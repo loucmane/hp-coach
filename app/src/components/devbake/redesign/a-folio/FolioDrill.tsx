@@ -25,11 +25,24 @@
 // (FolioQuant.tsx) and the running provpass (FolioProvpass.tsx) are built
 // from.
 //
-// Keys: the spread's pages, the phone drill's scroll and every Folio dialog
-// carry data-rd-keyscope, so the arrows scroll there and the bake-off's
-// switcher never takes them for a change of screen.
+// ELF (screen 14) is the same spread on data.drills.elf, with no switcher
+// moves: only the English content — the passage, the prompt, the options
+// and the facit's bodies — carries lang="en"; the chrome around it stays
+// Swedish, also inside the English article. A gap text sets its gaps as
+// ruled blanks that take the chosen word in pencil, then the right one.
+//
+// A reading drill answers only a complete question (answerable): its
+// passage, its prompt, its options and every picture it carries — its own
+// figure and each option's — loaded on the page, with the chosen option one
+// of its own. Until then Svara is held, whether clicked, ↵ or space, and the
+// page says plainly what is missing.
+//
+// Keys: only Folio's dialogs carry data-rd-keyscope. The spread's pages and
+// the phone drill's scroll only scroll vertically, so the bake-off's
+// switcher keeps its digits and ←/→ from anywhere in a drill.
 
 import {
+  ArrowRight,
   Check,
   ChevronDown,
   ChevronRight,
@@ -43,6 +56,7 @@ import {
 } from 'lucide-react'
 import {
   type CSSProperties,
+  createContext,
   Fragment,
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
@@ -50,8 +64,10 @@ import {
   type RefCallback,
   type RefObject,
   useCallback,
+  useContext,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -67,6 +83,7 @@ import {
   useDrillCore,
 } from '@/components/devbake/redesign/drillCore'
 import {
+  type Destination,
   type DirectionProps,
   fmtClock,
   prefersReducedMotion,
@@ -100,9 +117,11 @@ export type Origin = {
   /** The reader came from Idag, where round 1's switcher move (onScreen(1))
    *  also leads. */
   idag: boolean
+  /** The page the label names, for a way back that goes exactly there. */
+  to?: Destination | 'konto'
 }
 
-export const ORIGIN_IDAG: Origin = { label: 'Idag', idag: true }
+export const ORIGIN_IDAG: Origin = { label: 'Idag', idag: true, to: 'idag' }
 
 export type DrillMode = 'drill' | 'repetition'
 
@@ -158,8 +177,25 @@ export function drillSeam(
     // A wrong answer comes back after the ten-minute relearning step; the
     // view model does not say where a right one goes on the ladder.
     after: (correct) => (repetition && !correct ? 'Frågan kommer tillbaka om tio minuter.' : null),
-    lang: question.passage?.lang ?? (section === 'ELF' ? 'en' : 'sv'),
+    lang: contentLang(question),
   }
+}
+
+/** The language a question's content is in: its passage's, else English
+ *  for ELF. The chrome around it is always Swedish. */
+export function contentLang(q: Pick<DrillQuestion, 'passage' | 'section'>): 'sv' | 'en' {
+  return q.passage?.lang ?? (q.section === 'ELF' ? 'en' : 'sv')
+}
+
+/** "en" for an English question's content, else nothing: the root's sv
+ *  holds. */
+function langOf(q: Pick<DrillQuestion, 'passage' | 'section'>): 'en' | undefined {
+  return contentLang(q) === 'en' ? 'en' : undefined
+}
+
+/** Content in another language than its container (`lang`), or as it is. */
+function InLang({ lang, children }: { lang: 'en' | undefined; children: ReactNode }) {
+  return lang ? <span lang={lang}>{children}</span> : children
 }
 
 /** The core's actions as the drill's parts use them: lock, next and exit
@@ -256,8 +292,8 @@ export function questionStem(q: { prompt: string | null; section: Section }): st
 }
 
 /** Text with MEK's blanks (_____) set as ruled gaps in the line, each named
- *  "lucka N" for screen readers. Batch 3 adds the pencilled and graded
- *  states. */
+ *  "lucka N" for screen readers. An ELF gap text sets its blanks as
+ *  GapMarks instead (below). */
 export function GapText({ text }: { text: string }) {
   const parts = text.split(GAP_RE)
   if (parts.length === 1) return <MathText>{text}</MathText>
@@ -278,18 +314,467 @@ export function GapText({ text }: { text: string }) {
   )
 }
 
-// ── The reading drill (screens 2 and 3) ──────────────────────────────
+// ── ELF gap texts ────────────────────────────────────────────────────
+
+/** A gap in a P5 gap text, "___(1)___"; a bare "___" counts in order. */
+const GAP_MARK_RE = /_{3,}(?:\((\d+)\)_{3,})?/g
+/** Where a long gap sentence may be cut: a comma, semicolon, colon or a
+ *  spaced dash. */
+const CLAUSE_RE = /[,;:]\s+|\s[–—]\s/g
+
+/** What a gap text's blanks show (spec screen 14, "GapMark"). */
+export type GapModel = {
+  /** The open question's gap. */
+  current: number | null
+  /** The word pencilled into it: the chosen option, before Svara. */
+  chosen: string | null
+  /** Answered gaps: the right word, and the reader's when it was wrong. */
+  graded: Record<number, { right: string; wrong: string | null }>
+}
+
+const NO_GAPS: GapModel = { current: null, chosen: null, graded: {} }
+
+function countGaps(text: string): number {
+  return [...text.matchAll(GAP_MARK_RE)].length
+}
+
+function hasGaps(paragraphs: readonly string[]): boolean {
+  return paragraphs.some((p) => countGaps(p) > 0)
+}
+
+/** Each gap question's gap, by qid. "Gap (2)" names it; a gap text's
+ *  question without a prompt takes the next one in order. */
+export function gapNumbers(questions: readonly DrillQuestion[]): Record<string, number> {
+  const out: Record<string, number> = {}
+  let order = 0
+  for (const q of questions) {
+    if (q.section !== 'ELF' || !q.passage || !hasGaps(q.passage.paragraphs)) continue
+    order += 1
+    const named = /^\s*gap\s*\((\d+)\)\s*$/i.exec(q.prompt ?? '')
+    if (named) out[q.qid] = Number(named[1])
+    else if (!q.prompt?.trim()) out[q.qid] = order
+  }
+  return out
+}
+
+function samePassage(a: DrillQuestion['passage'], b: DrillQuestion['passage']): boolean {
+  if (!a || !b) return false
+  if (a.unitId && b.unitId) return a.unitId === b.unitId
+  return a.paragraphs[0] === b.paragraphs[0]
+}
+
+function optionText(q: DrillQuestion, letter: AnswerLetter | null): string | null {
+  return q.options?.find((o) => o.letter === letter)?.text ?? null
+}
+
+/** The open question's gap text as its blanks should show it: the open
+ *  gap with the chosen word, and every gap of the text answered so far. */
+function gapModel(
+  view: DrillCoreView,
+  questions: readonly DrillQuestion[],
+  of: Record<string, number>,
+): GapModel | null {
+  const passage = view.question.passage
+  if (!passage || !hasGaps(passage.paragraphs)) return null
+  const graded: GapModel['graded'] = {}
+  for (const r of view.results) {
+    const q = questions.find((x) => x.qid === r.qid)
+    const n = of[r.qid]
+    const right = q ? optionText(q, q.answer) : null
+    if (!q || n == null || !right || !samePassage(q.passage, passage)) continue
+    graded[n] = { right, wrong: r.correct ? null : optionText(q, r.pick) }
+  }
+  return {
+    current: of[view.question.qid] ?? null,
+    chosen: view.phase === 'question' ? optionText(view.question, view.selected) : null,
+    graded,
+  }
+}
+
+/**
+ * One blank of a gap text (spec screen 14, "GapMark"): a ruled blank with
+ * its number; the open one in the accent; the chosen word pencilled in
+ * (italic accent ink, the number lifted); once answered, the right word in
+ * ink — after a wrong pick struck through, then the right one. Its name is
+ * Swedish chrome inside the English text.
+ */
+function GapMark({ n, model }: { n: number; model: GapModel }) {
+  const graded = model.graded[n]
+  const current = !graded && model.current === n
+  const chosen = current ? model.chosen : null
+  const word = graded?.right ?? chosen
+  const label = graded
+    ? graded.wrong
+      ? `lucka ${n}: ditt ord ${graded.wrong}, rätt ord ${graded.right}`
+      : `lucka ${n}: ${graded.right}`
+    : chosen
+      ? `lucka ${n}: ${chosen}`
+      : `lucka ${n}, tom`
+  return (
+    <span
+      className="fo-gapmark"
+      data-gap={n}
+      data-state={graded ? (graded.wrong ? 'wrong' : 'right') : current ? 'current' : 'blank'}
+      data-filled={word ? 'true' : undefined}
+    >
+      <span className="fo-sr" lang="sv">
+        {label}
+      </span>
+      <span className="fo-gapmark-text" aria-hidden>
+        {graded?.wrong ? <s className="fo-gapmark-wrong">{graded.wrong}</s> : null}
+        {word ? <span className="fo-gapmark-word">{word}</span> : null}
+        <span className="fo-gapmark-n">{n}</span>
+      </span>
+    </span>
+  )
+}
+
+/** A run of a gap text with its blanks set as GapMarks. `first` counts the
+ *  bare blanks before it in the passage (they are numbered in order). */
+function GapRun({ text, model, first = 0 }: { text: string; model: GapModel; first?: number }) {
+  const out: ReactNode[] = []
+  let at = 0
+  let bare = first
+  for (const m of text.matchAll(GAP_MARK_RE)) {
+    const i = m.index ?? 0
+    if (i > at) out.push(text.slice(at, i))
+    bare += 1
+    out.push(<GapMark key={i} n={m[1] ? Number(m[1]) : bare} model={model} />)
+    at = i + m[0].length
+  }
+  if (at < text.length) out.push(text.slice(at))
+  return <>{out}</>
+}
+
+/** Where gap `n`'s sentence stands in the passage: its paragraph and range,
+ *  cut to the gap's clause when it runs long (`lead`/`tail` say where), and
+ *  the bare blanks before it. */
+function gapSentence(paragraphs: readonly string[], n: number) {
+  let bare = 0
+  for (const [para, text] of paragraphs.entries()) {
+    const before = bare
+    for (const m of text.matchAll(GAP_MARK_RE)) {
+      bare += 1
+      if ((m[1] ? Number(m[1]) : bare) !== n) continue
+      const at = m.index ?? 0
+      const after = at + m[0].length
+      const stops = [...text.slice(0, at).matchAll(/[.!?][”’"')]*\s+/g)]
+      const last = stops[stops.length - 1]
+      let start = last ? (last.index ?? 0) + last[0].length : 0
+      const stop = /[.!?][”’"')]*/.exec(text.slice(after))
+      let end = stop ? after + (stop.index ?? 0) + stop[0].length : text.length
+      let lead = false
+      let tail = false
+      if (at - start > 100) {
+        const cuts = [...text.slice(start, at).matchAll(CLAUSE_RE)]
+        const cut = cuts[cuts.length - 1]
+        if (cut) {
+          start += (cut.index ?? 0) + cut[0].length
+          lead = true
+        }
+      }
+      if (end - after > 80) {
+        const cut = [...text.slice(after, end).matchAll(CLAUSE_RE)][0]
+        if (cut) {
+          end = after + (cut.index ?? 0)
+          tail = true
+        }
+      }
+      return { para, start, end, lead, tail, first: before + countGaps(text.slice(0, start)) }
+    }
+  }
+  return null
+}
+
+/** The open gap's sentence quoted beside the options (spec screen 14,
+ *  "GapContext"), with the chosen word pencilled in, so a word can be tried
+ *  in its sentence without looking away. */
+function GapQuote({
+  paragraphs,
+  n,
+  model,
+}: {
+  paragraphs: readonly string[]
+  n: number
+  model: GapModel
+}) {
+  const s = gapSentence(paragraphs, n)
+  if (!s) return null
+  const text = paragraphs[s.para].slice(s.start, s.end)
+  return (
+    <blockquote className="fo-gapquote" lang="en">
+      <p>
+        “{s.lead ? '… ' : ''}
+        <GapRun text={text} model={model} first={s.first} />
+        {s.tail ? ' …' : ''}”
+      </p>
+    </blockquote>
+  )
+}
+
+/** The prompt slot: the question (in English for ELF), or for a gap
+ *  "Lucka 2" — Swedish chrome, since the head already says which question —
+ *  over the gap's sentence quoted from the text. */
+function PromptBlock({
+  view,
+  gap,
+  gaps,
+  after = false,
+  promptRef,
+}: {
+  view: Pick<DrillCoreView, 'question'>
+  gap: number | null
+  gaps: GapModel | null
+  /** Under the verdict: the quieter restatement. */
+  after?: boolean
+  promptRef?: RefCallback<HTMLElement>
+}) {
+  const q = view.question
+  const Tag = after ? 'p' : 'h2'
+  const focus = after ? {} : { ref: promptRef, tabIndex: promptRef ? -1 : undefined }
+  if (gap != null && gaps && q.passage) {
+    return (
+      <>
+        <Tag className="fo-prompt" data-after={after ? 'true' : undefined} {...focus}>
+          Lucka {gap}
+        </Tag>
+        <GapQuote paragraphs={q.passage.paragraphs} n={gap} model={gaps} />
+      </>
+    )
+  }
+  if (!q.prompt) return null
+  return (
+    <Tag className="fo-prompt" data-after={after ? 'true' : undefined} lang={langOf(q)} {...focus}>
+      <MathText>{q.prompt}</MathText>
+    </Tag>
+  )
+}
+
+// ── A complete question ──────────────────────────────────────────────
+
+/** Whose picture it is: the question's own figure, or an option's. */
+type Part = AnswerLetter | 'figure'
+
+/** One picture on the page: one mounted image, by itself (never "this
+ *  source has loaded once, somewhere"). */
+type Picture = { part: Part; src: string; state: 'loading' | 'loaded' | 'failed' }
+type Pictures = ReadonlyMap<object, Picture>
+
+/** Where a reading drill hears its pictures, and the try they are on (its
+ *  "Försök igen" tries every one afresh). Outside a reading drill nobody
+ *  listens, and an option's picture is as it always was. */
+const PictureGate = createContext<{
+  report: (token: object, picture: Picture | null) => void
+  attempt: number
+} | null>(null)
+
+/** What keeps the open question from being answered. */
+type Lack =
+  | { kind: 'passage' | 'prompt' | 'options' }
+  | { kind: 'wordless'; letter: AnswerLetter }
+  | { kind: 'picture'; part: Part; failed: boolean }
+
+/**
+ * What the open reading question lacks, or null when it is complete: its
+ * passage (a paragraph with words); its prompt, where a gap text's
+ * explicitly empty stem counts (the gap is its question; null is no
+ * prompt); its options, each with its words (an image option's label);
+ * and every picture it carries — its own figure, then each option's —
+ * loaded on each of its instances on the page. A picture that is not on
+ * the page (a phone slip at its peek) has not loaded.
+ */
+function lackOf(q: DrillQuestion, pictures: Pictures): Lack | null {
+  const passage = q.passage
+  if (!passage?.paragraphs.some((p) => p.trim())) return { kind: 'passage' }
+  if (q.prompt == null || (!q.prompt.trim() && !hasGaps(passage.paragraphs))) {
+    return { kind: 'prompt' }
+  }
+  const options = q.options ?? []
+  if (options.length === 0) return { kind: 'options' }
+  const wordless = options.find((o) => !o.text.trim())
+  if (wordless) return { kind: 'wordless', letter: wordless.letter }
+  const carried: { part: Part; src: string | undefined }[] = [
+    { part: 'figure', src: q.figure?.src },
+    ...options.map((o) => ({ part: o.letter, src: o.figure?.src })),
+  ]
+  const drawn = carried.flatMap(({ part, src }) => {
+    if (!src) return []
+    const shown = [...pictures.values()].filter((p) => p.part === part && p.src === src)
+    return [{ part, shown }]
+  })
+  const failed = drawn.find((d) => d.shown.some((p) => p.state === 'failed'))
+  if (failed) return { kind: 'picture', part: failed.part, failed: true }
+  const waiting = drawn.find(
+    (d) => d.shown.length === 0 || d.shown.some((p) => p.state !== 'loaded'),
+  )
+  if (waiting) return { kind: 'picture', part: waiting.part, failed: false }
+  return null
+}
+
+/** Svara's one gate, read by the button and by the lock alike (a click, ↵
+ *  or the button's own space): the open question complete, and the chosen
+ *  option one of its own. */
+function answerable(q: DrillQuestion, chosen: AnswerLetter | null, pictures: Pictures): boolean {
+  return (
+    chosen != null && (q.options ?? []).some((o) => o.letter === chosen) && !lackOf(q, pictures)
+  )
+}
+
+/** Svara's echo while it is held: the figure or the pictures still
+ *  loading, or a question that cannot be answered yet (the note above says
+ *  what is missing). */
+function holdOf(lack: Lack | null): string | null {
+  if (!lack) return null
+  if (lack.kind !== 'picture' || lack.failed) return 'Frågan går inte att besvara än.'
+  return lack.part === 'figure' ? 'Figuren laddas …' : 'Bilderna laddas …'
+}
+
+/** The plain words for what is missing; a picture still loading has none
+ *  (Svara's echo says it). */
+function lackText(lack: Lack): string | null {
+  switch (lack.kind) {
+    case 'passage':
+      return 'Texten till frågan saknas.'
+    case 'prompt':
+      return 'Frågetexten saknas.'
+    case 'options':
+      return 'Svarsalternativen saknas.'
+    case 'wordless':
+      return `Alternativ ${lack.letter} saknar sin text.`
+    case 'picture':
+      if (!lack.failed) return null
+      return lack.part === 'figure'
+        ? 'Figuren till frågan gick inte att visa.'
+        : `Bilden till alternativ ${lack.part} gick inte att visa.`
+  }
+}
+
+/** A question that cannot be answered says so (spec §1.7 "erratum"):
+ *  plain words behind a 1 px rule, announced as a status; a picture that
+ *  failed has one way to try again. */
+function LackNote({ lack, onRetry }: { lack: Lack | null; onRetry: () => void }) {
+  const text = lack ? lackText(lack) : null
+  if (!lack || !text) return null
+  return (
+    <div className="fo-erratum fo-lack" role="status" data-testid="rd-incomplete">
+      <p>{text}</p>
+      {lack.kind === 'picture' ? (
+        <button type="button" className="fo-link" onClick={onRetry}>
+          Försök igen
+        </button>
+      ) : null}
+    </div>
+  )
+}
+
+/**
+ * One picture as one mounted image, with a receipt of its own: loading
+ * until this very image has loaded or failed. Its parent keys it by source
+ * and try, so a new source, a picture that comes back or "Försök igen"
+ * mounts a fresh one, and no image inherits another's "loaded". Inside a
+ * reading drill it tells the drill how it stands (PictureGate); once it
+ * has failed, `fallback` stands in.
+ */
+function PictureMount({
+  part,
+  src,
+  alt,
+  width,
+  height,
+  className,
+  fallback,
+}: {
+  part: Part
+  src: string
+  alt: string
+  width: number
+  height: number
+  className: string
+  fallback: ReactNode
+}) {
+  const report = useContext(PictureGate)?.report
+  const [state, setState] = useState<Picture['state']>('loading')
+  useLayoutEffect(() => {
+    if (!report) return
+    const token = {}
+    report(token, { part, src, state })
+    return () => report(token, null)
+  }, [report, part, src, state])
+  if (state === 'failed') return fallback
+  return (
+    <img
+      className={className}
+      src={`/${src}`}
+      alt={alt}
+      width={width}
+      height={height}
+      onLoad={() => setState('loaded')}
+      onError={() => setState('failed')}
+    />
+  )
+}
+
+/** The question's own figure, set like a book figure above its prompt. A
+ *  reading question seldom has one; when it does, the figure is part of
+ *  the question, and the drill waits for it as for an option's picture.
+ *  It is an image either way, so its load can be watched (a drawn figure
+ *  shows as drawn, not in the ink's colour); if it fails, its name stands
+ *  in and the note above the prompt says so. */
+function QuestionFigure({ q }: { q: Pick<DrillQuestion, 'figure'> }) {
+  const attempt = useContext(PictureGate)?.attempt ?? 0
+  const figure = q.figure
+  if (!figure?.src) return null
+  return (
+    <figure className="fo-figure" data-testid="rd-qfigure">
+      <PictureMount
+        key={`${figure.src}#${attempt}`}
+        part="figure"
+        src={figure.src}
+        alt={figure.alt}
+        width={figure.width}
+        height={figure.height}
+        className="fo-figure-raster"
+        fallback={<figcaption className="fo-plate-caption">{figure.alt}</figcaption>}
+      />
+    </figure>
+  )
+}
+
+// ── The reading drills (screens 2, 3 and 14) ─────────────────────────
+
+/** A key that changes when a list shrinks: a sitting whose questions the
+ *  host cuts down opens again at its start, never past its end. */
+function useShrinkKey(length: number): number {
+  const seen = useRef(length)
+  const epoch = useRef(0)
+  if (length < seen.current) epoch.current += 1
+  seen.current = length
+  return epoch.current
+}
 
 export function FolioDrill(props: DirectionProps & { origin: Origin }) {
   const { data } = useDirectionData()
+  const elf = props.screen === 14
+  const session = elf ? data.drills.elf : data.drills.reading
+  const shrunk = useShrinkKey(session.questions.length)
   // The core needs a question to stand on; an empty sitting is a page.
-  if (data.drills.reading.questions.length === 0) {
-    return <EmptyDrill label="LÄS" width={props.width} />
+  if (session.questions.length === 0) {
+    return <EmptyDrill label={elf ? 'ELF' : 'LÄS'} width={props.width} />
   }
-  // One core per sitting: a sitting the host replaces opens at its own
-  // start; an update of the same sitting keeps the reader's place.
-  return <ReadingDrill key={data.drills.reading.id} {...props} />
+  // One core per sitting: a sitting the host replaces (or cuts short) opens
+  // at its own start; an update of the same sitting keeps the reader's
+  // place.
+  return (
+    <ReadingDrill
+      key={`${elf ? 'elf' : 'las'}:${session.id}:${shrunk}`}
+      {...props}
+      session={session}
+      switcher={!elf}
+    />
+  )
 }
+
+type FocusAfter = 'verdict' | 'prompt' | 'done'
 
 function ReadingDrill({
   screen,
@@ -297,14 +782,24 @@ function ReadingDrill({
   live,
   onScreen,
   origin,
-}: DirectionProps & { origin: Origin }) {
+  session,
+  switcher,
+}: DirectionProps & {
+  origin: Origin
+  session: DrillSessionView
+  /** Round 1's Läsfråga and Facit (2 and 3): the switcher follows the
+   *  drill. ELF (14) asks only through actions. */
+  switcher: boolean
+}) {
   const { data, actions } = useDirectionData()
-  const session = data.drills.reading
   // Screen 3 opens the sitting's question already graded with the bake-off's
   // wrong pick (a display state: the controller is not called).
   const [start] = useState<DrillStart>(() => {
     const qid = session.questions[session.start.index ?? 0]?.qid
-    return { ...session.start, graded: screen === 3 && qid ? session.wrongPick?.[qid] : undefined }
+    return {
+      ...session.start,
+      graded: switcher && screen === 3 && qid ? session.wrongPick?.[qid] : undefined,
+    }
   })
   const core = useDrillCore({
     questions: session.questions,
@@ -315,31 +810,92 @@ function ReadingDrill({
     live,
   })
   const { gradeAs, reopen, reset, lock: coreLock, next: coreNext, exit: coreExit } = core.act
-  const { view, refs } = core
-  const phase = view.phase
+  const { refs } = core
+  const phase = core.view.phase
+
+  // The pictures on the page (the question's figure and the options'),
+  // each mounted image by itself, and the try they are on.
+  const [pictures, setPictures] = useState<Pictures>(() => new Map())
+  const [attempt, setAttempt] = useState(0)
+  const report = useCallback((token: object, picture: Picture | null) => {
+    setPictures((all) => {
+      const next = new Map(all)
+      if (picture) next.set(token, picture)
+      else next.delete(token)
+      return next
+    })
+  }, [])
+  const pictureGate = useMemo(() => ({ report, attempt }), [report, attempt])
+  const retry = useCallback(() => setAttempt((a) => a + 1), [])
+  // Svara's one gate: the button and the lock read the same answer.
+  const ready = answerable(core.view.question, core.view.selected, pictures)
+  const readyRef = useRef(ready)
+  readyRef.current = ready
 
   // Keep in step with the switcher: a click on "Facit" while a question is
   // open grades it with the fixture's wrong pick; "Läsfråga" while graded
   // reopens the same question, and after the last one starts over.
   // biome-ignore lint/correctness/useExhaustiveDependencies: follows the switcher's screen only
   useLayoutEffect(() => {
+    if (!switcher) return
     if (screen === 3 && phase === 'question') gradeAs((q) => session.wrongPick?.[q.qid])
     else if (screen === 2 && phase === 'feedback') reopen()
     else if (screen === 2 && phase === 'done') reset()
   }, [screen])
 
+  // Focus follows the reader's own moves only (never a mount or a switcher
+  // jump): to the verdict on Svara, to the next question's prompt on
+  // Nästa, to the colophon at the end.
+  const focusAfter = useRef<FocusAfter | null>(null)
+  const targets = useRef<Partial<Record<FocusAfter, HTMLElement | null>>>({})
+  const verdictRef = useCallback((el: HTMLElement | null) => {
+    targets.current.verdict = el
+  }, [])
+  const promptRef = useCallback((el: HTMLElement | null) => {
+    targets.current.prompt = el
+  }, [])
+  const doneRef = useCallback((el: HTMLElement | null) => {
+    targets.current.done = el
+  }, [])
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs when the phase or question changes
+  useLayoutEffect(() => {
+    const to = focusAfter.current
+    focusAfter.current = null
+    if (live && to) targets.current[to]?.focus({ preventScroll: true })
+  }, [phase, core.view.index])
+
   const lock = useCallback(() => {
-    if (coreLock()) onScreen(3)
-  }, [coreLock, onScreen])
+    if (!readyRef.current || !coreLock()) return
+    focusAfter.current = 'verdict'
+    if (switcher) onScreen(3)
+  }, [coreLock, onScreen, switcher])
   const next = useCallback(() => {
-    if (coreNext() === 'next') onScreen(2)
-  }, [coreNext, onScreen])
+    const moved = coreNext()
+    if (moved) focusAfter.current = moved === 'next' ? 'prompt' : 'done'
+    if (moved === 'next' && switcher) onScreen(2)
+  }, [coreNext, onScreen, switcher])
   // Avsluta: back where the reader came from. Round 1's move to Idag
   // stays when that is where they came from; the controller hears it.
   const exit = useCallback(() => {
-    if (origin.idag) onScreen(1)
+    if (switcher && origin.idag) onScreen(1)
     coreExit()
-  }, [origin.idag, onScreen, coreExit])
+  }, [switcher, origin.idag, onScreen, coreExit])
+
+  // A chosen option the host has taken away is no choice: none shows as
+  // chosen, and Svara waits for a new one.
+  const selected = core.view.selected
+  const chosen = selected != null && core.view.letters.includes(selected) ? selected : null
+  const current = chosen === selected ? core.view : { ...core.view, selected: chosen }
+  // English content: the kit finds ¶ citations and quotations by Swedish
+  // rules only, so the ELF facit shows none rather than wrong ones (spec
+  // screen 14).
+  const english = contentLang(current.question) === 'en'
+  const view: DrillCoreView = english
+    ? { ...current, stepCites: {}, distractorCites: {}, cited: [], marks: [] }
+    : current
+  const lack = view.phase === 'question' ? lackOf(view.question, pictures) : null
+  const gapOf = gapNumbers(session.questions)
+  const gaps = gapModel(view, session.questions, gapOf)
   const act: DrillAct = {
     select: core.act.select,
     toggleEliminate: core.act.toggleEliminate,
@@ -399,9 +955,24 @@ function ReadingDrill({
     dateLabel: data.home.today.dateLabel,
     badge: data.copy.ovningstextBadge,
     noteText: data.copy.ovningstextNote,
+    gap: gapOf[view.question.qid] ?? null,
+    gaps,
+    verdictRef,
+    promptRef,
+    doneRef,
+    lack,
+    gate: { ready, hold: holdOf(lack) },
+    onRetry: retry,
   }
-  return width === 'phone' ? <PhoneDrill {...chrome} /> : <DeskDrill {...chrome} />
+  return (
+    <PictureGate.Provider value={pictureGate}>
+      {width === 'phone' ? <PhoneDrill {...chrome} /> : <DeskDrill {...chrome} />}
+    </PictureGate.Provider>
+  )
 }
+
+/** Svara's gate as the action bar shows it: open or held, and why. */
+type Gate = { ready: boolean; hold: string | null }
 
 type DrillChrome = Shared & {
   seam: DrillSeam
@@ -418,6 +989,29 @@ type DrillChrome = Shared & {
   dateLabel: string
   badge: string
   noteText: string
+  /** The open question's gap in a gap text, and the text's blanks. */
+  gap: number | null
+  gaps: GapModel | null
+  /** Where focus lands after the reader's own moves. */
+  verdictRef: RefCallback<HTMLElement>
+  promptRef: RefCallback<HTMLElement>
+  doneRef: RefCallback<HTMLElement>
+  /** What keeps the open question from being answered, or null. */
+  lack: Lack | null
+  gate: Gate
+  /** Tries the pictures afresh. */
+  onRetry: () => void
+}
+
+/** Scrolls `el` into view inside its own scroll box (`box`), clear of the
+ *  sticky head, instantly under reduced motion. */
+function scrollInto(box: HTMLElement | null, el: Element | null | undefined, offset: number): void {
+  if (!box || !el || typeof box.scrollTo !== 'function') return
+  const top = el.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop
+  box.scrollTo({
+    top: Math.max(0, top - offset),
+    behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+  })
 }
 
 /** "Magasinet i Hökaryd: en handbok …" → the title and its subtitle. */
@@ -439,11 +1033,17 @@ function DeskDrill(chrome: DrillChrome) {
 
   // A new question or a fresh verdict starts at the top of the recto; a
   // verdict also turns the verso to the evidence its steps cite (instantly
-  // the first time, so a deep link lands there).
+  // the first time, so a deep link lands there). In a gap text a new
+  // question turns the verso to its gap.
   // biome-ignore lint/correctness/useExhaustiveDependencies: scroll on question/phase change only
   useEffect(() => {
     rectoRef.current?.scrollTo?.({ top: 0 })
     const verso = versoRef.current
+    if (view.phase === 'question' && chrome.gap != null) {
+      scrollInto(verso, verso?.querySelector(`[data-gap="${chrome.gap}"]`), RUNHEAD + 120)
+      firstTurn.current = false
+      return
+    }
     const n = view.phase === 'feedback' ? evidencePara(view) : undefined
     const el = n ? verso?.querySelector<HTMLElement>(`[data-n="${n}"]`) : null
     if (verso && el) {
@@ -539,6 +1139,7 @@ function DeskDrill(chrome: DrillChrome) {
               active={active}
               badgeText={chrome.badge}
               noteText={chrome.noteText}
+              gaps={chrome.gaps}
             />
           </>
         }
@@ -555,8 +1156,13 @@ function DeskDrill(chrome: DrillChrome) {
                 seam={seam}
                 active={active}
                 point={point}
+                gap={chrome.gap}
+                gaps={chrome.gaps}
+                verdictRef={chrome.verdictRef}
+                promptRef={chrome.promptRef}
+                note={<LackNote lack={chrome.lack} onRetry={chrome.onRetry} />}
               />
-              <ActionBar view={view} act={act} seam={seam} />
+              <ActionBar view={view} act={act} seam={seam} gate={chrome.gate} />
             </div>
           </>
         }
@@ -699,14 +1305,14 @@ export function Spread({
       ref={spreadRef}
       style={{ '--fo-split': `${split * 100}%` } as CSSProperties}
     >
-      {/* Each page is a scroll region: its arrows scroll it (data-rd-keyscope
-       *  keeps them from the bake-off's switcher; data-fo-region tells a
-       *  running pass they are not a move to another question). */}
+      {/* Each page is a vertical scroll region. It is no keyscope: ↑/↓ scroll
+       *  it natively and the bake-off's switcher keeps its digits and ←/→.
+       *  data-fo-region tells a running pass, whose own root is the scope,
+       *  that a key on the page itself is not a move to another question. */}
       <section
         className="fo-page fo-page--verso"
         ref={versoRef}
         aria-label={versoLabel}
-        data-rd-keyscope
         data-fo-region
       >
         {verso}
@@ -735,7 +1341,6 @@ export function Spread({
         className="fo-page fo-page--recto"
         aria-label={rectoLabel}
         ref={rectoRef}
-        data-rd-keyscope
         data-fo-region
       >
         {recto}
@@ -753,15 +1358,24 @@ function QuestionColumn({
   seam,
   active,
   point,
-}: Shared & Pointing & { seam: DrillSeam }) {
+  gap,
+  gaps,
+  verdictRef,
+  promptRef,
+  note,
+}: Shared &
+  Pointing &
+  Pick<DrillChrome, 'gap' | 'gaps' | 'verdictRef' | 'promptRef'> & {
+    seam: DrillSeam
+    /** Above the question: what keeps it from being answered (LackNote). */
+    note?: ReactNode
+  }) {
   if (view.phase === 'question') {
     return (
       <>
-        {view.question.prompt ? (
-          <h2 className="fo-prompt">
-            <MathText>{view.question.prompt}</MathText>
-          </h2>
-        ) : null}
+        {note}
+        <QuestionFigure q={view.question} />
+        <PromptBlock view={view} gap={gap} gaps={gaps} promptRef={promptRef} />
         <Options view={view} act={act} />
         <KeyHints letters={view.letters} focus />
       </>
@@ -769,12 +1383,13 @@ function QuestionColumn({
   }
   return (
     <>
-      <Verdict view={view} after={view.correct == null ? null : seam.after(view.correct)} />
-      {view.question.prompt ? (
-        <p className="fo-prompt" data-after="true">
-          <MathText>{view.question.prompt}</MathText>
-        </p>
-      ) : null}
+      <Verdict
+        view={view}
+        after={view.correct == null ? null : seam.after(view.correct)}
+        focusRef={verdictRef}
+      />
+      <QuestionFigure q={view.question} />
+      <PromptBlock view={view} gap={gap} gaps={gaps} after />
       <GradedOptions view={view} />
       <Facit view={view} act={act} refs={refs} active={active} point={point} />
     </>
@@ -809,10 +1424,15 @@ export function ActionBar({
   view,
   act,
   seam,
+  gate,
 }: {
   view: DrillCoreView
   act: Pick<DrillAct, 'lock' | 'next'>
   seam: Pick<DrillSeam, 'unit' | 'next'>
+  /** Svara's gate where the drill keeps one (the reading drills): open
+   *  only when the question can be answered, and why it is held. Without
+   *  one, a choice opens it. */
+  gate?: Gate
 }) {
   const last = view.index + 1 >= view.total
   if (view.phase === 'question') {
@@ -821,7 +1441,7 @@ export function ActionBar({
         <button
           type="button"
           className="fo-btn"
-          disabled={!view.selected}
+          disabled={gate ? !gate.ready : !view.selected}
           onClick={act.lock}
           data-testid="rd-lock"
         >
@@ -831,7 +1451,7 @@ export function ActionBar({
           </kbd>
         </button>
         <span className="fo-echo" aria-live="polite">
-          {view.selected ? `Ditt val: ${view.selected}` : 'Välj ett alternativ'}
+          {gate?.hold ?? (view.selected ? `Ditt val: ${view.selected}` : 'Välj ett alternativ')}
         </span>
       </div>
     )
@@ -915,7 +1535,9 @@ function marked(
 
 /** The passage page: the ÖVNINGSTEXT tools and note, the title, the
  *  paragraphs with their ¶ numbers in the margin and, after an answer, the
- *  explanation's quotations underlined. */
+ *  explanation's quotations underlined. An English (ELF) article keeps its
+ *  tools, note and ¶ numbers Swedish; a gap text sets its blanks as
+ *  GapMarks (`gaps`, else plain numbered blanks). */
 export function PassageView({
   view,
   act,
@@ -926,6 +1548,7 @@ export function PassageView({
   badge = false,
   badgeText,
   noteText,
+  gaps,
 }: {
   view: PassageModel
   act: Pick<DrillAct, 'setFocusPara'>
@@ -937,23 +1560,24 @@ export function PassageView({
   badge?: boolean
   badgeText: string
   noteText: string
+  gaps?: GapModel | null
 }) {
   const paragraphs = view.passage?.paragraphs ?? []
   const byline = view.passage?.byline ?? null
   const synthetic = view.question.passage?.synthetic ?? false
-  const lang = view.question.passage?.lang ?? 'sv'
+  const english = (view.question.passage?.lang ?? 'sv') === 'en'
+  // Chrome inside an English article says so.
+  const sv = english ? 'sv' : undefined
   const [title, subtitle] = passageTitle(view)
   const graded = view.phase === 'feedback'
-  const marks = shownMarks(view)
+  const gapped = hasGaps(paragraphs)
+  const marks = gapped ? [] : shownMarks(view)
+  let blanks = 0
   return (
-    <article
-      className="fo-passage"
-      aria-labelledby="fo-ptitle"
-      lang={lang === 'sv' ? undefined : lang}
-    >
+    <article className="fo-passage" aria-labelledby="fo-ptitle" lang={english ? 'en' : undefined}>
       {synthetic ? (
         <>
-          <div className="fo-ptools">
+          <div className="fo-ptools" lang={sv}>
             {badge ? (
               <span className="fo-badge" data-testid="rd-badge">
                 {badgeText}
@@ -971,19 +1595,19 @@ export function PassageView({
               {note ? 'Dölj noten' : 'Om texten'}
             </button>
           </div>
-          <p className="fo-note" id="fo-note" hidden={!note} data-testid="rd-note">
+          <p className="fo-note" id="fo-note" hidden={!note} data-testid="rd-note" lang={sv}>
             {noteText}
           </p>
         </>
       ) : null}
       <h1 className="fo-ptitle" id="fo-ptitle">
-        {title || 'Texten'}
+        {title || (english ? <span lang="sv">Texten</span> : 'Texten')}
         {subtitle ? <span>{subtitle}</span> : null}
       </h1>
       <div
         className="fo-pbody"
         data-focus={String(view.focusPara != null)}
-        data-testid="rd-passage"
+        data-testid={english ? 'rd-elf-passage' : 'rd-passage'}
       >
         {paragraphs.map((p, i) => {
           const n = i + 1
@@ -991,6 +1615,8 @@ export function PassageView({
           // A ¶ link whose part quotes this paragraph marks the sentence;
           // otherwise the whole paragraph takes the mark.
           const sentence = own.some((m) => m.source === view.flashSource)
+          const first = blanks
+          if (gapped) blanks += countGaps(p)
           return (
             <p
               key={n}
@@ -1008,13 +1634,20 @@ export function PassageView({
                 type="button"
                 className="fo-pnum"
                 tabIndex={-1}
+                lang={sv}
                 aria-label={`Stycke ${n}${view.focusPara === n ? ', i fokus' : ''}`}
                 aria-pressed={view.focusPara === n}
                 onClick={() => act.setFocusPara(view.focusPara === n ? null : n)}
               >
                 {n}
               </button>
-              {own.length ? marked(p, own, view, active) : p}
+              {gapped ? (
+                <GapRun text={p} model={gaps ?? NO_GAPS} first={first} />
+              ) : own.length ? (
+                marked(p, own, view, active)
+              ) : (
+                p
+              )}
             </p>
           )
         })}
@@ -1027,21 +1660,26 @@ export function PassageView({
 // ── Options ──────────────────────────────────────────────────────────
 
 /** An option's content: its text (math rendered), or its picture with the
- *  text as the name — the text stands in if the picture fails. A failure
- *  belongs to its source: a new source is tried afresh. */
+ *  text as the name — the text stands in if the picture fails. Each source
+ *  and try is a picture of its own (PictureMount): a new source, a picture
+ *  that comes back, or a reading drill's "Försök igen" is tried afresh.
+ *  Inside a reading drill each mounted picture tells the drill how it
+ *  stands (PictureGate). */
 function OptionContent({ o }: { o: DrillOption }) {
-  const [failed, setFailed] = useState<string | null>(null)
+  const attempt = useContext(PictureGate)?.attempt ?? 0
+  const text = <MathText>{o.text}</MathText>
   const figure = o.figure
-  if (!figure || figure.src === failed) return <MathText>{o.text}</MathText>
+  if (!figure?.src) return text
   return (
-    <img
-      key={figure.src}
-      className="fo-opt-img"
-      src={`/${figure.src}`}
+    <PictureMount
+      key={`${figure.src}#${attempt}`}
+      part={o.letter}
+      src={figure.src}
       alt={o.text}
       width={figure.width}
       height={figure.height}
-      onError={() => setFailed(figure.src)}
+      className="fo-opt-img"
+      fallback={text}
     />
   )
 }
@@ -1049,7 +1687,9 @@ function OptionContent({ o }: { o: DrillOption }) {
 /** The options before the answer: choose with the letter, strike with the
  *  quiet control at the row's end (always in view). `testId` names the
  *  option buttons (rd-option-<L>, rd-quant-option-<L> or, in a running
- *  pass, where the choice is saved and never graded, rd-prov-option-<L>). */
+ *  pass, where the choice is saved and never graded, rd-prov-option-<L>).
+ *  An English option's text is lang="en"; its spoken label and the strike
+ *  stay Swedish, whatever the container says. */
 export function Options({
   view,
   act,
@@ -1059,6 +1699,8 @@ export function Options({
   act: Pick<DrillAct, 'select' | 'toggleEliminate'>
   testId?: string
 }) {
+  const en = langOf(view.question)
+  const sv = en ? 'sv' : undefined
   return (
     <ol className="fo-opts" aria-label="Svarsalternativ">
       {(view.question.options ?? []).map((o) => {
@@ -1082,17 +1724,20 @@ export function Options({
                 {o.letter}
               </span>
               <span className="fo-opt-text">
-                <span className="fo-sr">
+                <span className="fo-sr" lang={sv}>
                   Alternativ {o.letter}
                   {out ? ', struket' : ''}:{' '}
                 </span>
-                <OptionContent o={o} />
+                <InLang lang={en}>
+                  <OptionContent o={o} />
+                </InLang>
               </span>
             </button>
             <button
               type="button"
               className="fo-opt-x"
               data-testid={`rd-eliminate-${o.letter}`}
+              lang={sv}
               aria-pressed={out}
               aria-label={out ? `Ångra strykningen av ${o.letter}` : `Stryk ${o.letter}`}
               title={out ? 'Ångra' : 'Stryk alternativet (⇧ + bokstav)'}
@@ -1127,6 +1772,8 @@ export function GradedOptions({
   const options = view.question.options ?? []
   const shown = options.filter((o) => all || o.letter === key || o.letter === view.picked)
   const rest = options.length - shown.length
+  const en = langOf(view.question)
+  const sv = en ? 'sv' : undefined
   return (
     <>
       <ol className="fo-opts" aria-label="Svarsalternativ, rättade">
@@ -1145,10 +1792,14 @@ export function GradedOptions({
                   {o.letter}
                 </span>
                 <span className="fo-opt-text">
-                  <span className="fo-sr">Alternativ {o.letter}: </span>
-                  <OptionContent o={o} />
+                  <span className="fo-sr" lang={sv}>
+                    Alternativ {o.letter}:{' '}
+                  </span>
+                  <InLang lang={en}>
+                    <OptionContent o={o} />
+                  </InLang>
                   {right || mine ? (
-                    <span className="fo-opt-tag">
+                    <span className="fo-opt-tag" lang={sv}>
                       {right ? (
                         <Check size={14} strokeWidth={2.25} aria-hidden />
                       ) : (
@@ -1233,6 +1884,9 @@ type FacitAct = Pick<DrillAct, 'cite' | 'goToStep' | 'toggleStep'>
  * (and why it is wrong), what to take away (pitfall, technique), the
  * solution and its steps, and last the other options, folded. Without an
  * explanation yet, a plain line says so; the verdict above still stands.
+ * An ELF explanation is English under Swedish heads: each body is
+ * lang="en", and a missing body goes with its head. The framework line
+ * names the pattern and opens it in Uppslag ("Slå upp").
  */
 export function Facit({
   view,
@@ -1245,7 +1899,7 @@ export function Facit({
   act: FacitAct
   refs: Pick<DrillCoreRefs, 'step'>
 } & Pointing) {
-  const { data } = useDirectionData()
+  const { data, actions } = useDirectionData()
   const e = view.explanation
   if (!e) {
     return (
@@ -1255,10 +1909,12 @@ export function Facit({
     )
   }
   const q = view.question
+  const en = langOf(q)
   const optionText = (letter: string) => q.options?.find((o) => o.letter === letter)?.text ?? ''
   const mine = view.correct ? null : e.distractors.find((d) => d.letter === view.picked)
   const others = e.distractors.filter((d) => d.letter !== mine?.letter)
-  const framework = entryName(e.framework_id, data.frameworks)
+  const frameworkId = e.framework_id
+  const framework = entryName(frameworkId, data.frameworks)
   const steps = e.steps ?? []
   const hover = (source: string) => ({
     onMouseEnter: () => point(source),
@@ -1266,67 +1922,87 @@ export function Facit({
     onFocus: () => point(source),
     onBlur: () => point(null),
   })
+  // Folio records the request on its way to the host (Folio.tsx).
+  const lookUp = () => {
+    if (frameworkId) actions.openLesson(frameworkId)
+  }
   return (
     <div className="fo-facit">
-      {mine ? (
+      {mine && (mine.why_tempting || mine.why_wrong) ? (
         <section
           className="fo-fsec fo-fsec--lure"
           data-testid={`rd-distractor-${mine.letter}`}
           {...hover(`why-${mine.letter}`)}
         >
           {/* Two siblings, so one heading style for both. */}
-          <h3 className="fo-h3">Därför lockade {mine.letter}</h3>
-          <p className="fo-prose">
-            <Rich text={mine.why_tempting} act={act} />
-          </p>
-          <Cites
-            list={view.distractorCites[mine.letter]?.tempting ?? []}
-            source={`why-${mine.letter}`}
-            act={act}
-          />
-          <h3 className="fo-h3 fo-h3--next">Varför {mine.letter} är fel</h3>
-          <p className="fo-prose">
-            <Rich text={mine.why_wrong} act={act} />
-          </p>
-          <Cites
-            list={view.distractorCites[mine.letter]?.wrong ?? []}
-            source={`why-${mine.letter}`}
-            act={act}
-          />
+          {mine.why_tempting ? (
+            <>
+              <h3 className="fo-h3">Därför lockade {mine.letter}</h3>
+              <p className="fo-prose" lang={en}>
+                <Rich text={mine.why_tempting} act={act} />
+              </p>
+              <Cites
+                list={view.distractorCites[mine.letter]?.tempting ?? []}
+                source={`why-${mine.letter}`}
+                act={act}
+              />
+            </>
+          ) : null}
+          {mine.why_wrong ? (
+            <>
+              <h3 className={mine.why_tempting ? 'fo-h3 fo-h3--next' : 'fo-h3'}>
+                Varför {mine.letter} är fel
+              </h3>
+              <p className="fo-prose" lang={en}>
+                <Rich text={mine.why_wrong} act={act} />
+              </p>
+              <Cites
+                list={view.distractorCites[mine.letter]?.wrong ?? []}
+                source={`why-${mine.letter}`}
+                act={act}
+              />
+            </>
+          ) : null}
         </section>
       ) : null}
 
-      <section className="fo-fsec fo-notes">
-        <h3 className="fo-h3">Att ta med dig</h3>
-        {e.pitfall ? (
-          <div className="fo-note-item" data-testid="rd-pitfall">
-            <span className="fo-sub">Fallgropen</span>
-            <p className="fo-prose">
-              <MathText>{e.pitfall}</MathText>
-            </p>
-          </div>
-        ) : null}
-        <div className="fo-note-item" data-testid="rd-technique">
-          <span className="fo-sub">Tekniken</span>
-          <p className="fo-prose">
-            <MathText>{e.technique}</MathText>
-          </p>
-        </div>
-      </section>
+      {e.pitfall || e.technique ? (
+        <section className="fo-fsec fo-notes">
+          <h3 className="fo-h3">Att ta med dig</h3>
+          {e.pitfall ? (
+            <div className="fo-note-item" data-testid="rd-pitfall">
+              <span className="fo-sub">Fallgropen</span>
+              <p className="fo-prose" lang={en}>
+                <MathText>{e.pitfall}</MathText>
+              </p>
+            </div>
+          ) : null}
+          {e.technique ? (
+            <div className="fo-note-item" data-testid="rd-technique">
+              <span className="fo-sub">Tekniken</span>
+              <p className="fo-prose" lang={en}>
+                <MathText>{e.technique}</MathText>
+              </p>
+            </div>
+          ) : null}
+        </section>
+      ) : null}
 
-      <section className="fo-fsec">
-        <h3 className="fo-h3">Lösningen</h3>
-        <p className="fo-prose">
-          <MathText>{e.solution_path}</MathText>
-        </p>
-      </section>
+      {e.solution_path ? (
+        <section className="fo-fsec">
+          <h3 className="fo-h3">Lösningen</h3>
+          <p className="fo-prose" lang={en}>
+            <MathText>{e.solution_path}</MathText>
+          </p>
+        </section>
+      ) : null}
 
       {steps.length ? (
         <section className="fo-fsec">
           <h3 className="fo-h3">Steg för steg</h3>
           <ol>
             {steps.map((s) => (
-              <Step key={s.n} step={s} view={view} act={act} refs={refs} hover={hover} />
+              <Step key={s.n} step={s} view={view} act={act} refs={refs} hover={hover} lang={en} />
             ))}
           </ol>
         </section>
@@ -1343,14 +2019,19 @@ export function Facit({
               cites={view.distractorCites[d.letter] ?? { tempting: [], wrong: [] }}
               act={act}
               active={active}
+              lang={en}
             />
           ))}
         </section>
       ) : null}
 
-      {framework ? (
+      {framework && frameworkId ? (
         <p className="fo-framework">
-          Ramverk: <b>{framework}</b> · finns att slå upp i Uppslag
+          Ramverk: <b>{framework}</b> ·{' '}
+          <button type="button" className="fo-link" onClick={lookUp}>
+            Slå upp
+            <ArrowRight size={13} strokeWidth={1.75} aria-hidden />
+          </button>
         </p>
       ) : null}
     </div>
@@ -1363,12 +2044,15 @@ function Step({
   act,
   refs,
   hover,
+  lang,
 }: {
   step: ExplanationStep
   view: Pick<FacitView, 'openSteps' | 'stepCites'>
   act: FacitAct
   refs: Pick<DrillCoreRefs, 'step'>
   hover: (source: string) => Record<string, () => void>
+  /** 'en' for an ELF explanation's title and text. */
+  lang?: 'en'
 }) {
   const detail = step.tier === 'detail'
   const open = !detail || view.openSteps.has(step.n)
@@ -1388,12 +2072,12 @@ function Step({
         <div className="fo-step-head">
           <h4 className="fo-step-title">
             <span className="fo-sr">Steg {step.n}: </span>
-            {step.title}
+            <InLang lang={lang}>{step.title}</InLang>
           </h4>
           <Cites list={view.stepCites[step.n] ?? []} source={source} act={act} />
         </div>
         {open ? (
-          <p className="fo-step-text">
+          <p className="fo-step-text" lang={lang}>
             <Rich text={step.text} act={act} />
           </p>
         ) : null}
@@ -1420,15 +2104,19 @@ function Distractor({
   cites,
   act,
   active,
+  lang,
 }: {
   d: DistractorExplanation
   text: string
   cites: { tempting: number[]; wrong: number[] }
   act: FacitAct
   active: string | null
+  /** 'en' for an ELF option and its reasons. */
+  lang?: 'en'
 }) {
   const [open, setOpen] = useState(false)
   const bodyId = `fo-dis-${d.letter}`
+  const reasons = Boolean(d.why_tempting || d.why_wrong)
   return (
     <article
       className="fo-dis"
@@ -1442,32 +2130,44 @@ function Distractor({
         <div>
           <p className="fo-dis-opt">
             <span className="fo-sr">Alternativ {d.letter}: </span>
-            <MathText>{text}</MathText>
+            <InLang lang={lang}>
+              <MathText>{text}</MathText>
+            </InLang>
           </p>
-          <button
-            type="button"
-            className="fo-more"
-            aria-expanded={open}
-            aria-controls={bodyId}
-            onClick={() => setOpen(!open)}
-          >
-            {open ? 'Dölj' : 'Varför det lockar – och varför det är fel'}
-            <ChevronRight size={14} strokeWidth={1.75} aria-hidden />
-          </button>
+          {reasons ? (
+            <button
+              type="button"
+              className="fo-more"
+              aria-expanded={open}
+              aria-controls={bodyId}
+              onClick={() => setOpen(!open)}
+            >
+              {open ? 'Dölj' : 'Varför det lockar – och varför det är fel'}
+              <ChevronRight size={14} strokeWidth={1.75} aria-hidden />
+            </button>
+          ) : null}
         </div>
       </div>
-      {open ? (
+      {open && reasons ? (
         <div className="fo-dis-body" id={bodyId}>
-          <span className="fo-sub">Varför det lockar</span>
-          <p className="fo-prose">
-            <Rich text={d.why_tempting} act={act} />
-          </p>
-          <Cites list={cites.tempting} source={`why-${d.letter}`} act={act} />
-          <span className="fo-sub">Varför det är fel</span>
-          <p className="fo-prose">
-            <Rich text={d.why_wrong} act={act} />
-          </p>
-          <Cites list={cites.wrong} source={`why-${d.letter}`} act={act} />
+          {d.why_tempting ? (
+            <>
+              <span className="fo-sub">Varför det lockar</span>
+              <p className="fo-prose" lang={lang}>
+                <Rich text={d.why_tempting} act={act} />
+              </p>
+              <Cites list={cites.tempting} source={`why-${d.letter}`} act={act} />
+            </>
+          ) : null}
+          {d.why_wrong ? (
+            <>
+              <span className="fo-sub">Varför det är fel</span>
+              <p className="fo-prose" lang={lang}>
+                <Rich text={d.why_wrong} act={act} />
+              </p>
+              <Cites list={cites.wrong} source={`why-${d.letter}`} act={act} />
+            </>
+          ) : null}
         </div>
       ) : null}
     </article>
@@ -1550,6 +2250,8 @@ export function Colophon({
   next,
   back,
   extra,
+  titleLang,
+  titleRef,
 }: {
   title: string
   subtitle?: string
@@ -1558,6 +2260,10 @@ export function Colophon({
   next?: { label: string; onClick: () => void }
   back: { label: string; onClick: () => void }
   extra?: ReactNode
+  /** 'en' for an ELF unit's title (the facts and lines stay Swedish). */
+  titleLang?: 'en'
+  /** Makes the title a focus target: the end of a unit is announced there. */
+  titleRef?: RefCallback<HTMLElement>
 }) {
   return (
     <div className="fo-colophon" data-testid="rd-done">
@@ -1565,7 +2271,7 @@ export function Colophon({
         <span className="fo-colophon-mark" aria-hidden>
           ⁂
         </span>
-        <h2>
+        <h2 ref={titleRef} tabIndex={titleRef ? -1 : undefined} lang={titleLang}>
           {title}
           {subtitle ? <span>{subtitle}</span> : null}
         </h2>
@@ -1596,22 +2302,37 @@ export function Colophon({
   )
 }
 
-function ReadingColophon({ view, act, origin, onNext, nextLabel, dateLabel }: DrillChrome) {
+function ReadingColophon({
+  view,
+  act,
+  origin,
+  onNext,
+  nextLabel,
+  dateLabel,
+  doneRef,
+}: DrillChrome) {
+  const { actions } = useDirectionData()
   const [title, subtitle] = passageTitle(view)
   const right = view.results.filter((r) => r.correct).length
   const misses = view.total - right
+  // "Till Öva" goes to Öva: the page its label names, not wherever the
+  // drill's exit would lead.
+  const to = origin.to
+  const back = to === 'konto' ? actions.openKonto : to ? () => actions.go(to) : act.exit
   return (
     <Colophon
       title={title || 'Texten'}
       subtitle={subtitle}
-      facts={`${view.total} frågor · ${right} rätt · ${Math.max(1, Math.round(view.elapsed / 60))} min`}
+      titleLang={title ? langOf(view.question) : undefined}
+      titleRef={doneRef}
+      facts={`${view.total} ${view.total === 1 ? 'fråga' : 'frågor'} · ${right} rätt · ${Math.max(1, Math.round(view.elapsed / 60))} min`}
       lines={`Läst och besvarad ${dateLabel.toLowerCase()}. ${
         misses > 0
           ? `${misses === 1 ? 'Missen väntar' : 'Missarna väntar'} i nästa repetition, de äldsta först.`
           : 'Inga missar att repetera.'
       }`}
       next={onNext && nextLabel ? { label: nextLabel, onClick: onNext } : undefined}
-      back={{ label: `Till ${origin.label}`, onClick: act.exit }}
+      back={{ label: `Till ${origin.label}`, onClick: back }}
     />
   )
 }
@@ -1785,7 +2506,7 @@ export function FolioSlip({
 // ── Phone ────────────────────────────────────────────────────────────
 
 function PhoneDrill(chrome: DrillChrome) {
-  const { view, act, refs, seam, note, setNote, focusOn, toggleFocus, clocked } = chrome
+  const { view, act, refs, seam, note, setNote, focusOn, toggleFocus, clocked, gap, gaps } = chrome
   const { state: sheet, setState: setSheet, toggle, grab } = useSheet(view)
   const { hidden: compact, onScroll: onHeadScroll } = useHideOnScroll()
   const synthetic = view.question.passage?.synthetic ?? false
@@ -1795,6 +2516,14 @@ function PhoneDrill(chrome: DrillChrome) {
     onHeadScroll(e)
     setBadgeGone(e.currentTarget.scrollTop > 120)
   }
+  const scrollRef = useRef<HTMLDivElement>(null)
+  // A gap text keeps the open gap in view, above the slip's top edge.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: a new question or a sheet move only
+  useEffect(() => {
+    if (view.phase !== 'question' || gap == null) return
+    const box = scrollRef.current
+    scrollInto(box, box?.querySelector(`[data-gap="${gap}"]`), 96)
+  }, [view.index, sheet])
 
   // A ¶ link folds the sheet to its peek so the cited paragraph shows.
   const cite = (n: number, source?: string) => {
@@ -1846,12 +2575,13 @@ function PhoneDrill(chrome: DrillChrome) {
         </span>
       </header>
       {/* Under the full-height feedback sheet the passage is out of reach:
-       *  inert, so focus never lands on something covered. */}
+       *  inert, so focus never lands on something covered. It scrolls only
+       *  vertically, so it is no keyscope: the switcher keeps its keys. */}
       <div
         className="fo-pdrill-scroll"
+        ref={scrollRef}
         onScroll={onScroll}
         inert={sheet === 'full'}
-        data-rd-keyscope
         data-fo-region
       >
         <PassageView
@@ -1864,6 +2594,7 @@ function PhoneDrill(chrome: DrillChrome) {
           badge
           badgeText={chrome.badge}
           noteText={chrome.noteText}
+          gaps={gaps}
         />
         <div style={{ height: sheet === 'peek' ? 260 : 120 }} aria-hidden />
       </div>
@@ -1904,13 +2635,12 @@ function PhoneDrill(chrome: DrillChrome) {
           )}
         </div>
         <div className="fo-sheet-body">
+          {feedback ? null : <LackNote lack={chrome.lack} onRetry={chrome.onRetry} />}
           {sheet === 'peek' ? (
             <>
               {feedback ? <Verdict view={view} as="p" /> : null}
-              {feedback || !view.question.prompt ? null : (
-                <h2 className="fo-prompt">
-                  <MathText>{view.question.prompt}</MathText>
-                </h2>
+              {feedback ? null : (
+                <PromptBlock view={view} gap={gap} gaps={gaps} promptRef={chrome.promptRef} />
               )}
               {/* The peek's one action: the screen's filled button. */}
               <button type="button" className="fo-btn fo-peek-btn" onClick={toggle}>
@@ -1924,27 +2654,24 @@ function PhoneDrill(chrome: DrillChrome) {
                 view={view}
                 as="p"
                 after={view.correct == null ? null : seam.after(view.correct)}
+                focusRef={chrome.verdictRef}
               />
-              {view.question.prompt ? (
-                <p className="fo-prompt" data-after="true">
-                  <MathText>{view.question.prompt}</MathText>
-                </p>
-              ) : null}
+              <QuestionFigure q={view.question} />
+              <PromptBlock view={view} gap={gap} gaps={gaps} after />
               <GradedOptions view={view} />
               <Facit view={view} act={sheetAct} refs={refs} active={null} point={() => {}} />
             </>
           ) : (
             <>
-              {view.question.prompt ? (
-                <h2 className="fo-prompt">
-                  <MathText>{view.question.prompt}</MathText>
-                </h2>
-              ) : null}
+              <QuestionFigure q={view.question} />
+              <PromptBlock view={view} gap={gap} gaps={gaps} />
               <Options view={view} act={act} />
             </>
           )}
         </div>
-        {sheet === 'peek' ? null : <ActionBar view={view} act={act} seam={seam} />}
+        {sheet === 'peek' ? null : (
+          <ActionBar view={view} act={act} seam={seam} gate={chrome.gate} />
+        )}
       </section>
     </div>
   )
