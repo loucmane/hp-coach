@@ -1,21 +1,63 @@
-// E · Svep — the pieces Idag and the drill share: the deck on the table,
-// its counter with visible arrows, the index as a row of small cards, the
-// drill's progress as cards, and the keycap.
+// E · Svep — the pieces every screen shares: the deck on the table, its
+// counter with visible arrows, the index as a row of small cards, the
+// drill's progress as cards, the keycap, the section chip and the table's
+// tint, and the words for small numbers.
 
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { type ReactNode, useLayoutEffect, useRef } from 'react'
 
+import type { Section } from '@/data/questions'
 import { cardPos, type Deck, dragStyle } from './deck'
 
 /** The table's quiet tint: the section of the card in front. */
 export type Tint = 'las' | 'elf' | 'ord' | 'rep' | 'none'
+
+/** The sections with a table tint (and a chip colour) of their own. Every
+ *  other section lies on the neutral table: its name is in the text. */
+const SECTION_TINTS: Partial<Record<string, Tint>> = { LÄS: 'las', ELF: 'elf', ORD: 'ord' }
+
+export function sectionTint(section: Section | string | null | undefined): Tint {
+  return (section ? SECTION_TINTS[section] : undefined) ?? 'none'
+}
+
+/** A section in an id: lower-case ASCII ('LÄS' → 'las'), as the shared
+ *  contract's sectionSlug (contract.ts is test-only, so not imported). */
+export function sectionKey(section: Section): string {
+  return section.toLocaleLowerCase('sv-SE').replace('ä', 'a')
+}
+
+/** What a framework entry is to the reader, from its id's family
+ *  (XYZ-TRAP-017, DTK-TACTIC-003, LAS-TYPE-003). */
+export function frameworkKind(id: string): string {
+  if (id.includes('-TRAP-')) return 'Fälla'
+  if (id.includes('-TACTIC-')) return 'Taktik'
+  if (id.includes('-TYPE-')) return 'Frågetyp'
+  return 'Ramverk'
+}
+
+/** A section's chip. Cross-section items (repetition, a mixed drill) take
+ *  the repetition lilac, as round 1's plan cards did. */
+export function SecChip({ section, label }: { section: Section | null; label?: string }) {
+  return (
+    <span className="sv-sec" data-sec={section ? sectionTint(section) : 'rep'}>
+      {label ?? section ?? 'Alla delprov'}
+    </span>
+  )
+}
+
+export const WORDS = ['noll', 'en', 'två', 'tre', 'fyra', 'fem', 'sex', 'sju', 'åtta', 'nio', 'tio']
+
+export const cap = (s: string) => s.charAt(0).toLocaleUpperCase('sv-SE') + s.slice(1)
+
+/** 4 → "fyra"; past ten, the figure. */
+export const word = (n: number) => WORDS[n] ?? String(n)
 
 export type DeckCard = {
   id: string
   /** The card's name in the counter and the index. */
   label: string
   body: ReactNode
-  /** Idag: the table's tint while this card is in front. */
+  /** The table's tint while this card is in front. */
   tint?: Tint
   /** A card that tells rather than asks (Idag's "Läget"): the index marks
    *  it as a dot after a gap, so the to-dos count apart. */
@@ -38,7 +80,7 @@ export function DeckStage({
   deck: Deck
   cards: DeckCard[]
   label: string
-  kind: 'home' | 'run'
+  kind: 'home' | 'ova' | 'run'
   live: boolean
 }) {
   const ref = useRef<HTMLElement>(null)

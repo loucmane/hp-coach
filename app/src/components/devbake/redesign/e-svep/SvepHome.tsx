@@ -10,36 +10,47 @@
 // right; the day (date, greeting, countdown) stands to the left and the
 // index of the deck — the overview — to the right. Phone: the greeting
 // above, the deck, then the counter and the index as a row of small cards.
+//
+// Kit v2: the day is the view model's (useDirectionData().data.home). The
+// fields the real app has no source for (when and where the sitting was
+// paused, its minutes left, the plan's primary marker, the prognosis range,
+// target and weekly series, the weekly goal) are left out when absent. A
+// day with nothing on it at all is one calm card, the way to Öva.
 
 import { ArrowRight } from 'lucide-react'
-import { type CSSProperties, type ReactNode, useEffect, useId, useMemo } from 'react'
+import { type CSSProperties, type ReactNode, useId, useLayoutEffect, useMemo } from 'react'
 
-import {
-  ESTIMATE_CAVEAT,
-  EXAM,
-  PLAN,
-  type PlanItem,
-  PROGNOSIS,
-  RECENT,
-  RESUME,
-  TODAY,
-  TRAPS,
-  UNIT,
-  WEEK,
-} from '@/components/devbake/redesign/r1Fixtures'
-import {
-  type Destination,
-  fmtDelta,
-  fmtScore,
-  useKeyMap,
-  type WidthKey,
-} from '@/components/devbake/redesign/r1Kit'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
+import { fmtDelta, fmtScore, useKeyMap, type WidthKey } from '@/components/devbake/redesign/r1Kit'
+import type {
+  DrillSessionView,
+  HomeView,
+  PlanItemKind,
+  PlanItemView,
+  PrognosisView,
+  RecentPassView,
+  ResumeView,
+  TrapView,
+  WeekView,
+} from '@/components/devbake/redesign/viewModel'
+import { MathText } from '@/components/MathText'
 import { useDeck } from './deck'
-import { type DeckCard, DeckCounter, DeckStage, DeckTicks, Kbd, type Tint } from './parts'
+import {
+  cap,
+  type DeckCard,
+  DeckCounter,
+  DeckStage,
+  DeckTicks,
+  Kbd,
+  SecChip,
+  sectionTint,
+  type Tint,
+  word,
+} from './parts'
+import type { FrameNav } from './Svep'
 
-const WORDS = ['noll', 'en', 'två', 'tre', 'fyra', 'fem', 'sex', 'sju', 'åtta', 'nio', 'tio']
-
-const cap = (s: string) => s.charAt(0).toLocaleUpperCase('sv-SE') + s.slice(1)
+/** The top of HP's scale: the bars and the scale are drawn against it. */
+const SCALE_MAX = 2
 
 const DEVICE_DEFINITE: Record<string, string> = {
   telefon: 'telefonen',
@@ -47,25 +58,32 @@ const DEVICE_DEFINITE: Record<string, string> = {
   surfplatta: 'surfplattan',
 }
 
-const PLAN_DEST: Record<PlanItem['kind'], Destination> = {
-  repetition: 'ova',
-  lektion: 'uppslag',
-  övning: 'ova',
-}
-
-const PLAN_VERB: Record<PlanItem['kind'], string> = {
+const PLAN_VERB: Record<PlanItemKind, string> = {
   repetition: 'Starta repetitionen',
-  lektion: 'Öppna lektionen',
-  övning: 'Starta övningen',
+  lesson: 'Öppna lektionen',
+  drill: 'Starta övningen',
+  mock: 'Starta provpasset',
 }
 
-const SECTION_TINT: Record<string, Tint> = { LÄS: 'las', ELF: 'elf', ORD: 'ord' }
+/** The minutes the day's to-dos take, or null when the resume's are not
+ *  known (never a sum that leaves a part out). */
+function dayMinutes(home: HomeView): number | null {
+  if (!home.resume) return home.plan.minutes
+  return home.resume.minutesLeft == null ? null : home.plan.minutes + home.resume.minutesLeft
+}
+
+/** The day's to-dos: the sitting to resume and the plan's parts. */
+function dayCount(home: HomeView): number {
+  return (home.resume ? 1 : 0) + home.plan.items.length
+}
 
 /** The day in one line: how many things and how long, then where to start. */
-function daySentence(): string {
-  const things = 1 + PLAN.items.length
-  const minutes = PLAN.minutes + RESUME.minutesLeft
-  return `${cap(WORDS[things] ?? String(things))} saker idag, ungefär ${minutes} minuter. Börja med kortet överst.`
+function daySentence(home: HomeView): string {
+  const things = dayCount(home)
+  if (things === 0) return 'Inget inplanerat idag.'
+  const minutes = dayMinutes(home)
+  const long = minutes == null ? '' : `, ungefär ${minutes} minuter`
+  return `${cap(word(things))} ${things === 1 ? 'sak' : 'saker'} idag${long}. Börja med kortet överst.`
 }
 
 type HomeCard = DeckCard & {
@@ -80,23 +98,31 @@ export function SvepHome({
   width,
   live,
   onResume,
-  onGo,
+  nav,
   onTint,
 }: {
   width: WidthKey
   live: boolean
   onResume: () => void
-  onGo: (d: Destination) => void
+  nav: FrameNav
   onTint: (t: Tint) => void
 }) {
+  const { data } = useDirectionData()
+  const home = data.home
   const phone = width === 'phone'
   const caveatId = useId()
-  const cards = useMemo(() => homeCards({ onResume, onGo, caveatId }), [onResume, onGo, caveatId])
-  const deck = useDeck(cards.length)
+  const reading = data.drills.reading
+  const cards = useMemo(
+    () => homeCards({ home, reading, onResume, nav, caveatId }),
+    [home, reading, onResume, nav, caveatId],
+  )
+  // Never empty (an empty day has its own card), and the deck keeps its
+  // place inside the cards as the data changes.
+  const deck = useDeck(cards)
   const front = cards[deck.index]
 
   const tint = front.tint ?? 'none'
-  useEffect(() => onTint(tint), [tint, onTint])
+  useLayoutEffect(() => onTint(tint), [tint, onTint])
 
   // ←/→ move the deck; at either end they are left to the bake-off's
   // screen keys. Enter takes the card in front.
@@ -120,16 +146,17 @@ export function SvepHome({
       live={live}
     />
   )
+  const minutes = dayMinutes(home)
 
   if (phone) {
     return (
       <div className="sv-phome">
         <header className="sv-phome-head">
           <p className="sv-date">
-            {TODAY.dateLabel} · <b>{EXAM.daysLeft}&nbsp;dagar kvar</b>
+            {home.today.dateLabel} · <b>{home.exam.daysLeft}&nbsp;dagar kvar</b>
           </p>
-          <h1 className="sv-greet">{TODAY.greeting}</h1>
-          <p className="sv-day">{daySentence()}</p>
+          <h1 className="sv-greet">{home.today.greeting}</h1>
+          <p className="sv-day">{daySentence(home)}</p>
         </header>
         <div className="sv-home-deck">{stage}</div>
         <div className="sv-phome-foot">
@@ -165,15 +192,15 @@ export function SvepHome({
   return (
     <div className="sv-home">
       <aside className="sv-home-day" aria-label="Dagen">
-        <p className="sv-date">{TODAY.dateLabel}</p>
-        <h1 className="sv-greet">{TODAY.greeting}.</h1>
-        <p className="sv-day">{daySentence()}</p>
+        <p className="sv-date">{home.today.dateLabel}</p>
+        <h1 className="sv-greet">{home.today.greeting}.</h1>
+        <p className="sv-day">{daySentence(home)}</p>
         <p className="sv-countdown">
-          <span className="sv-countdown-n">{EXAM.daysLeft}</span>
+          <span className="sv-countdown-n">{home.exam.daysLeft}</span>
           <span>
             dagar kvar till högskoleprovet,
             <br />
-            {EXAM.dateLabel.replace(/(\d+) /, '$1 ')}
+            {home.exam.dateLabel.replace(/(\d+) /, '$1 ')}
           </span>
         </p>
       </aside>
@@ -189,10 +216,16 @@ export function SvepHome({
         <p className="sv-index-head">
           I leken <span>· {cards.length} kort</span>
         </p>
-        <p className="sv-index-group">Att göra · {PLAN.minutes + RESUME.minutesLeft} min</p>
+        <p className="sv-index-group">
+          Att göra{minutes == null || dayCount(home) === 0 ? '' : ` · ${minutes} min`}
+        </p>
         <ol>{todo.map(indexRow)}</ol>
-        <p className="sv-index-group">Läget</p>
-        <ol>{status.map(indexRow)}</ol>
+        {status.length ? (
+          <>
+            <p className="sv-index-group">Läget</p>
+            <ol>{status.map(indexRow)}</ol>
+          </>
+        ) : null}
       </nav>
     </div>
   )
@@ -200,104 +233,185 @@ export function SvepHome({
 
 // ── The cards ──────────────────────────────────────────────────────────
 
+/** The trap that matters now: a rising one, else the first. */
+function leadTrap(traps: TrapView[]): TrapView | undefined {
+  return traps.find((t) => t.rising) ?? traps[0]
+}
+
 function homeCards({
+  home,
+  reading,
   onResume,
-  onGo,
+  nav,
   caveatId,
 }: {
+  home: HomeView
+  reading: DrillSessionView
   onResume: () => void
-  onGo: (d: Destination) => void
+  nav: FrameNav
   caveatId: string
 }): HomeCard[] {
-  const trap = TRAPS.find((t) => t.rising) ?? TRAPS[0]
-  const plan: HomeCard[] = PLAN.items.map((item, i) => ({
-    id: item.id,
-    label: item.title,
-    tint: item.section ? (SECTION_TINT[item.section] ?? 'none') : 'rep',
-    group: 'todo',
-    meta: `${item.minutes} min`,
-    action: () => onGo(PLAN_DEST[item.kind]),
-    body: <PlanCard item={item} n={i + 1} onStart={() => onGo(PLAN_DEST[item.kind])} />,
-  }))
-  return [
-    {
+  const out: HomeCard[] = []
+  const resume = home.resume
+  if (resume) {
+    out.push({
       id: 'resume',
       label: 'Fortsätt',
-      tint: 'las',
+      tint: sectionTint(resume.section),
       group: 'todo',
-      meta: `${RESUME.minutesLeft} min`,
+      meta:
+        resume.minutesLeft == null
+          ? `${resume.position}/${resume.total}`
+          : `${resume.minutesLeft} min`,
       action: onResume,
-      body: <ResumeCard onResume={onResume} />,
-    },
-    ...plan,
-    {
+      body: <ResumeCard resume={resume} reading={reading} onResume={onResume} />,
+    })
+  }
+  home.plan.items.forEach((item, i) => {
+    // The plan's order is its priority: without a marker, its first item
+    // leads (and becomes the day's one filled action with nothing to resume).
+    const lead = item.primary ?? i === 0
+    out.push({
+      id: item.id,
+      label: item.title,
+      tint: item.section ? sectionTint(item.section) : item.kind === 'repetition' ? 'rep' : 'none',
+      group: 'todo',
+      meta: `${item.minutes} min`,
+      action: () => nav.openPlanItem(item),
+      body: (
+        <PlanCard
+          item={item}
+          n={i + 1}
+          of={home.plan.items.length}
+          lead={lead}
+          filled={!resume && i === 0}
+          onStart={() => nav.openPlanItem(item)}
+        />
+      ),
+    })
+  })
+  const p = home.prognosis
+  if (p.total != null) {
+    out.push({
       id: 'prognos',
       label: 'Prognos',
       tint: 'none',
       group: 'status',
       dot: true,
-      meta: fmtScore(PROGNOSIS.total),
-      action: () => onGo('framsteg'),
-      body: <PrognosisCard caveatId={caveatId} onMore={() => onGo('framsteg')} />,
-    },
-    {
+      meta: fmtScore(p.total),
+      action: () => nav.go('framsteg'),
+      body: (
+        <PrognosisCard
+          p={p}
+          total={p.total}
+          caveatId={caveatId}
+          onMore={() => nav.go('framsteg')}
+        />
+      ),
+    })
+  }
+  const trap = leadTrap(home.traps)
+  if (trap) {
+    out.push({
       id: 'trap',
       label: 'Fälla',
-      tint: SECTION_TINT[trap.section] ?? 'none',
+      tint: sectionTint(trap.section),
       group: 'status',
       dot: true,
       meta: `${trap.count} ggr`,
-      action: () => onGo('ova'),
-      body: <TrapCard onMore={() => onGo('ova')} />,
-    },
-    {
+      action: () => nav.go('ova'),
+      body: <TrapCard trap={trap} more={home.traps.length - 1} onMore={() => nav.go('ova')} />,
+    })
+  }
+  if (home.recent.length) {
+    out.push({
       id: 'recent',
       label: 'Senaste passen',
       tint: 'none',
       group: 'status',
       dot: true,
-      meta: `${RECENT.length} pass`,
-      action: () => onGo('framsteg'),
-      body: <RecentCard onMore={() => onGo('framsteg')} />,
-    },
-  ]
+      meta: `${home.recent.length} pass`,
+      action: () => nav.go('framsteg'),
+      body: <RecentCard recent={home.recent} week={home.week} onMore={() => nav.go('framsteg')} />,
+    })
+  }
+  if (out.length === 0) {
+    // Nothing to resume, plan or tell: the deck still has its one card.
+    out.push({
+      id: 'empty',
+      label: 'Öva fritt',
+      tint: 'none',
+      group: 'todo',
+      meta: '',
+      action: () => nav.go('ova'),
+      body: <FreeCard onOva={() => nav.go('ova')} />,
+    })
+  }
+  return out
 }
 
-function CardTop({ sec, eyebrow, meta }: { sec?: string; eyebrow: string; meta?: ReactNode }) {
+function CardTop({
+  section,
+  sec,
+  eyebrow,
+  meta,
+}: {
+  /** A section chip: a section, or null for "Alla delprov". */
+  section?: PlanItemView['section']
+  /** No chip when false. */
+  sec?: boolean
+  eyebrow: string
+  meta?: ReactNode
+}) {
   return (
     <div className="sv-hc-top">
-      {sec ? (
-        <span className="sv-sec" data-sec={SECTION_TINT[sec] ?? 'rep'}>
-          {sec}
-        </span>
-      ) : null}
+      {sec ? <SecChip section={section ?? null} /> : null}
       <span className="sv-hc-eyebrow">{eyebrow}</span>
       {meta ? <span className="sv-hc-meta">{meta}</span> : null}
     </div>
   )
 }
 
-function ResumeCard({ onResume }: { onResume: () => void }) {
-  const paused = RESUME.pausedAt.replace('Idag · ', 'idag ')
-  // The question waiting where you stopped, in the text's own face.
-  const waiting = UNIT.questions[RESUME.position - 1]
+/** "Pausad idag 07:52 på telefonen"; the parts the sitting does not know
+ *  are left out. */
+function pausedLine(resume: ResumeView): string {
+  const when = resume.pausedAt ? ` ${resume.pausedAt.replace('Idag · ', 'idag ')}` : ''
+  const where = resume.device ? ` på ${DEVICE_DEFINITE[resume.device] ?? resume.device}` : ''
+  return `Pausad${when}${where}`
+}
+
+function ResumeCard({
+  resume,
+  reading,
+  onResume,
+}: {
+  resume: ResumeView
+  reading: DrillSessionView
+  onResume: () => void
+}) {
+  // The question waiting where you stopped, in the text's own face: the
+  // sitting it reopens is the reading drill's.
+  const waiting = reading.questions[resume.position - 1]
+  const prompt = waiting?.section === resume.section ? waiting.prompt : null
   return (
     <>
       <CardTop
-        eyebrow={`Pausad ${paused} på ${DEVICE_DEFINITE[RESUME.device] ?? RESUME.device}`}
-        meta={`ca ${RESUME.minutesLeft} min kvar`}
+        eyebrow={pausedLine(resume)}
+        meta={resume.minutesLeft == null ? undefined : `ca ${resume.minutesLeft} min kvar`}
       />
       <div className="sv-hc-body">
         <p className="sv-hc-kicker">
-          Fortsätt: {RESUME.section} · fråga {RESUME.position} av {RESUME.total}
+          Fortsätt: {resume.section} · fråga {resume.position} av {resume.total}
         </p>
-        <h2 className="sv-hc-title sv-hc-title--lead">{RESUME.title}</h2>
-        <p className="sv-hc-sub">{RESUME.subtitle}</p>
-        <UnitHand />
-        {waiting ? (
+        <h2 className="sv-hc-title sv-hc-title--lead">{resume.title}</h2>
+        {resume.subtitle ? <p className="sv-hc-sub">{resume.subtitle}</p> : null}
+        <UnitHand resume={resume} />
+        {prompt ? (
           <p className="sv-hc-next">
             <span className="sv-hc-next-label">Där du slutade</span>
-            <span className="sv-hc-next-q">{waiting.prompt}</span>
+            <span className="sv-hc-next-q">
+              <MathText>{prompt}</MathText>
+            </span>
           </p>
         ) : null}
       </div>
@@ -318,45 +432,64 @@ function ResumeCard({ onResume }: { onResume: () => void }) {
 
 /** The text's questions as a small hand: the ones answered lie face down
  *  (no verdicts on Idag), the one you stopped at stands up, the rest wait. */
-function UnitHand() {
+function UnitHand({ resume }: { resume: ResumeView }) {
   return (
     <span
       className="sv-unit"
       role="img"
-      aria-label={`Fråga ${RESUME.position} av ${RESUME.total}, ${RESUME.answered} besvarade`}
+      aria-label={`Fråga ${resume.position} av ${resume.total}, ${resume.answered} besvarade`}
     >
-      {Array.from({ length: RESUME.total }, (_, i) => (
+      {Array.from({ length: resume.total }, (_, i) => (
         <i
           // biome-ignore lint/suspicious/noArrayIndexKey: one card per question of the unit
           key={i}
-          data-state={i === RESUME.position - 1 ? 'now' : i < RESUME.answered ? 'done' : 'todo'}
-          style={{ '--i': i - (RESUME.total - 1) / 2 } as CSSProperties}
+          data-state={i === resume.position - 1 ? 'now' : i < resume.answered ? 'done' : 'todo'}
+          style={{ '--i': i - (resume.total - 1) / 2 } as CSSProperties}
         >
-          {i < RESUME.answered ? null : i + 1}
+          {i < resume.answered ? null : i + 1}
         </i>
       ))}
     </span>
   )
 }
 
-function PlanCard({ item, n, onStart }: { item: PlanItem; n: number; onStart: () => void }) {
+function PlanCard({
+  item,
+  n,
+  of,
+  lead,
+  filled,
+  onStart,
+}: {
+  item: PlanItemView
+  n: number
+  of: number
+  /** The item the plan puts first. */
+  lead: boolean
+  /** The day's one filled action (only with nothing to resume). */
+  filled: boolean
+  onStart: () => void
+}) {
   return (
     <>
       <CardTop
-        sec={item.section ?? 'Alla delprov'}
-        eyebrow={
-          item.primary ? 'Sedan · först i planen' : `Planen · del ${n} av ${PLAN.items.length}`
-        }
+        sec
+        section={item.section}
+        eyebrow={lead ? 'Sedan · först i planen' : `Planen · del ${n} av ${of}`}
         meta={`${item.minutes} min`}
       />
       <div className="sv-hc-body">
         <h2 className="sv-hc-title">{item.title}</h2>
-        <p className="sv-hc-detail">{item.detail}</p>
+        {item.detail ? <p className="sv-hc-detail">{item.detail}</p> : null}
         <PlanFigure item={item} />
       </div>
       <p className="sv-hc-why">{item.rationale}</p>
       <div className="sv-hc-foot">
-        <button type="button" className="sv-btn sv-btn--tonal sv-btn--block" onClick={onStart}>
+        <button
+          type="button"
+          className={`sv-btn ${filled ? 'sv-btn--primary' : 'sv-btn--tonal'} sv-btn--block`}
+          onClick={onStart}
+        >
           {PLAN_VERB[item.kind]}
           <ArrowRight size={18} strokeWidth={2} aria-hidden />
         </button>
@@ -367,9 +500,9 @@ function PlanCard({ item, n, onStart }: { item: PlanItem; n: number; onStart: ()
 
 /** Each plan card's one small figure: the misses as a fan of cards, the
  *  round's questions as marks. */
-function PlanFigure({ item }: { item: PlanItem }) {
-  if (item.kind === 'repetition') {
-    const n = Number.parseInt(item.detail, 10) || 0
+function PlanFigure({ item }: { item: PlanItemView }) {
+  const n = Number.parseInt(item.detail ?? '', 10) || 0
+  if (item.kind === 'repetition' && n > 0) {
     return (
       <span className="sv-fan" role="img" aria-label={`${n} kort att repetera`}>
         {Array.from({ length: n }, (_, i) => (
@@ -382,8 +515,7 @@ function PlanFigure({ item }: { item: PlanItem }) {
       </span>
     )
   }
-  if (item.kind === 'övning') {
-    const n = Number.parseInt(item.detail, 10) || 0
+  if (item.kind === 'drill' && n > 0) {
     return (
       <span className="sv-marks" role="img" aria-label={`${n} frågor`}>
         {Array.from({ length: n }, (_, i) => (
@@ -396,31 +528,57 @@ function PlanFigure({ item }: { item: PlanItem }) {
   return null
 }
 
-function PrognosisCard({ caveatId, onMore }: { caveatId: string; onMore: () => void }) {
+function PrognosisCard({
+  p,
+  total,
+  caveatId,
+  onMore,
+}: {
+  p: PrognosisView
+  total: number
+  caveatId: string
+  onMore: () => void
+}) {
+  const halves = [
+    p.verbal == null ? null : `Verbal ${fmtScore(p.verbal)}`,
+    p.quant == null ? null : `Kvant ${fmtScore(p.quant)}`,
+  ].filter(Boolean)
   return (
     <>
-      <CardTop eyebrow="Prognos · hela provet" meta={`Mål ${fmtScore(PROGNOSIS.target)}`} />
+      <CardTop
+        eyebrow="Prognos · hela provet"
+        meta={p.target == null ? undefined : `Mål ${fmtScore(p.target)}`}
+      />
       <div className="sv-hc-body">
         <div className="sv-prog-row">
           <p className="sv-prog">
-            <span className="sv-prog-n" aria-describedby={caveatId}>
-              {fmtScore(PROGNOSIS.total)}
-              <sup aria-hidden>*</sup>
+            <span className="sv-prog-n" aria-describedby={p.caveat ? caveatId : undefined}>
+              {fmtScore(total)}
+              {p.caveat ? <sup aria-hidden>*</sup> : null}
             </span>
-            <span className="sv-prog-of">av {fmtScore(PROGNOSIS.target)}</span>
+            {p.target == null ? null : <span className="sv-prog-of">av {fmtScore(p.target)}</span>}
           </p>
-          <Weeks />
+          {p.weeks && p.weeks.length > 1 ? <Weeks weeks={p.weeks} /> : null}
         </div>
-        <p className="sv-prog-halves">
-          <b>{fmtDelta(PROGNOSIS.delta)}</b> sedan förra veckan · Verbal{' '}
-          {fmtScore(PROGNOSIS.verbal)} · Kvant {fmtScore(PROGNOSIS.quant)}
-        </p>
-        <Scale />
+        {p.delta != null || halves.length ? (
+          <p className="sv-prog-halves">
+            {p.delta != null ? (
+              <>
+                <b>{fmtDelta(p.delta)}</b> sedan förra veckan
+                {halves.length ? ' · ' : ''}
+              </>
+            ) : null}
+            {halves.join(' · ')}
+          </p>
+        ) : null}
+        <Scale total={total} low={p.low} high={p.high} />
       </div>
-      <p className="sv-caveat" id={caveatId}>
-        <b aria-hidden>*</b>
-        <span>{ESTIMATE_CAVEAT}</span>
-      </p>
+      {p.caveat ? (
+        <p className="sv-caveat" id={caveatId}>
+          <b aria-hidden>*</b>
+          <span>{p.caveat}</span>
+        </p>
+      ) : null}
       <div className="sv-hc-foot">
         <button type="button" className="sv-btn sv-btn--quiet sv-btn--block" onClick={onMore}>
           Prognosen i Framsteg
@@ -433,11 +591,10 @@ function PrognosisCard({ caveatId, onMore }: { caveatId: string; onMore: () => v
 
 /** The last weeks' estimates as bars on the same 0–2,0 scale (no cropped
  *  axis): the honest rise, this week's bar in the accent. */
-function Weeks() {
-  const w = PROGNOSIS.weeks
-  const n = cap(WORDS[w.length] ?? String(w.length))
-  const from = fmtScore(w[0])
-  const to = fmtScore(w[w.length - 1])
+function Weeks({ weeks }: { weeks: number[] }) {
+  const n = cap(word(weeks.length))
+  const from = fmtScore(weeks[0])
+  const to = fmtScore(weeks[weeks.length - 1])
   return (
     <figure className="sv-weeks">
       <span
@@ -445,12 +602,12 @@ function Weeks() {
         role="img"
         aria-label={`Prognosen de senaste ${n.toLowerCase()} veckorna, från ${from} till ${to}`}
       >
-        {w.map((v, i) => (
+        {weeks.map((v, i) => (
           <i
             // biome-ignore lint/suspicious/noArrayIndexKey: one bar per week, oldest first
             key={i}
-            style={{ height: `${(v / PROGNOSIS.target) * 100}%` }}
-            data-last={String(i === w.length - 1)}
+            style={{ height: `${(v / SCALE_MAX) * 100}%` }}
+            data-last={String(i === weeks.length - 1)}
           />
         ))}
       </span>
@@ -464,26 +621,37 @@ function Weeks() {
 /** 1.25 → "1,25": the range keeps its two decimals (one would round it). */
 const fmtRange = (v: number) => v.toFixed(2).replace('.', ',')
 
-/** The 0–2,0 scale: the likely range as a band, the estimate as a mark. */
-function Scale() {
-  const pct = (v: number) => `${(v / PROGNOSIS.target) * 100}%`
-  const range = `${fmtRange(PROGNOSIS.low)}–${fmtRange(PROGNOSIS.high)}`
+/** The 0–2,0 scale: the estimate as a mark, and the likely range as a band
+ *  when there is one. */
+function Scale({ total, low, high }: { total: number; low?: number; high?: number }) {
+  const pct = (v: number) => `${(v / SCALE_MAX) * 100}%`
+  const range = low != null && high != null ? `${fmtRange(low)}–${fmtRange(high)}` : null
   return (
     <div
       className="sv-scale"
       role="img"
-      aria-label={`Trolig nivå ${range} på skalan 0 till ${fmtScore(PROGNOSIS.target)}.`}
+      aria-label={
+        range
+          ? `Trolig nivå ${range} på skalan 0 till ${fmtScore(SCALE_MAX)}.`
+          : `Prognos ${fmtScore(total)} på skalan 0 till ${fmtScore(SCALE_MAX)}.`
+      }
     >
-      <span className="sv-scale-label" aria-hidden style={{ left: pct(PROGNOSIS.high) }}>
-        Troligt {range}
-      </span>
-      <span className="sv-scale-axis" aria-hidden />
-      <span
-        className="sv-scale-range"
-        aria-hidden
-        style={{ left: pct(PROGNOSIS.low), width: pct(PROGNOSIS.high - PROGNOSIS.low) }}
-      />
-      <span className="sv-scale-mark" aria-hidden style={{ left: pct(PROGNOSIS.total) }} />
+      {range && high != null && low != null ? (
+        <>
+          <span className="sv-scale-label" aria-hidden style={{ left: pct(high) }}>
+            Troligt {range}
+          </span>
+          <span className="sv-scale-axis" aria-hidden />
+          <span
+            className="sv-scale-range"
+            aria-hidden
+            style={{ left: pct(low), width: pct(high - low) }}
+          />
+        </>
+      ) : (
+        <span className="sv-scale-axis" aria-hidden />
+      )}
+      <span className="sv-scale-mark" aria-hidden style={{ left: pct(total) }} />
       {[0, 0.5, 1, 1.5, 2].map((v) => (
         <span key={v} className="sv-scale-tick" aria-hidden style={{ left: pct(v) }}>
           {v === 0 ? '0' : fmtScore(v)}
@@ -493,15 +661,37 @@ function Scale() {
   )
 }
 
-function TrapCard({ onMore }: { onMore: () => void }) {
-  const trap = TRAPS.find((t) => t.rising) ?? TRAPS[0]
-  const more = TRAPS.length - 1
+/** The day with nothing on it: no placeholder figures, one way on — the
+ *  screen's one filled action. */
+function FreeCard({ onOva }: { onOva: () => void }) {
   return (
     <>
-      <CardTop sec={trap.section} eyebrow="Din vanligaste fälla just nu" />
+      <CardTop eyebrow="Idag" />
       <div className="sv-hc-body">
-        <h2 className="sv-hc-title sv-hc-title--trap">{trap.pattern}</h2>
-        <p className="sv-hc-detail">{trap.name}</p>
+        <h2 className="sv-hc-title">Öva fritt</h2>
+        <p className="sv-hc-detail">Alla delprov och dina missar finns i Öva.</p>
+      </div>
+      <div className="sv-hc-foot">
+        <button
+          type="button"
+          className="sv-btn sv-btn--primary sv-btn--block sv-btn--lg"
+          onClick={onOva}
+        >
+          Till Öva
+          <Kbd>↵</Kbd>
+        </button>
+      </div>
+    </>
+  )
+}
+
+function TrapCard({ trap, more, onMore }: { trap: TrapView; more: number; onMore: () => void }) {
+  return (
+    <>
+      <CardTop sec section={trap.section} eyebrow="Din vanligaste fälla just nu" />
+      <div className="sv-hc-body">
+        <h2 className="sv-hc-title sv-hc-title--trap">{trap.pattern ?? trap.name}</h2>
+        {trap.pattern ? <p className="sv-hc-detail">{trap.name}</p> : null}
         <p className="sv-trap-count">
           <b>{trap.count} gånger</b>
           {trap.rising ? (
@@ -511,7 +701,9 @@ function TrapCard({ onMore }: { onMore: () => void }) {
           ) : null}
         </p>
       </div>
-      <p className="sv-hc-why">{cap(WORDS[more] ?? String(more))} fällor till väntar i Framsteg.</p>
+      {more > 0 ? (
+        <p className="sv-hc-why">{cap(word(more))} fällor till väntar i Framsteg.</p>
+      ) : null}
       {/* The card's action does something about the trap, not only shows it. */}
       <div className="sv-hc-foot">
         <button type="button" className="sv-btn sv-btn--tonal sv-btn--block" onClick={onMore}>
@@ -523,13 +715,25 @@ function TrapCard({ onMore }: { onMore: () => void }) {
   )
 }
 
-function RecentCard({ onMore }: { onMore: () => void }) {
+function RecentCard({
+  recent,
+  week,
+  onMore,
+}: {
+  recent: RecentPassView[]
+  week: WeekView
+  onMore: () => void
+}) {
+  const days = week.daysPractised
   return (
     <>
-      <CardTop eyebrow="Senaste passen" meta={`${WEEK.minutesToday} min idag`} />
+      <CardTop
+        eyebrow="Senaste passen"
+        meta={week.minutesToday == null ? undefined : `${week.minutesToday} min idag`}
+      />
       <div className="sv-hc-body">
         <ul className="sv-recent">
-          {RECENT.map((r) => (
+          {recent.map((r) => (
             <li key={r.id}>
               <span className="sv-recent-name">{r.label}</span>
               <span
@@ -546,18 +750,23 @@ function RecentCard({ onMore }: { onMore: () => void }) {
             </li>
           ))}
         </ul>
-        <div className="sv-week">
-          <span className="sv-week-days" aria-hidden>
-            {Array.from({ length: WEEK.goal }, (_, i) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: one mark per goal day
-              <i key={i} data-on={String(i < WEEK.daysPractised)} />
-            ))}
-          </span>
-          <span>
-            {cap(WORDS[WEEK.daysPractised] ?? String(WEEK.daysPractised))} av{' '}
-            {WORDS[WEEK.goal] ?? WEEK.goal} dagar den här veckan
-          </span>
-        </div>
+        {days != null ? (
+          <div className="sv-week">
+            {week.goal ? (
+              <span className="sv-week-days" aria-hidden>
+                {Array.from({ length: week.goal }, (_, i) => (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: one mark per goal day
+                  <i key={i} data-on={String(i < days)} />
+                ))}
+              </span>
+            ) : null}
+            <span>
+              {week.goal
+                ? `${cap(word(days))} av ${word(week.goal)} dagar den här veckan`
+                : `${cap(word(days))} dagar den här veckan`}
+            </span>
+          </div>
+        ) : null}
       </div>
       <div className="sv-hc-foot">
         <button type="button" className="sv-btn sv-btn--quiet sv-btn--block" onClick={onMore}>
