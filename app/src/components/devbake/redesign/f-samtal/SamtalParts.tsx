@@ -12,8 +12,9 @@
 //   - Dots, DoorIcon, Kbd, Mark — progress, the doors' icons, keys, the logo.
 //   - FigureImg      — a figure's image that says when it is there or has
 //                      failed, a cached one at once; the quant drill holds
-//                      the answer on it (FigureLoadsContext), and so does a
-//                      running Provpass (useFigureLoadState).
+//                      the answer on it (FigureLoadsContext), and so do a
+//                      running Provpass and ELF, each mounted image a load
+//                      of its own (useFigureLoadState, fresh).
 //   - FigurePage, FigurePan, FigureInspector — a printed page (DTK) as a
 //                      document: in a box of its own shape, turned in quarter
 //                      steps, panned by drag or keys, enlarged over the
@@ -24,6 +25,12 @@
 //                      it up): two replies, over the whole screen.
 //   - ScoreCard, Scale — the prognosis on HP's scale and its caveat as the
 //                      card's footnote (Idag, Framsteg).
+//   - ContentLang, En — the language of a drill's content (ELF: English):
+//                      the passage, the question, the options and the
+//                      explanation are marked lang="en" in place, while the
+//                      coach's Swedish words around them stay Swedish.
+//   - bringIntoView  — a section the reader asked for, scrolled to the top
+//                      of its own scroller (Konto, Uppslag).
 //   - words, count   — numbers said the way the coach says them.
 
 import { BookOpen, Minus, PenLine, Plus, RotateCw, Sun, Timer, TrendingUp, X } from 'lucide-react'
@@ -45,7 +52,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 
-import { splitStepRefs } from '@/components/devbake/redesign/drillCore'
+import { prefersReducedMotion, splitStepRefs } from '@/components/devbake/redesign/drillCore'
 import {
   type Destination,
   fmtDelta,
@@ -118,6 +125,63 @@ export function Kbd({ children }: { children: ReactNode }) {
       {children}
     </kbd>
   )
+}
+
+// ── The content's language ───────────────────────────────────────────
+
+/** The language of a drill's content when it is not Swedish: an ELF text,
+ *  its question, options and explanation are English. Undefined: Swedish,
+ *  like the coach. */
+export type ContentLang = 'en' | undefined
+
+export const ContentLangContext = createContext<ContentLang>(undefined)
+
+/** A run of the drill's content in its own language (lang="en" for ELF);
+ *  the coach's Swedish labels stand outside it. In Swedish content it is a
+ *  plain span. */
+export function En({ children, className }: { children: ReactNode; className?: string }) {
+  const lang = useContext(ContentLangContext)
+  return (
+    <span className={className} lang={lang}>
+      {children}
+    </span>
+  )
+}
+
+// ── Actions that may answer later ────────────────────────────────────
+
+/** An action that answers with a promise (a real host may, though the kit
+ *  types it void): its refusal is heard, never left unhandled. */
+export function isPromise(value: unknown): value is Promise<unknown> {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    typeof (value as { then?: unknown }).then === 'function' &&
+    typeof (value as { catch?: unknown }).catch === 'function'
+  )
+}
+
+// ── Scrolling to what the reader asked for ───────────────────────────
+
+/** Scrolls `el` to just under the top of its own scroller (the page's), and
+ *  never the clipping stage around it; instant under reduced motion, a no-op
+ *  without layout. */
+export function bringIntoView(el: HTMLElement | null, offset = 24): void {
+  if (!el) return
+  let box: HTMLElement | null = null
+  for (let n = el.parentElement; n; n = n.parentElement) {
+    const y = getComputedStyle(n).overflowY
+    if (y === 'auto' || y === 'scroll') {
+      box = n
+      break
+    }
+  }
+  if (!box || typeof box.scrollTo !== 'function') return
+  const top = el.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop
+  box.scrollTo({
+    top: Math.max(0, top - offset),
+    behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+  })
 }
 
 // ── Citations ────────────────────────────────────────────────────────
@@ -274,25 +338,28 @@ type FigureImgProps = Omit<ComponentProps<'img'>, 'ref' | 'onLoad' | 'onError'> 
  *  one too: an image already complete when it mounts reports at once, and
  *  never waits for a load event that has come and gone. Key it by source
  *  and attempt, so another source, or a retry, is a new image, checked
- *  again. */
+ *  again. Only a mounted image speaks: one that has gone (a tray folded, a
+ *  retry in its place) never reports for the image after it. */
 export function FigureImg({ alt, onStatus, fresh = false, ...img }: FigureImgProps) {
   const ref = useRef<HTMLImageElement>(null)
   const report = useRef(onStatus)
   report.current = onStatus
   const freshRef = useRef(fresh)
+  const mounted = useRef(false)
   useLayoutEffect(() => {
+    mounted.current = true
     const el = ref.current
     if (el?.complete && el.naturalWidth > 0) report.current('ready')
     else if (freshRef.current) report.current('loading')
+    return () => {
+      mounted.current = false
+    }
   }, [])
+  const say = (s: FigureStatus) => {
+    if (mounted.current) report.current(s)
+  }
   return (
-    <img
-      ref={ref}
-      alt={alt}
-      {...img}
-      onLoad={() => report.current('ready')}
-      onError={() => report.current('error')}
-    />
+    <img ref={ref} alt={alt} {...img} onLoad={() => say('ready')} onError={() => say('error')} />
   )
 }
 

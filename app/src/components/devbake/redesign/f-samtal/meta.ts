@@ -15,9 +15,10 @@ export const meta: DirectionMeta = {
     'I övningen ligger texten kvar som ett lugnt dokument; frågan kommer som en replik och alternativen är dina svar, med en svarsrad utan textfält. Facit är ett kort samtal – coachen frågar vad som lockade dig, och du kan svara eller hoppa över – och sedan coachens anteckningar, med ¶-hänvisningar som lyser upp i texten.',
     'Öva är ett förslag med skäl och alla åtta delprov som svarsknappar i fast ordning; Repetera visar vad som är redo nu och tar en avgränsad omgång. I kvant ligger uppgiften som en bilaga i coachens replik med matematiken satt, och DTK-underlaget är ett eget dokument att förstora, vrida och flytta.',
     'Provpasset är ett åtagande i ett enda utbyte: coachen föreslår passet du sett minst, och klockan startar först efter villkoren. Under passet tystnar coachen – frågan, dina svar och en svarsöversikt, inget facit. Resultatet sägs rakt ut med underlaget bredvid poängen, och Framsteg är en iakttagelse och ett svar, med prognos, veckor, delprov och Historik som bilagor.',
+    'I Uppslag ligger lektionen som ett lugnt dokument i coachens replik, med delproven som svarsknappar i fast ordning och resten av ramverket under den. Konto är ett kort formulär i samma språk – inga frågor att besvara och ingen spara-knapp – och i ELF står texten kvar på engelska medan coachen talar svenska.',
   ],
   risk: 'Risk: långsamt och chattbottsklyschigt. Svar: inga skrivprickar, inga avatarer och inget textfält – replikerna kommer direkt med en tonad entré på 120 ms, Nästa finns alltid i svarsraden, coachens fråga går att hoppa över och ”Visa allt” fäller ut hela förklaringen på en gång.',
   references:
     'ChatGPT:s studieläge, Khanmigo, Duolingos ”Förklara mitt svar”, Pi, iMessages återhållsamhet.',
-  screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+  screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
 }

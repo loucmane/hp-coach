@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
-import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import { useState } from 'react'
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
   describeDirectionContract,
@@ -9,9 +10,14 @@ import {
 } from '@/components/devbake/redesign/contract'
 import { DirectionDataProvider, FIXTURE_DATA } from '@/components/devbake/redesign/directionData'
 import type { DrillController } from '@/components/devbake/redesign/drillCore'
-import type { DirectionProps } from '@/components/devbake/redesign/r1Kit'
+import {
+  Redesign2026Bakeoff,
+  type Selection,
+} from '@/components/devbake/redesign/Redesign2026Bakeoff'
+import type { AppScreenKey, DirectionProps, WidthKey } from '@/components/devbake/redesign/r1Kit'
 import type { DirectionActions, DirectionData } from '@/components/devbake/redesign/viewModel'
 import { Folio } from './Folio'
+import { fmtPassScore } from './FolioProvpass'
 import { meta } from './meta'
 
 describeDirectionContract(meta, Folio)
@@ -57,6 +63,11 @@ function mount(s: DirectionProps['screen'], opts: Mount = {}) {
 
 const press = (key: string, init: KeyboardEventInit = {}) =>
   fireEvent.keyDown(window, { key, ...init })
+
+/** A key where a real one lands: on whatever has focus (after a pass opens
+ *  or moves, its question's heading), so the ancestors' rules apply. */
+const pressFocused = (key: string, init: KeyboardEventInit = {}) =>
+  fireEvent.keyDown(document.activeElement ?? document.body, { key, ...init })
 
 beforeAll(stubLayout)
 
@@ -124,8 +135,14 @@ describe('Folio · Idag on the data context', () => {
     expect(screen.getByTestId('rd-nav-ova')).toHaveAttribute('aria-current', 'page')
     fireEvent.click(screen.getByTestId('rd-nav-provpass'))
     expect(go).toHaveBeenLastCalledWith('provpass')
-    // Provpass is the host's to show (its "Inte byggd än" card): no stub.
-    expect(screen.getByRole('heading', { level: 1, name: 'Vad tränar vi?' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-nav-framsteg'))
+    expect(go).toHaveBeenLastCalledWith('framsteg')
+    expect(screen.getByRole('heading', { level: 1, name: 'Framsteg' })).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-nav-uppslag'))
+    expect(go).toHaveBeenLastCalledWith('uppslag')
+    // Uppslag is the host's to show (its "Inte byggd än" card): no stub.
+    expect(screen.getByRole('heading', { level: 1, name: 'Framsteg' })).toBeInTheDocument()
   })
 })
 
@@ -602,5 +619,1135 @@ describe('Folio · DTK', () => {
     reveal('rd-quant-option-A')
     expect(screen.getAllByRole('button', { name: /Visa figuren/ }).length).toBeGreaterThan(0)
     expect(screen.getByTestId('rd-figure')).toBeInTheDocument()
+  })
+})
+
+// ── Batch 2: Provpass, Provpassresultat, Framsteg ────────────────────
+
+const RUN = FIXTURE_DATA.provpass.running
+const RESULT = FIXTURE_DATA.provpass.result
+
+/** Through the hub's gate: Starta provpasset, then the slip's Starta nu. */
+function startPass() {
+  fireEvent.click(screen.getByTestId('rd-prov-start'))
+  fireEvent.click(screen.getByTestId('rd-confirm'))
+}
+
+const cell = (n: number) => screen.getByTestId(`rd-prov-cell-${n}`)
+
+/** A pass that is over while the host stays on screen 9: the runner gone,
+ *  the page saying so, an enabled way to the hub and the contents, and the
+ *  switcher's keys free again (no capture, no keyscope). */
+function expectEnded(title: string) {
+  expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+  expect(screen.getByRole('heading', { level: 1, name: title })).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /^Till anmälan/ })).toBeEnabled()
+  expect(screen.getByTestId('rd-nav-idag')).toBeEnabled()
+  expect(screen.getByTestId('rd-nav-provpass')).toHaveAttribute('aria-current', 'page')
+  expect(document.querySelector('[data-rd-keyscope]')).toBeNull()
+  for (const key of ['3', 'ArrowRight', 'ArrowLeft']) {
+    expect(pressFocused(key)).toBe(true)
+  }
+}
+
+describe('Folio · Provpass, the hub', () => {
+  it('summons the least-seen pass of the half; a cell of the register moves the lead', () => {
+    const startProvpass = vi.fn()
+    const openProvResult = vi.fn()
+    mount(9, { actions: { startProvpass, openProvResult } })
+    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        '40 frågor, 55 minuter, riktiga provvillkor – ingen feedback förrän du lämnar in.',
+      ),
+    ).toBeInTheDocument()
+    expect(screen.getByTestId('rd-prov-half-kvant')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByText('Kallelse · minst sett')).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Hösten 2025, provpass 1' }),
+    ).toBeInTheDocument()
+    expect(screen.getByText('Kvantitativ · XYZ 12 · KVA 10 · NOG 6 · DTK 12')).toBeInTheDocument()
+    expect(screen.getByText(/^Du har sett 6 av 40 frågor\./)).toBeInTheDocument()
+    expect(screen.getByText(`Inskriven: ${FIXTURE_DATA.konto.identity.name}`)).toBeInTheDocument()
+    // The register: sittings newest first, leader dots to their two passes.
+    const table = screen.getByRole('table')
+    const sittings = within(table)
+      .getAllByRole('rowheader')
+      .map((th) => th.textContent)
+    expect(sittings).toEqual(['Våren 2026', 'Hösten 2025'])
+    expect(screen.getByTestId('rd-prov-pass-host-2025-kvant1')).toHaveTextContent('sett 6/40')
+    expect(screen.getByTestId('rd-prov-pass-host-2025-kvant1')).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    fireEvent.click(screen.getByTestId('rd-prov-pass-var-2026-kvant2'))
+    expect(screen.getByText('Valt pass')).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Våren 2026, provpass 2' }),
+    ).toBeInTheDocument()
+    expect(screen.getByTestId('rd-prov-pass-var-2026-kvant2')).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    // The one filled button follows the choice; ↵ presses it.
+    press('Enter')
+    expect(screen.getByRole('dialog', { name: 'Starta provpass' })).toHaveTextContent(
+      'Våren 2026, provpass 2',
+    )
+    expect(startProvpass).not.toHaveBeenCalled()
+    press('Escape')
+    // The latest passes in the margin open their results.
+    fireEvent.click(
+      screen.getByRole('button', { name: /^Verbal, Våren 2026, provpass 1, 29 av 40 rätt/ }),
+    )
+    expect(openProvResult).toHaveBeenCalledWith(FIXTURE_DATA.provpass.hub.results[0].id)
+  })
+
+  it('turns to the verbal half: its summons, its sections, its register', () => {
+    mount(9)
+    fireEvent.click(screen.getByTestId('rd-prov-half-verbal'))
+    expect(screen.getByTestId('rd-prov-half-verbal')).toHaveAttribute('aria-pressed', 'true')
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Hösten 2025, provpass 2' }),
+    ).toBeInTheDocument()
+    expect(screen.getByText('Verbal · ORD 10 · LÄS 10 · MEK 10 · ELF 10')).toBeInTheDocument()
+    expect(screen.getByTestId('rd-prov-pass-host-2025-verb2')).toHaveTextContent('sett 9/40')
+    expect(screen.queryByTestId('rd-prov-pass-host-2025-kvant1')).toBeNull()
+  })
+
+  it('reads the conditions on a slip first; only Starta nu starts, and only once', async () => {
+    const startProvpass = vi.fn()
+    mount(9, { actions: { startProvpass } })
+    const start = screen.getByTestId('rd-prov-start')
+    start.focus()
+    fireEvent.click(start)
+    const slip = screen.getByRole('dialog', { name: 'Starta provpass' })
+    expect(
+      within(slip)
+        .getAllByRole('listitem')
+        .map((li) => li.textContent),
+    ).toEqual([
+      '1Ingen paus.',
+      '2Du kan ändra svar tills tiden går ut.',
+      '3Avbryter du blir provet ogiltigt.',
+      '4Lämna ingen fråga obesvarad – fel ger inga avdrag.',
+    ])
+    expect(within(slip).getByTestId('rd-confirm')).toHaveFocus()
+    expect(document.querySelector('.fo-app')).toHaveAttribute('inert')
+    fireEvent.click(within(slip).getByRole('button', { name: /Inte nu/ }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(startProvpass).not.toHaveBeenCalled()
+    await waitFor(() => expect(start).toHaveFocus())
+    fireEvent.click(start)
+    press('Escape')
+    expect(screen.queryByRole('dialog')).toBeNull()
+    fireEvent.click(start)
+    const accept = screen.getByTestId('rd-confirm')
+    fireEvent.click(accept)
+    fireEvent.click(accept)
+    expect(startProvpass).toHaveBeenCalledTimes(1)
+    expect(startProvpass).toHaveBeenCalledWith(RUN.passId)
+    expect(screen.getByTestId('rd-prov-running')).toBeInTheDocument()
+  })
+
+  it('waits honestly for a pass whose questions the host has not handed down', () => {
+    const startProvpass = vi.fn()
+    mount(9, { actions: { startProvpass } })
+    fireEvent.click(screen.getByTestId('rd-prov-pass-var-2026-kvant1'))
+    startPass()
+    expect(startProvpass).toHaveBeenCalledWith('var-2026:kvant1')
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+    expect(screen.getByText('Frågorna till passet är inte framme än.')).toBeInTheDocument()
+    expect(screen.queryByTestId('rd-prov-start')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Välj ett annat pass' }))
+    expect(screen.getByTestId('rd-prov-start')).toBeInTheDocument()
+  })
+
+  it('says a short pass’s true size, and a first visit or an empty half plainly', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    const pass = data.provpass.hub.passes.find((p) => p.id === RUN.passId)
+    if (!pass) throw new Error('the running pass is not in the register')
+    pass.presented = 39
+    data.provpass.hub.results = []
+    data.provpass.hub.passes = data.provpass.hub.passes.filter((p) => p.half === 'kvant')
+    mount(9, { data })
+    expect(screen.getByText('Passet har 39 frågor – en saknas i källan.')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-prov-start'))
+    expect(screen.getByRole('dialog')).toHaveTextContent(
+      'En fråga saknas i källan, så passet rättas på 39.',
+    )
+    press('Escape')
+    expect(screen.getByText('Inga pass ännu – det första blir din baslinje.')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-prov-half-verbal'))
+    expect(
+      screen.getByText('Inga riktiga pass att välja i den här halvan just nu.'),
+    ).toBeInTheDocument()
+    expect(screen.queryByTestId('rd-prov-start')).toBeNull()
+    expect(screen.queryByRole('table')).toBeNull()
+  })
+})
+
+describe('Folio · Provpass, the running pass', () => {
+  afterEach(() => vi.useRealTimers())
+
+  it('runs in focus mode at the host’s place: the heads, time left, the index', () => {
+    mount(9)
+    startPass()
+    expect(screen.queryByTestId('rd-nav-idag')).toBeNull()
+    expect(screen.getByTestId('rd-exit')).toHaveTextContent('Avbryt passet')
+    expect(screen.getByText('Provpass · KVA')).toBeInTheDocument()
+    expect(screen.getByText('Fråga 17 av 40')).toBeInTheDocument()
+    expect(
+      screen.getByRole('timer', { name: '31 minuter och 12 sekunder kvar' }),
+    ).toHaveTextContent('31:12 kvar')
+    // KVA as in its drill: the condition, then the quantities side by side.
+    expect(screen.getByRole('heading', { level: 2, name: 'y > 0' })).toBeInTheDocument()
+    expect(
+      within(screen.getByRole('table'))
+        .getAllByRole('cell')
+        .map((c) => c.textContent),
+    ).toEqual(['x - y', '3x - 2y'])
+    // The index: a segment a question, the sections apart.
+    expect(screen.getByTestId('rd-prov-grid').querySelectorAll('.fo-passindex-run')).toHaveLength(4)
+    expect(cell(16)).toHaveAttribute('data-answered', 'true')
+    expect(cell(17)).toHaveAttribute('data-current', 'true')
+    expect(cell(9)).toHaveAttribute('data-flagged', 'true')
+    expect(cell(22)).toHaveAccessibleName('Fråga 22, KVA, obesvarad')
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Kvantitativa jämförelser, fråga 17 av 40' }),
+    ).toHaveFocus()
+    expect(screen.getByText('Inget svar än – du kan hoppa över frågan.')).toBeInTheDocument()
+  })
+
+  it('saves a choice on a–d and never grades it; ←/→, ↵ and space move; E, digits and Esc do nothing', () => {
+    const lock = vi.fn<DrillController['lock']>(() => ({ correct: true }))
+    const exit = vi.fn()
+    mount(9, { actions: { drill: { lock, exit } } })
+    startPass()
+    press('b')
+    expect(screen.getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByText('Ditt val: B · sparat')).toBeInTheDocument()
+    expect(cell(17)).toHaveAttribute('data-answered', 'true')
+    press('e') // no E on a KVA question
+    expect(screen.queryByTestId('rd-prov-option-E')).toBeNull()
+    expect(screen.getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'true')
+    expect(fireEvent.keyDown(window, { key: '3' })).toBe(false) // the switcher's, swallowed
+    press('Escape')
+    expect(screen.getByTestId('rd-prov-running')).toBeInTheDocument()
+    expect(fireEvent.keyDown(window, { key: 'ArrowRight' })).toBe(false)
+    expect(cell(18)).toHaveAttribute('data-current', 'true')
+    expect(screen.getByRole('heading', { level: 1, name: /fråga 18 av 40$/ })).toHaveFocus()
+    press('a', { shiftKey: true })
+    expect(screen.getByTestId('rd-eliminate-A')).toHaveAttribute('aria-pressed', 'true')
+    press('Enter')
+    expect(cell(19)).toHaveAttribute('data-current', 'true')
+    press(' ')
+    expect(cell(20)).toHaveAttribute('data-current', 'true')
+    press('ArrowLeft')
+    expect(cell(19)).toHaveAttribute('data-current', 'true')
+    // A focused control keeps ↵ to itself.
+    const option = screen.getByTestId('rd-prov-option-C')
+    option.focus()
+    fireEvent.keyDown(option, { key: 'Enter' })
+    expect(cell(19)).toHaveAttribute('data-current', 'true')
+    // Back on 17 the choice is still there.
+    fireEvent.click(cell(17))
+    expect(screen.getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'true')
+    expect(lock).not.toHaveBeenCalled()
+    expect(exit).not.toHaveBeenCalled()
+    expect(screen.queryByTestId('rd-verdict')).toBeNull()
+  })
+
+  it('lets a focused scroll region keep its arrows: the question stays', () => {
+    mount(9)
+    startPass()
+    const region = document.querySelector<HTMLElement>('.fo-qscroll')
+    if (!region) throw new Error('the page has no scroll region')
+    expect(region).toHaveAttribute('data-rd-keyscope')
+    // Not prevented, so the region itself scrolls; its keyscope keeps the
+    // switcher off.
+    expect(fireEvent.keyDown(region, { key: 'ArrowRight' })).toBe(true)
+    expect(fireEvent.keyDown(region, { key: ' ' })).toBe(true)
+    expect(cell(17)).toHaveAttribute('data-current', 'true')
+  })
+
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('moves from where the focus really is, the question’s heading, on %s', (width) => {
+    mount(9, { width })
+    startPass()
+    const focused = () => document.activeElement
+    // Opened: the heading has focus, inside the page's scroll region.
+    expect(focused()).toHaveAccessibleName('Kvantitativa jämförelser, fråga 17 av 40')
+    expect(focused()?.closest('[data-fo-region]')).not.toBeNull()
+    expect(pressFocused('ArrowRight')).toBe(false)
+    expect(cell(18)).toHaveAttribute('data-current', 'true')
+    // Moved: the next heading has it, and the keys go on working from there.
+    expect(focused()).toHaveAccessibleName(/fråga 18 av 40$/)
+    expect(pressFocused('ArrowLeft')).toBe(false)
+    expect(cell(17)).toHaveAttribute('data-current', 'true')
+    pressFocused(' ')
+    expect(cell(18)).toHaveAttribute('data-current', 'true')
+    pressFocused('Enter')
+    expect(cell(19)).toHaveAttribute('data-current', 'true')
+    expect(focused()).toHaveAccessibleName(/fråga 19 av 40$/)
+    if (width === 'desktop') {
+      // A plate's question: the heading on the spread's recto page.
+      fireEvent.click(cell(29))
+      expect(focused()?.closest('.fo-page--recto')).not.toBeNull()
+      expect(pressFocused('ArrowRight')).toBe(false)
+      expect(cell(30)).toHaveAttribute('data-current', 'true')
+    }
+  })
+
+  it('folds the clock to its line and brings it back, in words, at five minutes', () => {
+    vi.useFakeTimers()
+    const data = structuredClone(FIXTURE_DATA)
+    data.provpass.running.remainingSeconds = 302
+    mount(9, { data })
+    startPass()
+    fireEvent.click(screen.getByRole('button', { name: 'Dölj klockan' }))
+    expect(screen.getByTestId('rd-prov-timer')).not.toHaveTextContent('05:02')
+    expect(document.querySelector('.fo-timeline')).not.toBeNull()
+    act(() => vi.advanceTimersByTime(3000))
+    expect(screen.getByText('Fem minuter kvar')).toBeInTheDocument()
+    expect(screen.getByTestId('rd-prov-timer')).toHaveTextContent('04:59 kvar')
+    expect(screen.getByTestId('rd-prov-timer')).toHaveAttribute('data-urgent', 'true')
+  })
+
+  it('hands the pass in once when the host’s countdown reaches zero, then ends it for good', () => {
+    vi.useFakeTimers()
+    const data = structuredClone(FIXTURE_DATA)
+    data.provpass.running.remainingSeconds = 3
+    const submitProvpass = vi.fn()
+    const { supply } = mount(9, { data, actions: { submitProvpass } })
+    startPass()
+    fireEvent.click(screen.getByTestId('rd-prov-option-B'))
+    // The host ticks to zero before the pass's own interval does; then it
+    // stays on screen 9.
+    const next = structuredClone(data)
+    next.provpass.running.remainingSeconds = 0
+    supply(next)
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    expect(screen.queryByText(/ogiltigt|räknas inte/)).toBeNull()
+    expectEnded('Passet är inlämnat.')
+    // The answers as handed in, read-only: no option to press any more.
+    const answers = screen.getByRole('region', { name: 'Dina svar' })
+    expect(within(answers).getByText('Fråga 17, svar B')).toBeInTheDocument()
+    expect(within(answers).getByText('Fråga 22, obesvarad')).toBeInTheDocument()
+    expect(screen.queryByTestId('rd-prov-option-B')).toBeNull()
+    act(() => vi.advanceTimersByTime(5000))
+    supply(structuredClone(next))
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    fireEvent.click(screen.getByRole('button', { name: /^Till anmälan/ }))
+    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+  })
+
+  it('hands in once on its own clock too, even with the abandon slip open', () => {
+    vi.useFakeTimers()
+    const data = structuredClone(FIXTURE_DATA)
+    data.provpass.running.remainingSeconds = 10
+    const submitProvpass = vi.fn()
+    mount(9, { data, actions: { submitProvpass } })
+    startPass()
+    fireEvent.click(screen.getByTestId('rd-exit'))
+    expect(screen.getByRole('dialog', { name: 'Avbryta provpasset?' })).toBeInTheDocument()
+    act(() => {
+      vi.setSystemTime(Date.now() + 11_000)
+      vi.advanceTimersByTime(1000)
+    })
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(screen.queryByText(/ogiltigt|räknas inte/)).toBeNull()
+    expectEnded('Passet är inlämnat.')
+    act(() => vi.advanceTimersByTime(10_000))
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+  })
+
+  it('ends calmly on the kit’s NOOP hand-in, the frame back at both widths', () => {
+    for (const width of ['desktop', 'phone'] as const) {
+      // No submitProvpass: the provider's NOOP stands in, and the host
+      // never leaves screen 9.
+      const view = mount(9, { width })
+      startPass()
+      fireEvent.click(screen.getByTestId('rd-prov-submit'))
+      fireEvent.click(screen.getByTestId('rd-confirm'))
+      expectEnded('Passet är inlämnat.')
+      expect(screen.getByText('Svaren nedan är de du lämnade in.')).toBeInTheDocument()
+      expect(screen.getByTestId('rd-prov-ended')).toHaveTextContent('16 av 40 frågor besvarade')
+      // The account entry is back with the contents.
+      expect(screen.getByTestId('rd-account')).toBeEnabled()
+      // The contents' Provpass opens the hub too.
+      fireEvent.click(screen.getByTestId('rd-nav-provpass'))
+      expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+      view.unmount()
+    }
+  })
+
+  it('never starts a pass whose time is up when it opens: it does not count', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    data.provpass.running.remainingSeconds = 0
+    const submitProvpass = vi.fn()
+    mount(9, { data, actions: { submitProvpass } })
+    startPass()
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+    expect(
+      screen.getByText('Passet hann ta slut innan det lämnades in. Det räknas inte.'),
+    ).toBeInTheDocument()
+    expect(submitProvpass).not.toHaveBeenCalled()
+    expect(screen.queryByTestId('rd-prov-timer')).toBeNull()
+  })
+
+  it('asks before handing in: the blanks in words, links to them, then one hand-in', () => {
+    const submitProvpass = vi.fn()
+    const data = structuredClone(FIXTURE_DATA)
+    const run = data.provpass.running
+    // Every question answered but the 22nd.
+    run.answers = Object.fromEntries(
+      run.questions.filter((_, i) => i !== 21).map((q) => [q.qid, 'A' as const]),
+    )
+    mount(9, { data, actions: { submitProvpass } })
+    startPass()
+    fireEvent.click(screen.getByTestId('rd-prov-submit'))
+    const slip = screen.getByRole('dialog', { name: 'Lämna in provpasset?' })
+    expect(slip).toHaveTextContent('En fråga är obesvarad – fel ger inga avdrag, så gissa hellre.')
+    fireEvent.click(within(slip).getByRole('button', { name: 'Gå till fråga 22' }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(cell(22)).toHaveAttribute('data-current', 'true')
+    press('c')
+    fireEvent.click(screen.getByTestId('rd-prov-submit'))
+    expect(screen.getByRole('dialog')).toHaveTextContent('Alla 40 frågor är besvarade.')
+    fireEvent.click(screen.getByRole('button', { name: 'Tillbaka till passet' }))
+    expect(submitProvpass).not.toHaveBeenCalled()
+    // On the last question ↵ asks to hand in.
+    fireEvent.click(cell(40))
+    press('Enter')
+    fireEvent.click(within(screen.getByRole('dialog')).getByTestId('rd-confirm'))
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    // The host stays on screen 9: the pass says it is in, and ↵ goes on to
+    // the hub, never to a second hand-in.
+    expectEnded('Passet är inlämnat.')
+    expect(screen.getByTestId('rd-prov-ended')).toHaveTextContent('40 av 40 frågor besvarade')
+    press('Enter')
+    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+  })
+
+  it('ends the pass on a failed hand-in and never hands it in again, on either clock', () => {
+    vi.useFakeTimers()
+    const submitProvpass = vi.fn(() => {
+      throw new Error('offline')
+    })
+    const data = structuredClone(FIXTURE_DATA)
+    const { supply } = mount(9, { data, actions: { submitProvpass } })
+    startPass()
+    press('a')
+    // By hand, with half an hour left.
+    fireEvent.click(screen.getByTestId('rd-prov-submit'))
+    expect(screen.getByRole('dialog')).toHaveTextContent(
+      '23 frågor är obesvarade – fel ger inga avdrag, så gissa hellre.',
+    )
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    // The host's countdown reaches zero, then the pass's own deadline
+    // passes: neither hands it in again.
+    const next = structuredClone(data)
+    next.provpass.running.remainingSeconds = 0
+    supply(next)
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    act(() => {
+      vi.setSystemTime(Date.now() + 40 * 60_000)
+      vi.advanceTimersByTime(2000)
+    })
+    press('b')
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    // Over for good, and said so where the pass was.
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expectEnded('Inlämningen gick inte fram.')
+    expect(
+      screen.getByText(
+        'Passet går inte att lämna in igen härifrån. Svaren nedan är dina, som de stod vid inlämningen.',
+      ),
+    ).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Försök igen/ })).toBeNull()
+    expect(
+      within(screen.getByRole('region', { name: 'Dina svar' })).getByText('Fråga 17, svar A'),
+    ).toBeInTheDocument()
+    // The error stays where it is.
+    press('Escape')
+    expect(screen.getByRole('heading', { level: 1, name: 'Inlämningen gick inte fram.' }))
+    fireEvent.click(screen.getByTestId('rd-nav-idag'))
+    expect(screen.getByTestId('rd-nav-idag')).toHaveAttribute('aria-current', 'page')
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+  })
+
+  it('says a failed hand-in at time out plainly and for good, with the way out', () => {
+    const submitProvpass = vi.fn(() => {
+      throw new Error('offline')
+    })
+    const data = structuredClone(FIXTURE_DATA)
+    const { supply } = mount(9, { data, actions: { submitProvpass } })
+    startPass()
+    // The host's clock reaches zero well before the pass's own deadline.
+    const next = structuredClone(data)
+    next.provpass.running.remainingSeconds = 0
+    supply(next)
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expectEnded('Inlämningen gick inte fram.')
+    press('Escape')
+    // A ↵ held down from before never skips the error; a fresh one leaves.
+    press('Enter', { repeat: true })
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Inlämningen gick inte fram.' }),
+    ).toBeInTheDocument()
+    press('Enter')
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+    // Handed in, not voided or run out: the hub has no note to give.
+    expect(screen.queryByText(/^Provet avbröts|^Passet hann ta slut/)).toBeNull()
+  })
+
+  it('asks before voiding: Fortsätt provpasset is the default, Avbryt passet voids', () => {
+    const submitProvpass = vi.fn()
+    mount(9, { actions: { submitProvpass } })
+    startPass()
+    fireEvent.click(screen.getByTestId('rd-exit'))
+    const slip = screen.getByRole('dialog', { name: 'Avbryta provpasset?' })
+    const stay = within(slip).getByRole('button', { name: /Fortsätt provpasset/ })
+    expect(stay).toHaveFocus()
+    press('b') // the pass's keys rest under the slip
+    expect(screen.getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'false')
+    fireEvent.click(stay)
+    expect(screen.getByTestId('rd-prov-running')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-exit'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'Provet avbröts – ogiltigt. Dina missar ligger i Repetera.',
+    )
+    expect(submitProvpass).not.toHaveBeenCalled()
+    expect(screen.getByTestId('rd-nav-provpass')).toHaveAttribute('aria-current', 'page')
+  })
+
+  it('lays the pass out in Översikt by section and goes where it is pressed', () => {
+    mount(9)
+    startPass()
+    fireEvent.click(screen.getByRole('button', { name: 'Översikt' }))
+    const slip = screen.getByRole('dialog', { name: 'Översikt' })
+    expect(slip).toHaveTextContent('16 av 40 besvarade')
+    const nav = within(slip).getByRole('navigation', { name: 'Frågor i passet' })
+    expect(within(nav).getAllByRole('list')).toHaveLength(4)
+    expect(
+      within(nav).getByRole('button', { name: 'Fråga 9, XYZ, besvarad, markerad' }),
+    ).toBeInTheDocument()
+    expect(
+      within(nav).getByRole('button', { name: 'Fråga 17, KVA, obesvarad, här är du' }),
+    ).toHaveAttribute('aria-current', 'step')
+    fireEvent.click(within(nav).getByRole('button', { name: 'Fråga 29, DTK, obesvarad' }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(cell(29)).toHaveAttribute('data-current', 'true')
+    fireEvent.click(screen.getByRole('button', { name: 'Översikt' }))
+    fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: /^Lämna in/ }))
+    expect(screen.getByRole('dialog', { name: 'Lämna in provpasset?' })).toBeInTheDocument()
+  })
+
+  it('marks a question with a folded corner, and has no Markera when the host has no flags', () => {
+    const first = mount(9)
+    startPass()
+    const flag = screen.getByTestId('rd-prov-flag')
+    expect(flag).toHaveAccessibleName('Markera för återkomst')
+    fireEvent.click(flag)
+    expect(flag).toHaveAttribute('aria-pressed', 'true')
+    expect(cell(17)).toHaveAttribute('data-flagged', 'true')
+    expect(document.querySelector('.fo-pass-q')).toHaveAttribute('data-dogear', 'true')
+    first.unmount()
+    const data = structuredClone(FIXTURE_DATA)
+    delete data.provpass.running.flags
+    mount(9, { data })
+    startPass()
+    expect(screen.queryByTestId('rd-prov-flag')).toBeNull()
+    expect(cell(9)).not.toHaveAttribute('data-flagged')
+  })
+
+  it('keeps its place in range when the host hands down fewer questions', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    const { supply } = mount(9, { data })
+    startPass()
+    fireEvent.click(cell(40))
+    const next = structuredClone(data)
+    next.provpass.running.questions = next.provpass.running.questions.slice(0, 30)
+    next.provpass.running.grid = next.provpass.running.grid.slice(0, 30)
+    expect(() => supply(next)).not.toThrow()
+    expect(cell(30)).toHaveAttribute('data-current', 'true')
+    expect(screen.queryByTestId('rd-prov-cell-31')).toBeNull()
+    press('ArrowLeft')
+    expect(cell(29)).toHaveAttribute('data-current', 'true')
+    // No questions at all: a blank page that says so, and the way back.
+    const none = structuredClone(next)
+    none.provpass.running.questions = []
+    none.provpass.running.grid = []
+    supply(none)
+    fireEvent.click(screen.getByRole('button', { name: 'Till anmälan' }))
+    expect(
+      screen.getByText('Passets frågor gick inte att visa. Inget har räknats.'),
+    ).toBeInTheDocument()
+  })
+
+  it('sets a DTK question on its plate, kept across the page’s questions, with Förstora', () => {
+    mount(9)
+    startPass()
+    fireEvent.click(cell(29))
+    const plate = screen.getByTestId('rd-figure')
+    expect(plate).toHaveTextContent('Hösten 2025 · Provpass 1 · uppgifterna 29–31')
+    expect(screen.getByText('Första av tre frågor till figuren')).toBeInTheDocument()
+    press('ArrowRight')
+    expect(screen.getByText('Andra av tre frågor till figuren')).toBeInTheDocument()
+    expect(screen.getByTestId('rd-figure')).toBe(plate)
+    const opener = screen.getByRole('button', { name: 'Förstora' })
+    opener.focus()
+    fireEvent.click(opener)
+    expect(screen.getByRole('dialog', { name: 'Förstorad figur' })).toBeInTheDocument()
+    press('b') // the pass's keys rest while it is open
+    expect(screen.getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'false')
+    press('ArrowRight') // pans the page, never the question
+    press('Escape')
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(cell(30)).toHaveAttribute('data-current', 'true')
+  })
+
+  it('sets a reading question on its spread, the ÖVNINGSTEXT badge in the head', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    const run = data.provpass.running
+    run.questions = data.drills.reading.questions
+    run.current = 0
+    run.answers = {}
+    mount(9, { data })
+    startPass()
+    expect(screen.getByText(`Provpass · LÄS · ${data.copy.ovningstextBadge}`)).toBeInTheDocument()
+    expect(screen.getByTestId('rd-passage')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-note-toggle'))
+    expect(screen.getByTestId('rd-note')).toHaveTextContent(data.copy.ovningstextNote)
+    press('c')
+    expect(screen.getByTestId('rd-prov-option-C')).toHaveAttribute('aria-pressed', 'true')
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Svensk läsförståelse, fråga 1 av 4' }),
+    ).toHaveFocus()
+  })
+
+  it('on phone keeps one page with the bar at the foot, and the slip for a plate', () => {
+    mount(9, { width: 'phone' })
+    startPass()
+    expect(screen.getByText('Fråga 17 av 40')).toBeInTheDocument()
+    expect(screen.getByRole('timer')).toHaveTextContent('31:12 kvar')
+    expect(document.querySelector('.fo-pfoot')).toContainElement(
+      screen.getByRole('button', { name: /^Nästa fråga/ }),
+    )
+    fireEvent.click(cell(29))
+    const sheet = screen.getByRole('region', { name: 'Fråga 29' })
+    expect(sheet).toHaveAttribute('data-state', 'peek')
+    expect(within(sheet).getByText('Fråga 29 av 40 · första av tre')).toBeInTheDocument()
+    fireEvent.click(within(sheet).getByRole('button', { name: /Visa de fyra alternativen/ }))
+    expect(within(sheet).getByTestId('rd-prov-option-A')).toBeInTheDocument()
+  })
+})
+
+/** The real bake-off around Folio, its selection merged on every change. */
+function mountHost(s: AppScreenKey, w: WidthKey = 'desktop') {
+  const onSelect = vi.fn()
+  function Host() {
+    const [sel, setSel] = useState<Selection>({ d: 'a', s, w, t: 'light', sbs: false, bare: false })
+    return (
+      <Redesign2026Bakeoff
+        sel={sel}
+        onSelect={(next) => {
+          onSelect(next)
+          setSel((prev) => ({ ...prev, ...next }))
+        }}
+      />
+    )
+  }
+  render(<Host />)
+  return onSelect
+}
+
+describe('Folio · in the real bake-off', () => {
+  // jsdom has no layout: give the stage the room of a 1440 × 900 window.
+  beforeEach(() => {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(848)
+  })
+  afterEach(() => vi.restoreAllMocks())
+
+  it.each([
+    'option',
+    'cell',
+    'heading',
+    'body',
+  ] as const)('keeps the switcher’s keys inside a running pass, from the %s', async (target) => {
+    const onSelect = mountHost(9)
+    fireEvent.click(await screen.findByTestId('rd-prov-start', {}, { timeout: 5000 }))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    onSelect.mockClear()
+    for (const key of ['1', '4', '8', '0', 'ArrowRight', 'ArrowLeft']) {
+      const el =
+        target === 'option'
+          ? screen.getByTestId('rd-prov-option-A')
+          : target === 'cell'
+            ? screen.getByTestId('rd-prov-cell-3')
+            : target === 'heading'
+              ? screen.getByRole('heading', { level: 1 })
+              : document.body
+      el.focus()
+      expect(fireEvent.keyDown(el, { key })).toBe(false)
+      expect(onSelect).not.toHaveBeenCalled()
+      expect(screen.getByTestId('rd-prov-running')).toBeInTheDocument()
+    }
+    expect(screen.getByTestId('rd-prov-running')).toHaveAttribute('data-rd-keyscope')
+  })
+
+  it('moves the question from the focused heading while the switcher stays put', async () => {
+    const onSelect = mountHost(9)
+    fireEvent.click(await screen.findByTestId('rd-prov-start', {}, { timeout: 5000 }))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    onSelect.mockClear()
+    expect(document.activeElement).toHaveAccessibleName(/fråga 17 av 40$/)
+    expect(pressFocused('ArrowRight')).toBe(false)
+    expect(screen.getByTestId('rd-prov-cell-18')).toHaveAttribute('data-current', 'true')
+    expect(document.activeElement).toHaveAccessibleName(/fråga 18 av 40$/)
+    pressFocused(' ')
+    expect(screen.getByTestId('rd-prov-cell-19')).toHaveAttribute('data-current', 'true')
+    pressFocused('ArrowLeft')
+    expect(screen.getByTestId('rd-prov-cell-18')).toHaveAttribute('data-current', 'true')
+    // The page's own scroll region keeps its arrows; the switcher stays out.
+    const region = document.querySelector<HTMLElement>('.fo-qscroll')
+    if (!region) throw new Error('the page has no scroll region')
+    fireEvent.keyDown(region, { key: 'ArrowRight' })
+    expect(screen.getByTestId('rd-prov-cell-18')).toHaveAttribute('data-current', 'true')
+    expect(onSelect).not.toHaveBeenCalled()
+    expect(screen.getByTestId('rd-prov-running')).toBeInTheDocument()
+  })
+
+  it('keeps a slip’s keys its own, and hands the pass in on to the result', async () => {
+    const onSelect = mountHost(9)
+    fireEvent.click(await screen.findByTestId('rd-prov-start', {}, { timeout: 5000 }))
+    const slip = screen.getByRole('dialog', { name: 'Starta provpass' })
+    onSelect.mockClear()
+    fireEvent.keyDown(within(slip).getByTestId('rd-confirm'), { key: '2' })
+    fireEvent.keyDown(within(slip).getByTestId('rd-confirm'), { key: 'ArrowRight' })
+    expect(onSelect).not.toHaveBeenCalled()
+    fireEvent.click(within(slip).getByTestId('rd-confirm'))
+    fireEvent.click(screen.getByTestId('rd-prov-submit'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    expect(onSelect).toHaveBeenLastCalledWith({ s: 10 })
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Provpasset klart.' }),
+    ).toBeInTheDocument()
+  })
+
+  it('keeps the arrows inside the reading drill’s pages from the switcher', async () => {
+    const onSelect = mountHost(2)
+    const passage = await screen.findByTestId('rd-passage', {}, { timeout: 5000 })
+    onSelect.mockClear()
+    fireEvent.keyDown(passage, { key: 'ArrowRight' })
+    expect(onSelect).not.toHaveBeenCalled()
+    fireEvent.keyDown(document.body, { key: 'ArrowRight' })
+    expect(onSelect).toHaveBeenLastCalledWith({ s: 3 })
+  })
+})
+
+describe('Folio · Provpassresultat', () => {
+  it('reports the pass as a closing page: the figure and its basis, each section, the misses', () => {
+    const openRepetera = vi.fn()
+    const openProvResult = vi.fn()
+    const go = vi.fn()
+    mount(10, { actions: { openRepetera, openProvResult, go } })
+    expect(screen.getByRole('heading', { level: 1, name: 'Provpasset klart.' })).toBeInTheDocument()
+    expect(
+      screen.getByText('Kvantitativ, riktigt pass. Du lämnade in efter 53 minuter.'),
+    ).toBeInTheDocument()
+    expect(screen.getByTestId('rd-nav-provpass')).toHaveAttribute('aria-current', 'page')
+    const value = RESULT.score.value
+    if (value == null) throw new Error('the fixture result has no score')
+    const score = screen.getByTestId('rd-prov-score')
+    expect(score).toHaveTextContent(`${fmtPassScore(value)}*normerat (härlett) · av 2,0`)
+    expect(score).toHaveTextContent('27 av 40 rätt')
+    expect(
+      within(score).getByRole('img', { name: `${fmtPassScore(value)} på skalan 0 till 2,0` }),
+    ).toBeInTheDocument()
+    // Per delprov, in the test's order, the tempo in words.
+    const rows = within(screen.getByRole('table', { name: 'Per delprov: rätt, tid och budget' }))
+      .getAllByRole('row')
+      .slice(1)
+    expect(rows.map((r) => r.dataset.testid)).toEqual([
+      'rd-prov-section-xyz',
+      'rd-prov-section-kva',
+      'rd-prov-section-nog',
+      'rd-prov-section-dtk',
+    ])
+    const xyz = screen.getByTestId('rd-prov-section-xyz')
+    for (const text of ['8/12', '17:30', '16:30', 'över budget']) {
+      expect(xyz).toHaveTextContent(text)
+    }
+    expect(screen.getByTestId('rd-prov-section-nog')).toHaveTextContent('över budget')
+    expect(screen.getByTestId('rd-prov-section-kva')).not.toHaveTextContent('över budget')
+    // The misses, and where they went.
+    expect(
+      screen.getByText('11 missar ligger nu i Repetera; två lämnades obesvarade.'),
+    ).toBeInTheDocument()
+    const errata = screen.getByRole('list', { name: 'Missarna' })
+    expect(within(errata).getAllByRole('listitem')).toHaveLength(RESULT.missed.length)
+    expect(within(errata).getAllByRole('listitem')[0]).toHaveTextContent('XYZ')
+    expect(within(errata).getAllByRole('listitem')[0]).toHaveTextContent('rätt B')
+    // The margin: earlier passes of the kind, exposure; the footnote.
+    const history = screen.getByTestId('rd-prov-history')
+    expect(within(history).getAllByRole('listitem')).toHaveLength(RESULT.history.length)
+    fireEvent.click(within(history).getAllByRole('button')[0])
+    expect(openProvResult).toHaveBeenCalledWith(RESULT.history[0].id)
+    expect(screen.getByText('Du hade sett 6 av 40 frågor innan.')).toBeInTheDocument()
+    expect(
+      screen.getByText(/UHR normerar hela den kvantitativa delen \(80 frågor\)/),
+    ).toBeInTheDocument()
+    // An authentic quant pass rests on no övningstext: no calibration caveat.
+    expect(screen.queryByText(FIXTURE_DATA.copy.estimateCaveat)).toBeNull()
+    // Learning first: Repetera holds the misses. Esc goes to Provpass.
+    fireEvent.click(screen.getByRole('button', { name: /^Till Repetera/ }))
+    expect(openRepetera).toHaveBeenCalledTimes(1)
+    press('Enter')
+    expect(openRepetera).toHaveBeenCalledTimes(2)
+    press('Escape')
+    expect(go).toHaveBeenLastCalledWith('provpass')
+    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+  })
+
+  it('says a clean pass, a linear estimate, a time-out and a short pass plainly', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    const r = data.provpass.result
+    r.presented = 39
+    r.answered = 39
+    r.correct = 39
+    r.missed = []
+    r.score = { value: 1.62, derived: 'linear', label: 'skattad' }
+    r.durationSeconds = 55 * 60
+    r.history = []
+    r.sections = [...r.sections].reverse()
+    const go = vi.fn()
+    mount(10, { data, actions: { go } })
+    expect(
+      screen.getByText(
+        'Kvantitativ, riktigt pass. Tiden tog slut – passet lämnades in automatiskt efter 55 minuter.',
+      ),
+    ).toBeInTheDocument()
+    expect(screen.getByTestId('rd-prov-score')).toHaveTextContent('1,62*skattad poäng · av 2,0')
+    expect(
+      screen.getByText('En fråga saknas i det här passet, så det rättades på 39.'),
+    ).toBeInTheDocument()
+    expect(screen.getByText('Inga missar i det här passet.')).toBeInTheDocument()
+    expect(screen.getByText('Linjär skattning – indikativ, inte UHR-normerad.')).toBeInTheDocument()
+    expect(screen.getByTestId('rd-prov-history')).toHaveTextContent(
+      'Inga tidigare pass av samma sort ännu.',
+    )
+    // Still in the test's order.
+    expect(
+      within(screen.getByRole('table'))
+        .getAllByRole('row')
+        .slice(1)
+        .map((row) => row.dataset.testid),
+    ).toEqual(['xyz', 'kva', 'nog', 'dtk'].map((s) => `rd-prov-section-${s}`))
+    fireEvent.click(screen.getByRole('button', { name: /^Nytt provpass/ }))
+    expect(go).toHaveBeenLastCalledWith('provpass')
+  })
+
+  it('adds the calibration caveat when the pass’s own questions carry P5 texts', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    const run = data.provpass.running
+    const r = data.provpass.result
+    // The pass's questions are still at hand: a verbal pass whose LÄS text
+    // is a P5 unit (an övningstext).
+    run.questions = data.drills.reading.questions
+    run.half = 'verbal'
+    r.passId = run.passId
+    r.half = 'verbal'
+    r.presented = run.questions.length
+    r.answered = run.questions.length
+    r.correct = run.questions.length - 1
+    r.missed = [run.questions[1].qid]
+    r.sections = [{ section: 'LÄS', presented: 4, correct: 3, timeSeconds: 700, quotaSeconds: 825 }]
+    r.trap = null
+    mount(10, { data })
+    const caveat = screen.getByText(data.copy.estimateCaveat)
+    expect(caveat.closest('.fo-footnote')).toHaveTextContent(/^\*\*Uppskattningen/)
+    // The figure carries both marks, and says so in words.
+    const score = screen.getByTestId('rd-prov-score')
+    expect(within(score).getByText('*,**')).toBeInTheDocument()
+    expect(score).toHaveTextContent('rätt, med förbehåll i fotnoten')
+    // The basis footnote is still the first.
+    expect(
+      screen.getByText(/UHR normerar hela den verbala delen/).closest('.fo-footnote'),
+    ).toHaveTextContent(/^\*Härlett/)
+  })
+
+  it('adds it for P5 misses too, and never claims P5 when the provenance is unknown', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    const r = data.provpass.result
+    // Another pass than the running one: its questions are not at hand.
+    r.passId = 'var-2026:verb1'
+    r.half = 'verbal'
+    r.sitting = 'Våren 2026'
+    r.pass = 'Provpass 1'
+    r.sections = (['ORD', 'LÄS', 'MEK', 'ELF'] as const).map((section) => ({
+      section,
+      presented: 10,
+      correct: 8,
+      timeSeconds: 780,
+      quotaSeconds: 825,
+    }))
+    r.trap = null
+    r.missed = ['var-2026-verb1-ORD-006', 'p5-elf-b19-003-r1-ELF-001']
+    const known = mount(10, { data })
+    expect(screen.getByText(data.copy.estimateCaveat)).toBeInTheDocument()
+    expect(within(screen.getByTestId('rd-prov-score')).getByText('*,**')).toBeInTheDocument()
+    known.unmount()
+    // Nothing says where its texts came from: no caveat, no second mark.
+    const unknown = structuredClone(data)
+    unknown.provpass.result.missed = ['var-2026-verb1-ORD-006', 'var-2026-verb1-ELF-033']
+    mount(10, { data: unknown })
+    expect(screen.queryByText(data.copy.estimateCaveat)).toBeNull()
+    expect(within(screen.getByTestId('rd-prov-score')).getByText('*')).toBeInTheDocument()
+    expect(screen.getByTestId('rd-prov-score')).not.toHaveTextContent('förbehåll')
+  })
+})
+
+describe('Folio · Framsteg', () => {
+  const F = FIXTURE_DATA.framsteg
+  const TOP = F.focus[0]
+
+  it('reads as a report: the week, one figure with its caveat, the one thing to practise', () => {
+    const startDrill = vi.fn()
+    const openKonto = vi.fn()
+    mount(11, { actions: { startDrill, openKonto } })
+    expect(screen.getByRole('heading', { level: 1, name: 'Framsteg' })).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        `180 frågor den här veckan med 70 % träffsäkerhet. Gapet upp till målet bärs framför allt av ${F.focus[0]} och ${F.focus[1]}.`,
+      ),
+    ).toBeInTheDocument()
+    const lead = screen.getByTestId('rd-framsteg-prognosis')
+    expect(lead).toHaveTextContent('1,4*av 2,0')
+    expect(lead).toHaveTextContent('+0,1 sedan förra veckan')
+    expect(lead).toHaveTextContent('Verbal 1,5 · Kvant 1,3')
+    expect(
+      within(lead).getByRole('img', { name: 'Prognos 1,4 på skalan 0 till 2,0, mål 2,0' }),
+    ).toBeInTheDocument()
+    fireEvent.click(within(lead).getByRole('button', { name: /^mål 2,0/ }))
+    expect(openKonto).toHaveBeenCalled()
+    expect(lead).toHaveTextContent(`Mest att vinna: ${TOP} –`)
+    fireEvent.click(within(lead).getByRole('button', { name: new RegExp(`^Öva ${TOP}`) }))
+    expect(startDrill).toHaveBeenLastCalledWith({ kind: 'section', section: TOP })
+    startDrill.mockClear()
+    press('Enter')
+    expect(startDrill).toHaveBeenLastCalledWith({ kind: 'section', section: TOP })
+    // The caveat is the figure's footnote, verbatim.
+    expect(screen.getByText(FIXTURE_DATA.copy.estimateCaveat)).toBeInTheDocument()
+    // No streak and no record: the days practised are counted, never lost.
+    expect(screen.getByTestId('rd-folio')).not.toHaveTextContent(/serie|rekord/i)
+  })
+
+  it('sets the eight sections as a ruled table in test order, the trends in words', () => {
+    mount(11)
+    const table = screen.getByRole('table', {
+      name: 'Delproven: prognos, osäkerhet, trend och underlag',
+    })
+    const rows = within(table).getAllByRole('row').slice(1)
+    expect(rows.map((r) => r.dataset.testid)).toEqual(
+      ['ord', 'las', 'mek', 'elf', 'xyz', 'kva', 'nog', 'dtk'].map(
+        (s) => `rd-framsteg-section-${s}`,
+      ),
+    )
+    // LÄS and ELF carry the caveat's mark; the others do not.
+    expect(within(screen.getByTestId('rd-framsteg-section-las')).getByText('*')).toBeInTheDocument()
+    expect(within(screen.getByTestId('rd-framsteg-section-ord')).queryByText('*')).toBeNull()
+    for (const s of F.sections) {
+      const word =
+        s.trend == null ? '–' : s.trend <= -0.02 ? 'ner' : s.trend >= 0.02 ? 'upp' : 'oförändrad'
+      const id = s.section.toLocaleLowerCase('sv-SE').replace('ä', 'a')
+      expect(screen.getByTestId(`rd-framsteg-section-${id}`)).toHaveTextContent(word)
+    }
+  })
+
+  it('offers the next two sections and the latest passes, then the whole ledger', () => {
+    const startDrill = vi.fn()
+    mount(11, { actions: { startDrill } })
+    const sedan = screen.getByRole('region', { name: 'Sedan' })
+    const entries = within(sedan).getAllByRole('button')
+    expect(entries).toHaveLength(2)
+    fireEvent.click(entries[0])
+    expect(startDrill).toHaveBeenLastCalledWith({ kind: 'section', section: F.focus[1] })
+    const hist = screen.getByRole('region', { name: 'Historik' })
+    const items = within(hist).getAllByRole('listitem')
+    expect(items).toHaveLength(5)
+    expect(items[0]).toHaveTextContent('tor 8 okt')
+    expect(items[0]).toHaveTextContent('ORD-övning')
+    expect(items[0]).toHaveTextContent('9/10')
+    expect(items[1]).toHaveTextContent('Repetition')
+    fireEvent.click(within(hist).getByRole('button', { name: /^Alla pass/ }))
+    expect(screen.getByRole('heading', { level: 1, name: 'Tidigare pass.' })).toBeInTheDocument()
+    expect(screen.getByTestId('rd-nav-framsteg')).toHaveAttribute('aria-current', 'page')
+  })
+
+  it('keeps Historik as a ledger by week, the provpass apart; Esc and the masthead go back', () => {
+    const openProvResult = vi.fn()
+    mount(11, { actions: { openProvResult } })
+    fireEvent.click(screen.getByRole('button', { name: /^Alla pass/ }))
+    const ledger = screen.getByTestId('rd-framsteg-history')
+    expect(
+      within(ledger).getByRole('heading', { level: 2, name: 'Vecka 41 · 5–11 oktober' }),
+    ).toBeInTheDocument()
+    expect(
+      within(ledger).getByRole('heading', {
+        level: 2,
+        name: 'Vecka 40 · 28 september – 4 oktober',
+      }),
+    ).toBeInTheDocument()
+    expect(screen.getByTestId('rd-framsteg-history-item-1')).toHaveTextContent('tor 8 okt')
+    const prov = within(ledger).getByRole('region', { name: 'Provpass' })
+    fireEvent.click(within(prov).getAllByRole('button')[0])
+    expect(openProvResult).toHaveBeenCalledWith(FIXTURE_DATA.provpass.hub.results[0].id)
+    press('Escape')
+    expect(screen.getByRole('heading', { level: 1, name: 'Framsteg' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /^Alla pass/ }))
+    fireEvent.click(screen.getByRole('button', { name: 'Framsteg, tillbaka' }))
+    expect(screen.getByRole('heading', { level: 1, name: 'Framsteg' })).toBeInTheDocument()
+  })
+
+  it('draws the weeks as a captioned figure, bridges the empty weeks, offers the table', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    data.framsteg.weekly[6].score = null
+    mount(11, { data })
+    const chart = screen.getByRole('img', { name: /^Poäng per vecka de senaste 12 veckorna, från/ })
+    expect(chart.querySelectorAll('.fo-chart-bridge')).toHaveLength(1)
+    expect(screen.getByText(/Prickat: veckor utan övning\./)).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Visa som tabell' }))
+    const table = screen.getByRole('table', { name: 'Poäng per vecka' })
+    expect(within(table).getAllByRole('row')).toHaveLength(13)
+    expect(within(table).getAllByText('ingen övning')).toHaveLength(3)
+  })
+
+  it('waits for two active weeks before it draws the curve', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    data.framsteg.weekly = data.framsteg.weekly.map((w, i) => ({
+      ...w,
+      score: i === data.framsteg.weekly.length - 1 ? 1.4 : null,
+    }))
+    mount(11, { data })
+    expect(screen.getByText('Kurvan börjar när du har övat två veckor.')).toBeInTheDocument()
+    expect(screen.queryByRole('img', { name: /^Poäng per vecka/ })).toBeNull()
+  })
+
+  it('counts the practice days per week as dots, never the days missed', () => {
+    mount(11)
+    const days = screen.getByTestId('rd-framsteg-week')
+    const weeks = within(days).getAllByRole('img')
+    expect(weeks).toHaveLength(6)
+    const now = weeks[weeks.length - 1]
+    expect(now).toHaveAccessibleName(/, den här veckan: fyra av fem dagar$/)
+    expect(now.querySelectorAll('i')).toHaveLength(4)
+    fireEvent.click(within(days).getByRole('button', { name: /^Visa alla \d+ veckor/ }))
+    expect(within(days).getAllByRole('img').length).toBeGreaterThan(6)
+  })
+
+  it('begins plainly without an estimate, and points at the half that is missing', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    data.framsteg.prognosis = { total: null, verbal: null, quant: null, caveat: null }
+    data.framsteg.week.attemptsThisWeek = 0
+    data.framsteg.history = []
+    const startDrill = vi.fn()
+    const fresh = mount(11, { data, actions: { startDrill } })
+    expect(
+      screen.getByText('Ingen prognos än – svara på några frågor så börjar den här sidan leva.'),
+    ).toBeInTheDocument()
+    expect(screen.getByTestId('rd-framsteg-prognosis')).toHaveTextContent('—')
+    fireEvent.click(screen.getByRole('button', { name: /^Börja här · 10 frågor/ }))
+    expect(startDrill).toHaveBeenLastCalledWith({ kind: 'mixed' })
+    expect(
+      screen.getByText('Inga avslutade pass än. Kör en övning så landar den här.'),
+    ).toBeInTheDocument()
+    fresh.unmount()
+    const half = structuredClone(FIXTURE_DATA)
+    half.framsteg.prognosis = { ...half.framsteg.prognosis, total: null, quant: null }
+    mount(11, { data: half, actions: { startDrill } })
+    expect(screen.getByTestId('rd-framsteg-prognosis')).toHaveTextContent('Verbal 1,5 · Kvant —')
+    expect(
+      screen.getByText('Totalen visas när du har svarat på frågor i båda halvorna.'),
+    ).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /^Börja med kvant: XYZ · 10 frågor/ }))
+    expect(startDrill).toHaveBeenLastCalledWith({ kind: 'section', section: 'XYZ' })
+  })
+
+  it('lists the traps by section in Fällor, led by the growing one', () => {
+    const startDrill = vi.fn()
+    const openLesson = vi.fn()
+    mount(11, { actions: { startDrill, openLesson } })
+    fireEvent.click(screen.getByRole('button', { name: /^Alla fällor/ }))
+    expect(screen.getByRole('heading', { level: 1, name: 'Dina fällor.' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Författarens hållning' }),
+    ).toBeInTheDocument()
+    expect(screen.getByText('LÄS · ökar')).toBeInTheDocument()
+    press('Enter')
+    expect(startDrill).toHaveBeenLastCalledWith({
+      kind: 'framework',
+      frameworkId: 'LAS-TYPE-003',
+      section: 'LÄS',
+    })
+    expect(
+      screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent?.split(' · ')[0]),
+    ).toEqual(['LÄS', 'ELF', 'XYZ'])
+    fireEvent.click(screen.getByRole('button', { name: 'Slå upp Bråkaddition' }))
+    expect(openLesson).toHaveBeenCalledWith('XYZ-TRAP-016')
+    press('Escape')
+    expect(screen.getByRole('heading', { level: 1, name: 'Framsteg' })).toBeInTheDocument()
+  })
+})
+
+describe('Folio · Idag into Provpass and Framsteg', () => {
+  it('opens Framsteg, its Historik and its Fällor from the margin', () => {
+    const go = vi.fn()
+    mount(1, { actions: { go } })
+    fireEvent.click(screen.getByRole('button', { name: /Alla pass i Framsteg/ }))
+    expect(go).toHaveBeenLastCalledWith('framsteg')
+    expect(screen.getByRole('heading', { level: 1, name: 'Tidigare pass.' })).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-nav-idag'))
+    fireEvent.click(screen.getByRole('button', { name: /Alla fällor i Framsteg/ }))
+    expect(screen.getByRole('heading', { level: 1, name: 'Dina fällor.' })).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-nav-idag'))
+    fireEvent.click(screen.getByRole('button', { name: 'Prognos' }))
+    expect(screen.getByRole('heading', { level: 1, name: 'Framsteg' })).toBeInTheDocument()
+  })
+
+  it('opens the conditions of the summoned pass when the plan’s provpass lands on the hub', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    data.home.resume = null
+    data.home.plan.items = [
+      {
+        id: 'mock',
+        kind: 'mock',
+        section: null,
+        title: 'Provpass',
+        detail: 'Kvantitativ',
+        rationale: 'Det är dags för ett provpass i den kvantitativa halvan.',
+        minutes: 55,
+        completed: false,
+      },
+    ]
+    const openPlanItem = vi.fn()
+    const { goTo } = mount(1, { data, actions: { openPlanItem } })
+    fireEvent.click(screen.getByRole('button', { name: /^Börja · 55 min/ }))
+    expect(openPlanItem).toHaveBeenCalledWith('mock')
+    goTo(9)
+    expect(screen.getByRole('dialog', { name: 'Starta provpass' })).toHaveTextContent(
+      'Hösten 2025, provpass 1',
+    )
   })
 })
