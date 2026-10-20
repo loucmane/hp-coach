@@ -268,3 +268,13 @@ describe('Folio+ calm · the shade in fpCalm.css', () => {
     }
   })
 })
+
+describe('Folio+ · the shade leaves the prognosis scale its colour', () => {
+  it('has no shade rule for the scale’s mark or range', () => {
+    const css = readFileSync(
+      path.join(process.cwd(), 'src/components/devbake/redesign/i-folio-plus/fpCalm.css'),
+      'utf8',
+    )
+    expect(css).not.toMatch(/\[data-fp-shade\][^{]*\.fp-scale-(mark|range)/)
+  })
+})

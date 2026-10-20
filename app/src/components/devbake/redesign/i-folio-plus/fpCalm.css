@@ -5,8 +5,9 @@
  * ink, its filled button and its accent. Everything else on the page sits
  * "in the shade" ([data-fp-shade]): its names and headings step down from
  * full ink to the second ink, and its accents (links, marks, the current
- * week's dots, the scale's mark) turn neutral, so nothing competes with the
- * lead. The shade is colour only — never opacity, never a smaller size —
+ * week's dots) turn neutral, so nothing competes with the lead. The
+ * prognosis scale keeps its colour (owner, 2026-10-20): it is data, and a
+ * grey bar read as broken. The shade is colour only — never opacity, never a smaller size —
  * and both inks keep full contrast on every palette's paper (ink-2 for
  * prose, ink-3 only where Folio already sets meta in it). A shaded block
  * lights fully again on hover or when focus moves into it.
@@ -50,22 +51,15 @@
   transition: color var(--fp-d2) var(--fp-ease);
 }
 
-/* Accent marks go neutral: the footnote's asterisk, the scale's mark and
- * range, the curve's last point, this week's dots, the suggested section's
+/* Accent marks go neutral: the footnote's asterisk, the curve's last point, this week's dots, the suggested section's
  * margin rule and a goal reached on the day path. */
 [data-rd='folio-plus'] [data-fp-shade] .fp-prog-n sup,
 [data-rd='folio-plus'] [data-fp-shade] .fp-footnote b {
   color: var(--fp-ink-3);
 }
 
-[data-rd='folio-plus'] [data-fp-shade] .fp-scale-mark,
 [data-rd='folio-plus'] [data-fp-shade] .fp-weekdot[data-current='true'] .fp-weekdot-dots i {
   background: var(--fp-ink-2);
-}
-
-[data-rd='folio-plus'] [data-fp-shade] .fp-scale-range {
-  background: var(--fp-paper-3);
-  box-shadow: inset 0 0 0 1px var(--fp-rule-2);
 }
 
 [data-rd='folio-plus'] [data-fp-shade] .fp-chart-end {
