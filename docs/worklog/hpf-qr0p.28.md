@@ -1,7 +1,7 @@
 ---
 bead: "hpf-qr0p.28"
 project: "hpfetcher"
-session: "ci-wisp-iuyau3w"
+session: "ci-wisp-4b17zr3"
 status: "implemented_uncommitted"
 ---
 
@@ -66,3 +66,35 @@ status: "implemented_uncommitted"
 - [S:ci-wisp-iuyau3w|W:hpf-qr0p.28|H:handoff|E:2429 app tests pass; 135 Raster tests; typecheck/lint/diff check pass] Raster batch 2 is ready for coordinator visual review and delivery.
 
 RASTER2 DONE: hpf-qr0p.28
+
+## Round 2 — 2026-10-20
+
+- Claimed the review-fix contract at clean HEAD `622e7d06aef9c4c0b7d96b2cbe2bb439d9e8e294`. No molecule. Read the Claude HOLD report at `/home/loucmane/scratch/hpf-qr0p.28/review-r1.md`.
+- Decisions before implementation: failed submission remains read-only with no retry, releases normal navigation and host keys, and offers a direct hub exit. An expired entry is never submitted. History summaries use neutral score wording. Drill/repetition history has no detail in kit v2 and must remain static; only an explicitly supplied mock row matching the available saved result can expand, without inserting mock rows into the supplied history.
+- The real bake-off maps digit `3` to direction C, not screen 3. The host regression tests that actual mapping; shared host behavior is outside scope.
+- Optional P3-2: retain the existing Översikt/Historik toggle buttons. Section 11 does not require ARIA tabs or links.
+- [S:ci-wisp-4b17zr3|W:hpf-qr0p.28|H:review-fix-red|E:regressions added before implementation] Testing real-host rejected submission, expired entry, neutral score wording and static/available-detail history rows.
+
+### Fixes and red-first evidence
+
+- **P2:** `RasterProvpass.tsx:441` reports whether the pass is live to `Raster.tsx:35`. Both synchronous exceptions and rejected promises enter the same failure state (`RasterProvpass.tsx:457`); the submitted latch and locked answers remain intact. The failure stops the capture listener (`:502`), removes the runner keyscope (`:583`), enables `rd-exit` (`:589`) and supplies a direct **Till Provpass** control (`:631`). No resubmit or optimistic completion was added. `Raster.test.tsx:299` exercises the real host with a rejected submission, preserved/read-only answers, restored navigation, direct hub exit, header exit and the direction-3 shortcut; each case requires exactly one submission. `Raster.test.tsx:414` also checks synchronous failure and exit.
+- **P3-1:** `RasterProvpass.tsx:435` captures expiry at runner entry, guards submission and ticking, and renders the cannot-resume notice plus hub exit (`:542`). `Raster.test.tsx:280` requires zero submit calls for an entry snapshot with zero seconds. Existing running-clock and provider-tick expiry tests still require exactly one submission.
+- **P3-3:** history summaries in `RasterProvpass.tsx:883` and matching saved-result rows in `RasterFramsteg.tsx:362` use **poäng (se resultatet)**. No normed/estimated provenance is inferred from summaries. `Raster.test.tsx:195`, `:209` and `:217` assert the wording on result history, hub history and matching Framsteg rows.
+- **P3-4:** `RasterFramsteg.tsx:345` checks for an explicitly supplied mock row with the exact saved-result ID. All other rows are static (`:379`); matching detail expands the actual read-only report (`:381`). No mock rows are inserted into the provider's drill/repetition history. `raster.css:458` preserves the ruled layout for both static rows and buttons without styling every button inside the expanded report as a summary. `Raster.test.tsx:217` checks static drill/repetition and missing-mock rows, plus open/close of a matching saved report, at both widths.
+- **P3-2:** the existing keyboard-native Översikt/Historik toggle buttons remain unchanged, as permitted by the brief and section 11.
+- Before implementation, the targeted run reported **10 failures / 133 skipped**: six desktop/phone score/static-row assertions, expired-entry submission, and three real-host rejection cases. After the fixes, the full redesign suite reports **14 files / 1,482 tests PASS**, including **143 Raster tests**. A test initially looked for the raw correct count inside the derived-score region; corrected that assertion to the actual report region, retaining the score-region provenance assertion.
+- App `pnpm typecheck` PASS; `pnpm lint` PASS (four existing informational diagnostics outside scope); `git diff --check` PASS. Vitest uses the repository runner with at most two workers; no ad-hoc Node/JSDOM harness, network, dependency or shared-source changes.
+
+### Round 2 playbook proposal
+
+- **gas-city-coordinator — 2026-10-20:** A failed runner can keep host shortcuts blocked even after its capture listener is disabled because the host also checks ancestor `data-rd-keyscope`. Release the ended runner's keyscope as well as its listener and parent timed-pass state; exercise a key from an enabled control inside the runner through the real host, not only from `window`. The managed writable roots exclude `~/scratch/skill-gotchas/`; retained here and in the classified worklog using the astra-relay fallback for coordinator pickup.
+
+### Round 2 handoff
+
+- Final full-app verification: `pnpm test --maxWorkers=2` **109 files / 2,543 tests PASS**. The required redesign run, typecheck, lint and diff check also pass. No shared-test failures or sandbox-blocked mechanical checks in this round.
+- Exact unchanged HEAD: `622e7d06aef9c4c0b7d96b2cbe2bb439d9e8e294`. Five allowed Raster source/test/CSS files and this worklog are uncommitted and unstaged. Source snapshot SHA-256: `e184fa6a921b149fab3bae111663114d1e144bd6ad1051fc41d45614c36bf0c0`. Reproduce by sorting `Raster.test.tsx`, `Raster.tsx`, `RasterFramsteg.tsx`, `RasterProvpass.tsx`, `raster.css`, then hashing basename + NUL + bytes + NUL for each.
+- The earlier Claude HOLD is addressed by these changes; independent re-review has not run. No new browser evidence is claimed. Host visual/native-dialog QA remains with the coordinator (earlier round's Vite check failed `listen EPERM`).
+- Coordinator next: inspect this diff and playbook proposal, run host visual checks, commit through the permitted delivery process and obtain independent exact-head Claude review. Worker will append the DONE evidence, park deferred, confirm, and drain without closing the bead.
+- [S:ci-wisp-4b17zr3|W:hpf-qr0p.28|H:review-fix-handoff|E:2543 app tests; 1482 redesign tests; 143 Raster tests; typecheck/lint/diff pass] All four required review fixes are ready for coordinator review and delivery.
+
+RASTER2R2 DONE: hpf-qr0p.28

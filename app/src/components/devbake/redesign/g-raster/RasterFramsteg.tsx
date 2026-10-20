@@ -4,6 +4,7 @@ import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import { fmtDelta, fmtScore } from '@/components/devbake/redesign/r1Kit'
 import type { FramstegView } from '@/components/devbake/redesign/viewModel'
 import { rasterSlug } from './RasterParts'
+import { RasterProvResult } from './RasterProvpass'
 
 function dateLabel(iso: string) {
   return new Date(iso).toLocaleDateString('sv-SE', {
@@ -340,13 +341,14 @@ export function RasterFramsteg() {
         </header>
         {progress.history.length ? (
           <ul className="ra-pass-history">
-            {progress.history.map((row, i) => (
-              <li key={row.id} data-testid={`rd-framsteg-history-item-${i + 1}`}>
-                <button
-                  type="button"
-                  aria-expanded={openedId === row.id}
-                  onClick={() => setOpenedId(openedId === row.id ? null : row.id)}
-                >
+            {progress.history.map((row, i) => {
+              const detail =
+                (row.kind === 'mock' || row.kind === 'mock_diagnostic') &&
+                row.id === data.provpass.result.id
+                  ? data.provpass.result
+                  : null
+              const summary = (
+                <>
                   <span>
                     <strong>{row.label}</strong>
                     <small>
@@ -356,17 +358,30 @@ export function RasterFramsteg() {
                   </span>
                   <span>
                     {row.correct}/{row.total} rätt{' '}
-                    <span aria-hidden>{openedId === row.id ? '−' : '＋'}</span>
+                    {detail?.score.value != null ? (
+                      <small>{fmtScore(detail.score.value)} poäng (se resultatet)</small>
+                    ) : null}
+                    {detail ? <span aria-hidden>{openedId === row.id ? '−' : '＋'}</span> : null}
                   </span>
-                </button>
-                {openedId === row.id ? (
-                  <p className="ra-history-note">
-                    Det sparade detaljresultatet är inte tillgängligt här. Den här raden visar det
-                    avslutade passet.
-                  </p>
-                ) : null}
-              </li>
-            ))}
+                </>
+              )
+              return (
+                <li key={row.id} data-testid={`rd-framsteg-history-item-${i + 1}`}>
+                  {detail ? (
+                    <button
+                      type="button"
+                      aria-expanded={openedId === row.id}
+                      onClick={() => setOpenedId(openedId === row.id ? null : row.id)}
+                    >
+                      {summary}
+                    </button>
+                  ) : (
+                    <div className="ra-history-static">{summary}</div>
+                  )}
+                  {detail && openedId === row.id ? <RasterProvResult /> : null}
+                </li>
+              )
+            })}
           </ul>
         ) : (
           <p className="ra-empty">Inga avslutade pass än.</p>

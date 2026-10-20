@@ -6,13 +6,17 @@ import {
   mountDirection,
   stubLayout,
 } from '@/components/devbake/redesign/contract'
+import * as directionData from '@/components/devbake/redesign/directionData'
 import {
   DirectionDataProvider,
   FIXTURE_DATA,
   useBakeoffDirectionData,
 } from '@/components/devbake/redesign/directionData'
 import { LOCAL_CONTROLLER } from '@/components/devbake/redesign/drillCore'
-import { Redesign2026Bakeoff } from '@/components/devbake/redesign/Redesign2026Bakeoff'
+import {
+  Redesign2026Bakeoff,
+  type Selection,
+} from '@/components/devbake/redesign/Redesign2026Bakeoff'
 import type { AppScreenKey, WidthKey } from '@/components/devbake/redesign/r1Kit'
 import type { DirectionActions, DirectionData } from '@/components/devbake/redesign/viewModel'
 import { meta } from './meta'
@@ -53,6 +57,22 @@ function passData() {
 function startPass() {
   fireEvent.click(screen.getByTestId('rd-prov-start'))
   fireEvent.click(screen.getByTestId('rd-confirm'))
+}
+
+function savedHistoryData() {
+  const data = fresh()
+  const result = data.provpass.result
+  data.framsteg.history.unshift({
+    id: result.id,
+    kind: 'mock',
+    label: 'Sparat provpass',
+    section: null,
+    correct: result.correct,
+    total: result.presented,
+    endedAt: '2026-10-20T01:00:00Z',
+    when: '20 okt',
+  })
+  return data
 }
 
 describe.each(['desktop', 'phone'] as const)('Raster timed pass and reports at %s', (width) => {
@@ -179,14 +199,49 @@ describe.each(['desktop', 'phone'] as const)('Raster timed pass and reports at %
     mountData(10, data, { go, openProvResult }, width)
     expect(screen.getByTestId('rd-prov-score')).toHaveTextContent('80 frågor')
     expect(screen.getByTestId('rd-prov-score')).toHaveTextContent('inte en officiell poäng')
+    expect(screen.getByTestId('rd-prov-history-item-1')).toHaveTextContent('poäng (se resultatet)')
     fireEvent.click(within(screen.getByTestId('rd-prov-history-item-1')).getByRole('button'))
     expect(openProvResult).toHaveBeenCalledWith(data.provpass.result.history[0].id)
     fireEvent.click(screen.getByRole('button', { name: 'Till Öva' }))
     expect(go).toHaveBeenCalledWith('ova')
   })
 
+  it('qualifies hub history scores without inventing their derivation', () => {
+    mountData(9, fresh(), {}, width)
+    const history = screen.getByRole('heading', { name: 'Tidigare provpass' }).parentElement!
+      .parentElement!
+    expect(history).toHaveTextContent('poäng (se resultatet)')
+    expect(history).not.toHaveTextContent(/normerad|skattad/i)
+  })
+
+  it('keeps history without saved detail static and expands only the matching saved result', () => {
+    const data = savedHistoryData()
+    // A mock row without its saved result must also stay static.
+    data.framsteg.history.push({ ...data.framsteg.history[0], id: 'unavailable-result' })
+    mountData(11, data, {}, width)
+    fireEvent.click(screen.getByRole('button', { name: 'Historik' }))
+    const rows = screen.getAllByTestId(/^rd-framsteg-history-item-/)
+    for (const row of rows.slice(1)) {
+      expect(within(row).queryByRole('button')).toBeNull()
+      expect(row.querySelector('summary, [aria-expanded]')).toBeNull()
+      expect(row).toHaveTextContent('rätt')
+    }
+    expect(rows[0]).toHaveTextContent('poäng (se resultatet)')
+    const opener = within(rows[0]).getByRole('button')
+    expect(opener).toHaveAttribute('aria-expanded', 'false')
+    fireEvent.click(opener)
+    expect(opener).toHaveAttribute('aria-expanded', 'true')
+    expect(within(rows[0]).getByTestId('rd-prov-result')).toBeVisible()
+    expect(within(rows[0]).getByTestId('rd-prov-result')).toHaveTextContent(
+      `${data.provpass.result.correct}`,
+    )
+    expect(within(rows[0]).getByTestId('rd-prov-score')).toHaveTextContent('normerat (härlett)')
+    fireEvent.click(opener)
+    expect(within(rows[0]).queryByTestId('rd-prov-result')).toBeNull()
+  })
+
   it('handles absent optional progress, sparse weeks and a shrinking history', () => {
-    const data = fresh()
+    const data = savedHistoryData()
     data.framsteg.prognosis = { total: null, verbal: null, quant: null, caveat: null }
     data.framsteg.focus = []
     data.framsteg.sections.forEach((section) => {
@@ -222,6 +277,87 @@ describe.each(['desktop', 'phone'] as const)('Raster timed pass and reports at %
 })
 
 describe('Raster pass timing, content readiness and host boundaries', () => {
+  it('does not hand in an expired snapshot at entry and offers the hub', () => {
+    const data = passData()
+    data.provpass.running.remainingSeconds = 0
+    const submitProvpass = vi.fn()
+    mountData(9, data, { submitProvpass })
+    startPass()
+    expect(submitProvpass).not.toHaveBeenCalled()
+    expect(screen.getByText('Det tidigare passet kan inte återupptas')).toBeVisible()
+    expect(screen.queryByText('Lämnar in…')).toBeNull()
+    expect(screen.getByTestId('rd-raster')).toHaveAttribute('data-timed-pass', 'false')
+    fireEvent.click(screen.getByRole('button', { name: 'Till Provpass' }))
+    expect(screen.getByTestId('rd-prov-start')).toBeVisible()
+    expect(submitProvpass).not.toHaveBeenCalled()
+  })
+
+  it.each([
+    'hub',
+    'rd-exit',
+    'switcher',
+  ] as const)('releases the failed pass through the real host: %s', async (exit) => {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(900)
+    const submitProvpass = vi.fn().mockRejectedValue(new Error('unavailable'))
+    const useActualData = directionData.useBakeoffDirectionData
+    vi.spyOn(directionData, 'useBakeoffDirectionData').mockImplementation((props) => {
+      const value = useActualData(props)
+      return { ...value, data: passData(), actions: { ...value.actions, submitProvpass } }
+    })
+    function Host() {
+      const [sel, setSel] = useState<Selection>({
+        d: 'g',
+        s: 9,
+        w: 'desktop',
+        t: 'light',
+        sbs: false,
+        bare: false,
+      })
+      return (
+        <Redesign2026Bakeoff
+          sel={sel}
+          onSelect={(next) => setSel((old) => ({ ...old, ...next }))}
+        />
+      )
+    }
+    render(<Host />)
+    await screen.findByTestId('rd-prov-start')
+    startPass()
+    fireEvent.click(screen.getByTestId('rd-prov-option-A'))
+    fireEvent.click(screen.getByTestId('rd-prov-submit'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    expect(
+      await screen.findByText('Inlämningen kunde inte bekräftas. Dina svar finns kvar här.'),
+    ).toBeVisible()
+    expect(screen.getByTestId('rd-prov-option-A')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('rd-prov-option-A')).toBeDisabled()
+    expect(screen.getByTestId('rd-prov-submit')).toBeDisabled()
+    expect(screen.getByTestId('rd-exit')).toBeEnabled()
+    expect(screen.getByTestId('rd-nav-idag')).toBeVisible()
+    expect(screen.getByTestId('rd-raster')).toHaveAttribute('data-timed-pass', 'false')
+    expect(screen.getByRole('button', { name: 'Till Provpass' })).toBeEnabled()
+    fireEvent.keyDown(window, { key: 'b' })
+    fireEvent.click(screen.getByTestId('rd-prov-submit'))
+    expect(screen.getByTestId('rd-prov-option-A')).toHaveAttribute('aria-pressed', 'true')
+    if (exit !== 'switcher') {
+      fireEvent.click(
+        exit === 'hub'
+          ? screen.getByRole('button', { name: 'Till Provpass' })
+          : screen.getByTestId('rd-exit'),
+      )
+      expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+      expect(screen.getByTestId('rd-prov-start')).toBeVisible()
+    }
+    // The host maps 3 to direction C; digits do not select screen numbers.
+    fireEvent.keyDown(exit === 'switcher' ? screen.getByTestId('rd-exit') : window, {
+      key: '3',
+    })
+    expect(screen.getByTestId('rb26-stage')).toHaveAttribute('data-direction', 'c')
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+    expect(submitProvpass).toHaveBeenCalledOnce()
+  })
+
   it('dismisses a figure viewer at expiry and leaves the submitting state visible', () => {
     const data = passData()
     data.provpass.running.questions = [data.drills.dtk.questions[0]]
@@ -291,6 +427,10 @@ describe('Raster pass timing, content readiness and host boundaries', () => {
     expect(screen.getByTestId('rd-prov-option-A')).toBeDisabled()
     fireEvent.click(screen.getByTestId('rd-prov-submit'))
     expect(submitProvpass).toHaveBeenCalledOnce()
+    expect(screen.getByTestId('rd-exit')).toBeEnabled()
+    fireEvent.click(screen.getByTestId('rd-exit'))
+    expect(screen.getByTestId('rd-prov-start')).toBeVisible()
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
   })
 
   it('does not relabel the fixed running fixture as a different selected pass', () => {

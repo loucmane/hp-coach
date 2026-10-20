@@ -20,9 +20,11 @@ export function RasterProvpass({
   width,
   activePass,
   onActivePass,
+  onTimedPassChange,
 }: Pick<DirectionProps, 'live' | 'width'> & {
   activePass: string | null
   onActivePass: (id: string | null) => void
+  onTimedPassChange: (active: boolean) => void
 }) {
   const { data, actions } = useDirectionData()
   const { hub, running } = data.provpass
@@ -54,6 +56,7 @@ export function RasterProvpass({
         live={live}
         width={width}
         onAbandon={abandon}
+        onTimedPassChange={onTimedPassChange}
       />
     )
   }
@@ -401,11 +404,13 @@ function RasterRunner({
   live,
   width,
   onAbandon,
+  onTimedPassChange,
 }: {
   run: ProvRunningView
   live: boolean
   width: DirectionProps['width']
   onAbandon: () => void
+  onTimedPassChange: (active: boolean) => void
 }) {
   const { data, actions } = useDirectionData()
   const [position, setPosition] = useState(run.current)
@@ -427,28 +432,33 @@ function RasterRunner({
   const [settling, setSettling] = useState(false)
   const [saveFailed, setSaveFailed] = useState(false)
   const submitted = useRef(false)
+  const [expiredAtEntry] = useState(() => run.remainingSeconds <= 0)
   // Capture expiry once. Provider ticks may shorten, but never extend, it.
   const [deadline] = useState(() => Date.now() + Math.max(0, run.remainingSeconds) * 1000)
   const [now, setNow] = useState(Date.now)
   const remaining = Math.max(0, Math.ceil(Math.min(run.remainingSeconds, (deadline - now) / 1000)))
+  useLayoutEffect(() => {
+    onTimedPassChange(!expiredAtEntry && !saveFailed)
+  }, [expiredAtEntry, saveFailed, onTimedPassChange])
   useEffect(() => {
-    if (!live || settling) return
+    if (!live || settling || expiredAtEntry) return
     const id = window.setInterval(() => setNow(Date.now()), 1000)
     return () => window.clearInterval(id)
-  }, [live, settling])
+  }, [live, settling, expiredAtEntry])
   const submit = useCallback(() => {
-    if (submitted.current || !live) return
+    if (submitted.current || !live || expiredAtEntry) return
     submitted.current = true
     setSettling(true)
     setGate(null)
     setOverview(false)
     setViewer(false)
     try {
-      actions.submitProvpass()
+      // The kit declares void; also retain failures from async provider implementations.
+      void Promise.resolve(actions.submitProvpass()).catch(() => setSaveFailed(true))
     } catch {
       setSaveFailed(true)
     }
-  }, [actions, live])
+  }, [actions, live, expiredAtEntry])
   useEffect(() => {
     if (remaining === 0) submit()
   }, [remaining, submit])
@@ -489,7 +499,7 @@ function RasterRunner({
     else setOverview(true)
   }
   useEffect(() => {
-    if (!live) return
+    if (!live || saveFailed || expiredAtEntry) return
     const onKey = (event: KeyboardEvent) => {
       const target = event.target instanceof Element ? event.target : null
       const hostKey =
@@ -529,6 +539,16 @@ function RasterRunner({
   const answered = run.questions.filter((q) => answers[q.qid] != null).length
   const blank = run.questions.length - answered
   const noteId = useId()
+  if (expiredAtEntry) {
+    return (
+      <section className="ra-register-page">
+        <h1>Det tidigare passet kan inte återupptas</h1>
+        <button type="button" className="ra-outline" onClick={onAbandon}>
+          Till Provpass
+        </button>
+      </section>
+    )
+  }
   const grid = (
     <div data-testid="rd-prov-grid" className="ra-answer-register">
       {run.questions.map((q, i) => (
@@ -560,17 +580,17 @@ function RasterRunner({
     <section
       className="ra-timed-pass"
       data-testid="rd-prov-running"
-      data-rd-keyscope
-      aria-label="Pågående provpass"
+      data-rd-keyscope={saveFailed ? undefined : ''}
+      aria-label={saveFailed ? 'Provpass med obekräftad inlämning' : 'Pågående provpass'}
     >
       <header className="ra-pass-bar">
         <button
           type="button"
           data-testid="rd-exit"
-          disabled={settling}
-          onClick={() => setGate('abort')}
+          disabled={settling && !saveFailed}
+          onClick={() => (saveFailed ? onAbandon() : setGate('abort'))}
         >
-          Avbryt provpass
+          {saveFailed ? 'Lämna provpasset' : 'Avbryt provpass'}
         </button>
         <span>
           <strong>{question ? `Fråga ${index + 1}/${run.questions.length}` : 'Inga frågor'}</strong>
@@ -596,7 +616,7 @@ function RasterRunner({
           Lämna in
         </button>
       </header>
-      {remaining > 0 && remaining <= 300 ? (
+      {!settling && remaining > 0 && remaining <= 300 ? (
         <p className="ra-time-warning" role="status">
           Högst fem minuter kvar. Lämna svar även om du är osäker.
         </p>
@@ -607,6 +627,13 @@ function RasterRunner({
             ? 'Inlämningen kunde inte bekräftas. Dina svar finns kvar här.'
             : 'Lämnar in…'}
         </p>
+      ) : null}
+      {saveFailed ? (
+        <div className="ra-time-warning">
+          <button type="button" className="ra-outline" onClick={onAbandon}>
+            Till Provpass
+          </button>
+        </div>
       ) : null}
       <section className="ra-register-strip" aria-label="Svarsläge">
         <div className="ra-register-toolbar">
@@ -688,13 +715,18 @@ function RasterRunner({
               ) : null}
               {!question.passage && !question.figure ? <PassPrompt question={question} /> : null}
             </section>
-            <section className="ra-pass-answer" aria-label="Fråga och ändringsbara svar">
+            <section
+              className="ra-pass-answer"
+              aria-label={settling ? 'Fråga och låsta svar' : 'Fråga och ändringsbara svar'}
+            >
               <h1>
                 {question.section} · Fråga {index + 1}
               </h1>
               {question.passage || question.figure ? <PassPrompt question={question} /> : null}
               <p id={noteId} className="ra-pass-answer-note">
-                Du kan ändra svaret fram till inlämningen.
+                {settling
+                  ? 'Svaren är låsta efter inlämningen.'
+                  : 'Du kan ändra svaret fram till inlämningen.'}
               </p>
               <ol key={question.qid} className="ra-options" aria-label="Svarsalternativ">
                 {question.options?.map((option) => (
@@ -846,7 +878,9 @@ function PassHistory({ rows, testId }: { rows: ProvResultSummaryView[]; testId?:
                 <span>
                   {row.correct}/{row.presented}
                   <small>
-                    {row.score == null ? 'Poäng saknas' : `${fmtScore(row.score)} poäng`}
+                    {row.score == null
+                      ? 'Poäng saknas'
+                      : `${fmtScore(row.score)} poäng (se resultatet)`}
                   </small>
                   <span aria-hidden> ↗</span>
                 </span>

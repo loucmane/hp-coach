@@ -32,7 +32,8 @@ export function Raster(props: DirectionProps) {
           : 'idag'
   const [dest, setDest] = useState<Destination>(screenDest)
   const [activePass, setActivePass] = useState<string | null>(null)
-  const timedPass = dest === 'provpass' && props.screen !== 10 && activePass !== null
+  const [passIsLive, setPassIsLive] = useState(true)
+  const timedPass = dest === 'provpass' && props.screen !== 10 && activePass !== null && passIsLive
   const [menu, setMenu] = useState(props.screen === 4)
   const reading = props.screen === 2 || props.screen === 3
   const drill = reading || props.screen === 6 || props.screen === 7
@@ -89,6 +90,7 @@ export function Raster(props: DirectionProps) {
                 width={props.width}
                 activePass={activePass}
                 onActivePass={setActivePass}
+                onTimedPassChange={setPassIsLive}
               />
             )
           ) : dest === 'framsteg' ? (
