@@ -808,18 +808,28 @@ export function describeDirectionContract(
           // be absent or visibly disabled, and pressing it changes nothing;
           // never silently inert. Every other control must work.
           const omitted = new Set(subject.omits?.konto ?? [])
+          // Every account action a press could reach; an omitted control's
+          // press must leave all their call counts unchanged.
+          const kontoActions = [
+            actions.setPrefs,
+            actions.setTheme,
+            actions.exportData,
+            actions.deleteAccount,
+            actions.signOut,
+          ].map((fn) => vi.mocked(fn))
           const expectUnavailable = (testId: string) => {
             const el = screen.queryByTestId(testId)
             if (!el) return
             const disabled =
               el.hasAttribute('disabled') || el.getAttribute('aria-disabled') === 'true'
             expect(disabled).toBe(true)
+            const before = kontoActions.map((fn) => fn.mock.calls.length)
             fireEvent.click(el)
+            expect(kontoActions.map((fn) => fn.mock.calls.length)).toEqual(before)
           }
           for (const pref of ['palette', 'font', 'density', 'coach'] as const) {
             if (omitted.has(pref)) {
               for (const o of k.options[pref]) expectUnavailable(`rd-konto-${pref}-${o.key}`)
-              expect(actions.setPrefs).not.toHaveBeenCalledWith({ [pref]: expect.anything() })
               continue
             }
             const other = k.options[pref].find((o) => o.key !== k.prefs[pref])
