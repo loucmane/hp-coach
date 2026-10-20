@@ -287,6 +287,9 @@ file shows only these two insertions.
 
 ## Resume: the mapping is re-derived, not stored
 
+**Superseded in round 2:** the links are now stored with the session and never
+re-derived. See "Round 2" below.
+
 The server session keeps only qids, and `SessionPlayer` and the sessions route
 are outside the write set. So `prunePlan` rebuilds each stored entry's link
 against the current due list, with no stored state, which also makes it work
@@ -399,3 +402,213 @@ The worker's harness refused writes outside `app/**` and `*.test.ts` (don't-ask 
 - Host verify:
   - worker: typecheck and lint clean, tests 404/404;
   - app: typecheck and lint clean, tests 4009/4009.
+
+## Round 2
+
+Codex's exact-head review of a6fc247 (review bead hpf-kudz) returned **HOLD**
+with two findings. Both are fixed, and every write landed inside the admitted
+set. Changes are uncommitted.
+
+### P1: a resume linked new questions by the current due order
+
+`prunePlan` rebuilt each stored new question's source from the due list as it
+stood at resume time. Take misses A and B with one trap, played as X→A and
+Y→B. Once X was answered, A left the due list and a resume produced X→B:
+- at position 1, Y was dropped and the unfinished round ended;
+- at position 0, an answer on X moved B;
+- a newer due miss C with the same trap could take Y's link.
+
+**Fix: the links are stored with the session.** `SessionPlayer` (outside the
+write set) creates the session with `plan: picked.map((q) => q.qid)`, so the
+route cannot change what that POST stores. The links are written into the same
+`sessions.plan` entries right after it:
+
+- **Entry format** (`lib/replay.ts`, `planEntry` / `parsePlanEntry`): a new
+  question is stored as `"<qid>~<sourceQid>"`. Any other question stays a
+  plain qid, which repeats its own mistake. That is also all an older plan
+  holds, so old plans resume exactly as before.
+  - Qids never contain `~`.
+  - The longest qid in the trap index is 29 characters, so a link fits the
+    80-character entry limit. A link that would not fit stays plain (see
+    below).
+  - The source is a qid, not a row id: one mistake per (user, question) is
+    the table's invariant, and a qid survives export/import, which re-numbers
+    rows.
+- **Server**, `PUT /api/mistakes/round/:sessionId { plan }`
+  (`worker/src/routes/mistakes.ts`). It only annotates:
+  - the session must be the caller's own (another user's is a 404), of kind
+    `adaptive_review`, and still open at the write;
+  - every entry must be well formed (one `~` between two non-empty qids) and
+    keep the question stored at its index, at the same length;
+  - the plan obeys the sessions route's bounds (1–80 characters per entry, at
+    most 500 entries);
+  - only `plan` is written. Position, current question and device stay
+    `SessionPlayer`'s.
+
+  The mistakes route now reads and writes `sessions`. `mockResults.ts`
+  already reads it for its own checks, and `routes/sessions.ts` is outside
+  the write set. There is no new column and no D1 migration.
+- **Client:**
+  - `useLinkRound()` (`useMistakes.ts`) sends the PUT and writes the returned
+    plan through to the `['sessions', 'active']` cache. Only the plan; the
+    cursor fields stay `SessionPlayer`'s.
+  - `repetition.tsx` keeps a fresh round's linked plan (only when it has a new
+    question). When that round's session shows up in the active-sessions
+    cache without its links, it writes them, with one write in flight at a
+    time.
+  - It keeps the plan for the life of the round, so a failed write is retried
+    on the session's next cache update. A slower `SessionPlayer` PATCH
+    response that puts the plain plan back in the cache also triggers a
+    re-write. The server is idempotent for the same links.
+
+**The cursor is reconciled** (`prunePlan(entries, due, position)`; `resolveReplayPlan` returns `{ questions, items, remaining }`):
+- **Before the saved cursor**, answered questions are kept whatever their
+  mistakes' state. The player's stored position and its
+  `?qid=`/`currentQuestionId` seek still land on the paused question, and the
+  Klart summary still counts them.
+- **From the cursor on**, an entry plays only while the mistake stored with it
+  is due, and each due mistake plays once. Due order and newly due mistakes
+  never matter.
+- `remaining === 0` is the only "round over" signal. It replaces the old
+  `position >= pruned length` test, which compared a stored-plan index with a
+  pruned length.
+- A resume reads the due list fresh (`due.refetch`), because the cache can
+  trail an answer given on another device by minutes.
+
+**A question whose source is no longer due is skipped, not answered against
+its source. The round goes on.** Why:
+1. The commonest way a source leaves the due list mid-round is that its own
+   question was answered and the student left before "Nästa". Then its
+   mistake has just moved: a right answer reschedules it, a wrong one sets
+   the 10-minute relearn rung. Skipping avoids a second review of the same
+   miss in one round.
+2. Otherwise it moved elsewhere: resolved by a correct answer elsewhere, or
+   graduated. Answering it here would be an off-schedule review that
+   advances or re-lapses it twice for one moment of practice. That is the
+   double-count the ghost-replay guard (#290) exists to prevent.
+3. Nothing is lost. The mistake comes back in a later round once it is due,
+   with its own pick.
+
+A plain new question (no stored link) is never re-derived. A link fails to
+exist only in three cases:
+- a link too long to store;
+- the moment between the session's creation and the PUT;
+- a PUT that never landed.
+
+Such an entry repeats only its own mistake, which it normally does not have,
+so from the cursor on it is skipped. The rest of the round plays on. If it was
+the last one left, the round ends and the next Start picks a fresh round.
+
+### P2: a fresh round reused a stale exposure map
+
+Picking siblings unseen-first needs a map that includes the round just played.
+`useExposure` caches it for five minutes, and nothing invalidates it on an
+answer.
+
+**Fix, inside `repetition.tsx`:**
+- Every fresh pick awaits `exposure.refetch({ cancelRefetch: false })`.
+- Every question answered on this visit (`onCorrect`/`onWrong`) counts as
+  just seen (`n ≥ 1`, `last` = now in epoch seconds, like the server's
+  `max(attempts.created_at)`), even before its attempt reaches the map.
+- A failed read still never blocks the round: the rest count as unseen.
+
+Not done: invalidating `EXPOSURE_KEY` in `useSubmitAttempt`'s `onSuccess`
+(`app/src/api/hooks/useAttempts.ts`, outside the write set). The exact change
+would be `qc.invalidateQueries({ queryKey: EXPOSURE_KEY })` next to its
+`STATS_KEY` invalidation. It would refresh the map for every exposure consumer
+(Provpass picker included). The route-level fix above covers Repetera without
+it.
+
+### Red-first evidence
+
+The regression tests ran against the round-1 code at a6fc247, before any
+implementation change.
+
+- `app` `pnpm test src/routes/-repetition.test.tsx`: **`Tests 8 failed | 10
+  passed (18)`**.
+  - **P1**, `resuming a partly answered round after the due list changed`:
+    - A left the due list: expected the plan `[LÄS-013, LÄS-014]`, got `[]`.
+      The unfinished round ended.
+    - A newer due miss with the same trap: both answers on Y reviewed
+      mistake **103** (the newer C), not 102 (B).
+    - At the cursor (position 0): expected `[LÄS-014]`, got `[LÄS-013,
+      LÄS-014]`. X was kept, re-linked to B.
+  - **P2**, `the next round after a round`:
+    - reads the exposure map afresh: round two re-picked `LÄS-012`, the
+      question round one had just played;
+    - counts a question answered on this visit as seen: same re-pick.
+  - The new storage format:
+    - stores each new question with the mistake it repeats: no PUT was sent;
+    - keeps a stored new question, mapped: the linked entry was dropped;
+    - labels a resumed new question too: same cause.
+- `worker` `pnpm test src/routes/mistakes.test.ts`, before the route existed:
+  **`Tests 6 failed | 28 passed (34)`**. Every new PUT case got a 404. The
+  other-user 404 test passed vacuously.
+- `app` `pnpm test src/lib/replay.test.ts`, against round 1's `replay.ts`:
+  **`Tests 11 failed | 23 passed (34)`**.
+  - `planEntry`/`parsePlanEntry` were missing.
+  - Stored links were dropped, or the trap-based relinking ran.
+  - `resolveReplayPlan` had the old return shape.
+
+  "Never re-derives a source for a stored new question that carries none"
+  passed vacuously: the old default trap index was empty.
+
+After the red run, the route file gained one test ("writes the links again
+whenever the session shows up without them"). Another became "never links a
+session that is not this open round": an ended session with the same plan
+must not be linked. The five P1/P2 regression tests are unchanged since the
+red run.
+
+### Tests changed
+
+- `-repetition.test.tsx` mocks `useActiveSessionOfKind`, `useLinkRound` and
+  `useDueMistakes().refetch`. It resumes with linked entries. The old "cursor
+  past the end of the pruned plan" test now reads "nothing left from the
+  cursor on", because the old expectation was the P1 bug.
+- `replay.test.ts`: round 1's trap-based `prunePlan` cases are replaced by
+  link-based ones:
+  - stored links survive a reordered due list that gains a same-trap miss;
+  - a plain new question is never re-derived;
+  - the cursor keeps answered questions and skips non-due ones after it;
+  - each due mistake plays once.
+
+  There are also `planEntry`/`parsePlanEntry` tests and the new
+  `resolveReplayPlan` shape.
+- `mistakes.test.ts` covers the PUT:
+  - storing the links leaves the cursor untouched;
+  - a retry is idempotent;
+  - another question, a reorder, a shorter or a longer plan are all refused;
+  - malformed links are refused;
+  - a drill or an ended round is refused;
+  - another user's session is a 404;
+  - bounds: an 81-character entry, an empty plan, an extra key, a missing
+    plan.
+
+### Verify (round 2, final tree)
+
+| Check | Result |
+|---|---|
+| app `pnpm typecheck` | pass |
+| app `pnpm lint` | pass. The same 4 pre-existing infos in devbake files, none in this change. |
+| app `pnpm test` | **113 files, 4024 / 4024 pass** |
+| worker `pnpm test` | **24 files, 411 / 411 pass** |
+| worker `pnpm typecheck`, `pnpm lint` | pass (run as well) |
+
+### Residuals
+
+- **The link write lands just after the session's creation.** A resume in
+  that gap never mis-links; it skips the round's new questions. This also
+  applies if the PUT never lands, on any device. A `SessionPlayer` prop
+  would remove the gap and the extra request: for example
+  `planEntries?: (picked: Question[]) => string[]`, used as
+  `plan: props.planEntries?.(picked) ?? picked.map((q) => q.qid)` in
+  `begin()`'s `startSession` call. The session would then be created with
+  links. It is outside the write set, so this is follow-up material.
+- **A failed due read on resume reads as "nothing due".** The round then ends,
+  as before round 2.
+- **The cursor fallback can land on an answered question.** If a stored qid
+  before the cursor stops resolving in the bank, and the paused question was
+  itself skipped, `SessionPlayer`'s position fallback is off by the number of
+  missing entries. The question ids in the bank are stable, so this is
+  theoretical.
+- Not visually verified, as in round 1. Nothing visible changed in round 2.

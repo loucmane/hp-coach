@@ -16,6 +16,11 @@
 // counts as relearned only through right answers on new questions. ORD,
 // untagged questions and traps with nothing left keep the missed question
 // itself — word knowledge belongs to the word.
+//
+// The link is stored with the round (planEntry: "X~A" in the session's
+// plan), and a resume reads exactly that link back (prunePlan). It is never
+// re-derived from the due list, whose order and members change between a
+// pause and a resume.
 
 import type { Mistake } from '@/api/hooks/useMistakes'
 import type { ExposureMap } from '@/api/hooks/useMockResults'
@@ -122,31 +127,62 @@ function playable(q: Question): boolean {
   return q.parsing_status === 'complete' && !!q.options && !EXCLUDED_QUESTIONS.has(q.qid)
 }
 
-/** A stored plan entry linked back to the due mistake it repeats. */
-export type PlanLink = {
-  qid: string
-  mistakeId: number
-  sourceQid: string
-  sibling: boolean
+/** Joins a new question to the question it repeats in a stored plan entry.
+ *  Qids never contain it. */
+const PLAN_LINK = '~'
+/** The longest entry a session plan stores (worker routes/sessions.ts). */
+const PLAN_ENTRY_MAX = 80
+
+/** The entry a round stores for an item in its session plan: a new question
+ *  as "<qid>~<sourceQid>", so a resume answers it against THAT mistake;
+ *  any other question as its plain qid, which is all an older plan holds.
+ *  A link too long to store is left out, and a resume then skips the
+ *  question rather than guess its source. */
+export function planEntry(item: ReplayItem): string {
+  const qid = item.question.qid
+  if (!item.sibling) return qid
+  const entry = `${qid}${PLAN_LINK}${item.sourceQid}`
+  return entry.length <= PLAN_ENTRY_MAX ? entry : qid
 }
 
-/** Ghost-replay guard (residual #290) — prunes an adopted adaptive_review
- *  session's STORED plan down to entries that still repeat a mistake in
- *  the CURRENT due list. Without this, resuming/adopting an active
- *  repetition session replays its plan verbatim, including questions
- *  whose mistakes were since resolved (a correct answer elsewhere) or
- *  rescheduled out (SRS pushed nextReviewAt into the future) — the user
- *  replays a question that's already "done".
+/** A stored plan entry read back: the question it plays, and the question
+ *  whose mistake it repeats — itself, for a plain qid. */
+export function parsePlanEntry(entry: string): { qid: string; sourceQid: string } {
+  const at = entry.indexOf(PLAN_LINK)
+  if (at < 0) return { qid: entry, sourceQid: entry }
+  return { qid: entry.slice(0, at), sourceQid: entry.slice(at + 1) }
+}
+
+/** A stored plan entry, read back against the current due list. */
+export type PlanLink = {
+  qid: string
+  /** The question whose mistake this entry repeats, as stored. */
+  sourceQid: string
+  /** A new question with the source's trap. */
+  sibling: boolean
+  /** That mistake's row while it is due; null once it is not. */
+  mistakeId: number | null
+}
+
+/** Ghost-replay guard (residual #290) — reads an adopted adaptive_review
+ *  session's STORED plan back against the CURRENT due list. Without this,
+ *  resuming/adopting an active repetition session replays its plan
+ *  verbatim, including questions whose mistakes were since resolved (a
+ *  correct answer elsewhere) or rescheduled out (SRS pushed nextReviewAt
+ *  into the future) — the user replays a question that's already "done".
  *
- *  Sibling-aware (hpf-bz6f.2): the server session stores only qids, so a
- *  stored new question is re-linked to its source mistake rather than
- *  dropped. An entry that IS a due mistake's question repeats that
- *  mistake; every other entry with a trap repeats the first due mistake
- *  (due order) with the same trap and section that no other entry
- *  repeats. Own-question entries claim their mistakes first. Anything left
- *  unlinked is dropped. With an unchanged due list this rebuilds exactly
- *  the links the picker made, because the picker walks the due list in the
- *  same order; on any device, since it needs no stored mapping.
+ *  Each entry repeats the mistake on the question stored with it
+ *  (parsePlanEntry), and only that one (hpf-bz6f.2). The due list is used
+ *  only to see whether that mistake is still due, never to pick a source:
+ *  its order and members change between a pause and a resume.
+ *
+ *  `position` is the session's saved cursor:
+ *    - Before it: questions already answered. They are kept, whatever their
+ *      mistakes' state, so the cursor still points at the same question and
+ *      the round's Klart summary still counts them.
+ *    - From it on: kept only while the mistake an entry repeats is still
+ *      due, and each due mistake once. A question whose mistake has left
+ *      the due list since the pick is skipped and the round goes on.
  *
  *  Pure and synchronous: no bank/network access, so it's trivial to
  *  unit-test and safe to run on every adopt. Preserves the STORED plan's
@@ -156,65 +192,57 @@ export type PlanLink = {
  *  Drill plans aren't mistake-backed, so pruning against the due-mistakes
  *  list would be meaningless there — drill's resolvePlan doesn't call this. */
 export function prunePlan(
-  qids: readonly string[],
+  entries: readonly string[],
   due: readonly Mistake[],
-  traps: TrapIndex = EMPTY_TRAP_INDEX,
+  position = 0,
 ): PlanLink[] {
   const dueByQid = new Map(due.map((m) => [m.questionId, m]))
   const claimed = new Set<number>()
-  for (const qid of qids) {
-    const own = dueByQid.get(qid)
-    if (own) claimed.add(own.id)
-  }
   const out: PlanLink[] = []
-  for (const qid of qids) {
-    const own = dueByQid.get(qid)
-    if (own) {
-      out.push({ qid, mistakeId: own.id, sourceQid: qid, sibling: false })
-      continue
-    }
-    // Same rule as the picker: ORD never repeats through another item.
-    const trap = sectionOf(qid) === 'ORD' ? null : traps.trapOf(qid)
-    if (!trap) continue
-    const source = due.find(
-      (m) =>
-        !claimed.has(m.id) &&
-        traps.trapOf(m.questionId) === trap &&
-        sectionOf(m.questionId) === sectionOf(qid),
-    )
-    if (!source) continue
-    claimed.add(source.id)
-    out.push({ qid, mistakeId: source.id, sourceQid: source.questionId, sibling: true })
-  }
+  entries.forEach((entry, i) => {
+    const { qid, sourceQid } = parsePlanEntry(entry)
+    const source = dueByQid.get(sourceQid)
+    const mistakeId = source && !claimed.has(source.id) ? source.id : null
+    if (mistakeId === null && i >= position) return
+    if (mistakeId !== null) claimed.add(mistakeId)
+    out.push({ qid, sourceQid, sibling: qid !== sourceQid, mistakeId })
+  })
   return out
 }
 
-/** prunePlan, resolved to playable items: a stored qid that no longer
- *  resolves in the bank is dropped, never thrown. The /repetition resume
- *  path. */
+/** A stored round, resolved to play on from its cursor. */
+export type ResumedRound = {
+  /** The questions to hand the player, in stored order (see prunePlan). */
+  questions: Question[]
+  /** Those that repeat a due mistake — what an answer reviews. */
+  items: ReplayItem[]
+  /** How many questions are left from the cursor on; 0 = the round is over. */
+  remaining: number
+}
+
+/** prunePlan, resolved against the bank: a stored qid that no longer
+ *  resolves is dropped, never thrown. The /repetition resume path. */
 export async function resolveReplayPlan(
-  qids: readonly string[],
+  entries: readonly string[],
   due: readonly Mistake[],
-  { traps }: Pick<ReplayPickOptions, 'traps'> = {},
-): Promise<ReplayItem[]> {
-  const [bank, index] = await Promise.all([loadBank(), traps ?? loadTrapsOrNone()])
-  const out: ReplayItem[] = []
-  for (const link of prunePlan(qids, due, index)) {
+  position = 0,
+): Promise<ResumedRound> {
+  const bank = await loadBank()
+  // prunePlan keeps every entry before the cursor, so these lead its output.
+  const answered = Math.min(position, entries.length)
+  const round: ResumedRound = { questions: [], items: [], remaining: 0 }
+  prunePlan(entries, due, position).forEach((link, i) => {
     const question = findQuestion(bank, link.qid)
-    if (!question) continue
-    out.push({
+    if (!question) return
+    round.questions.push(question)
+    if (i >= answered) round.remaining++
+    if (link.mistakeId === null) return
+    round.items.push({
       question,
       mistakeId: link.mistakeId,
       sourceQid: link.sourceQid,
       sibling: link.sibling,
     })
-  }
-  return out
-}
-
-/** "var-2026-verb1-LÄS-003" → "LÄS": the section is the qid's second-to-
- *  last segment (exam ids carry hyphens of their own). */
-function sectionOf(qid: string): string | undefined {
-  const parts = qid.split('-')
-  return parts[parts.length - 2]
+  })
+  return round
 }

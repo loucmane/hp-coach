@@ -9,8 +9,11 @@
 //      least recently seen one when all have been seen — never a question
 //      already in the round or itself a due miss; ORD, untagged questions
 //      and traps with nothing left keep the missed question itself.
-//   7) Resume (prunePlan / resolveReplayPlan): the ghost-replay guard keeps
-//      a stored sibling linked to the due mistake it repeats.
+//   7) Resume (planEntry / prunePlan / resolveReplayPlan): a stored plan
+//      carries each new question's source ("X~A") and a resume uses exactly
+//      that link, never one re-derived from the due list; answered questions
+//      before the cursor stay put, and from the cursor on only questions
+//      whose mistakes are still due are played.
 
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
@@ -22,7 +25,15 @@ import type { Mistake } from '@/api/hooks/useMistakes'
 import { EXCLUDED_QUESTIONS } from '@/data/figureOverrides'
 import { loadBank, type Question } from '@/data/questions'
 
-import { type PlanLink, pickReplayQuestions, prunePlan, resolveReplayPlan } from './replay'
+import {
+  type PlanLink,
+  parsePlanEntry,
+  pickReplayQuestions,
+  planEntry,
+  prunePlan,
+  type ReplayItem,
+  resolveReplayPlan,
+} from './replay'
 import {
   __resetTrapIndexCache,
   buildTrapIndex,
@@ -53,7 +64,7 @@ beforeAll(async () => {
   lasQids = bank
     .filter((q) => q.section === 'LÄS' && playable(q))
     .map((q) => q.qid)
-    .slice(0, 4)
+    .slice(0, 5)
   kvaQid = bank.find((q) => q.section === 'KVA' && playable(q))?.qid ?? ''
 })
 
@@ -263,10 +274,43 @@ describe('pickReplayQuestions — samma fälla, ny fråga', () => {
   })
 })
 
-// prunePlan — ghost-replay guard (residual #290): an adopted adaptive_review
-// session's stored plan may include qids whose mistakes were since resolved
-// or rescheduled out. prunePlan drops those, keeping the plan's own order,
-// and links every survivor to the due mistake it repeats.
+// planEntry / parsePlanEntry — what a round stores per question: a new
+// question carries the question whose mistake it repeats ("X~A"); every
+// other entry is a plain qid, which is all an older plan holds.
+const link = (qid: string, sourceQid: string) => `${qid}~${sourceQid}`
+
+describe('planEntry / parsePlanEntry', () => {
+  const item = (qid: string, sourceQid: string): ReplayItem => {
+    const question = bank.find((q) => q.qid === qid)
+    if (!question) throw new Error(`no question ${qid}`)
+    return { question, mistakeId: 1, sourceQid, sibling: qid !== sourceQid }
+  }
+
+  it('stores a new question with its source, and any other question as its plain qid', () => {
+    expect(planEntry(item(lasQids[1], lasQids[0]))).toBe(link(lasQids[1], lasQids[0]))
+    expect(planEntry(item(ordQids[0], ordQids[0]))).toBe(ordQids[0])
+  })
+
+  it('reads an entry back to the question it plays and the one whose mistake it repeats', () => {
+    expect(parsePlanEntry(link(lasQids[1], lasQids[0]))).toEqual({
+      qid: lasQids[1],
+      sourceQid: lasQids[0],
+    })
+    // A plain qid — all an older plan holds — repeats its own mistake.
+    expect(parsePlanEntry(ordQids[0])).toEqual({ qid: ordQids[0], sourceQid: ordQids[0] })
+  })
+
+  it('never stores an entry longer than a stored plan allows', () => {
+    const long = { ...item(lasQids[1], lasQids[0]), sourceQid: 'x'.repeat(80) }
+    expect(planEntry(long)).toBe(lasQids[1])
+  })
+})
+
+// prunePlan — the ghost-replay guard (residual #290), resuming an adopted
+// adaptive_review session's stored plan against the CURRENT due list. The
+// plan keeps its own order; answered entries before the cursor stay; from
+// the cursor on, an entry plays only while the mistake stored with it is
+// still due — mistakes since resolved or rescheduled out are dropped.
 const planQids = (links: PlanLink[]) => links.map((l) => l.qid)
 
 describe('prunePlan', () => {
@@ -301,78 +345,89 @@ describe('prunePlan', () => {
   it('links a same-question entry to its own mistake', () => {
     const m = mistake(ordQids[0])
     expect(prunePlan([ordQids[0]], [m])).toEqual([
-      { qid: ordQids[0], mistakeId: m.id, sourceQid: ordQids[0], sibling: false },
+      { qid: ordQids[0], sourceQid: ordQids[0], sibling: false, mistakeId: m.id },
     ])
   })
 
-  it('keeps a new question with a due mistake’s trap, linked to that mistake', () => {
-    const traps = buildTrapIndex({ [lasQids[0]]: 'LAS-TYPE-T', [lasQids[1]]: 'LAS-TYPE-T' })
+  it('links a new question to the mistake stored with it', () => {
     const m = mistake(lasQids[0])
-    expect(prunePlan([lasQids[1]], [m], traps)).toEqual([
-      { qid: lasQids[1], mistakeId: m.id, sourceQid: lasQids[0], sibling: true },
+    expect(prunePlan([link(lasQids[1], lasQids[0])], [m])).toEqual([
+      { qid: lasQids[1], sourceQid: lasQids[0], sibling: true, mistakeId: m.id },
     ])
   })
 
-  it('drops a new question once no due mistake carries its trap', () => {
-    const traps = buildTrapIndex({
-      [lasQids[0]]: 'LAS-TYPE-T',
-      [lasQids[1]]: 'LAS-TYPE-T',
-      [lasQids[2]]: 'LAS-TYPE-U',
-    })
-    expect(prunePlan([lasQids[1]], [mistake(lasQids[2])], traps)).toEqual([])
-  })
-
-  it('lets a same-question entry claim its own mistake before a new question can', () => {
-    const traps = buildTrapIndex({
-      [lasQids[0]]: 'LAS-TYPE-T',
-      [lasQids[1]]: 'LAS-TYPE-T',
-      [lasQids[2]]: 'LAS-TYPE-T',
-    })
-    // Due order puts m1 first, but m1 is repeated by its own question.
-    const m1 = mistake(lasQids[1])
-    const m0 = mistake(lasQids[0])
-    expect(prunePlan([lasQids[2], lasQids[1]], [m1, m0], traps)).toEqual([
-      { qid: lasQids[2], mistakeId: m0.id, sourceQid: lasQids[0], sibling: true },
-      { qid: lasQids[1], mistakeId: m1.id, sourceQid: lasQids[1], sibling: false },
+  it('keeps every stored link when the due list reorders and gains a mistake with the same trap', () => {
+    // X repeats A and Y repeats B. Now a newer miss C sorts first and B
+    // before A: re-deriving from due order would hand X to C and Y to B.
+    const [a, b, c] = [mistake(lasQids[0]), mistake(lasQids[1]), mistake(lasQids[4])]
+    const stored = [link(lasQids[2], a.questionId), link(lasQids[3], b.questionId)]
+    expect(prunePlan(stored, [c, b, a]).map((l) => [l.qid, l.mistakeId])).toEqual([
+      [lasQids[2], a.id],
+      [lasQids[3], b.id],
     ])
   })
 
-  it('links two new questions with one trap to two different mistakes, in due order', () => {
-    const traps = buildTrapIndex({
-      [lasQids[0]]: 'LAS-TYPE-T',
-      [lasQids[1]]: 'LAS-TYPE-T',
-      [lasQids[2]]: 'LAS-TYPE-T',
-      [lasQids[3]]: 'LAS-TYPE-T',
-    })
-    const m0 = mistake(lasQids[0])
-    const m1 = mistake(lasQids[1])
-    const links = prunePlan([lasQids[2], lasQids[3]], [m0, m1], traps)
-    expect(links.map((l) => [l.qid, l.mistakeId])).toEqual([
-      [lasQids[2], m0.id],
-      [lasQids[3], m1.id],
+  it('never re-derives a source for a stored new question that carries none', () => {
+    // A plain qid repeats its own mistake only — never a due one it shares a
+    // trap with.
+    expect(prunePlan([lasQids[2]], [mistake(lasQids[0])])).toEqual([])
+  })
+
+  it('keeps the answered questions before the cursor, whatever their mistakes’ state', () => {
+    // X was answered right, so A left the due list; the cursor is on Y.
+    const b = mistake(lasQids[1])
+    const stored = [link(lasQids[2], lasQids[0]), link(lasQids[3], lasQids[1])]
+    expect(prunePlan(stored, [b], 1)).toEqual([
+      { qid: lasQids[2], sourceQid: lasQids[0], sibling: true, mistakeId: null },
+      { qid: lasQids[3], sourceQid: lasQids[1], sibling: true, mistakeId: b.id },
     ])
   })
 
-  it('never links a new question to a mistake in another section', () => {
-    const traps = buildTrapIndex({ [kvaQid]: 'LAS-TYPE-T', [lasQids[1]]: 'LAS-TYPE-T' })
-    expect(prunePlan([lasQids[1]], [mistake(kvaQid)], traps)).toEqual([])
+  it('from the cursor on, skips a question whose mistake left the due list and keeps the rest', () => {
+    const b = mistake(lasQids[1])
+    const stored = [link(lasQids[2], lasQids[0]), link(lasQids[3], lasQids[1]), ordQids[0]]
+    expect(planQids(prunePlan(stored, [b], 0))).toEqual([lasQids[3]])
+  })
+
+  it('repeats a due mistake once, even when a stored plan names it twice', () => {
+    const a = mistake(lasQids[0])
+    const stored = [link(lasQids[2], lasQids[0]), link(lasQids[3], lasQids[0])]
+    expect(prunePlan(stored, [a]).map((l) => [l.qid, l.mistakeId])).toEqual([[lasQids[2], a.id]])
   })
 })
 
 describe('resolveReplayPlan', () => {
-  it('resolves a stored plan to questions, siblings linked, unresolvable qids dropped', async () => {
-    const traps = buildTrapIndex({ [lasQids[0]]: 'LAS-TYPE-T', [lasQids[1]]: 'LAS-TYPE-T' })
+  it('resolves a stored round: questions in order, linked items, unresolvable qids dropped', async () => {
     const mLas = mistake(lasQids[0])
     const mOrd = mistake(ordQids[0])
     const mGone = mistake('var-2026-verb1-ORD-999')
-    const items = await resolveReplayPlan(
-      [lasQids[1], 'var-2026-verb1-ORD-999', ordQids[0]],
+    const round = await resolveReplayPlan(
+      [link(lasQids[1], lasQids[0]), 'var-2026-verb1-ORD-999', ordQids[0]],
       [mLas, mOrd, mGone],
-      { traps },
     )
-    expect(items.map((i) => [i.question.qid, i.mistakeId, i.sourceQid, i.sibling])).toEqual([
+    expect(round.questions.map((q) => q.qid)).toEqual([lasQids[1], ordQids[0]])
+    expect(round.items.map((i) => [i.question.qid, i.mistakeId, i.sourceQid, i.sibling])).toEqual([
       [lasQids[1], mLas.id, lasQids[0], true],
       [ordQids[0], mOrd.id, ordQids[0], false],
     ])
+    expect(round.remaining).toBe(2)
+  })
+
+  it('hands back the answered questions before the cursor and counts what is left', async () => {
+    const mOrd = mistake(ordQids[1])
+    const round = await resolveReplayPlan(
+      [link(lasQids[1], lasQids[0]), ordQids[0], ordQids[1]],
+      [mOrd],
+      2,
+    )
+    expect(round.questions.map((q) => q.qid)).toEqual([lasQids[1], ordQids[0], ordQids[1]])
+    expect(round.items.map((i) => i.question.qid)).toEqual([ordQids[1]])
+    expect(round.remaining).toBe(1)
+  })
+
+  it('has nothing left once no question from the cursor on repeats a due mistake', async () => {
+    const round = await resolveReplayPlan([ordQids[0], ordQids[1]], [mistake(ordQids[0])], 1)
+    expect(round.questions.map((q) => q.qid)).toEqual([ordQids[0]])
+    expect(round.remaining).toBe(0)
   })
 })

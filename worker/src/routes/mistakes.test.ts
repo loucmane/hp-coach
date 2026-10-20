@@ -8,14 +8,15 @@
 // vocabularies must stay honest: `all` counts a fresh mistake scheduled
 // for tomorrow; `due` does not until it ripens. Also the PATCH
 // /:id/review path Repetera uses when a miss is repeated through a new
-// question with the same trap.
+// question with the same trap, and the PUT /round/:sessionId path that
+// stores which mistake each of a round's new questions repeats.
 
 import { eq } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { getDb } from '../db/client'
-import { mistakes, users } from '../db/schema'
+import { mistakes, sessions, users } from '../db/schema'
 import { makeTestD1, type ShimD1 } from '../lib/testD1'
 import type { Env, Vars } from '../types'
 import { mistakesRoute } from './mistakes'
@@ -552,6 +553,129 @@ describe('PATCH /api/mistakes/:id/review — a repeat answered on a question wit
       const res = await review('u39', id, body)
       expect(res.status).toBe(400)
     }
+  })
+})
+
+describe('PUT /api/mistakes/round/:sessionId — a round stores the mistake each new question repeats', () => {
+  // Repetera repeats a miss through a new question with the same trap
+  // (hpf-bz6f.2). SessionPlayer stores the round's plan as plain qids; the
+  // route then rewrites each new question as "<qid>~<sourceQid>" so a resume,
+  // on any device, answers it against THAT mistake. It may only annotate the
+  // open round: what the round plays never changes.
+  const X = 'var-2026-verb1-LÄS-012'
+  const Y = 'var-2026-verb1-LÄS-014'
+  const O = 'var-2026-verb1-ORD-001'
+  const PLAIN = [X, Y, O]
+  const LINKED = [`${X}~var-2026-verb1-LÄS-011`, `${Y}~var-2026-verb1-LÄS-013`, O]
+
+  async function seedSession(
+    clerkUserId: string,
+    opts: { kind?: string; plan?: string[] | null; endedAt?: Date | null } = {},
+  ): Promise<number> {
+    const db = getDb(d1 as unknown as D1Database)
+    let [user] = await db.select().from(users).where(eq(users.clerkUserId, clerkUserId))
+    if (!user) {
+      ;[user] = await db.insert(users).values({ clerkUserId }).returning()
+    }
+    const [row] = await db
+      .insert(sessions)
+      .values({
+        userId: user.id,
+        kind: opts.kind ?? 'adaptive_review',
+        sections: 'alla',
+        position: 1,
+        currentQuestionId: Y,
+        plan: opts.plan === undefined ? PLAIN : opts.plan,
+        endedAt: opts.endedAt ?? null,
+      })
+      .returning()
+    return row.id
+  }
+
+  async function link(asUser: string, sessionId: number, body: unknown) {
+    const { app, env } = appFor(asUser)
+    return app.request(
+      `/round/${sessionId}`,
+      {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(body),
+      },
+      env,
+    )
+  }
+
+  async function sessionById(id: number) {
+    const db = getDb(d1 as unknown as D1Database)
+    const [row] = await db.select().from(sessions).where(eq(sessions.id, id))
+    return row
+  }
+
+  it('stores the linked entries in the open round’s plan and leaves its cursor alone', async () => {
+    const id = await seedSession('u40')
+    const res = await link('u40', id, { plan: LINKED })
+    expect(res.status).toBe(200)
+    const body = (await res.json()) as { session: { id: number; plan: string[] } }
+    expect(body.session.id).toBe(id)
+    expect(body.session.plan).toEqual(LINKED)
+    const row = await sessionById(id)
+    expect(row.plan).toEqual(LINKED)
+    expect(row.position).toBe(1)
+    expect(row.currentQuestionId).toBe(Y)
+    expect(row.endedAt).toBeNull()
+  })
+
+  it('stores the same links again on a retry', async () => {
+    const id = await seedSession('u41', { plan: LINKED })
+    expect((await link('u41', id, { plan: LINKED })).status).toBe(200)
+    expect((await sessionById(id)).plan).toEqual(LINKED)
+  })
+
+  it('never changes what the round plays', async () => {
+    const id = await seedSession('u42')
+    const other = 'var-2026-verb1-LÄS-015'
+    for (const plan of [
+      [`${other}~${X}`, Y, O], // another question
+      [LINKED[1], LINKED[0], O], // reordered
+      LINKED.slice(0, 2), // shorter
+      [...LINKED, other], // longer
+    ]) {
+      expect((await link('u42', id, { plan })).status).toBe(400)
+    }
+    expect((await sessionById(id)).plan).toEqual(PLAIN)
+  })
+
+  it('refuses a malformed link', async () => {
+    const id = await seedSession('u43')
+    for (const first of [`${X}~`, `${X}~a~b`, `~${X}`]) {
+      expect((await link('u43', id, { plan: [first, Y, O] })).status).toBe(400)
+    }
+    expect((await sessionById(id)).plan).toEqual(PLAIN)
+  })
+
+  it('only links an open Repetera round', async () => {
+    const drill = await seedSession('u44', { kind: 'drill' })
+    expect((await link('u44', drill, { plan: LINKED })).status).toBe(400)
+    expect((await sessionById(drill)).plan).toEqual(PLAIN)
+
+    const ended = await seedSession('u44', { endedAt: new Date() })
+    expect((await link('u44', ended, { plan: LINKED })).status).toBe(400)
+    expect((await sessionById(ended)).plan).toEqual(PLAIN)
+  })
+
+  it('another user’s session is a 404 and stays untouched', async () => {
+    const id = await seedSession('u45')
+    expect((await link('u46', id, { plan: LINKED })).status).toBe(404)
+    expect((await sessionById(id)).plan).toEqual(PLAIN)
+  })
+
+  it('holds a plan to the bounds a stored plan has', async () => {
+    const id = await seedSession('u47')
+    const tooLong = `${X}~${'x'.repeat(80)}`
+    for (const body of [{ plan: [tooLong, Y, O] }, { plan: [] }, { plan: LINKED, extra: 1 }, {}]) {
+      expect((await link('u47', id, body)).status).toBe(400)
+    }
+    expect((await sessionById(id)).plan).toEqual(PLAIN)
   })
 })
 

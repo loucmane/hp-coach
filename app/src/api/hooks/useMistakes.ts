@@ -30,10 +30,16 @@
 //   from /repetition for every answer on a planned item, which may be a
 //   NEW question with the missed one's trap (hpf-bz6f.2): the answer
 //   moves the SOURCE mistake's row, right or wrong. Invalidates ALL keys.
+// useLinkRound — PUT /api/mistakes/round/:sessionId { plan }. Called from
+//   /repetition once a fresh round's session exists: stores each new
+//   question's source in the session plan ("X~A"), so a resume on any
+//   device answers it against that mistake. Writes the plan through to
+//   the active-sessions cache.
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { useApiClient } from '../useApiClient'
+import type { ActiveSession } from './useSessions'
 
 const DUE_KEY = ['mistakes', 'due'] as const
 const dueKeyForSection = (section?: string) =>
@@ -216,6 +222,38 @@ export function useReviewMistake() {
       qc.invalidateQueries({ queryKey: DUE_KEY })
       qc.invalidateQueries({ queryKey: ACTIVE_KEY })
       qc.invalidateQueries({ queryKey: PILE_KEY })
+    },
+  })
+}
+
+/** Store which mistake each new question of a fresh Repetera round repeats,
+ *  in the round's session plan ("<qid>~<sourceQid>", lib/replay.ts
+ *  planEntry). SessionPlayer creates the session with plain qids; the
+ *  server accepts only these links, never a change to what the round
+ *  plays. */
+export function useLinkRound() {
+  const api = useApiClient()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (input: { sessionId: number; plan: string[] }) => {
+      const res = await api.api.mistakes.round[':sessionId'].$put({
+        param: { sessionId: String(input.sessionId) },
+        json: { plan: input.plan },
+      })
+      if (!res.ok) {
+        throw new Error(`PUT /api/mistakes/round/${input.sessionId} failed: ${res.status}`)
+      }
+      const body = await res.json()
+      return body.session as ActiveSession
+    },
+    onSuccess: (session) => {
+      // Through to useSessions' active-sessions cache (key ['sessions',
+      // 'active']), so a resume in this tab adopts the linked plan without
+      // waiting for a refetch. Only the plan: the cursor fields belong to
+      // SessionPlayer's own writes.
+      qc.setQueryData<ActiveSession[]>(['sessions', 'active'], (old) =>
+        old?.map((s) => (s.id === session.id ? { ...s, plan: session.plan } : s)),
+      )
     },
   })
 }
