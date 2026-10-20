@@ -17,9 +17,9 @@
 // __root.tsx renders it without the SignedIn gate; if a prod user
 // somehow lands here it just hits a 403 from the worker.
 
-import { useSignIn } from '@clerk/clerk-react'
+import { useAuth, useClerk, useSignIn } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Mono } from '@/components/primitives'
 import { useFirstContentSignal } from '@/lib/motion'
@@ -31,48 +31,63 @@ export const Route = createFileRoute('/dev-login')({
   component: DevLoginScreen,
 })
 
+/** The readable text of a failed step. Clerk's API errors keep it in
+ *  `errors[0].longMessage` (or `.message`) and leave `err.message` empty. */
+export function devLoginErrorText(err: unknown): string {
+  const clerk = (err as { errors?: { longMessage?: string; message?: string }[] } | null)
+    ?.errors?.[0]
+  const text =
+    clerk?.longMessage || clerk?.message || (err instanceof Error ? err.message : String(err ?? ''))
+  return text || 'okänt fel'
+}
+
 function DevLoginScreen() {
   // Boot-veil content signal (#305 owner verdict) — dev/e2e bootstrap
   // route; its status line is present at mount.
   useFirstContentSignal()
   const { isLoaded, signIn, setActive } = useSignIn()
+  const { isLoaded: authLoaded, isSignedIn } = useAuth()
+  const { signOut } = useClerk()
   const navigate = useNavigate()
   const [status, setStatus] = useState<string>('Väntar på Clerk...')
+  // One attempt per page load: the hook identities can change and re-run
+  // the effect, and each run would otherwise fetch a fresh token.
+  const started = useRef(false)
 
   useEffect(() => {
-    if (!isLoaded || !signIn || !setActive) return
-    let cancelled = false
+    if (!isLoaded || !authLoaded || !signIn || !setActive || started.current) return
+    started.current = true
     ;(async () => {
       try {
+        // A ticket sign-in is refused while a session is active (for
+        // example the owner's own account): sign out and come back here.
+        if (isSignedIn) {
+          setStatus('Loggar ut befintlig session...')
+          await signOut({ redirectUrl: window.location.href })
+          return
+        }
         setStatus('Hämtar sign-in-token...')
         const res = await fetch(`${BASE_URL}/api/dev/login`, { method: 'POST' })
         const body = (await res.json()) as { token?: string; error?: { message: string } }
         if (!res.ok || !body.token) {
           throw new Error(body.error?.message ?? `HTTP ${res.status}`)
         }
-        if (cancelled) return
         setStatus('Växlar in token mot session...')
         const result = await signIn.create({
           strategy: 'ticket',
           ticket: body.token,
         })
-        if (cancelled) return
         if (result.status !== 'complete' || !result.createdSessionId) {
           throw new Error(`signIn.create returned status=${result.status}`)
         }
         await setActive({ session: result.createdSessionId })
-        if (cancelled) return
         setStatus('Klar — omdirigerar...')
         navigate({ to: '/' })
       } catch (err) {
-        if (cancelled) return
-        setStatus(`Fel: ${err instanceof Error ? err.message : String(err)}`)
+        setStatus(`Fel: ${devLoginErrorText(err)}`)
       }
     })()
-    return () => {
-      cancelled = true
-    }
-  }, [isLoaded, signIn, setActive, navigate])
+  }, [isLoaded, authLoaded, isSignedIn, signIn, setActive, signOut, navigate])
 
   return (
     <div
