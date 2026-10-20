@@ -277,7 +277,6 @@ function ReadingSession({
             className="ra-reading-scroll"
             onScroll={scrolling.onScroll}
             ref={passageScroll}
-            data-rd-keyscope
             // biome-ignore lint/a11y/noNoninteractiveTabindex: keyboard-scrollable passage
             tabIndex={0}
             aria-label="Lästext"
@@ -341,7 +340,6 @@ function ReadingSession({
               <section
                 className="ra-question-scroll"
                 ref={questionScroll}
-                data-rd-keyscope
                 // biome-ignore lint/a11y/noNoninteractiveTabindex: keyboard-scrollable question and feedback
                 tabIndex={0}
                 aria-label="Fråga och förklaring"

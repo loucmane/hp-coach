@@ -1,13 +1,20 @@
-import { type ReactNode, useId, useRef, useState } from 'react'
+import { type ReactNode, useId, useLayoutEffect, useRef, useState } from 'react'
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import type { DirectionProps } from '@/components/devbake/redesign/r1Kit'
 import { RasterDialog } from './RasterParts'
+
+export type KontoSection = 'konto' | 'settings'
 
 export function RasterKonto({
   theme,
   onTheme,
   onReturn,
-}: Pick<DirectionProps, 'theme' | 'onTheme'> & { onReturn: () => void }) {
+  live,
+  focusRequest,
+}: Pick<DirectionProps, 'theme' | 'onTheme' | 'live'> & {
+  onReturn: () => void
+  focusRequest: { section: KontoSection } | null
+}) {
   const { data, actions } = useDirectionData()
   const { identity, prefs, options, exam, links } = data.konto
   const [status, setStatus] = useState('')
@@ -15,7 +22,14 @@ export function RasterKonto({
   const [word, setWord] = useState('')
   const [deleteRequested, setDeleteRequested] = useState(false)
   const deleteLatch = useRef(false)
+  const heading = useRef<HTMLHeadingElement>(null)
+  const settingsHeading = useRef<HTMLHeadingElement>(null)
   const wordId = useId()
+  useLayoutEffect(() => {
+    if (!live || !focusRequest) return
+    const target = focusRequest.section === 'settings' ? settingsHeading : heading
+    target.current?.focus()
+  }, [focusRequest, live])
   const request = (action: () => void, message: string, failure: string) => {
     try {
       const result = action()
@@ -30,7 +44,9 @@ export function RasterKonto({
       <header className="ra-register-heading">
         <div>
           <p className="ra-label">Konto</p>
-          <h1>Din studiemiljö.</h1>
+          <h1 ref={heading} tabIndex={-1}>
+            Din studiemiljö.
+          </h1>
         </div>
         <p>Konto och inställningar</p>
       </header>
@@ -50,6 +66,9 @@ export function RasterKonto({
           </dl>
         </aside>
         <section aria-label="Inställningar" className="ra-settings">
+          <h2 ref={settingsHeading} tabIndex={-1}>
+            Inställningar
+          </h2>
           <Setting title="Tema">
             {(['light', 'dark'] as const).map((mode) => (
               <button

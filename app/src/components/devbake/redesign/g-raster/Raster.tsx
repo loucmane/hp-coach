@@ -10,7 +10,7 @@ import {
 import { RasterDrill } from './RasterDrill'
 import { RasterFramsteg } from './RasterFramsteg'
 import { RasterHome } from './RasterHome'
-import { RasterKonto } from './RasterKonto'
+import { type KontoSection, RasterKonto } from './RasterKonto'
 import { RasterNav } from './RasterNav'
 import { RasterOva } from './RasterOva'
 import { RasterProvpass, RasterProvResult } from './RasterProvpass'
@@ -24,36 +24,43 @@ const FONTS =
 export function Raster(props: DirectionProps) {
   useWebFonts('raster', FONTS)
   const { data, actions } = useDirectionData()
-  const screenDest: Destination =
+  const screenDest: Destination | null =
     props.screen === 9 || props.screen === 10
       ? 'provpass'
       : props.screen === 11
         ? 'framsteg'
         : props.screen === 12
           ? 'uppslag'
-          : props.screen >= 5
-            ? 'ova'
-            : 'idag'
-  const [dest, setDest] = useState<Destination>(screenDest)
+          : props.screen === 13
+            ? null
+            : props.screen >= 5
+              ? 'ova'
+              : 'idag'
+  const [dest, setDest] = useState<Destination | null>(screenDest)
   const [activePass, setActivePass] = useState<string | null>(null)
   const [passIsLive, setPassIsLive] = useState(true)
   const timedPass = dest === 'provpass' && props.screen !== 10 && activePass !== null && passIsLive
   const [menu, setMenu] = useState(props.screen === 4)
   const [konto, setKonto] = useState(props.screen === 13)
-  const reading = props.screen === 2 || props.screen === 3 || props.screen === 14
-  const drill = reading || props.screen === 6 || props.screen === 7
+  const [kontoFocus, setKontoFocus] = useState<{ section: KontoSection } | null>(null)
+  const [leftDrill, setLeftDrill] = useState(false)
+  const reading =
+    !leftDrill && !konto && (props.screen === 2 || props.screen === 3 || props.screen === 14)
+  const drill = !leftDrill && !konto && (reading || props.screen === 6 || props.screen === 7)
   const returnToHome = useRef(true)
   if (!drill) returnToHome.current = props.screen === 1 || props.screen === 4
   useLayoutEffect(() => {
     setDest(screenDest)
     setMenu(props.screen === 4)
     setKonto(props.screen === 13)
+    setLeftDrill(false)
     if (props.screen !== 9) setActivePass(null)
   }, [props.screen, screenDest])
   const go = useCallback(
     (next: Destination) => {
       setMenu(false)
       setKonto(false)
+      setKontoFocus(null)
       setDest(next)
       if (next !== 'provpass' || !passIsLive) setActivePass(null)
       if (drill) actions.drill.exit?.()
@@ -78,13 +85,20 @@ export function Raster(props: DirectionProps) {
       {!timedPass ? (
         <RasterNav
           {...props}
-          dest={drill ? 'ova' : dest}
+          screen={konto ? 13 : leftDrill ? 5 : props.screen}
+          dest={konto ? null : drill ? 'ova' : dest}
           onGo={go}
           menu={menu}
           setMenu={setMenu}
-          onKonto={() => {
+          onKonto={(section) => {
             setKonto(true)
+            setDest(null)
+            setKontoFocus({ section })
             setActivePass(null)
+            if (drill) {
+              setLeftDrill(true)
+              actions.drill.exit?.()
+            }
             actions.openKonto()
           }}
         />
@@ -101,7 +115,13 @@ export function Raster(props: DirectionProps) {
       ) : (
         <main className="ra-main" key={dest}>
           {konto ? (
-            <RasterKonto theme={props.theme} onTheme={props.onTheme} onReturn={() => go('ova')} />
+            <RasterKonto
+              theme={props.theme}
+              onTheme={props.onTheme}
+              live={props.live}
+              focusRequest={kontoFocus}
+              onReturn={() => go('ova')}
+            />
           ) : dest === 'uppslag' ? (
             <RasterUppslag width={props.width} />
           ) : dest === 'provpass' ? (

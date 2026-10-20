@@ -6,6 +6,7 @@ import {
   type DirectionProps,
   useDismiss,
 } from '@/components/devbake/redesign/r1Kit'
+import type { KontoSection } from './RasterKonto'
 import { IndexNumber } from './RasterParts'
 
 export function RasterNav({
@@ -19,16 +20,16 @@ export function RasterNav({
   setMenu,
   onKonto,
 }: DirectionProps & {
-  dest: Destination
+  dest: Destination | null
   onGo: (dest: Destination) => void
   menu: boolean
   setMenu: (open: boolean) => void
-  onKonto: () => void
+  onKonto: (section: KontoSection) => void
 }) {
   const { data } = useDirectionData()
   const focus = screen === 2 || screen === 3 || screen === 6 || screen === 7 || screen === 14
   const [collapsed, setCollapsed] = useState(screen === 4)
-  const [accountPage, setAccountPage] = useState<string | null>(null)
+  const [showHelp, setShowHelp] = useState(false)
   const menuId = useId()
   const ref = useRef<HTMLDivElement>(null)
   const button = useRef<HTMLButtonElement>(null)
@@ -88,7 +89,7 @@ export function RasterNav({
           aria-expanded={menu}
           aria-controls={menu ? menuId : undefined}
           onClick={() => {
-            setAccountPage(null)
+            setShowHelp(false)
             setMenu(!menu)
           }}
         >
@@ -103,35 +104,37 @@ export function RasterNav({
             data-rd-keyscope
           >
             <div className="ra-menu-heading">
-              <h2>{accountPage ?? 'Ditt konto'}</h2>
+              <h2>{showHelp ? 'Hjälp' : 'Ditt konto'}</h2>
               <button type="button" onClick={close} aria-label="Stäng kontot">
                 ×
               </button>
             </div>
-            {accountPage ? (
+            {showHelp ? (
               <>
                 <p>
-                  {accountPage === 'Konto'
-                    ? 'Inloggad · gratisplan'
-                    : accountPage === 'Inställningar'
-                      ? 'Provdatum och mål visas här när riktningen är vald.'
-                      : 'A–E väljer de svar som finns. Enter svarar och går vidare. F aktiverar styckefokus i en text; J och K byter stycke.'}
+                  A–E väljer de svar som finns. Enter svarar och går vidare. F aktiverar styckefokus
+                  i en text; J och K byter stycke.
                 </p>
-                <button type="button" className="ra-menu-row" onClick={() => setAccountPage(null)}>
+                <button type="button" className="ra-menu-row" onClick={() => setShowHelp(false)}>
                   ← Tillbaka
                 </button>
               </>
             ) : (
               <>
                 <p className="ra-label">{data.konto.identity.name}</p>
-                {['Konto', 'Inställningar'].map((label) => (
+                {(
+                  [
+                    ['konto', 'Konto'],
+                    ['settings', 'Inställningar'],
+                  ] as const
+                ).map(([section, label]) => (
                   <button
                     type="button"
                     className="ra-menu-row"
                     key={label}
                     onClick={() => {
                       close()
-                      onKonto()
+                      onKonto(section)
                     }}
                   >
                     {label}
@@ -156,11 +159,7 @@ export function RasterNav({
                     Mörkt
                   </button>
                 </fieldset>
-                <button
-                  type="button"
-                  className="ra-menu-row"
-                  onClick={() => setAccountPage('Hjälp')}
-                >
+                <button type="button" className="ra-menu-row" onClick={() => setShowHelp(true)}>
                   Hjälp<span aria-hidden>↗</span>
                 </button>
               </>

@@ -728,6 +728,37 @@ describe.each(['desktop', 'phone'] as const)('Raster batch 3 at %s', (width) => 
     expect(screen.getByTestId('rd-lesson')).toBeVisible()
   })
 
+  it('leaves every main navigation destination unselected on Konto', () => {
+    mountData(13, fresh(), {}, width)
+    expect(screen.getByTestId('rd-raster').querySelector('[aria-current="page"]')).toBeNull()
+  })
+
+  it.each([
+    2, 3, 6, 7, 14,
+  ] as const)('leaves drill %s for Konto with a passive provider and returns to Öva', (s) => {
+    const openKonto = vi.fn()
+    const exit = vi.fn()
+    const go = vi.fn()
+    mountData(s, fresh(), { openKonto, go, drill: { ...LOCAL_CONTROLLER, exit } }, width)
+    fireEvent.click(screen.getByTestId('rd-account'))
+    const menu = screen.getByTestId('rd-account-menu')
+    const entry = within(menu).getByRole('button', { name: /^Konto/ })
+    entry.focus()
+    fireEvent.click(entry)
+    expect(openKonto).toHaveBeenCalledOnce()
+    expect(exit).toHaveBeenCalledOnce()
+    expect(screen.getByTestId('rd-konto-identity')).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'Din studiemiljö.' })).toHaveFocus()
+    expect(screen.getByTestId('rd-raster')).toHaveAttribute('data-drill', 'false')
+    expect(screen.getByTestId('rd-raster').querySelector('[aria-current="page"]')).toBeNull()
+    expect(screen.queryByTestId('rd-exit')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: /Tillbaka till Öva/ }))
+    expect(go).toHaveBeenCalledExactlyOnceWith('ova')
+    expect(screen.queryByTestId('rd-konto-identity')).toBeNull()
+    expect(screen.queryByTestId('rd-exit')).toBeNull()
+    expect(screen.getByTestId('rd-nav-ova')).toHaveAttribute('aria-current', 'page')
+  })
+
   it('marks only ELF content English and completes using its own controller', () => {
     const data = fresh()
     data.home.plan.items.forEach((item) => {
@@ -1033,11 +1064,11 @@ it.each([
   }
 })
 
-function RasterHost({ initial }: { initial: AppScreenKey }) {
+function RasterHost({ initial, width = 'phone' }: { initial: AppScreenKey; width?: WidthKey }) {
   const [sel, setSel] = useState<Selection>({
     d: 'g',
     s: initial,
-    w: 'phone',
+    w: width,
     t: 'light',
     sbs: false,
     bare: false,
@@ -1132,21 +1163,83 @@ it('closes a native account dialog only on an actual backdrop click and restores
   expect(opener).toHaveFocus()
 })
 
-it('keeps ELF scroll keys and account preview focus correct through the real host', async () => {
-  vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
-  vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(900)
-  render(<RasterHost initial={14} />)
-  await screen.findByTestId('rd-elf-passage')
-  const passage = screen.getByRole('region', { name: 'Lästext' })
-  passage.focus()
-  fireEvent.keyDown(passage, { key: 'ArrowRight' })
-  expect(screen.getByTestId('rd-elf-passage')).toBeInTheDocument()
-  expect(screen.getByTestId('rd-raster')).toBeInTheDocument()
-  fireEvent.keyDown(passage, { key: '3' })
-  expect(screen.getByTestId('rd-raster')).toBeInTheDocument()
-  screen.getByTestId('rd-exit').focus()
-  fireEvent.keyDown(screen.getByTestId('rd-exit'), { key: '3' })
-  expect(screen.queryByTestId('rd-raster')).toBeNull()
+describe.each(['desktop', 'phone'] as const)('Raster review regressions at %s', (width) => {
+  it.each([
+    2, 3, 14,
+  ] as const)('passes focused reading controls to the real host on screen %s, idle and in feedback', async (s) => {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(900)
+    const onSelect = vi.fn()
+    render(
+      <Redesign2026Bakeoff
+        sel={{ d: 'g', s, w: width, t: 'light', sbs: false, bare: false }}
+        onSelect={onSelect}
+      />,
+    )
+    await screen.findByTestId('rd-raster')
+    if (width === 'phone') openSheet()
+    // Screen 3 starts in feedback. Its next question exercises the idle state
+    // while the controlled host keeps the same screen selected.
+    if (s === 3) fireEvent.click(screen.getByTestId('rd-next'))
+    if (width === 'phone') openSheet()
+    const checkKeys = (target: HTMLElement) => {
+      expect(target).toBeVisible()
+      target.focus()
+      expect(target).toHaveFocus()
+      for (const key of ['3', 'ArrowRight']) {
+        onSelect.mockClear()
+        fireEvent.keyDown(document.activeElement!, { key })
+        const label = target.getAttribute('data-testid') ?? target.getAttribute('aria-label')
+        expect
+          .soft(onSelect, `${label ?? target.tagName}: ${key}`)
+          .toHaveBeenCalledExactlyOnceWith(
+            key === '3' ? { d: 'c', sbs: false } : { s: s === 14 ? 1 : s + 1 },
+          )
+      }
+    }
+    const checkPassage = () => {
+      checkKeys(screen.getByRole('region', { name: 'Lästext' }))
+      checkKeys(screen.getByTestId('rd-note-toggle'))
+      checkKeys(screen.getByRole('button', { name: '¶ Styckefokus' }))
+      checkKeys(
+        within(screen.getByTestId('rd-para-1')).getByRole('button', { name: 'Läs stycke 1' }),
+      )
+      checkKeys(screen.getByRole('region', { name: 'Fråga och förklaring' }))
+    }
+    checkPassage()
+    checkKeys(screen.getByTestId('rd-option-A'))
+    checkKeys(screen.getByTestId('rd-eliminate-A'))
+    fireEvent.click(screen.getByTestId('rd-option-A'))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(screen.getByTestId('rd-verdict')).toBeVisible()
+    if (width === 'phone') openSheet()
+    checkPassage()
+    checkKeys(screen.getAllByTestId(/^rd-cite-/).find((el) => !el.closest('[hidden]'))!)
+  })
+
+  it.each([
+    [1, 'Konto', 'Din studiemiljö.'],
+    [1, 'Inställningar', 'Inställningar'],
+    [14, 'Konto', 'Din studiemiljö.'],
+    [14, 'Inställningar', 'Inställningar'],
+  ] as const)('focuses the %s menu target %s through the real host', async (initial, entry, heading) => {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(900)
+    render(<RasterHost initial={initial} width={width} />)
+    await screen.findByTestId('rd-raster')
+    for (let visit = 0; visit < 2; visit += 1) {
+      fireEvent.click(screen.getByTestId('rd-account'))
+      const button = within(screen.getByTestId('rd-account-menu')).getByRole('button', {
+        name: new RegExp(`^${entry}`),
+      })
+      button.focus()
+      fireEvent.click(button)
+      await screen.findByTestId('rd-konto-identity')
+      expect(screen.getByTestId('rb26-stage')).toHaveAttribute('data-screen', '13')
+      expect(screen.getByRole('heading', { name: heading })).toHaveFocus()
+      expect(screen.getByTestId('rd-raster').querySelector('[aria-current="page"]')).toBeNull()
+    }
+  })
 })
 
 it('does not auto-focus the screen-4 account preview into a keyscope', async () => {
