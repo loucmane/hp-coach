@@ -1,4 +1,4 @@
-import { useId, useState } from 'react'
+import { useId, useRef, useState } from 'react'
 import { useDirectionData } from '../directionData'
 import { fmtDelta, fmtScore } from '../r1Kit'
 import type { FramstegView } from '../viewModel'
@@ -13,7 +13,13 @@ export function InstrumentFramsteg({ initialHistory = false }: { initialHistory?
   const progress = data.framsteg
   const { prognosis, week } = progress
   const [view, setView] = useState<'overview' | 'history'>(initialHistory ? 'history' : 'overview')
-  const [category, setCategory] = useState<'practice' | 'mock'>('practice')
+  const tabsId = useId()
+  const tabRefs = useRef<Record<'overview' | 'history', HTMLButtonElement | null>>({
+    overview: null,
+    history: null,
+  })
+  const [selectedCategory, setCategory] = useState<'practice' | 'mock'>('practice')
+  const category = data.provpass.hub.results.length ? selectedCategory : 'practice'
   const [selected, setSelected] = useState<string | null>(null)
   const measured = progress.sections.filter(
     (section) => section.score != null && section.attempts90d > 0,
@@ -32,25 +38,51 @@ export function InstrumentFramsteg({ initialHistory = false }: { initialHistory?
         <h1 tabIndex={-1}>Framsteg</h1>
         <p>Avläs underlaget. Välj nästa övning.</p>
       </header>
-      <fieldset className="in-pass-controls in-view-switch" aria-label="Visa framsteg">
-        <button
-          type="button"
-          className="in-btn2"
-          aria-pressed={view === 'overview'}
-          onClick={() => setView('overview')}
-        >
-          Översikt
-        </button>
-        <button
-          type="button"
-          className="in-btn2"
-          aria-pressed={view === 'history'}
-          onClick={() => setView('history')}
-        >
-          Historik
-        </button>
-      </fieldset>
-      <div hidden={view !== 'overview'}>
+      <div className="in-pass-controls in-view-switch" role="tablist" aria-label="Visa framsteg">
+        {(['overview', 'history'] as const).map((tab) => (
+          <button
+            key={tab}
+            ref={(node) => {
+              tabRefs.current[tab] = node
+            }}
+            type="button"
+            role="tab"
+            id={`${tabsId}-${tab}-tab`}
+            aria-controls={`${tabsId}-${tab}-panel`}
+            aria-selected={view === tab}
+            tabIndex={view === tab ? 0 : -1}
+            className="in-btn2"
+            onClick={() => setView(tab)}
+            onKeyDown={(event) => {
+              if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return
+              const next =
+                event.key === 'Home'
+                  ? 'overview'
+                  : event.key === 'End'
+                    ? 'history'
+                    : event.key === 'ArrowLeft' || event.key === 'ArrowRight'
+                      ? tab === 'overview'
+                        ? 'history'
+                        : 'overview'
+                      : null
+              if (!next) return
+              event.preventDefault()
+              setView(next)
+              tabRefs.current[next]?.focus()
+            }}
+          >
+            {tab === 'overview' ? 'Översikt' : 'Historik'}
+          </button>
+        ))}
+      </div>
+      <div
+        role="tabpanel"
+        id={`${tabsId}-overview-panel`}
+        aria-labelledby={`${tabsId}-overview-tab`}
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: Tab reaches the selected panel's introductory content
+        tabIndex={0}
+        hidden={view !== 'overview'}
+      >
         <section className="in-directory" aria-label="Prognos och delprov">
           <div className="in-hub-lead in-progress-readout" data-testid="rd-framsteg-prognosis">
             <div className="in-queue-readouts">
@@ -213,10 +245,14 @@ export function InstrumentFramsteg({ initialHistory = false }: { initialHistory?
         </section>
       </div>
       <section
+        role="tabpanel"
+        id={`${tabsId}-history-panel`}
+        aria-labelledby={`${tabsId}-history-tab`}
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: Tab reaches the selected panel's introductory content
+        tabIndex={0}
         hidden={view !== 'history'}
         data-testid="rd-framsteg-history"
         className="in-directory in-history"
-        aria-label="Historik"
       >
         <h2 className="in-cell-head">Avslutade pass</h2>
         {data.provpass.hub.results.length ? (

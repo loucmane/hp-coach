@@ -251,7 +251,9 @@ export function InstrumentProvRunning({
         (q.prompt || q.passage) &&
         (q.section !== 'DTK' || q.figure),
     )
-  const expired = run.passId === passId && run.remainingSeconds <= 0
+  // Only recovery of an already-expired snapshot is voided. Once entered,
+  // provider countdown updates must leave the runner's hand-in deadline alive.
+  const [expired] = useState(() => run.passId === passId && run.remainingSeconds <= 0)
   if (run.passId !== passId || !complete || expired)
     return (
       <div className="in-done">
@@ -284,9 +286,8 @@ function PassRunner({
   onExit: () => void
 }) {
   const { data, actions } = useDirectionData()
-  const [current, setCurrent] = useState(
-    Math.max(0, Math.min(run.current, run.questions.length - 1)),
-  )
+  const [selectedIndex, setCurrent] = useState(run.current)
+  const current = Math.max(0, Math.min(selectedIndex, run.questions.length - 1))
   const [answers, setAnswers] = useState({ ...run.answers })
   const [flags, setFlags] = useState(run.flags ?? [])
   const [confirm, setConfirm] = useState<'exit' | 'submit' | null>(null)
@@ -344,25 +345,23 @@ function PassRunner({
       )
         return
       const target = event.target instanceof Element ? event.target : null
-      if (
-        target?.closest(
-          'button, input, textarea, select, a, summary, dialog, [contenteditable], [data-pass-media], [data-pass-grid]',
-        )
-      )
+      if (target?.closest('dialog[open]')) return
+      const arrow = event.key === 'ArrowLeft' || event.key === 'ArrowRight'
+      // These keys must never reach the bake-off switcher during a run,
+      // including after a click leaves focus on an answer or grid button.
+      if (arrow || /^[0-9]$/.test(event.key)) event.preventDefault()
+      if (target?.closest('input, textarea, select, a, [contenteditable], [data-pass-media]'))
         return
-      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      const option = q.options!.find(
+        (item) => item.letter.toLowerCase() === event.key.toLowerCase(),
+      )
+      if (option) {
         event.preventDefault()
         event.stopPropagation()
+        choose(option.letter)
+      } else if (arrow && !target?.closest('button, summary, [data-pass-grid]')) {
+        event.stopPropagation()
         move(current + (event.key === 'ArrowRight' ? 1 : -1))
-      } else {
-        const option = q.options!.find(
-          (item) => item.letter.toLowerCase() === event.key.toLowerCase(),
-        )
-        if (option) {
-          event.preventDefault()
-          event.stopPropagation()
-          choose(option.letter)
-        }
       }
     }
     window.addEventListener('keydown', key, true)
@@ -371,7 +370,7 @@ function PassRunner({
   const status = (src: string, state: 'ready' | 'error') =>
     setMedia((previous) => (previous[src] === state ? previous : { ...previous, [src]: state }))
   return (
-    <div className="in-pass-running" data-testid="rd-prov-running">
+    <div className="in-pass-running" data-testid="rd-prov-running" data-rd-keyscope>
       <header className="in-pass-runbar">
         <button
           type="button"
@@ -576,7 +575,7 @@ function PassRunner({
           <p>
             {confirm === 'exit'
               ? 'Om du avbryter blir provpasset ogiltigt och får inget resultat. Klockan fortsätter tills du lämnar passet.'
-              : `${unanswered} frågor är obesvarade. Efter inlämning kan du inte ändra svaren.`}
+              : `${unanswered === 0 ? 'Alla frågor är besvarade.' : unanswered === 1 ? '1 fråga är obesvarad.' : `${unanswered} frågor är obesvarade.`} Efter inlämning kan du inte ändra svaren.`}
           </p>
         </PassDialog>
       ) : null}
@@ -728,6 +727,14 @@ function PassImage({
       // biome-ignore lint/a11y/noNoninteractiveTabindex: keyboard scrolling of enlarged source
       tabIndex={0}
       aria-label="Underlag, rulla för att läsa hela figuren"
+      onKeyDown={(event) => {
+        if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
+        // The runner prevents the switcher's arrow defaults in capture phase;
+        // keep horizontal panning explicit within this focused source area.
+        event.preventDefault()
+        event.currentTarget.scrollLeft += event.key === 'ArrowRight' ? 48 : -48
+      }}
     >
       <div
         className="in-pass-image-canvas"
@@ -910,12 +917,11 @@ export function InstrumentProvResult() {
             />
             <p>
               {result.score.derived === 'official-derived'
-                ? 'UHR normerar en halva med 80 frågor. Ett pass med 40 frågor skalas upp; poängen är härledd, inte ett officiellt resultat för det här passet.'
+                ? result.presented > 0
+                  ? `UHR normerar en halva med 80 frågor. Ditt pass med ${result.presented} ${result.presented === 1 ? 'fråga' : 'frågor'} skalas upp; poängen är härledd, inte ett officiellt resultat för det här passet.`
+                  : 'UHR normerar en halva med 80 frågor. Utan frågor går det inte att härleda en poäng.'
                 : 'Linjär skattning — indikativ, inte UHR-normerad.'}
             </p>
-            {result.mode === 'synthetic' && result.half === 'verbal' ? (
-              <p>{data.copy.estimateCaveat}</p>
-            ) : null}
             {result.presented === 0 || result.score.value == null ? (
               <p>Poäng kan inte beräknas med det här underlaget.</p>
             ) : null}

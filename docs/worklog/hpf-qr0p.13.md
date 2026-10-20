@@ -101,3 +101,58 @@ These three SHA-256 values supersede their earlier entries; all other candidate 
 | instrument.css | `59d8843620d29a55a2ed419f60f8b17d46643e51eab212ca0de99e8d8c5f0e39` |
 
 INSTRUMENT2 DONE: hpf-qr0p.13
+
+## Round 2 — review fixes, 2026-10-20
+
+Starting state: clean `f067a51eac43dcc398010401eecf05f147191be4` on the assigned branch. Read the latest Bead DESIGN, the cross-vendor review probes at `/home/loucmane/scratch/hpf-qr0p.13-review/probe.test.tsx`, the B0 screens 9–11 specification and kit countdown mapping. No molecule controls this item. The prior review remains HOLD at `c8b6eb2e710199d6c4070199346effe3fa57d18b`; this uncommitted fix candidate needs a fresh independent review.
+
+Paths in the following table are relative to `app/src/components/devbake/redesign/b-instrument/`.
+
+| Finding | Fix | Red-first regression in `Instrument.test.tsx` |
+| --- | --- | --- |
+| P2-1: switcher keys abandon an active pass | `InstrumentProvpass.tsx:350` prevents the unmodified arrow/digit defaults before checking control targets; `:373` marks the whole run `data-rd-keyscope`. Heading/body arrows still move between questions, while buttons/grid retain their local semantics. | `:378`: real `Redesign2026Bakeoff` with its real provider and selection state; focused answer, grid, heading and body; both arrows, 1, 8, 9 and 0. Red calls changed screen to 10 or direction to A; green keeps selection unchanged. |
+| P2-2: provider countdown zero voids a live run | `InstrumentProvpass.tsx:256` captures expiry once when the keyed run is entered. Later provider renders retain the runner and its original wall-clock deadline. Existing initially-expired recovery behavior remains covered. | `:401`: start at three seconds, advance wall time, rerender the provider at zero before the interval fires, then assert exactly one submission, retained answer, disabled hand-in control and no voided screen. Further provider renders/ticks cannot resubmit. Red made zero submission calls. |
+| P3: shrinking question list crashes | `InstrumentProvpass.tsx:290` clamps the index for every render, including the question, navigator, position and previous/next actions. | `:428`: select the final question, shrink the same pass's questions/grid/source count, then verify the new final question, answer and previous navigation. Red threw on `q.figure`. |
+| P3: answer letters stop after focus moves to a button | `InstrumentProvpass.tsx:355` resolves answer letters before the button/grid arrow exclusions, retaining dialog/media ownership. | `:462`: A–E on a NOG question from an answer button and a grid button; selection changes without moving focus or question. Both cases were red. |
+| P3: zero/singular unanswered copy | `InstrumentProvpass.tsx:578` uses all-answered, singular and plural messages. All new wording remains proposed. | `:484`: 0, 1 and 2 unanswered questions; 0/1 were red and the plural case was a passing control. |
+| P3: hard-coded 40-question normering explanation | `InstrumentProvpass.tsx:921` names the actual presented count, with a zero-underlay explanation instead of scaling zero questions. | `:498`: partial 39-question source names 39 and does not claim 40. Existing zero-denominator regression remains green. |
+| P3: progress switch lacks tab semantics | `InstrumentFramsteg.tsx:41` provides linked tablist/tab/tabpanel roles, selected state, roving focus and wrapping arrows plus Home/End. `instrument.css:3776` preserves the selected visual treatment for `aria-selected`. | `:517`: real bake-off host, active/hidden panel, IDs/labels, roving focus, arrow wrap, Home/End and click activation without changing host selection. Red could not find a tablist. Existing Home → Historik → primary overview checks now assert tab semantics. |
+| P3: selected mock category hides practice after mock results disappear | `InstrumentFramsteg.tsx:22` derives practice as the active category whenever mock results are absent. | `:552`: remove mock results while selected, with populated and empty practice histories. Both red cases stranded the mock panel; green displays practice or its empty state. |
+| P3: guessed P5 calibration caveat | Removed the mode/half-based caveat branch from `InstrumentProvpass.tsx:917`. Only supplied score provenance remains. | `:507`: a generated verbal result does not imply the P5 caveat; the linear-score explanation remains. Red rendered the guessed caveat. |
+
+### Keyboard panning preservation
+
+The stricter capture guard also prevents the browser's default horizontal scrolling in an inline figure. `InstrumentProvpass.tsx:730` now handles that local pan explicitly, without changing answers or the current question. The real-host regression at `Instrument.test.tsx:350` failed with an unchanged scroll offset before this addition, then passed with both horizontal directions. Expanded-dialog behavior and ordinary vertical scrolling remain available; the existing media/dialog safeguard passes.
+
+### Verification
+
+- Red-first review cases against the unchanged production code: **15 failed, 1 passed, 103 skipped**. The initial attempt exposed a jsdom setup issue (zero viewport dimensions); the meaningful red run above followed adding/restoring dimension spies so the real lazy stage mounts. The reviewer findings then reproduced directly through the host.
+- First green full app run: **1,775 passed / 107 files**. After the additional red-first panning regression and fix, the final full `pnpm test` passed **1,776 tests / 107 files**, including all **120 Instrument tests** and **17 new cases**. Exit status 0.
+- Final `pnpm typecheck`: **PASS**, exit 0.
+- Final `pnpm lint`: **PASS**, 486 files, exit 0; four existing informational findings in unrelated LandingBakeoff/M3 files, none in this change.
+- `git --no-optional-locks diff --check`: **PASS**. Four source/test/CSS files plus this worklog changed, all within the admitted write set. No dependency or shared-kit changes.
+- Browser screenshots/native focus and physical scroll behavior were not rerun in this managed sandbox; the prior loopback `EPERM` limitation remains recorded above. Coordinator runs those checks on the host. No browser verification or new independent-review PASS is claimed.
+
+### Spec gaps
+
+- B0 screen 10 score copy requests a calibration caveat when the estimate actually contains uncalibrated P5 LÄS/ELF data. `ProvResultView` has no calibration/provenance flag or result-specific caveat to establish that condition. A generated verbal pass is insufficient evidence. Kit owner must supply that information before the result view can display the caveat conditionally; this fix removes the guess. The separate provider-supplied progress prognosis caveat is unchanged.
+
+### Playbook proposal
+
+- Playbook-proposal — astra-relay — 2026-10-20: the real redesign bake-off mounted no stage in jsdom despite `stubLayout()`, making keyboard regressions fail before reaching the interaction. Cause: its stage waits for nonzero `clientWidth`/`clientHeight`, which the shared stub does not supply. Rule: stub and restore those dimensions and await the real lazy stage in host integration tests; do not replace the host listener with a copied implementation. Also verify local scrolling when capture handlers cancel arrow defaults, since jsdom does not perform native key scrolling. The proposal is retained here and in the classified worklog because this worker's actual writable roots exclude `~/scratch/skill-gotchas/`; coordinator relay is required.
+
+### Candidate and handoff
+
+- HEAD is still `f067a51eac43dcc398010401eecf05f147191be4`; all Round 2 changes are uncommitted. Coordinator owns host browser validation, the fresh independent Claude review, signing and delivery. The bead will be parked deferred/unassigned after the completion note, then the worker drains. Do not close as shipped from this implementation evidence alone.
+- SHA-256 fingerprints of the final source candidate (same directory prefix as above):
+
+| File | SHA-256 |
+| --- | --- |
+| `InstrumentProvpass.tsx` | `66abf34ff14e0028927f3df797ee67b932fecdb1ece9a174de8b3eb870296993` |
+| `InstrumentFramsteg.tsx` | `0bb2f3b669e27e71e729ce3960809219d2e6a3228a00cab2dc1eaaff55197c06` |
+| `Instrument.test.tsx` | `058fa96c37b33f9d98b175a63879e7d0f642db4688c6ef2b862d5b2226760ed4` |
+| `instrument.css` | `2c682b9a068816c5bb13d165566bebc81d9df71be0db5e04e7d5e57b3abe6492` |
+
+- Handoff confirmation: the Round 2 completion note was appended and read back; native Beads now reports **DEFERRED**, with assignee cleared. Final drain acknowledgement follows.
+
+INSTRUMENT2R2 DONE: hpf-qr0p.13
