@@ -3007,13 +3007,12 @@ describe('Folio+ · Konto’s Färg recolours the book', () => {
   })
   afterEach(() => vi.restoreAllMocks())
 
-  it('opens on Spalt, Folio’s own colours, and a pick takes the whole direction', async () => {
+  it('opens on Spalt, the app’s own palette, and a pick takes the whole direction', async () => {
     mountHost(13)
     const spalt = await screen.findByTestId('rd-konto-palette-spalt', {}, { timeout: 5000 })
     const root = screen.getByTestId('rd-folio-plus')
     expect(spalt).toHaveAttribute('aria-pressed', 'true')
     expect(root).toHaveAttribute('data-palette', 'spalt')
-    expect(screen.getByText('Spalt är Folios egna färger.')).toBeInTheDocument()
     fireEvent.click(screen.getByTestId('rd-konto-palette-sage'))
     expect(root).toHaveAttribute('data-palette', 'sage')
     expect(screen.getByTestId('rd-konto-palette-sage')).toHaveAttribute('aria-pressed', 'true')
@@ -3023,15 +3022,14 @@ describe('Folio+ · Konto’s Färg recolours the book', () => {
     expect(screen.getByTestId('rd-folio-plus')).toHaveAttribute('data-palette', 'sage')
   }, 15000)
 
-  it('gives every palette but Spalt its own light and dark tokens', () => {
+  it('gives every palette, Spalt included, its own light and dark tokens', () => {
     const css = readFileSync(
       path.join(process.cwd(), 'src/components/devbake/redesign/i-folio-plus/fpPalette.css'),
       'utf8',
     )
-    for (const p of ['sand', 'sage', 'ink', 'rose']) {
+    for (const p of ['spalt', 'sand', 'sage', 'ink', 'rose']) {
       expect(css).toContain(`[data-palette='${p}']:not([data-theme='dark'])`)
       expect(css).toContain(`[data-theme='dark'][data-palette='${p}']`)
     }
-    expect(css).not.toContain(`[data-palette='spalt']`)
   })
 })

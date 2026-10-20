@@ -250,11 +250,7 @@ export function FolioKonto({
           legend="Färg"
           options={k.options.palette}
           value={prefs.palette}
-          hint={
-            prefs.palette === 'spalt'
-              ? 'Spalt är Folios egna färger.'
-              : 'Papperets ton och accentfärgen, i ljust och mörkt.'
-          }
+          hint="Papperets ton och accentfärgen, i ljust och mörkt."
           error={unsaved === 'palette'}
           swatches
           testId={(key) => `rd-konto-palette-${key}`}
