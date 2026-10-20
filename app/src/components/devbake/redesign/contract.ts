@@ -854,7 +854,12 @@ export function describeDirectionContract(
             if (word) {
               fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
               expect(actions.deleteAccount).not.toHaveBeenCalled()
+              // Any other word is refused too; typing alone deletes nothing.
+              fireEvent.change(word, { target: { value: `${KONTO_DELETE_WORD}x` } })
+              fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
+              expect(actions.deleteAccount).not.toHaveBeenCalled()
               fireEvent.change(word, { target: { value: KONTO_DELETE_WORD } })
+              expect(actions.deleteAccount).not.toHaveBeenCalled()
             }
             fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
             expect(actions.deleteAccount).toHaveBeenCalled()
