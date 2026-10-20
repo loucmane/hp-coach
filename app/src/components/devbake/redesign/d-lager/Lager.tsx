@@ -18,7 +18,15 @@
 // blurring the page behind it.
 
 import { BookOpen, ChartLine, ChevronRight, PenLine, Sun, Timer, UserRound } from 'lucide-react'
-import { type ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import {
+  type ReactNode,
+  type RefObject,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 
 import './lager.css'
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
@@ -29,15 +37,16 @@ import {
   type ThemeKey,
   useDismiss,
   useWebFonts,
-  type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
 import { LagerDrill } from './LagerDrill'
 import { LagerFramsteg } from './LagerFramsteg'
 import { LagerHome } from './LagerHome'
+import { type AccountSection, LagerKonto } from './LagerKonto'
 import { LagerOva } from './LagerOva'
 import { LagerProvpass, LagerProvResult, LagerProvRunner } from './LagerProvpass'
 import { LagerQuant } from './LagerQuant'
 import { LagerRepetera } from './LagerRepetera'
+import { LagerUppslag } from './LagerUppslag'
 
 const FONTS =
   'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,100..900,0..100;1,9..144,100..900,0..100&family=Inter:opsz,wght@14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap'
@@ -64,14 +73,14 @@ export function Lager(props: DirectionProps) {
   const scrollPositions = useRef(new Map<string, number>())
   // The field drains while reading and warms back when the text is done.
   const [doneWarm, setDoneWarm] = useState(false)
-  const drill = [2, 3, 6, 7].includes(props.screen) || running
+  const drill = [2, 3, 6, 7, 14].includes(props.screen) || running
   return (
     <div
       data-rd="lager"
       data-theme={props.theme}
       data-width={props.width}
       data-live={String(props.live)}
-      data-mood={drill && !doneWarm ? 'calm' : 'warm'}
+      data-mood={(drill && !doneWarm) || props.screen === 12 ? 'calm' : 'warm'}
       data-testid="rd-lager"
       lang="sv"
     >
@@ -116,6 +125,8 @@ type AccountProps = {
   close: () => void
   theme: ThemeKey
   onTheme: (t: ThemeKey) => void
+  openPage: (section: AccountSection) => void
+  trigger: RefObject<HTMLButtonElement | null>
 }
 
 function LagerFrame({
@@ -139,6 +150,9 @@ function LagerFrame({
   // Screen 4 shows the chrome's other state: menu open, and on desktop the
   // page scrolled a little, which is what shrinks the dock.
   const [menu, setMenu] = useState(screen === 4)
+  const [accountSection, setAccountSection] = useState<AccountSection | null>(null)
+  const consumeAccountSection = useCallback(() => setAccountSection(null), [])
+  const previousDestination = useRef<Destination>('idag')
   const [scrolled, setScrolled] = useState(false)
   const destination: Destination =
     screen === 5 || screen === 8
@@ -147,15 +161,23 @@ function LagerFrame({
         ? 'provpass'
         : screen === 11
           ? 'framsteg'
-          : 'idag'
+          : screen === 12
+            ? 'uppslag'
+            : screen === 13
+              ? previousDestination.current
+              : 'idag'
+  if (screen !== 13) previousDestination.current = destination
   const [dest, setDest] = useState<Destination>(destination)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const accountTrigger = useRef<HTMLButtonElement>(null)
   const scrollKey =
-    screen === 8 && dest === 'ova'
-      ? 'repetera'
-      : screen === 10 && dest === 'provpass'
-        ? 'resultat'
-        : dest
+    screen === 13
+      ? 'konto'
+      : screen === 8 && dest === 'ova'
+        ? 'repetera'
+        : screen === 10 && dest === 'provpass'
+          ? 'resultat'
+          : dest
   useEffect(() => {
     setMenu(screen === 4)
     setDest(destination)
@@ -184,8 +206,23 @@ function LagerFrame({
     },
     [actions],
   )
-  const closeMenu = useCallback(() => setMenu(false), [])
-  const account: AccountProps = { open: menu, setOpen: setMenu, close: closeMenu, theme, onTheme }
+  const closeMenu = useCallback(() => {
+    setMenu(false)
+    accountTrigger.current?.focus()
+  }, [])
+  const account: AccountProps = {
+    open: menu,
+    setOpen: setMenu,
+    close: closeMenu,
+    theme,
+    onTheme,
+    trigger: accountTrigger,
+    openPage: (section) => {
+      setAccountSection(section)
+      setMenu(false)
+      actions.openKonto()
+    },
+  }
   const phone = width === 'phone'
 
   const onScroll = (e: { currentTarget: HTMLElement }) => {
@@ -195,7 +232,17 @@ function LagerFrame({
 
   const corner = phone ? <AccountTrigger {...account} glass /> : null
   const page =
-    dest === 'idag' ? (
+    screen === 13 ? (
+      <LagerKonto
+        width={width}
+        live={live}
+        account={corner}
+        theme={theme}
+        section={accountSection}
+        onSectionHandled={consumeAccountSection}
+        onBack={() => go(previousDestination.current)}
+      />
+    ) : dest === 'idag' ? (
       <LagerHome
         width={width}
         live={live}
@@ -228,7 +275,7 @@ function LagerFrame({
     ) : dest === 'framsteg' ? (
       <LagerFramsteg width={width} live={live} account={corner} />
     ) : (
-      <Stub dest={dest} width={width} live={live} account={corner} />
+      <LagerUppslag width={width} live={live} account={corner} />
     )
 
   return (
@@ -321,12 +368,18 @@ function DueBadge() {
   )
 }
 
-function AccountTrigger({ open, setOpen, glass = false }: AccountProps & { glass?: boolean }) {
+function AccountTrigger({
+  open,
+  setOpen,
+  trigger,
+  glass = false,
+}: AccountProps & { glass?: boolean }) {
   return (
     <button
       type="button"
       className={`la-avatar${glass ? ' la-glass' : ''}`}
       data-testid="rd-account"
+      ref={trigger}
       aria-label="Konto och inställningar"
       aria-expanded={open}
       aria-controls="la-account-menu"
@@ -346,7 +399,7 @@ type ThemeChoice = ThemeKey | 'system'
  * and plain rows with trailing chevrons. A disclosure of buttons, not a
  * menu role: there is no arrow-key model to promise.
  */
-function MenuItems({ close, theme, onTheme }: AccountProps) {
+function MenuItems({ close, theme, onTheme, openPage }: AccountProps) {
   const { data, actions } = useDirectionData()
   // "System" follows the device; the bake-off itself keeps light/dark.
   const [choice, setChoice] = useState<ThemeChoice>(theme)
@@ -385,33 +438,34 @@ function MenuItems({ close, theme, onTheme }: AccountProps) {
       <MenuItem
         label="Konto"
         onClick={() => {
-          close()
-          actions.openKonto()
+          openPage('konto')
         }}
       />
       <MenuItem
         label="Inställningar"
         onClick={() => {
-          close()
-          actions.openKonto()
+          openPage('settings')
         }}
       />
       <MenuItem
         label="Hjälp"
         onClick={() => {
-          close()
-          actions.openKonto()
+          openPage('help')
         }}
       />
-      <hr className="la-menu-sep" />
-      <MenuItem
-        label="Logga ut"
-        onClick={() => {
-          close()
-          actions.signOut()
-        }}
-        chevron={false}
-      />
+      {data.konto.identity.name || data.konto.identity.email ? (
+        <>
+          <hr className="la-menu-sep" />
+          <MenuItem
+            label="Logga ut"
+            onClick={() => {
+              close()
+              actions.signOut()
+            }}
+            chevron={false}
+          />
+        </>
+      ) : null}
     </>
   )
 }
@@ -475,44 +529,5 @@ function MenuItem({
       <span>{label}</span>
       {chevron ? <ChevronRight size={17} strokeWidth={2} aria-hidden /> : null}
     </button>
-  )
-}
-
-function Stub({
-  dest,
-  width,
-  live,
-  account,
-}: {
-  dest: Destination
-  width: WidthKey
-  live: boolean
-  account: ReactNode
-}) {
-  const d = DESTINATIONS.find((x) => x.id === dest) ?? DESTINATIONS[0]
-  return (
-    <div className={width === 'phone' ? 'la-phome' : undefined}>
-      {width === 'phone' ? (
-        <div className="la-ptop">
-          <span className="la-mark-word">
-            <i aria-hidden />
-            HP-Coach
-          </span>
-          {account}
-        </div>
-      ) : null}
-      <section
-        className={`la-sheet la-stub${live ? ' la-rise' : ''}`}
-        data-depth="2"
-        aria-labelledby="la-stub-h"
-      >
-        <span className="la-chip">{d.label}</span>
-        <h1 id="la-stub-h">{d.label}</h1>
-        <p>{d.blurb}</p>
-        <p className="la-stub-note">
-          Den här sidan byggs i nästa omgång. Dockan och kontot fungerar redan härifrån.
-        </p>
-      </section>
-    </div>
   )
 }
