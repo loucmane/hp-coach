@@ -32,6 +32,10 @@
 // marked in the text. A question without its text, stem or options cannot
 // be answered and offers Till Öva; a figure or option image it needs holds
 // the answer while it loads and stops it if it fails, with a real retry.
+// Each image counts where it is mounted: one the phone's tray mounts anew
+// (the open tray after the peek, the tray folded and opened again) or a
+// later question shows again is waited for again, unless the browser
+// already holds it, while an image that stays on screen keeps its load.
 // A new sitting, or a deck that changes under the drill, opens fresh.
 
 import { ChevronDown, ChevronUp, CircleSlash, Clock, Info, Pilcrow, Undo2, X } from 'lucide-react'
@@ -127,6 +131,10 @@ export type DrillChrome = {
   /** What the answer waits for (a figure it needs, still loading), or
    *  null: said calmly, with no way out, since it passes by itself. */
   waiting: string | null
+  /** Each mounted image is a load of its own (ELF): an option's image the
+   *  tray folds away, or the next question shows again, is waited for
+   *  again where it is mounted anew, unless the browser already holds it. */
+  fresh?: boolean
   /** The way back while the answer cannot be sent ("Till Öva"). */
   out?: { label: string; onClick: () => void }
   /** A passage beside the thread: the action bar names the focus key. */
@@ -271,8 +279,9 @@ export function optionImagesFailed(letters: readonly string[]): string {
 /** The options as replies in your lane, each with its strike control
  *  inside the card. Chosen, an option takes your turn's tint and corner.
  *  Only the letters the question has: four, five, or none. In the quant
- *  drill an option's image reports its load, and one that failed says so
- *  under the options, with a real retry. */
+ *  drill and ELF an option's image reports its load (in ELF each image as
+ *  it is mounted, c.fresh), and one that failed says so under the options,
+ *  with a real retry. */
 export function Options({ c }: { c: DrillChrome }) {
   const { view, act, optionId } = c
   const loads = useContext(FigureLoadsContext)
@@ -310,7 +319,7 @@ export function Options({ c }: { c: DrillChrome }) {
                     Alternativ {o.letter}
                     {out ? ', struket' : ''}:{' '}
                   </span>
-                  <OptionBody option={o} loads={loads} />
+                  <OptionBody option={o} loads={loads} fresh={c.fresh} />
                 </span>
               </button>
               <button
@@ -984,6 +993,7 @@ function ElfDrill({
     optionId: 'rd-option',
     blocked: block && !block.wait ? block.reason : null,
     waiting: block?.wait ? block.reason : null,
+    fresh: true,
     out: { label: 'Till Öva', onClick: toOva },
     focusAid: (passage?.paragraphs.length ?? 0) > 0,
     lastLabel: 'Slutför texten',
@@ -1128,7 +1138,9 @@ function QuestionTurn({ view, ref }: { view: DrillCoreView; ref?: Ref<HTMLElemen
 
 /** A figure in the coach's question, on its paper plate. The answer waits
  *  for it while it loads (readingBlock); if it fails, it says so in place
- *  with a real retry. Another source, or a retry, is a new image. */
+ *  with a real retry. Another source, or a retry, is a new image, and so is
+ *  each image mounted anew (fresh): the peek's figure is waited for again
+ *  in the open tray, unless the browser already holds it. */
 function TurnFigure({ figure, loads }: { figure: DrillFigure; loads: FigureLoads }) {
   const { src } = figure
   if (loads.status(src) === 'error') {
@@ -1149,6 +1161,7 @@ function TurnFigure({ figure, loads }: { figure: DrillFigure; loads: FigureLoads
         alt={figure.alt}
         width={figure.width}
         height={figure.height}
+        fresh
         onStatus={(s) => loads.report(src, s)}
       />
     </figure>

@@ -155,3 +155,59 @@ Commands as the bead asks (never `cd`; the shell's folder is the worktree):
 - Coordinator next: the browser screenshot pass (above), commit, independent cross-vendor review at the exact head, and the Framsteg keyscope follow-up (outside this write set).
 
 SAMTAL3 DONE: hpf-qr0p.26
+
+## Round 2 — review hpf-64dw (HOLD, one P2): ELF image readiness per mounted image
+
+- **Claim.** `gc hook --claim --json` returned `hpf-qr0p.26`, assignee `ci-wisp-hqs580l`, route `hpfetcher/gc.implementation-worker`; `bd show hpf-qr0p.26 --json` matched the id, the status (`in_progress`), the assignee and `gc.routed_to`.
+- **Checkout.** HEAD `38c3fbad3de273f2605ad7a581804a05d7b1b0db` (the batch commit `56719ec` merged with `origin/main`), clean at the start apart from the sandbox's mount placeholders (above). Report read first: `/home/loucmane/scratch/hpf-qr0p.26/review-hpf-64dw.md`.
+
+### The finding
+
+ELF kept readiness per source (`useFigureLoadState`), but `TurnFigure` and `Options` mounted their images without `fresh`. A new, incomplete image therefore reported nothing, and the source's earlier `ready` stood for it. Svara was enabled, and Enter graded, before the image on screen had loaded. This happened on the phone when the open tray replaced the peek's loaded figure, and when the unanswered tray folded and reopened its option images. It also happened at any width when a later question showed an earlier image URL in a new element. On the desktop, the options remount after Facit, and a figure remounts after a question without one.
+
+### The fix (paths under `app/src/components/devbake/redesign/f-samtal/`)
+
+- `SamtalDrill.tsx:1164`: `TurnFigure` mounts its `FigureImg` with `fresh`. Each image mounted anew reports `loading` unless it is already complete. The open tray therefore waits for its own figure, and the next question's peek and tray wait for theirs.
+- `SamtalDrill.tsx:137`: `DrillChrome.fresh?`, opt-in. `Options` passes it to `OptionBody` (`:322`), and `ElfDrill` sets `fresh: true` (`:996`). The quant drill leaves it unset, so its behaviour is unchanged.
+- `SamtalParts.tsx:343`–`:362`: only a mounted image reports. A `mounted` ref is set in the mount layout effect and cleared in its cleanup, and `onLoad`/`onError` go through `say`, which drops a report from an image that has gone. React 19 already ignores a load or error from an element it has removed, so this changes nothing a test can observe (M5 below). The guard states the "older instances never speak" contract in `FigureImg` itself, for every screen that uses it.
+- **Unchanged:**
+  - An image that stays mounted keeps its load. It is not remounted and reports nothing new, e.g. the desktop figure from one question to the next.
+  - An image complete at mount is ready at once (the existing layout-effect check).
+  - A failed figure still needs a real retry: its alert replaces the image, so nothing remounts.
+  - A retry is a new image, as before.
+- Doc comments: `SamtalDrill.tsx` header (`:35`–`:38`), `DrillChrome.fresh` (`:134`–`:136`), `Options` (`:282`–`:284`), `TurnFigure` (`:1141`–`:1143`); `SamtalParts.tsx` header (`:15`–`:17`), `FigureImg` (`:341`–`:342`).
+
+### Red-first tests (`Samtal.test.tsx:3829`, "ELF waits for each image where it is mounted (review hpf-64dw)")
+
+- **phone `:3863`.** The question's figure loads in the peek, then the tray opens while its new image is incomplete. Svara is disabled with "Figuren laddas – du kan svara när den syns.", Svara (click) and Enter are refused, and no verdict shows. A load on the peek's old image changes nothing. The new image's load enables Svara, and Enter grades once. **Red on 38c3fba.**
+- **phone `:3889`.** The option images load, the tray folds and opens again, and the images are new elements. The choice is kept (`aria-pressed`). Svara is disabled with "Bilderna till svarsalternativen laddas …", and Enter is refused. Loads on the folded-away images change nothing. With every new image but the last loaded, Svara is still disabled. After the last, it is enabled, and Enter grades once. **Red.**
+- **phone `:3919`.** The next question has the same figure URL. After Nästa, the peek and then the open tray mount it anew, and Svara and Enter refuse until it loads. **Red.**
+- **phone `:3942`, guard.** Images the browser already holds (complete at mount) are ready at once each time the tray mounts them (open, fold, open). Nothing says "laddas", and Enter grades. Green before and after: it guards against over-correction.
+- **desktop `:3967`.** The next question has the same option images. The options remount after Facit, and Svara and Enter refuse until the images load. **Red.**
+- **desktop `:3986`.** The figure that stays on screen into the next question is the same element and keeps its load: Svara is enabled at once. After a question without the figure, it mounts anew and is waited for. **Red** (in the second half).
+- Run on the unchanged source: 5 failed, all at `expect(send()).toBeDisabled()`; 1 passed (the cached-image guard).
+
+**Mutation checks** (each edit made, run on the six tests, then reverted):
+- M1, `TurnFigure` without `fresh`: 3 red (phone peek → open, phone next question, desktop figure after a gap).
+- M2, `ElfDrill` without `fresh: true`: 2 red (phone fold and reopen, desktop next-question options).
+- M3, `TurnFigure` keyed by question (remounts on every question; an over-correction): the desktop "stays on screen keeps its load" test is red.
+- M4, `FigureImg` ignoring the cache when `fresh`: the cached-image guard is red.
+- M5, `FigureImg` without the `mounted` guard: all six green. React 19 drops events from a removed image; the stale-image assertions in `:3863` and `:3889` pin that behaviour.
+
+### Verification (round 2; the Samtal run came just before the formatting-only fix below, and the full run after it includes those tests)
+
+- `pnpm -C app typecheck`: **PASS**, no output.
+- `pnpm -C app lint`: **PASS**, "Checked 524 files … Found 4 infos." These are the same four pre-existing infos as above, outside the write set. 0 errors, 0 warnings. The first run flagged this round's `FigureImg` return line for formatting; it was reformatted as Biome prints it.
+- `pnpm -C app test src/components/devbake/redesign/f-samtal/`: **568/568 PASS** (562 + 6).
+- `pnpm -C app test`: **Test Files 109 passed (109) · Tests 3319 passed (3319)** (3313 at the merge head + 6).
+- **No shared test failed, and none was edited.** Changed this round: `SamtalDrill.tsx`, `SamtalParts.tsx`, `Samtal.test.tsx` and this worklog, all admitted. `FigureImg`'s guard also covers `SamtalQuant.tsx` and `SamtalProvpass.tsx`, which mount `FigureImg`. Their behaviour is unchanged (React already drops those events), and their suites pass.
+- **Browser self-check: not run** this round (last round's Vite attempt was denied by the permission policy).
+
+### Follow-up outside this write set (seen, not changed)
+
+- `SamtalQuant.tsx` (batch 1, not admitted) keeps readiness per source the same way.
+  - DTK's phone tray (`TrayDrill`) folds and reopens its option images (the eleven pie-chart questions), and its chrome (`:344`) leaves `fresh` unset. A reopened, still-incomplete image can therefore pass on its source's earlier `ready`.
+  - Its `Diagram` (`:680`) can do the same when a later question shows a diagram again after a question without it.
+  - The fix is the same opt-in: `fresh: true` in its chrome and `fresh` on `Diagram`.
+
+SAMTAL3R2 DONE: hpf-qr0p.26

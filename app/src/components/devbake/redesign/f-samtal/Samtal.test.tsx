@@ -49,7 +49,12 @@
 //     English kept English and the coach Swedish, Facit in place, the end,
 //     gap items, missing content, figures that hold the answer and decks
 //     that change; and, through the real host, the switcher's keys from
-//     every focused part of 12, 13 and 14.
+//     every focused part of 12, 13 and 14;
+//   - batch 3's review (hpf-64dw): an image ELF needs is waited for where it
+//     is mounted — the question's figure when the tray opens over the peek,
+//     the options' images when the tray folds and opens again, an earlier
+//     question's image shown again — while an image still on screen keeps
+//     its load and one the browser holds is there at once.
 
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
@@ -3816,6 +3821,205 @@ describe.each(WIDTHS)('F · Samtal, %s: ELF-läsfråga', (width) => {
     )
     key('Enter')
     expect(actions.go).toHaveBeenCalledWith('ova')
+  })
+})
+
+// ── Batch 3's review (hpf-64dw): each image ELF mounts is its own load ──
+
+describe('F · Samtal: ELF waits for each image where it is mounted (review hpf-64dw)', () => {
+  const [q] = D.drills.elf.questions
+  /** A figure in the question, as an ELF item may carry one. */
+  const FIGURE = {
+    src: 'figures/test-elf-figure.svg',
+    alt: 'Figur till frågan',
+    width: 800,
+    height: 600,
+    kind: 'svg',
+  } as const
+  const WAITS_FIGURE = 'Figuren laddas – du kan svara när den syns.'
+  const WAITS_IMAGES = 'Bilderna till svarsalternativen laddas – du kan svara när de syns.'
+
+  /** The fixtures with the ELF sitting holding `questions`. */
+  function elfWith(questions: DrillQuestion[]): DirectionData {
+    const base = fixtureDirectionData()
+    return { ...base, drills: { ...base.drills, elf: { ...base.drills.elf, questions } } }
+  }
+
+  /** The ELF question again as question `n` of a deck, changed by `patch`. */
+  function nth(n: number, patch: Partial<DrillQuestion> = {}): DrillQuestion {
+    return { ...q, qid: `test-elf-image-${n}`, number: n, ...patch }
+  }
+
+  const tray = () => screen.getByTestId('rd-sheet')
+  const figure = () => screen.getByRole('img', { name: FIGURE.alt })
+  const images = () => screen.getAllByRole('img', { name: /^Diagram [A-D]$/ })
+  const send = () => screen.getByTestId('rd-lock')
+  const choose = () => fireEvent.click(screen.getByTestId(`rd-option-${q.answer}`))
+  const openTray = () =>
+    fireEvent.click(within(tray()).getByRole('button', { name: /Välj ett svar/ }))
+  const foldTray = () => fireEvent.click(within(tray()).getByText('Visa texten'))
+
+  describe('phone: the tray mounts its images anew', () => {
+    it('the question’s figure, loaded in the peek, is waited for again in the open tray: Svara and Enter refuse until that image loads', () => {
+      const { actions } = mountWith(elfWith([{ ...q, figure: FIGURE }]), 14, 'phone')
+      const peeked = figure()
+      fireEvent.load(peeked)
+      openTray()
+      expect(tray()).toHaveAttribute('data-state', 'open')
+      const opened = figure()
+      expect(opened).not.toBe(peeked)
+      choose()
+      expect(send()).toBeDisabled()
+      expect(screen.getByText(WAITS_FIGURE)).toBeInTheDocument()
+      fireEvent.click(send())
+      key('Enter')
+      expect(actions.drill.lock).not.toHaveBeenCalled()
+      expect(screen.queryByTestId('rd-verdict')).toBeNull()
+      // The peek's image has gone: what it does now speaks for nothing.
+      fireEvent.load(peeked)
+      expect(send()).toBeDisabled()
+      fireEvent.load(opened)
+      expect(send()).toBeEnabled()
+      expect(screen.queryByText(WAITS_FIGURE)).toBeNull()
+      key('Enter')
+      expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+      expect(screen.getByTestId('rd-verdict')).toBeInTheDocument()
+    })
+
+    it('the options’ images, loaded, folded away with the tray and opened again, are waited for again: Svara and Enter refuse until they load', () => {
+      const { actions } = mountWith(elfWith([withOptionImages(q)]), 14, 'phone')
+      openTray()
+      const before = images()
+      loadImages()
+      choose()
+      expect(send()).toBeEnabled()
+      foldTray()
+      expect(tray()).toHaveAttribute('data-state', 'peek')
+      openTray()
+      const after = images()
+      for (const [i, img] of after.entries()) expect(img).not.toBe(before[i])
+      // The choice is the drill's: it stands, and waits with the images.
+      expect(screen.getByTestId(`rd-option-${q.answer}`)).toHaveAttribute('aria-pressed', 'true')
+      expect(send()).toBeDisabled()
+      expect(screen.getByText(WAITS_IMAGES)).toBeInTheDocument()
+      fireEvent.click(send())
+      key('Enter')
+      expect(actions.drill.lock).not.toHaveBeenCalled()
+      // The folded-away images have gone: their loads speak for nothing.
+      for (const img of before) fireEvent.load(img)
+      expect(send()).toBeDisabled()
+      for (const img of after.slice(0, -1)) fireEvent.load(img)
+      expect(send()).toBeDisabled()
+      fireEvent.load(after[after.length - 1])
+      expect(send()).toBeEnabled()
+      key('Enter')
+      expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+    })
+
+    it('the next question’s figure, the same image as the last one’s, is waited for again where the tray mounts it', () => {
+      const deck = [nth(1, { figure: FIGURE }), nth(2, { figure: FIGURE })]
+      const { actions } = mountWith(elfWith(deck), 14, 'phone')
+      fireEvent.load(figure())
+      openTray()
+      fireEvent.load(figure())
+      choose()
+      key('Enter')
+      expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+      fireEvent.click(screen.getByTestId('rd-next'))
+      expect(tray()).toHaveAttribute('data-state', 'peek')
+      openTray()
+      choose()
+      expect(send()).toBeDisabled()
+      expect(screen.getByText(WAITS_FIGURE)).toBeInTheDocument()
+      key('Enter')
+      expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+      fireEvent.load(figure())
+      expect(send()).toBeEnabled()
+      key('Enter')
+      expect(actions.drill.lock).toHaveBeenCalledTimes(2)
+    })
+
+    it('images the browser already holds are there at once, each time the tray mounts them', () => {
+      const restore = cachedImages()
+      try {
+        const { actions } = mountWith(
+          elfWith([withOptionImages({ ...q, figure: FIGURE })]),
+          14,
+          'phone',
+        )
+        openTray()
+        choose()
+        expect(send()).toBeEnabled()
+        foldTray()
+        openTray()
+        // No load event: complete when they mount, so ready at once.
+        expect(send()).toBeEnabled()
+        expect(screen.queryByText(/laddas/)).toBeNull()
+        key('Enter')
+        expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+      } finally {
+        restore()
+      }
+    })
+  })
+
+  describe('desktop: an image mounted anew is waited for; one still on screen keeps its load', () => {
+    it('the next question’s options, with the same images as the last one’s, are mounted anew: Svara and Enter refuse until their images load', () => {
+      const deck = [withOptionImages(nth(1)), withOptionImages(nth(2))]
+      const { actions } = mountWith(elfWith(deck), 14, 'desktop')
+      loadImages()
+      choose()
+      key('Enter')
+      expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+      fireEvent.click(screen.getByTestId('rd-next'))
+      choose()
+      expect(send()).toBeDisabled()
+      expect(screen.getByText(WAITS_IMAGES)).toBeInTheDocument()
+      key('Enter')
+      expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+      loadImages()
+      expect(send()).toBeEnabled()
+      key('Enter')
+      expect(actions.drill.lock).toHaveBeenCalledTimes(2)
+    })
+
+    it('the question’s figure that stays on screen into the next question keeps its load; shown again after a question without it, it is waited for again', () => {
+      const deck = [
+        nth(1, { figure: FIGURE }),
+        nth(2, { figure: FIGURE }),
+        nth(3, { figure: null }),
+        nth(4, { figure: FIGURE }),
+      ]
+      const { actions } = mountWith(elfWith(deck), 14, 'desktop')
+      const first = figure()
+      fireEvent.load(first)
+      choose()
+      key('Enter')
+      fireEvent.click(screen.getByTestId('rd-next'))
+      // Question 2 shows the same image, never unmounted: still loaded.
+      expect(figure()).toBe(first)
+      choose()
+      expect(send()).toBeEnabled()
+      key('Enter')
+      fireEvent.click(screen.getByTestId('rd-next'))
+      // Question 3 has no figure; question 4 mounts the image anew.
+      expect(screen.queryByRole('img', { name: FIGURE.alt })).toBeNull()
+      choose()
+      key('Enter')
+      fireEvent.click(screen.getByTestId('rd-next'))
+      expect(actions.drill.lock).toHaveBeenCalledTimes(3)
+      const again = figure()
+      expect(again).not.toBe(first)
+      choose()
+      expect(send()).toBeDisabled()
+      expect(screen.getByText(WAITS_FIGURE)).toBeInTheDocument()
+      key('Enter')
+      expect(actions.drill.lock).toHaveBeenCalledTimes(3)
+      fireEvent.load(again)
+      expect(send()).toBeEnabled()
+      key('Enter')
+      expect(actions.drill.lock).toHaveBeenCalledTimes(4)
+    })
   })
 })
 

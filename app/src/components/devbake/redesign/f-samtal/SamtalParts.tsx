@@ -12,8 +12,9 @@
 //   - Dots, DoorIcon, Kbd, Mark — progress, the doors' icons, keys, the logo.
 //   - FigureImg      — a figure's image that says when it is there or has
 //                      failed, a cached one at once; the quant drill holds
-//                      the answer on it (FigureLoadsContext), and so does a
-//                      running Provpass (useFigureLoadState).
+//                      the answer on it (FigureLoadsContext), and so do a
+//                      running Provpass and ELF, each mounted image a load
+//                      of its own (useFigureLoadState, fresh).
 //   - FigurePage, FigurePan, FigureInspector — a printed page (DTK) as a
 //                      document: in a box of its own shape, turned in quarter
 //                      steps, panned by drag or keys, enlarged over the
@@ -337,25 +338,28 @@ type FigureImgProps = Omit<ComponentProps<'img'>, 'ref' | 'onLoad' | 'onError'> 
  *  one too: an image already complete when it mounts reports at once, and
  *  never waits for a load event that has come and gone. Key it by source
  *  and attempt, so another source, or a retry, is a new image, checked
- *  again. */
+ *  again. Only a mounted image speaks: one that has gone (a tray folded, a
+ *  retry in its place) never reports for the image after it. */
 export function FigureImg({ alt, onStatus, fresh = false, ...img }: FigureImgProps) {
   const ref = useRef<HTMLImageElement>(null)
   const report = useRef(onStatus)
   report.current = onStatus
   const freshRef = useRef(fresh)
+  const mounted = useRef(false)
   useLayoutEffect(() => {
+    mounted.current = true
     const el = ref.current
     if (el?.complete && el.naturalWidth > 0) report.current('ready')
     else if (freshRef.current) report.current('loading')
+    return () => {
+      mounted.current = false
+    }
   }, [])
+  const say = (s: FigureStatus) => {
+    if (mounted.current) report.current(s)
+  }
   return (
-    <img
-      ref={ref}
-      alt={alt}
-      {...img}
-      onLoad={() => report.current('ready')}
-      onError={() => report.current('error')}
-    />
+    <img ref={ref} alt={alt} {...img} onLoad={() => say('ready')} onError={() => say('error')} />
   )
 }
 
