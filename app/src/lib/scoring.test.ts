@@ -440,3 +440,245 @@ describe('estimate bases — synthetic answers count, marked uncalibrated', () =
     expect(weeklyBasis({ attempts: 9 })).toEqual({ authentic: 9, synthetic: 0, calibrated: true })
   })
 })
+
+// ── Honest prognosis (hpf-bz6f.4) ──────────────────────────────────
+//
+// The prognosis counts each question's first try only (the worker's
+// firstTry* fields): Repetera retries and changed mock answers no longer
+// inflate it. Its total carries a band, and a week-over-week change is
+// named only when it clears the noise.
+
+import { computeHonestDelta, computeHonestProjected, firstTryStats, scoreBand } from './scoring'
+
+/** Var(2p̂) = 4·p(1−p)/n — the per-section Wald model scoreBand uses. */
+const scoreVar = (p: number, n: number) => (4 * p * (1 - p)) / n
+
+describe('firstTryStats', () => {
+  it('reads the first-try fields in place of every attempt', () => {
+    const st = stats({
+      attempts7d: 12,
+      correct7d: 11,
+      attempts7to14d: 9,
+      correct7to14d: 8,
+      attempts90d: 40,
+      correct90d: 36,
+      firstTry7d: 6,
+      firstTryCorrect7d: 4,
+      firstTry7to14d: 5,
+      firstTryCorrect7to14d: 3,
+      firstTry90d: 20,
+      firstTryCorrect90d: 13,
+      avgTimeMs: 50_000,
+      lastAttemptedAt: 1_700_000_000_000,
+      attemptsToday: 3,
+    })
+    expect(firstTryStats(st)).toEqual({
+      ...st,
+      attempts7d: 6,
+      correct7d: 4,
+      attempts7to14d: 5,
+      correct7to14d: 3,
+      attempts90d: 20,
+      correct90d: 13,
+    })
+  })
+
+  it('an older worker sends no first-try fields: every attempt counts, as before', () => {
+    const st = stats({ attempts90d: 40, correct90d: 36 })
+    expect(firstTryStats(st)).toEqual(st)
+  })
+})
+
+describe('computeHonestProjected', () => {
+  const ORD = stats({ attempts90d: 50, correct90d: 45, firstTry90d: 20, firstTryCorrect90d: 12 })
+  const LAS = stats({ attempts90d: 30, correct90d: 27, firstTry90d: 10, firstTryCorrect90d: 8 })
+  const KVA = stats({ attempts90d: 40, correct90d: 36, firstTry90d: 25, firstTryCorrect90d: 10 })
+
+  it('projects first tries, not every attempt, section → half → total', () => {
+    // Every attempt reads 1,8 in each section; first tries read 1,2 / 1,6 / 0,8.
+    const p = computeHonestProjected({ ORD, LÄS: LAS, KVA })
+    expect(p.verbal).toBeCloseTo((1.2 + 1.6) / 2, 12)
+    expect(p.quant).toBeCloseTo(0.8, 12)
+    expect(p.total).toBeCloseTo(1.1, 12)
+    expect(
+      computeProjected([
+        computeSectionScore('ORD', ORD),
+        computeSectionScore('LÄS', LAS),
+        computeSectionScore('KVA', KVA),
+      ]).total,
+    ).toBeCloseTo(1.8, 12)
+  })
+
+  it('bands the total by pooling the per-section Wald variances', () => {
+    const p = computeHonestProjected({ ORD, LÄS: LAS, KVA })
+    // A half is the mean of its k sections: Var = ΣVar(sᵢ)/k². The total is
+    // the mean of the two halves: Var = (Var(V) + Var(Q))/4.
+    const verbal = (scoreVar(0.6, 20) + scoreVar(0.8, 10)) / 4
+    const quant = scoreVar(0.4, 25)
+    expect(p.band).toBeCloseTo(1.96 * Math.sqrt((verbal + quant) / 4), 12)
+    // The per-section term is exactly scoreBand's model.
+    expect(1.96 * Math.sqrt(scoreVar(0.6, 20))).toBeCloseTo(scoreBand(1.2, 20) ?? Number.NaN, 12)
+  })
+
+  it('floors p like scoreBand, so a perfect section still widens the band', () => {
+    const p = computeHonestProjected({
+      ORD: stats({ attempts90d: 30, correct90d: 30, firstTry90d: 30, firstTryCorrect90d: 30 }),
+      KVA: stats({ attempts90d: 30, correct90d: 0, firstTry90d: 30, firstTryCorrect90d: 0 }),
+    })
+    const floored = scoreVar(0.05, 30)
+    expect(p.band).toBeCloseTo(1.96 * Math.sqrt((floored + floored) / 4), 12)
+  })
+
+  it('a section with one first try pools at the worst case, p(1−p) = 1/4', () => {
+    const p = computeHonestProjected({
+      ORD: stats({ attempts90d: 9, correct90d: 9, firstTry90d: 1, firstTryCorrect90d: 1 }),
+      KVA,
+    })
+    // One answer has no Wald interval of its own…
+    expect(scoreBand(2, 1)).toBeNull()
+    // …and must not read as the certainty of a lucky 1 of 1.
+    expect(p.band).toBeCloseTo(1.96 * Math.sqrt((4 * 0.25 + scoreVar(0.4, 25)) / 4), 12)
+  })
+
+  it('no total, no band', () => {
+    expect(computeHonestProjected({ ORD })).toEqual({
+      verbal: expect.closeTo(1.2, 12),
+      quant: null,
+      total: null,
+      band: null,
+    })
+    expect(computeHonestProjected({})).toEqual({
+      verbal: null,
+      quant: null,
+      total: null,
+      band: null,
+    })
+  })
+
+  it('a section with retries only has no honest score', () => {
+    const p = computeHonestProjected({
+      ORD: stats({ attempts90d: 30, correct90d: 30, firstTry90d: 0, firstTryCorrect90d: 0 }),
+      LÄS: LAS,
+      KVA,
+    })
+    expect(p.verbal).toBeCloseTo(1.6, 12)
+    expect(p.band).toBeCloseTo(1.96 * Math.sqrt((scoreVar(0.8, 10) + scoreVar(0.4, 25)) / 4), 12)
+  })
+
+  it('an older worker without first-try fields projects every attempt, as before', () => {
+    const p = computeHonestProjected({
+      ORD: stats({ attempts90d: 20, correct90d: 12 }),
+      KVA: stats({ attempts90d: 25, correct90d: 10 }),
+    })
+    expect(p.total).toBeCloseTo(1.0, 12)
+  })
+})
+
+describe('computeHonestDelta — a week-over-week change only beyond the noise', () => {
+  it('names a change that clears the combined uncertainty of the two weeks', () => {
+    const d = computeHonestDelta({
+      ORD: stats({
+        firstTry7d: 100,
+        firstTryCorrect7d: 80,
+        firstTry7to14d: 100,
+        firstTryCorrect7to14d: 50,
+      }),
+    })
+    // 2·0,80 − 2·0,50 = +0,6 against 1,96·√(4·0,8·0,2/100 + 4·0,5·0,5/100) ≈ 0,25.
+    expect(d).toEqual({
+      kind: 'change',
+      delta: expect.closeTo(0.6, 12),
+      band: expect.closeTo(1.96 * Math.sqrt(scoreVar(0.8, 100) + scoreVar(0.5, 100)), 12),
+    })
+  })
+
+  it('a drop is a change too', () => {
+    const d = computeHonestDelta({
+      KVA: stats({
+        firstTry7d: 100,
+        firstTryCorrect7d: 50,
+        firstTry7to14d: 100,
+        firstTryCorrect7to14d: 80,
+      }),
+    })
+    expect(d).toMatchObject({ kind: 'change', delta: expect.closeTo(-0.6, 12) })
+  })
+
+  it('is stable — no figure at all — when the change is inside the noise', () => {
+    // The "+0,1 sedan förra veckan" case: 2·0,75 − 2·0,70 = +0,1 against ≈ 0,55.
+    const d = computeHonestDelta({
+      ORD: stats({
+        firstTry7d: 20,
+        firstTryCorrect7d: 15,
+        firstTry7to14d: 20,
+        firstTryCorrect7to14d: 14,
+      }),
+    })
+    expect(d).toEqual({
+      kind: 'stable',
+      band: expect.closeTo(1.96 * Math.sqrt(scoreVar(0.75, 20) + scoreVar(0.7, 20)), 12),
+    })
+    expect(d).not.toHaveProperty('delta')
+  })
+
+  it('is stable when only the rounded figure would sit inside the noise', () => {
+    // 2·0,57 − 2·0,50 = 0,14 clears a band of ≈ 0,123, but it would show as
+    // "+0,1", a figure smaller than the noise.
+    const d = computeHonestDelta({
+      ORD: stats({
+        firstTry7d: 500,
+        firstTryCorrect7d: 285,
+        firstTry7to14d: 500,
+        firstTryCorrect7to14d: 250,
+      }),
+    })
+    const band = 1.96 * Math.sqrt(scoreVar(0.57, 500) + scoreVar(0.5, 500))
+    expect(0.14).toBeGreaterThan(band)
+    expect(0.1).toBeLessThan(band)
+    expect(d).toEqual({ kind: 'stable', band: expect.closeTo(band, 12) })
+  })
+
+  it('reads first tries: Repetera retries no longer manufacture a rise', () => {
+    const bySection = {
+      ORD: stats({
+        attempts7d: 100,
+        correct7d: 95,
+        attempts7to14d: 100,
+        correct7to14d: 50,
+        firstTry7d: 40,
+        firstTryCorrect7d: 24,
+        firstTry7to14d: 40,
+        firstTryCorrect7to14d: 24,
+      }),
+    }
+    // Counting every attempt, the same week read +0,9.
+    expect(computeProjectedDelta(bySection)).toBeCloseTo(0.9, 12)
+    expect(computeHonestDelta(bySection)).toMatchObject({ kind: 'stable' })
+  })
+
+  it('pools only sections where both weeks clear the floor; none → null', () => {
+    expect(
+      computeHonestDelta({
+        ORD: stats({
+          firstTry7d: 10,
+          firstTryCorrect7d: 8,
+          firstTry7to14d: 2,
+          firstTryCorrect7to14d: 1,
+        }),
+      }),
+    ).toBeNull()
+    expect(computeHonestDelta({})).toBeNull()
+    // KVA (this week only) must not drag the pooled weeks.
+    expect(
+      computeHonestDelta({
+        ORD: stats({
+          firstTry7d: 100,
+          firstTryCorrect7d: 80,
+          firstTry7to14d: 100,
+          firstTryCorrect7to14d: 50,
+        }),
+        KVA: stats({ firstTry7d: 50, firstTryCorrect7d: 0, firstTry7to14d: 0 }),
+      }),
+    ).toMatchObject({ kind: 'change', delta: expect.closeTo(0.6, 12) })
+  })
+})

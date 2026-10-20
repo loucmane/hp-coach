@@ -49,7 +49,9 @@ export type Stats = {
   timeMsToday?: number
   /** Per-section rolling-90d aggregates that feed lib/scoring.ts.
    *  Worker computes these from raw attempts; the SPA computes the
-   *  derived score / trend / weakness ranking in lib/scoring.ts. */
+   *  derived score / trend / weakness ranking in lib/scoring.ts. Each
+   *  section also carries its FIRST-TRY counts (firstTry90d and the rest,
+   *  hpf-bz6f.4), which the honest prognosis reads. */
   bySection: Record<Section, SectionStats>
   /** 12-week rolling buckets, oldest first. Drives the trend chart. */
   weekly: WeeklyBucket[]
@@ -79,7 +81,9 @@ export function useStats() {
   return useQuery({
     queryKey: STATS_KEY,
     queryFn: async (): Promise<Stats> => {
-      const res = await api.api.me.stats.$get()
+      // firstTry=1 adds the first-try counts. They are opt-in on the worker
+      // so its default body stays exactly what the assessment golden pins.
+      const res = await api.api.me.stats.$get({ query: { firstTry: '1' } })
       if (!res.ok) {
         throw new Error(`GET /api/me/stats failed: ${res.status}`)
       }

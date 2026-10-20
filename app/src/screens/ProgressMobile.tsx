@@ -6,7 +6,10 @@
 //              delta, volume, accuracy, streak, halves comparison and
 //              which sections carry the gap to 1,8. Every clause is
 //              data-gated so a sparse week degrades to shorter prose,
-//              never to fabricated numbers.
+//              never to fabricated numbers. The hero is the honest
+//              prognosis (hpf-bz6f.4): first tries only, said once in a
+//              quiet line, and a week change named only beyond the
+//              noise ("stabil, inom felmarginalen" otherwise).
 //   12 V       prognosis sparkline against the 1,8 goal line, from
 //              the rolling weekly buckets.
 //   SEKTIONER  every section as a flat ledger row (home-trap idiom):
@@ -32,10 +35,12 @@ import { ConsistencyHeat } from '@/components/progress/ConsistencyHeat'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
 import {
-  computeProjected,
-  computeProjectedDelta,
+  computeHonestDelta,
+  computeHonestProjected,
   computeSectionScore,
   formatDeltaSv,
+  type HonestDelta,
+  honestSectionScores,
   rankWeakness,
   type SectionScore,
   scoreBand,
@@ -58,6 +63,9 @@ type ProgressMobileProps = {
 
 const RETRY_LINE = 'Gick inte att hämta just nu — försöker igen automatiskt.'
 
+/** Said once, quietly, under the hero's paragraph (hpf-bz6f.4). */
+const FIRST_TRY_NOTE = 'Prognosen räknar bara första försöket på varje fråga, inte repetitioner.'
+
 /** `1,41` — two-decimal Swedish comma form. /progress is the page
  *  where precision matters (the home compass rounds to one). */
 function fmtSv(score: number | null): string {
@@ -72,6 +80,8 @@ export function ProgressMobile({ stats, loading, error }: ProgressMobileProps) {
   const sitting = useSitting()
   const erroredNoData = error === true && stats == null
 
+  // Every attempt — the Sektioner ledger and Fokus (rankWeakness, which
+  // the scheduler shares) still read these.
   const scores: SectionScore[] = useMemo(
     () =>
       stats?.bySection
@@ -79,8 +89,14 @@ export function ProgressMobile({ stats, loading, error }: ProgressMobileProps) {
         : [],
     [stats],
   )
-  const projected = stats ? computeProjected(scores) : null
-  const delta = stats ? computeProjectedDelta(stats.bySection) : null
+  // The hero reads first tries only: the prognosis, its week change, and
+  // the section scores its paragraph names.
+  const honestScores: SectionScore[] = useMemo(
+    () => (stats?.bySection ? honestSectionScores(stats.bySection) : []),
+    [stats],
+  )
+  const projected = stats ? computeHonestProjected(stats.bySection) : null
+  const delta = stats ? computeHonestDelta(stats.bySection) : null
   const weak = stats ? rankWeakness(scores).slice(0, 3) : []
   // How many sections actually carry a signal — the Fokus copy must not
   // claim "lägsta sektionen" when there is nothing to compare against.
@@ -140,7 +156,7 @@ export function ProgressMobile({ stats, loading, error }: ProgressMobileProps) {
                   stats={stats}
                   projected={projected}
                   delta={delta}
-                  scores={scores}
+                  scores={honestScores}
                 />
               </SkriftLine>
             )}
@@ -399,7 +415,8 @@ function NarvaroRules() {
 //
 // Composes the hero paragraph from live data, clause by clause. Every
 // clause has a presence condition; the sentence contracts gracefully
-// instead of printing null-shaped filler.
+// instead of printing null-shaped filler. `projected`, `delta` and
+// `scores` are the honest, first-try numbers (hpf-bz6f.4).
 
 function PrognosParagraph({
   stats,
@@ -409,7 +426,7 @@ function PrognosParagraph({
 }: {
   stats: Stats | undefined
   projected: { verbal: number | null; quant: number | null; total: number | null } | null
-  delta: number | null
+  delta: HonestDelta | null
   scores: SectionScore[]
 }) {
   if (!stats) return null
@@ -443,19 +460,20 @@ function PrognosParagraph({
     )
   }
 
-  // Sentence 1 — the week: delta + volume + accuracy + streak.
+  // Sentence 1 — the week: delta + volume + accuracy + streak. A change
+  // inside the noise is "stable" and carries no figure.
   const week = stats.attempts.thisWeek
   const acc = stats.accuracy7d
   const streak = stats.streakDays
-  const deltaRounded = delta == null ? null : Math.round(delta * 10) / 10
+  const change = delta?.kind === 'change' ? delta.delta : null
   const lead =
-    deltaRounded == null
+    delta == null
       ? 'Den här veckan'
-      : deltaRounded > 0
-        ? 'Prognosen steg '
-        : deltaRounded < 0
-          ? 'Prognosen föll '
-          : 'Prognosen låg still den här veckan'
+      : change == null
+        ? 'Prognosen är stabil, inom felmarginalen'
+        : change > 0
+          ? 'Prognosen steg '
+          : 'Prognosen föll '
   const tailBits: string[] = []
   if (week > 0) {
     tailBits.push(
@@ -507,19 +525,24 @@ function PrognosParagraph({
     ) : null
 
   return (
-    <Paragraph data-testid="progress-prose">
-      {lead}
-      {deltaRounded != null && deltaRounded !== 0 && <Strong>{formatDeltaSv(deltaRounded)}</Strong>}
-      {deltaRounded != null && deltaRounded !== 0 && ' den här veckan'}
-      {tail && (deltaRounded == null ? ': ' : ' — ')}
-      {tail}.{' '}
-      {halves != null && (
-        <>
-          {halves}
-          {gap}.
-        </>
-      )}
-    </Paragraph>
+    <>
+      <Paragraph data-testid="progress-prose">
+        {lead}
+        {change != null && <Strong>{formatDeltaSv(change)}</Strong>}
+        {change != null && ' den här veckan'}
+        {tail && (delta == null ? ': ' : ' — ')}
+        {tail}.{' '}
+        {halves != null && (
+          <>
+            {halves}
+            {gap}.
+          </>
+        )}
+      </Paragraph>
+      <p data-testid="progress-first-try-note" style={{ ...mono11, margin: '12px 0 0' }}>
+        {FIRST_TRY_NOTE}
+      </p>
+    </>
   )
 }
 

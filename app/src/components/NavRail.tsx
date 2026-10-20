@@ -13,9 +13,11 @@
 //   Öva ¹⁴                              row is set in var(--accent). A
 //   Provpass                          raised folio numeral rides right
 //   Uppslag ⁸                           after the label (spine-corner
-//   Framsteg ⁺⁰,⁰⁴                      grammar) — REAL signals: Öva →
+//   Framsteg ⁺⁰,²                       grammar) — REAL signals: Öva →
 //                                     due queue, Uppslag → wired
-//                                     sections, Framsteg → week delta.
+//                                     sections, Framsteg → week change,
+//                                     shown only when it clears the
+//                                     noise (computeHonestDelta).
 //   [ PÅBÖRJAD · Övning · KVA ]       the cross-device resume card
 //   Höstprov 26 · 114 dagar           the clock, always present
 //   ljus ◐ · historik · mer →         mode toggle + appendix + /mer hub
@@ -43,7 +45,7 @@ import { DueNumeral } from '@/components/motion/DueNumeral'
 import { wiredSections } from '@/data/frameworks'
 import { dueNumeralOwnedByPage } from '@/lib/motion'
 import { DOORS, type Door, type DoorId } from '@/lib/nav'
-import { computeProjectedDelta, formatDeltaSv } from '@/lib/scoring'
+import { computeHonestDelta, formatDeltaSv } from '@/lib/scoring'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
 import { useUiStore } from '@/stores/uiStore'
 
@@ -175,9 +177,11 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
   const due = usePileMistakes()
   const stats = useStats()
   const dueCount = due.data?.length ?? 0
+  // The same honest change as Home's stats row. A `stable` week has no
+  // figure to show, so the folio stays empty — never a "±0,0".
   const weekDelta = useMemo(() => {
     if (!stats.data) return null
-    return computeProjectedDelta(stats.data.bySection)
+    return computeHonestDelta(stats.data.bySection)
   }, [stats.data])
   // The living numeral (A2): the Öva due-count. It rolls A2-style on
   // every change (DigitRoll — up on a new mistake, down on a resolve)
@@ -192,7 +196,7 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
   const folios: Partial<Record<DoorId, string>> = {
     ova: dueCount > 0 ? String(dueCount) : undefined,
     uppslag: String(wiredSections().length),
-    framsteg: weekDelta != null ? formatDeltaSv(weekDelta) : undefined,
+    framsteg: weekDelta?.kind === 'change' ? formatDeltaSv(weekDelta.delta) : undefined,
   }
 
   if (collapsed) {

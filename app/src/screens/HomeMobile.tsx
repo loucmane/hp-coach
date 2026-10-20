@@ -5,9 +5,10 @@
 // the drill:
 //
 //   date rail    greeting (italic display) + the stats row: Swedish-
-//                comma prognosis ("1,4 / prognos av 2,0" + the honest
-//                week-over-week delta when both weeks have signal),
-//                streak, and today's estimated minutes
+//                comma prognosis over first tries ("1,4 / prognos av
+//                2,0" + the week-over-week change when it clears the
+//                noise, else "stabil, inom felmarginalen"), streak, and
+//                today's minutes
 //   PÅBÖRJAD     the cross-device resume band (accent-soft, CTA)
 //   IDAG         "Dagens plan" — numbered plan rows (cobalt serif
 //                ordinal, section tag, headline, rationale, minutes)
@@ -39,7 +40,7 @@ import { formatSwedishHeader } from '@/lib/dates'
 import type { DiagnosticMemory } from '@/lib/diagnosticMemory'
 import { logMockEvent } from '@/lib/mockEvents'
 import type { DailyPlan, MockPrescription } from '@/lib/scheduler'
-import { formatDeltaSv, formatScoreSv, type ProjectedTotal } from '@/lib/scoring'
+import { formatDeltaSv, formatScoreSv, type HonestDelta, type ProjectedTotal } from '@/lib/scoring'
 import type { CoachKey } from '@/lib/voice'
 import { useCoachStore } from '@/stores/coachStore'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
@@ -67,14 +68,16 @@ type HomeMobileProps = {
    *  an honest em dash instead of ghost-loading forever (same idiom as
    *  `planError` for the plan card). */
   statsError?: boolean
-  /** Optional per-half + total projection — the stats row's prognosis.
+  /** Optional per-half + total projection — the stats row's prognosis
+   *  (the route passes computeHonestProjected: first tries only).
    *  Null/undefined hides the stat (cold-start, loading). Route owns
    *  the data wire so HomeMobile stays pure. */
   projected?: ProjectedTotal | null
-  /** M3H — honest week-over-week projected delta from
-   *  computeProjectedDelta. Null/undefined renders NO delta line (the
-   *  weeks aren't comparable); the route owns the computation. */
-  projectedDelta?: number | null
+  /** The week-over-week change from computeHonestDelta: a `change`
+   *  prints its figure, `stable` prints "stabil, inom felmarginalen" and
+   *  no figure. Null/undefined renders NO delta line (the weeks aren't
+   *  comparable); the route owns the computation. */
+  projectedDelta?: HonestDelta | null
   /** Accepted for caller compatibility; the in-Home affordance moved
    *  to /diagnostik. */
   diagnosticMemory?: DiagnosticMemory | null
@@ -275,16 +278,23 @@ export function HomeMobile({
                 <div data-testid="home-score-line">
                   <div className="hpc-m3-stat-n">{formatScoreSv(projected.total)}</div>
                   <div className="hpc-m3-stat-l">prognos av 2,0</div>
-                  {projectedDelta != null && (
+                  {projectedDelta?.kind === 'change' && (
                     // Color by sign, not hard-coded green (same rule as the
                     // DrillResult pass-delta): a week-over-week drop reads red.
-                    // A flat 0 delta stays green (≥0). The CSS class keeps the
-                    // layout; inline color overrides its hard-coded --ok.
+                    // A change is never 0 — it cleared the noise. The CSS class
+                    // keeps the layout; inline color overrides its --ok.
                     <div
                       className="hpc-m3-stat-d"
-                      style={{ color: projectedDelta >= 0 ? 'var(--ok)' : 'var(--bad)' }}
+                      style={{ color: projectedDelta.delta > 0 ? 'var(--ok)' : 'var(--bad)' }}
                     >
-                      {formatDeltaSv(projectedDelta)} sedan förra veckan
+                      {formatDeltaSv(projectedDelta.delta)} sedan förra veckan
+                    </div>
+                  )}
+                  {projectedDelta?.kind === 'stable' && (
+                    // Inside the noise: no figure, and neither good nor bad
+                    // news — so it is set quiet, not in --ok/--bad.
+                    <div className="hpc-m3-stat-d" style={{ color: 'var(--muted)' }}>
+                      stabil, inom felmarginalen
                     </div>
                   )}
                 </div>

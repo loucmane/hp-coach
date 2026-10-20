@@ -158,17 +158,37 @@ describe('HomeMobile — stats row (M3H)', () => {
     expect(stat).toHaveTextContent(/prognos av 2,0/i)
   })
 
-  it('renders the honest week delta only when provided, labeled sedan förra veckan', () => {
-    const { rerender } = render(
+  it('renders a week change beyond the noise, labeled sedan förra veckan', () => {
+    render(
       <HomeMobile
         forceLayout="phone"
         plan={makePlan()}
         projected={{ total: 0.65, verbal: 0.81, quant: 0.49 }}
-        projectedDelta={0.12}
+        projectedDelta={{ kind: 'change', delta: 0.32, band: 0.21 }}
       />,
     )
-    expect(screen.getByText(/\+0,1 sedan förra veckan/)).toBeInTheDocument()
-    rerender(
+    expect(screen.getByText(/\+0,3 sedan förra veckan/)).toBeInTheDocument()
+  })
+
+  it('says "stabil, inom felmarginalen" for a change inside the noise, never a +/− figure', () => {
+    // hpf-bz6f.4: "+0,1 sedan förra veckan" was often smaller than its own
+    // uncertainty — random ups and downs read as reward and punishment.
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        projected={{ total: 0.65, verbal: 0.81, quant: 0.49 }}
+        projectedDelta={{ kind: 'stable', band: 0.55 }}
+      />,
+    )
+    const stat = screen.getByTestId('home-score-line')
+    expect(stat).toHaveTextContent('stabil, inom felmarginalen')
+    expect(stat).not.toHaveTextContent(/sedan förra veckan/)
+    expect(stat).not.toHaveTextContent(/[+−±]\s?\d/)
+  })
+
+  it('renders no delta line when the two weeks are not comparable', () => {
+    render(
       <HomeMobile
         forceLayout="phone"
         plan={makePlan()}
@@ -177,6 +197,7 @@ describe('HomeMobile — stats row (M3H)', () => {
       />,
     )
     expect(screen.queryByText(/sedan förra veckan/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/felmarginalen/)).not.toBeInTheDocument()
   })
 
   it('renders prognos and minutes stats, no streak — even when streakDays is passed', () => {
