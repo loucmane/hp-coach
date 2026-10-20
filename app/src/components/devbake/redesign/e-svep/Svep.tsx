@@ -36,7 +36,9 @@
 // page in the frame at once, so the frame keeps working where nothing
 // follows the request (a stage mounted without a provider). A started pass
 // runs here, on screen 9, until it is handed in (the host then shows the
-// result) or voided (back to the hub, which says so).
+// result) or voided (back to the hub, which says so). A hand-in that fails,
+// or that the host does not follow with the result, ends the run too: the
+// frame comes back and Provpass shows what was handed in, read-only.
 
 import {
   BookOpen,
@@ -83,7 +85,7 @@ import { SvepDrill } from './SvepDrill'
 import { type FramstegCardId, SvepFramsteg } from './SvepFramsteg'
 import { SvepHome } from './SvepHome'
 import { SvepOva } from './SvepOva'
-import { SvepPassRun, SvepProvpass, SvepResult } from './SvepProvpass'
+import { type Handed, SvepPassHanded, SvepPassRun, SvepProvpass, SvepResult } from './SvepProvpass'
 import { SvepQuant } from './SvepQuant'
 import { SvepRepetera } from './SvepRepetera'
 
@@ -151,9 +153,12 @@ export type FrameNav = {
   framsteg: (card: FramstegCardId) => void
 }
 
-/** The Provpass screen's state: the pass running on it, or the half of the
- *  pass just voided (the hub says so). */
-type ProvState = { run: boolean; voided: Half | null }
+/** The Provpass screen's state: the pass running on it, the half of the
+ *  pass just voided (the hub says so), or a hand-in that did not reach its
+ *  result (Provpass shows what was handed in). */
+type ProvState = { run: boolean; voided: Half | null; handed: Handed | null }
+
+const PROV_IDLE: ProvState = { run: false, voided: null, handed: null }
 
 export function Svep(props: DirectionProps) {
   useWebFonts('svep', FONTS)
@@ -163,19 +168,23 @@ export function Svep(props: DirectionProps) {
   const [tint, setTint] = useState<Tint>(SCREEN_TINT[screen] ?? 'las')
   // A pass runs on screen 9 until it is handed in or voided; the switcher
   // moving on ends it.
-  const [prov, setProv] = useState<ProvState>({ run: false, voided: null })
+  const [prov, setProv] = useState<ProvState>(PROV_IDLE)
   const [provSeat, setProvSeat] = useState(screen)
   if (provSeat !== screen) {
     setProvSeat(screen)
-    setProv({ run: false, voided: null })
+    setProv(PROV_IDLE)
   }
+  // Away from what a hand-in left: the way back to the hub, or any door.
+  const leaveHanded = useCallback(() => setProv((p) => (p.handed ? { ...p, handed: null } : p)), [])
   const provHub = useMemo(
     () => ({
       voided: prov.voided,
+      handed: prov.handed,
       dismiss: () => setProv((p) => ({ ...p, voided: null })),
-      start: () => setProv({ run: true, voided: null }),
+      start: () => setProv({ run: true, voided: null, handed: null }),
+      leave: leaveHanded,
     }),
-    [prov.voided],
+    [prov.voided, prov.handed, leaveHanded],
   )
   let stage: ReactNode
   let table: Tint = tint
@@ -186,7 +195,8 @@ export function Svep(props: DirectionProps) {
         key={data.provpass.running.passId}
         width={props.width}
         live={props.live}
-        onAbandon={() => setProv({ run: false, voided: data.provpass.running.half })}
+        onAbandon={() => setProv({ run: false, voided: data.provpass.running.half, handed: null })}
+        onHanded={(handed) => setProv({ run: false, voided: null, handed })}
       />
     )
     table = 'none'
@@ -234,8 +244,15 @@ function SvepFrame({
   prov,
 }: DirectionProps & {
   onTint: (t: Tint) => void
-  /** The Provpass hub's link to the stage: a voided pass, and a start. */
-  prov: { voided: Half | null; dismiss: () => void; start: () => void }
+  /** The Provpass hub's link to the stage: a voided pass, a start, and a
+   *  hand-in that did not reach its result, with the way away from it. */
+  prov: {
+    voided: Half | null
+    handed: Handed | null
+    dismiss: () => void
+    start: () => void
+    leave: () => void
+  }
 }) {
   const { data, actions } = useDirectionData()
   // Screen 4 shows the frame's other state; the others the default.
@@ -272,9 +289,12 @@ function SvepFrame({
     return () => window.removeEventListener('keydown', onKey, true)
   }, [live, width])
 
+  const leaveHanded = prov.leave
   const nav = useMemo<FrameNav>(
     () => ({
       go: (d) => {
+        // A door, or Till Provpass, leaves what a hand-in left behind.
+        leaveHanded()
         setAccount(false)
         setFramstegCard(undefined)
         setPage(d)
@@ -295,7 +315,7 @@ function SvepFrame({
         actions.go('framsteg')
       },
     }),
-    [actions],
+    [actions, leaveHanded],
   )
 
   const phone = width === 'phone'
@@ -319,7 +339,9 @@ function SvepFrame({
   } else if (page === 'repetera') {
     body = <SvepRepetera width={width} live={pageLive} nav={nav} />
   } else if (page === 'provpass') {
-    body = (
+    body = prov.handed ? (
+      <SvepPassHanded width={width} live={pageLive} handed={prov.handed} nav={nav} />
+    ) : (
       <SvepProvpass
         width={width}
         live={pageLive}

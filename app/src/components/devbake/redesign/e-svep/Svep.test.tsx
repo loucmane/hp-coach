@@ -15,11 +15,13 @@
 // changes), the result and Framsteg with Historik. Batch 2's round 2: a
 // picture's state belongs to the place that shows it (the enlarged page
 // never speaks for the page on the card), and a running pass's text keeps
-// its arrows inside the real bake-off.
+// its arrows inside the real bake-off. Batch 2's round 3: a hand-in that
+// fails, or that the host does not follow with the result, lets go of the
+// pass inside the real bake-off and is never sent again.
 
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { useState } from 'react'
-import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeAll, beforeEach, describe, expect, it, type Mock, vi } from 'vitest'
 
 import {
   describeDirectionContract,
@@ -33,12 +35,14 @@ import {
   drillQuestion,
   FIXTURE_DATA,
 } from '@/components/devbake/redesign/directionData'
+import { DIRECTIONS } from '@/components/devbake/redesign/directions'
 import {
   Redesign2026Bakeoff,
   type Selection,
 } from '@/components/devbake/redesign/Redesign2026Bakeoff'
 import {
   type AppScreenKey,
+  DESTINATIONS,
   type DirectionProps,
   fmtClock,
   fmtScore,
@@ -47,15 +51,22 @@ import {
   type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
 import { DTK_PAGES, PASS_QUESTIONS } from '@/components/devbake/redesign/r2Fixtures'
-import type { DirectionData, DrillQuestion } from '@/components/devbake/redesign/viewModel'
+import type {
+  DirectionActions,
+  DirectionData,
+  DrillQuestion,
+} from '@/components/devbake/redesign/viewModel'
 import type { Question } from '@/data/questions'
 import { meta } from './meta'
 import { Svep } from './Svep'
+import { SETTLE_MS } from './SvepProvpass'
 
-// The bake-off's own data, changed for one test: the real hook, its data
-// passed through `bakeoffData.patch` while one is set.
+// The bake-off's own data and requests, changed for one test: the real
+// hook, its data passed through `bakeoffData.patch` and its requests
+// through `bakeoffData.actions` while one is set.
 const bakeoffData = vi.hoisted(() => ({
   patch: null as ((data: DirectionData) => DirectionData) | null,
+  actions: null as ((actions: DirectionActions) => DirectionActions) | null,
 }))
 
 vi.mock('@/components/devbake/redesign/directionData', async (importOriginal) => {
@@ -64,8 +75,17 @@ vi.mock('@/components/devbake/redesign/directionData', async (importOriginal) =>
   const { useMemo } = await import('react')
   function useBakeoffDirectionData(...args: Parameters<typeof actual.useBakeoffDirectionData>) {
     const value = actual.useBakeoffDirectionData(...args)
-    const patch = bakeoffData.patch
-    return useMemo(() => (patch ? { ...value, data: patch(value.data) } : value), [value, patch])
+    const { patch, actions } = bakeoffData
+    return useMemo(
+      () =>
+        patch || actions
+          ? {
+              data: patch ? patch(value.data) : value.data,
+              actions: actions ? actions(value.actions) : value.actions,
+            }
+          : value,
+      [value, patch, actions],
+    )
   }
   return { ...actual, useBakeoffDirectionData }
 })
@@ -1481,10 +1501,12 @@ describe('Svep, the pass clock', () => {
     expect(timer()).toHaveTextContent('00:02')
     act(() => vi.advanceTimersByTime(3000))
     expect(actions.submitProvpass).toHaveBeenCalledTimes(1)
+    expect(screen.getByText('Lämnas in …')).toBeInTheDocument()
     act(() => vi.advanceTimersByTime(5000))
     expect(actions.submitProvpass).toHaveBeenCalledTimes(1)
-    expect(screen.getByTestId('rd-prov-running')).toBeInTheDocument()
-    expect(screen.getByText('Lämnas in …')).toBeInTheDocument()
+    // The stage stayed on the pass: handed in, said calmly — never a void.
+    expect(screen.getByTestId('rd-prov-handed')).toHaveAttribute('data-outcome', 'sent')
+    expect(screen.getByRole('heading', { level: 1, name: 'Inlämnat' })).toBeInTheDocument()
     expect(screen.queryByText('Provpasset avbröts.')).toBeNull()
   })
 
@@ -1877,6 +1899,228 @@ describe('Svep, a running pass inside the bake-off', () => {
     expect(stage).toHaveAttribute('data-screen', '10')
     expect(await within(stage).findByTestId('rd-prov-result')).toBeInTheDocument()
     expect(within(stage).getByTestId('rd-nav-provpass')).toHaveAttribute('aria-current', 'page')
+  })
+})
+
+// ── Round 3: a hand-in that does not reach the result ───────────────
+
+/** Every switcher key, and what the switcher asks for on it from E's
+ *  screen 9. */
+const SWITCHER_REQUESTS: [string, Partial<Selection>][] = [
+  ...DIRECTIONS.map((d, i): [string, Partial<Selection>] => [
+    String(i + 1),
+    { d: d.key, sbs: false },
+  ]),
+  ['0', { sbs: true }],
+  ['ArrowLeft', { s: 8 }],
+  ['ArrowRight', { s: 10 }],
+]
+
+describe('Svep, a hand-in that does not reach the result', () => {
+  beforeEach(() => {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(848)
+  })
+  afterEach(() => {
+    bakeoffData.patch = null
+    bakeoffData.actions = null
+    vi.useRealTimers()
+    vi.restoreAllMocks()
+  })
+
+  /** The bake-off on Svep's Provpass screen with the host's hand-in replaced
+   *  by `submit`, the pass `seconds` from its end. The switcher's requests
+   *  are recorded and never followed, so the stage stays on screen 9
+   *  whatever the hand-in or a key asks for, and every key can be tried on
+   *  the same stage. The pass is started on a fake clock and its current
+   *  question answered B. */
+  async function stuck(w: WidthKey, submit: () => void, seconds = RUN.remainingSeconds) {
+    const submitProvpass = vi.fn(submit)
+    bakeoffData.actions = (a) => ({ ...a, submitProvpass })
+    bakeoffData.patch = (d) => ({
+      ...d,
+      provpass: { ...d.provpass, running: { ...d.provpass.running, remainingSeconds: seconds } },
+    })
+    const errors = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const onSelect = vi.fn<(next: Partial<Selection>) => void>()
+    render(
+      <Redesign2026Bakeoff
+        sel={{ d: 'e', s: 9, w, t: 'light', sbs: false, bare: false }}
+        onSelect={onSelect}
+      />,
+    )
+    const stage = screen.getByTestId('rb26-stage')
+    await within(stage).findByTestId('rd-svep', {}, { timeout: 5000 })
+    vi.useFakeTimers()
+    fireEvent.click(within(stage).getByTestId('rd-prov-start'))
+    fireEvent.click(within(stage).getByTestId('rd-confirm'))
+    fireEvent.keyDown(window, { key: 'b' })
+    expect(within(stage).getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'true')
+    onSelect.mockClear()
+    return { stage, onSelect, submitProvpass, errors }
+  }
+
+  /** Lämna in, confirmed. */
+  function handIn(stage: HTMLElement) {
+    fireEvent.click(within(stage).getByTestId('rd-prov-submit'))
+    fireEvent.click(within(stage).getByTestId('rd-confirm'))
+  }
+
+  /** Ticks of the clock, a second each. */
+  function tick(times: number) {
+    for (let i = 0; i < times; i++) act(() => vi.advanceTimersByTime(1000))
+  }
+
+  /** Every switcher key pressed on `target`: the switcher takes each one,
+   *  nothing of the pass in its way. */
+  function expectSwitcherKeys(target: Element, onSelect: Mock<(next: Partial<Selection>) => void>) {
+    for (const [key, next] of SWITCHER_REQUESTS) {
+      onSelect.mockClear()
+      expect(fireEvent.keyDown(target, { key })).toBe(false)
+      expect(onSelect).toHaveBeenCalledTimes(1)
+      expect(onSelect).toHaveBeenLastCalledWith(next)
+    }
+  }
+
+  /** The pass is over and holds on to nothing. Every switcher key reaches
+   *  the switcher from the body; the frame's doors and account are back;
+   *  the card says `title` and `text`, with the focus on its heading, and
+   *  the keys reach the switcher from there too; no key scope is left; the
+   *  answers read as handed in, question by question, and cannot change;
+   *  nothing can hand the pass in again. Then the way back asks for
+   *  Provpass and opens the hub. */
+  function expectReleased(
+    stage: HTMLElement,
+    onSelect: Mock<(next: Partial<Selection>) => void>,
+    outcome: 'failed' | 'sent',
+    title: string,
+    text: RegExp,
+  ) {
+    expectSwitcherKeys(document.body, onSelect)
+    expect(within(stage).queryByTestId('rd-prov-running')).toBeNull()
+    const handed = within(stage).getByTestId('rd-prov-handed')
+    expect(handed).toHaveAttribute('data-outcome', outcome)
+    for (const d of DESTINATIONS) {
+      expect(within(stage).getByTestId(`rd-nav-${d.id}`)).toBeInTheDocument()
+    }
+    expect(within(stage).getByTestId('rd-account')).toBeInTheDocument()
+    const heading = within(handed).getByRole('heading', { level: 1, name: title })
+    expect(heading).toHaveFocus()
+    expect(handed).toHaveTextContent(text)
+    expect(within(handed).getByRole(outcome === 'failed' ? 'alert' : 'status')).toContainElement(
+      heading,
+    )
+    expectSwitcherKeys(heading, onSelect)
+    expect(stage.querySelector('[data-rd-keyscope]')).toBeNull()
+
+    // The answers as handed in: readable, never changeable.
+    const chosen = within(stage).getByTestId('rd-prov-option-B')
+    expect(chosen).toHaveAttribute('aria-pressed', 'true')
+    expect(chosen).toHaveAttribute('aria-disabled', 'true')
+    fireEvent.click(within(stage).getByTestId('rd-prov-option-C'))
+    expect(fireEvent.keyDown(document.body, { key: 'c' })).toBe(true)
+    expect(chosen).toHaveAttribute('aria-pressed', 'true')
+    expect(within(stage).getByTestId('rd-prov-option-C')).toHaveAttribute('aria-pressed', 'false')
+    fireEvent.click(within(stage).getByTestId('rd-prov-cell-1'))
+    const first = within(stage).getByRole('region', {
+      name: `Fråga 1 av ${RUN.questions.length}`,
+    })
+    for (const option of within(first).getAllByRole('button', { name: /^Alternativ/ })) {
+      expect(option).toHaveAttribute('aria-disabled', 'true')
+    }
+    // Nothing hands it in again.
+    expect(within(stage).queryByTestId('rd-prov-submit')).toBeNull()
+    expect(within(stage).queryByRole('button', { name: /Lämna in/ })).toBeNull()
+    expect(within(stage).queryByTestId('rd-prov-timer')).toBeNull()
+
+    onSelect.mockClear()
+    fireEvent.click(within(stage).getByTestId('rd-exit'))
+    expect(onSelect).toHaveBeenLastCalledWith({ s: 9 })
+    expect(within(stage).queryByTestId('rd-prov-handed')).toBeNull()
+    expect(within(stage).getByTestId('rd-prov-start')).toBeInTheDocument()
+    expect(within(stage).getByTestId('rd-nav-provpass')).toHaveAttribute('aria-current', 'page')
+  }
+
+  it.each(
+    WIDTHS,
+  )('says so when Lämna in fails, keeps the answers read-only and lets go of the keys (%s)', async (w) => {
+    const failure = new Error('Nätet svarar inte.')
+    const { stage, onSelect, submitProvpass, errors } = await stuck(w, () => {
+      throw failure
+    })
+    handIn(stage)
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    expectReleased(
+      stage,
+      onSelect,
+      'failed',
+      'Provpasset kunde inte lämnas in',
+      /Något gick fel när passet skulle lämnas in\. Svaren står kvar/,
+    )
+    // Logged for whoever runs the host, never swallowed.
+    expect(errors).toHaveBeenCalledWith(expect.any(String), failure)
+    tick(10)
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+  })
+
+  it.each(
+    WIDTHS,
+  )('says so when the clock’s hand-in fails, and never tries again on a later tick (%s)', async (w) => {
+    const { stage, onSelect, submitProvpass, errors } = await stuck(
+      w,
+      () => {
+        throw new Error('Nätet svarar inte.')
+      },
+      3,
+    )
+    tick(4)
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    tick(6)
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    expectReleased(
+      stage,
+      onSelect,
+      'failed',
+      'Provpasset kunde inte lämnas in',
+      /Tiden tog slut, men passet kunde inte lämnas in\. Svaren står kvar/,
+    )
+    expect(errors).toHaveBeenCalledWith(expect.any(String), expect.any(Error))
+    tick(6)
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+  })
+
+  it.each(
+    WIDTHS,
+  )('says Inlämnat when Lämna in returns but the stage stays on the pass (%s)', async (w) => {
+    const { stage, onSelect, submitProvpass } = await stuck(w, () => {})
+    handIn(stage)
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    // The host has a moment to show the result: until then it is on its way.
+    expect(within(stage).getByTestId('rd-prov-running')).toBeInTheDocument()
+    expect(within(stage).getByText('Lämnas in …')).toBeInTheDocument()
+    act(() => vi.advanceTimersByTime(SETTLE_MS))
+    expectReleased(stage, onSelect, 'sent', 'Inlämnat', /Provpasset är inlämnat\./)
+    tick(10)
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+  })
+
+  it.each(
+    WIDTHS,
+  )('says Inlämnat when the clock’s hand-in returns and the stage stays, however long it ticks (%s)', async (w) => {
+    const { stage, onSelect, submitProvpass } = await stuck(w, () => {}, 2)
+    tick(3)
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    tick(8)
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    expectReleased(
+      stage,
+      onSelect,
+      'sent',
+      'Inlämnat',
+      /Tiden tog slut och provpasset är inlämnat\./,
+    )
+    tick(8)
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
   })
 })
 

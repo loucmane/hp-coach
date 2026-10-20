@@ -196,3 +196,79 @@ No shared test outside the write set failed. Per the brief, no browser harness w
 - **Unchanged by brief.** Letters pressed while the DTK page region has the focus are still left alone, as in round 1. The drill answers from there, so a later batch could align the two.
 
 SVEP2R2 DONE: hpf-qr0p.22
+
+## Round 3 — review fix (narrow Codex re-review hpf-rgf8: HOLD, one P2)
+
+- **Claim.** `gc hook --claim --json` returned `hpf-qr0p.22` (assignee `ci-wisp-96zw6rc`, route `hpfetcher/gc.implementation-worker`); `bd show` matched the id, the status (`in_progress`), the assignee and `gc.routed_to`. Start: `d6ef14b` (the reviewed merge head), clean apart from the sandbox's root dotfiles (character devices, not touched).
+- **Evidence read first:** `/home/loucmane/scratch/hpf-qr0p.22/review-hpf-rgf8.md`.
+- **Write set kept.** Changed: `SvepProvpass.tsx`, `Svep.tsx`, `svep.css`, `Svep.test.tsx` and this worklog. No shared file, other direction or dependency was touched; no git writes; uncommitted.
+
+Paths below are under `app/src/components/devbake/redesign/e-svep/`; line numbers are the uncommitted tree's.
+
+### The finding
+
+At `d6ef14b` the hand-in set its one-shot latch and then called `submitProvpass()`. If the request threw, or returned while the stage stayed on screen 9, the run stayed pending for good. `go()`, Avsluta and the capture listener all keyed off that latch, so the user could not leave and the switcher's keys were swallowed. A throw from the clock's hand-in also escaped its effect as an uncaught error.
+
+### The fix: the latch stays, the run lets go
+
+This follows the coordinator's decision: the one-shot latch is kept, and exit and key ownership no longer hang on it.
+
+1. **The hand-in settles** (`SvepProvpass.tsx:1004–1046`). `handIn` keeps the latch (`handed.current`, `:1018`) and calls the request inside `try`.
+   - **A throw** (Lämna in or the clock) is logged with `console.error` (`:1027`) and ends the run at once as failed.
+   - **A return** gives the stage `SETTLE_MS` = 1500 ms (`:937`) to show the result. If the run is still mounted after that, it ends as handed in (`:1042–1046`). A screen change unmounts the run first and clears the timer, so a host that shows the result never flashes the frame. The moment exists because the dev route's `navigate()` lands a little after the request returns.
+   - Either way the run hands Svep a `Handed` snapshot (`:925`): why, whether it failed, the answers, the flags and the current question.
+2. **The frame takes over** (`Svep.tsx:159–199`, `:292–297`, `:342`). `onHanded` ends the run and keeps the snapshot. The frame mounts on Provpass with its doors and account, and its page shows `SvepPassHanded` instead of the hub. Any door, or Till Provpass, leaves it (`nav.go` calls `leaveHanded`); the switcher moving on resets it as before.
+3. **What the user sees** (`SvepPassHanded`, `SvepProvpass.tsx:1412–1551`), laid out as the hub (`.sv-tri` on desktop, `.sv-ptri` on phone):
+   - **Failed** (`role="alert"`): "Provpasset kunde inte lämnas in". Then "Något gick fel när passet skulle lämnas in." (from the clock: "Tiden tog slut, men passet kunde inte lämnas in.") and "Svaren står kvar här men går inte att ändra, och passet lämnas inte in igen härifrån."
+   - **Returned, stage stayed** (`role="status"`): "Inlämnat". Then "Provpasset är inlämnat." (from the clock: "Tiden tog slut och provpasset är inlämnat.") and "Svaren går inte att ändra längre."
+   - The pass's name is above the heading. The heading takes the focus, not the button, so a held Enter from the gate leaves nothing. The one filled action is **Till Provpass** (`rd-exit`, `go('provpass')`).
+   - **The answers read back.** The question card opens at the question the pass was handed in from, read-only (`review`): the choices are `aria-disabled`, the way between questions is open and quiet, there is no Lämna in, and the echo says "Svar B." or "Inget svar." (`:1639`, `:1715`, `:1730`). The register's cards open their questions.
+   - **Nothing holds on.** No clock, no capture listener, no `data-rd-keyscope` region, no viewer and no sheet (on the phone the register lies in the column), so every key is the switcher's again. Nothing can submit.
+4. **Styles** (`svep.css:6560–6616`). The hub's table and column are reused. On desktop the card shrinks to the table and scrolls inside; on phone each part keeps its own height. The heading's focus ring is a gate's.
+5. **Copy fixed on the way.** While a hand-in is pending, the card's echo said "Du kan ändra det tills tiden går ut."; locked, it now says "Svar B.".
+
+### Red-first tests
+
+All run through the real host: `Redesign2026Bakeoff` on Svep's screen 9.
+
+- **Test seam.** The host's `submitProvpass` is replaced through `bakeoffData.actions` (`Svep.test.tsx:64–91`, beside round 2's `patch`).
+- **Stage held on 9.** The switcher's requests are recorded and never followed, so the stage stays on screen 9 whatever is asked (`stuck`, `:1937`). Each case answers B on a fake clock, then hands in.
+- **What `expectReleased` checks** (`:1992`):
+  - every switcher key (1–8, 0, ←, →), pressed on the body and then on the focused heading, reaches the switcher with its own request (`expectSwitcherKeys`, `:1976`);
+  - the doors and the account are back, with the right message and role;
+  - no key scope is left;
+  - the answers are read-only: B stays pressed and `aria-disabled`, C changes nothing by click or key, and another question is read-only through the register;
+  - there is no Lämna in and no timer;
+  - Till Provpass asks for `go('provpass')` and opens the hub.
+
+Every case also checks that `submitProvpass` is called exactly once, including after further ticks of the clock (10 s or more) and after the way back.
+
+| Test (`Svep.test.tsx`) | Red at `d6ef14b` |
+|---|---|
+| `:2046` "says so when Lämna in fails, keeps the answers read-only and lets go of the keys" (desktop, phone) | The switcher got none of the keys (0 calls): the run swallowed them. |
+| `:2068` "says so when the clock’s hand-in fails, and never tries again on a later tick" (desktop, phone) | The thrown error escaped the clock's effect, uncaught. |
+| `:2094` "says Inlämnat when Lämna in returns but the stage stays on the pass" (desktop, phone) | The switcher got none of the keys once `SETTLE_MS` had passed. |
+| `:2109` "says Inlämnat when the clock’s hand-in returns and the stage stays, however long it ticks" (desktop, phone) | The same. |
+| `:1495` "counts down … hands it in once at the end — never a void" (expectation changed) | No "Inlämnat": the run stayed pending. |
+
+**One expectation changed.** `:1495` used to assert that the pass was still pending ("Lämnas in …") 5 s after the clock's hand-in, with a host that never moves on. That was the trap the review found. It now asserts "Lämnas in …" right after the hand-in and "Inlämnat" once `SETTLE_MS` is over.
+
+### Verification (from the worktree root, `pnpm -C app …`)
+
+| Check | Result |
+|---|---|
+| Red run (new tests on the unfixed source) | `Svep.test.tsx`: 9 failed: the 8 new cases and the changed clock test. |
+| `pnpm -C app typecheck` | Clean. |
+| `pnpm -C app lint` | 514 files, 0 errors, 0 warnings; the 4 infos are the pre-existing ones (`LandingBakeoffR3/R4A/R4C.tsx`, `l12/M3.tsx`). |
+| `pnpm -C app test` | 109 files, **2716 passed, 0 failed**; `Svep.test.tsx` 265 (257 + 8). |
+| `git diff --check` | Clean. |
+
+No shared test outside the write set failed. Per the brief, no browser harness was run, so the new view is checked in jsdom only. Its layout reuses the hub's table and column, but a screenshot pass of screen 9 in both outcomes, at both widths and in both themes, is still open.
+
+### Notes
+
+- **Kit.** `submitProvpass` is typed `() => void` and the view model has no submission state, so a throw is the only failure the run can see. A request that returns a promise is treated as returned; its rejection stays the host's. Round 1's spec gap 4 is now met as far as kit v2 allows. A later kit with an async hand-in and a result state would let the run say more.
+- **The moment.** For up to 1.5 s after a request returns, the run still owns its keys and Avsluta, as before. Once it is over the trap is gone.
+- **Not in this brief.** hpf-rgf8's lower-priority caveat (retries are per source when both the inline page and the viewer failed) is unchanged.
+
+SVEP2R3 DONE: hpf-qr0p.22

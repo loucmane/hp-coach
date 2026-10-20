@@ -6557,6 +6557,64 @@
   background: linear-gradient(225deg, var(--sv-ink) 50%, transparent 50%);
 }
 
+/* ── Provpass: a hand-in that did not reach its result ── */
+
+/* The table again: what became of the hand-in where the hub's orientation
+ * lies, with the way back; the answers as handed in on one card; the
+ * register beside it. */
+.sv-root .sv-handed {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.sv-root .sv-handed .sv-handed-say .sv-greet {
+  font-size: 32px;
+}
+
+/* The heading takes the focus when the outcome is dealt, as a gate's does. */
+.sv-root .sv-handed-say .sv-greet:focus-visible {
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.sv-root .sv-handed-say .sv-btn {
+  margin-top: 22px;
+}
+
+/* The card is as tall as its question and never taller than the table:
+ * past that it scrolls inside. */
+.sv-root .sv-handed-q {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+}
+
+.sv-root .sv-handed-q > .sv-pq {
+  flex: 0 1 auto;
+  height: auto;
+  min-height: 0;
+}
+
+/* Phone: the outcome and its way back, the card, then the register, in the
+ * one column that scrolls; the card's way on stays at the column's foot. */
+.sv-root .sv-phanded {
+  gap: 14px;
+}
+
+/* Each part keeps its own height: the column scrolls, nothing in it does. */
+.sv-root .sv-phanded > * {
+  flex: none;
+}
+
+.sv-root .sv-phanded .sv-handed-say .sv-btn {
+  margin-top: 10px;
+}
+
+.sv-root .sv-phanded .sv-prun-body {
+  overflow: visible;
+  padding: 0;
+}
+
 /* ── Provpassresultat ── */
 
 .sv-root .sv-res-raw {

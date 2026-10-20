@@ -18,7 +18,10 @@
 // graded before it. The clock is decided once, when the pass starts, and
 // its end hands the pass in, exactly once; Avsluta asks first and voids.
 // A question that needs a picture (its page, its figure, picture options)
-// cannot be answered until that picture is on screen.
+// cannot be answered until that picture is on screen. A hand-in whose
+// request fails, or that the stage does not follow with the result, ends
+// the run in the frame (SvepPassHanded): what became of it, the way back
+// to Provpass and the answers read-only; it is never sent again.
 //
 // The result (10) is the pass turned over and read one evidence card at a
 // time: the outcome and how its score was derived, each section against
@@ -917,15 +920,35 @@ type Sheet = {
   flags: ReadonlySet<string>
 }
 
+/** What a hand-in leaves when it does not reach the result: why it was
+ *  handed in, whether its request failed, and the answers as they were. */
+export type Handed = {
+  why: 'manual' | 'time'
+  failed: boolean
+  answers: Partial<Record<string, AnswerLetter>>
+  flags: ReadonlySet<string>
+  current: number
+}
+
+/** How long a hand-in whose request returned waits for the stage to show
+ *  the result before it says "Inlämnat" itself. A host may show it a
+ *  moment after its request returns (a router's transition), and the run
+ *  should not flash the frame in between. */
+export const SETTLE_MS = 1500
+
 export function SvepPassRun({
   width,
   live,
   onAbandon,
+  onHanded,
 }: {
   width: WidthKey
   live: boolean
   /** Avsluta, confirmed: the pass is void and the hub comes back. */
   onAbandon: () => void
+  /** The hand-in failed, or it returned and the stage stayed on the pass:
+   *  the run ends and the frame shows what was handed in. */
+  onHanded: (handed: Handed) => void
 }) {
   const { data, actions } = useDirectionData()
   const running = data.provpass.running
@@ -956,6 +979,8 @@ export function SvepPassRun({
   const [now, setNow] = useState(clock.t0)
   const [handedIn, setHandedIn] = useState<'manual' | 'time' | null>(null)
   const handed = useRef(false)
+  // The hand-in's request returned: the stage has SETTLE_MS to move on.
+  const [sent, setSent] = useState(false)
   useEffect(() => {
     if (!live || handedIn) return
     const id = window.setInterval(() => setNow(Date.now()), 500)
@@ -976,7 +1001,18 @@ export function SvepPassRun({
   const regButtonRef = useRef<HTMLButtonElement>(null)
   const regId = useId()
 
-  /** Hands the pass in, once — the clock's end or a confirmed Lämna in. */
+  // What the run leaves behind when its hand-in ends here.
+  const leave = useRef({ sheet, index, onHanded })
+  leave.current = { sheet, index, onHanded }
+  const settle = useCallback((why: 'manual' | 'time', failed: boolean) => {
+    const { sheet: s, index: at, onHanded: done } = leave.current
+    done({ why, failed, answers: s.answers, flags: s.flags, current: at })
+  }, [])
+
+  /** Hands the pass in, once — the clock's end or a confirmed Lämna in. The
+   *  latch is for good: nothing asks again. A request that throws ends the
+   *  run at once and says so; one that returns gives the stage SETTLE_MS
+   *  to show the result. */
   const handIn = useCallback(
     (why: 'manual' | 'time') => {
       if (handed.current) return
@@ -985,15 +1021,29 @@ export function SvepPassRun({
       setViewer(false)
       setRegister(false)
       setHandedIn(why)
-      actions.submitProvpass()
+      try {
+        actions.submitProvpass()
+      } catch (error) {
+        console.error('submitProvpass failed', error)
+        settle(why, true)
+        return
+      }
+      setSent(true)
     },
-    [actions],
+    [actions, settle],
   )
   // The end of the time hands the pass in — never voids it.
   const expired = live && remaining <= 0
   useEffect(() => {
     if (expired) handIn('time')
   }, [expired, handIn])
+  // Still here once the moment is over: the request landed but nothing
+  // showed the result, so the run ends calmly and lets go of everything.
+  useEffect(() => {
+    if (!sent || !handedIn) return
+    const id = window.setTimeout(() => settle(handedIn, false), SETTLE_MS)
+    return () => window.clearTimeout(id)
+  }, [sent, handedIn, settle])
 
   const abandon = () => {
     if (handed.current) return
@@ -1358,6 +1408,148 @@ export function SvepPassRun({
   )
 }
 
+/** The headline and the line under it, by what became of the hand-in. */
+function handedCopy({ why, failed }: Handed): { title: string; text: string } {
+  if (failed) {
+    const what =
+      why === 'time'
+        ? 'Tiden tog slut, men passet kunde inte lämnas in.'
+        : 'Något gick fel när passet skulle lämnas in.'
+    return {
+      title: 'Provpasset kunde inte lämnas in',
+      text: `${what} Svaren står kvar här men går inte att ändra, och passet lämnas inte in igen härifrån.`,
+    }
+  }
+  const what =
+    why === 'time' ? 'Tiden tog slut och provpasset är inlämnat.' : 'Provpasset är inlämnat.'
+  return { title: 'Inlämnat', text: `${what} Svaren går inte att ändra längre.` }
+}
+
+/** A question read back after the hand-in: nothing to wait for. */
+const READ_BACK: Gating = { open: true, text: null, failed: false }
+
+/**
+ * A hand-in that did not reach its result: its request failed, or it
+ * returned and the stage stayed on the pass. The run is over and the frame
+ * is back, doors and account, so no key and no region is the pass's any
+ * more and nothing can hand it in again. The outcome lies where the hub's
+ * orientation does, with the way back to Provpass; the answers stay
+ * readable as they were handed in, question by question and in the
+ * register, and never change.
+ */
+export function SvepPassHanded({
+  width,
+  live,
+  handed,
+  nav,
+}: {
+  width: WidthKey
+  live: boolean
+  handed: Handed
+  nav: FrameNav
+}) {
+  const { data } = useDirectionData()
+  const running = data.provpass.running
+  const questions = running.questions
+  const total = questions.length
+  const phone = width === 'phone'
+  const [current, setCurrent] = useState(handed.current)
+  const index = total === 0 ? 0 : Math.min(Math.max(0, current), total - 1)
+  const q: DrillQuestion | undefined = questions[index]
+  const flagsKnown =
+    running.flags !== undefined || running.grid.some((c) => c.flagged !== undefined)
+  const pictures = useRunPictures()
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const { title, text } = handedCopy(handed)
+  const name = `${HALF_SHORT[running.half]} · ${running.sitting} · ${running.pass}`
+
+  // The outcome takes the focus: its heading, not its button, so a held
+  // Enter from the hand-in's gate leaves nothing.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: on mount only
+  useEffect(() => {
+    if (live) titleRef.current?.focus({ preventScroll: true })
+  }, [])
+
+  const go = (i: number) => {
+    if (total > 0) setCurrent(Math.min(total - 1, Math.max(0, i)))
+  }
+
+  const head = (
+    <>
+      <p className="sv-date">{name}</p>
+      <h1 className="sv-greet" ref={titleRef} tabIndex={-1}>
+        {title}
+      </h1>
+      <p className="sv-day">{text}</p>
+    </>
+  )
+  const back = (
+    <button
+      type="button"
+      className={`sv-btn sv-btn--primary sv-btn--lg${phone ? ' sv-btn--block' : ''}`}
+      data-testid="rd-exit"
+      onClick={() => nav.go('provpass')}
+    >
+      <ArrowLeft size={18} strokeWidth={2} aria-hidden />
+      Till Provpass
+    </button>
+  )
+  const role = handed.failed ? 'alert' : 'status'
+  const card = q ? (
+    <RunQuestion
+      question={q}
+      n={index + 1}
+      total={total}
+      answer={handed.answers[q.qid] ?? null}
+      onPick={() => {}}
+      gating={READ_BACK}
+      refused={false}
+      flag={flagsKnown && handed.flags.has(q.qid) ? { on: true, toggle: () => {} } : null}
+      pictures={pictures}
+      locked
+      review
+      onPrev={() => go(index - 1)}
+      onNext={() => go(index + 1)}
+    />
+  ) : null
+  const register = (
+    <Register
+      questions={questions}
+      answers={handed.answers}
+      flags={handed.flags}
+      flagsKnown={flagsKnown}
+      current={index}
+      locked={false}
+      onJump={go}
+    />
+  )
+  const outcome = handed.failed ? 'failed' : 'sent'
+
+  if (phone) {
+    return (
+      <div className="sv-ptri sv-phanded" data-testid="rd-prov-handed" data-outcome={outcome}>
+        <div className="sv-handed-say" role={role}>
+          <header className="sv-ptri-head">{head}</header>
+          {back}
+        </div>
+        {card ? <div className="sv-prun-body">{card}</div> : null}
+        {register}
+      </div>
+    )
+  }
+
+  return (
+    <div className="sv-tri sv-handed" data-testid="rd-prov-handed" data-outcome={outcome}>
+      <div className="sv-tri-side sv-handed-say" role={role}>
+        {head}
+        {back}
+      </div>
+      <div className="sv-handed-q">{card}</div>
+      <div className="sv-tri-end">{register}</div>
+    </div>
+  )
+}
+
 /** The clock: time left, steady (it is not read out every second). Under
  *  five minutes it turns to ink, never red. */
 function PassTimer({ seconds, low }: { seconds: number; low: boolean }) {
@@ -1414,6 +1606,7 @@ function RunQuestion({
   flag,
   pictures,
   locked,
+  review = false,
   onPrev,
   onNext,
   onHandIn,
@@ -1430,20 +1623,30 @@ function RunQuestion({
   pictures: RunPictures
   /** Handed in: nothing changes any more. */
   locked: boolean
+  /** Handed in and read back: the answers stay as they are, the way between
+   *  the questions is open, and nothing hands the pass in. */
+  review?: boolean
   onPrev: () => void
   onNext: () => void
-  onHandIn: () => void
+  /** Lämna in on the last question; none once the pass is handed in. */
+  onHandIn?: () => void
 }) {
   const titleId = useId()
   const last = n >= total
   const quant =
     q.section === 'XYZ' || q.section === 'KVA' || q.section === 'NOG' || q.section === 'DTK'
+  // On its way in, nothing moves; read back, only the answers stay still.
+  const still = locked && !review
   const wait = gating.open ? null : gating.failed || refused ? gating.text : null
   const echo = wait
     ? wait
-    : answer
-      ? `Svar ${answer}. Du kan ändra det tills tiden går ut.`
-      : 'Inget svar än.'
+    : locked
+      ? answer
+        ? `Svar ${answer}.`
+        : 'Inget svar.'
+      : answer
+        ? `Svar ${answer}. Du kan ändra det tills tiden går ut.`
+        : 'Inget svar än.'
   const svg = q.figure && referenceOf(q) == null ? q.figure : null
   return (
     <section
@@ -1502,26 +1705,30 @@ function RunQuestion({
           <button
             type="button"
             className="sv-btn sv-btn--quiet"
-            aria-disabled={n <= 1 || locked}
-            onClick={n <= 1 || locked ? undefined : onPrev}
+            aria-disabled={n <= 1 || still}
+            onClick={n <= 1 || still ? undefined : onPrev}
           >
             <ArrowLeft size={18} strokeWidth={2} aria-hidden />
             Föregående
           </button>
           {last ? (
-            <button
-              type="button"
-              className="sv-btn sv-btn--primary"
-              disabled={locked}
-              onClick={onHandIn}
-            >
-              Lämna in
-            </button>
+            onHandIn && !review ? (
+              <button
+                type="button"
+                className="sv-btn sv-btn--primary"
+                disabled={locked}
+                onClick={onHandIn}
+              >
+                Lämna in
+              </button>
+            ) : null
           ) : (
+            // Read back, the way on is quiet: the one filled action is the
+            // way back to Provpass.
             <button
               type="button"
-              className="sv-btn sv-btn--primary"
-              disabled={locked}
+              className={`sv-btn ${review ? 'sv-btn--quiet' : 'sv-btn--primary'}`}
+              disabled={still}
               onClick={onNext}
             >
               Nästa fråga
