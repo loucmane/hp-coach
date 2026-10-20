@@ -17,14 +17,16 @@ export function RasterNav({
   onGo,
   menu,
   setMenu,
+  onKonto,
 }: DirectionProps & {
   dest: Destination
   onGo: (dest: Destination) => void
   menu: boolean
   setMenu: (open: boolean) => void
+  onKonto: () => void
 }) {
-  const { data, actions } = useDirectionData()
-  const focus = screen === 2 || screen === 3 || screen === 6 || screen === 7
+  const { data } = useDirectionData()
+  const focus = screen === 2 || screen === 3 || screen === 6 || screen === 7 || screen === 14
   const [collapsed, setCollapsed] = useState(screen === 4)
   const [accountPage, setAccountPage] = useState<string | null>(null)
   const menuId = useId()
@@ -61,7 +63,7 @@ export function RasterNav({
         </nav>
       ) : (
         <span className="ra-focus-label">
-          {screen === 7 ? 'DTK' : screen === 6 ? 'Kvant' : 'LÄS'} / Fokus
+          {screen === 7 ? 'DTK' : screen === 6 ? 'Kvant' : screen === 14 ? 'ELF' : 'LÄS'} / Fokus
         </span>
       )}
       {width === 'desktop' && !focus ? (
@@ -98,6 +100,7 @@ export function RasterNav({
             id={menuId}
             data-testid="rd-account-menu"
             aria-label="Konto och inställningar"
+            data-rd-keyscope
           >
             <div className="ra-menu-heading">
               <h2>{accountPage ?? 'Ditt konto'}</h2>
@@ -128,7 +131,7 @@ export function RasterNav({
                     key={label}
                     onClick={() => {
                       close()
-                      actions.openKonto()
+                      onKonto()
                     }}
                   >
                     {label}

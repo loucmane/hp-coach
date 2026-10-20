@@ -9,12 +9,14 @@ import {
 } from '@/components/devbake/redesign/r1Kit'
 import { RasterDrill } from './RasterDrill'
 import { RasterFramsteg } from './RasterFramsteg'
-import { RasterDestination, RasterHome } from './RasterHome'
+import { RasterHome } from './RasterHome'
+import { RasterKonto } from './RasterKonto'
 import { RasterNav } from './RasterNav'
 import { RasterOva } from './RasterOva'
 import { RasterProvpass, RasterProvResult } from './RasterProvpass'
 import { RasterQuant } from './RasterQuant'
 import { RasterRepetera } from './RasterRepetera'
+import { RasterUppslag } from './RasterUppslag'
 
 const FONTS =
   'https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap'
@@ -27,31 +29,37 @@ export function Raster(props: DirectionProps) {
       ? 'provpass'
       : props.screen === 11
         ? 'framsteg'
-        : props.screen >= 5
-          ? 'ova'
-          : 'idag'
+        : props.screen === 12
+          ? 'uppslag'
+          : props.screen >= 5
+            ? 'ova'
+            : 'idag'
   const [dest, setDest] = useState<Destination>(screenDest)
   const [activePass, setActivePass] = useState<string | null>(null)
   const [passIsLive, setPassIsLive] = useState(true)
   const timedPass = dest === 'provpass' && props.screen !== 10 && activePass !== null && passIsLive
   const [menu, setMenu] = useState(props.screen === 4)
-  const reading = props.screen === 2 || props.screen === 3
+  const [konto, setKonto] = useState(props.screen === 13)
+  const reading = props.screen === 2 || props.screen === 3 || props.screen === 14
   const drill = reading || props.screen === 6 || props.screen === 7
   const returnToHome = useRef(true)
   if (!drill) returnToHome.current = props.screen === 1 || props.screen === 4
   useLayoutEffect(() => {
     setDest(screenDest)
     setMenu(props.screen === 4)
+    setKonto(props.screen === 13)
     if (props.screen !== 9) setActivePass(null)
   }, [props.screen, screenDest])
   const go = useCallback(
     (next: Destination) => {
       setMenu(false)
+      setKonto(false)
       setDest(next)
+      if (next !== 'provpass' || !passIsLive) setActivePass(null)
       if (drill) actions.drill.exit?.()
       actions.go(next)
     },
-    [drill, actions],
+    [drill, actions, passIsLive],
   )
   return (
     <div
@@ -68,7 +76,18 @@ export function Raster(props: DirectionProps) {
       lang="sv"
     >
       {!timedPass ? (
-        <RasterNav {...props} dest={drill ? 'ova' : dest} onGo={go} menu={menu} setMenu={setMenu} />
+        <RasterNav
+          {...props}
+          dest={drill ? 'ova' : dest}
+          onGo={go}
+          menu={menu}
+          setMenu={setMenu}
+          onKonto={() => {
+            setKonto(true)
+            setActivePass(null)
+            actions.openKonto()
+          }}
+        />
       ) : null}
       {reading ? (
         <RasterDrill
@@ -81,7 +100,11 @@ export function Raster(props: DirectionProps) {
         <RasterQuant {...props} live={props.live && !menu} />
       ) : (
         <main className="ra-main" key={dest}>
-          {dest === 'provpass' ? (
+          {konto ? (
+            <RasterKonto theme={props.theme} onTheme={props.onTheme} onReturn={() => go('ova')} />
+          ) : dest === 'uppslag' ? (
+            <RasterUppslag width={props.width} />
+          ) : dest === 'provpass' ? (
             props.screen === 10 ? (
               <RasterProvResult />
             ) : (
@@ -108,9 +131,7 @@ export function Raster(props: DirectionProps) {
               }}
               onGo={go}
             />
-          ) : (
-            <RasterDestination dest={dest} onHome={() => go('idag')} />
-          )}
+          ) : null}
         </main>
       )}
     </div>

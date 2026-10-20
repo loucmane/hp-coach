@@ -1,4 +1,12 @@
-import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import { useDrillCore } from '@/components/devbake/redesign/drillCore'
@@ -10,6 +18,7 @@ import {
   useKeyMap,
   useSheet,
 } from '@/components/devbake/redesign/r1Kit'
+import type { DrillOptionFigure, DrillSessionView } from '@/components/devbake/redesign/viewModel'
 import { MathText } from '@/components/MathText'
 import { RasterFeedback } from './RasterFeedback'
 import { PassageText, type RasterDrillState } from './RasterParts'
@@ -17,31 +26,55 @@ import { PassageText, type RasterDrillState } from './RasterParts'
 type ReadingProps = DirectionProps & { onGo: (dest: Destination) => void; returnToHome: boolean }
 
 export function RasterDrill(props: ReadingProps) {
-  const { data } = useDirectionData()
-  const session = data.drills.reading
+  const { data, actions } = useDirectionData()
+  const session = props.screen === 14 ? data.drills.elf : data.drills.reading
   if (!session.questions.length)
     return (
       <main className="ra-done">
-        <button type="button" data-testid="rd-exit" onClick={() => props.onGo('ova')}>
+        <button type="button" data-testid="rd-exit" onClick={() => actions.drill.exit?.()}>
           ← Avsluta
         </button>
-        <h1>Frågan saknar fullständigt innehåll</h1>
+        <h1>
+          {props.screen === 14
+            ? 'Texten eller frågan saknas'
+            : 'Frågan saknar fullständigt innehåll'}
+        </h1>
         <button type="button" className="ra-primary" onClick={() => props.onGo('ova')}>
           Till Öva
         </button>
       </main>
     )
-  return <ReadingSession key={session.id} {...props} />
+  // The core requires a stable nonempty deck. Reset before it can dereference
+  // an old index when a provider replaces or shrinks the question list.
+  return (
+    <ReadingSession
+      key={`${session.id}:${session.questions.map((q) => q.qid).join('|')}`}
+      {...props}
+      session={session}
+    />
+  )
 }
 
-function ReadingSession({ screen, width, live, onScreen, onGo, returnToHome }: ReadingProps) {
+function ReadingSession({
+  screen,
+  width,
+  live,
+  onScreen,
+  onGo,
+  returnToHome,
+  session,
+}: ReadingProps & { session: DrillSessionView }) {
   const { data, actions } = useDirectionData()
-  const session = data.drills.reading
+  const elf = screen === 14
   const [start] = useState(() => ({
     ...session.start,
     graded:
       screen === 3
-        ? session.wrongPick?.[session.questions[session.start.index ?? 0].qid]
+        ? session.wrongPick?.[
+            session.questions[
+              Math.max(0, Math.min(session.questions.length - 1, session.start.index ?? 0))
+            ].qid
+          ]
         : session.start.graded,
   }))
   const {
@@ -64,18 +97,19 @@ function ReadingSession({ screen, width, live, onScreen, onGo, returnToHome }: R
   const act = {
     ...core,
     lock: () => {
+      if (!ready) return false
       const locked = core.lock()
-      if (locked) onScreen(3)
+      if (locked && !elf) onScreen(3)
       return locked
     },
     next: () => {
       const next = core.next()
-      if (next === 'next') onScreen(2)
+      if (next === 'next' && !elf) onScreen(2)
       return next
     },
     exit: () => {
       core.exit()
-      if (returnToHome) onScreen(1)
+      if (returnToHome && !elf) onScreen(1)
     },
   }
   const sheet = useSheet(view)
@@ -83,15 +117,43 @@ function ReadingSession({ screen, width, live, onScreen, onGo, returnToHome }: R
   const [note, setNote] = useState(false)
   const [clock, setClock] = useState(true)
   const scrolling = useHideOnScroll()
-  const questionScroll = useRef<HTMLDivElement>(null)
+  const questionScroll = useRef<HTMLElement>(null)
+  const passageScroll = useRef<HTMLElement>(null)
+  const savedSheet = useRef(sheet.state)
+  const returnScroll = useRef(0)
+  const [citing, setCiting] = useState(false)
   const questionId = useId()
-  const nextItem = data.home.plan.items.find((item) => !item.completed)
+  const nextItem = data.home.plan.allComplete
+    ? undefined
+    : data.home.plan.items.find((item) => !item.completed)
   const nextPlan = () => (nextItem ? actions.openPlanItem(nextItem.id) : onGo('ova'))
-  const usable = !!view.question.prompt && !!view.question.options?.length && !!view.passage
+  const cloze = view.question.section === 'ELF' && !view.question.prompt?.trim()
+  const usable =
+    (!!view.question.prompt?.trim() || cloze) &&
+    !!view.question.options?.length &&
+    !!view.passage?.paragraphs.some((p) => p.trim())
+  const [images, setImages] = useState<Record<string, ImageState>>({})
+  const report = useCallback<ReportImage>((id, status) => {
+    setImages((old) => {
+      if (old[id] === status || (status === null && !(id in old))) return old
+      const next = { ...old }
+      if (status === null) delete next[id]
+      else next[id] = status
+      return next
+    })
+  }, [])
+  const mainImage = view.question.figure ? `main:${view.question.figure.src}` : null
+  const required = [
+    ...(mainImage ? [mainImage] : []),
+    ...(view.question.options?.flatMap((o) =>
+      o.figure ? [optionKey(view.question.qid, o.letter, o.figure.src)] : [],
+    ) ?? []),
+  ]
+  const ready = usable && required.every((id) => images[id] === 'ready')
   const advance = () => {
     if (view.phase === 'done') nextPlan()
     else if (view.phase === 'feedback') act.next()
-    else if (usable) act.lock()
+    else if (ready) act.lock()
   }
   const keys: Record<string, () => void> = {
     Enter: advance,
@@ -114,17 +176,40 @@ function ReadingSession({ screen, width, live, onScreen, onGo, returnToHome }: R
   // biome-ignore lint/correctness/useExhaustiveDependencies: phase/index are scroll reset boundaries
   useEffect(() => {
     if (questionScroll.current) questionScroll.current.scrollTop = 0
+    setCiting(false)
   }, [view.phase, view.index])
+  const passageKey = JSON.stringify([
+    view.question.passage?.unitId,
+    view.question.passage?.title,
+    view.passage?.paragraphs,
+  ])
+  // biome-ignore lint/correctness/useExhaustiveDependencies: content identity is the scroll reset boundary
+  useEffect(() => {
+    if (passageScroll.current) passageScroll.current.scrollTop = 0
+    setNote(false)
+  }, [passageKey])
   const cite: typeof act.cite = (n, source) => {
     // First expose the passage, then let the shared hook reveal its paragraph.
-    if (phone) sheet.setState('peek')
+    if (phone) {
+      savedSheet.current = sheet.state
+      returnScroll.current = questionScroll.current?.scrollTop ?? 0
+      setCiting(true)
+      sheet.setState('peek')
+    }
     act.cite(n, source)
+  }
+  const returnToExplanation = () => {
+    sheet.setState(savedSheet.current === 'peek' ? 'open' : savedSheet.current)
+    setCiting(false)
+    window.requestAnimationFrame(() => {
+      if (questionScroll.current) questionScroll.current.scrollTop = returnScroll.current
+    })
   }
   const shared = { view, refs, act: { ...act, cite } }
   const peek = phone && sheet.state === 'peek'
 
   return (
-    <main className="ra-drill">
+    <main className="ra-drill" data-reading="true">
       <header className="ra-drill-bar" data-quiet={String(phone && scrolling.hidden)}>
         <button type="button" className="ra-exit" data-testid="rd-exit" onClick={act.exit}>
           ← Avsluta
@@ -163,7 +248,7 @@ function ReadingSession({ screen, width, live, onScreen, onGo, returnToHome }: R
       </div>
       {view.phase === 'done' ? (
         <section className="ra-done" data-testid="rd-done">
-          <p className="ra-label">LÄS / Texten är klar</p>
+          <p className="ra-label">{view.question.section} / Texten klar</p>
           <h1>En text närmare.</h1>
           <p className="ra-display">
             {view.results.filter((r) => r.correct).length}
@@ -173,7 +258,7 @@ function ReadingSession({ screen, width, live, onScreen, onGo, returnToHome }: R
             Rätt i den här texten
             {session.elapsedSeconds != null ? ` · ${fmtClock(view.elapsed)}` : ''}
           </p>
-          <p>Ta med dig tekniken till nästa text. Missarna finns kvar att repetera.</p>
+          <p>Ta med dig tekniken till nästa text.</p>
           <button
             type="button"
             className="ra-primary"
@@ -188,9 +273,29 @@ function ReadingSession({ screen, width, live, onScreen, onGo, returnToHome }: R
         </section>
       ) : (
         <div className="ra-drill-grid">
-          <div className="ra-reading-scroll" onScroll={scrolling.onScroll}>
+          <section
+            className="ra-reading-scroll"
+            onScroll={scrolling.onScroll}
+            ref={passageScroll}
+            data-rd-keyscope
+            // biome-ignore lint/a11y/noNoninteractiveTabindex: keyboard-scrollable passage
+            tabIndex={0}
+            aria-label="Lästext"
+          >
             <Passage {...shared} note={note} setNote={setNote} />
-          </div>
+            {view.question.figure && mainImage ? (
+              <figure className="ra-reading-figure" data-testid="rd-figure">
+                <ReadingImage
+                  key={mainImage}
+                  id={mainImage}
+                  figure={view.question.figure}
+                  report={report}
+                  lang={elf ? 'en' : 'sv'}
+                />
+                <figcaption lang={elf ? 'en' : 'sv'}>{view.question.figure.alt}</figcaption>
+              </figure>
+            ) : null}
+          </section>
           <section
             className="ra-question-sheet"
             data-testid={phone ? 'rd-sheet' : undefined}
@@ -209,43 +314,74 @@ function ReadingSession({ screen, width, live, onScreen, onGo, returnToHome }: R
                   {view.phase === 'feedback' ? 'Facit' : `Fråga ${view.index + 1} av ${view.total}`}
                 </span>
                 <span>
-                  {peek ? 'Visa' : 'Till texten'} <span aria-hidden>{peek ? '↑' : '↓'}</span>
+                  {peek ? 'Visa alternativen' : 'Visa texten'}{' '}
+                  <span aria-hidden>{peek ? '↑' : '↓'}</span>
                 </span>
               </button>
             ) : null}
             {peek ? (
-              <p className="ra-peek-prompt">
+              <p
+                className="ra-peek-prompt"
+                lang={view.phase === 'feedback' || cloze ? 'sv' : elf ? 'en' : 'sv'}
+              >
                 {view.phase === 'feedback'
                   ? `${view.correct ? 'Rätt.' : 'Fel.'} Rätt svar är ${view.question.answer}. Visa förklaringen.`
-                  : view.question.prompt}
+                  : cloze
+                    ? `Lucka ${view.question.number}`
+                    : view.question.prompt}
               </p>
+            ) : null}
+            {citing ? (
+              <button type="button" className="ra-citation-return" onClick={returnToExplanation}>
+                Till förklaringen ↑
+              </button>
             ) : null}
             {/* Keep the question mounted to preserve detail state when following a citation. */}
             <div className="ra-answer-area" id={questionId} hidden={peek}>
-              <div className="ra-question-scroll" ref={questionScroll}>
+              <section
+                className="ra-question-scroll"
+                ref={questionScroll}
+                data-rd-keyscope
+                // biome-ignore lint/a11y/noNoninteractiveTabindex: keyboard-scrollable question and feedback
+                tabIndex={0}
+                aria-label="Fråga och förklaring"
+              >
                 {view.phase === 'feedback' ? (
                   <RasterFeedback {...shared} />
                 ) : usable ? (
-                  <Question {...shared} />
+                  <Question {...shared} report={report} />
                 ) : (
-                  <p className="ra-missing">Frågan saknar fullständigt innehåll.</p>
+                  <div className="ra-missing">
+                    <p>Texten eller frågan saknas.</p>
+                    <button type="button" className="ra-outline" onClick={() => onGo('ova')}>
+                      Till Öva
+                    </button>
+                  </div>
                 )}
-              </div>
+              </section>
               <footer className="ra-actionbar">
                 {view.phase === 'question' ? (
                   <>
                     <span aria-live="polite">
-                      {view.selected ? `Ditt val: ${view.selected}` : 'Välj ett alternativ'}
+                      {!usable
+                        ? 'Innehåll saknas'
+                        : !ready
+                          ? 'Inväntar bilderna'
+                          : view.selected
+                            ? `Ditt val: ${view.selected}`
+                            : 'Välj ett alternativ'}
                     </span>
-                    <button
-                      type="button"
-                      className="ra-primary"
-                      data-testid="rd-lock"
-                      disabled={!view.selected || !usable}
-                      onClick={act.lock}
-                    >
-                      Svara <kbd aria-hidden>↵</kbd>
-                    </button>
+                    {usable ? (
+                      <button
+                        type="button"
+                        className="ra-primary"
+                        data-testid="rd-lock"
+                        disabled={!view.selected || !ready}
+                        onClick={act.lock}
+                      >
+                        Svara <kbd aria-hidden>↵</kbd>
+                      </button>
+                    ) : null}
                   </>
                 ) : (
                   <>
@@ -284,9 +420,14 @@ function Passage({
   const { data } = useDirectionData()
   const noteId = useId()
   const titleId = useId()
-  const [title, subtitle] = (view.question.passage?.title ?? view.question.source.label).split(': ')
+  const english = view.question.section === 'ELF'
+  const title = view.question.passage?.title
+  const cloze = english && !view.question.prompt?.trim()
+  const gaps = cloze
+    ? gapChain(view.passage?.paragraphs.join('\n\n') ?? '', view.question.number)
+    : new Set<number>()
   return (
-    <article className="ra-passage" aria-labelledby={titleId} lang="sv">
+    <section className="ra-passage">
       <div className="ra-reading-tools">
         {view.question.passage?.synthetic ? (
           <button
@@ -315,47 +456,62 @@ function Passage({
       >
         {data.copy.ovningstextNote}
       </p>
-      <div className="ra-passage-heading">
-        <span className="ra-label">{view.question.section} / Läsförståelse</span>
-        <h1 id={titleId}>{title}</h1>
-        <p>{subtitle}</p>
-      </div>
-      <div className="ra-passage-body" data-testid="rd-passage">
-        {view.passage?.paragraphs.map((text, i) => (
-          <p
-            className="ra-paragraph"
-            key={text}
-            ref={refs.para(i + 1)}
-            data-testid={`rd-para-${i + 1}`}
-            data-focused={String(view.focusPara === i + 1)}
-            data-flash={String(view.flashPara === i + 1)}
-          >
-            <button
-              type="button"
-              className="ra-pilcrow"
-              tabIndex={-1}
-              aria-label={`Stycke ${i + 1}`}
-              aria-pressed={view.focusPara === i + 1}
-              onClick={() => act.setFocusPara(view.focusPara === i + 1 ? null : i + 1)}
+      <article
+        lang={english ? 'en' : 'sv'}
+        aria-labelledby={title ? titleId : undefined}
+        aria-label={title ? undefined : english ? 'English passage' : 'Lästext'}
+        data-testid={english ? 'rd-elf-passage' : 'rd-passage'}
+      >
+        <div className="ra-passage-heading">
+          <span className="ra-label" lang="sv">
+            {view.question.section} / {english ? 'Engelsk läsförståelse' : 'Läsförståelse'}
+          </span>
+          {title ? <h1 id={titleId}>{title}</h1> : <p lang="sv">{view.question.source.label}</p>}
+        </div>
+        <div className="ra-passage-body">
+          {view.passage?.paragraphs.map((text, i) => (
+            <p
+              className="ra-paragraph"
+              key={text}
+              ref={refs.para(i + 1)}
+              data-testid={`rd-para-${i + 1}`}
+              data-focused={String(view.focusPara === i + 1)}
+              data-flash={String(view.flashPara === i + 1)}
             >
-              <span aria-hidden>¶</span>
-              {i + 1}
-            </button>
-            <PassageText text={text} number={i + 1} view={view} />
-          </p>
-        ))}
-        {view.passage?.byline ? <p className="ra-byline">{view.passage.byline}</p> : null}
-      </div>
-    </article>
+              <button
+                type="button"
+                className="ra-pilcrow"
+                tabIndex={-1}
+                lang="sv"
+                aria-label={`Läs stycke ${i + 1}`}
+                aria-pressed={view.focusPara === i + 1}
+                onClick={() => act.setFocusPara(view.focusPara === i + 1 ? null : i + 1)}
+              >
+                <span aria-hidden>¶</span>
+                {i + 1}
+              </button>
+              {cloze ? (
+                <ClozeText text={text} current={view.question.number} gaps={gaps} />
+              ) : (
+                <PassageText text={text} number={i + 1} view={view} />
+              )}
+            </p>
+          ))}
+          {view.passage?.byline ? <p className="ra-byline">{view.passage.byline}</p> : null}
+        </div>
+      </article>
+    </section>
   )
 }
 
-function Question({ view, act }: RasterDrillState) {
+function Question({ view, act, report }: RasterDrillState & { report: ReportImage }) {
+  const english = view.question.section === 'ELF'
+  const cloze = english && !view.question.prompt?.trim()
   return (
     <div className="ra-question">
       <p className="ra-label">{view.question.section} / Läsförståelse</p>
-      <h2>
-        <MathText>{view.question.prompt}</MathText>
+      <h2 lang={cloze ? 'sv' : english ? 'en' : 'sv'}>
+        {cloze ? `Lucka ${view.question.number}` : <MathText>{view.question.prompt}</MathText>}
       </h2>
       <p className="ra-key-hints">
         {view.letters.join('–')} väljer · ⇧ + bokstav stryker · ↵ svarar
@@ -380,7 +536,9 @@ function Question({ view, act }: RasterDrillState) {
                 <kbd>{option.letter}</kbd>
                 <span>
                   <span className="ra-sr">{eliminated ? 'Struket alternativ: ' : ''}</span>
-                  <MathText>{option.text}</MathText>
+                  <span lang={english ? 'en' : 'sv'}>
+                    <MathText>{option.text}</MathText>
+                  </span>
                 </span>
                 <span className="ra-option-mark" aria-hidden>
                   {selected ? '●' : ''}
@@ -398,10 +556,128 @@ function Question({ view, act }: RasterDrillState) {
               >
                 {eliminated ? '↶' : '╱'}
               </button>
+              {option.figure ? (
+                <div className="ra-reading-option-image">
+                  <ReadingImage
+                    key={optionKey(view.question.qid, option.letter, option.figure.src)}
+                    id={optionKey(view.question.qid, option.letter, option.figure.src)}
+                    figure={option.figure}
+                    report={report}
+                    lang={english ? 'en' : 'sv'}
+                  />
+                </div>
+              ) : null}
             </li>
           )
         })}
       </ol>
     </div>
   )
+}
+
+type ImageState = 'loading' | 'ready' | 'error'
+type ReportImage = (id: string, status: ImageState | null) => void
+const optionKey = (qid: string, letter: string, src: string) => `${qid}:${letter}:${src}`
+
+/** A keyed mounted copy owns its own readiness, including cached images and retries. */
+function ReadingImage({
+  id,
+  figure,
+  report,
+  lang,
+}: {
+  id: string
+  figure: DrillOptionFigure
+  report: ReportImage
+  lang?: 'en' | 'sv'
+}) {
+  const ref = useRef<HTMLImageElement>(null)
+  const [attempt, setAttempt] = useState(0)
+  const [status, setStatus] = useState<ImageState>('loading')
+  const update = useCallback(
+    (next: ImageState) => {
+      setStatus(next)
+      report(id, next)
+    },
+    [id, report],
+  )
+  // biome-ignore lint/correctness/useExhaustiveDependencies: each retry mounts a new image and rechecks its cache state
+  useLayoutEffect(() => {
+    const image = ref.current
+    update(image?.complete ? (image.naturalWidth > 0 ? 'ready' : 'error') : 'loading')
+    return () => report(id, null)
+  }, [id, report, update, attempt])
+  return (
+    <div className="ra-required-image">
+      <img
+        key={attempt}
+        ref={ref}
+        src={`/${figure.src.replace(/^\/+/, '')}`}
+        alt={figure.alt}
+        width={figure.width}
+        height={figure.height}
+        lang={lang}
+        onLoad={() => update('ready')}
+        onError={() => update('error')}
+      />
+      {status !== 'ready' ? (
+        <p role="status">{status === 'error' ? 'Bilden kunde inte visas.' : 'Laddar bilden…'}</p>
+      ) : null}
+      {status === 'error' ? (
+        <button
+          type="button"
+          className="ra-outline"
+          onClick={() => {
+            update('loading')
+            setAttempt((n) => n + 1)
+          }}
+        >
+          Försök igen
+        </button>
+      ) : null}
+    </div>
+  )
+}
+
+// Same extraction semantics as DrillQuestion's private cloze helpers: accept
+// the consecutive question-number chain, leaving ages, ranges and percentages.
+const GAP = /(?<![\w–-])_{0,14}(\d{2})_{0,14}(?![\w–\-%])/g
+function gapChain(context: string, current: number): Set<number> {
+  const candidates = [...context.matchAll(GAP)]
+    .map((m) => Number(m[1]))
+    .filter((n) => Math.abs(n - current) <= 6)
+  let best: number[] = []
+  for (let i = 0; i < candidates.length; i++) {
+    const chain = [candidates[i]]
+    for (let j = i + 1; j < candidates.length; j++) {
+      if (candidates[j] === chain[chain.length - 1] + 1) chain.push(candidates[j])
+    }
+    if (chain.includes(current) && chain.length > best.length) best = chain
+  }
+  return new Set(best.length ? best : candidates)
+}
+function ClozeText({ text, current, gaps }: { text: string; current: number; gaps: Set<number> }) {
+  const out: ReactNode[] = []
+  let at = 0
+  for (const match of text.matchAll(GAP)) {
+    const n = Number(match[1])
+    if (!gaps.has(n)) continue
+    out.push(text.slice(at, match.index))
+    out.push(
+      <span
+        key={match.index}
+        role="img"
+        className="ra-cloze-gap"
+        data-testid={`cloze-gap-${n}`}
+        data-active={String(n === current)}
+        lang="sv"
+        aria-label={`Lucka ${n}${n === current ? ', aktuell' : ''}`}
+      >
+        {n}
+      </span>,
+    )
+    at = match.index + match[0].length
+  }
+  out.push(text.slice(at))
+  return out
 }
