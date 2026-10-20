@@ -1,5 +1,5 @@
 import { ArrowRight } from 'lucide-react'
-import { useState } from 'react'
+import { useId, useRef, useState } from 'react'
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import { fmtDelta, fmtScore } from '@/components/devbake/redesign/r1Kit'
 import type { FramstegView } from '@/components/devbake/redesign/viewModel'
@@ -15,22 +15,60 @@ export function LagerFramsteg(props: HubProps) {
   const stats = data.framsteg
   const p = stats.prognosis
   const [history, setHistory] = useState(false)
+  const tabId = useId()
+  const tabs = useRef<(HTMLButtonElement | null)[]>([])
   const focus = stats.focus
     .map((section) => stats.sections.find((s) => s.section === section && s.attempts90d > 0))
     .find(Boolean)
   const hasPrognosis = p.total != null
   return (
     <Hub {...props} title="Framsteg">
-      <fieldset className="la-seg la-progress-tabs">
-        <legend className="la-sr">Visa framsteg</legend>
-        <button type="button" aria-pressed={!history} onClick={() => setHistory(false)}>
-          Översikt
-        </button>
-        <button type="button" aria-pressed={history} onClick={() => setHistory(true)}>
-          Historik
-        </button>
-      </fieldset>
-      <div hidden={history}>
+      <div
+        className="la-seg la-progress-tabs"
+        role="tablist"
+        aria-label="Visa framsteg"
+        data-rd-keyscope
+      >
+        {['Översikt', 'Historik'].map((label, i) => (
+          <button
+            key={label}
+            type="button"
+            role="tab"
+            ref={(el) => {
+              tabs.current[i] = el
+            }}
+            id={`${tabId}-tab-${i}`}
+            aria-controls={`${tabId}-panel-${i}`}
+            aria-selected={Number(history) === i}
+            tabIndex={Number(history) === i ? 0 : -1}
+            onClick={() => setHistory(i === 1)}
+            onKeyDown={(event) => {
+              const next =
+                event.key === 'ArrowRight' || event.key === 'ArrowLeft'
+                  ? 1 - i
+                  : event.key === 'Home'
+                    ? 0
+                    : event.key === 'End'
+                      ? 1
+                      : null
+              if (next == null || event.altKey || event.ctrlKey || event.metaKey) return
+              event.preventDefault()
+              setHistory(next === 1)
+              tabs.current[next]?.focus()
+            }}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      <div
+        role="tabpanel"
+        id={`${tabId}-panel-0`}
+        aria-labelledby={`${tabId}-tab-0`}
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: tab panels with leading text need a keyboard entry point
+        tabIndex={0}
+        hidden={history}
+      >
         <div className="la-hub-grid la-progress-top">
           <section
             className="la-sheet la-progress-evidence"
@@ -190,8 +228,14 @@ export function LagerFramsteg(props: HubProps) {
         className="la-sheet la-progress-history"
         data-depth="1"
         data-testid="rd-framsteg-history"
+        role="tabpanel"
+        id={`${tabId}-panel-1`}
+        aria-labelledby={`${tabId}-tab-1`}
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: tab panels with leading text need a keyboard entry point
+        tabIndex={0}
+        hidden={!history}
       >
-        <h2 className="la-h">{history ? 'Historik' : 'Dina avslutade pass'}</h2>
+        <h2 className="la-h">Historik</h2>
         <h3 className="la-eyebrow">Övning och repetition</h3>
         {stats.history.length ? (
           <ul>

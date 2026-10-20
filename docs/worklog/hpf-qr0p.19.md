@@ -62,3 +62,38 @@
 LAGER2 DONE: hpf-qr0p.19
 
 - 2026-10-20: Delivery note recorded; native Beads readback confirms **DEFERRED** with no assignee. Runtime drain follows. No further work claim.
+
+## Round 2 — review fixes, 2026-10-20
+
+- Starting HEAD: `d2424c02d8010ac381718359063275bef2e898fa`, clean, on the existing assigned branch. Claimed this bead only; no molecule. The latest DESIGN narrows this round to the two P2 findings and four P3 fixes; source remains uncommitted for coordinator delivery. Read the independent review probes at `/home/loucmane/scratch/hpf-qr0p.19-review/probe.test.tsx` and their recorded outcomes before editing.
+- Red first: added behavioral regressions before production edits. The run reported **12 failures / 1,885 passes across 107 files**: five digit-focus cases changed direction and unmounted the pass, both provider-countdown cases made zero submissions, shrink showed the missing-questions card, both settlement-focus cases lacked a focusable status heading, and the new plus migrated progress tests lacked real tab roles. The real-host result-focus control already passed.
+
+All paths in this fix list are under `app/src/components/devbake/redesign/d-lager/`:
+
+| Review item | Fix | Regression evidence |
+| --- | --- | --- |
+| P2-1: host digits lose the running pass | `LagerProvpass.tsx:333` captures digits 0–8 through the pass key map, including while settlement waits or offers retry; `LagerProvpass.tsx:358` marks the root `data-rd-keyscope`. | `Lager.test.tsx:363` runs the real controlled bake-off host with focus on answer, grid cell, question heading, body and switcher. All specified digits leave selection, runner identity, answer and flag unchanged. After abort, 3 and 0 work again. These five tests were red before the fix. |
+| P2-2: ticking provider replaces the pass with an expired card | `LagerProvpass.tsx:258` freezes entry expiry; `LagerProvpass.tsx:279` treats later provider zero as time-up through the same one-shot submission guard as the local timer. A pending/failed settlement is preserved. | `Lager.test.tsx:410` starts a pass mid-second so provider expiry precedes the local deadline. Exactly one submission occurs at provider zero, answers stay locked and retained, later ticks do not resubmit, and a thrown submission keeps its deliberate retry. Both cases were red before the fix; existing local/throttled-timer and expired-entry tests also pass. |
+| P3: question-list shrink | `LagerProvpass.tsx:245` clamps and persists the current position before reading the question. | `Lager.test.tsx:443` shrinks a pass from question 5 to two questions, checks focus/current question 2, grows it again without restoring stale position 5, then navigates back. Red first. |
+| P3: current-cell focus ring | `lager.css:3544` follows the current-cell rule with an equal-specificity focus-visible rule using the focus color and 3px offset. | Cascade inspected: both nested selectors have specificity `(0,3,0)`, so the later focus rule wins. This CSS-only fix has no jsdom visual assertion; browser verification remains with the coordinator. |
+| P3: focus after hand-in | `LagerProvpass.tsx:300` moves focus after dialog cleanup to the settlement heading at `LagerProvpass.tsx:427`. | `Lager.test.tsx:469` starts from a focused submit button, focuses confirmation and verifies focus on pending/failed status headings (both red first). `Lager.test.tsx:486` verifies the successful real host transition focuses the result heading. |
+| P3: Framsteg tabs | `LagerFramsteg.tsx:25` uses labelled tablist/tab/tabpanel relationships, one tab stop, Left/Right wrapping, Home/End, and a key scope; only the selected panel is visible. `lager.css:1069` retains selected-segment styling via `aria-selected`. | `Lager.test.tsx:503` verifies linked panel IDs, selection, tab stops, focus, wrap/Home/End and clicks through the real host without a screen change. Red first. Existing overview/history coverage was migrated to tab roles. |
+
+- Focused verification after fixes: **118/118 Lager tests PASS**. `pnpm typecheck` and `pnpm lint` **PASS**; lint reports only four pre-existing informational findings outside the write set. `git diff --check` **PASS**. Full app verification is recorded below when complete.
+- No shared kit, dependencies, routes or other directions were edited. No new browser sign-off is claimed: the earlier sandbox Vite `listen EPERM` limitation remains a host handoff. `/work/hpf-qr0p.19` is absent; these app checks required no custom test fixtures or temporary test HOME. No scratch files were created in `/tmp` or `/var/tmp`.
+- [S:codex-3|W:hpf-qr0p.19|H:round-2-fix|E:red-12-green-118] Implemented all six accepted review fixes and verified the focused suite, types and lint. Independent cross-vendor re-review remains required after coordinator delivery.
+
+### Playbook-proposal — astra-relay
+
+- 2026-10-20 · Symptom: an intended focused Vitest invocation ran all 107 app test files. Cause: `pnpm test -- <file> --reporter=dot` forwarded a literal `--` to Vitest and did not apply the intended filter/options. Fix/rule: use `pnpm test <file> --reporter=dot` (or `pnpm exec vitest run <file>`) and confirm the reported file count. Proposed here and in the classified worklog because `~/scratch/skill-gotchas/` is outside this managed session's writable roots; the astra-relay playbook documents that fallback.
+
+### Round 2 final verification and handoff
+
+- Final full app run: `pnpm test --maxWorkers=4` **PASS**, **107 files / 1,897 tests**, exit 0. The preceding default-concurrency `pnpm test` run had **1,896 passes / 1 failure**: `DirectionShell.test.tsx:121`, the unrelated Folio mount, timed out waiting for its lazy stage. That file passed **15/15** in isolation before the capped full run. The failure is consistent with startup contention; no timeouts or unrelated code were changed. Coordinator should retain both outcomes and rerun the default host command before delivery.
+- `pnpm typecheck`, `pnpm lint`, and `git diff --check` **PASS**. Focused Lager suite **118/118 PASS**. No screenshots or native-browser focus/CSS sign-off from this round; the known sandbox socket restriction remains a host verification boundary.
+- HEAD remains `d2424c02d8010ac381718359063275bef2e898fa`. Changes are **uncommitted and unstaged** in exactly five admitted paths: the Lager test, Provpass, Framsteg, CSS and this worklog. The classified worklog is also updated. Coordinator owns signed delivery, exact-head independent cross-vendor re-review and host browser checks; the earlier HOLD is not superseded by this author verification.
+- [S:codex-3|W:hpf-qr0p.19|H:round-2-handoff|E:118-lager-1897-app] All accepted fixes implemented. Record one delivery note, park deferred and confirm before runtime drain. Do not close or claim another item.
+
+- 2026-10-20: One delivery note recorded and read back; native Beads confirms **DEFERRED**, unassigned. Runtime drain follows. Source remains uncommitted for coordinator review.
+
+LAGER2R2 DONE: hpf-qr0p.19

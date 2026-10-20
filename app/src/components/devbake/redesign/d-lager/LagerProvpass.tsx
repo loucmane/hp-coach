@@ -242,7 +242,10 @@ export function LagerProvRunner({
   onAbort: () => void
 }) {
   const { data, actions } = useDirectionData()
-  const [index, setIndex] = useState(Math.max(0, Math.min(run.current, run.questions.length - 1)))
+  const [position, setIndex] = useState(run.current)
+  const index = Math.max(0, Math.min(position, run.questions.length - 1))
+  // Persist a clamped position so later growth cannot restore a stale index.
+  if (position !== index) setIndex(index)
   const [answers, setAnswers] = useState(run.answers)
   const [flags, setFlags] = useState(run.flags)
   const [gate, setGate] = useState<'submit' | 'abort' | null>(null)
@@ -252,8 +255,9 @@ export function LagerProvRunner({
   const [settlement, setSettlement] = useState<'active' | 'pending' | 'failed'>('active')
   const settled = useRef(false)
   const [deadline] = useState(() => Date.now() + run.remainingSeconds * 1000)
-  const expiredOnEntry = run.remainingSeconds <= 0
+  const [expiredOnEntry] = useState(() => run.remainingSeconds <= 0)
   const heading = useRef<HTMLHeadingElement>(null)
+  const statusHeading = useRef<HTMLHeadingElement>(null)
   const gridToggle = useRef<HTMLDetailsElement>(null)
   const q = run.questions[index]
   // The empty guard still follows the same hook order.
@@ -273,6 +277,12 @@ export function LagerProvRunner({
   const submitRef = useRef(submit)
   submitRef.current = submit
   useEffect(() => {
+    if (!live || expiredOnEntry || settlement !== 'active' || run.remainingSeconds > 0) return
+    // The provider can tick before our local interval (or while it is throttled).
+    setRemaining(0)
+    submitRef.current()
+  }, [live, expiredOnEntry, settlement, run.remainingSeconds])
+  useEffect(() => {
     if (!live || expiredOnEntry || settlement !== 'active') return
     const tick = () => {
       const left = Math.max(0, Math.ceil((deadline - Date.now()) / 1000))
@@ -287,6 +297,9 @@ export function LagerProvRunner({
     heading.current?.focus({ preventScroll: true })
     setNote(false)
   }, [index])
+  useEffect(() => {
+    if (settlement !== 'active') statusHeading.current?.focus({ preventScroll: true })
+  }, [settlement])
   const unlocked = settlement === 'active' && remaining > 0 && (!live || Date.now() < deadline)
   const canInteract = () => {
     if (settled.current || settlement !== 'active' || remaining <= 0) return false
@@ -317,7 +330,10 @@ export function LagerProvRunner({
     ' ': () => (index + 1 < run.questions.length ? move(index + 1) : askGate('submit')),
   }
   for (const o of q?.options ?? []) keys[o.letter.toLowerCase()] = () => pick(o.letter)
-  useKeyMap(keys, live && unlocked && !gate && !viewer && Boolean(q))
+  // Capture host switcher digits even when focus has left the runner, and keep
+  // the pending/failed pass intact until the host supplies its result.
+  for (const key of ['0', '1', '2', '3', '4', '5', '6', '7', '8']) keys[key] = () => {}
+  useKeyMap(keys, live && !expiredOnEntry && !gate && !viewer && Boolean(q))
   const answered = run.questions.filter((item) => answers[item.qid] != null).length
   const blanks = run.questions.length - answered
   if (!q || expiredOnEntry)
@@ -339,7 +355,7 @@ export function LagerProvRunner({
       </div>
     )
   return (
-    <div className="la-prov-run" data-testid="rd-prov-running">
+    <div className="la-prov-run" data-testid="rd-prov-running" data-rd-keyscope>
       <header className="la-prov-controls">
         <div className="la-pill la-glass">
           <button
@@ -408,9 +424,11 @@ export function LagerProvRunner({
         </details>
         {settlement !== 'active' ? (
           <div className="la-sheet la-prov-status" role="status">
-            {settlement === 'pending'
-              ? 'Lämnar in…'
-              : 'Resultatet kunde inte lämnas in. Dina val finns kvar här.'}
+            <h2 className="la-h" ref={statusHeading} tabIndex={-1}>
+              {settlement === 'pending'
+                ? 'Lämnar in…'
+                : 'Resultatet kunde inte lämnas in. Dina val finns kvar här.'}
+            </h2>
             {settlement === 'failed' ? (
               <button
                 type="button"

@@ -1,4 +1,5 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { useEffect, useState } from 'react'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 
 import {
@@ -7,7 +8,10 @@ import {
   stubLayout,
 } from '@/components/devbake/redesign/contract'
 import { DirectionDataProvider, FIXTURE_DATA } from '@/components/devbake/redesign/directionData'
-import { Redesign2026Bakeoff } from '@/components/devbake/redesign/Redesign2026Bakeoff'
+import {
+  Redesign2026Bakeoff,
+  type Selection,
+} from '@/components/devbake/redesign/Redesign2026Bakeoff'
 import type { DirectionProps } from '@/components/devbake/redesign/r1Kit'
 import type { DirectionActions, DirectionData } from '@/components/devbake/redesign/viewModel'
 import { Lager } from './Lager'
@@ -37,6 +41,38 @@ function oneQuestion(kind: 'reading' | 'quant' | 'dtk'): DirectionData {
   data.drills[kind].questions = [data.drills[kind].questions[0]]
   data.drills[kind].start = { index: 0, results: [] }
   return data
+}
+
+function BakeoffHost({ initialScreen = 9 }: { initialScreen?: Selection['s'] }) {
+  const [sel, setSel] = useState<Selection>({
+    d: 'd',
+    s: initialScreen,
+    w: 'desktop',
+    t: 'light',
+    sbs: false,
+    bare: false,
+  })
+  return (
+    <>
+      <Redesign2026Bakeoff sel={sel} onSelect={(next) => setSel((old) => ({ ...old, ...next }))} />
+      <output data-testid="host-selection">{`${sel.d}/${sel.s}/${sel.sbs}`}</output>
+    </>
+  )
+}
+
+function TickingPass({ submitProvpass }: Pick<DirectionActions, 'submitProvpass'>) {
+  const [remaining, setRemaining] = useState(4)
+  useEffect(() => {
+    const timer = window.setInterval(() => setRemaining((left) => Math.max(0, left - 1)), 1000)
+    return () => window.clearInterval(timer)
+  }, [])
+  const data = structuredClone(FIXTURE_DATA)
+  data.provpass.running.remainingSeconds = remaining
+  return (
+    <DirectionDataProvider data={data} actions={{ submitProvpass }}>
+      <Lager screen={9} width="desktop" theme="light" live onScreen={vi.fn()} onTheme={vi.fn()} />
+    </DirectionDataProvider>
+  )
 }
 
 describe('Lager: data boundary and practice states', () => {
@@ -318,6 +354,193 @@ describe('Lager: data boundary and practice states', () => {
     expect(screen.queryByTestId('rd-prov-running')).toBeNull()
   })
 
+  it.each([
+    'answer',
+    'grid',
+    'heading',
+    'body',
+    'switcher',
+  ])('keeps all switcher digits inside the running pass with focus on %s', async (target) => {
+    const width = vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    const height = vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(900)
+    try {
+      render(<BakeoffHost />)
+      fireEvent.click(await screen.findByTestId('rd-prov-start'))
+      fireEvent.click(screen.getByTestId('rd-confirm'))
+      const runner = screen.getByTestId('rd-prov-running')
+      const answer = screen.getByTestId('rd-prov-option-A')
+      fireEvent.click(answer)
+      const flag = screen.getByTestId('rd-prov-flag')
+      fireEvent.click(flag)
+      const flagged = flag.getAttribute('aria-pressed')
+      const focused =
+        target === 'answer'
+          ? answer
+          : target === 'grid'
+            ? screen.getByTestId('rd-prov-cell-2')
+            : target === 'heading'
+              ? screen.getByRole('heading', { name: /^Fråga \d+ av/ })
+              : target === 'switcher'
+                ? within(screen.getByTestId('rb26-bar')).getAllByRole('button')[0]
+                : document.body
+      focused.focus()
+      for (const key of ['3', '0', '1', '2', '4', '5', '6', '7', '8']) {
+        expect(fireEvent.keyDown(focused, { key })).toBe(false)
+        expect(screen.getByTestId('host-selection')).toHaveTextContent('d/9/false')
+        expect(screen.getByTestId('rd-prov-running')).toBe(runner)
+        expect(answer).toHaveAttribute('aria-pressed', 'true')
+        expect(flag).toHaveAttribute('aria-pressed', flagged)
+      }
+      expect(runner).toHaveAttribute('data-rd-keyscope')
+      fireEvent.click(screen.getByTestId('rd-exit'))
+      fireEvent.click(screen.getByTestId('rd-confirm'))
+      fireEvent.keyDown(window, { key: '3' })
+      expect(screen.getByTestId('host-selection')).toHaveTextContent('c/9/false')
+      fireEvent.keyDown(window, { key: '0' })
+      expect(screen.getByTestId('host-selection')).toHaveTextContent('c/9/true')
+    } finally {
+      width.mockRestore()
+      height.mockRestore()
+    }
+  })
+
+  it.each([
+    false,
+    true,
+  ])('settles once when a ticking provider reaches zero (failure=%s)', (fail) => {
+    vi.useFakeTimers()
+    try {
+      const submitProvpass = vi.fn()
+      if (fail)
+        submitProvpass.mockImplementationOnce(() => {
+          throw new Error('offline')
+        })
+      const { unmount } = render(<TickingPass submitProvpass={submitProvpass} />)
+      act(() => vi.advanceTimersByTime(1500))
+      fireEvent.click(screen.getByTestId('rd-prov-start'))
+      fireEvent.click(screen.getByTestId('rd-confirm'))
+      fireEvent.click(screen.getByTestId('rd-prov-option-A'))
+      // Provider expires at 4 s, before the runner's local deadline at 4.5 s.
+      for (let i = 0; i < 25; i++) act(() => vi.advanceTimersByTime(100))
+      expect(submitProvpass).toHaveBeenCalledTimes(1)
+      expect(screen.getByTestId('rd-prov-timer')).toHaveTextContent('0:00')
+      expect(screen.getByTestId('rd-prov-option-A')).toBeDisabled()
+      expect(screen.getByTestId('rd-prov-option-A')).toHaveAttribute('aria-pressed', 'true')
+      act(() => vi.advanceTimersByTime(5000))
+      expect(submitProvpass).toHaveBeenCalledTimes(1)
+      expect(screen.queryByText('Tiden för provpasset har gått ut.')).toBeNull()
+      if (fail) {
+        fireEvent.click(screen.getByRole('button', { name: 'Försök lämna in igen' }))
+        expect(submitProvpass).toHaveBeenCalledTimes(2)
+      }
+      expect(screen.getByText('Lämnar in…')).toBeInTheDocument()
+      unmount()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('clamps the current question when the same pass shrinks and retains that position on growth', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    const view = (value: DirectionData) => (
+      <DirectionDataProvider data={value}>
+        <Lager screen={9} width="desktop" theme="light" live onScreen={vi.fn()} onTheme={vi.fn()} />
+      </DirectionDataProvider>
+    )
+    const { rerender } = render(view(data))
+    fireEvent.click(screen.getByTestId('rd-prov-start'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    fireEvent.click(screen.getByTestId('rd-prov-cell-5'))
+    const smaller = structuredClone(data)
+    smaller.provpass.running.questions = smaller.provpass.running.questions.slice(0, 2)
+    smaller.provpass.running.grid = smaller.provpass.running.grid.slice(0, 2)
+    rerender(view(smaller))
+    expect(screen.getByRole('heading', { name: 'Fråga 2 av 2' })).toHaveFocus()
+    expect(screen.getByTestId('rd-prov-cell-2')).toHaveAttribute('data-current', 'true')
+    rerender(view(data))
+    expect(screen.getByTestId('rd-prov-cell-2')).toHaveAttribute('data-current', 'true')
+    fireEvent.click(screen.getByRole('button', { name: 'Föregående' }))
+    expect(screen.getByTestId('rd-prov-cell-1')).toHaveAttribute('data-current', 'true')
+  })
+
+  it.each([
+    false,
+    true,
+  ])('focuses the settlement heading after confirmation (failure=%s)', (fail) => {
+    const submitProvpass = vi.fn(() => {
+      if (fail) throw new Error('offline')
+    })
+    mount(9, undefined, { submitProvpass })
+    fireEvent.click(screen.getByTestId('rd-prov-start'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    const submit = screen.getByTestId('rd-prov-submit')
+    submit.focus()
+    fireEvent.click(submit)
+    const confirm = screen.getByTestId('rd-confirm')
+    confirm.focus()
+    fireEvent.click(confirm)
+    expect(submit).toBeDisabled()
+    expect(within(screen.getByRole('status')).getByRole('heading')).toHaveFocus()
+  })
+
+  it('focuses the result heading after hand-in through the real host', async () => {
+    const width = vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    const height = vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(900)
+    try {
+      render(<BakeoffHost />)
+      fireEvent.click(await screen.findByTestId('rd-prov-start'))
+      fireEvent.click(screen.getByTestId('rd-confirm'))
+      fireEvent.click(screen.getByTestId('rd-prov-submit'))
+      screen.getByTestId('rd-confirm').focus()
+      fireEvent.click(screen.getByTestId('rd-confirm'))
+      expect(screen.getByRole('heading', { name: 'Provpassresultat' })).toHaveFocus()
+    } finally {
+      width.mockRestore()
+      height.mockRestore()
+    }
+  })
+
+  it('offers labelled progress tabs with roving focus without changing the host screen', async () => {
+    const width = vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    const height = vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(900)
+    try {
+      render(<BakeoffHost initialScreen={11} />)
+      const list = await screen.findByRole('tablist', { name: 'Visa framsteg' })
+      const overview = within(list).getByRole('tab', { name: 'Översikt' })
+      const history = within(list).getByRole('tab', { name: 'Historik' })
+      const check = (active: HTMLElement, inactive: HTMLElement) => {
+        expect(active).toHaveAttribute('aria-selected', 'true')
+        expect(active).toHaveAttribute('tabindex', '0')
+        expect(inactive).toHaveAttribute('aria-selected', 'false')
+        expect(inactive).toHaveAttribute('tabindex', '-1')
+        const panel = screen.getByRole('tabpanel', { name: active.textContent! })
+        expect(panel.id).toBe(active.getAttribute('aria-controls'))
+        expect(panel).toHaveAttribute('aria-labelledby', active.id)
+        expect(screen.getByTestId('host-selection')).toHaveTextContent('d/11/false')
+      }
+      overview.focus()
+      check(overview, history)
+      for (const [key, active, inactive] of [
+        ['ArrowRight', history, overview],
+        ['ArrowRight', overview, history],
+        ['ArrowLeft', history, overview],
+        ['Home', overview, history],
+        ['End', history, overview],
+      ] as const) {
+        fireEvent.keyDown(document.activeElement!, { key })
+        check(active, inactive)
+        expect(active).toHaveFocus()
+      }
+      fireEvent.click(overview)
+      check(overview, history)
+      fireEvent.click(history)
+      check(history, overview)
+    } finally {
+      width.mockRestore()
+      height.mockRestore()
+    }
+  })
+
   it('requests another selected pass without mislabelling the supplied running snapshot', () => {
     const startProvpass = vi.fn()
     mount(9, undefined, { startProvpass })
@@ -536,11 +759,11 @@ describe('Lager: data boundary and practice states', () => {
     expect(screen.getByText('Underlag saknas')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Öva KVA' }))
     expect(startDrill).toHaveBeenCalledWith({ kind: 'section', section: 'KVA' })
-    fireEvent.click(screen.getByRole('button', { name: 'Historik' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Historik' }))
     expect(screen.queryByRole('heading', { name: 'Din prognos' })).toBeNull()
     expect(screen.getByRole('heading', { name: 'Övning och repetition' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Provpass' })).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('button', { name: 'Översikt' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Översikt' }))
     expect(screen.getByRole('heading', { name: 'Din prognos' })).toBeInTheDocument()
   })
 
