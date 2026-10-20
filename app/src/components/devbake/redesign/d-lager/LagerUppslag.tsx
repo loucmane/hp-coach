@@ -21,6 +21,7 @@ export function LagerUppslag(props: HubProps) {
   const section = sections.find((s) => s.section === selected) ?? sections[0]
   const [outline, setOutline] = useState(false)
   const [large, setLarge] = useState(false)
+  const [requestedLesson, setRequestedLesson] = useState(false)
   const heading = useRef<HTMLHeadingElement>(null)
   const outlineButton = useRef<HTMLButtonElement>(null)
   const directory = useRef<HTMLElement>(null)
@@ -28,6 +29,7 @@ export function LagerUppslag(props: HubProps) {
   useEffect(() => {
     if (previousLesson.current === lesson.id) return
     previousLesson.current = lesson.id
+    setRequestedLesson(false)
     setSelected(lesson.section)
     setOutline(false)
     heading.current?.focus({ preventScroll: true })
@@ -69,7 +71,10 @@ export function LagerUppslag(props: HubProps) {
                 className="la-ref-entry"
                 aria-current={entry.id === lesson.id ? 'page' : undefined}
                 data-testid={`rd-uppslag-entry-${entry.id}`}
-                onClick={() => actions.openLesson(entry.id)}
+                onClick={() => {
+                  actions.openLesson(entry.id)
+                  setRequestedLesson(entry.id !== lesson.id)
+                }}
               >
                 <span className="la-ref-entry-title">{entry.title}</span>
                 {entry.summary ? <span>{entry.summary}</span> : null}
@@ -128,6 +133,11 @@ export function LagerUppslag(props: HubProps) {
           </button>
         </div>
       </div>
+      <p role="status">
+        {requestedLesson
+          ? 'Lektion begärd. Den öppna texten ligger kvar tills den nya har laddats.'
+          : ''}
+      </p>
       <div className="la-reference">
         <section
           aria-label="Innehåll"

@@ -58,3 +58,39 @@
 LAGER3 DONE: hpf-qr0p.20
 
 - 2026-10-20: Delivery note recorded and read back; native Beads confirms **DEFERRED**, unassigned. Runtime drain follows. Source remains uncommitted for coordinator review.
+
+## Round 2
+
+- 2026-10-20: Claimed the review-fix round; worktree clean at `8f0a13323f611a1cacd07febf301fb66cea04711`, no molecule. Read the Claude HOLD report at `/home/loucmane/scratch/hpf-qr0p.20/review-r1.md` and its probes. Shared confirmation contract is already fixed; all edits stay in the admitted write set.
+- Decisions before implementation: test focused-element shortcuts through the real bake-off host; reserve only passage left/right arrows for scrolling; keep mount focus unchanged; consume explicit account-section requests; close the captured native dialog before restoring focus; show honest lesson-request and deletion-preview copy. Include the four requested P3 fixes. Framsteg and Provpass remain separate follow-ups.
+- [S:codex-2|W:hpf-qr0p.20|H:round-2-inspect|E:8f0a133-clean-claude-hold] Regression tests precede fixes; leave source uncommitted, append evidence, park and drain.
+
+### Fixes and red-first evidence
+
+All source paths below are under `app/src/components/devbake/redesign/d-lager/`.
+
+- **F1:** `LagerDrill.tsx:141` remembers the actual question/phase and skips mount focus, including Strict Mode effect replay. Removed broad keyscopes from question, verdict and phone sheet regions. `LagerDrill.tsx:471` reserves only left/right arrows for passage scrolling through a local `preventDefault` handler, with reduced-motion support; digits reach the host. `Lager.test.tsx:110` reproduces focused-element ArrowRight navigation from screen 1 through 2 to 3 at both widths. The matrix at `Lager.test.tsx:123` checks entry, options, passage and verdict on screens 2/3/14, including direction digits, side-by-side and both arrows with/without Shift. Passage arrows explicitly assert scrolling and no screen change; screen 3 has no exposed options in its initial feedback state. These tests failed before the fix.
+- **F2:** `LagerKonto.tsx:267` captures the mounted dialog, closes it in cleanup and only then restores the opener. `Lager.test.tsx:208` failed for both native cancel (Escape) and Tillbaka before the fix; the test models native inertness by refusing opener focus while the dialog is open, then asserts restored focus. Browser top-layer behavior still needs the coordinator's browser check.
+- **F3:** `LagerUppslag.tsx:24`, `:71` and `:136` announce a different lesson request while retaining the provider's article, clear the notice when the provider changes the lesson, and do not announce a request for the already open lesson. `Lager.test.tsx:229` failed for the missing status before implementation and covers request, unchanged content and eventual arrival.
+- **F4:** `Lager.tsx:153`, `:241` and `LagerKonto.tsx:38` make section focus an explicit, consumed launcher request. Direct entry and later re-entry retain the frame h1 focus and scroll restoration; repeated requests for the same launcher section still work. The two-width test at `Lager.test.tsx:185` failed on mount before implementation. Existing real-host settings navigation remains covered.
+- **F5:** `LagerKonto.tsx:234`, `:293` and `:337` label both deletion stages as a förhandsvisning and state that nothing is deleted in this preview after requesting. Export-first ordering, consequence text, exact typed `radera`, and duplicate-request prevention remain intact. `Lager.test.tsx:262` failed on the missing preview label before implementation; the existing negative typed-confirmation test remains unchanged.
+- **P3:** `lager.css:656`, `:686`, `:731` give quiet and pill controls a 44px minimum target in both dimensions. `LagerDrill.tsx:457` gives cloze labels Swedish text and `lang="sv"`; `Lager.test.tsx:655` failed on the English label first. `LagerKonto.tsx:24` clears System selection when the host changes theme; `Lager.test.tsx:284` covers light and dark system preferences and prevents stale selection after switching back. `LagerKonto.tsx:86` and `Lager.tsx:456` hide sign-out in both account surfaces without an identity; `Lager.test.tsx:301` reproduced both the page and remaining launcher bug before their respective fixes.
+- First red run: **33 failed / 153 passed** in the Lager suite. After the core fixes: **186/186 passed**. Then extended Shift+Arrow, both System themes and launcher coverage; the launcher extension failed once before its matching fix. No shared test, dependency, Framsteg or Provpass source changed.
+- Proposed Swedish copy is explicitly limited to lesson-request feedback, preview disclosure and the localized cloze label.
+
+### Playbook-proposal — astra-relay
+
+- 2026-10-20 · Symptom: dialog focus restoration passed a basic jsdom lifecycle test but failed in the browser. Cause: React layout-effect cleanup runs while the modal remains open, making the opener inert; simple dialog stubs do not model that restriction. Rule: capture and close the dialog before focusing its opener; regression tests must check that ordering for cancel and button dismissal, and retain a native-browser handoff. Recorded here and in the classified worklog because `~/scratch/skill-gotchas/` is outside the declared writable roots; no `/tmp` fallback used.
+
+### Final verification and handoff — Round 2
+
+- `pnpm -C app typecheck`: **PASS**.
+- `pnpm -C app lint`: **PASS**, with four informational findings in untouched files.
+- `pnpm -C app test --maxWorkers=2 --reporter=dot`: **2,700/2,700 passed**, **109/109 files**, 69.52 seconds. This includes all **187 Lager tests** and the shared host/contract suites. Non-failing React act/router warnings came from unrelated existing suites.
+- `git --no-optional-locks diff --check`: **PASS**. Final source remains **uncommitted and unstaged** at `8f0a13323f611a1cacd07febf301fb66cea04711`; seven admitted repository paths changed. No dependency changes, remote actions, source commits or out-of-scope repairs.
+- No required app check was blocked by this sandbox in Round 2. Native-browser checks were not rerun: the unit tests model dialog close/focus ordering but cannot establish browser top-layer behavior or visual target dimensions. Coordinator should verify Escape/Tillbaka focus, passage scrolling and 44px controls in the host browser and obtain independent cross-vendor re-review at the resulting commit.
+- [S:codex-2|W:hpf-qr0p.20|H:round-2-handoff|E:2700-pass-109-files-types-lint] F1–F5 and the requested P3 items complete; record the final bead note, park deferred/unassigned, verify, then drain without closing this bead.
+
+LAGER3R2 DONE: hpf-qr0p.20
+
+- 2026-10-20: Final note persisted and read back. Native Beads confirms **DEFERRED**, unassigned. Runtime drain is the remaining final action.

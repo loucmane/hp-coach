@@ -150,7 +150,8 @@ function LagerFrame({
   // Screen 4 shows the chrome's other state: menu open, and on desktop the
   // page scrolled a little, which is what shrinks the dock.
   const [menu, setMenu] = useState(screen === 4)
-  const [accountSection, setAccountSection] = useState<AccountSection>('konto')
+  const [accountSection, setAccountSection] = useState<AccountSection | null>(null)
+  const consumeAccountSection = useCallback(() => setAccountSection(null), [])
   const previousDestination = useRef<Destination>('idag')
   const [scrolled, setScrolled] = useState(false)
   const destination: Destination =
@@ -238,6 +239,7 @@ function LagerFrame({
         account={corner}
         theme={theme}
         section={accountSection}
+        onSectionHandled={consumeAccountSection}
         onBack={() => go(previousDestination.current)}
       />
     ) : dest === 'idag' ? (
@@ -451,15 +453,19 @@ function MenuItems({ close, theme, onTheme, openPage }: AccountProps) {
           openPage('help')
         }}
       />
-      <hr className="la-menu-sep" />
-      <MenuItem
-        label="Logga ut"
-        onClick={() => {
-          close()
-          actions.signOut()
-        }}
-        chevron={false}
-      />
+      {data.konto.identity.name || data.konto.identity.email ? (
+        <>
+          <hr className="la-menu-sep" />
+          <MenuItem
+            label="Logga ut"
+            onClick={() => {
+              close()
+              actions.signOut()
+            }}
+            chevron={false}
+          />
+        </>
+      ) : null}
     </>
   )
 }

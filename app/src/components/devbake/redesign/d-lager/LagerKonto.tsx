@@ -9,16 +9,21 @@ export type AccountSection = 'konto' | 'settings' | 'help'
 export function LagerKonto({
   theme,
   section,
+  onSectionHandled,
   onBack,
   ...props
 }: HubProps & {
   theme: ThemeKey
-  section: AccountSection
+  section: AccountSection | null
+  onSectionHandled: () => void
   onBack: () => void
 }) {
   const { data, actions } = useDirectionData()
   const { identity, prefs, options, links, exam } = data.konto
   const [system, setSystem] = useState<ThemeKey | null>(null)
+  useEffect(() => {
+    if (system !== null && system !== theme) setSystem(null)
+  }, [system, theme])
   const [deleting, setDeleting] = useState(false)
   const [notice, setNotice] = useState('')
   const [minutesDraft, setMinutesDraft] = useState<string | null>(null)
@@ -32,8 +37,10 @@ export function LagerKonto({
     el?.scrollIntoView?.({ block: 'start' })
   }, [])
   useEffect(() => {
+    if (section === null) return
     focusSection(section)
-  }, [section, focusSection])
+    onSectionHandled()
+  }, [section, focusSection, onSectionHandled])
   const request = (action: () => void, confirmation = '') => {
     try {
       action()
@@ -76,14 +83,16 @@ export function LagerKonto({
               <p>Kontouppgifterna är inte tillgängliga.</p>
             )}
             {identity.plan ? <p>{identity.plan}</p> : null}
-            <button
-              type="button"
-              className="la-quiet"
-              data-testid="rd-konto-signout"
-              onClick={() => request(actions.signOut)}
-            >
-              Logga ut
-            </button>
+            {identity.name || identity.email ? (
+              <button
+                type="button"
+                className="la-quiet"
+                data-testid="rd-konto-signout"
+                onClick={() => request(actions.signOut)}
+              >
+                Logga ut
+              </button>
+            ) : null}
           </section>
           <section className="la-account-section" ref={settings}>
             <h2 tabIndex={-1}>Inställningar</h2>
@@ -222,6 +231,7 @@ export function LagerKonto({
           </section>
           <details className="la-account-danger">
             <summary>Radera konto</summary>
+            <p>Förhandsvisning av radering. Inget raderas här.</p>
             <p>Exportera gärna dina data först. Radering går inte att ångra.</p>
             <button
               type="button"
@@ -257,9 +267,11 @@ function DeleteConfirmation({ onClose }: { onClose: () => void }) {
   const [requested, setRequested] = useState(false)
   useLayoutEffect(() => {
     const previous = document.activeElement
-    dialog.current?.showModal()
+    const node = dialog.current
+    node?.showModal()
     cancel.current?.focus()
     return () => {
+      node?.close()
       if (previous instanceof HTMLElement && previous.isConnected) previous.focus()
     }
   }, [])
@@ -278,6 +290,7 @@ function DeleteConfirmation({ onClose }: { onClose: () => void }) {
         Radera konto
       </h2>
       <div className="la-confirm-body">
+        <p>Förhandsvisning av radering. Inget raderas här.</p>
         <p>
           Allt raderas direkt — konto, försök, missar och resultat. Säkerhetskopior tunnas ut inom
           30 dagar. Det går inte att ångra.
@@ -321,7 +334,7 @@ function DeleteConfirmation({ onClose }: { onClose: () => void }) {
             try {
               actions.deleteAccount()
               setRequested(true)
-              setNotice('Begäran skickad. Inväntar besked.')
+              setNotice('Begäran skickad. Inget raderas i den här förhandsvisningen.')
             } catch {
               setNotice('Begäran kunde inte skickas. Försök igen.')
             }

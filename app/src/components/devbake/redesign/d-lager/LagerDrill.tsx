@@ -32,6 +32,7 @@ import {
 import {
   createContext,
   Fragment,
+  type KeyboardEvent,
   type ReactNode,
   useCallback,
   useContext,
@@ -137,9 +138,12 @@ function ReadingSession({
   const blocked =
     images.blocked || !view.passage?.paragraphs.some((p) => p.trim()) || !view.letters.length
   const focus = useRef<HTMLDivElement>(null)
-  // Explicit session transitions focus the front sheet, never provider ticks.
-  // biome-ignore lint/correctness/useExhaustiveDependencies: only a question/phase transition moves focus
+  const previousFocus = useRef({ index: view.index, phase: view.phase })
+  // Only real transitions move focus, including when Strict Mode replays mount effects.
   useEffect(() => {
+    const previous = previousFocus.current
+    if (previous.index === view.index && previous.phase === view.phase) return
+    previousFocus.current = { index: view.index, phase: view.phase }
     const target = focus.current?.querySelector<HTMLElement>(
       view.phase === 'done'
         ? '.la-done-line'
@@ -450,7 +454,9 @@ function ClozeText({
     parts.push(text.slice(at, match.index))
     parts.push(
       <span key={match.index} className="la-cloze-gap" data-active={String(n === number)}>
-        <span className="la-sr">{`Gap ${n}${n === number ? ', current question' : ''}: `}</span>
+        <span className="la-sr" lang="sv">
+          {`Lucka ${n}${n === number ? ', aktuell fråga' : ''}: `}
+        </span>
         {match[0]}
       </span>,
     )
@@ -461,6 +467,17 @@ function ClozeText({
 }
 
 // ── Desktop: the reading sheet beside a question sheet / stack ───────
+
+function scrollPassage(e: KeyboardEvent<HTMLElement>) {
+  if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return
+  if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
+  e.preventDefault()
+  const passage = e.currentTarget
+  passage.scrollTo({
+    top: Math.max(0, passage.scrollTop + (e.key === 'ArrowRight' ? 120 : -120)),
+    behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+  })
+}
 
 function Desk({
   view,
@@ -509,7 +526,7 @@ function Desk({
         data-size={large ? 'large' : 'normal'}
         ref={readRef}
         aria-labelledby="la-ptitle"
-        data-rd-keyscope
+        onKeyDown={scrollPassage}
         // biome-ignore lint/a11y/noNoninteractiveTabindex: keyboard users must be able to scroll the passage
         tabIndex={0}
       >
@@ -541,7 +558,7 @@ function Desk({
             </button>
           ) : null}
           <div className="la-stack-body" inert={qPos === 'back'}>
-            <div className="la-q-scroll" data-rd-keyscope>
+            <div className="la-q-scroll">
               <span className="la-eyebrow">
                 Fråga {n} av {view.total} · {view.question.options?.length ?? 0} alternativ
               </span>
@@ -573,7 +590,7 @@ function Desk({
               </button>
             ) : null}
             <div className="la-stack-body" inert={ePos === 'back'}>
-              <div className="la-ex-scroll" ref={exRef} data-rd-keyscope>
+              <div className="la-ex-scroll" ref={exRef}>
                 <Explanation view={view} act={act} refs={refs} />
               </div>
               <Actions view={view} act={act} />
@@ -1619,7 +1636,7 @@ function PhoneDrill({
         </fieldset>
       </div>
       {/* biome-ignore lint/a11y/noNoninteractiveTabindex: keyboard-accessible scrolling region */}
-      <section className="la-pscroll" data-rd-keyscope tabIndex={0} aria-label="Lästext">
+      <section className="la-pscroll" onKeyDown={scrollPassage} tabIndex={0} aria-label="Lästext">
         <article
           className="la-sheet la-read la-pread"
           data-depth="1"
@@ -1690,7 +1707,7 @@ function PhoneDrill({
             </button>
           ) : null}
         </div>
-        <div className="la-psheet-body" data-rd-keyscope>
+        <div className="la-psheet-body">
           {feedback ? (
             sheet === 'peek' ? (
               <>

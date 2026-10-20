@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
-import { useEffect, useState } from 'react'
-import { beforeAll, describe, expect, it, vi } from 'vitest'
+import { StrictMode, useEffect, useState } from 'react'
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
   describeDirectionContract,
@@ -43,11 +43,17 @@ function oneQuestion(kind: 'reading' | 'quant' | 'dtk' | 'elf'): DirectionData {
   return data
 }
 
-function BakeoffHost({ initialScreen = 9 }: { initialScreen?: Selection['s'] }) {
+function BakeoffHost({
+  initialScreen = 9,
+  width = 'desktop',
+}: {
+  initialScreen?: Selection['s']
+  width?: Selection['w']
+}) {
   const [sel, setSel] = useState<Selection>({
     d: 'd',
     s: initialScreen,
-    w: 'desktop',
+    w: width,
     t: 'light',
     sbs: false,
     bare: false,
@@ -74,6 +80,234 @@ function TickingPass({ submitProvpass }: Pick<DirectionActions, 'submitProvpass'
     </DirectionDataProvider>
   )
 }
+
+describe('Lager: round 2 review regressions', () => {
+  beforeEach(() => {
+    stubLayout()
+    vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockReturnValue(900)
+  })
+  afterEach(() => vi.restoreAllMocks())
+
+  const pressFocused = (key: string, shiftKey = false) => {
+    expect(document.activeElement).not.toBeNull()
+    fireEvent.keyDown(document.activeElement!, { key, shiftKey })
+  }
+  const selection = () => screen.getByTestId('host-selection')
+  const host = async (s: Selection['s'], width: Selection['w']) => {
+    const result = render(
+      <StrictMode>
+        <BakeoffHost initialScreen={s} width={width} />
+      </StrictMode>,
+    )
+    await screen.findByTestId('rd-lager')
+    return result
+  }
+
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('walks from screen 1 through 2 to 3 with arrows on the focused element on %s', async (width) => {
+    await host(1, width)
+    pressFocused('ArrowRight')
+    expect(selection()).toHaveTextContent('d/2/false')
+    expect(document.activeElement?.closest('.la-drill, .la-reading-root')).toBeNull()
+    pressFocused('ArrowRight')
+    expect(selection()).toHaveTextContent('d/3/false')
+  })
+
+  for (const width of ['desktop', 'phone'] as const) {
+    for (const s of [2, 3, 14] as const) {
+      const targets =
+        s === 3 ? ['entry', 'passage', 'verdict'] : ['entry', 'option', 'passage', 'verdict']
+      it.each(targets)(`keeps host shortcuts from %s on screen ${s}, ${width}`, async (target) => {
+        for (const [key, shift] of [
+          ['2', false],
+          ['0', false],
+          ['ArrowRight', false],
+          ['ArrowLeft', false],
+          ['ArrowRight', true],
+          ['ArrowLeft', true],
+        ] as const) {
+          const { unmount } = await host(s, width)
+          if (target === 'entry') {
+            expect(document.activeElement?.closest('.la-drill, .la-reading-root')).toBeNull()
+          } else if (target === 'passage') {
+            const passage = document.querySelector<HTMLElement>(
+              width === 'phone' ? '.la-pscroll' : '.la-read',
+            )!
+            passage.focus()
+          } else {
+            if (s !== 3) {
+              reveal('rd-option-A')
+              screen.getByTestId('rd-option-A').focus()
+              if (target === 'verdict') {
+                fireEvent.click(screen.getByTestId('rd-option-A'))
+                fireEvent.click(screen.getByTestId('rd-lock'))
+              }
+            }
+            if (target === 'verdict') {
+              const verdict = screen.getByTestId('rd-verdict')
+              if (s !== 3) expect(verdict).toHaveFocus()
+              verdict.setAttribute('tabindex', '-1')
+              verdict.focus()
+            }
+          }
+          const current = Number(selection().textContent!.split('/')[1])
+          if (target === 'passage' && key.startsWith('Arrow')) {
+            // The reader owns only these two keys; digits still reach the host.
+            const passage = document.activeElement as HTMLElement
+            const scroll = vi.spyOn(passage, 'scrollTo')
+            passage.scrollTop = 200
+            pressFocused(key, shift)
+            expect(selection()).toHaveTextContent(`d/${current}/false`)
+            expect(scroll).toHaveBeenCalledOnce()
+            const { top } = scroll.mock.calls[0][0] as ScrollToOptions
+            expect(key === 'ArrowRight' ? top! > 200 : top! < 200).toBe(true)
+          } else {
+            pressFocused(key, shift)
+            if (key === '2') expect(selection()).toHaveTextContent(`b/${current}/false`)
+            else if (key === '0') expect(selection()).toHaveTextContent(`d/${current}/true`)
+            else {
+              const next = key === 'ArrowRight' ? (current % 14) + 1 : ((current + 12) % 14) + 1
+              expect(selection()).toHaveTextContent(`d/${next}/false`)
+            }
+          }
+          unmount()
+        }
+      })
+    }
+  }
+
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('leaves account entry at the h1 without scrolling on %s', async (width) => {
+    const scroll = vi.spyOn(Element.prototype, 'scrollIntoView')
+    await host(13, width)
+    expect(screen.getByRole('heading', { level: 1, name: 'Konto och inställningar' })).toHaveFocus()
+    expect(scroll).not.toHaveBeenCalled()
+    for (let request = 0; request < 2; request++) {
+      fireEvent.click(screen.getByTestId('rd-account'))
+      fireEvent.click(
+        within(screen.getByTestId('rd-account-menu')).getByRole('button', { name: 'Hjälp' }),
+      )
+      expect(screen.getByRole('heading', { name: 'Verktyg och hjälp' })).toHaveFocus()
+      expect(scroll).toHaveBeenCalledTimes(request + 1)
+    }
+    pressFocused('ArrowLeft')
+    scroll.mockClear()
+    pressFocused('ArrowRight')
+    expect(screen.getByRole('heading', { level: 1, name: 'Konto och inställningar' })).toHaveFocus()
+    expect(scroll).not.toHaveBeenCalled()
+  })
+
+  it.each([
+    'Escape',
+    'Tillbaka',
+  ])('closes deletion before restoring opener focus on %s', (method) => {
+    mount(13)
+    fireEvent.click(screen.getByText('Radera konto', { selector: 'summary' }))
+    const opener = screen.getByTestId('rd-konto-delete')
+    opener.focus()
+    fireEvent.click(opener)
+    const dialog = screen.getByRole('dialog') as HTMLDialogElement
+    const stillModalAtFocus: boolean[] = []
+    const focus = opener.focus.bind(opener)
+    vi.spyOn(opener, 'focus').mockImplementation(() => {
+      stillModalAtFocus.push(dialog.open)
+      // Model the native top-layer restriction missing in jsdom.
+      if (!dialog.open) focus()
+    })
+    if (method === 'Escape') fireEvent(dialog, new Event('cancel', { cancelable: true }))
+    else fireEvent.click(within(dialog).getByRole('button', { name: 'Tillbaka' }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(stillModalAtFocus).toEqual([false])
+    expect(opener).toHaveFocus()
+  })
+
+  it('announces requested lessons without replacing provider content, then clears on arrival', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    const openLesson = vi.fn()
+    const subject = () => (
+      <DirectionDataProvider data={data} actions={{ openLesson }}>
+        <Lager
+          screen={12}
+          width="desktop"
+          theme="light"
+          live
+          onScreen={vi.fn()}
+          onTheme={vi.fn()}
+        />
+      </DirectionDataProvider>
+    )
+    const { rerender } = render(subject())
+    fireEvent.click(screen.getByTestId(`rd-uppslag-entry-${data.uppslag.open.id}`))
+    expect(screen.queryByText(/Lektion begärd/)).toBeNull()
+    const other = data.uppslag.sections
+      .find((section) => section.section === data.uppslag.open.section)!
+      .entries.find((entry) => entry.id !== data.uppslag.open.id)!
+    fireEvent.click(screen.getByTestId(`rd-uppslag-entry-${other.id}`))
+    expect(openLesson).toHaveBeenLastCalledWith(other.id)
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'Lektion begärd. Den öppna texten ligger kvar tills den nya har laddats.',
+    )
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(data.uppslag.open.title)
+    data.uppslag.open = { ...data.uppslag.open, id: other.id, title: other.title }
+    rerender(subject())
+    expect(screen.queryByText(/Lektion begärd/)).toBeNull()
+    expect(screen.getByRole('heading', { name: other.title })).toHaveFocus()
+  })
+
+  it('labels both deletion stages as previews and says nothing was deleted after the request', () => {
+    const deleteAccount = vi.fn()
+    mount(13, undefined, { deleteAccount })
+    expect(
+      screen.getByText('Radera konto', { selector: 'summary' }).parentElement,
+    ).toHaveTextContent(/förhandsvisning/i)
+    fireEvent.click(screen.getByTestId('rd-konto-delete'))
+    const dialog = screen.getByRole('dialog')
+    expect(dialog).toHaveTextContent(/förhandsvisning/i)
+    expect(dialog).toHaveTextContent('Säkerhetskopior tunnas ut inom 30 dagar.')
+    fireEvent.change(screen.getByTestId('rd-konto-delete-word'), { target: { value: 'radera' } })
+    fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
+    expect(deleteAccount).toHaveBeenCalledOnce()
+    expect(within(dialog).getByRole('status')).toHaveTextContent(
+      'Inget raderas i den här förhandsvisningen.',
+    )
+    expect(screen.getByTestId('rd-konto-delete-confirm')).toBeDisabled()
+  })
+
+  it.each([
+    'light',
+    'dark',
+  ])('clears System (%s) after a host theme change without resurrecting it', async (system) => {
+    const matchMedia = window.matchMedia
+    vi.spyOn(window, 'matchMedia').mockImplementation((query) => ({
+      ...matchMedia(query),
+      matches: system === 'dark' && query === '(prefers-color-scheme: dark)',
+    }))
+    await host(13, 'desktop')
+    fireEvent.click(screen.getByRole('button', { name: 'System' }))
+    expect(screen.getByRole('button', { name: 'System' })).toHaveAttribute('aria-pressed', 'true')
+    const bar = within(screen.getByTestId('rb26-theme'))
+    fireEvent.click(bar.getByRole('button', { name: system === 'light' ? /Mörkt/ : /Ljust/ }))
+    expect(screen.getByRole('button', { name: 'System' })).toHaveAttribute('aria-pressed', 'false')
+    fireEvent.click(bar.getByRole('button', { name: system === 'light' ? /Ljust/ : /Mörkt/ }))
+    expect(screen.getByRole('button', { name: 'System' })).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getByTestId(`rd-konto-mode-${system}`)).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('omits sign-out when account identity is unavailable', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    data.konto.identity = { name: '', email: '', initials: '' }
+    mount(13, data)
+    expect(screen.queryByRole('button', { name: 'Logga ut' })).toBeNull()
+    expect(screen.getByText('Kontouppgifterna är inte tillgängliga.')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-account'))
+    expect(screen.queryByRole('button', { name: 'Logga ut' })).toBeNull()
+  })
+})
 
 describe('Lager: data boundary and practice states', () => {
   beforeAll(() => {
@@ -436,6 +670,10 @@ describe('Lager: data boundary and practice states', () => {
     expect(passage).toHaveTextContent('At age 40')
     expect(passage.querySelectorAll('.la-cloze-gap')).toHaveLength(3)
     expect(passage.querySelector('[data-active="true"]')).toHaveTextContent('32_____')
+    expect(passage.querySelector('[data-active="true"] .la-sr')).toHaveTextContent(
+      'Lucka 32, aktuell fråga',
+    )
+    expect(passage.querySelector('[data-active="true"] .la-sr')).toHaveAttribute('lang', 'sv')
     fireEvent.click(screen.getByTestId('rd-option-A'))
     fireEvent.click(screen.getByTestId('rd-lock'))
     expect(screen.getByText('”They counted 32_____ more.”')).toHaveAttribute('lang', 'en')
