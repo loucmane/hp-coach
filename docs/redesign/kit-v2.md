@@ -436,3 +436,7 @@ The builders in `directionData.tsx` derive the view model from that state with t
 - **`DIRECTIONS`, `STAGES` and `DirectionKey` are unchanged.**
 - **`useDrill`'s behaviour is unchanged.** It keeps its signature (its `screen` accepts `AppScreenKey`) and returns the same view. The passage helpers moved into `drillCore.ts` and are re-exported from `r1Kit.ts` under the same names.
 - **The route** accepts `s=1…14`. Its `SCREEN_KEYS` stay inline (bundle boundary) and are pinned to `APP_SCREENS` by its test.
+
+### Keys inside a figure or dialog
+
+The bake-off switcher answers 1–8, 0 and ←/→ on the window. It leaves alone any key pressed inside an open `dialog` (a figure viewer, a gate) or inside an element marked `data-rd-keyscope` (a figure's pan or scroll region), so the arrows pan or scroll there and never change the screen. Mark an inline pan region with `data-rd-keyscope`; a native dialog needs nothing.

@@ -119,7 +119,7 @@ export function Redesign2026Bakeoff({
   selNow.current = sel
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.defaultPrevented || isForeignKey(e)) return
+      if (e.defaultPrevented || isForeignKey(e) || inOwnKeyScope(e.target)) return
       const cur = selNow.current
       const pick = DIRECTIONS.findIndex((_, i) => e.key === String(i + 1))
       if (pick !== -1) {
@@ -169,6 +169,13 @@ export function Redesign2026Bakeoff({
       </DirectionDataProvider>
     </div>
   )
+}
+
+/** Keys pressed inside an open dialog (a figure viewer, a gate) or a region
+ *  a direction marks data-rd-keyscope (a figure's pan area) belong to it:
+ *  the arrows pan or scroll there, they never change the screen. */
+function inOwnKeyScope(target: EventTarget | null): boolean {
+  return target instanceof Element && target.closest('dialog[open], [data-rd-keyscope]') != null
 }
 
 // ── Switcher ─────────────────────────────────────────────────────────
