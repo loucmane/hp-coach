@@ -88,13 +88,16 @@ function optionOf(view: DrillCoreView, letter: string | null): DrillOption | und
 /** An option's words, its math rendered; an image option shows its figure
  *  (its text is the image's name). Among the options to choose from, the
  *  image reports to the drill's `loads`: the answer waits for it, so it
- *  loads at once, never lazily. */
+ *  loads at once, never lazily. `fresh`: each mounted image is a load of
+ *  its own (a running Provpass waits for an option shown again). */
 export function OptionBody({
   option,
   loads = null,
+  fresh = false,
 }: {
   option: DrillOption
   loads?: FigureLoads | null
+  fresh?: boolean
 }) {
   const figure = option.figure
   if (figure) {
@@ -109,6 +112,7 @@ export function OptionBody({
             width={figure.width}
             height={figure.height}
             onStatus={(s) => loads.report(figure.src, s)}
+            fresh={fresh}
           />
         ) : (
           <img
