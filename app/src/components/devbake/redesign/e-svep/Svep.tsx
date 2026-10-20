@@ -26,6 +26,15 @@
 //                   at a time (SvepProvpass)
 //  11 Framsteg    — progress as a small indexed deck, Historik its last
 //                   card (SvepFramsteg)
+//  12 Uppslag     — every section as a small door, the open lesson as one
+//                   tall reference card with the next entries' edges behind
+//                   it, the section's contents as its register (SvepUppslag)
+//  13 Konto       — the account card dealt open: a small deck of Konto,
+//                   Inställningar and Hjälp, its register, and the account's
+//                   details farther down the table, deletion last
+//                   (SvepKonto)
+//  14 ELF-läsfråga — the reading pair on the ELF table, the English text
+//                   and question marked as English (SvepDrill's SvepElf)
 // Desktop navigation is a slim top bar of the five doors, laid straight on
 // the table; phone has a bottom bar. The drills and a running pass hide
 // both behind Avsluta.
@@ -39,6 +48,12 @@
 // result) or voided (back to the hub, which says so). A hand-in that fails,
 // or that the host does not follow with the result, ends the run too: the
 // frame comes back and Provpass shows what was handed in, read-only.
+//
+// The account card's rows each open Konto at their own card (Konto,
+// Inställningar, Hjälp) and remember where they were asked from, so Konto's
+// way back names that page. A lesson asked for by name (a plan's lesson)
+// travels to Uppslag with its id, so Uppslag can say when the text on
+// screen is still the one open before.
 
 import {
   BookOpen,
@@ -81,13 +96,15 @@ import type {
   PlanItemView,
 } from '@/components/devbake/redesign/viewModel'
 import { sectionTint, type Tint } from './parts'
-import { SvepDrill } from './SvepDrill'
+import { SvepDrill, SvepElf } from './SvepDrill'
 import { type FramstegCardId, SvepFramsteg } from './SvepFramsteg'
 import { SvepHome } from './SvepHome'
+import { type KontoCardId, SvepKonto } from './SvepKonto'
 import { SvepOva } from './SvepOva'
 import { type Handed, SvepPassHanded, SvepPassRun, SvepProvpass, SvepResult } from './SvepProvpass'
 import { SvepQuant } from './SvepQuant'
 import { SvepRepetera } from './SvepRepetera'
+import { SvepUppslag } from './SvepUppslag'
 
 const FONTS =
   'https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap'
@@ -100,9 +117,9 @@ const DOOR_ICON: Record<Destination, LucideIcon> = {
   framsteg: TrendingUp,
 }
 
-/** What the frame shows: a destination, Repetera inside Öva, or a pass's
- *  result inside Provpass. */
-type Page = Destination | 'repetera' | 'resultat'
+/** What the frame shows: a destination, Repetera inside Öva, a pass's
+ *  result inside Provpass, or the account's own page. */
+type Page = Destination | 'repetera' | 'resultat' | 'konto'
 
 /** The frame's page on each screen it is shown on. */
 const SCREEN_PAGE: Partial<Record<AppScreenKey, Page>> = {
@@ -113,6 +130,8 @@ const SCREEN_PAGE: Partial<Record<AppScreenKey, Page>> = {
   9: 'provpass',
   10: 'resultat',
   11: 'framsteg',
+  12: 'uppslag',
+  13: 'konto',
 }
 
 /** Where a plan item leads in the frame while its request travels. */
@@ -123,13 +142,14 @@ const PLAN_PAGE: Record<PlanItemKind, Page> = {
   drill: 'ova',
 }
 
-/** The table under a page without a deck that tints it. */
-const PAGE_TINT: Record<Exclude<Page, 'idag' | 'ova'>, Tint> = {
+/** The table under a page without a deck that tints it (Idag, Öva and
+ *  Uppslag tint it after the card or the lesson in front). */
+const PAGE_TINT: Record<Exclude<Page, 'idag' | 'ova' | 'uppslag'>, Tint> = {
   repetera: 'rep',
   provpass: 'none',
   resultat: 'none',
-  uppslag: 'ord',
   framsteg: 'none',
+  konto: 'none',
 }
 
 /** The table a screen opens on, before its page says otherwise. */
@@ -139,6 +159,18 @@ const SCREEN_TINT: Partial<Record<AppScreenKey, Tint>> = {
   9: 'none',
   10: 'none',
   11: 'none',
+  13: 'none',
+}
+
+/** A page's name in a way back to it ("Tillbaka till Öva"). */
+const PAGE_NAME: Record<Exclude<Page, 'konto'>, string> = {
+  idag: 'Idag',
+  ova: 'Öva',
+  repetera: 'Repetera',
+  provpass: 'Provpass',
+  resultat: 'resultatet',
+  uppslag: 'Uppslag',
+  framsteg: 'Framsteg',
 }
 
 type ThemeChoice = ThemeKey | 'system'
@@ -153,6 +185,17 @@ export type FrameNav = {
   framsteg: (card: FramstegCardId) => void
 }
 
+/** Konto's way back: the page it was opened from, by name. */
+export type KontoReturn = { label: string; go: () => void }
+
+/** A request for Konto from the account card: the card to open at, and a
+ *  count, so asking twice for the same card still moves the focus. */
+export type KontoAsk = { card: KontoCardId; n: number }
+
+/** A lesson asked for by id (a plan's lesson), with a count, so asking
+ *  again for the same one still says so. */
+export type LessonAsk = { id: string; n: number }
+
 /** The Provpass screen's state: the pass running on it, the half of the
  *  pass just voided (the hub says so), or a hand-in that did not reach its
  *  result (Provpass shows what was handed in). */
@@ -164,8 +207,14 @@ export function Svep(props: DirectionProps) {
   useWebFonts('svep', FONTS)
   const { data } = useDirectionData()
   const { screen } = props
-  // The table's tint follows the card in front (Idag, Öva) or the page.
-  const [tint, setTint] = useState<Tint>(SCREEN_TINT[screen] ?? 'las')
+  // The table's tint follows the card in front (Idag, Öva), the open
+  // lesson (Uppslag) or the page.
+  const [tint, setTint] = useState<Tint>(
+    () =>
+      SCREEN_TINT[screen] ??
+      (screen === 12 ? sectionTint(data.uppslag.open.section) : undefined) ??
+      'las',
+  )
   // A pass runs on screen 9 until it is handed in or voided; the switcher
   // moving on ends it.
   const [prov, setProv] = useState<ProvState>(PROV_IDLE)
@@ -201,8 +250,26 @@ export function Svep(props: DirectionProps) {
     )
     table = 'none'
   } else if (screen === 2 || screen === 3) {
-    stage = <SvepDrill {...props} />
-    table = sectionTint(data.drills.reading.questions[0]?.section)
+    // A new sitting starts the drill afresh (Läsfråga and Facit share one).
+    const reading = data.drills.reading
+    stage = (
+      <SvepDrill
+        key={`${reading.id}:${reading.questions.map((q) => q.qid).join(',')}`}
+        {...props}
+      />
+    )
+    table = sectionTint(reading.questions[0]?.section)
+  } else if (screen === 14) {
+    // A new sitting (its id or its questions) starts the drill afresh.
+    const elf = data.drills.elf
+    stage = (
+      <SvepElf
+        key={`${elf.id}:${elf.questions.map((q) => q.qid).join(',')}`}
+        width={props.width}
+        live={props.live}
+      />
+    )
+    table = sectionTint(elf.questions[0]?.section ?? 'ELF')
   } else if (screen === 6 || screen === 7) {
     // One sitting per screen: the key keeps the two drills' states apart.
     stage = (
@@ -261,6 +328,13 @@ function SvepFrame({
   const [page, setPage] = useState<Page>(SCREEN_PAGE[screen] ?? 'idag')
   // The card Framsteg opens at, when a link asked for one.
   const [framstegCard, setFramstegCard] = useState<FramstegCardId | undefined>(undefined)
+  // Konto asked for from the account card: the card to open at and the page
+  // it was asked from. Konto reached any other way (the switcher, a link)
+  // has neither: it opens at its first card and offers the way to Idag.
+  const [konto, setKonto] = useState<{ ask: KontoAsk; from: Page | null } | null>(null)
+  // A lesson asked for by id, so Uppslag can say when the text it shows is
+  // still the one open before.
+  const [lesson, setLesson] = useState<LessonAsk | null>(null)
   // Re-seat the frame when the switcher moves, before it paints, so the old
   // page never shows for a frame.
   const [seated, setSeated] = useState(screen)
@@ -269,11 +343,15 @@ function SvepFrame({
     setFolded(screen === 4)
     setAccount(screen === 4)
     setPage(SCREEN_PAGE[screen] ?? 'idag')
+    // A request's own screen keeps it (the host following it there); any
+    // other screen lets it go.
+    if (screen !== 13) setKonto(null)
+    if (screen !== 12) setLesson(null)
   }
 
   // The pages with a deck of their own tint report it; the rest are fixed.
   useLayoutEffect(() => {
-    if (page !== 'idag' && page !== 'ova') onTint(PAGE_TINT[page])
+    if (page !== 'idag' && page !== 'ova' && page !== 'uppslag') onTint(PAGE_TINT[page])
   }, [page, onTint])
 
   // ⌘B / Ctrl+B folds the bar, as ⌘B folds the live app's rail.
@@ -302,6 +380,9 @@ function SvepFrame({
       },
       openPlanItem: (item) => {
         setPage(PLAN_PAGE[item.kind])
+        // A lesson names its entry: Uppslag hears which one was asked for.
+        const asked = item.kind === 'lesson' ? item.framework : undefined
+        if (asked) setLesson((l) => ({ id: asked, n: (l?.n ?? 0) + 1 }))
         actions.openPlanItem(item.id)
       },
       openResult: (id) => {
@@ -318,10 +399,44 @@ function SvepFrame({
     [actions, leaveHanded],
   )
 
+  // The account card's rows: Konto at the asked-for card, remembering the
+  // page it was asked from (asked again from Konto itself, the first page
+  // stays the way back).
+  const openKonto = (card: KontoCardId) => {
+    setAccount(false)
+    setKonto((k) => ({
+      ask: { card, n: (k?.ask.n ?? 0) + 1 },
+      from: page === 'konto' ? (k?.from ?? null) : page,
+    }))
+    setPage('konto')
+    actions.openKonto()
+  }
+  const from = konto?.from ?? null
+  let kontoBack: KontoReturn
+  if (from === null || from === 'konto') {
+    kontoBack = { label: 'Till Idag', go: () => nav.go('idag') }
+  } else if (from === 'repetera') {
+    kontoBack = {
+      label: `Tillbaka till ${PAGE_NAME.repetera}`,
+      go: () => {
+        setPage('repetera')
+        actions.openRepetera()
+      },
+    }
+  } else if (from === 'resultat') {
+    kontoBack = {
+      label: `Tillbaka till ${PAGE_NAME.resultat}`,
+      go: () => nav.openResult(data.provpass.result.id),
+    }
+  } else {
+    kontoBack = { label: `Tillbaka till ${PAGE_NAME[from]}`, go: () => nav.go(from) }
+  }
+
   const phone = width === 'phone'
   // Repetera lives inside Öva and a result inside Provpass: their door
-  // stays the current one.
-  const current: Destination = page === 'repetera' ? 'ova' : page === 'resultat' ? 'provpass' : page
+  // stays the current one. Konto is none of the five.
+  const current: Destination | null =
+    page === 'repetera' ? 'ova' : page === 'resultat' ? 'provpass' : page === 'konto' ? null : page
   const pageLive = live && !account
   let body: ReactNode
   if (page === 'idag') {
@@ -355,8 +470,10 @@ function SvepFrame({
     body = <SvepResult width={width} live={pageLive} nav={nav} />
   } else if (page === 'framsteg') {
     body = <SvepFramsteg width={width} live={pageLive} nav={nav} card={framstegCard} />
+  } else if (page === 'uppslag') {
+    body = <SvepUppslag width={width} onTint={onTint} ask={lesson} />
   } else {
-    body = <SvepStub dest={page} />
+    body = <SvepKonto width={width} live={pageLive} ask={konto?.ask ?? null} back={kontoBack} />
   }
 
   const doors = (
@@ -397,7 +514,7 @@ function SvepFrame({
       theme={theme}
       onTheme={onTheme}
       identity={data.konto.identity}
-      onKonto={actions.openKonto}
+      onKonto={openKonto}
       onSignOut={actions.signOut}
     />
   )
@@ -478,7 +595,8 @@ function AccountEntry({
   theme: ThemeKey
   onTheme: (t: ThemeKey) => void
   identity: IdentityView
-  onKonto: () => void
+  /** Konto, opened at one of its cards. */
+  onKonto: (card: KontoCardId) => void
   onSignOut: () => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -536,7 +654,7 @@ function AccountCard({
   onTheme: (t: ThemeKey) => void
   close: () => void
   identity: IdentityView
-  onKonto: () => void
+  onKonto: (card: KontoCardId) => void
   onSignOut: () => void
 }) {
   // "System" follows the device once; the app's mode itself stays light or
@@ -551,9 +669,11 @@ function AccountCard({
       onTheme(dark ? 'dark' : 'light')
     } else onTheme(c)
   }
-  const toKonto = () => {
+  // Each row opens its own card of Konto; the card here closes first, so
+  // one account panel is ever on the table.
+  const toKonto = (card: KontoCardId) => {
     close()
-    onKonto()
+    onKonto(card)
   }
   return (
     <div className="sv-card sv-acard" id="sv-account-card" data-testid="rd-account-menu">
@@ -569,8 +689,16 @@ function AccountCard({
           <X size={18} strokeWidth={1.75} aria-hidden />
         </button>
       </div>
-      <AccountRow label="Konto" hint="Namn, e-post, plan" onClick={toKonto} />
-      <AccountRow label="Inställningar" hint="Provdatum och mål" onClick={toKonto} />
+      <AccountRow
+        label="Konto"
+        hint="Namn, e-post och inloggning"
+        onClick={() => toKonto('konto')}
+      />
+      <AccountRow
+        label="Inställningar"
+        hint="Palett, typsnitt och coach"
+        onClick={() => toKonto('installningar')}
+      />
       <div className="sv-theme">
         <span className="sv-theme-label" id="sv-theme-label">
           Tema
@@ -592,7 +720,7 @@ function AccountCard({
           </button>
         </fieldset>
       </div>
-      <AccountRow label="Hjälp" hint="Kortkommandon, frågor" onClick={close} />
+      <AccountRow label="Hjälp" hint="Kortkommandon och support" onClick={() => toKonto('hjalp')} />
       <div className="sv-acard-foot">
         <button
           type="button"
@@ -626,29 +754,5 @@ function AccountRow({
       </span>
       <ChevronRight size={18} strokeWidth={1.75} aria-hidden />
     </button>
-  )
-}
-
-/** A door a later batch builds: one card on its own table. The bake-off's
- *  stage shows its own card for these screens; this one is for a stage that
- *  keeps Svep mounted. */
-function SvepStub({ dest }: { dest: Destination }) {
-  const d = DESTINATIONS.find((x) => x.id === dest) ?? DESTINATIONS[0]
-  const Icon = DOOR_ICON[d.id]
-  return (
-    <div className="sv-stub-wrap">
-      <section className="sv-card sv-stub" aria-labelledby="sv-stub-h">
-        <span className="sv-stub-icon" aria-hidden>
-          <Icon size={24} strokeWidth={1.75} />
-        </span>
-        <h1 id="sv-stub-h" className="sv-stub-title">
-          {d.label}
-        </h1>
-        <p className="sv-stub-blurb">{d.blurb}</p>
-        <p className="sv-stub-note">
-          Den här leken läggs senare i omgång 2. Menyn och kontot fungerar redan härifrån.
-        </p>
-      </section>
-    </div>
   )
 }
