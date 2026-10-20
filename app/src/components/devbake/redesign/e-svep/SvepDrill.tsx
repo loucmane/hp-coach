@@ -25,6 +25,15 @@
 // .reading) and runs on useDrillCore with the context's controller. The
 // switcher's round-1 moves stay on onScreen, as r1Kit's useDrill kept them:
 // a lock opens Facit, Nästa Läsfråga, Avsluta Idag.
+//
+// ELF-läsfråga (screen 14, SvepElf) is the same table on the sea-grey ELF
+// tint: one tall English reading card and its waiting question hand, the
+// answer turning into the same short run of evidence cards. It runs on
+// useDrillCore alone (no switcher moves): Avsluta asks the controller,
+// which returns to where the drill was started. The English content — the
+// title, the passage, the prompt, the options, the answer and the
+// explanation, which ELF writes in English — is marked lang="en"; the
+// Swedish controls, labels and headings around it stay Swedish.
 
 import {
   ArrowRight,
@@ -68,10 +77,12 @@ import {
   splitStepRefs,
   useKeyMap,
   useSheet,
+  type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
 import type {
   DrillOption,
   DrillOptionFigure,
+  DrillQuestion,
   DrillSessionView,
 } from '@/components/devbake/redesign/viewModel'
 import { MathText } from '@/components/MathText'
@@ -119,18 +130,200 @@ export type Wait = { text: string; retry?: () => void }
 
 export function SvepDrill({ screen, width, live, onScreen }: DirectionProps) {
   const { data, actions } = useDirectionData()
-  const session = data.drills.reading
-  const { view, act, refs } = useReadingDrill(session, {
+  const { view, act, refs } = useReadingDrill(data.drills.reading, {
     screen,
     onScreen,
     live,
     controller: actions.drill,
   })
+  return (
+    <ReadingTable
+      view={view}
+      act={act}
+      refs={refs}
+      width={width}
+      live={live}
+      passageId="rd-passage"
+      exitHint={READING_EXIT_HINT}
+      onHome={() => onScreen(1)}
+    />
+  )
+}
+
+/**
+ * Screen 14, ELF-läsfråga: the English sitting on the same table, on the
+ * drill core alone. A sitting that lacks its questions or its text is never
+ * an answerable shell: it says so, with the way out. A question that lacks
+ * its prompt or its options says so where they would be, and nothing
+ * answers it (textGate).
+ */
+export function SvepElf({ width, live }: { width: WidthKey; live: boolean }) {
+  const { data, actions } = useDirectionData()
+  const session = data.drills.elf
+  if (session.questions.length === 0 || !session.questions.every(hasText)) {
+    return <MissingText width={width} act={{ exit: () => actions.drill.exit?.() }} />
+  }
+  return <ElfSitting session={session} width={width} live={live} />
+}
+
+function hasText(q: DrillQuestion): boolean {
+  return (q.passage?.paragraphs.length ?? 0) > 0
+}
+
+/** An ELF gap item: no stem of its own, its prompt the empty string. */
+function isGap(q: DrillQuestion): boolean {
+  return q.prompt === '' && q.section === 'ELF'
+}
+
+/** A prompt to read: words, or an ELF gap item's gap. */
+function hasPrompt(q: DrillQuestion): boolean {
+  return isGap(q) || (q.prompt ?? '').trim() !== ''
+}
+
+/** What a text question needs before it can be answered. */
+type Need = 'text' | 'prompt' | 'options'
+
+/** Svara's line while a question lacks what it needs. */
+const LACKING: Record<Need, string> = {
+  text: 'Frågan kan inte besvaras utan texten.',
+  prompt: 'Frågan kan inte besvaras utan frågetexten.',
+  options: 'Frågan kan inte besvaras utan svarsalternativen.',
+}
+
+/** The first thing a text question needs and lacks, or null. */
+function lackOf(q: DrillQuestion): Need | null {
+  if (!hasText(q)) return 'text'
+  if (!hasPrompt(q)) return 'prompt'
+  if (!q.options?.length) return 'options'
+  return null
+}
+
+/**
+ * Whether the open text question can be answered, and what Svara's line
+ * says while it cannot. A question lacking its text, its prompt or its
+ * options never can, said at once; nor can a choice whose option has gone.
+ * The data may change under the question (the same qid), so this is asked
+ * of the question on screen every time, never of the one that was dealt.
+ */
+function textGate(view: DrillCoreView): { open: boolean; wait: Wait | null } {
+  const lack = lackOf(view.question)
+  if (lack) return { open: false, wait: { text: LACKING[lack] } }
+  return { open: chosen(view) != null, wait: null }
+}
+
+function ElfSitting({
+  session,
+  width,
+  live,
+}: {
+  session: DrillSessionView
+  width: WidthKey
+  live: boolean
+}) {
+  const { actions } = useDirectionData()
+  const { view, act, refs } = useDrillCore({
+    questions: session.questions,
+    explanations: session.explanations,
+    start: session.start,
+    elapsed: session.elapsedSeconds,
+    controller: actions.drill,
+    live,
+  })
+  return (
+    <ReadingTable
+      view={view}
+      act={act}
+      refs={refs}
+      width={width}
+      live={live}
+      passageId="rd-elf-passage"
+      onHome={() => actions.go('idag')}
+    />
+  )
+}
+
+/** The text a sitting needs did not come: no question to answer, the way
+ *  out at hand. */
+function MissingText({ width, act }: { width: WidthKey; act: Pick<DrillCoreActions, 'exit'> }) {
+  const titleId = useId()
+  const card = (
+    <section className="sv-card sv-done sv-missing" aria-labelledby={titleId}>
+      <p className="sv-rc-eyebrow">ELF · engelsk läsförståelse</p>
+      <h1 className="sv-done-title" id={titleId}>
+        Texten saknas just nu.
+      </h1>
+      <p className="sv-done-note">
+        Övningen kan inte visas utan sin text, så det finns inget att svara på här. Avsluta och välj
+        en annan övning så länge.
+      </p>
+    </section>
+  )
+  if (width === 'phone') {
+    return (
+      <div className="sv-pdrill sv-pdrill--done">
+        <header className="sv-pdhead">
+          <ExitButton act={act} />
+        </header>
+        <div className="sv-done-wrap">{card}</div>
+      </div>
+    )
+  }
+  return (
+    <div className="sv-drill sv-drill--done">
+      <div className="sv-drill-top">
+        <ExitButton act={act} />
+      </div>
+      <div className="sv-done-wrap">{card}</div>
+    </div>
+  )
+}
+
+/** The passage's contract id: a LÄS text, or ELF's English one. */
+type PassageId = 'rd-passage' | 'rd-elf-passage'
+
+/** The language of a question's content when it is not the interface's:
+ *  'en' for ELF (its text, its question, its options and its explanation),
+ *  else nothing — the content inherits Swedish. */
+export function contentLang(q: DrillQuestion): 'en' | undefined {
+  return q.passage?.lang === 'en' || q.section === 'ELF' ? 'en' : undefined
+}
+
+/**
+ * The reading table both text drills share: the text and question pair on
+ * desktop, the text under a rising question card on phone; the facit run,
+ * the keys and the end of the sitting.
+ */
+function ReadingTable({
+  view,
+  act: core,
+  refs,
+  width,
+  live,
+  passageId,
+  exitHint,
+  onHome,
+}: {
+  view: DrillCoreView
+  act: DrillCoreActions
+  refs: DrillCoreRefs
+  width: WidthKey
+  live: boolean
+  passageId: PassageId
+  /** Avsluta's tooltip. */
+  exitHint?: string
+  /** "Till Idag" on the end card. */
+  onHome: () => void
+}) {
+  const { data, actions } = useDirectionData()
   const phone = width === 'phone'
+  // Every way to answer — Svara, Enter, Space — goes through the gate.
+  const gate = textGate(view)
+  const act: DrillCoreActions = { ...core, lock: () => (gate.open ? core.lock() : false) }
+  const wait = view.phase === 'question' ? gate.wait : null
   const [note, setNote] = useState(false)
   const focusOn = view.focusPara != null
   const toggleFocus = () => act.setFocusPara(focusOn ? null : 1)
-  // The end of the unit deals the plan's next part.
+  // The end of the unit deals the plan's next part (never a finished one).
   const next = data.home.plan.items.find((i) => !i.completed) ?? null
   const onNextPart = () => {
     if (next) actions.openPlanItem(next.id)
@@ -161,6 +354,7 @@ export function SvepDrill({ screen, width, live, onScreen }: DirectionProps) {
     onDone: onNextPart,
   })
 
+  const [about] = unitTitle(view)
   const chrome: Chrome = {
     view,
     act,
@@ -168,17 +362,21 @@ export function SvepDrill({ screen, width, live, onScreen }: DirectionProps) {
     run,
     motion,
     live,
+    wait,
     note,
     setNote,
     focusOn,
     toggleFocus,
     copy: data.copy,
+    passageId,
+    exitHint,
     done: (
       <DoneCard
         view={view}
         live={live}
         eyebrow={`${view.question.section} · klart`}
-        about={unitTitle(view)[0]}
+        about={about}
+        aboutLang={view.question.passage?.title ? contentLang(view.question) : undefined}
         primary={
           next
             ? {
@@ -188,7 +386,7 @@ export function SvepDrill({ screen, width, live, onScreen }: DirectionProps) {
               }
             : null
         }
-        secondary={{ label: 'Till Idag', onClick: () => onScreen(1) }}
+        secondary={{ label: 'Till Idag', onClick: onHome }}
       />
     ),
   }
@@ -273,11 +471,17 @@ type Chrome = {
   run: Run
   motion: Motion
   live: boolean
+  /** Why Svara cannot answer the open question, or nothing. */
+  wait: Wait | null
   note: boolean
   setNote: (open: boolean) => void
   focusOn: boolean
   toggleFocus: () => void
   copy: { ovningstextBadge: string; ovningstextNote: string }
+  /** The text's contract id. */
+  passageId: PassageId
+  /** Avsluta's tooltip. */
+  exitHint?: string
   /** The end of the unit: the hand turned face up. */
   done: ReactNode
 }
@@ -316,9 +520,10 @@ export function useSpaceAdvance(live: boolean, advance: () => boolean) {
 
 /**
  * A drill's keys: the question's own letters choose and Shift+letter
- * strikes, Enter and Space answer once a choice is made and then deal the
- * next question; in Facit ←/→ move through the run (and fall through to the
- * bake-off's screen keys at its ends). Digits are left to the switcher.
+ * strikes, Enter and Space answer once a choice is made (one still among
+ * the question's options) and then deal the next question; in Facit ←/→
+ * move through the run (and fall through to the bake-off's screen keys at
+ * its ends). Digits are left to the switcher.
  */
 export function useDrillKeys({
   view,
@@ -353,7 +558,7 @@ export function useDrillKeys({
       }
       keys[`Shift+${l}`] = () => act.toggleEliminate(letter)
     }
-    if (view.selected) keys.Enter = act.lock
+    if (chosen(view)) keys.Enter = act.lock
   } else if (view.phase === 'feedback') {
     keys.Enter = act.next
     if (arrows && run.deck.index > 0) keys.ArrowLeft = run.deck.prev
@@ -363,8 +568,9 @@ export function useDrillKeys({
   }
   useKeyMap(keys, live)
   useSpaceAdvance(live, () => {
-    // An answer refused (a picture still missing) leaves Space alone.
-    if (view.phase === 'question') return view.selected ? act.lock() : false
+    // An answer refused (a picture or a part of the question missing)
+    // leaves Space alone.
+    if (view.phase === 'question') return chosen(view) ? act.lock() : false
     if (view.phase === 'feedback') act.next()
     else onDone()
     return true
@@ -487,6 +693,8 @@ function runBody(
 ): ReactNode {
   const e = view.explanation
   const mine = minePick(view)
+  // The explanation's own language (ELF's is English).
+  const lang = contentLang(view.question)
   switch (id) {
     case 'svar':
       return <VerdictCard view={view} deck={deck} lure={plan[1]?.id === 'lockade'} />
@@ -503,14 +711,14 @@ function runBody(
           {e.pitfall ? (
             <section className="sv-take" data-testid="rd-pitfall">
               <h3 className="sv-rc-title">Fallgropen</h3>
-              <p className="sv-rc-text sv-rc-text--lead">
+              <p className="sv-rc-text sv-rc-text--lead" lang={lang}>
                 <MathText>{e.pitfall}</MathText>
               </p>
             </section>
           ) : null}
           <section className="sv-take" data-testid="rd-technique">
             <h3 className="sv-rc-title">Tekniken</h3>
-            <p className="sv-rc-text">
+            <p className="sv-rc-text" lang={lang}>
               <MathText>{e.technique}</MathText>
             </p>
             {framework && e.framework_id ? (
@@ -534,7 +742,7 @@ function runBody(
               {options.problem}
             </div>
           ) : null}
-          <p className="sv-rc-text sv-rc-text--lead">
+          <p className="sv-rc-text sv-rc-text--lead" lang={lang}>
             <MathText>{e.solution_path}</MathText>
           </p>
           <h4 className="sv-steps-head">Steg för steg</h4>
@@ -560,6 +768,7 @@ function runBody(
                 option={optionOf(view, d.letter)}
                 cites={view.distractorCites[d.letter] ?? { tempting: [], wrong: [] }}
                 act={act}
+                lang={lang}
               />
             ))}
           </div>
@@ -630,6 +839,7 @@ function VerdictCard({ view, deck, lure }: { view: DrillCoreView; deck: Deck; lu
   const correct = view.correct === true
   const right = optionOf(view, q.answer)
   const mine = correct ? null : optionOf(view, view.picked)
+  const lang = contentLang(q)
   return (
     <div className="sv-rc sv-rc--verdict sv-rc--center" data-correct={String(correct)}>
       <p className="sv-verdict" data-testid="rd-verdict" data-correct={String(correct)}>
@@ -650,7 +860,9 @@ function VerdictCard({ view, deck, lure }: { view: DrillCoreView; deck: Deck; lu
             <p className="sv-rank-label">{correct ? 'Ditt svar, rätt' : 'Rätt svar'}</p>
             <p className="sv-rank-text">
               <span className="sv-sr">Alternativ {right.letter}: </span>
-              <OptionText option={right} />
+              <span lang={lang}>
+                <OptionText option={right} />
+              </span>
             </p>
           </div>
         </div>
@@ -658,7 +870,9 @@ function VerdictCard({ view, deck, lure }: { view: DrillCoreView; deck: Deck; lu
       {mine ? (
         <p className="sv-chose">
           <span className="sv-chose-label">Du valde {mine.letter}</span>
-          <OptionText option={mine} />
+          <span lang={lang}>
+            <OptionText option={mine} />
+          </span>
         </p>
       ) : null}
       {view.explanation ? null : (
@@ -684,16 +898,17 @@ function LureCard({
   act: DrillCoreActions
 }) {
   const cites = view.distractorCites[d.letter] ?? { tempting: [], wrong: [] }
+  const lang = contentLang(view.question)
   return (
     <div className="sv-rc" data-testid={`rd-distractor-${d.letter}`}>
       <p className="sv-rc-eyebrow">Ditt svar · {d.letter}</p>
       <h3 className="sv-rc-title">Därför lockade {d.letter}</h3>
-      <p className="sv-rc-text">
+      <p className="sv-rc-text" lang={lang}>
         <Rich text={d.why_tempting} act={act} />
       </p>
       <Cites list={cites.tempting} source={`why-${d.letter}`} act={act} />
       <h3 className="sv-rc-title sv-rc-title--next">Varför {d.letter} är fel</h3>
-      <p className="sv-rc-text">
+      <p className="sv-rc-text" lang={lang}>
         <Rich text={d.why_wrong} act={act} />
       </p>
       <Cites list={cites.wrong} source={`why-${d.letter}`} act={act} />
@@ -714,6 +929,7 @@ function Step({
 }) {
   const detail = step.tier === 'detail'
   const open = !detail || view.openSteps.has(step.n)
+  const lang = contentLang(view.question)
   return (
     <li
       className="sv-step"
@@ -727,11 +943,13 @@ function Step({
       <div className="sv-step-body">
         <h4 className="sv-step-title">
           <span className="sv-sr">Steg {step.n}: </span>
-          <MathText>{step.title}</MathText>
+          <span lang={lang}>
+            <MathText>{step.title}</MathText>
+          </span>
           {detail ? <span className="sv-step-tier"> · fördjupning</span> : null}
         </h4>
         {open ? (
-          <p className="sv-step-text">
+          <p className="sv-step-text" lang={lang}>
             <Rich text={step.text} act={act} />
           </p>
         ) : null}
@@ -760,11 +978,14 @@ function Distractor({
   option,
   cites,
   act,
+  lang,
 }: {
   d: DistractorExplanation
   option: DrillOption | undefined
   cites: { tempting: number[]; wrong: number[] }
   act: DrillCoreActions
+  /** The content's language when it is not Swedish. */
+  lang?: 'en'
 }) {
   const [open, setOpen] = useState(false)
   const bodyId = useId()
@@ -776,7 +997,11 @@ function Distractor({
         </span>
         <p className="sv-dis-opt">
           <span className="sv-sr">Alternativ {d.letter}: </span>
-          {option ? <OptionText option={option} /> : null}
+          {option ? (
+            <span lang={lang}>
+              <OptionText option={option} />
+            </span>
+          ) : null}
         </p>
       </div>
       <button
@@ -792,12 +1017,12 @@ function Distractor({
       {open ? (
         <div className="sv-dis-body" id={bodyId}>
           <p className="sv-dis-sub">Varför det lockar</p>
-          <p className="sv-rc-text">
+          <p className="sv-rc-text" lang={lang}>
             <Rich text={d.why_tempting} act={act} />
           </p>
           <Cites list={cites.tempting} source={`why-${d.letter}`} act={act} />
           <p className="sv-dis-sub">Varför det är fel</p>
-          <p className="sv-rc-text">
+          <p className="sv-rc-text" lang={lang}>
             <Rich text={d.why_wrong} act={act} />
           </p>
           <Cites list={cites.wrong} source={`why-${d.letter}`} act={act} />
@@ -934,6 +1159,7 @@ function PassageCard({
   toggleFocus,
   front,
   phone,
+  passageId,
   inert,
   scrollRef,
 }: {
@@ -948,6 +1174,7 @@ function PassageCard({
   /** The run card in front (facit), whose evidence the text leans on. */
   front: RunId | undefined
   phone: boolean
+  passageId: PassageId
   inert?: boolean
   scrollRef?: { current: HTMLElement | null }
 }) {
@@ -957,6 +1184,10 @@ function PassageCard({
   const paragraphs = view.passage?.paragraphs ?? []
   const byline = view.passage?.byline ?? null
   const [title, subtitle] = unitTitle(view)
+  // An English text: its title (when it has one, not the source's Swedish
+  // name) and its body are English; the paragraph numbers' buttons say
+  // their Swedish names in Swedish.
+  const en = passage?.lang === 'en'
   const graded = view.phase === 'feedback'
   const lean = leaningOn(front, view)
   // Underlined always after the answer: the steps' quotations and the
@@ -1020,13 +1251,15 @@ function PassageCard({
             {copy.ovningstextNote}
           </p>
         ) : null}
-        <h1 className="sv-ptitle" id={titleId}>
+        <h1 className="sv-ptitle" id={titleId} lang={en && passage?.title ? 'en' : undefined}>
           {title}
           {subtitle ? <span>{subtitle}</span> : null}
         </h1>
+        {/* A question without its text says so where the text would be. */}
+        {paragraphs.length ? null : <p className="sv-pmissing">Texten saknas just nu.</p>}
         <div
           className="sv-pbody"
-          data-testid="rd-passage"
+          data-testid={passageId}
           data-focus={String(view.focusPara != null)}
           lang={passage?.lang}
         >
@@ -1054,6 +1287,7 @@ function PassageCard({
                   type="button"
                   className="sv-pnum"
                   tabIndex={-1}
+                  lang={en ? 'sv' : undefined}
                   aria-label={`Stycke ${n}${view.focusPara === n ? ', i fokus' : ''}`}
                   aria-pressed={view.focusPara === n}
                   onClick={() => act.setFocusPara(view.focusPara === n ? null : n)}
@@ -1073,6 +1307,13 @@ function PassageCard({
 
 // ── The question card ────────────────────────────────────────────────
 
+/** The open question's choice while it is still one of its options. The
+ *  data may change under the question: a choice whose option has gone is
+ *  no choice, and nothing answers with it. */
+function chosen(view: DrillCoreView): DrillCoreView['selected'] {
+  return view.selected != null && view.letters.includes(view.selected) ? view.selected : null
+}
+
 /** The options as slips of card stock, each with its strike. `prefix`
  *  names them for the contract (rd-option on a reading question,
  *  rd-quant-option on a quant one, which carries no strike ids). */
@@ -1091,9 +1332,14 @@ export function Options({
   pictures?: Pictures
 }) {
   const strikeIds = prefix === 'rd-option'
+  const lang = contentLang(view.question)
+  if (!view.question.options?.length) {
+    // A question without its options cannot be answered: said, not hidden.
+    return <p className="sv-opts-missing">Svarsalternativen saknas just nu.</p>
+  }
   return (
     <ol className="sv-opts" aria-label="Svarsalternativ">
-      {(view.question.options ?? []).map((o) => {
+      {view.question.options.map((o) => {
         const selected = view.selected === o.letter
         const out = view.eliminated.has(o.letter)
         return (
@@ -1119,7 +1365,13 @@ export function Options({
                   Alternativ {o.letter}
                   {out ? ', struket' : ''}:{' '}
                 </span>
-                <OptionText option={o} pictures={still ? undefined : pictures} />
+                {lang ? (
+                  <span lang={lang}>
+                    <OptionText option={o} pictures={still ? undefined : pictures} />
+                  </span>
+                ) : (
+                  <OptionText option={o} pictures={still ? undefined : pictures} />
+                )}
               </span>
             </button>
             <button
@@ -1154,20 +1406,21 @@ export function LockBar({
   view: DrillCoreView
   act: DrillCoreActions
   still: boolean
-  /** Why Svara waits (a picture the question needs), or nothing. */
+  /** Why Svara waits (a picture or a part the question needs), or nothing. */
   wait?: Wait | null
 }) {
+  const choice = chosen(view)
   return (
     <div className="sv-lockbar">
       <button
         type="button"
         className="sv-btn sv-btn--primary sv-btn--wide"
-        disabled={!view.selected || wait != null}
+        disabled={!choice || wait != null}
         onClick={still ? undefined : act.lock}
         data-testid={still ? undefined : 'rd-lock'}
         tabIndex={still ? -1 : undefined}
       >
-        {view.selected ? `Svara ${view.selected}` : 'Svara'}
+        {choice ? `Svara ${choice}` : 'Svara'}
         <Kbd>↵</Kbd>
       </button>
       <span
@@ -1177,7 +1430,7 @@ export function LockBar({
       >
         {wait
           ? wait.text
-          : view.selected
+          : choice
             ? 'Du kan ändra dig tills du svarar.'
             : 'Välj ett alternativ först.'}
       </span>
@@ -1196,10 +1449,12 @@ function QuestionFace({
   view,
   act,
   still,
+  wait,
 }: {
   view: DrillCoreView
   act: DrillCoreActions
   still: boolean
+  wait: Wait | null
 }) {
   return (
     <div className="sv-card sv-qcard">
@@ -1207,13 +1462,28 @@ function QuestionFace({
         <p className="sv-qlabel">
           Fråga {view.index + 1} <span>av {view.total}</span>
         </p>
-        <h2 className="sv-prompt">
-          <MathText>{view.question.prompt}</MathText>
-        </h2>
+        <Prompt view={view} />
         <Options view={view} act={act} still={still} />
       </div>
-      <LockBar view={view} act={act} still={still} />
+      <LockBar view={view} act={act} still={still} wait={wait} />
     </div>
+  )
+}
+
+/** A reading question's prompt in its own language. An ELF gap item has
+ *  no stem of its own: it is named by its gap, in Swedish ("Lucka 32"),
+ *  and the numbered gap stays in the English text. A question without its
+ *  prompt says so in its place, in Swedish. */
+function Prompt({ view }: { view: DrillCoreView }) {
+  const q = view.question
+  if (isGap(q)) return <h2 className="sv-prompt">Lucka {q.number}</h2>
+  if (!hasPrompt(q)) {
+    return <h2 className="sv-prompt sv-prompt--missing">Frågetexten saknas just nu.</h2>
+  }
+  return (
+    <h2 className="sv-prompt" lang={contentLang(q)}>
+      <MathText>{q.prompt}</MathText>
+    </h2>
   )
 }
 
@@ -1402,7 +1672,7 @@ function DeskDrill(c: Chrome) {
     return (
       <div className="sv-drill sv-drill--done">
         <div className="sv-drill-top">
-          <ExitButton act={act} hint={READING_EXIT_HINT} />
+          <ExitButton act={act} hint={c.exitHint} />
         </div>
         <div className="sv-done-wrap">{c.done}</div>
       </div>
@@ -1412,7 +1682,7 @@ function DeskDrill(c: Chrome) {
   return (
     <div className="sv-drill">
       <div className="sv-drill-top">
-        <ExitButton act={act} hint={READING_EXIT_HINT} />
+        <ExitButton act={act} hint={c.exitHint} />
         {/* The position in cards (the question card names it in words). */}
         <div className="sv-drill-status">
           <QuestionCards
@@ -1435,6 +1705,7 @@ function DeskDrill(c: Chrome) {
           toggleFocus={c.toggleFocus}
           front={front}
           phone={false}
+          passageId={c.passageId}
           scrollRef={scrollRef}
         />
         <QuestionColumn
@@ -1443,7 +1714,7 @@ function DeskDrill(c: Chrome) {
           run={run}
           motion={motion}
           live={live}
-          face={(still) => <QuestionFace view={view} act={act} still={still} />}
+          face={(still) => <QuestionFace view={view} act={act} still={still} wait={c.wait} />}
           finish="Slutför texten"
           keys={
             <p className="sv-keys">
@@ -1698,18 +1969,16 @@ function PhoneDrill(c: Chrome & { sheet: Sheet }) {
           toggleFocus={c.toggleFocus}
           front={front}
           phone
+          passageId={c.passageId}
           inert={inert}
         />
       )}
       refLabel="Till texten"
       toReference={toText}
-      prompt={
-        <h2 className="sv-prompt">
-          <MathText>{view.question.prompt}</MathText>
-        </h2>
-      }
+      prompt={<Prompt view={view} />}
+      wait={c.wait}
       finish="Slutför texten"
-      exitHint={READING_EXIT_HINT}
+      exitHint={c.exitHint}
       done={c.done}
     />
   )
@@ -1885,6 +2154,7 @@ export function DoneCard({
   live,
   eyebrow,
   about,
+  aboutLang,
   primary,
   secondary,
 }: {
@@ -1894,6 +2164,8 @@ export function DoneCard({
   eyebrow: string
   /** What was drilled: the unit's title, or nothing for a mixed sitting. */
   about?: string | null
+  /** The title's language when it is not Swedish (an ELF unit's). */
+  aboutLang?: 'en'
   /** The one filled action (Enter takes it). */
   primary: DoneAction | null
   secondary?: DoneAction | null
@@ -1903,7 +2175,11 @@ export function DoneCard({
   const misses = view.results.length - right
   const minutes = Math.max(1, Math.round(view.elapsed / 60))
   // A number never parts from its unit.
-  const sub = [about, `${view.total} frågor`, `${right} rätt`, `${minutes} min`].filter(Boolean)
+  const sub = [
+    `${view.total} ${view.total === 1 ? 'fråga' : 'frågor'}`,
+    `${right} rätt`,
+    `${minutes} min`,
+  ].filter(Boolean)
   return (
     <section
       className="sv-card sv-done"
@@ -1915,7 +2191,14 @@ export function DoneCard({
       <h2 className="sv-done-title" id={titleId}>
         Hela leken är vänd.
       </h2>
-      <p className="sv-done-sub">{sub.join(' · ')}</p>
+      <p className="sv-done-sub">
+        {about ? (
+          <>
+            <span lang={aboutLang}>{about}</span> ·{' '}
+          </>
+        ) : null}
+        {sub.join(' · ')}
+      </p>
       <ol className="sv-hand" aria-label="Dina svar">
         {view.results.map((r, i) => (
           <li
