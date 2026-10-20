@@ -26,6 +26,10 @@
 // useResolveMistake — PATCH /api/mistakes/:id { resolve: true }. Called
 //   from /repetition on every right answer. Also invalidates ALL keys so
 //   a correct repetition drops the pile numeral live.
+// useReviewMistake — PATCH /api/mistakes/:id/review { correct }. Called
+//   from /repetition for every answer on a planned item, which may be a
+//   NEW question with the missed one's trap (hpf-bz6f.2): the answer
+//   moves the SOURCE mistake's row, right or wrong. Invalidates ALL keys.
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
@@ -180,6 +184,33 @@ export function useResolveMistakeByQuestion() {
       }
       const body = await res.json()
       return body.mistake as Mistake | null
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: DUE_KEY })
+      qc.invalidateQueries({ queryKey: ACTIVE_KEY })
+      qc.invalidateQueries({ queryKey: PILE_KEY })
+    },
+  })
+}
+
+/** Review a mistake by ROW id with the outcome of a repeat. Repetera may
+ *  repeat a miss through a new question with the same trap, so the
+ *  question-keyed routes can't find the row: a right answer advances it,
+ *  a wrong one lapses it — never a new mistake for the new question. */
+export function useReviewMistake() {
+  const api = useApiClient()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (input: { id: number; correct: boolean }) => {
+      const res = await api.api.mistakes[':id'].review.$patch({
+        param: { id: String(input.id) },
+        json: { correct: input.correct },
+      })
+      if (!res.ok) {
+        throw new Error(`PATCH /api/mistakes/${input.id}/review failed: ${res.status}`)
+      }
+      const body = await res.json()
+      return body.mistake as Mistake
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: DUE_KEY })

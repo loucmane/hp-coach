@@ -50,6 +50,12 @@ const PatchBody = z
   })
   .strict()
 
+const ReviewBody = z
+  .object({
+    correct: z.boolean(),
+  })
+  .strict()
+
 const IdParam = z.object({ id: z.coerce.number().int().positive() })
 
 const DueQuery = z
@@ -287,6 +293,87 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       return c.json({ mistake: row })
     },
   )
+
+  // PATCH /api/mistakes/:id/review — { correct } (hpf-bz6f.2). Repetera
+  // repeats a LÄS/MEK/ELF/quant miss through a NEW question with the same
+  // trap ("Samma fälla, ny fråga"), so the answer arrives on a different
+  // questionId than the row's and the question-keyed paths would miss it
+  // (or, on a wrong answer, record the new question as a mistake of its
+  // own). The client addresses the source mistake by row id instead, and
+  // this route moves THAT row the way the existing paths move a
+  // same-question repeat, so the due / pile scopes stay right:
+  //   - correct → nextOnCorrect, as in /by-question: advance, resume after
+  //     a lapse, or graduate at the cap. Only an active row moves; one
+  //     resolved meanwhile (e.g. on another device) is left as it is.
+  //   - wrong   → the lapse POST / applies to an existing row: relearn
+  //     rung + banked height, errorCount7d + 1, lastErrorAt = now, status
+  //     back to 'active' — the item stays on today's pile. Never an
+  //     insert: a miss on the new question lapses the ORIGINAL mistake.
+  // Same ownership rule as /:id: another user's row is a 404.
+  .patch('/:id/review', zValidator('param', IdParam), zValidator('json', ReviewBody), async (c) => {
+    const { id } = c.req.valid('param')
+    const { correct } = c.req.valid('json')
+    const db = getDb(c.env.DB)
+    const userId = await ensureUserRow(db, c.var.userId)
+
+    const [existing] = await db
+      .select()
+      .from(mistakes)
+      .where(and(eq(mistakes.id, id), eq(mistakes.userId, userId)))
+      .limit(1)
+    if (!existing) {
+      return c.json({ error: { code: 'not_found', message: 'Mistake not found' } }, 404)
+    }
+
+    if (!correct) {
+      const now = new Date()
+      const wrong = nextOnWrong(now, {
+        intervalMinutes: existing.intervalMinutes ?? 0,
+        lapseIntervalMinutes: existing.lapseIntervalMinutes ?? null,
+      })
+      const [row] = await db
+        .update(mistakes)
+        .set({
+          status: 'active',
+          errorCount7d: (existing.errorCount7d ?? 0) + 1,
+          lastErrorAt: now,
+          intervalMinutes: wrong.intervalMinutes,
+          nextReviewAt: wrong.nextReviewAt,
+          lapseIntervalMinutes: wrong.lapseIntervalMinutes > 0 ? wrong.lapseIntervalMinutes : null,
+        })
+        .where(eq(mistakes.id, existing.id))
+        .returning()
+      return c.json({ mistake: row })
+    }
+
+    if (existing.status !== 'active') {
+      return c.json({ mistake: existing })
+    }
+    const outcome = nextOnCorrect(
+      existing.intervalMinutes ?? 0,
+      new Date(),
+      existing.lapseIntervalMinutes ?? null,
+    )
+    if (outcome.graduated) {
+      const [row] = await db
+        .update(mistakes)
+        .set({ status: 'resolved' })
+        .where(eq(mistakes.id, existing.id))
+        .returning()
+      return c.json({ mistake: row })
+    }
+    const [row] = await db
+      .update(mistakes)
+      .set({
+        intervalMinutes: outcome.intervalMinutes,
+        nextReviewAt: outcome.nextReviewAt,
+        // Consume/clear any stashed lapse height (null on every correct).
+        lapseIntervalMinutes: outcome.lapseIntervalMinutes,
+      })
+      .where(eq(mistakes.id, existing.id))
+      .returning()
+    return c.json({ mistake: row })
+  })
 
   // PATCH /api/mistakes/:id — { resolve: true } reports a correct
   // answer in /repetition. The server advances the row up the ladder

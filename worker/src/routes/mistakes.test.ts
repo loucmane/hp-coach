@@ -6,7 +6,9 @@
 // Focus: the GET /due endpoint's `scope` query param — `due` (default,
 // nextReviewAt-gated) vs `all` (whole active queue, ungated). The two
 // vocabularies must stay honest: `all` counts a fresh mistake scheduled
-// for tomorrow; `due` does not until it ripens.
+// for tomorrow; `due` does not until it ripens. Also the PATCH
+// /:id/review path Repetera uses when a miss is repeated through a new
+// question with the same trap.
 
 import { eq } from 'drizzle-orm'
 import { Hono } from 'hono'
@@ -367,6 +369,189 @@ describe('FSRS-lite lapse memory (PL-L.2) — a lapse remembers the height', () 
     const resumed = await correct(app, env, q)
     expect(resumed.mistake?.intervalMinutes).toBe(DAY_MIN)
     expect(resumed.mistake?.lapseIntervalMinutes).toBeNull()
+  })
+})
+
+describe('PATCH /api/mistakes/:id/review — a repeat answered on a question with the same trap', () => {
+  // Repetera repeats a LÄS/MEK/ELF/quant miss through a NEW question with the
+  // same trap (hpf-bz6f.2), so the answer arrives on another questionId than
+  // the row's. The client addresses the source mistake by row id; the route
+  // must move THAT row exactly as the existing paths move a same-question
+  // repeat, so due / pile stay right — and must never create a row for the
+  // question that was actually answered.
+  const DAY_MIN = 24 * 60
+  const dayStart = String(new Date().setHours(0, 0, 0, 0))
+
+  async function seedRow(
+    clerkUserId: string,
+    opts: {
+      questionId: string
+      status?: string
+      intervalMinutes?: number
+      lapseIntervalMinutes?: number | null
+      errorCount7d?: number
+      lastErrorAt?: Date
+      nextReviewAt?: Date | null
+    },
+  ): Promise<number> {
+    const db = getDb(d1 as unknown as D1Database)
+    let [user] = await db.select().from(users).where(eq(users.clerkUserId, clerkUserId))
+    if (!user) {
+      ;[user] = await db.insert(users).values({ clerkUserId }).returning()
+    }
+    const [row] = await db
+      .insert(mistakes)
+      .values({
+        userId: user.id,
+        questionId: opts.questionId,
+        status: opts.status ?? 'active',
+        intervalMinutes: opts.intervalMinutes ?? 10,
+        lapseIntervalMinutes: opts.lapseIntervalMinutes ?? null,
+        errorCount7d: opts.errorCount7d ?? 1,
+        lastErrorAt: opts.lastErrorAt ?? new Date(Date.now() - 3 * DAY_MIN * 60_000),
+        nextReviewAt:
+          opts.nextReviewAt === undefined ? new Date(Date.now() - 60_000) : opts.nextReviewAt,
+      })
+      .returning()
+    return row.id
+  }
+
+  async function review(asUser: string, id: number, body: unknown) {
+    const { app, env } = appFor(asUser)
+    const res = await app.request(
+      `/${id}/review`,
+      {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(body),
+      },
+      env,
+    )
+    return res
+  }
+
+  async function rowById(id: number) {
+    const db = getDb(d1 as unknown as D1Database)
+    const [row] = await db.select().from(mistakes).where(eq(mistakes.id, id))
+    return row
+  }
+
+  async function listed(asUser: string, query: string) {
+    const { app, env } = appFor(asUser)
+    const res = await app.request(`/due?limit=500&${query}`, {}, env)
+    return ((await res.json()) as { mistakes: Array<{ id: number }> }).mistakes.map((m) => m.id)
+  }
+
+  it('correct advances THAT row up the ladder and drops it from due and from today’s pile', async () => {
+    const id = await seedRow('u30', { questionId: 'var-2026-verb1-LÄS-003' })
+    expect(await listed('u30', 'scope=due')).toEqual([id])
+
+    const res = await review('u30', id, { correct: true })
+    expect(res.status).toBe(200)
+    const body = (await res.json()) as {
+      mistake: { id: number; status: string; intervalMinutes: number }
+    }
+    expect(body.mistake.id).toBe(id)
+    expect(body.mistake.status).toBe('active')
+    expect(body.mistake.intervalMinutes).toBe(DAY_MIN)
+    expect(await listed('u30', 'scope=due')).toEqual([])
+    // An older miss (last error 3 days ago) answered right leaves the pile.
+    expect(await listed('u30', `scope=pile&dayStart=${dayStart}`)).toEqual([])
+  })
+
+  it('correct at the 30-day cap graduates the row', async () => {
+    const id = await seedRow('u31', {
+      questionId: 'var-2026-kvant1-NOG-002',
+      intervalMinutes: 30 * DAY_MIN,
+    })
+    const res = await review('u31', id, { correct: true })
+    expect(res.status).toBe(200)
+    expect((await rowById(id)).status).toBe('resolved')
+  })
+
+  it('correct after a lapse resumes at half the banked height and clears the stash', async () => {
+    const id = await seedRow('u32', {
+      questionId: 'var-2026-verb2-MEK-011',
+      intervalMinutes: 10,
+      lapseIntervalMinutes: 8 * DAY_MIN,
+    })
+    await review('u32', id, { correct: true })
+    const row = await rowById(id)
+    expect(row.intervalMinutes).toBe(4 * DAY_MIN)
+    expect(row.lapseIntervalMinutes).toBeNull()
+  })
+
+  it('wrong lapses THAT row like a wrong repeat: relearn rung, banked height, error count, pile', async () => {
+    const id = await seedRow('u33', {
+      questionId: 'var-2026-verb1-ELF-024',
+      intervalMinutes: 8 * DAY_MIN,
+      errorCount7d: 2,
+    })
+    const before = Date.now()
+    const res = await review('u33', id, { correct: false })
+    expect(res.status).toBe(200)
+    const row = await rowById(id)
+    expect(row.status).toBe('active')
+    expect(row.intervalMinutes).toBe(10)
+    expect(row.lapseIntervalMinutes).toBe(8 * DAY_MIN)
+    expect(row.errorCount7d).toBe(3)
+    // Timestamps are stored at second precision.
+    expect(row.lastErrorAt?.getTime()).toBeGreaterThanOrEqual(before - 1000)
+    expect(row.nextReviewAt?.getTime()).toBeGreaterThan(before)
+    // Relearn rung, touched today → it stays on today's pile (static numeral).
+    expect(await listed('u33', `scope=pile&dayStart=${dayStart}`)).toEqual([id])
+  })
+
+  it('a wrong answer never creates a mistake row for any other question', async () => {
+    const id = await seedRow('u34', { questionId: 'var-2026-kvant2-XYZ-005' })
+    await review('u34', id, { correct: false })
+    await review('u34', id, { correct: false })
+    const db = getDb(d1 as unknown as D1Database)
+    const rows = await db.select().from(mistakes)
+    expect(rows.map((r) => [r.id, r.questionId])).toEqual([[id, 'var-2026-kvant2-XYZ-005']])
+  })
+
+  it('a resolved row stays resolved on a correct answer and comes back on a wrong one', async () => {
+    const id = await seedRow('u35', {
+      questionId: 'var-2026-kvant1-KVA-007',
+      status: 'resolved',
+      intervalMinutes: 30 * DAY_MIN,
+      nextReviewAt: null,
+    })
+    expect((await review('u35', id, { correct: true })).status).toBe(200)
+    const kept = await rowById(id)
+    expect(kept.status).toBe('resolved')
+    expect(kept.intervalMinutes).toBe(30 * DAY_MIN)
+
+    // Same as the POST upsert: a wrong answer re-activates the row.
+    await review('u35', id, { correct: false })
+    const back = await rowById(id)
+    expect(back.status).toBe('active')
+    expect(back.intervalMinutes).toBe(10)
+    expect(back.lapseIntervalMinutes).toBe(30 * DAY_MIN)
+  })
+
+  it('another user’s row is a 404 and stays untouched', async () => {
+    const id = await seedRow('u36', { questionId: 'var-2026-verb1-LÄS-009', errorCount7d: 4 })
+    const before = await rowById(id)
+    for (const correct of [true, false]) {
+      const res = await review('u37', id, { correct })
+      expect(res.status).toBe(404)
+    }
+    expect(await rowById(id)).toEqual(before)
+  })
+
+  it('an unknown id is a 404', async () => {
+    const res = await review('u38', 999_999, { correct: true })
+    expect(res.status).toBe(404)
+  })
+
+  it('rejects a body without a boolean `correct`', async () => {
+    const id = await seedRow('u39', { questionId: 'var-2026-verb1-LÄS-010' })
+    for (const body of [{}, { correct: 'yes' }, { correct: true, questionId: 'x' }]) {
+      const res = await review('u39', id, body)
+      expect(res.status).toBe(400)
+    }
   })
 })
 
