@@ -70,6 +70,8 @@ export type ScreenContract = {
 }
 
 const NAV = ['rd-nav-<dest>', 'rd-account']
+/** The word the real app's account deletion asks for (routes/konto.tsx). */
+const KONTO_DELETE_WORD = 'radera'
 const VERDICT = [
   'rd-lock',
   'rd-verdict',
@@ -846,6 +848,19 @@ export function describeDirectionContract(
           } else {
             fireEvent.click(screen.getByTestId('rd-konto-delete'))
             expect(actions.deleteAccount).not.toHaveBeenCalled()
+            // A delete may ask for the typed word, as the real app does
+            // (routes/konto.tsx): then the confirm must refuse until it is typed.
+            const word = screen.queryByTestId('rd-konto-delete-word')
+            if (word) {
+              fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
+              expect(actions.deleteAccount).not.toHaveBeenCalled()
+              // Any other word is refused too; typing alone deletes nothing.
+              fireEvent.change(word, { target: { value: `${KONTO_DELETE_WORD}x` } })
+              fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
+              expect(actions.deleteAccount).not.toHaveBeenCalled()
+              fireEvent.change(word, { target: { value: KONTO_DELETE_WORD } })
+              expect(actions.deleteAccount).not.toHaveBeenCalled()
+            }
             fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
             expect(actions.deleteAccount).toHaveBeenCalled()
           }
