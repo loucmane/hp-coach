@@ -15,9 +15,11 @@
 // fields the real app has no source for (when and where the sitting was
 // paused, its minutes left, the plan's primary marker, the prognosis range,
 // target and weekly series, the weekly goal) are left out when absent. A
-// day with nothing on it at all is one calm card, the way to Öva.
+// day with nothing on it at all is one calm card, the way to Öva. A part of
+// the plan already done says so and offers nothing to start; with every
+// part done and nothing to resume, the deck opens on "Dagens plan är klar."
 
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Check } from 'lucide-react'
 import { type CSSProperties, type ReactNode, useId, useLayoutEffect, useMemo } from 'react'
 
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
@@ -66,30 +68,50 @@ const PLAN_VERB: Record<PlanItemKind, string> = {
   mock: 'Förbered provpasset',
 }
 
+/** The plan's parts still to do. A finished part is never offered again. */
+function openItems(home: HomeView): PlanItemView[] {
+  return home.plan.items.filter((i) => !i.completed)
+}
+
+/** Every part of today's plan done (and there was a plan). */
+function planDone(home: HomeView): boolean {
+  return home.plan.items.length > 0 && openItems(home).length === 0
+}
+
+/** The minutes the plan's open parts take: the plan's own estimate while
+ *  nothing is done, else the parts left. */
+function planMinutes(home: HomeView): number {
+  const open = openItems(home)
+  return open.length === home.plan.items.length
+    ? home.plan.minutes
+    : open.reduce((sum, i) => sum + i.minutes, 0)
+}
+
 /** The minutes the day's to-dos take, or null when the resume's are not
  *  known (never a sum that leaves a part out). */
 function dayMinutes(home: HomeView): number | null {
-  if (!home.resume) return home.plan.minutes
-  return home.resume.minutesLeft == null ? null : home.plan.minutes + home.resume.minutesLeft
+  if (!home.resume) return planMinutes(home)
+  return home.resume.minutesLeft == null ? null : planMinutes(home) + home.resume.minutesLeft
 }
 
-/** The day's to-dos: the sitting to resume and the plan's parts. */
+/** The day's to-dos: the sitting to resume and the plan's open parts. */
 function dayCount(home: HomeView): number {
-  return (home.resume ? 1 : 0) + home.plan.items.length
+  return (home.resume ? 1 : 0) + openItems(home).length
 }
 
 /** The day in one line: how many things and how long, then where to start. */
 function daySentence(home: HomeView): string {
   const things = dayCount(home)
-  if (things === 0) return 'Inget inplanerat idag.'
+  if (things === 0) return planDone(home) ? 'Dagens plan är klar.' : 'Inget inplanerat idag.'
   const minutes = dayMinutes(home)
   const long = minutes == null ? '' : `, ungefär ${minutes} minuter`
   return `${cap(word(things))} ${things === 1 ? 'sak' : 'saker'} idag${long}. Börja med kortet överst.`
 }
 
 type HomeCard = DeckCard & {
-  /** What Enter does while the card is in front. */
-  action: () => void
+  /** What Enter does while the card is in front; null on a part already
+   *  done (nothing to take). */
+  action: (() => void) | null
   /** The index's right-hand figure. */
   meta: string
   group: 'todo' | 'status'
@@ -133,7 +155,7 @@ export function SvepHome({
       ...(deck.index < cards.length - 1 ? { ArrowRight: deck.next } : {}),
       Home: () => deck.go(0),
       End: () => deck.go(cards.length - 1),
-      Enter: front.action,
+      ...(front.action ? { Enter: front.action } : {}),
     },
     live,
   )
@@ -268,29 +290,50 @@ function homeCards({
       body: <ResumeCard resume={resume} reading={reading} onResume={onResume} />,
     })
   }
-  home.plan.items.forEach((item, i) => {
-    // The plan's order is its priority: without a marker, its first item
-    // leads (and becomes the day's one filled action with nothing to resume).
-    const lead = item.primary ?? i === 0
+  // Every part done and nothing to resume: the day says so first, with the
+  // way to practise freely as its one filled action.
+  if (!resume && planDone(home)) {
+    out.push({
+      id: 'klar',
+      label: 'Planen är klar',
+      tint: 'none',
+      group: 'todo',
+      meta: 'klart',
+      action: () => nav.go('ova'),
+      body: <PlanDoneCard parts={home.plan.items.length} onOva={() => nav.go('ova')} />,
+    })
+  }
+  // The plan's order is its priority: the open part with the marker leads,
+  // else the first open part (the day's one filled action with nothing to
+  // resume). A part already done is never the next work: the open parts
+  // come first, the done ones after them, each keeping its place number.
+  const open = openItems(home)
+  const lead = open.find((i) => i.primary) ?? open[0]
+  const items = home.plan.items.map((item, i) => ({ item, i }))
+  const ordered = [
+    ...items.filter(({ item }) => !item.completed),
+    ...items.filter(({ item }) => item.completed),
+  ]
+  for (const { item, i } of ordered) {
     out.push({
       id: item.id,
       label: item.title,
       tint: item.section ? sectionTint(item.section) : item.kind === 'repetition' ? 'rep' : 'none',
       group: 'todo',
-      meta: `${item.minutes} min`,
-      action: () => nav.openPlanItem(item),
+      meta: item.completed ? 'klart' : `${item.minutes} min`,
+      action: item.completed ? null : () => nav.openPlanItem(item),
       body: (
         <PlanCard
           item={item}
           n={i + 1}
           of={home.plan.items.length}
-          lead={lead}
-          filled={!resume && i === 0}
+          lead={item === lead}
+          filled={!resume && item === lead}
           onStart={() => nav.openPlanItem(item)}
         />
       ),
     })
-  })
+  }
   const p = home.prognosis
   if (p.total != null) {
     out.push({
@@ -474,6 +517,23 @@ function PlanCard({
   filled: boolean
   onStart: () => void
 }) {
+  if (item.completed) {
+    // Done: said in a word and a glyph, with nothing left to start.
+    return (
+      <>
+        <CardTop sec section={item.section} eyebrow={`Planen · del ${n} av ${of}`} />
+        <div className="sv-hc-body">
+          <h2 className="sv-hc-title">{item.title}</h2>
+          {item.detail ? <p className="sv-hc-detail">{item.detail}</p> : null}
+          <p className="sv-plan-done">
+            <Check size={18} strokeWidth={2.5} aria-hidden />
+            Klart för idag
+          </p>
+        </div>
+        <p className="sv-hc-why">{item.rationale}</p>
+      </>
+    )
+  }
   return (
     <>
       <CardTop
@@ -496,6 +556,32 @@ function PlanCard({
         >
           {PLAN_VERB[item.kind]}
           <ArrowRight size={18} strokeWidth={2} aria-hidden />
+        </button>
+      </div>
+    </>
+  )
+}
+
+/** Today's plan, every part done: said plainly, and the one way on. */
+function PlanDoneCard({ parts, onOva }: { parts: number; onOva: () => void }) {
+  return (
+    <>
+      <CardTop eyebrow="Idag" />
+      <div className="sv-hc-body">
+        <h2 className="sv-hc-title">Dagens plan är klar.</h2>
+        <p className="sv-hc-detail">
+          {parts === 1 ? 'Planens enda del är gjord.' : `Alla ${word(parts)} delarna är gjorda.`}
+        </p>
+      </div>
+      <p className="sv-hc-why">Vill du öva mer finns alla delprov och dina missar i Öva.</p>
+      <div className="sv-hc-foot">
+        <button
+          type="button"
+          className="sv-btn sv-btn--primary sv-btn--block sv-btn--lg"
+          onClick={onOva}
+        >
+          Till Öva
+          <Kbd>↵</Kbd>
         </button>
       </div>
     </>

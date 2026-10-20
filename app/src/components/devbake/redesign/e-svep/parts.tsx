@@ -79,13 +79,14 @@ export type DeckCard = {
 }
 
 /** The kinds of deck on the table, for the stylesheet. */
-export type DeckKind = 'home' | 'ova' | 'run' | 'prov' | 'res' | 'fs'
+export type DeckKind = 'home' | 'ova' | 'run' | 'prov' | 'res' | 'fs' | 'konto'
 
 /**
  * The deck: every card is in the DOM, one is in front and the next two
  * show their edges behind it. The others are inert, as the hidden slides
  * of a WAI-ARIA carousel are; the counter, the arrows, the index and the
- * keys reach them. A horizontal pull moves it (deck.ts).
+ * keys reach them. A horizontal pull moves it (deck.ts), unless `swipe` is
+ * off: a deck whose cards hold choices (Konto) moves by its controls only.
  */
 export function DeckStage({
   deck,
@@ -93,12 +94,14 @@ export function DeckStage({
   label,
   kind,
   live,
+  swipe = true,
 }: {
   deck: Deck
   cards: DeckCard[]
   label: string
   kind: DeckKind
   live: boolean
+  swipe?: boolean
 }) {
   const ref = useRef<HTMLElement>(null)
   // A card that leaves the front turns inert and would drop the focus on
@@ -120,7 +123,7 @@ export function DeckStage({
       data-moved={String(deck.moved)}
       aria-roledescription="kortlek"
       aria-label={label}
-      {...(live ? deck.bind : {})}
+      {...(live && swipe ? deck.bind : {})}
     >
       {cards.map((c, i) => {
         const pos = cardPos(i, deck.index)

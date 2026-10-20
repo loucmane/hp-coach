@@ -63,6 +63,7 @@
    * (LÄS), or warm stone on the neutral table (quant, DTK). */
   --sv-back: oklch(96.4% 0.016 248);
   --sv-back-none: oklch(96.2% 0.009 80);
+  --sv-back-elf: oklch(96.4% 0.014 196);
 
   /* A source page (DTK) lies on its own light sheet in both themes: its
    * colours are the print's, never inverted. */
@@ -188,6 +189,7 @@
   --sv-mark-line: oklch(70% 0.11 84);
   --sv-back: oklch(29.5% 0.026 250);
   --sv-back-none: oklch(29.5% 0.013 70);
+  --sv-back-elf: oklch(29.5% 0.024 200);
 
   --sv-accent: oklch(52% 0.19 352);
   --sv-accent-2: oklch(47.5% 0.18 352);
@@ -1508,7 +1510,8 @@
     [data-kind='ova'],
     [data-kind='prov'],
     [data-kind='res'],
-    [data-kind='fs']
+    [data-kind='fs'],
+    [data-kind='konto']
   )
   .sv-dcard {
   display: flex;
@@ -2075,7 +2078,8 @@
     [data-kind='ova'],
     [data-kind='prov'],
     [data-kind='res'],
-    [data-kind='fs']
+    [data-kind='fs'],
+    [data-kind='konto']
   )
   .sv-dcard {
   padding: 22px 24px 12px;
@@ -2176,52 +2180,6 @@
 .sv-root .sv-phome-foot .sv-count {
   min-height: 24px;
   font-size: 14px;
-}
-
-/* ── A door round 2 builds ────────────────────────────────────────── */
-
-.sv-root .sv-stub-wrap {
-  display: grid;
-  place-items: safe center;
-  height: 100%;
-  overflow-y: auto;
-  padding: 24px 16px 48px;
-}
-
-.sv-root .sv-stub {
-  display: grid;
-  gap: 12px;
-  width: min(100%, 520px);
-  padding: 34px 36px 36px;
-  animation: sv-deal var(--sv-d-move) var(--sv-ease) both;
-}
-
-.sv-root .sv-stub-icon {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  background: var(--sv-card-2);
-  box-shadow: inset 0 0 0 1px var(--sv-line);
-  color: var(--sv-ink-2);
-}
-
-.sv-root .sv-stub-title {
-  font-size: 40px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-}
-
-.sv-root .sv-stub-blurb {
-  color: var(--sv-ink);
-  font-size: 18px;
-}
-
-.sv-root .sv-stub-note {
-  color: var(--sv-ink-2);
-  font-size: 15px;
 }
 
 /* ── The drill ────────────────────────────────────────────────────── */
@@ -5132,7 +5090,6 @@
   }
 
   .sv-root .sv-faces .sv-face[data-deal='in'],
-  .sv-root .sv-stub-wrap .sv-stub,
   .sv-root .sv-done-wrap .sv-done,
   .sv-root .sv-acct .sv-acard,
   .sv-root .sv-viewer,
@@ -5160,7 +5117,8 @@
   .sv-root .sv-sdoor,
   .sv-root .sv-repdoor,
   .sv-root .sv-halfdoor,
-  .sv-root .sv-reg-cell {
+  .sv-root .sv-reg-cell,
+  .sv-root .sv-ko-choice {
     transform: none !important;
   }
 
@@ -7421,5 +7379,965 @@
 
   .sv-root[data-width='desktop'] .sv-run {
     grid-template-rows: 68px minmax(0, 1fr);
+  }
+}
+
+/* ── Round 2, batch 3: Uppslag, Konto, ELF ────────────────────────── */
+
+/* ── Uppslag: the sections as doors, the lesson as a reference card ── */
+
+/* The reading card wants the reading measure: the middle column a little
+ * wider than a hub's deck. */
+.sv-root .sv-up {
+  grid-template-columns: minmax(0, 1fr) 600px minmax(0, 1fr);
+  column-gap: 72px;
+}
+
+.sv-root .sv-up-center {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+}
+
+/* The card in front and the next entries' blank edges behind it. */
+.sv-root .sv-up-slot {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 780px;
+}
+
+.sv-root .sv-up-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sv-root .sv-up-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 28px 40px 30px;
+}
+
+.sv-root .sv-up-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--sv-r3) var(--sv-r3) 0 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sv-line-2) transparent;
+}
+
+.sv-root .sv-up-scroll:focus-visible {
+  outline-offset: -4px;
+}
+
+.sv-root .sv-up-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+
+.sv-root .sv-up-kind {
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.sv-root .sv-up-pos {
+  margin-left: auto;
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* The lesson asked for is not the one open: said on the card, above the
+ * text that stays. */
+.sv-root .sv-up-pending {
+  display: grid;
+  gap: 4px;
+  max-width: none;
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-up-pending-what {
+  color: var(--sv-ink-2);
+  font-weight: 650;
+}
+
+.sv-root .sv-up-title {
+  margin: 22px 0 4px;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+/* A trap's name is a whole sentence: set as a headline, not a word. */
+.sv-root .sv-up-card[data-family$='_traps'] .sv-up-title {
+  font-size: 25px;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.sv-root .sv-up-title:focus-visible {
+  border-radius: 6px;
+  outline-offset: 4px;
+}
+
+.sv-root .sv-up-lead {
+  margin-top: 12px;
+  color: var(--sv-ink);
+  font-family: var(--sv-serif);
+  font-size: 21px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-up-part {
+  margin-top: 28px;
+}
+
+.sv-root .sv-up-part-title {
+  margin-bottom: 12px;
+  color: var(--sv-ink);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* Lesson prose keeps the passages' reading face and scale. */
+.sv-root .sv-up-prose {
+  color: var(--sv-ink);
+  font-family: var(--sv-serif);
+  font-size: 18.5px;
+  line-height: 1.6;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  text-wrap: pretty;
+}
+
+/* The method: numbered steps, each number a small card. */
+.sv-root .sv-up-method {
+  display: grid;
+  gap: 14px;
+}
+
+.sv-root .sv-up-method li {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+}
+
+.sv-root .sv-up-method-n {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 32px;
+  margin-top: 1px;
+  border-radius: 6px;
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow:
+    inset 0 0 0 1.5px var(--sv-line-2),
+    0 1px 2px oklch(28% 0.02 265 / 0.1);
+  color: var(--sv-ink);
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The common wrong answers: each under one thin rule of the stock's ink. */
+.sv-root .sv-up-lures {
+  display: grid;
+  gap: 18px;
+}
+
+.sv-root .sv-up-lures li {
+  padding-left: 16px;
+  border-left: 3px solid var(--sv-line-2);
+}
+
+.sv-root .sv-up-lure {
+  color: var(--sv-ink);
+  font-size: 16.5px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.sv-root .sv-up-lures .sv-up-prose {
+  margin-top: 4px;
+  font-size: 17.5px;
+}
+
+.sv-root .sv-up-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sv-root .sv-up-words li {
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+  color: var(--sv-ink);
+  font-family: var(--sv-serif);
+  font-size: 17px;
+}
+
+.sv-root .sv-up-example {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  gap: 10px 14px;
+}
+
+.sv-root .sv-up-example dt {
+  padding-top: 4px;
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 750;
+}
+
+.sv-root .sv-up-example dd {
+  margin: 0;
+  color: var(--sv-ink);
+  font-family: var(--sv-serif);
+  font-size: 17.5px;
+  line-height: 1.55;
+}
+
+/* The card's foot: the read marker and the one filled action, on the
+ * card's own stock under its text. */
+.sv-root .sv-up-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border-top: 1px solid var(--sv-line);
+  border-radius: 0 0 var(--sv-r3) var(--sv-r3);
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+}
+
+.sv-root .sv-up-foot .sv-btn {
+  border-radius: 14px;
+}
+
+.sv-root .sv-up-practice {
+  flex: 1 1 260px;
+  justify-content: space-between;
+}
+
+.sv-root .sv-up-practice-n {
+  font-size: 14.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Read: a state on the button, in words and an ink rim — never colour
+ * alone. */
+.sv-root .sv-up-read[aria-pressed='true'] {
+  background-color: var(--sv-card);
+  box-shadow: inset 0 0 0 2px var(--sv-ink);
+}
+
+/* Another section's card: what it holds and the way in. */
+.sv-root .sv-up-hub .sv-up-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.sv-root .sv-up-next {
+  display: grid;
+  gap: 4px;
+  margin-top: auto;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+}
+
+.sv-root .sv-up-next-label {
+  color: var(--sv-ink-2);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.sv-root .sv-up-next-title {
+  color: var(--sv-ink);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.sv-root .sv-up-steps {
+  flex: none;
+}
+
+.sv-root .sv-up-steps .sv-count {
+  min-width: 150px;
+}
+
+.sv-root .sv-up-steps .sv-count-n {
+  color: var(--sv-table-ink);
+}
+
+/* The doors: two a row in the orientation, the section in front raised
+ * with an ink rim (a state, as the halves on Provpass). */
+.sv-root .sv-up-doors {
+  margin-top: 26px;
+}
+
+.sv-root .sv-up-doors .sv-sdoors-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 8px;
+}
+
+.sv-root .sv-up-door {
+  min-height: 84px;
+}
+
+.sv-root .sv-up-door[aria-pressed='true'] {
+  background-color: var(--sv-card);
+  box-shadow:
+    var(--sv-chip),
+    inset 0 0 0 2px var(--sv-ink);
+  transform: translateY(-2px);
+}
+
+.sv-root .sv-up-door-n {
+  margin-top: auto;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-up-door-unit {
+  color: var(--sv-ink-2);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+/* The register's entries: a name may take two lines (a trap is named in a
+ * sentence); what is read, open or asked for is said in a word. */
+.sv-root .sv-up-register {
+  width: 100%;
+}
+
+.sv-root .sv-up-register .sv-index-head:focus-visible {
+  border-radius: 6px;
+  outline-offset: 4px;
+}
+
+.sv-root .sv-up-row {
+  align-items: start;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.sv-root .sv-up-row .sv-index-n {
+  margin-top: -2px;
+}
+
+.sv-root .sv-up-row-name {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 14.5px;
+  line-height: 1.35;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-wrap: pretty;
+}
+
+/* Phone Uppslag: one column that scrolls — the doors, the card as tall as
+ * its text, its arrows and Innehåll, then the register. */
+.sv-root .sv-pup .sv-up-doors {
+  margin-top: 4px;
+}
+
+.sv-root .sv-pup .sv-sdoors > .sv-index-head {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.sv-root .sv-pup .sv-up-doors .sv-sdoors-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 19px 8px;
+  margin-top: 0;
+  padding-top: 15px;
+}
+
+.sv-root .sv-pup .sv-up-door {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  align-items: baseline;
+  column-gap: 4px;
+  min-height: 58px;
+  padding: 8px 8px 8px 9px;
+}
+
+.sv-root .sv-pup .sv-up-door-n {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+.sv-root .sv-pup .sv-up-door-unit {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.sv-root .sv-pup .sv-up-door .sv-sdoor-wait {
+  grid-column: 1 / -1;
+  align-self: end;
+}
+
+.sv-root .sv-pup .sv-up-slot {
+  flex: none;
+  max-height: none;
+  margin: 16px 0 26px;
+}
+
+.sv-root .sv-pup .sv-up-slot .sv-qedge[data-n='1'] {
+  transform: translateY(10px) scale(0.96);
+}
+
+.sv-root .sv-pup .sv-up-slot .sv-qedge[data-n='2'] {
+  transform: translateY(20px) scale(0.92);
+}
+
+.sv-root .sv-pup .sv-up-card {
+  height: auto;
+  border-radius: 24px;
+}
+
+.sv-root .sv-pup .sv-up-body {
+  padding: 20px 20px 22px;
+}
+
+.sv-root .sv-pup .sv-up-scroll {
+  overflow: visible;
+}
+
+.sv-root .sv-pup .sv-up-title {
+  font-size: 31px;
+}
+
+.sv-root .sv-pup .sv-up-card[data-family$='_traps'] .sv-up-title {
+  font-size: 22px;
+}
+
+.sv-root .sv-pup .sv-up-prose {
+  font-size: 17.5px;
+}
+
+.sv-root .sv-pup .sv-up-lead {
+  font-size: 19px;
+}
+
+.sv-root .sv-pup .sv-up-example {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+}
+
+.sv-root .sv-pup .sv-up-example dd + dt {
+  margin-top: 10px;
+}
+
+.sv-root .sv-pup .sv-up-foot {
+  padding: 12px;
+  border-radius: 0 0 24px 24px;
+}
+
+.sv-root .sv-pup .sv-up-foot .sv-btn {
+  flex: 1 1 100%;
+  border-radius: 12px;
+}
+
+.sv-root .sv-pup .sv-up-steps {
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-top: -6px;
+}
+
+.sv-root .sv-pup .sv-up-steps .sv-count {
+  min-width: 0;
+}
+
+.sv-root .sv-up-contents {
+  min-height: 44px;
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-pup .sv-up-register {
+  margin-top: 18px;
+}
+
+/* ── Konto: the account card's deck and the details under it ── */
+
+/* The middle column scrolls the deck and the details together; it reaches
+ * into the gap at its right so the next cards' edges stay in view. */
+.sv-root .sv-ko-center {
+  min-height: 0;
+  max-height: 100%;
+  margin-right: -72px;
+  padding: 4px 72px 40px 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sv-table-line) transparent;
+}
+
+.sv-root .sv-ko-deck {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.sv-root .sv-tri.sv-ko .sv-deck {
+  flex: none;
+  width: 100%;
+  height: clamp(480px, calc(100cqh - 200px), 600px);
+  min-height: 0;
+}
+
+.sv-root .sv-ko-body {
+  gap: 22px;
+  padding-top: 22px;
+}
+
+.sv-root .sv-ko-who {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+}
+
+/* A picture of the account, not another way in. */
+.sv-root .sv-ko-avatar {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line-2);
+  color: var(--sv-ink-2);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+.sv-root .sv-ko-name {
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.sv-root :is(.sv-ko-name, .sv-ko-title, .sv-ko-detail-title):focus-visible {
+  border-radius: 6px;
+  outline-offset: 4px;
+}
+
+/* The full address, never cut short: it wraps where it must. */
+.sv-root .sv-ko-email {
+  margin-top: 6px;
+  color: var(--sv-ink-2);
+  font-size: 16px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.sv-root .sv-ko-plan {
+  margin-top: 2px;
+  color: var(--sv-ink-2);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sv-root .sv-ko-title {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.sv-root .sv-ko-sub {
+  padding-top: 18px;
+  border-top: 1px solid var(--sv-line);
+  color: var(--sv-ink-2);
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* A preference: its name, then its choices as slips of stock; the one in
+ * use lies raised with an ink rim (a state, not a second filled action). */
+.sv-root .sv-ko-field {
+  display: grid;
+  gap: 8px;
+}
+
+.sv-root .sv-ko-label {
+  padding: 0;
+  color: var(--sv-ink);
+  font-size: 15.5px;
+  font-weight: 750;
+}
+
+.sv-root .sv-ko-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sv-root .sv-ko-choices[data-wide='true'] {
+  display: grid;
+}
+
+.sv-root .sv-ko-choice {
+  display: grid;
+  gap: 2px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+  color: var(--sv-ink-2);
+  font-size: 15px;
+  font-weight: 700;
+  text-align: left;
+  transition:
+    box-shadow var(--sv-d-ui) var(--sv-ease),
+    transform var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-ko-choice:hover {
+  box-shadow: inset 0 0 0 1px var(--sv-line-2);
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-ko-choice[aria-pressed='true'] {
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow:
+    var(--sv-chip),
+    inset 0 0 0 2px var(--sv-ink);
+  color: var(--sv-ink);
+  transform: translateY(-1px);
+}
+
+.sv-root .sv-ko-choice-blurb {
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 550;
+  line-height: 1.4;
+}
+
+.sv-root .sv-ko-hint {
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+/* Hjälp: the keys as a short list, then the pages beside the bake-off. */
+.sv-root .sv-ko-keys {
+  display: grid;
+}
+
+.sv-root .sv-ko-key {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 42px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--sv-line);
+}
+
+.sv-root .sv-ko-key dt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  color: var(--sv-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.sv-root .sv-ko-key dd {
+  margin: 0;
+  color: var(--sv-ink);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.sv-root .sv-ko-links {
+  display: grid;
+  gap: 2px;
+}
+
+.sv-root .sv-ko-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: var(--sv-ink);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: underline 1px var(--sv-line-2);
+  text-underline-offset: 4px;
+}
+
+.sv-root .sv-ko-link:hover {
+  text-decoration-color: currentColor;
+}
+
+.sv-root .sv-ko-below {
+  margin-top: 14px;
+}
+
+/* The details: the account's own facts, farther down the same table. */
+.sv-root .sv-ko-details {
+  display: grid;
+  gap: 14px;
+  margin-top: 44px;
+}
+
+.sv-root .sv-ko-details-head {
+  padding: 0 6px;
+  color: var(--sv-table-ink);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.sv-root .sv-ko-detail {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  padding: 22px 26px 24px;
+  border-radius: 22px;
+}
+
+.sv-root .sv-ko-detail-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+
+.sv-root .sv-ko-detail-text {
+  max-width: 36em;
+  color: var(--sv-ink-2);
+  font-size: 15px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-ko-status {
+  color: var(--sv-ink-2);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sv-root .sv-ko-status:empty {
+  display: none;
+}
+
+/* Deletion: last, under a rule, quieter than everything above it. */
+.sv-root .sv-ko-delete {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  width: 100%;
+  margin-top: 16px;
+  padding-top: 20px;
+  border-top: 1px solid var(--sv-line);
+}
+
+.sv-root .sv-ko-confirm {
+  display: grid;
+  gap: 8px;
+  width: min(100%, 380px);
+}
+
+.sv-root .sv-ko-word-label {
+  color: var(--sv-ink-2);
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.sv-root .sv-ko-word-label b {
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-ko-word {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--sv-card);
+  box-shadow: inset 0 0 0 1.5px var(--sv-line-2);
+  color: var(--sv-ink);
+  font: inherit;
+  font-size: 16px;
+}
+
+.sv-root .sv-ko-confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* A destructive action: the verdict red as its ink and rim, never a fill. */
+.sv-root .sv-btn--danger {
+  background: var(--sv-card);
+  color: var(--sv-bad);
+  box-shadow: inset 0 0 0 1.5px var(--sv-bad-line);
+}
+
+.sv-root .sv-btn--danger:hover {
+  box-shadow: inset 0 0 0 1.5px var(--sv-bad);
+}
+
+.sv-root .sv-btn--danger:disabled {
+  color: var(--sv-ink-3);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+  cursor: not-allowed;
+}
+
+/* Phone Konto: the three cards as tabs over the deck, the details under. */
+.sv-root .sv-ko-tabs {
+  margin: 8px 0 0;
+}
+
+.sv-root .sv-pko .sv-ptri-deck {
+  height: 560px;
+}
+
+.sv-root .sv-pko .sv-ko-name {
+  font-size: 27px;
+}
+
+.sv-root .sv-pko .sv-ko-avatar {
+  width: 52px;
+  height: 52px;
+  font-size: 18px;
+}
+
+.sv-root .sv-pko .sv-ko-title {
+  font-size: 24px;
+}
+
+.sv-root .sv-pko .sv-ko-key {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+}
+
+.sv-root .sv-pko .sv-ko-details {
+  margin-top: 26px;
+}
+
+.sv-root .sv-pko .sv-ko-detail {
+  padding: 18px 18px 20px;
+  border-radius: 20px;
+}
+
+/* ── ELF and the reading drill ── */
+
+/* The ELF table's turned card is sea-grey stock, not LÄS slate. */
+.sv-root[data-tint='elf'] .sv-dcard[data-card='svar'] {
+  background-color: var(--sv-back-elf);
+}
+
+/* A question without its options says so where they would be. */
+.sv-root .sv-opts-missing {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+  color: var(--sv-ink-2);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* Idag: a part of the plan already done, in a word and a glyph. */
+.sv-root .sv-plan-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  color: var(--sv-ink);
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.sv-root .sv-plan-done svg {
+  color: var(--sv-ok);
+}
+
+/* ── Batch 3 on narrower and shorter desktops ── */
+
+@container svep (max-width: 1320px) {
+  .sv-root[data-width='desktop'] .sv-up {
+    grid-template-columns: minmax(0, 1fr) 540px minmax(0, 1fr);
+  }
+
+  .sv-root[data-width='desktop'] .sv-ko-center {
+    margin-right: -48px;
+    padding-right: 48px;
+  }
+}
+
+@container svep (max-width: 1120px) {
+  .sv-root[data-width='desktop'] .sv-up {
+    grid-template-columns: minmax(0, 1fr) 480px minmax(0, 1fr);
+  }
+
+  .sv-root[data-width='desktop'] .sv-up-body {
+    padding: 24px 28px 26px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-ko-center {
+    margin-right: -28px;
+    padding-right: 28px;
+  }
+}
+
+@container svep (max-height: 820px) {
+  .sv-root[data-width='desktop'] .sv-up-title {
+    margin-top: 16px;
+    font-size: 34px;
   }
 }
