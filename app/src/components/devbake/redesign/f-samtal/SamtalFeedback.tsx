@@ -17,6 +17,9 @@
 // (the options, your answer, the right answer and every part of the
 // explanation), image options show their figure, and a question without an
 // explanation yet gets the verdict and the way on, nothing else.
+// In ELF the content is English and stays so: the options, the right answer
+// and the explanation's own words are marked lang="en" in place (En), while
+// the coach's headings and replies around them are Swedish.
 // The set ends the same way: the coach sums up and proposes the plan's next
 // part as a reply.
 
@@ -37,6 +40,7 @@ import {
   Coach,
   count,
   Divider,
+  En,
   FigureImg,
   type FigureLoads,
   Kbd,
@@ -126,7 +130,11 @@ export function OptionBody({
       </span>
     )
   }
-  return <MathText>{option.text}</MathText>
+  return (
+    <En>
+      <MathText>{option.text}</MathText>
+    </En>
+  )
 }
 
 /** Your answer, as your turn in the conversation. */
@@ -262,7 +270,9 @@ export function Explanation({
           <div className="sa-notes-item" data-testid="rd-pitfall">
             <h4 className="sa-notes-item-h">Se upp för</h4>
             <p className="sa-say">
-              <MathText>{e.pitfall}</MathText>
+              <En>
+                <MathText>{e.pitfall}</MathText>
+              </En>
             </p>
           </div>
         ) : null}
@@ -270,14 +280,18 @@ export function Explanation({
         <div className="sa-notes-item" data-testid="rd-technique">
           <h4 className="sa-notes-item-h">Nästa gång</h4>
           <p className="sa-say">
-            <MathText>{e.technique}</MathText>
+            <En>
+              <MathText>{e.technique}</MathText>
+            </En>
           </p>
         </div>
 
         <div className="sa-notes-item">
           <h4 className="sa-notes-item-h">Så hittar du {q.answer}</h4>
           <p className="sa-say">
-            <MathText>{e.solution_path}</MathText>
+            <En>
+              <MathText>{e.solution_path}</MathText>
+            </En>
           </p>
         </div>
 
@@ -386,7 +400,9 @@ function Lure({
           Det som lockar med {d.letter}
         </h3>
         <p className="sa-say">
-          <Rich text={d.why_tempting} act={act} />
+          <En>
+            <Rich text={d.why_tempting} act={act} />
+          </En>
         </p>
         <Cites list={cites.tempting} source={source} act={act} />
       </Coach>
@@ -395,7 +411,9 @@ function Lure({
           Men därför är {d.letter} fel
         </h3>
         <p className="sa-say">
-          <Rich text={d.why_wrong} act={act} />
+          <En>
+            <Rich text={d.why_wrong} act={act} />
+          </En>
         </p>
         <Cites list={cites.wrong} source={source} act={act} />
       </Coach>
@@ -436,11 +454,15 @@ function Step({
       <div className="sa-step-main">
         <h5 className="sa-step-title">
           <span className="sa-sr">Steg {step.n}: </span>
-          <MathText>{step.title}</MathText>
+          <En>
+            <MathText>{step.title}</MathText>
+          </En>
         </h5>
         {open ? (
           <p className="sa-step-text">
-            <Rich text={step.text} act={act} />
+            <En>
+              <Rich text={step.text} act={act} />
+            </En>
           </p>
         ) : null}
         <div className="sa-step-foot">
@@ -514,12 +536,16 @@ function Other({
         <div className="sa-other-body" id={id}>
           <p className="sa-other-sub">Därför lockar det</p>
           <p className="sa-say">
-            <Rich text={d.why_tempting} act={act} />
+            <En>
+              <Rich text={d.why_tempting} act={act} />
+            </En>
           </p>
           <Cites list={cites.tempting} source={source} act={act} />
           <p className="sa-other-sub">Därför är det fel</p>
           <p className="sa-say">
-            <Rich text={d.why_wrong} act={act} />
+            <En>
+              <Rich text={d.why_wrong} act={act} />
+            </En>
           </p>
           <Cites list={cites.wrong} source={source} act={act} />
         </div>
@@ -535,6 +561,7 @@ function Other({
 export function Closing({
   view,
   title,
+  titleLang,
   divider,
   repetition = false,
   clock,
@@ -546,6 +573,8 @@ export function Closing({
   view: DrillCoreView
   /** The set's name, said first ("Magasinet i Hökaryd"). */
   title: string
+  /** 'en' for an English text's own title (ELF). */
+  titleLang?: 'en'
   /** The line the closing opens with ("Texten är läst"). */
   divider: string
   /** A repetition round: its misses are already in the pile. */
@@ -572,7 +601,9 @@ export function Closing({
           tabIndex={-1}
           ref={ref}
         >
-          <p className="sa-hello">{title}</p>
+          <p className="sa-hello" lang={titleLang}>
+            {title}
+          </p>
           <h2 className="sa-lead-q" id="sa-done-h">
             Klart. {count(view.results.length, 'fråga', 'frågor')}, {right}&nbsp;rätt.
           </h2>

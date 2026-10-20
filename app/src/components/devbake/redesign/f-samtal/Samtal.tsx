@@ -31,15 +31,31 @@
 //  11 Framsteg    — the frame around Framsteg (SamtalFramsteg): one
 //                   observation and one reply, the evidence as attachments,
 //                   and Historik as its second view
+//  12 Uppslag     — the frame around Uppslag (SamtalUppslag): the open
+//                   lesson as a document in the coach's turn, practice as
+//                   the reply, the eight sections and the section's other
+//                   entries below
+//  13 Konto       — the frame around Konto och inställningar (SamtalKonto):
+//                   a short form in the same language, its one reply the
+//                   way back to the door the reader came from; the account
+//                   card's rows lead to its sections
+//  14 ELF         — the reading drill on the ELF sitting (SamtalElf): the
+//                   English text a calm document marked lang="en", the
+//                   coach's turns and replies Swedish
 // Every screen reads its data and asks for its moves through
 // useDirectionData() (kit v2), so the same screens can run on real data.
 
 import { type ReactNode, useCallback, useEffect, useState } from 'react'
 
 import './samtal.css'
-import { type DirectionProps, useWebFonts } from '@/components/devbake/redesign/r1Kit'
+import {
+  type AppScreenKey,
+  type Destination,
+  type DirectionProps,
+  useWebFonts,
+} from '@/components/devbake/redesign/r1Kit'
 import { meta } from './meta'
-import { SamtalDrill } from './SamtalDrill'
+import { SamtalDrill, SamtalElf } from './SamtalDrill'
 import { SamtalFrame } from './SamtalNav'
 import { SamtalRoot } from './SamtalParts'
 import { type HandedPass, SamtalPass } from './SamtalProvpass'
@@ -48,10 +64,29 @@ import { SamtalQuant } from './SamtalQuant'
 const FONTS =
   'https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..800;1,300..800&family=Lora:ital,wght@0,400..700;1,400..700&display=swap'
 
+/** The door each framed screen belongs to: Konto's way back. */
+const DOOR_OF: Partial<Record<AppScreenKey, Destination>> = {
+  1: 'idag',
+  4: 'idag',
+  5: 'ova',
+  8: 'ova',
+  9: 'provpass',
+  10: 'provpass',
+  11: 'framsteg',
+  12: 'uppslag',
+}
+
 export function Samtal(props: DirectionProps) {
   useWebFonts(meta.slug, FONTS)
   const { screen } = props
   const [root, setRoot] = useState<HTMLDivElement | null>(null)
+  // The last door the reader stood at: Konto offers the way back to it.
+  // A drill or Konto itself leaves it as it was.
+  const [origin, setOrigin] = useState<Destination>(() => DOOR_OF[screen] ?? 'idag')
+  useEffect(() => {
+    const door = DOOR_OF[screen]
+    if (door) setOrigin(door)
+  }, [screen])
   // A pass runs on Provpass (9) only: started from its hub, it takes the
   // whole screen until it is handed in or given up, and a move to another
   // screen ends it — the hub opens fresh on the way back. Giving it up
@@ -90,6 +125,7 @@ export function Samtal(props: DirectionProps) {
   if (screen === 2 || screen === 3) stage = <SamtalDrill {...props} />
   // Kvantfråga and DTK are two sittings: each opens fresh.
   else if (screen === 6 || screen === 7) stage = <SamtalQuant key={screen} {...props} />
+  else if (screen === 14) stage = <SamtalElf {...props} />
   else if (screen === 9 && run != null) {
     stage = (
       <SamtalPass
@@ -110,6 +146,7 @@ export function Samtal(props: DirectionProps) {
         passNotice={notice}
         passHanded={handed}
         onPassBack={toHub}
+        origin={origin}
       />
     )
   }
