@@ -1,6 +1,6 @@
 // E · Svep — "Ett kort i taget". The direction's root: it injects
 // Schibsted Grotesk + Source Serif 4, scopes the token set (svep.css) to
-// its own root class and routes the four bake-off screens:
+// its own root class and routes the screens it has built:
 //   1 Idag        — the frame around a deck of cards on a quiet table that
 //                   takes the tint of the card in front (SvepHome)
 //   2 Läsfråga    — the drill: the text is a tall card, the question the
@@ -9,8 +9,23 @@
 //                   run of cards
 //   4 Navigering  — the frame's other state: the five doors folded into a
 //                   hand of small cards, and the account card dealt open
+//   5 Öva         — three task cards (a suggestion, mixed practice,
+//                   Repetera) beside every section as a small door card
+//                   (SvepOva)
+//   6 Kvantfråga  — one substantial problem card that turns into the facit
+//                   run (SvepQuant)
+//   7 DTK         — the figure page as the tall reference card beside the
+//                   question card (SvepQuant)
+//   8 Repetera    — today's misses as a finite hand and its register
+//                   (SvepRepetera)
 // Desktop navigation is a slim top bar of the five doors, laid straight on
-// the table; phone has a bottom bar. The drill hides both behind Avsluta.
+// the table; phone has a bottom bar. The drills hide both behind Avsluta.
+//
+// Kit v2: every screen reads the view model and asks for what it does
+// through useDirectionData(); round 1's switcher moves (Fortsätt, the
+// drill's lock, Nästa and Avsluta) stay on onScreen. A door also opens its
+// page in the frame at once, so the frame keeps working where nothing
+// follows the request (a stage mounted without a provider).
 
 import {
   BookOpen,
@@ -25,11 +40,20 @@ import {
   UserRound,
   X,
 } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 import './svep.css'
-import { OVA_DUE } from '@/components/devbake/redesign/r1Fixtures'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
+  type AppScreenKey,
   DESTINATIONS,
   type Destination,
   type DirectionProps,
@@ -37,9 +61,17 @@ import {
   useDismiss,
   useWebFonts,
 } from '@/components/devbake/redesign/r1Kit'
-import type { Tint } from './parts'
+import type {
+  IdentityView,
+  PlanItemKind,
+  PlanItemView,
+} from '@/components/devbake/redesign/viewModel'
+import { sectionTint, type Tint } from './parts'
 import { SvepDrill } from './SvepDrill'
 import { SvepHome } from './SvepHome'
+import { SvepOva } from './SvepOva'
+import { SvepQuant } from './SvepQuant'
+import { SvepRepetera } from './SvepRepetera'
 
 const FONTS =
   'https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap'
@@ -50,6 +82,25 @@ const DOOR_ICON: Record<Destination, LucideIcon> = {
   provpass: Timer,
   uppslag: BookOpen,
   framsteg: TrendingUp,
+}
+
+/** What the frame shows: a destination, or Repetera inside Öva. */
+type Page = Destination | 'repetera'
+
+/** The frame's page on each screen it is shown on. */
+const SCREEN_PAGE: Partial<Record<AppScreenKey, Page>> = {
+  1: 'idag',
+  4: 'idag',
+  5: 'ova',
+  8: 'repetera',
+}
+
+/** Where a plan item leads in the frame while its request travels. */
+const PLAN_PAGE: Record<PlanItemKind, Page> = {
+  repetition: 'repetera',
+  lesson: 'uppslag',
+  mock: 'provpass',
+  drill: 'ova',
 }
 
 /** The table under a door that is not built yet. */
@@ -63,23 +114,37 @@ const DOOR_TINT: Record<Destination, Tint> = {
 
 type ThemeChoice = ThemeKey | 'system'
 
+/** The frame's navigation, as its pages ask for it. */
+export type FrameNav = {
+  go: (d: Destination) => void
+  openPlanItem: (item: PlanItemView) => void
+}
+
 export function Svep(props: DirectionProps) {
   useWebFonts('svep', FONTS)
-  const drill = props.screen === 2 || props.screen === 3
-  // The table's tint follows the card in front (Idag) or the door.
-  const [tint, setTint] = useState<Tint>('las')
-  // A door asked for at the end of a unit ("Nästa kort: Repetition" opens
-  // Öva): the frame opens there instead of on Idag.
-  const [wanted, setWanted] = useState<Destination | null>(null)
-  const { onScreen } = props
-  const goFromDrill = useCallback(
-    (d: Destination) => {
-      setWanted(d)
-      onScreen(1)
-    },
-    [onScreen],
-  )
-  const clearWanted = useCallback(() => setWanted(null), [])
+  const { data } = useDirectionData()
+  const { screen } = props
+  // The table's tint follows the card in front (Idag, Öva) or the page.
+  const [tint, setTint] = useState<Tint>(screen === 8 ? 'rep' : screen === 5 ? 'none' : 'las')
+  let stage: ReactNode
+  let table: Tint = tint
+  if (screen === 2 || screen === 3) {
+    stage = <SvepDrill {...props} />
+    table = sectionTint(data.drills.reading.questions[0]?.section)
+  } else if (screen === 6 || screen === 7) {
+    // One sitting per screen: the key keeps the two drills' states apart.
+    stage = (
+      <SvepQuant
+        key={screen}
+        kind={screen === 6 ? 'quant' : 'dtk'}
+        width={props.width}
+        live={props.live}
+      />
+    )
+    table = 'none'
+  } else {
+    stage = <SvepFrame {...props} onTint={setTint} />
+  }
   return (
     <div
       className="sv-root"
@@ -87,15 +152,11 @@ export function Svep(props: DirectionProps) {
       data-theme={props.theme}
       data-width={props.width}
       data-live={String(props.live)}
-      data-tint={drill ? 'las' : tint}
+      data-tint={table}
       data-testid="rd-svep"
       lang="sv"
     >
-      {drill ? (
-        <SvepDrill {...props} onGo={goFromDrill} />
-      ) : (
-        <SvepFrame {...props} wanted={wanted} clearWanted={clearWanted} onTint={setTint} />
-      )}
+      {stage}
     </div>
   )
 }
@@ -107,29 +168,28 @@ function SvepFrame({
   live,
   onScreen,
   onTheme,
-  wanted,
-  clearWanted,
   onTint,
-}: DirectionProps & {
-  wanted: Destination | null
-  clearWanted: () => void
-  onTint: (t: Tint) => void
-}) {
-  // Screen 4 shows the frame's other state; screen 1 the default.
+}: DirectionProps & { onTint: (t: Tint) => void }) {
+  const { data, actions } = useDirectionData()
+  // Screen 4 shows the frame's other state; the others the default.
   const [folded, setFolded] = useState(screen === 4)
   const [account, setAccount] = useState(screen === 4)
-  const [dest, setDest] = useState<Destination>(wanted ?? 'idag')
-  // biome-ignore lint/correctness/useExhaustiveDependencies: re-seat the frame when the screen changes only
-  useEffect(() => {
+  const [page, setPage] = useState<Page>(SCREEN_PAGE[screen] ?? 'idag')
+  // Re-seat the frame when the switcher moves, before it paints, so the old
+  // page never shows for a frame.
+  const [seated, setSeated] = useState(screen)
+  if (seated !== screen) {
+    setSeated(screen)
     setFolded(screen === 4)
     setAccount(screen === 4)
-    setDest(wanted ?? 'idag')
-    clearWanted()
-  }, [screen])
+    setPage(SCREEN_PAGE[screen] ?? 'idag')
+  }
 
-  useEffect(() => {
-    if (dest !== 'idag') onTint(DOOR_TINT[dest])
-  }, [dest, onTint])
+  // The pages with a deck report their own tint; the rest have a fixed one.
+  useLayoutEffect(() => {
+    if (page === 'repetera') onTint('rep')
+    else if (page !== 'idag' && page !== 'ova') onTint(DOOR_TINT[page])
+  }, [page, onTint])
 
   // ⌘B / Ctrl+B folds the bar, as ⌘B folds the live app's rail.
   useEffect(() => {
@@ -144,30 +204,48 @@ function SvepFrame({
     return () => window.removeEventListener('keydown', onKey, true)
   }, [live, width])
 
-  const go = useCallback((d: Destination) => {
-    setAccount(false)
-    setDest(d)
-  }, [])
+  const nav = useMemo<FrameNav>(
+    () => ({
+      go: (d) => {
+        setAccount(false)
+        setPage(d)
+        actions.go(d)
+      },
+      openPlanItem: (item) => {
+        setPage(PLAN_PAGE[item.kind])
+        actions.openPlanItem(item.id)
+      },
+    }),
+    [actions],
+  )
 
   const phone = width === 'phone'
-  const page =
-    dest === 'idag' ? (
+  // Repetera lives inside Öva: its door stays the current one.
+  const current: Destination = page === 'repetera' ? 'ova' : page
+  let body: ReactNode
+  if (page === 'idag') {
+    body = (
       <SvepHome
         width={width}
         live={live && !account}
         onResume={() => onScreen(2)}
-        onGo={go}
+        nav={nav}
         onTint={onTint}
       />
-    ) : (
-      <SvepStub dest={dest} />
     )
+  } else if (page === 'ova') {
+    body = <SvepOva width={width} live={live && !account} onTint={onTint} />
+  } else if (page === 'repetera') {
+    body = <SvepRepetera width={width} live={live && !account} nav={nav} />
+  } else {
+    body = <SvepStub dest={page} />
+  }
 
   const doors = (
     <nav className="sv-doors" aria-label="Huvudmeny" data-folded={String(!phone && folded)}>
       {DESTINATIONS.map((d) => {
         const Icon = DOOR_ICON[d.id]
-        const due = d.id === 'ova' ? `, ${OVA_DUE} att repetera` : ''
+        const due = d.id === 'ova' ? `, ${data.home.ovaDue} att repetera` : ''
         const tip = !phone && folded
         return (
           <button
@@ -176,9 +254,9 @@ function SvepFrame({
             className="sv-door"
             data-testid={`rd-nav-${d.id}`}
             data-tip={tip ? d.label : undefined}
-            aria-current={dest === d.id ? 'page' : undefined}
+            aria-current={current === d.id ? 'page' : undefined}
             aria-label={tip ? `${d.label}${due}` : undefined}
-            onClick={() => go(d.id)}
+            onClick={() => nav.go(d.id)}
           >
             <span className="sv-door-card" aria-hidden>
               <Icon size={phone ? 20 : 17} strokeWidth={1.75} />
@@ -187,7 +265,7 @@ function SvepFrame({
               {d.label}
               {due ? <span className="sv-sr">{due}</span> : null}
             </span>
-            {due ? <span className="sv-door-dot" aria-hidden /> : null}
+            {due && data.home.ovaDue > 0 ? <span className="sv-door-dot" aria-hidden /> : null}
           </button>
         )
       })}
@@ -195,15 +273,23 @@ function SvepFrame({
   )
 
   const accountEntry = (
-    <AccountEntry open={account} setOpen={setAccount} theme={theme} onTheme={onTheme} />
+    <AccountEntry
+      open={account}
+      setOpen={setAccount}
+      theme={theme}
+      onTheme={onTheme}
+      identity={data.konto.identity}
+      onKonto={actions.openKonto}
+      onSignOut={actions.signOut}
+    />
   )
 
   if (phone) {
     return (
       <div className="sv-pframe">
         <div className="sv-pframe-account">{accountEntry}</div>
-        <main className="sv-pmain" key={dest}>
-          {page}
+        <main className="sv-pmain" key={page}>
+          {body}
         </main>
         {doors}
       </div>
@@ -234,8 +320,8 @@ function SvepFrame({
           {accountEntry}
         </div>
       </header>
-      <main className="sv-main" key={dest}>
-        {page}
+      <main className="sv-main" key={page}>
+        {body}
       </main>
     </div>
   )
@@ -265,11 +351,17 @@ function AccountEntry({
   setOpen,
   theme,
   onTheme,
+  identity,
+  onKonto,
+  onSignOut,
 }: {
   open: boolean
   setOpen: (open: boolean) => void
   theme: ThemeKey
   onTheme: (t: ThemeKey) => void
+  identity: IdentityView
+  onKonto: () => void
+  onSignOut: () => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const close = useCallback(() => setOpen(false), [setOpen])
@@ -298,7 +390,14 @@ function AccountEntry({
             aria-label="Stäng kontot"
             onClick={close}
           />
-          <AccountCard theme={theme} onTheme={onTheme} close={close} />
+          <AccountCard
+            theme={theme}
+            onTheme={onTheme}
+            close={close}
+            identity={identity}
+            onKonto={onKonto}
+            onSignOut={onSignOut}
+          />
         </>
       ) : null}
     </div>
@@ -311,12 +410,19 @@ function AccountCard({
   theme,
   onTheme,
   close,
+  identity,
+  onKonto,
+  onSignOut,
 }: {
   theme: ThemeKey
   onTheme: (t: ThemeKey) => void
   close: () => void
+  identity: IdentityView
+  onKonto: () => void
+  onSignOut: () => void
 }) {
-  // "System" follows the device; the bake-off itself keeps light/dark.
+  // "System" follows the device once; the app's mode itself stays light or
+  // dark (there is no saved System mode).
   const [choice, setChoice] = useState<ThemeChoice>(theme)
   const pick = (c: ThemeChoice) => {
     setChoice(c)
@@ -327,6 +433,10 @@ function AccountCard({
       onTheme(dark ? 'dark' : 'light')
     } else onTheme(c)
   }
+  const toKonto = () => {
+    close()
+    onKonto()
+  }
   return (
     <div className="sv-card sv-acard" id="sv-account-card" data-testid="rd-account-menu">
       <div className="sv-acard-head">
@@ -334,15 +444,15 @@ function AccountCard({
           <UserRound size={20} strokeWidth={1.75} />
         </span>
         <span className="sv-acard-who">
-          <b>Ditt konto</b>
-          <span>Inloggad · gratisplan</span>
+          <b>{identity.name}</b>
+          <span>{identity.plan ? `Inloggad · ${identity.plan}` : identity.email}</span>
         </span>
         <button type="button" className="sv-icon-btn" aria-label="Stäng" onClick={close}>
           <X size={18} strokeWidth={1.75} aria-hidden />
         </button>
       </div>
-      <AccountRow label="Konto" hint="Namn, e-post, plan" onClick={close} />
-      <AccountRow label="Inställningar" hint="Provdatum och mål" onClick={close} />
+      <AccountRow label="Konto" hint="Namn, e-post, plan" onClick={toKonto} />
+      <AccountRow label="Inställningar" hint="Provdatum och mål" onClick={toKonto} />
       <div className="sv-theme">
         <span className="sv-theme-label" id="sv-theme-label">
           Tema
@@ -366,7 +476,14 @@ function AccountCard({
       </div>
       <AccountRow label="Hjälp" hint="Kortkommandon, frågor" onClick={close} />
       <div className="sv-acard-foot">
-        <button type="button" className="sv-btn sv-btn--quiet sv-btn--block" onClick={close}>
+        <button
+          type="button"
+          className="sv-btn sv-btn--quiet sv-btn--block"
+          onClick={() => {
+            close()
+            onSignOut()
+          }}
+        >
           Logga ut
         </button>
       </div>
@@ -394,7 +511,9 @@ function AccountRow({
   )
 }
 
-/** A door that round 2 builds: one card on its own table. */
+/** A door a later batch builds: one card on its own table. The bake-off's
+ *  stage shows its own card for these screens; this one is for a stage that
+ *  keeps Svep mounted. */
 function SvepStub({ dest }: { dest: Destination }) {
   const d = DESTINATIONS.find((x) => x.id === dest) ?? DESTINATIONS[0]
   const Icon = DOOR_ICON[d.id]
@@ -409,8 +528,7 @@ function SvepStub({ dest }: { dest: Destination }) {
         </h1>
         <p className="sv-stub-blurb">{d.blurb}</p>
         <p className="sv-stub-note">
-          Den här leken läggs i omgång 2, när en riktning är vald. Menyn och kontot fungerar redan
-          härifrån.
+          Den här leken läggs senare i omgång 2. Menyn och kontot fungerar redan härifrån.
         </p>
       </section>
     </div>
