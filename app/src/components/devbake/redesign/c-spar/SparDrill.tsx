@@ -934,7 +934,8 @@ export type OptionsLayout = 'column' | 'row' | 'grid' | 'images'
  * The options: a letter blob that morphs into a tilted ink squircle when
  * chosen, the text (math rendered), and a strike button. `content` gives
  * an option its own body (KVA's relation, NOG's statement glyph, a chart
- * tile); the accessible name is always the words.
+ * tile); the accessible name is always the words. A running Provpass
+ * passes its own question, answer and strikes (no drill core there).
  */
 export function Options({
   view,
@@ -943,7 +944,8 @@ export function Options({
   layout = 'column',
   content,
   disabled = false,
-}: Pick<Shared, 'view'> & {
+}: {
+  view: Pick<DrillCoreView, 'question' | 'selected' | 'eliminated'>
   act: Pick<DrillAct, 'select' | 'toggleEliminate'>
   testid?: 'rd-option' | 'rd-quant-option'
   layout?: OptionsLayout

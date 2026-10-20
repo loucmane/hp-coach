@@ -358,8 +358,8 @@ describe('Raster pass timing, content readiness and host boundaries', () => {
       key: '3',
     })
     expect(screen.getByTestId('rb26-stage')).toHaveAttribute('data-direction', 'c')
-    // Raster's runner is gone; direction C may render its own pass.
-    expect(screen.queryByTestId('rd-raster')).toBeNull()
+    // Raster's runner is gone once C's lazy stage replaces it; C may render its own pass.
+    await waitFor(() => expect(screen.queryByTestId('rd-raster')).toBeNull())
     expect(submitProvpass).toHaveBeenCalledOnce()
   })
 

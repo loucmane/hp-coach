@@ -16,5 +16,5 @@ export const meta: DirectionMeta = {
   ],
   risk: 'Risk: överlast och streak-ångest. Svar: ingen rörelse under läsning, ett lugnt läge och en förlåtande veckorytm utan förlust.',
   references: 'Brilliant, Duolingo 2026, Speak, Material 3 Expressive.',
-  screens: [1, 2, 3, 4, 5, 6, 7, 8],
+  screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
 }
