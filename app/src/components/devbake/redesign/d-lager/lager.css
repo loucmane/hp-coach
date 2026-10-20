@@ -3351,6 +3351,96 @@
 
 /* ── Round 2: the task brought forward, its sources one level below ─ */
 
+/* B3: a quiet contents sheet and an elevated, continuous reading surface. */
+[data-rd='lager'] {
+  .la-reference, .la-account-layout { display: grid; grid-template-columns: minmax(240px, 3fr) minmax(0, 7fr); gap: 48px; align-items: start; }
+  .la-ref-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
+  .la-ref-outline, .la-account-outline { padding: 24px; min-width: 0; }
+  .la-ref-heading { font: 650 18px/1.4 var(--la-ui); color: var(--la-ink); margin-bottom: 18px; }
+  .la-ref-outline-toggle { display: none; }
+  .la-ref-sections { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: var(--la-r-ctl); background: var(--la-well); }
+  .la-ref-section { min-height: 44px; border-radius: 12px; font-size: 13px; font-weight: 650; color: var(--la-ink); }
+  .la-ref-section[aria-pressed='true'] { background: var(--la-sheet-up); box-shadow: var(--la-sh-1); }
+  .la-ref-section-name { margin: 20px 0 12px; color: var(--la-ink); font-size: 14px; line-height: 1.6; }
+  .la-ref-entries { list-style: none; margin: 0; padding: 0; border-radius: var(--la-r-ctl); overflow: hidden; background: var(--la-well); }
+  .la-ref-entry { width: 100%; min-height: 60px; display: grid; gap: 8px; text-align: left; padding: 18px 14px; color: var(--la-ink); border-bottom: 1px solid var(--la-hair-2); font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+  .la-ref-entry-title { font-weight: 650; }
+  .la-ref-entry[aria-current='page'] { background: var(--la-sheet-up); box-shadow: inset 3px 0 var(--la-accent); }
+  .la-ref-state { display: flex; align-items: center; gap: 5px; font-size: 12px; }
+  .la-ref-entry:focus-visible { outline-offset: -3px; }
+  .la-lesson, .la-account-content { margin-top: 30px; padding: 36px 40px; min-width: 0; color: var(--la-ink); }
+  .la-lesson > h2 { font: 500 32px/1.2 var(--la-read); margin: 22px 0 28px; text-wrap: balance; }
+  .la-lesson-prose { font: 19.5px/1.62 var(--la-read); overflow-wrap: anywhere; }
+  .la-lesson[data-size='large'] .la-lesson-prose { font-size: 21.5px; }
+  .la-lesson-part { margin: 26px 0; }
+  .la-lesson-part h3 { font: 650 14px/1.5 var(--la-ui); margin-bottom: 10px; }
+  .la-lesson-part p { margin: 10px 0; }
+  .la-lesson-steps { padding-left: 26px; }
+  .la-lesson-steps li { padding: 0 0 20px 8px; }
+  .la-lesson-steps li::marker { font: 650 14px var(--la-ui); }
+  .la-lesson-detail { border-top: 1px solid var(--la-hair-2); padding: 4px 0; }
+  .la-lesson-detail summary, .la-account-danger summary { min-height: 44px; padding: 12px 0; cursor: pointer; }
+  .la-lesson-detail p { padding: 12px 0; }
+  .la-lesson-foot { border-top: 1px solid var(--la-hair-2); padding-top: 24px; display: grid; justify-items: start; gap: 14px; }
+  .la-lesson-foot p { font-size: 14px; line-height: 1.5; }
+  .la-lesson-foot .la-btn { margin-top: 10px; }
+  .la-account-exam { border-top: 1px solid var(--la-hair-2); margin-top: 20px; padding-top: 20px; font-size: 14px; line-height: 1.6; color: var(--la-ink); }
+  .la-account-section { padding-bottom: 32px; margin-bottom: 30px; border-bottom: 1px solid var(--la-hair-2); scroll-margin-top: 24px; }
+  .la-account-section h2 { font: 650 20px/1.4 var(--la-ui); margin-bottom: 18px; }
+  .la-account-section p { line-height: 1.6; margin: 12px 0; overflow-wrap: anywhere; }
+  .la-account-name { font: 500 28px/1.3 var(--la-read); }
+  .la-account-email { overflow-wrap: anywhere; }
+  .la-pref { margin: 28px 0; padding: 0; border: 0; min-width: 0; }
+  .la-pref legend { font-weight: 650; margin-bottom: 12px; }
+  .la-pref .la-seg { display: flex; width: fit-content; max-width: 100%; flex-wrap: wrap; }
+  .la-pref .la-seg button { min-height: 44px; }
+  .la-pref p { color: var(--la-ink); font-size: 14px; }
+  .la-pref-options { border-radius: var(--la-r-ctl); background: var(--la-well); padding: 4px; }
+  .la-pref-options button { display: grid; gap: 5px; text-align: left; padding: 14px 16px; width: 100%; min-height: 48px; border-radius: 12px; color: var(--la-ink); }
+  .la-pref-options button span { font-size: 14px; line-height: 1.6; }
+  .la-pref-options button[aria-pressed='true'] { background: var(--la-sheet-up-2); box-shadow: var(--la-sh-1); }
+  .la-pref-check { display: flex; align-items: center; gap: 14px; min-height: 44px; margin: 16px 0; }
+  .la-pref-check input { width: 22px; height: 22px; accent-color: var(--la-btn); }
+  .la-pref-minutes { display: grid; gap: 12px; }
+  .la-pref-minutes input, .la-delete-confirm input { min-height: 48px; background: var(--la-well); color: var(--la-ink); border: 1px solid var(--la-ink-3); border-radius: 12px; padding: 10px 14px; width: 100%; max-width: 100%; }
+  .la-account-links { list-style: none; padding: 0; margin: 16px 0 0; }
+  .la-account-links a { display: flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; color: var(--la-ink); }
+  .la-account-danger { font-size: 14px; line-height: 1.6; }
+  .la-account-notice { min-height: 24px; margin: 20px 0; line-height: 1.6; }
+  .la-delete-confirm label { display: block; margin: 20px 0 12px; }
+  .la-delete-confirm .la-confirm-actions { flex-wrap: wrap; }
+  .la-reading-root { height: 100%; min-height: 0; }
+  .la-reading-figure { margin: 20px 0; }
+  .la-reading-figure img { max-width: 100%; height: auto; background: white; }
+  .la-cloze-gap { display: inline-block; padding: 0 12px; border-bottom: 2px solid currentColor; font-family: var(--la-ui); font-size: .85em; }
+  .la-cloze-gap[data-active='true'] { outline: 2px solid var(--la-focus); outline-offset: 2px; background: var(--la-well); font-weight: 700; }
+  .la-para[data-focused='true'] { box-shadow: -3px 0 var(--la-focus); }
+  .la-pbody[data-focus='true'] .la-para:not([data-focused='true']) { opacity: 1; }
+  .la-prompt, .la-ptitle, .la-option-figure { overflow-wrap: anywhere; }
+}
+[data-rd='lager'][data-width='phone'] {
+  .la-reference, .la-account-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .la-ref-outline-toggle { display: inline-flex; }
+  .la-ref-outline:not([data-open='true']) { display: none; }
+  .la-lesson, .la-account-content { padding: 24px 20px; margin-top: 0; }
+  .la-lesson > h2 { font-size: 28px; }
+  .la-lesson-prose { font-size: 17.5px; line-height: 1.6; }
+  .la-lesson[data-size='large'] .la-lesson-prose { font-size: 19.5px; }
+  .la-account-outline { padding: 12px 16px; }
+  .la-account-outline nav { display: flex; flex-wrap: wrap; }
+  .la-account-outline .la-menu-item { width: auto; flex: 1 1 auto; padding: 10px; }
+  .la-account-exam { margin-top: 10px; padding-top: 14px; }
+}
+@container (max-width: 1120px) {
+  [data-rd='lager'] .la-desk { display: grid; grid-template-columns: minmax(0, 1fr); overflow: auto; padding-bottom: 32px; }
+  [data-rd='lager'] .la-desk .la-read { max-height: none; overflow: visible; }
+  [data-rd='lager'] .la-desk .la-qcol { min-height: 600px; }
+}
+@container (max-width: 900px) {
+  [data-rd='lager'] .la-reference, [data-rd='lager'] .la-account-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  [data-rd='lager'] .la-lesson, [data-rd='lager'] .la-account-content { margin-top: 0; }
+}
+
 [data-rd='lager'] { container-type: inline-size; }
 .la-hub-grid {
   display: grid;
