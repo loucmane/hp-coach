@@ -215,6 +215,8 @@ function FigurePane({
       </div>
       <section
         className="lj-figure-scroll"
+        // Arrows scroll the page here: the bake-off switcher leaves them alone.
+        data-rd-keyscope=""
         // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrolling page must be reachable to scroll it with the keyboard
         tabIndex={0}
         aria-label="Underlaget. Rulla för att se hela sidan."
@@ -313,6 +315,7 @@ function FigureViewer({
       aria-modal="true"
       aria-label="Förstorat underlag"
       data-testid="rd-figure-viewer"
+      data-rd-keyscope=""
       ref={dialog}
       onKeyDown={trap}
     >

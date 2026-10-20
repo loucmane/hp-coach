@@ -656,6 +656,24 @@ describe('Ljuskägla DTK', () => {
 
 // ── 8 · Repetera ────────────────────────────────────────────────────
 
+describe('Ljuskägla DTK keys inside the page and the viewer', () => {
+  // The bake-off switcher leaves keys alone inside a data-rd-keyscope region
+  // (Redesign2026Bakeoff.test.tsx proves that); here every focus target that
+  // uses the arrows sits inside one.
+  it('puts the scroll region and the enlarged viewer inside a key scope', () => {
+    spied(7)
+    const figure = screen.getByTestId('rd-figure')
+    const scroll = figure.querySelector<HTMLElement>('.lj-figure-scroll')
+    if (!scroll) throw new Error('no scroll region')
+    expect(scroll.closest('[data-rd-keyscope]')).not.toBeNull()
+    fireEvent.click(within(figure).getByRole('button', { name: /Förstora figur/ }))
+    const viewer = screen.getByTestId('rd-figure-viewer')
+    for (const el of [viewer, ...viewer.querySelectorAll<HTMLElement>('button, [tabindex]')]) {
+      expect(el.closest('[data-rd-keyscope]')).not.toBeNull()
+    }
+  })
+})
+
 describe('Ljuskägla Repetera', () => {
   const due = D.repetera.items.filter((i) => i.dueNow)
   const later = D.repetera.items.filter((i) => !i.dueNow)
