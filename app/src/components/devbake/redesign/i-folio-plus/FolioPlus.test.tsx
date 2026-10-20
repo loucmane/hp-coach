@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useMemo, useState } from 'react'
@@ -2322,8 +2324,10 @@ describe('Folio · Konto & inställningar', () => {
     for (const nav of screen.getAllByTestId(/^rd-nav-/)) {
       expect(nav).not.toHaveAttribute('aria-current')
     }
-    // Left out by the spec (meta.omits): no palette, font or density rows.
-    expect(screen.queryByTestId(/^rd-konto-(palette|font|density)-/)).toBeNull()
+    // Left out by the spec (meta.omits): no font or density rows. Folio+
+    // brings the palette back.
+    expect(screen.queryByTestId(/^rd-konto-(font|density)-/)).toBeNull()
+    expect(screen.getByTestId('rd-konto-palette-sage')).toBeInTheDocument()
     expect(screen.getByTestId('rd-konto-identity')).toHaveTextContent(
       FIXTURE_DATA.konto.identity.email,
     )
@@ -2994,4 +2998,40 @@ describe('Folio+ · the way back from a lesson, through the host', () => {
     await screen.findByTestId('rd-lesson', {}, { timeout: 5000 })
     expect(screen.queryByRole('button', { name: 'Tillbaka till frågan' })).toBeNull()
   }, 15000)
+})
+
+describe('Folio+ · Konto’s Färg recolours the book', () => {
+  beforeEach(() => {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(848)
+  })
+  afterEach(() => vi.restoreAllMocks())
+
+  it('opens on Spalt, Folio’s own colours, and a pick takes the whole direction', async () => {
+    mountHost(13)
+    const spalt = await screen.findByTestId('rd-konto-palette-spalt', {}, { timeout: 5000 })
+    const root = screen.getByTestId('rd-folio-plus')
+    expect(spalt).toHaveAttribute('aria-pressed', 'true')
+    expect(root).toHaveAttribute('data-palette', 'spalt')
+    expect(screen.getByText('Spalt är Folios egna färger.')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-konto-palette-sage'))
+    expect(root).toHaveAttribute('data-palette', 'sage')
+    expect(screen.getByTestId('rd-konto-palette-sage')).toHaveAttribute('aria-pressed', 'true')
+    // It carries to the other pages: the choice is the reader's, not Konto's.
+    fireEvent.click(screen.getByTestId('rd-nav-idag'))
+    expect(await screen.findByTestId('rd-resume')).toBeInTheDocument()
+    expect(screen.getByTestId('rd-folio-plus')).toHaveAttribute('data-palette', 'sage')
+  }, 15000)
+
+  it('gives every palette but Spalt its own light and dark tokens', () => {
+    const css = readFileSync(
+      path.join(process.cwd(), 'src/components/devbake/redesign/i-folio-plus/fpPalette.css'),
+      'utf8',
+    )
+    for (const p of ['sand', 'sage', 'ink', 'rose']) {
+      expect(css).toContain(`[data-palette='${p}']:not([data-theme='dark'])`)
+      expect(css).toContain(`[data-theme='dark'][data-palette='${p}']`)
+    }
+    expect(css).not.toContain(`[data-palette='spalt']`)
+  })
 })

@@ -1,0 +1,191 @@
+/* Folio+ · Konto's Färg: the five palettes of the live app (lib/tokens.ts
+ * PALETTES), set in Folio's own terms. Spalt, the default, is Folio as
+ * drawn (folioPlus.css): no override. The others keep Folio's lightness
+ * steps and move only the paper's tone and the accent's hue, so contrast
+ * stays where folioPlus.css put it. The verdict colours (ok, bad) and the
+ * marker stay: they mean something.
+ *
+ * Light rules exclude dark explicitly: they load after folioPlus.css and
+ * would otherwise beat its dark block. */
+
+/* ── Sand: warm paper, a terracotta accent ─────────────────────────── */
+[data-rd='folio-plus'][data-palette='sand']:not([data-theme='dark']) {
+  --fp-paper: oklch(97% 0.014 75);
+  --fp-paper-2: oklch(95.2% 0.016 73);
+  --fp-paper-3: oklch(92.4% 0.018 71);
+  --fp-leaf: oklch(98.8% 0.008 78);
+  --fp-menu: oklch(99.2% 0.006 78);
+  --fp-accent: oklch(47% 0.12 42);
+  --fp-accent-2: oklch(40% 0.11 42);
+  --fp-accent-ink: oklch(45% 0.12 42);
+  --fp-accent-soft: oklch(93.5% 0.03 50);
+  --fp-accent-fill: oklch(47% 0.12 42);
+  --fp-accent-fill-2: oklch(40% 0.11 42);
+  --fp-focus: oklch(53% 0.15 42);
+}
+[data-rd='folio-plus'][data-theme='dark'][data-palette='sand'] {
+  --fp-paper: oklch(21.5% 0.011 60);
+  --fp-paper-2: oklch(19% 0.01 60);
+  --fp-paper-3: oklch(26.5% 0.012 62);
+  --fp-leaf: oklch(24.2% 0.012 62);
+  --fp-menu: oklch(28% 0.013 62);
+  --fp-accent: oklch(72% 0.085 45);
+  --fp-accent-2: oklch(76% 0.08 45);
+  --fp-accent-ink: oklch(80% 0.075 45);
+  --fp-accent-soft: oklch(31% 0.035 45);
+  --fp-accent-fill: oklch(50% 0.1 42);
+  --fp-accent-fill-2: oklch(46% 0.1 42);
+  --fp-focus: oklch(78% 0.1 45);
+}
+
+/* ── Sage: cool green-grey paper, a teal accent ────────────────────── */
+[data-rd='folio-plus'][data-palette='sage']:not([data-theme='dark']) {
+  --fp-paper: oklch(97% 0.012 165);
+  --fp-paper-2: oklch(95.2% 0.014 165);
+  --fp-paper-3: oklch(92.4% 0.016 165);
+  --fp-leaf: oklch(98.8% 0.007 165);
+  --fp-menu: oklch(99.2% 0.005 165);
+  --fp-ink: oklch(21% 0.015 200);
+  --fp-ink-2: oklch(37% 0.015 200);
+  --fp-ink-3: oklch(47.5% 0.014 200);
+  --fp-rule: oklch(86.5% 0.013 170);
+  --fp-rule-2: oklch(74% 0.014 170);
+  --fp-rule-strong: oklch(21% 0.015 200);
+  --fp-accent: oklch(44% 0.085 195);
+  --fp-accent-2: oklch(37% 0.08 195);
+  --fp-accent-ink: oklch(42% 0.085 195);
+  --fp-accent-soft: oklch(93.5% 0.025 190);
+  --fp-accent-fill: oklch(44% 0.085 195);
+  --fp-accent-fill-2: oklch(37% 0.08 195);
+  --fp-focus: oklch(50% 0.11 195);
+}
+[data-rd='folio-plus'][data-theme='dark'][data-palette='sage'] {
+  --fp-paper: oklch(21.5% 0.012 200);
+  --fp-paper-2: oklch(19% 0.011 200);
+  --fp-paper-3: oklch(26.5% 0.013 200);
+  --fp-leaf: oklch(24.2% 0.013 200);
+  --fp-menu: oklch(28% 0.014 200);
+  --fp-ink: oklch(88% 0.012 170);
+  --fp-ink-2: oklch(79% 0.012 170);
+  --fp-ink-3: oklch(68% 0.012 175);
+  --fp-rule: oklch(33.5% 0.013 200);
+  --fp-rule-2: oklch(46% 0.014 200);
+  --fp-rule-strong: oklch(64% 0.014 190);
+  --fp-accent: oklch(72% 0.075 190);
+  --fp-accent-2: oklch(76% 0.07 190);
+  --fp-accent-ink: oklch(80% 0.07 190);
+  --fp-accent-soft: oklch(30% 0.035 195);
+  --fp-accent-fill: oklch(48% 0.08 195);
+  --fp-accent-fill-2: oklch(44% 0.08 195);
+  --fp-focus: oklch(78% 0.09 190);
+}
+
+/* ── Ink: cool blue-white paper, a deep navy accent ────────────────── */
+[data-rd='folio-plus'][data-palette='ink']:not([data-theme='dark']) {
+  --fp-paper: oklch(97.5% 0.007 250);
+  --fp-paper-2: oklch(95.5% 0.009 250);
+  --fp-paper-3: oklch(92.8% 0.011 250);
+  --fp-leaf: oklch(99% 0.004 250);
+  --fp-menu: oklch(99.3% 0.003 250);
+  --fp-ink: oklch(20% 0.03 262);
+  --fp-ink-2: oklch(36% 0.026 262);
+  --fp-ink-3: oklch(47% 0.022 262);
+  --fp-rule: oklch(87% 0.011 255);
+  --fp-rule-2: oklch(74% 0.014 255);
+  --fp-rule-strong: oklch(20% 0.03 262);
+  --fp-accent: oklch(38% 0.13 265);
+  --fp-accent-2: oklch(32% 0.12 265);
+  --fp-accent-ink: oklch(37% 0.13 265);
+  --fp-accent-soft: oklch(93% 0.03 265);
+  --fp-accent-fill: oklch(38% 0.13 265);
+  --fp-accent-fill-2: oklch(32% 0.12 265);
+  --fp-focus: oklch(48% 0.16 265);
+}
+[data-rd='folio-plus'][data-theme='dark'][data-palette='ink'] {
+  --fp-paper: oklch(20% 0.018 262);
+  --fp-paper-2: oklch(17.5% 0.016 262);
+  --fp-paper-3: oklch(25% 0.02 262);
+  --fp-leaf: oklch(23% 0.02 262);
+  --fp-menu: oklch(27% 0.022 262);
+  --fp-ink: oklch(89% 0.008 250);
+  --fp-ink-2: oklch(80% 0.01 250);
+  --fp-ink-3: oklch(68% 0.012 250);
+  --fp-rule: oklch(32% 0.018 262);
+  --fp-rule-2: oklch(45% 0.02 262);
+  --fp-rule-strong: oklch(64% 0.02 258);
+  --fp-accent: oklch(72% 0.09 262);
+  --fp-accent-2: oklch(76% 0.085 262);
+  --fp-accent-ink: oklch(81% 0.085 262);
+  --fp-accent-soft: oklch(30% 0.045 262);
+  --fp-accent-fill: oklch(50% 0.12 265);
+  --fp-accent-fill-2: oklch(45% 0.12 265);
+  --fp-focus: oklch(78% 0.12 262);
+}
+
+/* ── Rose: blush paper, a rose accent ──────────────────────────────── */
+[data-rd='folio-plus'][data-palette='rose']:not([data-theme='dark']) {
+  --fp-paper: oklch(97% 0.011 30);
+  --fp-paper-2: oklch(95.2% 0.013 28);
+  --fp-paper-3: oklch(92.4% 0.015 26);
+  --fp-leaf: oklch(98.8% 0.006 30);
+  --fp-menu: oklch(99.2% 0.005 30);
+  --fp-ink: oklch(21% 0.012 20);
+  --fp-ink-2: oklch(37% 0.013 20);
+  --fp-ink-3: oklch(47.5% 0.013 22);
+  --fp-rule: oklch(86.5% 0.013 25);
+  --fp-rule-2: oklch(74% 0.014 25);
+  --fp-rule-strong: oklch(21% 0.012 20);
+  --fp-accent: oklch(46% 0.13 10);
+  --fp-accent-2: oklch(39% 0.12 10);
+  --fp-accent-ink: oklch(44% 0.13 10);
+  --fp-accent-soft: oklch(93.5% 0.03 10);
+  --fp-accent-fill: oklch(46% 0.13 10);
+  --fp-accent-fill-2: oklch(39% 0.12 10);
+  --fp-focus: oklch(52% 0.15 10);
+}
+[data-rd='folio-plus'][data-theme='dark'][data-palette='rose'] {
+  --fp-paper: oklch(21% 0.012 20);
+  --fp-paper-2: oklch(18.5% 0.011 20);
+  --fp-paper-3: oklch(26% 0.013 20);
+  --fp-leaf: oklch(23.8% 0.013 20);
+  --fp-menu: oklch(27.5% 0.014 20);
+  --fp-ink: oklch(88% 0.01 25);
+  --fp-ink-2: oklch(79% 0.011 25);
+  --fp-ink-3: oklch(68% 0.012 25);
+  --fp-rule: oklch(33% 0.013 20);
+  --fp-rule-2: oklch(46% 0.014 20);
+  --fp-rule-strong: oklch(64% 0.014 20);
+  --fp-accent: oklch(73% 0.085 10);
+  --fp-accent-2: oklch(77% 0.08 10);
+  --fp-accent-ink: oklch(81% 0.075 10);
+  --fp-accent-soft: oklch(30.5% 0.04 10);
+  --fp-accent-fill: oklch(50% 0.11 10);
+  --fp-accent-fill-2: oklch(46% 0.11 10);
+  --fp-focus: oklch(79% 0.1 10);
+}
+
+/* ── Konto's swatches: each palette's paper with its accent ───────── */
+[data-rd='folio-plus'] .fp-kt-swatch {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin-inline-end: 0.4em;
+  border-radius: 50%;
+  vertical-align: -0.05em;
+  box-shadow: 0 0 0 1px var(--fp-rule-2);
+}
+[data-rd='folio-plus'] .fp-kt-swatch[data-swatch='spalt'] {
+  background: linear-gradient(135deg, oklch(97% 0.012 85) 50%, oklch(43% 0.12 258) 50%);
+}
+[data-rd='folio-plus'] .fp-kt-swatch[data-swatch='sand'] {
+  background: linear-gradient(135deg, oklch(97% 0.014 75) 50%, oklch(47% 0.12 42) 50%);
+}
+[data-rd='folio-plus'] .fp-kt-swatch[data-swatch='sage'] {
+  background: linear-gradient(135deg, oklch(97% 0.012 165) 50%, oklch(44% 0.085 195) 50%);
+}
+[data-rd='folio-plus'] .fp-kt-swatch[data-swatch='ink'] {
+  background: linear-gradient(135deg, oklch(97.5% 0.007 250) 50%, oklch(38% 0.13 265) 50%);
+}
+[data-rd='folio-plus'] .fp-kt-swatch[data-swatch='rose'] {
+  background: linear-gradient(135deg, oklch(97% 0.011 30) 50%, oklch(46% 0.13 10) 50%);
+}

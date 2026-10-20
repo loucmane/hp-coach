@@ -42,6 +42,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import './folioPlus.css'
 import './fpShell.css'
+import './fpPalette.css'
 import {
   DirectionDataProvider,
   useDirectionData,
@@ -296,6 +297,7 @@ export function FolioPlus(props: DirectionProps) {
     <div
       data-rd="folio-plus"
       data-theme={props.theme}
+      data-palette={data.konto.prefs.palette}
       data-width={props.width}
       data-live={String(props.live)}
       data-testid="rd-folio-plus"

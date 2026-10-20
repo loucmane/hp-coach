@@ -246,6 +246,20 @@ export function FolioKonto({
           testId={(key) => `rd-konto-mode-${key}`}
           onPick={(mode) => choose('mode', () => actions.setTheme(mode))}
         />
+        <Choice
+          legend="Färg"
+          options={k.options.palette}
+          value={prefs.palette}
+          hint={
+            prefs.palette === 'spalt'
+              ? 'Spalt är Folios egna färger.'
+              : 'Papperets ton och accentfärgen, i ljust och mörkt.'
+          }
+          error={unsaved === 'palette'}
+          swatches
+          testId={(key) => `rd-konto-palette-${key}`}
+          onPick={(palette) => choose('palette', () => actions.setPrefs({ palette }))}
+        />
       </Part>
 
       <Part id="data" title="Din data">
@@ -390,6 +404,7 @@ function Choice<K extends string>({
   hint,
   error = false,
   testId,
+  swatches = false,
   onPick,
 }: {
   legend: string
@@ -398,6 +413,8 @@ function Choice<K extends string>({
   hint?: string
   error?: boolean
   testId?: (key: K) => string
+  /** Färg: a small paper-and-accent chip before each word. */
+  swatches?: boolean
   onPick: (key: K) => void
 }) {
   const id = useId()
@@ -414,6 +431,7 @@ function Choice<K extends string>({
               data-testid={testId?.(o.key)}
               onClick={() => onPick(o.key)}
             >
+              {swatches ? <span className="fp-kt-swatch" data-swatch={o.key} aria-hidden /> : null}
               {o.label}
             </button>
           ))}
