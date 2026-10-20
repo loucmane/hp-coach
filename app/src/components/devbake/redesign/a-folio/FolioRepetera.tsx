@@ -203,9 +203,11 @@ export function FolioRepetera({ width, live }: { width: WidthKey; live: boolean 
 }
 
 /** The rest of today's pile: folded behind one quiet disclosure while
- *  there is a round to start, so the page leads with what is ready. */
+ *  there is a round to start, so the page leads with what is ready. With
+ *  nothing ready it is the list itself, even if it was folded before. */
 function LaterPart({ items, folded }: { items: RepeteraItemView[]; folded: boolean }) {
-  const [open, setOpen] = useState(!folded)
+  const [open, setOpen] = useState(false)
+  const shown = !folded || open
   return (
     <div className="fo-part-block">
       <PartHead id="fo-rep-later">Senare idag</PartHead>
@@ -221,7 +223,7 @@ function LaterPart({ items, folded }: { items: RepeteraItemView[]; folded: boole
           <ChevronRight size={14} strokeWidth={1.75} aria-hidden />
         </button>
       ) : null}
-      {open ? (
+      {shown ? (
         <ol aria-labelledby="fo-rep-later" id="fo-rep-later-list">
           {items.map((item) => (
             <MissRow key={item.mistakeId} item={item} />

@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 
 import {
@@ -23,13 +23,14 @@ type Mount = {
 }
 
 function mount(s: DirectionProps['screen'], opts: Mount = {}) {
-  const data = opts.data ?? structuredClone(FIXTURE_DATA)
+  let data = opts.data ?? structuredClone(FIXTURE_DATA)
+  let shown = s
   const width = opts.width ?? 'desktop'
   const onScreen = vi.fn()
-  const tree = (screenKey: DirectionProps['screen']) => (
+  const tree = () => (
     <DirectionDataProvider data={data} actions={opts.actions}>
       <Folio
-        screen={screenKey}
+        screen={shown}
         width={width}
         theme="light"
         live
@@ -38,11 +39,19 @@ function mount(s: DirectionProps['screen'], opts: Mount = {}) {
       />
     </DirectionDataProvider>
   )
-  const utils = render(tree(s))
+  const utils = render(tree())
   return {
     ...utils,
     onScreen,
-    goTo: (next: DirectionProps['screen']) => utils.rerender(tree(next)),
+    goTo: (next: DirectionProps['screen']) => {
+      shown = next
+      utils.rerender(tree())
+    },
+    /** The provider hands down new data, as the host does when it changes. */
+    supply: (next: DirectionData) => {
+      data = next
+      utils.rerender(tree())
+    },
   }
 }
 
@@ -216,6 +225,18 @@ describe('Folio · Repetera', () => {
     expect(startDrill).toHaveBeenLastCalledWith({ kind: 'repetition' })
   })
 
+  it('lists the later misses outright once nothing is ready, with nothing to unfold', () => {
+    const { supply } = mount(8)
+    expect(screen.queryByTestId('rd-repetera-item-9')).toBeNull()
+    // The round is done: the host's queue keeps only the later misses.
+    const data = structuredClone(FIXTURE_DATA)
+    const later = data.repetera.items.filter((i) => !i.dueNow)
+    data.repetera = { ...data.repetera, dueNow: 0, pile: later.length, items: later }
+    supply(data)
+    expect(screen.queryByRole('button', { name: /som blir redo senare/ })).toBeNull()
+    expect(screen.getAllByTestId(/^rd-repetera-item-/)).toHaveLength(15)
+  })
+
   it('shows each miss by its stem: NOG’s question, KVA’s quantities, the trap behind it', () => {
     mount(8)
     const nog = screen.getByTestId('rd-repetera-item-4')
@@ -273,6 +294,43 @@ describe('Folio · the reading drill on the kit', () => {
     fireEvent.click(screen.getByTestId('rd-exit'))
     expect(fromOva.onScreen).not.toHaveBeenCalledWith(1)
     expect(exit).toHaveBeenCalledTimes(2)
+  })
+})
+
+describe('Folio · a sitting the host replaces', () => {
+  it.each([
+    [2, 'desktop'],
+    [2, 'phone'],
+    [6, 'desktop'],
+    [6, 'phone'],
+  ] as const)('screen %i on %s opens a new sitting at its own start, and keeps its place through an update', (s, width) => {
+    const data = structuredClone(FIXTURE_DATA)
+    const kind = s === 2 ? 'reading' : 'quant'
+    data.drills[kind].start = { index: 1, results: [] }
+    const lock = vi.fn<DrillController['lock']>(() => ({ correct: true }))
+    const { supply } = mount(s, { data, width, actions: { drill: { lock } } })
+    expect(screen.getByText(/^Fråga 2 av \d$/)).toBeInTheDocument()
+    // A new sitting, one question long, from its first question.
+    const next = structuredClone(data)
+    const old = next.drills[kind]
+    const q = old.questions[2]
+    next.drills[kind] = {
+      ...old,
+      id: `${old.id}-next`,
+      questions: [q],
+      start: { index: 0, results: [] },
+    }
+    supply(next)
+    expect(screen.getByText('Fråga 1 av 1')).toBeInTheDocument()
+    fireEvent.click(reveal(`${s === 2 ? 'rd-option' : 'rd-quant-option'}-${q.answer}`))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(lock).toHaveBeenLastCalledWith(expect.objectContaining({ qid: q.qid }), q.answer)
+    // The same sitting, updated: the verdict stays and the update shows.
+    const update = structuredClone(next)
+    update.drills[kind].explanations[q.qid] = null
+    supply(update)
+    expect(screen.getByTestId('rd-verdict')).toHaveAttribute('data-correct', 'true')
+    expect(screen.getByText('Förklaring saknas ännu för den här frågan.')).toBeInTheDocument()
   })
 })
 
@@ -402,6 +460,73 @@ describe('Folio · Kvantfråga', () => {
       await vi.waitFor(() => expect(figure.querySelector('svg')).not.toBeNull())
       expect(figure.querySelector('svg')).toHaveAttribute('width', '100%')
       expect(screen.getByRole('button', { name: /Förstora/ })).toBeInTheDocument()
+    })
+
+    it('keeps an SVG figure in the finished round’s facit, Förstora and all', async () => {
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => ({
+          ok: true,
+          text: async () =>
+            '<svg viewBox="0 0 10 10"><path d="M0 0L10 10" stroke="currentColor"/></svg>',
+        })),
+      )
+      const data = structuredClone(FIXTURE_DATA)
+      const [q] = data.drills.quant.questions
+      q.figure = {
+        src: 'figures/review-figure.svg',
+        alt: 'Figur till uppgift 1',
+        width: 1000,
+        height: 600,
+        kind: 'svg',
+      }
+      data.drills.quant.questions = [q]
+      const openPlanItem = vi.fn()
+      mount(6, { data, actions: { openPlanItem } })
+      const name = 'Figur till uppgift 1'
+      expect(screen.getByRole('img', { name })).toBeInTheDocument()
+      fireEvent.click(screen.getByTestId(`rd-quant-option-${q.answer}`))
+      fireEvent.click(screen.getByTestId('rd-lock'))
+      expect(screen.getByRole('img', { name })).toBeInTheDocument()
+      fireEvent.click(screen.getByTestId('rd-next'))
+      fireEvent.click(screen.getByRole('button', { name: 'Hela passet' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Fråga 1, XYZ, rätt. Visa facit' }))
+      const figure = screen.getByRole('img', { name })
+      await waitFor(() => expect(figure.querySelector('svg')).not.toBeNull())
+      const zoom = screen.getByRole('button', { name: 'Förstora' })
+      zoom.focus()
+      fireEvent.click(zoom)
+      const viewer = screen.getByRole('dialog', { name: 'Förstorad figur' })
+      await waitFor(() =>
+        expect(within(viewer).getByRole('img', { name }).querySelector('svg')).not.toBeNull(),
+      )
+      press('Enter') // the colophon's keys rest while it is open
+      expect(openPlanItem).not.toHaveBeenCalled()
+      press('Escape')
+      expect(screen.queryByRole('dialog')).toBeNull()
+      await waitFor(() => expect(zoom).toHaveFocus())
+    })
+
+    it('tries an option’s new picture after its old one failed, on the same question', () => {
+      const data = structuredClone(FIXTURE_DATA)
+      const option = data.drills.quant.questions[0].options?.[0]
+      if (!option) throw new Error('the first problem has no options')
+      const name = 'Ett stapeldiagram'
+      option.text = name
+      option.figure = { src: 'figures/old-option.png', alt: name, width: 240, height: 160 }
+      const { supply } = mount(6, { data })
+      fireEvent.click(screen.getByTestId('rd-quant-option-A'))
+      fireEvent.error(screen.getByRole('img', { name }))
+      expect(screen.queryByRole('img', { name })).toBeNull()
+      expect(screen.getByTestId('rd-quant-option-A')).toHaveTextContent(name)
+      // The host sends a new picture for the same option.
+      const next = structuredClone(data)
+      const figure = next.drills.quant.questions[0].options?.[0].figure
+      if (!figure) throw new Error('the option lost its picture')
+      figure.src = 'figures/new-option.png'
+      supply(next)
+      expect(screen.getByRole('img', { name })).toHaveAttribute('src', '/figures/new-option.png')
+      expect(screen.getByTestId('rd-quant-option-A')).toHaveAttribute('aria-pressed', 'true')
     })
   })
 })

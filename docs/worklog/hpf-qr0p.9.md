@@ -204,3 +204,57 @@ The full set of new strings:
   - measuring `--fo-math-scale`;
   - review and commit.
 - Kit and owner questions are listed under Spec gaps. Bead parked deferred after this note.
+
+## Round 2 — review fixes (hpf-yyal)
+
+- 2026-10-20 · Claude worker, session `ci-wisp-wga2m1u`. Started at `b64bf7f`: the batch `7b6b976` with origin/main merged in by the coordinator, clean. Changes are **uncommitted**, in four admitted source and test files plus this worklog.
+- Coordinator decision on finding 1 (grading while a plate loads or fails): by design per the merged spec `docs/redesign/directions/a-folio.md:845–849` (Svara stays available), so not changed. The by-design test "keeps Svara open when the page fails to load" is untouched. It is now at `Folio.test.tsx:586`, moved from :461 only because new tests sit above it.
+
+Each fix below names the test that proves it. All seven new tests were run on the unfixed code first: each failed where the review said, and all pass after the fixes.
+
+1. **Finding 2 · a replaced sitting kept the old core.**
+   - Fix: `FolioQuant.tsx:117–119` keys `QuantDrill` on `session.id` (screens 6 and 7), and `FolioDrill.tsx:283–285` keys `ReadingDrill` on `data.drills.reading.id`. A sitting the host replaces mounts a fresh core at its own start. An update of the same sitting (same id, new objects) keeps the reader's place. B · Instrument and D · Lager key their drills the same way.
+   - Test: `Folio.test.tsx:300` "a sitting the host replaces", four cases (screens 2 and 6 × desktop and phone).
+     - The sitting opens at index 1. The provider then hands down a one-question sitting, with a new id, from index 0.
+     - It checks "Fråga 1 av 1" and grades the new question through the controller.
+     - It then hands down the same sitting with its explanation gone: the verdict stays and "Förklaring saknas ännu …" appears.
+   - Red: all four threw `TypeError: Cannot read properties of undefined (reading 'qid')` in `useDrillCore` (`drillCore.ts:483`) on the rerender.
+2. **Finding 3 · Repetera could hide the whole later pile.**
+   - Fix: `FolioRepetera.tsx:209–210, 226`. `open` now means only "opened by the reader" and starts false; the list renders when `!folded || open`. While there is a round to start, the later pile is folded as before. Once nothing is ready, it is the list itself, with no disclosure.
+   - Test: `Folio.test.tsx:228`. Mount the fixture queue (8 ready, 15 later, the later list closed), then hand down the queue with only the 15 later misses. There is no "Visa de … som blir redo senare" button, and there are 15 miss rows.
+   - Red: zero rows (`Unable to find … rd-repetera-item-` at :237).
+3. **Finding 4 · the finished round's review dropped SVG figures.**
+   - Fix: `FolioQuant.tsx:1599–1611`. `Review` sets an SVG figure above the problem with `FigureInline`, as the drill does before the answer and in the facit. A raster figure stays the plate.
+   - Its Förstora works. The one viewer in `QuantDrill` now holds the figure it shows (`FolioQuant.tsx:169–181, 308–319`): the drill opens it on the question's figure, and the review (`QuantDone` → `Review`, `onZoom`) on the reviewed one. While it is open, keys rest and the page is inert, as before.
+   - Test: `Folio.test.tsx:465`, a one-question XYZ sitting with an SVG figure.
+     - The figure is there before the answer and in the facit.
+     - After Slutför, Hela passet › Fråga 1 shows it inlined.
+     - Förstora opens the viewer on it, Enter does not reach the colophon, and Esc gives focus back to Förstora.
+   - Red: the review ("Fråga 1 av 1 · XYZ") had no image named "Figur till uppgift 1".
+4. **Finding 5 · an option picture's failure outlived its source.**
+   - Fix: `FolioDrill.tsx:983–1001`. `OptionContent` records which source failed and keys the `<img>` on its source. A new source is tried at once; the text stands in only for the source that failed.
+   - Test: `Folio.test.tsx:510`.
+     - Option A is a picture (`figures/old-option.png`). The reader picks A, the picture fails, and the text stands in.
+     - The provider then sends `figures/new-option.png` for the same option. The picture renders from the new source, on the same question, with A still picked.
+   - Red: no image after the new source (`Folio.test.tsx:528`).
+
+Test plumbing:
+- `mount()` in `Folio.test.tsx` gained `supply(data)`, a provider rerender with new data.
+- The SVG review test waits with Testing Library's `waitFor`, not `vi.waitFor`, so React's act(...) check does not flag the async SVG load.
+
+### Verification (round 2)
+
+| Check | Result |
+|---|---|
+| `pnpm typecheck` (from `app/`) | PASS |
+| `pnpm lint` | PASS: 488 files, the same 4 informational notes in unrelated files (LandingBakeoffR3/R4A/R4C, l12/M3) |
+| `pnpm test` | PASS: **1,815 passed / 0 failed**, 108 files (1,808 at the candidate + the 7 new tests) |
+| `Folio.test.tsx` alone | 82/82; this file prints no act(...) warnings |
+| `git diff --check` | PASS. `git status` shows only admitted files modified: the four source and test files and this worklog. |
+
+- The round-1 shared-test failure (`Redesign2026Bakeoff.test.tsx:348`) passes now: the coordinator's merge brought in main's fix. I did not edit it, and no shared test outside the write set fails.
+- Not done this round: real-browser screenshots. The fixes change no layout or CSS; the review's SVG figure uses the drill's own figure block and styles.
+
+### Left open
+
+- In the review, a raster (DTK) plate still has no Förstora, as in round 1. The finding was about SVG figures, so the plate is unchanged. Passing `onOpen={() => onZoom(figure)}` to it would add one (coordinator's or owner's call).

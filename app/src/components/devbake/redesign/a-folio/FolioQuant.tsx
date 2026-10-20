@@ -114,7 +114,9 @@ export function FolioQuant(props: DirectionProps & { origin: Origin }) {
   if (session.questions.length === 0) {
     return <EmptyDrill label={props.screen === 7 ? 'Kvant · DTK' : 'Kvant'} width={props.width} />
   }
-  return <QuantDrill {...props} session={session} />
+  // One core per sitting: a sitting the host replaces opens at its own
+  // start; an update of the same sitting keeps the reader's place.
+  return <QuantDrill key={session.id} {...props} session={session} />
 }
 
 /** The figure page a question stands on, and where it is among the
@@ -164,16 +166,19 @@ function QuantDrill({
   const seam = drillSeam(session, q, 'Slutför övningen')
   const plate = q.figure?.kind === 'raster'
 
-  // Förstora: one viewer for the question's figure; its zoom, scroll and
-  // rotation are kept per page, so it opens again where it was.
-  const [viewer, setViewer] = useState(false)
+  // Förstora: one viewer, for the question's figure or a reviewed one's;
+  // zoom, scroll and rotation are kept per page, so it opens again where
+  // it was.
+  const [viewing, setViewing] = useState<DrillFigure | null>(null)
+  const viewer = viewing != null
   const [rotations, setRotations] = useState<Record<string, number>>({})
   const viewerStates = useRef(new Map<string, ViewerState>())
-  const rot = q.figure ? (rotations[q.figure.src] ?? 0) : 0
-  const rotate = useCallback(() => {
-    const src = q.figure?.src
+  const turn = useCallback((src: string | undefined) => {
     if (src) setRotations((r) => ({ ...r, [src]: ((r[src] ?? 0) + 90) % 360 }))
-  }, [q.figure?.src])
+  }, [])
+  const rot = q.figure ? (rotations[q.figure.src] ?? 0) : 0
+  const rotate = useCallback(() => turn(q.figure?.src), [turn, q.figure?.src])
+  const rotateViewing = useCallback(() => turn(viewing?.src), [turn, viewing?.src])
 
   // The FLIP move: where the problem stood before Svara.
   const colRef = useRef<HTMLDivElement>(null)
@@ -266,7 +271,7 @@ function QuantDrill({
     verdictRef,
     rot,
     rotate,
-    openViewer: () => setViewer(true),
+    openViewer: () => setViewing(q.figure ?? null),
     live,
   }
 
@@ -286,6 +291,7 @@ function QuantDrill({
             : undefined
         }
         dateLabel={data.home.today.dateLabel}
+        onZoom={setViewing}
       />
     )
   } else if (width === 'phone') {
@@ -299,15 +305,15 @@ function QuantDrill({
       <div className="fo-qroot" data-kind={plate ? 'dtk' : 'quant'} inert={viewer || undefined}>
         {page}
       </div>
-      {viewer && q.figure ? (
+      {viewing ? (
         <FigureViewer
-          figure={q.figure}
-          rot={rot}
-          rotate={rotate}
-          saved={viewerStates.current.get(q.figure.src)}
+          figure={viewing}
+          rot={rotations[viewing.src] ?? 0}
+          rotate={rotateViewing}
+          saved={viewerStates.current.get(viewing.src)}
           onClose={(state) => {
-            if (q.figure) viewerStates.current.set(q.figure.src, state)
-            setViewer(false)
+            viewerStates.current.set(viewing.src, state)
+            setViewing(null)
           }}
         />
       ) : null}
@@ -1368,6 +1374,7 @@ function QuantDone({
   onExit,
   next,
   dateLabel,
+  onZoom,
 }: {
   width: WidthKey
   view: DrillCoreView
@@ -1377,6 +1384,8 @@ function QuantDone({
   onExit: () => void
   next?: { label: string; onClick: () => void }
   dateLabel: string
+  /** Förstora on a reviewed question's figure. */
+  onZoom: (figure: DrillFigure) => void
 }) {
   const { data } = useDirectionData()
   const [reviewing, setReviewing] = useState<number | null>(null)
@@ -1412,6 +1421,7 @@ function QuantDone({
         total={view.results.length}
         backLabel={repetition ? 'Tillbaka till omgången' : 'Tillbaka till passet'}
         onBack={() => setReviewing(null)}
+        onZoom={onZoom}
       />
     ) : (
       <Colophon
@@ -1529,8 +1539,9 @@ export function RoundList({
 
 const NO_REF = () => {}
 
-/** One question of a finished set, graded and read-only: the problem, the
- *  verdict, every option graded and the facit, its detail steps on demand. */
+/** One question of a finished set, graded and read-only: the problem with
+ *  its figure as it was set, the verdict, every option graded and the
+ *  facit, its detail steps on demand. */
 function Review({
   result,
   session,
@@ -1538,6 +1549,7 @@ function Review({
   total,
   backLabel,
   onBack,
+  onZoom,
 }: {
   result: DrillResult
   session: DrillSessionView
@@ -1545,8 +1557,10 @@ function Review({
   total: number
   backLabel: string
   onBack: () => void
+  onZoom: (figure: DrillFigure) => void
 }) {
   const question = session.questions.find((x) => x.qid === result.qid) as DrillQuestion
+  const figure = question.figure
   const [openSteps, setOpenSteps] = useState<ReadonlySet<number>>(() => new Set())
   const backRef = useRef<HTMLButtonElement>(null)
   useEffect(() => {
@@ -1582,15 +1596,19 @@ function Review({
       <p className="fo-label" id="fo-review-h">
         Fråga {n} av {total} · {question.section}
       </p>
-      {question.figure?.kind === 'raster' ? (
-        <FigurePlate
-          figure={question.figure}
-          rot={0}
-          caption={question.source.label}
-          live={false}
-        />
+      {figure?.kind === 'raster' ? (
+        <FigurePlate figure={figure} rot={0} caption={question.source.label} live={false} />
       ) : null}
-      <QuantProblem q={question} n={n} after />
+      <QuantProblem
+        q={question}
+        n={n}
+        after
+        figure={
+          figure?.kind === 'svg' ? (
+            <FigureInline figure={figure} onZoom={() => onZoom(figure)} />
+          ) : undefined
+        }
+      />
       <Verdict view={{ correct: result.correct, question }} />
       <GradedOptions view={{ question, picked: result.pick }} all />
       <Facit view={view} act={act} refs={{ step: () => NO_REF }} active={null} point={() => {}} />

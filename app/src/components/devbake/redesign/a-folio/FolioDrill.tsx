@@ -280,7 +280,9 @@ export function FolioDrill(props: DirectionProps & { origin: Origin }) {
   if (data.drills.reading.questions.length === 0) {
     return <EmptyDrill label="LÄS" width={props.width} />
   }
-  return <ReadingDrill {...props} />
+  // One core per sitting: a sitting the host replaces opens at its own
+  // start; an update of the same sitting keeps the reader's place.
+  return <ReadingDrill key={data.drills.reading.id} {...props} />
 }
 
 function ReadingDrill({
@@ -979,18 +981,21 @@ function PassageView({
 // ── Options ──────────────────────────────────────────────────────────
 
 /** An option's content: its text (math rendered), or its picture with the
- *  text as the name — the text stands in if the picture fails. */
+ *  text as the name — the text stands in if the picture fails. A failure
+ *  belongs to its source: a new source is tried afresh. */
 function OptionContent({ o }: { o: DrillOption }) {
-  const [failed, setFailed] = useState(false)
-  if (!o.figure || failed) return <MathText>{o.text}</MathText>
+  const [failed, setFailed] = useState<string | null>(null)
+  const figure = o.figure
+  if (!figure || figure.src === failed) return <MathText>{o.text}</MathText>
   return (
     <img
+      key={figure.src}
       className="fo-opt-img"
-      src={`/${o.figure.src}`}
+      src={`/${figure.src}`}
       alt={o.text}
-      width={o.figure.width}
-      height={o.figure.height}
-      onError={() => setFailed(true)}
+      width={figure.width}
+      height={figure.height}
+      onError={() => setFailed(figure.src)}
     />
   )
 }
