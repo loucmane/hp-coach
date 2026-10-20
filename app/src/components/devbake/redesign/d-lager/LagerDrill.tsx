@@ -29,7 +29,15 @@ import {
   Undo2,
   X,
 } from 'lucide-react'
-import { Fragment, type ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import {
+  Fragment,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
   type DrillCoreActions as DrillActions,
@@ -46,6 +54,7 @@ import {
   useKeyMap,
   useSheet,
 } from '@/components/devbake/redesign/r1Kit'
+import type { DrillQuestion } from '@/components/devbake/redesign/viewModel'
 import { MathText } from '@/components/MathText'
 import type { DistractorExplanation, ExplanationStep } from '@/data/explanations'
 
@@ -623,11 +632,68 @@ function PassageBody({ view, act, refs, note, setNote }: Shared & NoteState) {
 
 // ── Options ──────────────────────────────────────────────────────────
 
+/** A required image is usable only after load (including a cached load).
+ * Retry returns to loading; readiness covers every option, not just the selected one. */
+export function useRequiredImages(question: Pick<DrillQuestion, 'figure' | 'options'>) {
+  const [images, setImages] = useState<
+    Record<string, { status: 'loading' | 'ready' | 'error'; attempt: number }>
+  >({})
+  const callbacks = useRef(new Map<string, (img: HTMLImageElement | null) => void>())
+  const report = useCallback((src: string, status: 'loading' | 'ready' | 'error') => {
+    setImages((old) =>
+      old[src]?.status === status
+        ? old
+        : { ...old, [src]: { status, attempt: old[src]?.attempt ?? 0 } },
+    )
+  }, [])
+  // Slot as well as source: an option may use the same URL as the main figure.
+  const id = (src: string, slot = 'main') => `${slot}:${src}`
+  const sources = [
+    ...(question.figure ? [id(question.figure.src)] : []),
+    ...(question.options ?? []).flatMap((o) => (o.figure ? [id(o.figure.src, o.letter)] : [])),
+  ]
+  const imageKey = (src: string, slot = 'main') =>
+    `${id(src, slot)}:${images[id(src, slot)]?.attempt ?? 0}`
+  const imageRef = (src: string, slot = 'main') => {
+    const key = imageKey(src, slot)
+    let ref = callbacks.current.get(key)
+    if (!ref) {
+      ref = (img) => {
+        if (img)
+          report(
+            id(src, slot),
+            img.complete ? (img.naturalWidth > 0 ? 'ready' : 'error') : 'loading',
+          )
+      }
+      callbacks.current.set(key, ref)
+    }
+    return ref
+  }
+  return {
+    blocked: sources.some((src) => images[src]?.status !== 'ready'),
+    failed: (src: string, slot = 'main') => images[id(src, slot)]?.status === 'error',
+    key: imageKey,
+    props: (src: string, slot = 'main') => ({
+      ref: imageRef(src, slot),
+      onLoad: () => report(id(src, slot), 'ready'),
+      onError: () => report(id(src, slot), 'error'),
+    }),
+    retry: (src: string, slot = 'main') =>
+      setImages((old) => ({
+        ...old,
+        [id(src, slot)]: { status: 'loading', attempt: (old[id(src, slot)]?.attempt ?? 0) + 1 },
+      })),
+  }
+}
+
+export type ImageReadiness = ReturnType<typeof useRequiredImages>
+
 export function Options({
   view,
   act,
   quant = false,
-}: Pick<Shared, 'view' | 'act'> & { quant?: boolean }) {
+  images,
+}: Pick<Shared, 'view' | 'act'> & { quant?: boolean; images?: ImageReadiness }) {
   const graded = view.phase !== 'question'
   return (
     <ol className="la-opts" aria-label="Svarsalternativ">
@@ -698,6 +764,8 @@ export function Options({
                 <MathText>{o.text}</MathText>
                 {o.figure ? (
                   <img
+                    key={images?.key(o.figure.src, o.letter)}
+                    {...images?.props(o.figure.src, o.letter)}
                     className="la-option-figure"
                     src={`/${o.figure.src}`}
                     alt={o.figure.alt}
@@ -707,6 +775,15 @@ export function Options({
                 ) : null}
               </span>
             </button>
+            {o.figure && images?.failed(o.figure.src, o.letter) ? (
+              <button
+                type="button"
+                className="la-link la-image-retry"
+                onClick={() => images.retry(o.figure!.src, o.letter)}
+              >
+                Försök hämta alternativ {o.letter} igen
+              </button>
+            ) : null}
             <button
               type="button"
               className="la-opt-x"

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 
 import {
@@ -7,6 +7,7 @@ import {
   stubLayout,
 } from '@/components/devbake/redesign/contract'
 import { DirectionDataProvider, FIXTURE_DATA } from '@/components/devbake/redesign/directionData'
+import { Redesign2026Bakeoff } from '@/components/devbake/redesign/Redesign2026Bakeoff'
 import type { DirectionProps } from '@/components/devbake/redesign/r1Kit'
 import type { DirectionActions, DirectionData } from '@/components/devbake/redesign/viewModel'
 import { Lager } from './Lager'
@@ -200,6 +201,397 @@ describe('Lager: data boundary and practice states', () => {
     expect(lock).toHaveBeenCalledTimes(1)
   })
 
+  it.each([
+    'main',
+    'option',
+  ] as const)('waits for every %s image and stays blocked during retries', (kind) => {
+    const data = oneQuestion('dtk')
+    const q = data.drills.dtk.questions[0]
+    if (kind === 'option' && q.options)
+      q.options[0].figure = {
+        src: 'test-option.svg',
+        alt: 'Alternativets figur',
+        width: 80,
+        height: 80,
+      }
+    const lock = vi.fn(() => ({ correct: true }))
+    mount(7, data, { drill: { lock } })
+    fireEvent.click(reveal('rd-quant-option-A'))
+    const main = within(screen.getByTestId('rd-figure')).getByRole('img')
+    if (kind === 'option') fireEvent.load(main)
+    const img = kind === 'main' ? main : screen.getByRole('img', { name: 'Alternativets figur' })
+    for (const key of ['Enter', ' ']) fireEvent.keyDown(window, { key })
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(lock).not.toHaveBeenCalled()
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.error(img)
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: kind === 'main' ? 'Försök hämta figuren igen' : 'Försök hämta alternativ A igen',
+      }),
+    )
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.keyDown(window, { key: 'Enter' })
+    expect(lock).not.toHaveBeenCalled()
+    fireEvent.load(
+      kind === 'main'
+        ? within(screen.getByTestId('rd-figure')).getByRole('img')
+        : screen.getByRole('img', { name: 'Alternativets figur' }),
+    )
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    fireEvent.keyDown(window, { key: ' ' })
+    expect(lock).toHaveBeenCalledTimes(1)
+  })
+
+  it.each([true, false])('reconciles a cached main and option image (success=%s)', (success) => {
+    const complete = vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(true)
+    const width = vi
+      .spyOn(HTMLImageElement.prototype, 'naturalWidth', 'get')
+      .mockReturnValue(success ? 80 : 0)
+    try {
+      const data = oneQuestion('dtk')
+      const q = data.drills.dtk.questions[0]
+      if (q.options)
+        q.options[0].figure = { src: 'cached.svg', alt: 'Cachad figur', width: 80, height: 80 }
+      const lock = vi.fn(() => ({ correct: true }))
+      mount(7, data, { drill: { lock } })
+      fireEvent.click(reveal('rd-quant-option-A'))
+      expect(screen.getByTestId('rd-lock').hasAttribute('disabled')).toBe(!success)
+      fireEvent.keyDown(window, { key: 'Enter' })
+      expect(lock).toHaveBeenCalledTimes(success ? 1 : 0)
+    } finally {
+      complete.mockRestore()
+      width.mockRestore()
+    }
+  })
+
+  it('waits for an option instance even when it shares the main figure URL', () => {
+    const data = oneQuestion('dtk')
+    const q = data.drills.dtk.questions[0]
+    q.options![0].figure = { ...q.figure!, alt: 'Samma bild i alternativ A' }
+    const lock = vi.fn(() => ({ correct: true }))
+    mount(7, data, { drill: { lock } })
+    fireEvent.click(reveal('rd-quant-option-A'))
+    fireEvent.load(within(screen.getByTestId('rd-figure')).getByRole('img'))
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.load(screen.getByRole('img', { name: 'Samma bild i alternativ A' }))
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+  })
+
+  it('contains viewer digits through the real bake-off host', async () => {
+    const width = vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    const height = vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(900)
+    try {
+      const onSelect = vi.fn()
+      render(
+        <Redesign2026Bakeoff
+          sel={{ d: 'd', s: 7, w: 'desktop', t: 'light', sbs: false, bare: false }}
+          onSelect={onSelect}
+        />,
+      )
+      fireEvent.load(within(await screen.findByTestId('rd-figure')).getByRole('img'))
+      fireEvent.click(screen.getByRole('button', { name: 'Förstora figur' }))
+      const viewer = screen.getByRole('dialog', { name: 'Förstorad figur' })
+      for (const key of ['1', '4', '8', 'ArrowRight'])
+        fireEvent.keyDown(within(viewer).getByRole('region'), { key })
+      expect(onSelect).not.toHaveBeenCalled()
+      expect(within(viewer).getByRole('region')).toHaveAttribute('data-rd-keyscope')
+      fireEvent.click(within(viewer).getByRole('button', { name: 'Stäng' }))
+      fireEvent.keyDown(window, { key: '1' })
+      expect(onSelect).toHaveBeenCalledWith({ d: 'a', sbs: false })
+    } finally {
+      width.mockRestore()
+      height.mockRestore()
+    }
+  })
+
+  it('does not start on a cancelled commitment and returns focus to the candidate', () => {
+    const startProvpass = vi.fn()
+    mount(9, undefined, { startProvpass })
+    const start = screen.getByTestId('rd-prov-start')
+    start.focus()
+    fireEvent.click(start)
+    expect(startProvpass).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: 'Tillbaka' }))
+    expect(startProvpass).not.toHaveBeenCalled()
+    expect(start).toHaveFocus()
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+  })
+
+  it('requests another selected pass without mislabelling the supplied running snapshot', () => {
+    const startProvpass = vi.fn()
+    mount(9, undefined, { startProvpass })
+    fireEvent.click(screen.getByTestId('rd-prov-half-verbal'))
+    fireEvent.click(screen.getByTestId('rd-prov-start'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    expect(startProvpass).toHaveBeenCalledWith(expect.stringContaining('verb'))
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+    expect(screen.getByRole('heading', { name: 'Väntar på provpasset' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Tillbaka till provpassen' }))
+    expect(screen.getByTestId('rd-prov-start')).toBeInTheDocument()
+  })
+
+  it('shows actual partial counts, empty halves and an absent optional flag', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    const run = data.provpass.running
+    data.provpass.hub.passes = data.provpass.hub.passes.filter((p) => p.id === run.passId)
+    data.provpass.hub.passes[0].presented = 39
+    delete run.flags
+    mount(9, data)
+    expect(screen.getByText('39 av 40 frågor tillgängliga.')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-prov-half-verbal'))
+    expect(
+      screen.getByRole('heading', { name: 'Inga provpass tillgängliga för det här valet' }),
+    ).toBeInTheDocument()
+    expect(screen.queryByTestId('rd-prov-start')).toBeNull()
+    fireEvent.click(screen.getByTestId('rd-prov-half-kvant'))
+    fireEvent.click(screen.getByTestId('rd-prov-start'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    expect(screen.queryByTestId('rd-prov-flag')).toBeNull()
+    expect(screen.queryByTestId('rd-nav-idag')).toBeNull()
+  })
+
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('changes answers without grading and preserves them across jumps on %s', (width) => {
+    const data = structuredClone(FIXTURE_DATA)
+    const run = data.provpass.running
+    run.current = 0
+    run.answers = {}
+    const lock = vi.fn(() => ({ correct: true }))
+    const submitProvpass = vi.fn()
+    mount(9, data, { drill: { lock }, submitProvpass }, width)
+    fireEvent.click(screen.getByTestId('rd-prov-start'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    fireEvent.keyDown(window, { key: 'a' })
+    expect(screen.getByTestId('rd-prov-option-A')).toHaveAttribute('aria-pressed', 'true')
+    fireEvent.keyDown(window, { key: 'b' })
+    expect(screen.getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'true')
+    fireEvent.keyDown(window, { key: 'Enter' })
+    expect(screen.getByTestId('rd-prov-cell-2')).toHaveAttribute('data-current', 'true')
+    fireEvent.click(screen.getByTestId('rd-prov-cell-1'))
+    expect(screen.getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('rd-prov-cell-1')).toHaveAttribute('data-answered', 'true')
+    expect(lock).not.toHaveBeenCalled()
+    expect(screen.queryByTestId('rd-verdict')).toBeNull()
+    fireEvent.keyDown(window, { key: 'Escape' })
+    expect(screen.getByTestId('rd-prov-running')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-prov-submit'))
+    expect(screen.getByRole('dialog')).toHaveTextContent(
+      `${run.questions.length - 1} av ${run.questions.length} frågor är obesvarade`,
+    )
+    expect(submitProvpass).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    expect(screen.getByText('Lämnar in…')).toBeInTheDocument()
+    expect(screen.getByTestId('rd-prov-option-B')).toBeDisabled()
+  })
+
+  it('requires confirmation before aborting and keeps selections when that gate is cancelled', () => {
+    mount(9)
+    fireEvent.click(screen.getByTestId('rd-prov-start'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    fireEvent.click(screen.getByTestId('rd-exit'))
+    expect(screen.getByRole('dialog')).toHaveTextContent('ingen paus')
+    fireEvent.click(screen.getByRole('button', { name: 'Tillbaka' }))
+    expect(screen.getByTestId('rd-prov-running')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-exit'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+    expect(screen.getByTestId('rd-nav-provpass')).toBeInTheDocument()
+  })
+
+  it('submits once on timeout, including while a confirmation is open', () => {
+    vi.useFakeTimers()
+    try {
+      const data = structuredClone(FIXTURE_DATA)
+      data.provpass.running.remainingSeconds = 2
+      const submitProvpass = vi.fn()
+      const { unmount } = mount(9, data, { submitProvpass })
+      fireEvent.click(screen.getByTestId('rd-prov-start'))
+      fireEvent.click(screen.getByTestId('rd-confirm'))
+      fireEvent.click(screen.getByTestId('rd-exit'))
+      act(() => vi.advanceTimersByTime(6000))
+      expect(submitProvpass).toHaveBeenCalledTimes(1)
+      expect(screen.queryByRole('dialog')).toBeNull()
+      expect(screen.getByTestId('rd-prov-submit')).toBeDisabled()
+      fireEvent.keyDown(window, { key: 'a' })
+      act(() => vi.advanceTimersByTime(6000))
+      expect(submitProvpass).toHaveBeenCalledTimes(1)
+      unmount()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('rejects a late answer when the timer callback was delayed', () => {
+    vi.useFakeTimers()
+    try {
+      const data = structuredClone(FIXTURE_DATA)
+      data.provpass.running.current = 0
+      data.provpass.running.answers = {}
+      data.provpass.running.remainingSeconds = 2
+      const submitProvpass = vi.fn()
+      const { unmount } = mount(9, data, { submitProvpass })
+      fireEvent.click(screen.getByTestId('rd-prov-start'))
+      fireEvent.click(screen.getByTestId('rd-confirm'))
+      vi.setSystemTime(Date.now() + 3000)
+      fireEvent.keyDown(window, { key: 'a' })
+      expect(screen.getByTestId('rd-prov-option-A')).toHaveAttribute('aria-pressed', 'false')
+      expect(submitProvpass).toHaveBeenCalledTimes(1)
+      unmount()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('preserves answers after a synchronous submission failure and retries deliberately', () => {
+    const submitProvpass = vi.fn().mockImplementationOnce(() => {
+      throw new Error('unavailable')
+    })
+    mount(9, undefined, { submitProvpass })
+    fireEvent.click(screen.getByTestId('rd-prov-start'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    fireEvent.keyDown(window, { key: 'a' })
+    fireEvent.click(screen.getByTestId('rd-prov-submit'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    expect(screen.getByTestId('rd-prov-option-A')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('rd-prov-option-A')).toBeDisabled()
+    fireEvent.click(screen.getByRole('button', { name: 'Försök lämna in igen' }))
+    expect(submitProvpass).toHaveBeenCalledTimes(2)
+    expect(screen.getByText('Lämnar in…')).toBeInTheDocument()
+  })
+
+  it('does not invent a result for an already expired snapshot', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    data.provpass.running.remainingSeconds = 0
+    const submitProvpass = vi.fn()
+    mount(9, data, { submitProvpass })
+    fireEvent.click(screen.getByTestId('rd-prov-start'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    expect(
+      screen.getByRole('heading', { name: 'Tiden för provpasset har gått ut.' }),
+    ).toBeInTheDocument()
+    expect(submitProvpass).not.toHaveBeenCalled()
+  })
+
+  it('renders English passage content without exposing an answer key in a running pass', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    const run = data.provpass.running
+    run.questions = [data.drills.elf.questions[0]]
+    run.current = 0
+    run.answers = {}
+    mount(9, data)
+    fireEvent.click(screen.getByTestId('rd-prov-start'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    expect(screen.getByTestId('rd-prov-passage')).toHaveAttribute('lang', 'en')
+    expect(screen.getByTestId('rd-prov-running').querySelector('[data-grade]')).toBeNull()
+    expect(screen.queryByTestId('rd-verdict')).toBeNull()
+  })
+
+  it('keeps a zero result, missing norming and actual denominator honest', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    const r = data.provpass.result
+    r.correct = 0
+    r.presented = 39
+    r.answered = 37
+    r.score.value = null
+    r.trap = null
+    r.history = []
+    delete r.total
+    r.sections.forEach((s) => {
+      delete s.estimate
+    })
+    const go = vi.fn()
+    mount(10, data, { go })
+    expect(screen.getByTestId('rd-prov-result')).toHaveTextContent('0 av 39 rätt')
+    expect(screen.getByTestId('rd-prov-result')).toHaveTextContent('1 fråga saknas')
+    expect(screen.getByTestId('rd-prov-score')).toHaveTextContent('Ingen poäng tillgänglig.')
+    expect(screen.getByText(/37 besvarade · 2 obesvarade/)).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Repetera missar' })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Till Idag' }))
+    expect(go).toHaveBeenCalledWith('idag')
+  })
+
+  it('routes comparable mock history through its actual result identifier', () => {
+    const openProvResult = vi.fn()
+    mount(10, undefined, { openProvResult })
+    fireEvent.click(within(screen.getByTestId('rd-prov-history-item-1')).getByRole('button'))
+    expect(openProvResult).toHaveBeenCalledWith(FIXTURE_DATA.provpass.result.history[0].id)
+  })
+
+  it('keeps weekly gaps, separates practice and mock history, and starts the evidenced focus', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    data.framsteg.weekly = [
+      { weekStart: '2026-09-28', score: 1 },
+      { weekStart: '2026-10-05', score: null },
+      { weekStart: '2026-10-12', score: 1.4 },
+    ]
+    data.framsteg.focus = ['KVA']
+    const startDrill = vi.fn()
+    mount(11, data, { startDrill })
+    const line = document.querySelector('.la-trend-line')!
+    expect(line.getAttribute('d')).not.toContain('L')
+    expect(screen.getByText('Underlag saknas')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Öva KVA' }))
+    expect(startDrill).toHaveBeenCalledWith({ kind: 'section', section: 'KVA' })
+    fireEvent.click(screen.getByRole('button', { name: 'Historik' }))
+    expect(screen.queryByRole('heading', { name: 'Din prognos' })).toBeNull()
+    expect(screen.getByRole('heading', { name: 'Övning och repetition' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Provpass' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Översikt' }))
+    expect(screen.getByRole('heading', { name: 'Din prognos' })).toBeInTheDocument()
+  })
+
+  it('handles a cold prognosis, unknown attendance and absent optional fields without invented values', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    data.framsteg.prognosis = { total: null, verbal: null, quant: null, caveat: null }
+    data.framsteg.week = {
+      streakDays: 0,
+      attemptsThisWeek: 0,
+      accuracy7d: null,
+      minutesToday: null,
+    }
+    data.framsteg.weekly = []
+    data.framsteg.days = []
+    data.framsteg.history = []
+    data.framsteg.focus = []
+    data.framsteg.sections.forEach((s) => {
+      s.score = null
+      delete s.band
+      s.daysSince = null
+    })
+    mount(11, data)
+    expect(screen.getByText('Närvarouppgifter saknas.')).toBeInTheDocument()
+    expect(screen.getByText('Inga avslutade pass än.')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Till Öva' })).toBeInTheDocument()
+    expect(screen.getByTestId('rd-lager')).not.toHaveTextContent(
+      /undefined|NaN|Målnivå|Intervall|95 %/,
+    )
+    expect(document.querySelector('.la-trend-line')).toBeNull()
+  })
+
+  it.each([false, true])('excludes completed plan work (all complete=%s)', (all) => {
+    const data = structuredClone(FIXTURE_DATA)
+    data.home.resume = null
+    data.home.plan.items.forEach((item, i) => {
+      item.completed = all || i === 0
+    })
+    data.home.plan.allComplete = all
+    const openPlanItem = vi.fn()
+    mount(1, data, { openPlanItem })
+    for (const item of data.home.plan.items.filter((item) => item.completed)) {
+      expect(screen.queryByRole('button', { name: new RegExp(item.title) })).toBeNull()
+    }
+    if (all) expect(screen.getByText('Dagens plan är klar.')).toBeInTheDocument()
+    else {
+      const next = data.home.plan.items.find((item) => !item.completed)!
+      fireEvent.click(screen.getByRole('button', { name: new RegExp(next.title) }))
+      expect(openPlanItem).toHaveBeenCalledWith(next.id)
+    }
+  })
+
   it('blocks grading when the DTK figure is missing entirely', () => {
     const data = oneQuestion('dtk')
     data.drills.dtk.questions[0].figure = null
@@ -227,7 +619,9 @@ describe('Lager: data boundary and practice states', () => {
     const viewer = screen.getByRole('dialog', { name: 'Förstorad figur' })
     const switchScreen = vi.fn()
     window.addEventListener('keydown', switchScreen)
-    fireEvent.keyDown(within(viewer).getByRole('region'), { key: 'ArrowRight' })
+    for (const key of ['ArrowRight', '1', '4', '8']) {
+      fireEvent.keyDown(within(viewer).getByRole('region'), { key })
+    }
     expect(switchScreen).not.toHaveBeenCalled()
     window.removeEventListener('keydown', switchScreen)
     fireEvent.click(within(viewer).getByRole('button', { name: 'Zooma in' }))
