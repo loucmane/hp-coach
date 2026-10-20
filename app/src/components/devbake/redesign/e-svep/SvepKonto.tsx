@@ -33,7 +33,7 @@ import {
 } from 'react'
 
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
-import type { WidthKey } from '@/components/devbake/redesign/r1Kit'
+import { prefersReducedMotion, type WidthKey } from '@/components/devbake/redesign/r1Kit'
 import type {
   DirectionActions,
   KontoView,
@@ -121,11 +121,16 @@ export function SvepKonto({
     head?.scrollIntoView?.({ block: 'nearest' })
   })
 
-  /** A detail farther down, brought into view with its heading focused. */
+  /** A detail farther down, brought into view with its heading focused: at
+   *  once under reduced motion (the CSS query never reaches a scroll asked
+   *  for here). */
   const toDetail = (id: DetailId) => {
     const head = document.getElementById(detailHeads[id])
     head?.focus({ preventScroll: true })
-    head?.scrollIntoView?.({ block: 'start', behavior: 'smooth' })
+    head?.scrollIntoView?.({
+      block: 'start',
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+    })
   }
 
   const stage = (

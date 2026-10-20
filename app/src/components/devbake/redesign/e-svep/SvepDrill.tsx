@@ -153,7 +153,9 @@ export function SvepDrill({ screen, width, live, onScreen }: DirectionProps) {
 /**
  * Screen 14, ELF-läsfråga: the English sitting on the same table, on the
  * drill core alone. A sitting that lacks its questions or its text is never
- * an answerable shell: it says so, with the way out.
+ * an answerable shell: it says so, with the way out. A question that lacks
+ * its prompt or its options says so where they would be, and nothing
+ * answers it (textGate).
  */
 export function SvepElf({ width, live }: { width: WidthKey; live: boolean }) {
   const { data, actions } = useDirectionData()
@@ -166,6 +168,47 @@ export function SvepElf({ width, live }: { width: WidthKey; live: boolean }) {
 
 function hasText(q: DrillQuestion): boolean {
   return (q.passage?.paragraphs.length ?? 0) > 0
+}
+
+/** An ELF gap item: no stem of its own, its prompt the empty string. */
+function isGap(q: DrillQuestion): boolean {
+  return q.prompt === '' && q.section === 'ELF'
+}
+
+/** A prompt to read: words, or an ELF gap item's gap. */
+function hasPrompt(q: DrillQuestion): boolean {
+  return isGap(q) || (q.prompt ?? '').trim() !== ''
+}
+
+/** What a text question needs before it can be answered. */
+type Need = 'text' | 'prompt' | 'options'
+
+/** Svara's line while a question lacks what it needs. */
+const LACKING: Record<Need, string> = {
+  text: 'Frågan kan inte besvaras utan texten.',
+  prompt: 'Frågan kan inte besvaras utan frågetexten.',
+  options: 'Frågan kan inte besvaras utan svarsalternativen.',
+}
+
+/** The first thing a text question needs and lacks, or null. */
+function lackOf(q: DrillQuestion): Need | null {
+  if (!hasText(q)) return 'text'
+  if (!hasPrompt(q)) return 'prompt'
+  if (!q.options?.length) return 'options'
+  return null
+}
+
+/**
+ * Whether the open text question can be answered, and what Svara's line
+ * says while it cannot. A question lacking its text, its prompt or its
+ * options never can, said at once; nor can a choice whose option has gone.
+ * The data may change under the question (the same qid), so this is asked
+ * of the question on screen every time, never of the one that was dealt.
+ */
+function textGate(view: DrillCoreView): { open: boolean; wait: Wait | null } {
+  const lack = lackOf(view.question)
+  if (lack) return { open: false, wait: { text: LACKING[lack] } }
+  return { open: chosen(view) != null, wait: null }
 }
 
 function ElfSitting({
@@ -252,7 +295,7 @@ export function contentLang(q: DrillQuestion): 'en' | undefined {
  */
 function ReadingTable({
   view,
-  act,
+  act: core,
   refs,
   width,
   live,
@@ -273,6 +316,10 @@ function ReadingTable({
 }) {
   const { data, actions } = useDirectionData()
   const phone = width === 'phone'
+  // Every way to answer — Svara, Enter, Space — goes through the gate.
+  const gate = textGate(view)
+  const act: DrillCoreActions = { ...core, lock: () => (gate.open ? core.lock() : false) }
+  const wait = view.phase === 'question' ? gate.wait : null
   const [note, setNote] = useState(false)
   const focusOn = view.focusPara != null
   const toggleFocus = () => act.setFocusPara(focusOn ? null : 1)
@@ -315,6 +362,7 @@ function ReadingTable({
     run,
     motion,
     live,
+    wait,
     note,
     setNote,
     focusOn,
@@ -423,6 +471,8 @@ type Chrome = {
   run: Run
   motion: Motion
   live: boolean
+  /** Why Svara cannot answer the open question, or nothing. */
+  wait: Wait | null
   note: boolean
   setNote: (open: boolean) => void
   focusOn: boolean
@@ -470,9 +520,10 @@ export function useSpaceAdvance(live: boolean, advance: () => boolean) {
 
 /**
  * A drill's keys: the question's own letters choose and Shift+letter
- * strikes, Enter and Space answer once a choice is made and then deal the
- * next question; in Facit ←/→ move through the run (and fall through to the
- * bake-off's screen keys at its ends). Digits are left to the switcher.
+ * strikes, Enter and Space answer once a choice is made (one still among
+ * the question's options) and then deal the next question; in Facit ←/→
+ * move through the run (and fall through to the bake-off's screen keys at
+ * its ends). Digits are left to the switcher.
  */
 export function useDrillKeys({
   view,
@@ -507,7 +558,7 @@ export function useDrillKeys({
       }
       keys[`Shift+${l}`] = () => act.toggleEliminate(letter)
     }
-    if (view.selected) keys.Enter = act.lock
+    if (chosen(view)) keys.Enter = act.lock
   } else if (view.phase === 'feedback') {
     keys.Enter = act.next
     if (arrows && run.deck.index > 0) keys.ArrowLeft = run.deck.prev
@@ -517,8 +568,9 @@ export function useDrillKeys({
   }
   useKeyMap(keys, live)
   useSpaceAdvance(live, () => {
-    // An answer refused (a picture still missing) leaves Space alone.
-    if (view.phase === 'question') return view.selected ? act.lock() : false
+    // An answer refused (a picture or a part of the question missing)
+    // leaves Space alone.
+    if (view.phase === 'question') return chosen(view) ? act.lock() : false
     if (view.phase === 'feedback') act.next()
     else onDone()
     return true
@@ -1203,6 +1255,8 @@ function PassageCard({
           {title}
           {subtitle ? <span>{subtitle}</span> : null}
         </h1>
+        {/* A question without its text says so where the text would be. */}
+        {paragraphs.length ? null : <p className="sv-pmissing">Texten saknas just nu.</p>}
         <div
           className="sv-pbody"
           data-testid={passageId}
@@ -1252,6 +1306,13 @@ function PassageCard({
 }
 
 // ── The question card ────────────────────────────────────────────────
+
+/** The open question's choice while it is still one of its options. The
+ *  data may change under the question: a choice whose option has gone is
+ *  no choice, and nothing answers with it. */
+function chosen(view: DrillCoreView): DrillCoreView['selected'] {
+  return view.selected != null && view.letters.includes(view.selected) ? view.selected : null
+}
 
 /** The options as slips of card stock, each with its strike. `prefix`
  *  names them for the contract (rd-option on a reading question,
@@ -1345,20 +1406,21 @@ export function LockBar({
   view: DrillCoreView
   act: DrillCoreActions
   still: boolean
-  /** Why Svara waits (a picture the question needs), or nothing. */
+  /** Why Svara waits (a picture or a part the question needs), or nothing. */
   wait?: Wait | null
 }) {
+  const choice = chosen(view)
   return (
     <div className="sv-lockbar">
       <button
         type="button"
         className="sv-btn sv-btn--primary sv-btn--wide"
-        disabled={!view.selected || wait != null}
+        disabled={!choice || wait != null}
         onClick={still ? undefined : act.lock}
         data-testid={still ? undefined : 'rd-lock'}
         tabIndex={still ? -1 : undefined}
       >
-        {view.selected ? `Svara ${view.selected}` : 'Svara'}
+        {choice ? `Svara ${choice}` : 'Svara'}
         <Kbd>↵</Kbd>
       </button>
       <span
@@ -1368,7 +1430,7 @@ export function LockBar({
       >
         {wait
           ? wait.text
-          : view.selected
+          : choice
             ? 'Du kan ändra dig tills du svarar.'
             : 'Välj ett alternativ först.'}
       </span>
@@ -1387,10 +1449,12 @@ function QuestionFace({
   view,
   act,
   still,
+  wait,
 }: {
   view: DrillCoreView
   act: DrillCoreActions
   still: boolean
+  wait: Wait | null
 }) {
   return (
     <div className="sv-card sv-qcard">
@@ -1401,18 +1465,20 @@ function QuestionFace({
         <Prompt view={view} />
         <Options view={view} act={act} still={still} />
       </div>
-      <LockBar view={view} act={act} still={still} />
+      <LockBar view={view} act={act} still={still} wait={wait} />
     </div>
   )
 }
 
 /** A reading question's prompt in its own language. An ELF gap item has
  *  no stem of its own: it is named by its gap, in Swedish ("Lucka 32"),
- *  and the numbered gap stays in the English text. */
+ *  and the numbered gap stays in the English text. A question without its
+ *  prompt says so in its place, in Swedish. */
 function Prompt({ view }: { view: DrillCoreView }) {
   const q = view.question
-  if (q.prompt === '' && q.section === 'ELF') {
-    return <h2 className="sv-prompt">Lucka {q.number}</h2>
+  if (isGap(q)) return <h2 className="sv-prompt">Lucka {q.number}</h2>
+  if (!hasPrompt(q)) {
+    return <h2 className="sv-prompt sv-prompt--missing">Frågetexten saknas just nu.</h2>
   }
   return (
     <h2 className="sv-prompt" lang={contentLang(q)}>
@@ -1648,7 +1714,7 @@ function DeskDrill(c: Chrome) {
           run={run}
           motion={motion}
           live={live}
-          face={(still) => <QuestionFace view={view} act={act} still={still} />}
+          face={(still) => <QuestionFace view={view} act={act} still={still} wait={c.wait} />}
           finish="Slutför texten"
           keys={
             <p className="sv-keys">
@@ -1910,6 +1976,7 @@ function PhoneDrill(c: Chrome & { sheet: Sheet }) {
       refLabel="Till texten"
       toReference={toText}
       prompt={<Prompt view={view} />}
+      wait={c.wait}
       finish="Slutför texten"
       exitHint={c.exitHint}
       done={c.done}

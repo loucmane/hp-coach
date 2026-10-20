@@ -119,3 +119,57 @@ No shared test outside the write set failed, so there is nothing to hand the coo
 ## Owner questions carried
 
 From e-svep.md: 1 (System theme) and 2 (first synthetic-text disclosure) bear on this batch; both keep the proposed defaults above. New: should ←/→ stay the facit run's own in Svep's Facit (3 and 14), as since round 1, or always go to the switcher?
+
+## Round 2
+
+The Codex review hpf-2l28 of `f318da3` (at merge head `0dd3089`) returned HOLD with two P2 findings (`~/scratch/hpf-qr0p.23/review-hpf-2l28.md`). Both are fixed below; everything else is unchanged.
+
+- **Claim.** `gc hook --claim --json` returned `hpf-qr0p.23` (assignee `ci-wisp-zvd10pf`, route `hpfetcher/gc.implementation-worker`); `bd show hpf-qr0p.23 --json` matched the id, the status (`in_progress`), the assignee and `gc.routed_to`.
+- **Start.** The worktree at `0dd3089`, clean apart from the sandbox's untracked root dotfiles, which were not touched.
+- **Write set kept.** Changed: `SvepDrill.tsx`, `SvepKonto.tsx`, `SvepUppslag.tsx`, `svep.css`, `Svep.test.tsx`, this worklog. `drillCore.ts` is outside the write set and unchanged: the gate sits in Svep's own submit paths. Nothing committed; no network.
+- **Check script.** `gc.check_path` unchanged, sha256 `71f17450e127055c8304a3cb44ce87b2439abe04ba41f225c7b386be3dc73911`. The bead names no validator to run, so it was not run.
+
+All paths below are under `app/src/components/devbake/redesign/e-svep/`.
+
+### Fix 1: an incomplete question is never graded
+
+- **The gate.** `textGate` (`SvepDrill.tsx:208`) asks the question on screen, on every render, for what it needs: its text, its prompt and its options (`lackOf` :194). An ELF gap item's explicit `''` counts as a prompt (`isGap`/`hasPrompt` :174–181). The choice must also still be one of the question's options (`chosen` :1313). Because the question is checked on every render, data that changes under the same qid is caught too.
+- **Every submit path.** `ReadingTable` (:320–323) wraps the `act.lock` that Svara, Enter and Space all call, and passes the gate's reason to Svara at both widths (desktop `QuestionFace` :1717, phone `SheetDrill` :1979). That covers 14 ELF and the same table on 2–3 LÄS.
+- **Shared Svara and keys.** The shared paths now refuse a choice whose option has gone:
+  - Enter is bound only for `chosen(view)` (`useDrillKeys` :561), and Space answers only then (:573).
+  - `LockBar` is enabled and labelled "Svara X" only for that choice (:1412–1418).
+
+  Kvantfråga and DTK use the same paths (`SvepQuant.tsx`, not edited). They had the same hole through Enter and Space, and through Svara when the option list was empty.
+- **Honest state.**
+  - A question without its prompt says "Frågetexten saknas just nu." in the prompt's place, in a quieter line (`Prompt` :1481; `svep.css:8299`).
+  - Without options it says "Svarsalternativen saknas just nu." (as before).
+  - A LÄS question without its text says "Texten saknas just nu." under the text card's title (:1259; `svep.css:8286`). ELF's sitting already shows its own missing-text state before this point.
+  - Svara stays in place but is off, and its line says why: "Frågan kan inte besvaras utan frågetexten." / "… utan svarsalternativen." / "… utan texten.". When the chosen option has gone, Svara is off with "Välj ett alternativ först.".
+  - Once the content is back, the same choice answers again (tested).
+- **Red-first tests.** These failed at `0dd3089`, each with the controller's `lock` called once, and pass now. All are in "Svep, an ELF question that is not whole".
+  - "never grades a question without its prompt (width, way)" (`Svep.test.tsx:3356`), 6 tests: desktop and phone × Svara, Enter, Space. Choose, try, no lock, no verdict; then the heading and Svara's line. With the prompt back, the same way answers once.
+  - "never grades a choice whose options have gone (width, way)" (:3376), 6 tests. Choose, then replace the options under the same qid with `null`, `[]`, and a list without the chosen letter. Each way makes no lock, Svara is off and no longer "Svara D", and its line says why. With the options back, the choice answers.
+  - "never grades a LÄS question without its prompt / text either (width)" (:3430), 4 tests: the shared table on screen 2.
+  - "Kvantfråga's Svara and keys refuse a choice whose options have gone (width)" (:3452), 2 tests: the shared paths on screen 6.
+  - Guard, green before and after: "answers a gap item: its empty prompt is its gap, not a lack (width)" (:3409), 2 tests.
+
+### Fix 2: scrolling from script respects reduced motion
+
+- **The change.** Konto's detail links (`SvepKonto.tsx:132`, `toDetail`) and the phone Uppslag's Innehåll (`SvepUppslag.tsx:190`) now ask the existing `prefersReducedMotion()` (re-exported by r1Kit). Under reduced motion they scroll with `behavior: 'auto'`, which is immediate because `svep.css` sets no `scroll-behavior`; otherwise with `'smooth'`. This is the same idiom as drillCore's `reveal` and the desktop text's turn to its evidence.
+- **Tests.** "Svep, a scroll asked for in script" (`Svep.test.tsx:3510`, :3528) stubs `matchMedia` for `(prefers-reduced-motion: reduce)` and spies on `scrollIntoView`.
+  - Konto's three detail links exist only on desktop. Each focuses its heading and asks for one scroll of that heading with `{ block: 'start', behavior }`.
+  - The phone Uppslag's Innehåll does the same for the contents register's heading.
+  - Red-first: the reduced-motion case of each, which asked for `'smooth'` at `0dd3089`. The motion-on case of each is a guard.
+
+### Verification
+
+- `pnpm -C app typecheck`: clean.
+- `pnpm -C app lint`: 0 errors and 0 warnings. The same 4 infos as before, all outside the write set.
+- `Svep.test.tsx`: 378/378 (354 + 24 new).
+- `pnpm -C app test`: 109 files, 3409/3409.
+- No shared test outside the write set failed.
+- **No browser check**, per the brief. The two new missing-content looks (the quieter prompt line and the text card's note) use existing tokens but have only been checked in jsdom. A screenshot of 14 with a null prompt, at both widths, would confirm them.
+
+### Proposed copy (new, none approved yet)
+
+"Frågetexten saknas just nu.", "Frågan kan inte besvaras utan frågetexten.", "Frågan kan inte besvaras utan svarsalternativen.", "Frågan kan inte besvaras utan texten."; on LÄS, ELF's existing "Texten saknas just nu.".

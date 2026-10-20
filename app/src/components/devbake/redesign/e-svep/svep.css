@@ -8280,8 +8280,10 @@
   background-color: var(--sv-back-elf);
 }
 
-/* A question without its options says so where they would be. */
-.sv-root .sv-opts-missing {
+/* A question without its options says so where they would be; one without
+ * its text, under the text card's title. */
+.sv-root .sv-opts-missing,
+.sv-root .sv-pmissing {
   margin-top: 18px;
   padding: 14px 16px;
   border-radius: 14px;
@@ -8290,6 +8292,15 @@
   color: var(--sv-ink-2);
   font-size: 15px;
   font-weight: 600;
+}
+
+/* A question without its prompt says so in the prompt's place, in the
+ * interface's quieter voice: a status, not the question (on both widths). */
+.sv-root .sv-prompt.sv-prompt--missing {
+  color: var(--sv-ink-2);
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: 0;
 }
 
 /* Idag: a part of the plan already done, in a word and a glyph. */

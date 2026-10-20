@@ -29,7 +29,7 @@ import { ArrowRight, ChevronLeft, ChevronRight, ListOrdered } from 'lucide-react
 import { type ReactNode, useId, useLayoutEffect, useRef, useState } from 'react'
 
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
-import type { WidthKey } from '@/components/devbake/redesign/r1Kit'
+import { prefersReducedMotion, type WidthKey } from '@/components/devbake/redesign/r1Kit'
 import type {
   FrameworkEntry,
   FrameworkFamily,
@@ -183,7 +183,12 @@ export function SvepUppslag({
         phone
           ? () => {
               registerRef.current?.focus({ preventScroll: true })
-              registerRef.current?.scrollIntoView?.({ block: 'start', behavior: 'smooth' })
+              // At once under reduced motion: the CSS query never reaches a
+              // scroll asked for here.
+              registerRef.current?.scrollIntoView?.({
+                block: 'start',
+                behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+              })
             }
           : undefined
       }

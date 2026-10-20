@@ -23,7 +23,11 @@
 // a request per preference, distinct rows from the account card, the way
 // back, export, the typed-word deletion labelled a preview), ELF (the
 // English content marked lang="en", the Swedish controls not), the keys
-// on all three through the real bake-off, and Idag's finished plan.
+// on all three through the real bake-off, and Idag's finished plan. Batch
+// 3's round 2: a text question lacking its prompt, its options or its text,
+// or whose chosen option has gone, is never graded by Svara, Enter or Space
+// (and Kvantfråga's shared Svara and keys refuse a choice that has gone);
+// a scroll asked for in script is immediate under reduced motion.
 
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { useState } from 'react'
@@ -3326,3 +3330,212 @@ describe('Svep, batch 3 inside the bake-off', () => {
 function lessonCard(): HTMLElement {
   return screen.getByTestId('rd-lesson').closest('article') as HTMLElement
 }
+
+// ── Batch 3, round 2: a text question that is not whole ─────────────
+
+/** The three ways to answer the open question: Svara, Enter and Space. */
+const ANSWER_BY = {
+  click: () => fireEvent.click(lockButton()),
+  Enter: () => press('Enter'),
+  Space: () => press(' '),
+}
+type AnswerWay = keyof typeof ANSWER_BY
+/** Each way to answer at each width. */
+const WAYS = WIDTHS.flatMap((w) =>
+  (Object.keys(ANSWER_BY) as AnswerWay[]).map((way) => [w, way] as const),
+)
+/** The ELF sitting with its one question patched and its qid kept: the same
+ *  sitting, so the drill keeps the choice made on it. */
+const elfQuestion = (patch: Partial<DrillQuestion>): DirectionData =>
+  elfWith({ questions: [{ ...EQ, ...patch }] })
+/** The choice the tests make on the ELF question: its last letter. */
+const PICK = EQ_OPTIONS[EQ_OPTIONS.length - 1].letter
+const MISSING_OPTIONS = 'Frågan kan inte besvaras utan svarsalternativen.'
+
+describe('Svep, an ELF question that is not whole', () => {
+  it.each(WAYS)('never grades a question without its prompt (%s, %s)', (w, way) => {
+    const { actions, rerender } = host(elfQuestion({ prompt: null }), 14, w)
+    fireEvent.click(reveal(`rd-option-${PICK}`))
+    ANSWER_BY[way]()
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    expect(screen.queryByTestId('rd-verdict')).toBeNull()
+    // Said where the prompt would be; Svara says why it cannot answer.
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Frågetexten saknas just nu.' }),
+    ).toBeInTheDocument()
+    expect(lockButton()).toBeDisabled()
+    expect(echo()).toHaveTextContent('Frågan kan inte besvaras utan frågetexten.')
+    // With its prompt back, the same choice answers.
+    rerender(D)
+    expect(lockButton()).toBeEnabled()
+    ANSWER_BY[way]()
+    expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+    expect(actions.drill.lock).toHaveBeenCalledWith(expect.objectContaining({ qid: EQ.qid }), PICK)
+  })
+
+  it.each(WAYS)('never grades a choice whose options have gone (%s, %s)', (w, way) => {
+    const { actions, rerender } = host(D, 14, w)
+    fireEvent.click(reveal(`rd-option-${PICK}`))
+    expect(lockButton()).toBeEnabled()
+    const gone: [string, DrillQuestion['options'], string][] = [
+      ['null', null, MISSING_OPTIONS],
+      ['empty', [], MISSING_OPTIONS],
+      ['without the choice', EQ_OPTIONS.slice(0, -1), 'Välj ett alternativ först.'],
+    ]
+    for (const [name, options, said] of gone) {
+      rerender(elfQuestion({ options }))
+      ANSWER_BY[way]()
+      expect(actions.drill.lock, name).not.toHaveBeenCalled()
+      expect(screen.queryByTestId('rd-verdict'), name).toBeNull()
+      expect(lockButton(), name).toBeDisabled()
+      expect(lockButton(), name).not.toHaveTextContent(`Svara ${PICK}`)
+      expect(echo(), name).toHaveTextContent(said)
+      if (options?.length) {
+        for (const o of options) {
+          expect(screen.getByTestId(`rd-option-${o.letter}`)).toHaveAttribute(
+            'aria-pressed',
+            'false',
+          )
+        }
+      } else expect(screen.getByText('Svarsalternativen saknas just nu.')).toBeInTheDocument()
+    }
+    // With the options back, the choice is one of them again, and answers.
+    rerender(D)
+    ANSWER_BY[way]()
+    expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+    expect(actions.drill.lock).toHaveBeenCalledWith(expect.objectContaining({ qid: EQ.qid }), PICK)
+  })
+
+  it.each(WIDTHS)('answers a gap item: its empty prompt is its gap, not a lack (%s)', (w) => {
+    const { actions } = host(elfQuestion({ qid: 'elf-gap', number: 32, prompt: '' }), 14, w)
+    expect(screen.getByRole('heading', { level: 2, name: 'Lucka 32' })).toBeInTheDocument()
+    fireEvent.click(reveal(`rd-option-${PICK}`))
+    expect(echo()).toHaveTextContent('Du kan ändra dig tills du svarar.')
+    press('Enter')
+    expect(actions.drill.lock).toHaveBeenCalledWith(
+      expect.objectContaining({ qid: 'elf-gap' }),
+      PICK,
+    )
+  })
+
+  it.each(
+    WIDTHS.flatMap((w) =>
+      (
+        [
+          ['prompt', { prompt: null }, 'Frågetexten saknas just nu.', 'utan frågetexten.'],
+          ['text', { passage: null }, 'Texten saknas just nu.', 'utan texten.'],
+        ] as const
+      ).map(([lack, patch, shown, said]) => [lack, w, patch, shown, said] as const),
+    ),
+  )('never grades a LÄS question without its %s either (%s)', (_lack, w, patch, shown, said) => {
+    const reading: DirectionData = {
+      ...D,
+      drills: {
+        ...D.drills,
+        reading: {
+          ...READING,
+          questions: READING.questions.map((q) => (q.qid === Q3.qid ? { ...q, ...patch } : q)),
+        },
+      },
+    }
+    const { actions } = host(reading, 2, w)
+    fireEvent.click(reveal(`rd-option-${Q3.answer}`))
+    for (const way of Object.values(ANSWER_BY)) way()
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    expect(screen.getByText(shown)).toBeInTheDocument()
+    expect(lockButton()).toBeDisabled()
+    expect(echo()).toHaveTextContent(`Frågan kan inte besvaras ${said}`)
+  })
+
+  it.each(
+    WIDTHS,
+  )('Kvantfråga’s Svara and keys refuse a choice whose options have gone (%s)', (w) => {
+    const quantWith = (options: DrillQuestion['options']): DirectionData => ({
+      ...D,
+      drills: {
+        ...D.drills,
+        quant: {
+          ...D.drills.quant,
+          questions: D.drills.quant.questions.map((q) =>
+            q.qid === XYZ.qid ? { ...q, options } : q,
+          ),
+        },
+      },
+    })
+    const { actions, rerender } = host(D, 6, w)
+    fireEvent.click(screen.getByTestId(`rd-quant-option-${XYZ.answer}`))
+    rerender(quantWith([]))
+    for (const way of Object.values(ANSWER_BY)) way()
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    expect(lockButton()).toBeDisabled()
+    // Without any options the card offers no Svara at all, and the keys
+    // still answer nothing.
+    rerender(quantWith(null))
+    press('Enter')
+    press(' ')
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    rerender(D)
+    press('Enter')
+    expect(actions.drill.lock).toHaveBeenCalledWith(
+      expect.objectContaining({ qid: XYZ.qid }),
+      XYZ.answer,
+    )
+  })
+})
+
+// ── Batch 3, round 2: a scroll asked for in script ──────────────────
+
+/** prefers-reduced-motion as `reduce` says (no other query matches). */
+function preferReducedMotion(reduce: boolean) {
+  const matchMedia = window.matchMedia
+  vi.spyOn(window, 'matchMedia').mockImplementation((query) => ({
+    ...matchMedia(query),
+    matches: reduce && query === '(prefers-reduced-motion: reduce)',
+  }))
+}
+
+/** Reduced motion off and on, and the scroll each asks for. */
+const MOTION = [
+  [false, 'smooth'],
+  [true, 'auto'],
+] as const
+
+describe('Svep, a scroll asked for in script', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it.each(
+    MOTION,
+  )('Konto: a detail link brings its section into view (reduced motion %s: %s)', (reduce, behavior) => {
+    preferReducedMotion(reduce)
+    const scroll = vi.spyOn(Element.prototype, 'scrollIntoView')
+    mount(13, 'desktop')
+    const below = within(screen.getByRole('navigation', { name: 'Längre ned på sidan' }))
+    for (const name of ['Inloggning', 'Plan och betalning', 'Dina data']) {
+      scroll.mockClear()
+      fireEvent.click(below.getByRole('button', { name }))
+      const head = screen.getByRole('heading', { level: 3, name })
+      expect(head).toHaveFocus()
+      expect(scroll).toHaveBeenCalledTimes(1)
+      expect(scroll.mock.contexts[0]).toBe(head)
+      expect(scroll).toHaveBeenCalledWith({ block: 'start', behavior })
+    }
+  })
+
+  it.each(
+    MOTION,
+  )('Uppslag: the phone’s Innehåll brings the contents into view (reduced motion %s: %s)', (reduce, behavior) => {
+    preferReducedMotion(reduce)
+    const scroll = vi.spyOn(Element.prototype, 'scrollIntoView')
+    mount(12, 'phone')
+    scroll.mockClear()
+    fireEvent.click(screen.getByRole('button', { name: 'Innehåll' }))
+    const head = document.activeElement as HTMLElement
+    expect(head).toHaveClass('sv-index-head')
+    expect(head.closest('nav')).toHaveAttribute('aria-label', `Innehåll, ${OPEN.section}`)
+    expect(scroll).toHaveBeenCalledTimes(1)
+    expect(scroll.mock.contexts[0]).toBe(head)
+    expect(scroll).toHaveBeenCalledWith({ block: 'start', behavior })
+  })
+})
