@@ -1,8 +1,7 @@
-import { PanelLeftClose, PanelLeftOpen, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import { useState } from 'react'
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
-  DESTINATIONS,
   type Destination,
   type DirectionProps,
   fmtClock,
@@ -11,7 +10,7 @@ import type { ProvPassOptionView } from '@/components/devbake/redesign/viewModel
 import { LjuskaglaFramsteg } from './LjuskaglaFramsteg'
 import { LjuskaglaDestination, LjuskaglaHome } from './LjuskaglaHome'
 import { LjuskaglaOva } from './LjuskaglaOva'
-import { Account, type FramePage, Mark, NAV_ICONS, type OpenPage, useGate } from './LjuskaglaParts'
+import { Account, type FramePage, FrameShell, type OpenPage, useGate } from './LjuskaglaParts'
 import { LjuskaglaProvHub, LjuskaglaProvResult, PassConfirmation } from './LjuskaglaProvpass'
 import { LjuskaglaRepetera } from './LjuskaglaRepetera'
 
@@ -111,73 +110,25 @@ export function LjuskaglaFrame({
   prov,
   ...props
 }: DirectionProps & { page: FramePage; prov: ProvFlow }) {
-  const { data, actions } = useDirectionData()
+  const { actions } = useDirectionData()
   const [page, setPage] = useState(initialPage)
-  const [collapsed, setCollapsed] = useState(props.screen === 4)
   const start = useGate<ProvPassOptionView>()
-  const phone = props.width === 'phone'
   const open: OpenPage = (next, ask) => {
     ask()
     setPage(next)
   }
   const go = (door: Destination) => open(door, () => actions.go(door))
-  const nav = (
-    <nav className="lj-nav" aria-label="Huvudmeny">
-      {DESTINATIONS.map((d) => {
-        const Icon = NAV_ICONS[d.id]
-        return (
-          <button
-            type="button"
-            key={d.id}
-            data-testid={`rd-nav-${d.id}`}
-            aria-current={PAGE_DOOR[page] === d.id ? 'page' : undefined}
-            aria-label={d.label}
-            title={d.label}
-            onClick={() => go(d.id)}
-          >
-            <Icon size={20} strokeWidth={1.5} aria-hidden />
-            <span className="lj-nav-label">{d.label}</span>
-            {!phone && d.id === 'ova' && data.home.ovaDue > 0 && (
-              <span className="lj-nav-count" title={`${data.home.ovaDue} att repetera`}>
-                {data.home.ovaDue}
-              </span>
-            )}
-          </button>
-        )
-      })}
-    </nav>
-  )
-  const account = <Account {...props} initiallyOpen={props.screen === 4} />
   const chosen = start.gate
   return (
     <>
-      <div className="lj-frame" data-collapsed={String(collapsed)} inert={chosen != null}>
-        {phone ? (
-          <header className="lj-phone-head">
-            <Mark />
-            {account}
-          </header>
-        ) : (
-          <aside className="lj-sidebar">
-            <Mark compact={collapsed} />
-            <button
-              className="lj-collapse"
-              type="button"
-              data-testid="rd-collapse"
-              aria-label={collapsed ? 'Fäll ut menyn' : 'Fäll ihop menyn'}
-              aria-expanded={!collapsed}
-              onClick={() => setCollapsed(!collapsed)}
-            >
-              {collapsed ? (
-                <PanelLeftOpen size={19} aria-hidden />
-              ) : (
-                <PanelLeftClose size={19} aria-hidden />
-              )}
-            </button>
-            {nav}
-            <div className="lj-sidebar-foot">{account}</div>
-          </aside>
-        )}
+      <FrameShell
+        door={PAGE_DOOR[page]}
+        onGo={go}
+        width={props.width}
+        account={<Account {...props} initiallyOpen={props.screen === 4} />}
+        initiallyCollapsed={props.screen === 4}
+        inert={chosen != null}
+      >
         <main className="lj-home-scroll" key={page}>
           {page === 'idag' ? (
             <LjuskaglaHome onResume={() => props.onScreen(2)} onOpen={open} />
@@ -201,8 +152,7 @@ export function LjuskaglaFrame({
             <LjuskaglaDestination destination={page} />
           )}
         </main>
-        {phone && nav}
-      </div>
+      </FrameShell>
       {chosen && (
         <PassConfirmation
           pass={chosen}

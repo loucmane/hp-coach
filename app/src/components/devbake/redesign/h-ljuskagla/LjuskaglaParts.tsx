@@ -9,6 +9,8 @@ import {
   Layers,
   Maximize2,
   Moon,
+  PanelLeftClose,
+  PanelLeftOpen,
   RotateCw,
   Sun,
   Timer,
@@ -19,6 +21,7 @@ import {
   ZoomOut,
 } from 'lucide-react'
 import {
+  type ReactEventHandler,
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
   type RefCallback,
@@ -30,12 +33,14 @@ import {
   useRef,
   useState,
 } from 'react'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import type {
   DrillCoreActions,
   DrillCoreRefs,
   DrillCoreView,
 } from '@/components/devbake/redesign/drillCore'
 import {
+  DESTINATIONS,
   type Destination,
   type DirectionProps,
   splitStepRefs,
@@ -131,6 +136,94 @@ export function Mark({ compact = false }: { compact?: boolean }) {
       <LampDesk size={24} strokeWidth={1.5} aria-hidden />
       {!compact && <span>HP-Coach</span>}
     </span>
+  )
+}
+
+/**
+ * The normal shell's outside, around the page it holds: the five doors and
+ * the account in a sidebar that gains light on approach and folds (desktop),
+ * or under a head and in a bottom bar (phone). `door` is the lit one. The
+ * frame holds its pages in it, and a pass that has ended without a result
+ * holds its read-only answers in it.
+ */
+export function FrameShell({
+  door,
+  onGo,
+  width,
+  account,
+  initiallyCollapsed = false,
+  inert = false,
+  children,
+}: {
+  door: Destination
+  onGo: (door: Destination) => void
+  width: DirectionProps['width']
+  account: ReactNode
+  initiallyCollapsed?: boolean
+  /** While a dialog covers the shell. */
+  inert?: boolean
+  children: ReactNode
+}) {
+  const { data } = useDirectionData()
+  const [collapsed, setCollapsed] = useState(initiallyCollapsed)
+  const phone = width === 'phone'
+  const nav = (
+    <nav className="lj-nav" aria-label="Huvudmeny">
+      {DESTINATIONS.map((d) => {
+        const Icon = NAV_ICONS[d.id]
+        return (
+          <button
+            type="button"
+            key={d.id}
+            data-testid={`rd-nav-${d.id}`}
+            aria-current={door === d.id ? 'page' : undefined}
+            aria-label={d.label}
+            title={d.label}
+            onClick={() => onGo(d.id)}
+          >
+            <Icon size={20} strokeWidth={1.5} aria-hidden />
+            <span className="lj-nav-label">{d.label}</span>
+            {!phone && d.id === 'ova' && data.home.ovaDue > 0 && (
+              <span className="lj-nav-count" title={`${data.home.ovaDue} att repetera`}>
+                {data.home.ovaDue}
+              </span>
+            )}
+          </button>
+        )
+      })}
+    </nav>
+  )
+  return (
+    <div className="lj-frame" data-collapsed={String(collapsed)} inert={inert}>
+      {phone ? (
+        <header className="lj-phone-head">
+          <Mark />
+          {account}
+        </header>
+      ) : (
+        <aside className="lj-sidebar">
+          <Mark compact={collapsed} />
+          <button
+            className="lj-collapse"
+            type="button"
+            data-testid="rd-collapse"
+            aria-label={collapsed ? 'Fäll ut menyn' : 'Fäll ihop menyn'}
+            aria-expanded={!collapsed}
+            onClick={() => setCollapsed(!collapsed)}
+          >
+            {collapsed ? (
+              <PanelLeftOpen size={19} aria-hidden />
+            ) : (
+              <PanelLeftClose size={19} aria-hidden />
+            )}
+          </button>
+          {nav}
+          <div className="lj-sidebar-foot">{account}</div>
+        </aside>
+      )}
+      {children}
+      {phone && nav}
+    </div>
   )
 }
 
@@ -491,12 +584,12 @@ const MIN_ZOOM = 1
 const MAX_ZOOM = 4
 const ZOOM_STEP = 1.25
 
-/** What an image tells the figure gate: it loaded, it failed, or it was
- *  complete before the handlers were attached (a cached page). */
+/** What an image tells the figure gate: that it is mounted (and whether it
+ *  was complete already, a cached page), then that it loaded or failed. */
 export type FigureImg = {
   ref?: RefCallback<HTMLImageElement>
-  onLoad?: () => void
-  onError?: () => void
+  onLoad?: ReactEventHandler<HTMLImageElement>
+  onError?: ReactEventHandler<HTMLImageElement>
 }
 
 /** The figure page at `zoom` × the box's width, upright or in quarter
@@ -801,18 +894,29 @@ export function FigureViewer({
 
 export type FigureLoad = 'loading' | 'ready' | 'failed'
 
+/** The image mounted in a place now: its key (place, source and retry) and
+ *  its own load. */
+type ShownFigure = { el: HTMLImageElement; key: string; load: FigureLoad }
+
 /**
  * Whether a question can be answered yet: every figure it needs — its page
- * or diagram, and every image option — has loaded. Each image is tracked
- * by its place and source (the page and an option may share a file, and
- * each must load), so a page shared by consecutive questions stays ready
- * while a new source starts over. A page complete before its handlers were
- * attached (from the cache) counts as loaded; a failed one waits for a
- * deliberate retry, which mounts a fresh image.
+ * or diagram, and every image option — has loaded. Readiness belongs to the
+ * image element mounted in each place now, not to its source (the page and
+ * an option may share a file, and each must load). A page that stays
+ * mounted across consecutive questions stays ready; a newly mounted image
+ * starts over, even on a source that loaded before (a page come back to, a
+ * sheet that opens again), and an older image's late events change
+ * nothing. An image complete before its handlers were attached (from the
+ * cache) counts as loaded; a failed one waits for a deliberate retry, which
+ * mounts a fresh image. The enlarged viewer has its own image, outside the
+ * gate.
  */
 export function useFigureGate(question: DrillQuestion | undefined) {
-  const [loads, setLoads] = useState<Record<string, FigureLoad>>({})
+  const [shown, setShown] = useState<Record<string, ShownFigure>>({})
   const [tries, setTries] = useState<Record<string, number>>({})
+  // One ref per image key, kept: a render must not detach and attach the
+  // image it already has.
+  const refs = useRef(new Map<string, RefCallback<HTMLImageElement>>())
   const slots: { slot: string; src: string }[] = []
   if (question?.figure) slots.push({ slot: 'figure', src: question.figure.src })
   for (const option of question?.options ?? []) {
@@ -822,19 +926,39 @@ export function useFigureGate(question: DrillQuestion | undefined) {
     const base = `${slot}|${src}`
     return `${base}|${tries[base] ?? 0}`
   }
-  const status = (slot: string, src: string): FigureLoad => loads[keyOf(slot, src)] ?? 'loading'
-  const mark = (key: string, load: FigureLoad) =>
-    setLoads((old) => (old[key] === load ? old : { ...old, [key]: load }))
-  const img = (slot: string, src: string): FigureImg => {
-    const key = keyOf(slot, src)
-    return {
-      ref: (el) => {
-        if (el?.complete && el.naturalWidth > 0) mark(key, 'ready')
-      },
-      onLoad: () => mark(key, 'ready'),
-      onError: () => mark(key, 'failed'),
-    }
+  const status = (slot: string, src: string): FigureLoad => {
+    const now = shown[slot]
+    return now?.key === keyOf(slot, src) ? now.load : 'loading'
   }
+  /** An image's own news, heard only while it is the one in its place. */
+  const settle = (slot: string, el: HTMLImageElement, load: FigureLoad) =>
+    setShown((old) => {
+      const now = old[slot]
+      return now?.el !== el || now.load === load ? old : { ...old, [slot]: { ...now, load } }
+    })
+  const refFor = (slot: string, key: string) => {
+    let ref = refs.current.get(key)
+    if (!ref) {
+      ref = (el) => {
+        if (!el) return
+        const load: FigureLoad = el.complete && el.naturalWidth > 0 ? 'ready' : 'loading'
+        setShown((old) => (old[slot]?.el === el ? old : { ...old, [slot]: { el, key, load } }))
+        return () =>
+          setShown((old) => {
+            if (old[slot]?.el !== el) return old
+            const { [slot]: _gone, ...rest } = old
+            return rest
+          })
+      }
+      refs.current.set(key, ref)
+    }
+    return ref
+  }
+  const img = (slot: string, src: string): FigureImg => ({
+    ref: refFor(slot, keyOf(slot, src)),
+    onLoad: (e) => settle(slot, e.currentTarget, 'ready'),
+    onError: (e) => settle(slot, e.currentTarget, 'failed'),
+  })
   const retry = (slot: string, src: string) =>
     setTries((old) => {
       const base = `${slot}|${src}`

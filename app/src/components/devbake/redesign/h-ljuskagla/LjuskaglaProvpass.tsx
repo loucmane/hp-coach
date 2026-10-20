@@ -12,6 +12,7 @@ import {
 import { type ReactNode, useCallback, useEffect, useId, useRef, useState } from 'react'
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
+  type Destination,
   type DirectionProps,
   fmtClock,
   fmtScore,
@@ -33,6 +34,8 @@ import {
   count,
   FigurePane,
   FigureViewer,
+  type FramePage,
+  FrameShell,
   fmtInt,
   Gate,
   halfName,
@@ -432,6 +435,47 @@ export function PassConfirmation({
 
 type Settle = 'active' | 'pending' | 'failed'
 
+/** Focus targets whose ←/→ are their own: a control (it is pressed, or it
+ *  moves among its tabs, options or values) and a panning page. A text
+ *  field's arrows are the kit's foreign keys. */
+const OWN_ARROWS = [
+  'button',
+  'a[href]',
+  'summary',
+  '[data-lj-pan]',
+  ...[
+    'button',
+    'link',
+    'checkbox',
+    'switch',
+    'radio',
+    'tab',
+    'option',
+    'menuitem',
+    'menuitemcheckbox',
+    'menuitemradio',
+    'spinbutton',
+    'combobox',
+    'scrollbar',
+    'gridcell',
+    'treeitem',
+  ].map((role) => `[role="${role}"]`),
+].join(', ')
+
+/** Whether the focused element scrolls its own content (the page itself
+ *  aside): then the arrows scroll it, as a browser's arrows do. */
+function scrollsItself(el: Element): boolean {
+  if (el === document.body || el === document.documentElement) return false
+  const style = getComputedStyle(el)
+  return /auto|scroll/.test(`${style.overflowX} ${style.overflowY}`)
+}
+
+/** Whether ←/→ belong where they are pressed — a control, a panning page,
+ *  a scroll region that has focus itself — rather than to the questions. */
+function keepsArrows(target: EventTarget | null): boolean {
+  return target instanceof Element && (target.closest(OWN_ARROWS) != null || scrollsItself(target))
+}
+
 /** "1 fråga är obesvarad", "2 frågor är obesvarade". */
 function blanksLine(n: number): string {
   return n === 1 ? '1 fråga är obesvarad' : `${n} frågor är obesvarade`
@@ -449,14 +493,24 @@ function blanksLine(n: number): string {
  * remaining seconds it brings. It ticks locally; a host whose own clock
  * reaches zero first hands in just the same, exactly once. A pass that was
  * already out of time on entry shows that, never a result. Keys: the
- * question's letters choose, ←/→ change question (a panning page keeps its
- * arrows), and the switcher's digits never leave a pass.
+ * question's letters choose, ←/→ change question (a control, a panning
+ * page and a scroll region in focus keep their own arrows), and the
+ * switcher's digits never leave a running pass.
+ *
+ * A hand-in that fails ends the attempt: there is no second one (kit v2
+ * cannot tell a lost answer from a failed hand-in, so it could count
+ * twice). The answers stay, read-only, in the normal shell with its doors,
+ * a way back to the hub, and the switcher's keys returned.
  */
 export function LjuskaglaProvRunner({
   run,
   onLeave,
   ...props
-}: DirectionProps & { run: ProvRunningView; onLeave: (why: 'aborted' | 'ended') => void }) {
+}: DirectionProps & {
+  run: ProvRunningView
+  /** The pass is gone: abandoned, or ended (for `to`, when a door was taken). */
+  onLeave: (why: 'aborted' | 'ended', to?: FramePage) => void
+}) {
   const { data, actions } = useDirectionData()
   const { live } = props
   const phone = props.width === 'phone'
@@ -491,6 +545,7 @@ export function LjuskaglaProvRunner({
   const [accountOpen, setAccountOpen] = useState(false)
   const [lit, setLit] = useState<number | null>(null)
   const [note, setNote] = useState(false)
+  const root = useRef<HTMLDivElement>(null)
   const heading = useRef<HTMLHeadingElement>(null)
   const statusRef = useRef<HTMLHeadingElement>(null)
   const enlargeRef = useRef<HTMLButtonElement>(null)
@@ -505,17 +560,10 @@ export function LjuskaglaProvRunner({
 
   const active = live && !expiredOnEntry && settle === 'active'
   const locked = settle !== 'active'
+  // The attempt ended without a result: the pass gives up its keys.
+  const failed = settle === 'failed'
   const covered = gate.gate != null || viewer
 
-  const handIn = useCallback(() => {
-    setSettle('pending')
-    try {
-      actions.submitProvpass()
-    } catch {
-      // The answers stay; a retry is the reader's own decision.
-      setSettle('failed')
-    }
-  }, [actions])
   const closeGate = gate.close
   const submit = useCallback(
     (why: 'hand-in' | 'time') => {
@@ -527,9 +575,16 @@ export function LjuskaglaProvRunner({
       }
       closeGate()
       setViewer(false)
-      handIn()
+      setSettle('pending')
+      try {
+        actions.submitProvpass()
+      } catch {
+        // The attempt has ended. No second hand-in, by the reader or the
+        // clock: a lost answer would make it count twice.
+        setSettle('failed')
+      }
     },
-    [closeGate, handIn],
+    [actions, closeGate],
   )
   const submitRef = useRef(submit)
   submitRef.current = submit
@@ -585,6 +640,12 @@ export function LjuskaglaProvRunner({
     actions.go('provpass')
     onLeave('ended')
   }
+  /** A door taken from a pass that has ended: the host is asked, and the
+   *  frame opens the page as well, for a host that does not navigate. */
+  const goDoor = (door: Destination) => {
+    actions.go(door)
+    onLeave('ended', door)
+  }
 
   // A new question takes focus at its heading, with the text unlit.
   // biome-ignore lint/correctness/useExhaustiveDependencies: a new question (index) resets these
@@ -604,8 +665,12 @@ export function LjuskaglaProvRunner({
     enlargeRef.current?.focus()
   }, [viewer])
 
-  // Keys, ahead of the switcher (capture). Digits are always held here, so
-  // a running pass never changes direction or screen under the reader.
+  // Keys, ahead of the switcher (capture). Until the attempt ends, digits
+  // are held wherever focus is, so a pass never changes direction or screen
+  // under the reader. ←/→ change the question, except where they already
+  // mean something: on a control, a panning page or a scroll region in
+  // focus. Inside the pass those keep their native arrows (its key scope
+  // keeps the switcher out); outside it they are only held.
   const keys = useRef({ suspended: true, letters: [] as AnswerLetter[], step: (_: 1 | -1) => {} })
   keys.current = {
     suspended: !active || covered || accountOpen,
@@ -614,7 +679,7 @@ export function LjuskaglaProvRunner({
   }
   const pickRef = useRef(pick)
   pickRef.current = pick
-  const holdKeys = live && !expiredOnEntry && total > 0
+  const holdKeys = live && !expiredOnEntry && total > 0 && !failed
   useEffect(() => {
     if (!holdKeys) return
     const onKey = (e: KeyboardEvent) => {
@@ -625,10 +690,11 @@ export function LjuskaglaProvRunner({
         return
       }
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-        // A page that pans keeps its arrows (the switcher leaves them there).
-        if (e.target instanceof Element && e.target.closest('[data-lj-pan]')) return
+        if (isForeignKey(e)) return
+        const own = keepsArrows(e.target)
+        if (own && e.target instanceof Node && root.current?.contains(e.target)) return
         e.preventDefault()
-        if (!k.suspended && !isForeignKey(e)) k.step(e.key === 'ArrowRight' ? 1 : -1)
+        if (!own && !k.suspended) k.step(e.key === 'ArrowRight' ? 1 : -1)
         return
       }
       if (k.suspended || e.defaultPrevented || isForeignKey(e) || e.key.length !== 1) return
@@ -808,24 +874,26 @@ export function LjuskaglaProvRunner({
     </section>
   )
 
+  // A failed hand-in says so and leads back, never on to a result: the pass
+  // may still have reached the host, so the copy promises neither way.
   const status =
     settle === 'active' ? null : (
       <div className="lj-run-status" data-state={settle} role="status">
         <h2 ref={statusRef} tabIndex={-1}>
-          {settle === 'failed'
+          {failed
             ? 'Provpasset kunde inte lämnas in.'
             : timeUp
               ? 'Tiden är ute. Provpasset lämnas in …'
               : 'Provpasset lämnas in …'}
         </h2>
         <p>
-          {settle === 'failed'
-            ? 'Dina svar finns kvar här och är låsta. Försök igen.'
+          {failed
+            ? `${timeUp ? 'Tiden tog slut. ' : ''}Dina svar finns kvar här men går inte längre att ändra. Om inlämningen ändå gick fram finns resultatet under Tidigare resultat.`
             : 'Dina svar är låsta. Resultatet visas när det är sparat.'}
         </p>
-        {settle === 'failed' && (
-          <button className="lj-primary" type="button" onClick={handIn}>
-            <span>Försök lämna in igen</span>
+        {failed && (
+          <button className="lj-primary" type="button" onClick={leave}>
+            <span>Till Provpass</span>
             <ArrowRight size={20} aria-hidden />
           </button>
         )}
@@ -902,7 +970,7 @@ export function LjuskaglaProvRunner({
       )}
       {shape === 'problem' && q.options && <p className="lj-answer-lead">{lead}</p>}
       {optionRows}
-      {figures.blocked && (
+      {figures.blocked && !locked && (
         <p className="lj-run-wait" role="status">
           {figureFailed || optionFailed
             ? 'En bild som frågan behöver kunde inte visas. Svaren går att välja när den har laddats.'
@@ -928,7 +996,8 @@ export function LjuskaglaProvRunner({
     </>
   )
 
-  const footer = (
+  // Moving on, and its keys, end with the attempt.
+  const footer = failed ? null : (
     <footer className="lj-action-bar lj-run-foot">
       <div className="lj-run-steps">
         <button
@@ -1092,8 +1161,55 @@ export function LjuskaglaProvRunner({
     )
   }
 
+  const enlarged = viewer && figure && figureView.view && (
+    <FigureViewer
+      figure={figure}
+      source={q.source.label}
+      view={figureView.view}
+      onZoom={figureView.zoomBy}
+      onRotate={figureView.rotate}
+      onFit={figureView.fit}
+      onClose={() => {
+        returnFocus.current = true
+        setViewer(false)
+      }}
+    />
+  )
+
+  // An attempt that ended without a result: its answers, read-only, in the
+  // normal shell, where the doors and the switcher's keys work again.
+  if (failed) {
+    return (
+      <>
+        <FrameShell
+          door="provpass"
+          onGo={goDoor}
+          width={props.width}
+          account={<Account theme={props.theme} onTheme={props.onTheme} />}
+          inert={covered}
+        >
+          <main
+            className="lj-drill lj-run"
+            data-testid="rd-prov-running"
+            data-shape={shape}
+            data-spotlight={String(lit != null)}
+            data-settle={settle}
+          >
+            <div className="lj-run-chrome">
+              {status}
+              {map}
+            </div>
+            <div className="lj-drill-body">{body}</div>
+          </main>
+        </FrameShell>
+        {enlarged}
+      </>
+    )
+  }
+
   return (
     <div
+      ref={root}
       className="lj-drill lj-run"
       data-testid="rd-prov-running"
       // Keys inside a running pass are its own: the switcher leaves them.
@@ -1154,20 +1270,7 @@ export function LjuskaglaProvRunner({
           <p>Det finns ingen paus: klockan går vidare även om du bara lämnar sidan.</p>
         </Gate>
       )}
-      {viewer && figure && figureView.view && (
-        <FigureViewer
-          figure={figure}
-          source={q.source.label}
-          view={figureView.view}
-          onZoom={figureView.zoomBy}
-          onRotate={figureView.rotate}
-          onFit={figureView.fit}
-          onClose={() => {
-            returnFocus.current = true
-            setViewer(false)
-          }}
-        />
-      )}
+      {enlarged}
     </div>
   )
 }

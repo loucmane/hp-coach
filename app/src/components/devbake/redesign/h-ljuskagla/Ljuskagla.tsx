@@ -29,14 +29,17 @@ export function Ljuskagla(props: DirectionProps) {
   const { data, actions } = useDirectionData()
   const { screen } = props
   // The Provpass flow: the pass asked for, which runs once the host supplies
-  // its questions, and whether one was just abandoned. A move to another
-  // screen ends it; a host that answers the start by showing Provpass
-  // (screen 9) keeps it.
+  // its questions, whether one was just abandoned, and the page a pass that
+  // ended was left for (a door, opened here too for a host that does not
+  // navigate). A move to another screen ends it; a host that answers the
+  // start by showing Provpass (screen 9) keeps it.
   const [flowScreen, setFlowScreen] = useState(screen)
   const [requested, setRequested] = useState<string | null>(null)
   const [aborted, setAborted] = useState(false)
+  const [leftFor, setLeftFor] = useState<FramePage | null>(null)
   if (flowScreen !== screen) {
     setFlowScreen(screen)
+    setLeftFor(null)
     if (screen !== 9) {
       setRequested(null)
       setAborted(false)
@@ -51,10 +54,12 @@ export function Ljuskagla(props: DirectionProps) {
       actions.startProvpass(passId)
       setRequested(passId)
       setAborted(false)
+      setLeftFor(null)
     },
     onCancel: () => setRequested(null),
   }
-  const page: FramePage = requested != null || aborted ? 'provpass' : (FRAME_PAGE[screen] ?? 'idag')
+  const page: FramePage =
+    requested != null || aborted ? 'provpass' : (leftFor ?? FRAME_PAGE[screen] ?? 'idag')
   return (
     <div
       className="ljuskagla"
@@ -69,9 +74,10 @@ export function Ljuskagla(props: DirectionProps) {
           key={run.passId}
           {...props}
           run={run}
-          onLeave={(why) => {
+          onLeave={(why, to) => {
             setRequested(null)
             setAborted(why === 'aborted')
+            setLeftFor(to ?? null)
           }}
         />
       ) : screen === 2 || screen === 3 ? (

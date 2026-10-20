@@ -30,6 +30,7 @@ import {
 import type {
   DirectionActions,
   DirectionData,
+  DrillQuestion,
   DrillSessionView,
   ProvResultView,
   ProvRunningView,
@@ -824,15 +825,60 @@ function TickingHost({ actions, from }: { actions: DirectionActions; from: numbe
   )
 }
 
-/** The real bake-off page, its selection on show. */
-function BakeoffHost({ s = 9, w = 'desktop' }: { s?: AppScreenKey; w?: WidthKey }) {
+/** The real bake-off page, its selection on show. `ask` sees each change
+ *  the page asks its route for first, and may throw as a failing route does. */
+function BakeoffHost({
+  s = 9,
+  w = 'desktop',
+  ask,
+}: {
+  s?: AppScreenKey
+  w?: WidthKey
+  ask?: (next: Partial<Selection>) => void
+}) {
   const [sel, setSel] = useState<Selection>({ d: 'h', s, w, t: 'light', sbs: false, bare: false })
   return (
     <>
-      <Redesign2026Bakeoff sel={sel} onSelect={(next) => setSel((old) => ({ ...old, ...next }))} />
+      <Redesign2026Bakeoff
+        sel={sel}
+        onSelect={(next) => {
+          ask?.(next)
+          setSel((old) => ({ ...old, ...next }))
+        }}
+      />
       <output data-testid="host-selection">{`${sel.d}/${sel.s}/${sel.sbs}`}</output>
     </>
   )
+}
+
+/** The stage measures its box before it mounts a direction; jsdom has none. */
+function stageBox() {
+  vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+  vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(900)
+}
+
+/** The real host on Ljuskägla's Provpass, its suggested pass started. */
+async function startInHost() {
+  render(<BakeoffHost />)
+  fireEvent.click(await screen.findByTestId('rd-prov-start', {}, { timeout: 5000 }))
+  fireEvent.click(screen.getByTestId('rd-confirm'))
+  return screen.getByTestId('rd-prov-running')
+}
+
+/** Vitest leaves CSS out (css: false): loads the direction's own sheet into
+ *  jsdom around a block, as Samtal's tests do. jsdom lays nothing out, so
+ *  this gives the cascade, not the geometry; the coordinator's browser pass
+ *  checks the geometry. */
+function withSheet() {
+  const sheet = document.createElement('style')
+  beforeAll(() => {
+    sheet.textContent = readFileSync(
+      path.resolve(process.cwd(), 'src/components/devbake/redesign/h-ljuskagla/ljuskagla.css'),
+      'utf8',
+    )
+    document.head.appendChild(sheet)
+  })
+  afterAll(() => sheet.remove())
 }
 
 describe('Ljuskägla Provpass hub', () => {
@@ -1088,19 +1134,22 @@ describe('Ljuskägla running pass', () => {
     expect(screen.getByTestId('rd-prov-start')).toBeInTheDocument()
   })
 
-  it('keeps the answers after a failed hand-in and retries only when asked', () => {
-    const { actions } = startPass()
-    vi.mocked(actions.submitProvpass).mockImplementationOnce(() => {
+  it.each<WidthKey>([
+    'desktop',
+    'phone',
+  ])('on %s, after a failed hand-in opens a door in the frame too when the host does not navigate', (width) => {
+    const { actions } = startPass({ width })
+    vi.mocked(actions.submitProvpass).mockImplementation(() => {
       throw new Error('offline')
     })
-    fireEvent.click(screen.getByTestId('rd-prov-option-B'))
     fireEvent.click(screen.getByTestId('rd-prov-submit'))
     fireEvent.click(screen.getByTestId('rd-confirm'))
     expect(screen.getByRole('heading', { name: 'Provpasset kunde inte lämnas in.' })).toHaveFocus()
-    expect(screen.getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'true')
-    fireEvent.click(screen.getByRole('button', { name: /Försök lämna in igen/ }))
-    expect(actions.submitProvpass).toHaveBeenCalledTimes(2)
-    expect(screen.getByRole('heading', { name: 'Provpasset lämnas in …' })).toHaveFocus()
+    fireEvent.click(screen.getByTestId('rd-nav-framsteg'))
+    expect(actions.go).toHaveBeenCalledWith('framsteg')
+    expect(screen.getByTestId('rd-framsteg-prognosis')).toBeInTheDocument()
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+    expect(actions.submitProvpass).toHaveBeenCalledTimes(1)
   })
 
   it('keeps its place inside a pass that shrinks, and stays there when it grows back', () => {
@@ -1166,6 +1215,86 @@ describe('Ljuskägla running pass', () => {
     expect(screen.getByTestId('rd-prov-option-A')).toBeEnabled()
   })
 
+  // Readiness belongs to the image mounted now, not to a source that loaded
+  // once (review hpf-r4it): a page that comes back is a new image.
+  it.each<[string, (page: string | undefined) => number]>([
+    [
+      'another page',
+      (page) => RUN.questions.findIndex((q, i) => i > PAGE_AT && q.figure && q.figure.src !== page),
+    ],
+    ['a question without a figure', () => RUN.questions.findIndex((q) => !q.figure)],
+  ])('holds a page’s answers again when it comes back after %s, until the new image loads', (_, away) => {
+    startPass()
+    const page = () => within(screen.getByTestId('rd-figure')).getByRole('img')
+    fireEvent.click(screen.getByTestId(`rd-prov-cell-${PAGE_AT + 1}`))
+    const first = page()
+    fireEvent.load(first)
+    expect(screen.getByTestId('rd-prov-option-A')).toBeEnabled()
+    fireEvent.click(
+      screen.getByTestId(`rd-prov-cell-${away(RUN.questions[PAGE_AT].figure?.src) + 1}`),
+    )
+    fireEvent.click(screen.getByTestId(`rd-prov-cell-${PAGE_AT + 1}`))
+    const again = page()
+    expect(again).not.toBe(first)
+    expect(again).toHaveAttribute('src', first.getAttribute('src'))
+    expect(screen.getByTestId('rd-prov-option-A')).toBeDisabled()
+    expect(screen.getByText('Svaren går att välja när underlaget har laddats.')).toBeInTheDocument()
+    fireEvent.keyDown(window, { key: 'a' })
+    expect(screen.getByTestId('rd-prov-option-A')).toHaveAttribute('aria-pressed', 'false')
+    // A late event from the image that left changes nothing.
+    fireEvent.load(first)
+    expect(screen.getByTestId('rd-prov-option-A')).toBeDisabled()
+    fireEvent.load(again)
+    expect(screen.getByTestId('rd-prov-option-A')).toBeEnabled()
+    // The enlarged page is the viewer's own: its failure leaves the gate be.
+    fireEvent.click(screen.getByRole('button', { name: 'Förstora figur' }))
+    fireEvent.error(within(screen.getByTestId('rd-figure-viewer')).getByRole('img'))
+    fireEvent.click(screen.getByRole('button', { name: 'Stäng' }))
+    expect(screen.getByTestId('rd-prov-option-A')).toBeEnabled()
+  })
+
+  it('holds image answers again when a phone sheet mounts them afresh, until each loads', () => {
+    const imaged = (q: DrillQuestion): DrillQuestion => ({
+      ...q,
+      options:
+        q.options?.map((o) => ({
+          ...o,
+          figure: {
+            src: `figures/${q.qid}-${o.letter}.svg`,
+            alt: `Bildalternativ ${o.letter}`,
+            width: 240,
+            height: 120,
+          },
+        })) ?? null,
+    })
+    const questions = RUN.questions.map((q, i) => (i === PAGE_AT ? imaged(q) : q))
+    startPass({ width: 'phone', data: withProv({ running: { questions } }) })
+    fireEvent.click(screen.getByRole('button', { name: /Svarsöversikt/ }))
+    fireEvent.click(screen.getByTestId(`rd-prov-cell-${PAGE_AT + 1}`))
+    fireEvent.load(within(screen.getByTestId('rd-figure')).getByRole('img'))
+    const sheet = screen.getByRole('region', { name: `Fråga ${PAGE_AT + 1}` })
+    const toggle = () => fireEvent.click(within(sheet).getByRole('button', { name: /^Visa / }))
+    const options = () => screen.getAllByRole('img', { name: /^Bildalternativ / })
+    toggle()
+    expect(screen.getByTestId('rd-prov-option-A')).toBeDisabled()
+    for (const img of options()) fireEvent.load(img)
+    expect(screen.getByTestId('rd-prov-option-A')).toBeEnabled()
+    const before = options()
+    toggle()
+    expect(sheet).toHaveAttribute('data-state', 'peek')
+    // Folded away, the image answers are not there to choose among.
+    fireEvent.keyDown(window, { key: 'b' })
+    expect(within(sheet).queryByText(/ditt svar/)).toBeNull()
+    toggle()
+    const [first, ...rest] = options()
+    expect(first).not.toBe(before[0])
+    expect(screen.getByTestId('rd-prov-option-A')).toBeDisabled()
+    for (const img of rest) fireEvent.load(img)
+    expect(screen.getByTestId('rd-prov-option-A')).toBeDisabled()
+    fireEvent.load(first)
+    expect(screen.getByTestId('rd-prov-option-A')).toBeEnabled()
+  })
+
   it('reads a text question in the reading room: English as English, the badge outside it', () => {
     const elf = D.drills.elf.questions
     startPass({ data: withProv({ running: { questions: elf, current: 0, answers: {} } }) })
@@ -1213,18 +1342,7 @@ describe('Ljuskägla running pass', () => {
 })
 
 describe('Ljuskägla running pass through the real bake-off host', () => {
-  // The stage measures its box before it mounts a direction; jsdom has none.
-  beforeEach(() => {
-    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
-    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(900)
-  })
-
-  async function startInHost() {
-    render(<BakeoffHost />)
-    fireEvent.click(await screen.findByTestId('rd-prov-start', {}, { timeout: 5000 }))
-    fireEvent.click(screen.getByTestId('rd-confirm'))
-    return screen.getByTestId('rd-prov-running')
-  }
+  beforeEach(stageBox)
 
   it.each([
     'answer',
@@ -1253,10 +1371,16 @@ describe('Ljuskägla running pass through the real bake-off host', () => {
       expect(screen.getByTestId('rd-prov-running')).toBe(runner)
       expect(answer).toHaveAttribute('aria-pressed', 'true')
     }
-    // The arrows change the question here, never the screen.
-    expect(fireEvent.keyDown(focused, { key: 'ArrowRight' })).toBe(false)
+    // The arrows change the question from the heading or the body, never the
+    // screen. A focused control keeps them: natively inside the pass, held
+    // outside it (review hpf-r4it).
+    const control = target === 'answer' || target === 'cell' || target === 'switcher'
+    expect(fireEvent.keyDown(focused, { key: 'ArrowRight' })).toBe(target !== 'switcher' && control)
     expect(screen.getByTestId('host-selection')).toHaveTextContent('h/9/false')
-    expect(screen.getByTestId('rd-prov-cell-18')).toHaveAttribute('data-current', 'true')
+    expect(screen.getByTestId(`rd-prov-cell-${control ? 17 : 18}`)).toHaveAttribute(
+      'data-current',
+      'true',
+    )
     expect(runner).toHaveAttribute('data-rd-keyscope')
     // An abandoned pass gives the switcher its keys back.
     fireEvent.click(screen.getByTestId('rd-exit'))
@@ -1307,6 +1431,134 @@ describe('Ljuskägla running pass through the real bake-off host', () => {
     fireEvent.keyDown(history, { key: 'Home' })
     expect(overview).toHaveAttribute('aria-selected', 'true')
     expect(overview).toHaveFocus()
+  })
+})
+
+describe('Ljuskägla running pass, a focused scroll region through the real bake-off host', () => {
+  // The region scrolls by its own CSS: the sheet supplies it.
+  withSheet()
+  beforeEach(stageBox)
+
+  it('keeps its arrows, Shift included, while the digits stay held', async () => {
+    const runner = await startInHost()
+    const column = runner.querySelector<HTMLElement>('.lj-problem-column')
+    if (!column) throw new Error('question 17 is a problem in its own column')
+    expect(column.querySelector('[data-lj-pan]')).toBeNull()
+    // Chrome and Firefox let an overflowing scroll region with nothing to tab
+    // to inside take focus on its own; jsdom lays nothing out, so the column
+    // is given that focusability here.
+    column.tabIndex = -1
+    column.focus()
+    for (const shiftKey of [false, true]) {
+      for (const key of ['ArrowRight', 'ArrowLeft']) {
+        expect(fireEvent.keyDown(column, { key, shiftKey })).toBe(true)
+        expect(column).toHaveFocus()
+        expect(screen.getByTestId('rd-prov-cell-17')).toHaveAttribute('data-current', 'true')
+        expect(screen.getByTestId('host-selection')).toHaveTextContent('h/9/false')
+      }
+    }
+    for (const key of ['1', '8', '0']) {
+      expect(fireEvent.keyDown(column, { key })).toBe(false)
+      expect(screen.getByTestId('host-selection')).toHaveTextContent('h/9/false')
+    }
+    // The question's heading, inside the same column, still changes question.
+    const heading = screen.getByRole('heading', { name: /^Fråga 17 av 40/ })
+    heading.focus()
+    expect(fireEvent.keyDown(heading, { key: 'ArrowRight', shiftKey: true })).toBe(false)
+    expect(screen.getByTestId('rd-prov-cell-18')).toHaveAttribute('data-current', 'true')
+    expect(screen.getByTestId('host-selection')).toHaveTextContent('h/9/false')
+  })
+})
+
+describe('Ljuskägla failed hand-in through the real bake-off host', () => {
+  beforeEach(stageBox)
+  afterEach(() => vi.useRealTimers())
+
+  /**
+   * Runs the suggested pass in the real host until its hand-in fails. The
+   * host's submitProvpass asks its route for the result (screen 10), and
+   * this route throws there, as an offline one would. Question 17 keeps the
+   * answer B. Then the clock runs far past the deadline, where a second
+   * hand-in would show. Returns how many hand-ins the host has seen.
+   */
+  async function failInHost(how: 'hand-in' | 'time') {
+    const ask = vi.fn((next: Partial<Selection>) => {
+      if (next.s === 10) throw new Error('offline')
+    })
+    render(<BakeoffHost ask={ask} />)
+    fireEvent.click(await screen.findByTestId('rd-prov-start', {}, { timeout: 5000 }))
+    vi.useFakeTimers()
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    fireEvent.click(screen.getByTestId('rd-prov-option-B'))
+    if (how === 'hand-in') {
+      fireEvent.click(screen.getByTestId('rd-prov-submit'))
+      fireEvent.click(screen.getByTestId('rd-confirm'))
+    } else {
+      vi.setSystemTime(Date.now() + RUN.remainingSeconds * 1000)
+      act(() => vi.advanceTimersByTime(1000))
+    }
+    vi.setSystemTime(Date.now() + 2 * RUN.remainingSeconds * 1000)
+    act(() => vi.advanceTimersByTime(5000))
+    vi.useRealTimers()
+    return () => ask.mock.calls.filter(([next]) => next.s === 10).length
+  }
+
+  it.each([
+    'hand-in',
+    'time',
+  ] as const)('after a failed %s shows the error over read-only answers, once, with a way back to the hub', async (how) => {
+    const handIns = await failInHost(how)
+    expect(screen.getByRole('heading', { name: 'Provpasset kunde inte lämnas in.' })).toHaveFocus()
+    expect(handIns()).toBe(1)
+    const runner = screen.getByTestId('rd-prov-running')
+    expect(runner).toHaveAttribute('data-settle', 'failed')
+    expect(runner.closest('[data-rd-keyscope]')).toBeNull()
+    expect(screen.getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'true')
+    for (const letter of ['A', 'B', 'C', 'D'])
+      expect(screen.getByTestId(`rd-prov-option-${letter}`)).toBeDisabled()
+    fireEvent.keyDown(document.body, { key: 'c' })
+    expect(screen.getByTestId('rd-prov-option-C')).toHaveAttribute('aria-pressed', 'false')
+    // No resubmit: kit v2 cannot tell a lost answer from a failed hand-in.
+    expect(screen.queryByRole('button', { name: /igen/ })).toBeNull()
+    expect(screen.getByTestId('rd-nav-provpass')).toHaveAttribute('aria-current', 'page')
+    fireEvent.click(screen.getByRole('button', { name: /Till Provpass/ }))
+    expect(screen.getByTestId('host-selection')).toHaveTextContent('h/9/false')
+    expect(screen.getByTestId('rd-prov-start')).toBeInTheDocument()
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+    expect(screen.queryByTestId('rd-prov-result')).toBeNull()
+    expect(handIns()).toBe(1)
+  })
+
+  it.each(
+    (['hand-in', 'time'] as const).flatMap((how) =>
+      (['focused heading', 'body'] as const).flatMap((where) =>
+        (
+          [
+            ['3', 'c/9/false'],
+            ['ArrowLeft', 'h/8/false'],
+          ] as const
+        ).map(([key, after]) => [how, key, where, after] as const),
+      ),
+    ),
+  )('after a failed %s gives the switcher its %s back on the %s', async (how, key, where, after) => {
+    const handIns = await failInHost(how)
+    const heading = screen.getByRole('heading', { name: 'Provpasset kunde inte lämnas in.' })
+    expect(heading).toHaveFocus()
+    if (where === 'body') {
+      heading.blur()
+      expect(document.body).toHaveFocus()
+    }
+    fireEvent.keyDown(where === 'body' ? document.body : heading, { key })
+    expect(screen.getByTestId('host-selection')).toHaveTextContent(after)
+    expect(handIns()).toBe(1)
+  })
+
+  it('after a failed hand-in leads through its doors as well', async () => {
+    const handIns = await failInHost('hand-in')
+    fireEvent.click(screen.getByTestId('rd-nav-framsteg'))
+    expect(screen.getByTestId('host-selection')).toHaveTextContent('h/11/false')
+    expect(screen.getByTestId('rd-framsteg-prognosis')).toBeInTheDocument()
+    expect(handIns()).toBe(1)
   })
 })
 
@@ -1583,18 +1835,7 @@ describe('Ljuskägla Provpass and Framsteg with optional fields absent', () => {
 // ── Every named grid area has its cell ──────────────────────────────
 
 describe('Ljuskägla grids', () => {
-  // Vitest leaves CSS out (css: false): load the direction's own sheet, as
-  // Samtal's tests do. jsdom lays nothing out, so this reads the cascade,
-  // not the geometry; the coordinator's browser pass checks the geometry.
-  const sheet = document.createElement('style')
-  beforeAll(() => {
-    sheet.textContent = readFileSync(
-      path.resolve(process.cwd(), 'src/components/devbake/redesign/h-ljuskagla/ljuskagla.css'),
-      'utf8',
-    )
-    document.head.appendChild(sheet)
-  })
-  afterAll(() => sheet.remove())
+  withSheet()
 
   /** A plain track list's tracks, with the arguments of minmax() and the
    *  like folded away (a repeat() counts as one). */

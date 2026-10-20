@@ -267,3 +267,98 @@ The vocabulary is batch 1's throughout:
 ### Playbook proposal
 
 - 2026-10-20 · Symptom: placeholder `.mcp.json` and `.claude/` entries appeared inside `app/src/…` and broke `biome check` on that folder with "Permission denied (os error 13)". Cause: the sandbox mounts its protected paths relative to the working directory, and `cd` into a subdirectory moved that directory. Rule: in this sandbox never `cd`; run `pnpm -C <app> …` and use absolute paths from the worktree root.
+
+## Round 2 — review fixes (Codex review hpf-r4it), 2026-10-20
+
+Session `ci-wisp-u5nvy84`, claimed through the managed hook. Starting state: clean `d25020d53a65bbb4a8a6811716a505348a794515` on the assigned branch (only the eleven untracked root dotfile placeholders). I read the review report (`~/scratch/hpf-qr0p.31/review-hpf-r4it.md`, VERDICT: HOLD, three P2 findings), the Round 2 brief in the Bead DESIGN, spec §9 and the shared rules in `docs/redesign/directions/h-ljuskagla.md`, the bake-off host and its provider, and Instrument's round-2 key fix (hpf-qr0p.13) as precedent. All changes are uncommitted and inside the write set: six files plus this worklog. Paths below are under `app/src/components/devbake/redesign/h-ljuskagla/`.
+
+### Fix 1 · A failed hand-in no longer traps the reader
+
+Coordinator decision followed: no resubmit button and no automatic retry.
+- `LjuskaglaProvpass.tsx:568`–`:588`: one hand-in attempt. `submit` keeps its one-shot `settled` guard, and a throw from `submitProvpass` ends the attempt as `failed` (`:584`). The retry button and the separate `handIn` it called are gone, so neither the reader nor the clock can hand in again.
+- `:879`–`:901`: the status shows the error with an honest line and an enabled **Till Provpass**. That button calls `leave` (`go('provpass')`, then `onLeave('ended')`): nothing is submitted, and no result is claimed.
+- `:1181`–`:1208`: once the attempt has failed, the read-only pass renders in `FrameShell`, the normal shell, with Provpass lit. The status and map come first, then the question with its answers disabled. There is no focus head: the clock, Avbryt and Lämna in no longer apply.
+  - The root carries no `data-rd-keyscope` there; the live runner keeps it (`:1210`–`:1216`).
+  - The enlarged viewer still opens over it, with the shell inert behind it.
+- `:682`: `holdKeys` is off once failed, so digits, 0 and the arrows reach the switcher again from the focused element or the body.
+- `:1000` and `:973`: the footer (Föregående / Nästa fråga and its key hint) and the figure-wait notice are left out once the answers lock, since neither can act anymore.
+- `:645`: the shell's doors call `goDoor` (`go(door)`, then `onLeave('ended', door)`). `Ljuskagla.tsx:39` and `:62` keep the page left for (`leftFor`), so a host that does not navigate still opens the door's page, as the frame's doors do. A new start or a screen change clears it.
+- `LjuskaglaParts.tsx:149`: `FrameShell` is the frame's sidebar, phone head and bottom bar, moved out unchanged. `LjuskaglaNav.tsx:124` now renders the frame through it, with the same DOM, so the runner and the frame share one shell. `ljuskagla.css:503` lets the run fill the shell beside its doors.
+- Red-first tests:
+  - `Ljuskagla.test.tsx:1473`: through the real `Redesign2026Bakeoff` on screen 9. `failInHost` (`:1484`) makes the host's own `submitProvpass` throw: its request for screen 10 fails in the route (`BakeoffHost`'s new `ask`, `:830`). It hands in manually or lets the local clock run out under fake timers, then runs the clock far past the deadline.
+  - `:1509`, manual and timed: the error heading has focus. `submitProvpass` was called once. There is no keyscope, the answer B stays pressed, all options are disabled and a letter changes nothing. There is no retry and Provpass is the lit door. Till Provpass lands on the hub at `h/9`, with no result and still one hand-in.
+  - `:1543`, eight cases: manual or timed × the focused heading or the body × `3` or `ArrowLeft`. The switcher answers (`c/9`, `h/8`), and there is still one hand-in.
+  - `:1556`: the Framsteg door leads to screen 11.
+  - `:1140`: a non-navigating host, desktop and phone, opens Framsteg in the frame as well.
+  - These replace the retry test that was at `:1091`.
+
+### Fix 2 · Figure readiness belongs to the mounted image
+
+- `LjuskaglaParts.tsx:899`–`:975`: `useFigureGate` keeps, for each place (`figure`, `option-<L>`), the image element mounted there now, with its key (place, source and retry) and its own load.
+  - A kept ref callback per key (`:939`) registers each newly mounted element. It is `ready` only if it is already complete with pixels, otherwise `loading`. Its React 19 cleanup (`:946`) removes it on unmount.
+  - `settle` (`:934`) accepts load and error only from the element now in the place.
+  - `status` answers `loading` unless the place's current element has the asked key.
+  - So a page shared by consecutive questions stays mounted and stays ready. A page come back to, a remounted layout and a sheet's image options start over, and the enlarged viewer keeps its own ungated image.
+- `:589`: `FigureImg`'s handlers now receive the event, to know which element spoke.
+- Red-first tests:
+  - `Ljuskagla.test.tsx:1226`: load page A, then visit another page or a question without a figure, then return to A. The new `<img>` is a different element with the same source. The answers and letters stay blocked, and a late load from the old image changes nothing. They open once the new image loads. The viewer's own image failing leaves the gate ready.
+  - `:1256`, phone: image options load in the open sheet, the sheet folds (letters then choose nothing: the images are not mounted) and opens again. The new images block until each has loaded.
+  - The existing tests stay green: the shared page needs no second load, retry, and a cached image counts as loaded.
+
+### Fix 3 · Question arrows yield to scroll regions and focused controls
+
+- `LjuskaglaProvpass.tsx:441`–`:477`: `keepsArrows` recognises targets whose ←/→ are their own:
+  - a control: `button`, `a[href]`, `summary`, the ARIA widget roles;
+  - a panning page (`data-lj-pan`);
+  - an element that scrolls itself: its computed overflow is `auto` or `scroll`, the page itself aside. That is what a browser focuses as a keyboard scroller, such as an overflowing problem column.
+- `:692`–`:699`: text fields (the kit's foreign keys) keep their arrows without `preventDefault` now. A target that keeps its arrows inside the runner is left to its native scrolling. The runner's own `data-rd-keyscope` keeps the switcher away from it.
+  - Outside the runner (the bake-off bar), such a target is held: `preventDefault`, no question change.
+  - Anything else (the question heading focused on each new question, the body) still changes the question.
+  - Digits and 0 stay held while the pass runs.
+- Behaviour change to note: with focus on an answer, a map cell, a gate or the viewer's buttons, ←/→ no longer change the question or get swallowed. They keep their native meaning, which is scrolling. This is spec §9's "yield to focused controls", the same reading as Instrument's round 2. The letters still choose from anywhere.
+- Red-first tests:
+  - `Ljuskagla.test.tsx:1437`–`:1442`, real host with the direction sheet loaded (`withSheet`, `:872`): the KVA problem column (no figure inside) is focused. ArrowRight, ArrowLeft, Shift+ArrowRight and Shift+ArrowLeft are not prevented, and keep the question, the focus and the host selection. `1`, `8` and `0` stay held. jsdom has no layout, so the test lends the column the focusability that Chrome and Firefox give an overflowing scroller.
+  - The heading inside the same column still steps.
+  - `:1353`/`:1377`: the five-target host test now expects focused controls to keep their arrows, with no question change: native for the answer and the cell, held for the switcher bar. The heading and the body still step.
+
+### Evidence
+
+- **Red first.** The new and changed tests were written before any source change. Against the untouched `d25020d` source they failed: **20 failed | 184 passed (204)**, each at its intended assertion:
+  - nav absent;
+  - options enabled too early;
+  - arrows prevented or stepping;
+  - keyscope still on the failed pass;
+  - switcher keys still held.
+- **Green.** After the fix: **204/204** in `Ljuskagla.test.tsx`.
+- **Mutation checks** (each reverted; the source re-checked by grep):
+  - M1, `holdKeys` without `!failed`: the 8 switcher-key tests failed.
+  - M2, `data-rd-keyscope` kept on the failed pass: the 2 exit tests and the 4 focused-heading key tests failed. The body ones correctly passed.
+  - M3, no unmount cleanup in the figure gate: the phone sheet test failed at its folded-sheet letter check (`:1287`).
+  - M4, `scrollsItself` always false: the scroll-region test failed.
+  - M5, `button` removed from `OWN_ARROWS`: the answer, cell and switcher-bar cases failed.
+  - Not mutation-sensitive: `settle`'s element check. React drops events from unmounted elements, so the "late event" assertion holds either way; the check is defence in depth.
+- **Verification** (from the worktree root, never `cd`):
+  - `pnpm -C app typecheck`: exit 0.
+  - `pnpm -C app lint`: exit 0, 512 files, the same 4 pre-existing infos (three `useIndexOf` in `LandingBakeoffR3/R4A/R4C.tsx`, one `noUselessFragments` in `l12/M3.tsx`).
+  - `pnpm -C app test`: **109 files, 2650/2650**.
+  - `git diff --check`: clean.
+- **Shared tests:** none failed; no file outside the write set was edited.
+
+### Copy (Swedish, proposed)
+
+- Removed: "Dina svar finns kvar här och är låsta. Försök igen." and "Försök lämna in igen".
+- New, failed status: "Provpasset kunde inte lämnas in." (kept) and "[Tiden tog slut. ]Dina svar finns kvar här men går inte längre att ändra. Om inlämningen ändå gick fram finns resultatet under Tidigare resultat.", with **Till Provpass**.
+- It promises neither way, since the hand-in may have reached the host.
+
+### Left for the coordinator
+
+- **Browser pass, not possible here:** a failed hand-in on desktop and phone, light and dark, after a manual hand-in and after time-up. Check:
+  - the shell beside the read-only pass;
+  - the status lamp, and focus on its heading;
+  - the phone's head, map toggle, sheet and bottom bar;
+  - the viewer opened over the failed state.
+- In Chrome, Tab to an overflowing KVA/NOG problem column (desktop) and check that ←/→ scroll it, or do nothing, while the question stays.
+- **Unchanged kit gap:** a hand-in that does not throw stays "Provpasset lämnas in …" until the host navigates. Kit v2 has no settlement acknowledgement, and this round treats only a failed attempt as ended.
+- Still open from batch 2: `LjuskaglaQuant.tsx`'s private part copies and B1's ungated practice Svara (outside this write set), and the root dotfile placeholders (delete from outside the sandbox).
+
+LJUSKAGLA2R2 DONE: hpf-qr0p.31
