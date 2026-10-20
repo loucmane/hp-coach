@@ -28,7 +28,13 @@
 // moment it starts: it runs through every gate, and at zero it hands the
 // pass in, once. Phone: the head keeps the exit and the clock; the rest is
 // one scroll — the document, the question, the options, a docked action bar
-// and the overview.
+// and the overview. A scroll pane with focus — the passage, the DTK page,
+// the conversation's own column — keeps its arrows.
+//
+// Handed in (PassHanded), the pass lets go of the screen and its keys: the
+// frame and its doors come back with "Lämnar in …" until the result opens.
+// A hand-in the host refuses says so, with the answers as they stood,
+// read-only — it is never sent again — and the way on is the hub.
 //
 // The result (10): "Klart. 27 av 40 rätt." with the score attached and its
 // basis said beside it, never behind a hover; the one reply is "Till Öva"
@@ -56,7 +62,7 @@ import {
   Timer,
   X,
 } from 'lucide-react'
-import { type Ref, type RefObject, useCallback, useEffect, useId, useRef, useState } from 'react'
+import { type Ref, type RefObject, useEffect, useId, useRef, useState } from 'react'
 
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
@@ -202,7 +208,15 @@ export function SamtalProvpassHub({
 }) {
   const { data, actions } = useDirectionData()
   const { hub } = data.provpass
-  const [half, setHalf] = useState<Half>(hub.half)
+  const [chosen, setHalf] = useState<Half>(hub.half)
+  // A half the provider no longer lists gives way to the hub's own half,
+  // else to the first it lists: the hub always shows a half it can name.
+  const listed = (h: Half) => hub.halves.some((x) => x.half === h)
+  const half = listed(chosen)
+    ? chosen
+    : listed(hub.half)
+      ? hub.half
+      : (hub.halves[0]?.half ?? chosen)
   // The pass the gate asks about, or null.
   const [asking, setAsking] = useState<ProvPassOptionView | null>(null)
   const leadId = useId()
@@ -558,12 +572,19 @@ export function SamtalPass({
   width,
   live,
   onLeave,
+  onHandIn,
+  onHandInFailed,
 }: {
   passId: string
   width: WidthKey
   live: boolean
   /** Back to the hub: the pass was given up ('void'), or never ran. */
   onLeave: (why: 'void' | 'back') => void
+  /** The pass is handed in, its answers as they stood: the run ends. */
+  onHandIn: (pass: HandedPass) => void
+  /** The host refused that hand-in: its action threw, or its promise
+   *  rejected. */
+  onHandInFailed: (pass: HandedPass) => void
 }) {
   const { data } = useDirectionData()
   const running = data.provpass.running
@@ -610,6 +631,8 @@ export function SamtalPass({
       width={width}
       live={live}
       onVoid={() => onLeave('void')}
+      onHandIn={onHandIn}
+      onHandInFailed={onHandInFailed}
     />
   )
 }
@@ -754,6 +777,22 @@ function onControl(target: EventTarget | null): boolean {
   )
 }
 
+/** The pass's own scroll panes, which keep their arrows and Space: the
+ *  conversation's column when it has focus itself (the desktop thread, the
+ *  phone's one scroll), and the document beside the question — the
+ *  passage, the DTK page and its pan — wherever in it focus is. */
+function inPane(target: EventTarget | null): boolean {
+  return (
+    target instanceof Element &&
+    (target.matches('.sa-thread--pass, .sa-ppass-scroll') || target.closest('.sa-pass-doc') != null)
+  )
+}
+
+/** An action's answer that settles later: a promise, or another thenable. */
+function settlesLater(value: unknown): value is PromiseLike<unknown> {
+  return typeof (value as PromiseLike<unknown> | null | undefined)?.then === 'function'
+}
+
 type PassGate = 'review' | 'abort'
 
 function PassRunner({
@@ -761,11 +800,15 @@ function PassRunner({
   width,
   live,
   onVoid,
+  onHandIn,
+  onHandInFailed,
 }: {
   r: ProvRunningView
   width: WidthKey
   live: boolean
   onVoid: () => void
+  onHandIn: (pass: HandedPass) => void
+  onHandInFailed: (pass: HandedPass) => void
 }) {
   const { actions } = useDirectionData()
   const phone = width === 'phone'
@@ -774,6 +817,7 @@ function PassRunner({
   // A list that shrinks under the reader keeps a real question on screen.
   const at = clamp(index, 0, total - 1)
   const q = r.questions[at]
+  const page = q.figure?.kind === 'raster' ? q.figure : null
   const [answers, setAnswers] = useState<Partial<Record<string, AnswerLetter>>>(() => ({
     ...r.answers,
   }))
@@ -798,23 +842,41 @@ function PassRunner({
     ? Math.max(0, Math.min(Math.ceil((deadline - now) / 1000), r.remainingSeconds))
     : r.remainingSeconds
 
-  // Handing in happens once — by the reader, or by the clock at zero.
+  // Handing in happens once — by the reader, or by the clock at zero. The
+  // answers go to the screen as they stand (Samtal.tsx), which ends the run:
+  // the frame comes back with "Lämnar in …", and this runner, its keys and
+  // its key scope with it, is gone. An action that throws, or a promise from
+  // it that rejects, is a refused hand-in, said with those answers; it is
+  // never sent again (kit v2 has no safe way to send a pass twice).
   const handed = useRef(false)
-  const [handedBy, setHandedBy] = useState<'reader' | 'time' | null>(null)
-  const handIn = useCallback(
-    (by: 'reader' | 'time') => {
-      if (handed.current) return
-      handed.current = true
-      setGate(null)
-      setInspecting(false)
-      setHandedBy(by)
-      actions.submitProvpass()
-    },
-    [actions],
-  )
+  const handIn = (by: 'reader' | 'time') => {
+    if (handed.current) return
+    handed.current = true
+    setGate(null)
+    setInspecting(false)
+    const pass: HandedPass = {
+      name: `${r.sitting} · ${r.pass}`,
+      by,
+      questions: r.questions,
+      answers,
+      flags: flagsOn ? flags : null,
+    }
+    onHandIn(pass)
+    const refused = () => onHandInFailed(pass)
+    let sent: unknown
+    try {
+      sent = actions.submitProvpass()
+    } catch {
+      refused()
+      return
+    }
+    if (settlesLater(sent)) sent.then(undefined, refused)
+  }
+  const handInNow = useRef(handIn)
+  handInNow.current = handIn
   useEffect(() => {
-    if (live && left === 0) handIn('time')
-  }, [live, left, handIn])
+    if (live && left === 0) handInNow.current('time')
+  }, [live, left])
 
   const block = passBlock(q, loads)
   const picked = answers[q.qid] ?? null
@@ -864,19 +926,49 @@ function PassRunner({
 
   const toOverview = () => overviewRef.current?.focus()
 
-  // The keys. While the pass runs, the bake-off's switcher keys (the
-  // digits, ←/→) never leave it, whatever has focus. a–e answer only the
-  // letters the question has, from anywhere but a gate or the enlarged
-  // page; ←/→ change the question unless a control or the page has focus;
-  // Enter moves on (on the last question: Granska svar); Space moves on once
-  // answered, and otherwise scrolls. Esc never gives the pass up.
+  // "Förstora figur": the page over the whole pass, for as long as the
+  // question has it. Esc or "Stäng figur" closes it; once the pass under it
+  // is in reach again (no longer inert), focus goes back to the control
+  // that opened it — or to the question, if that control went with the
+  // page. A pass that ends under it hands focus to its hand-in instead.
+  const showing = inspecting && page != null
+  const opener = useRef<HTMLElement | null>(null)
+  const wasShowing = useRef(false)
+  useEffect(() => {
+    if (showing) {
+      wasShowing.current = true
+      return
+    }
+    if (inspecting) setInspecting(false)
+    if (!wasShowing.current) return
+    wasShowing.current = false
+    const back = opener.current
+    opener.current = null
+    if (back?.isConnected && !back.matches(':disabled')) back.focus({ preventScroll: true })
+    else turnRef.current?.focus({ preventScroll: true })
+  }, [showing, inspecting])
+  const inspect = (from: HTMLElement) => {
+    opener.current = from
+    setInspecting(true)
+  }
+
+  // The keys. While the pass runs, the bake-off's switcher keys never leave
+  // it: the digits never, whatever has focus; ←/→ neither, but a scroll
+  // pane with focus keeps them (inPane) — there they scroll, or with Shift
+  // select, natively, and the pass's key scope keeps them from the switcher
+  // all the same. a–e answer only the letters the question has, from
+  // anywhere but a gate or the enlarged page; ←/→ change the question unless
+  // a control or a pane has focus; Enter moves on (on the last question:
+  // Granska svar); Space moves on once answered, and otherwise scrolls. Esc
+  // never gives the pass up. Handed in, the pass lets go of every key.
   const keys = useRef<(e: KeyboardEvent) => void>(() => {})
   keys.current = (e) => {
-    if (e.metaKey || e.ctrlKey || e.altKey) return
-    const arrow = e.key === 'ArrowLeft' || e.key === 'ArrowRight'
-    if (arrow || /^[0-9]$/.test(e.key)) e.preventDefault()
-    if (handed.current || gate || inspecting || isForeignKey(e)) return
+    if (handed.current || e.metaKey || e.ctrlKey || e.altKey) return
     const target = e.target
+    const arrow = e.key === 'ArrowLeft' || e.key === 'ArrowRight'
+    const pane = inPane(target)
+    if (/^[0-9]$/.test(e.key) || (arrow && !pane)) e.preventDefault()
+    if (gate || showing || isForeignKey(e)) return
     const k = e.key.length === 1 ? e.key.toLocaleLowerCase('sv-SE') : e.key
     if (/^[a-e]$/.test(k)) {
       if (e.shiftKey) return
@@ -887,9 +979,8 @@ function PassRunner({
       }
       return
     }
-    const inPage = target instanceof Element && target.closest('.sa-fig-scroll') != null
     if (arrow) {
-      if (onControl(target) || inPage) return
+      if (onControl(target) || pane) return
       go(at + (e.key === 'ArrowRight' ? 1 : -1))
       return
     }
@@ -900,7 +991,7 @@ function PassRunner({
       return
     }
     if (e.key === ' ') {
-      if (onControl(target) || inPage || picked == null) return
+      if (onControl(target) || pane || picked == null) return
       e.preventDefault()
       next()
     }
@@ -912,19 +1003,6 @@ function PassRunner({
     return () => window.removeEventListener('keydown', onKey, true)
   }, [live])
 
-  if (handedBy) {
-    return (
-      <HandingIn
-        width={width}
-        by={handedBy}
-        name={`${r.sitting} · ${r.pass}`}
-        answered={answeredCount}
-        total={total}
-      />
-    )
-  }
-
-  const page = q.figure?.kind === 'raster' ? q.figure : null
   const view = page ? (views[page.src] ?? PAGE_START) : PAGE_START
   const setView = (patch: Partial<PageView>) => {
     if (!page) return
@@ -942,12 +1020,12 @@ function PassRunner({
       run={pageRun(r.questions, at)}
       onZoom={(dir) => setView({ zoom: clamp(view.zoom + dir, 0, FIGURE_ZOOMS.length - 1) })}
       onRotate={() => setView({ rotation: (view.rotation + 90) % 360 })}
-      onInspect={() => setInspecting(true)}
+      onInspect={inspect}
       onStatus={(s) => loads.report(page.src, s)}
       onRetry={() => loads.retry(page.src)}
     />
   ) : q.passage ? (
-    <PassPassage key={docKey(q) ?? undefined} q={q} />
+    <PassPassage key={docKey(q) ?? undefined} q={q} scrolls={!phone} />
   ) : null
 
   const flagged = flagsOn && flags.has(q.qid)
@@ -1009,7 +1087,7 @@ function PassRunner({
         .map((x, i) => (flags.has(x.qid) ? i + 1 : null))
         .filter((n): n is number => n != null)
     : []
-  const busy = gate != null || inspecting
+  const busy = gate != null || showing
 
   const body = phone ? (
     <div className="sa-ppass">
@@ -1065,8 +1143,9 @@ function PassRunner({
       className="sa-pass"
       data-testid="rd-prov-running"
       data-width={width}
-      // The whole pass is the reader's: the switcher leaves its keys alone.
-      data-rd-keyscope=""
+      // While it runs, the whole pass is the reader's: the switcher leaves
+      // its keys alone. Handed in, the runner and its scope are gone.
+      data-rd-keyscope={live ? '' : undefined}
     >
       <h1 className="sa-sr">
         Provpass: {r.sitting} · {r.pass}
@@ -1098,7 +1177,7 @@ function PassRunner({
           }}
         />
       ) : null}
-      {inspecting && page ? (
+      {showing && page ? (
         <FigureInspector
           figure={page}
           rotation={view.rotation}
@@ -1720,52 +1799,172 @@ function AbortGate({ onBack, onAbort }: { onBack: () => void; onAbort: () => voi
   )
 }
 
-/** Handed in: the answers are locked and the coach says so, until the
- *  result opens. */
-function HandingIn({
-  width,
-  by,
-  name,
-  answered,
-  total,
-}: {
-  width: WidthKey
-  by: 'reader' | 'time'
+// ── Handed in ────────────────────────────────────────────────────────
+
+/** A pass handed in — by the reader or by the clock — with its answers as
+ *  they stood. Samtal.tsx holds it while the host settles the hand-in;
+ *  PassHanded shows it on Provpass. */
+export type HandedPass = {
+  /** "Hösten 2025 · Provpass 1" */
   name: string
-  answered: number
-  total: number
+  by: 'reader' | 'time'
+  questions: readonly DrillQuestion[]
+  answers: Partial<Record<string, AnswerLetter>>
+  /** Null when the pass carries no flags. */
+  flags: ReadonlySet<string> | null
+}
+
+/**
+ * A handed-in pass, in the frame again with its doors: the answers are
+ * locked and the coach says "Lämnar in …" until the host opens the result.
+ * A hand-in the host refused says so — the answers as they stood beside
+ * it, read-only, since nothing here sends them again — and the one way on
+ * is the hub (↵). Its heading takes focus, and again when the hand-in
+ * fails.
+ */
+export function PassHanded({
+  pass,
+  failed,
+  width,
+  live,
+  onBack,
+}: {
+  pass: HandedPass
+  failed: boolean
+  width: WidthKey
+  live: boolean
+  /** To the hub. */
+  onBack: () => void
 }) {
   const headingId = useId()
-  const turn = (
-    <div className="sa-closing">
-      <Divider>{name}</Divider>
+  const headingRef = useRef<HTMLHeadingElement>(null)
+  useKeyMap({ Enter: onBack }, live && failed)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: again when the hand-in fails
+  useEffect(() => {
+    if (live) headingRef.current?.focus({ preventScroll: true })
+  }, [live, failed])
+  const total = pass.questions.length
+  const answered = pass.questions.filter((x) => pass.answers[x.qid] != null).length
+  return (
+    <div
+      className="sa-prov"
+      data-width={width}
+      data-testid={failed ? 'rd-prov-failed' : 'rd-prov-handing'}
+    >
+      <Divider>{pass.name}</Divider>
       <div className="sa-thread">
         <Coach as="section" kind="sa-turn--lead" aria-labelledby={headingId}>
-          {by === 'time' ? <p className="sa-hello">Tiden är ute.</p> : null}
-          <h1 className="sa-lead-q" id={headingId}>
-            Lämnar in …
+          {pass.by === 'time' ? <p className="sa-hello">Tiden är ute.</p> : null}
+          <h1 className="sa-lead-q" id={headingId} tabIndex={-1} ref={headingRef}>
+            {failed ? 'Passet kunde inte lämnas in.' : 'Lämnar in …'}
           </h1>
-          <p className="sa-say" role="status">
-            {answered} av {total} frågor besvarade. Resultatet öppnas när det är klart.
-          </p>
+          {failed ? (
+            <>
+              <p className="sa-say" role="alert">
+                Något gick fel när passet skulle lämnas in, så det finns inget resultat att visa.
+              </p>
+              <p className="sa-say sa-say--quiet">
+                Dina svar står kvar nedan, som de var. De kan inte ändras, och passet kan inte
+                lämnas in igen härifrån.
+              </p>
+            </>
+          ) : (
+            <p className="sa-say" role="status">
+              {answered} av {total} frågor besvarade. Resultatet öppnas när det är klart.
+            </p>
+          )}
         </Coach>
+        {failed ? (
+          <Replies>
+            <button
+              type="button"
+              className="sa-chip sa-chip--primary sa-chip--big"
+              onClick={onBack}
+            >
+              Till Provpass
+              <Kbd>↵</Kbd>
+            </button>
+          </Replies>
+        ) : null}
       </div>
-    </div>
-  )
-  return (
-    <div className="sa-pass" data-testid="rd-prov-handing" data-width={width}>
-      {width === 'phone' ? (
-        <div className="sa-pdrill" data-phase="done">
-          <div className="sa-pdone">{turn}</div>
-        </div>
-      ) : (
-        <div className="sa-drill" data-phase="done">
-          <div className="sa-done-scroll">
-            <div className="sa-col">{turn}</div>
+      {failed ? (
+        <div className="sa-later">
+          <Divider quiet>Dina svar</Divider>
+          <div className="sa-cards">
+            <AnswerRecord pass={pass} />
           </div>
         </div>
-      )}
+      ) : null}
     </div>
+  )
+}
+
+/** A refused pass's answers as they stood: every question by section with
+ *  its letter and its flag, as the overview showed them — a record, with
+ *  nothing to press. */
+function AnswerRecord({ pass }: { pass: HandedPass }) {
+  const id = useId()
+  const { questions, answers, flags } = pass
+  const answered = questions.filter((x) => answers[x.qid] != null).length
+  const marked = flags ? questions.filter((x) => flags.has(x.qid)).length : 0
+  return (
+    <section
+      className="sa-card sa-overview sa-overview--record"
+      aria-labelledby={id}
+      data-testid="rd-prov-record"
+    >
+      <header className="sa-card-head">
+        <h2 id={id}>Svarsöversikt</h2>
+        <span>
+          {answered} av {questions.length} besvarade
+          {marked ? ` · ${marked} markerade` : null}
+        </span>
+      </header>
+      {runsOf(questions).map((run) => (
+        <div className="sa-overview-run" key={run.start}>
+          <h3 className="sa-overview-h">
+            {run.section}{' '}
+            <span>
+              {run.start + 1}–{run.end}
+            </span>
+          </h3>
+          <ol className="sa-cells">
+            {questions.slice(run.start, run.end).map((x, k) => {
+              const n = run.start + k + 1
+              const letter = answers[x.qid] ?? null
+              const flagged = flags?.has(x.qid) ?? false
+              const said = [
+                `Fråga ${n}`,
+                x.section,
+                letter ? `svar ${letter}` : 'obesvarad',
+                flagged ? 'markerad' : null,
+              ]
+                .filter(Boolean)
+                .join(', ')
+              return (
+                <li
+                  key={x.qid}
+                  className="sa-cell sa-cell--still"
+                  data-answered={String(letter != null)}
+                  data-flagged={flagged ? 'true' : undefined}
+                >
+                  <span className="sa-sr">{said}</span>
+                  <span className="sa-cell-n" aria-hidden>
+                    {n}
+                  </span>
+                  <span className="sa-cell-l" aria-hidden>
+                    {letter ?? ''}
+                  </span>
+                  {flagged ? (
+                    <Flag className="sa-cell-flag" size={11} strokeWidth={2} aria-hidden />
+                  ) : null}
+                </li>
+              )
+            })}
+          </ol>
+        </div>
+      ))}
+    </section>
   )
 }
 
@@ -1777,8 +1976,9 @@ function splitTitle(title: string): [string, string | null] {
 
 /** A passage as the pass's document: ¶ numbers in its margin, the
  *  ÖVNINGSTEXT badge and "Om texten" for a practice text, English marked as
- *  English. Nothing points into it during a pass. */
-function PassPassage({ q }: { q: DrillQuestion }) {
+ *  English. Nothing points into it during a pass. Where it scrolls on its
+ *  own (the desktop), it is a stop for the keyboard, which scrolls it. */
+function PassPassage({ q, scrolls }: { q: DrillQuestion; scrolls: boolean }) {
   const { data } = useDirectionData()
   const p = q.passage
   const [note, setNote] = useState(false)
@@ -1788,7 +1988,12 @@ function PassPassage({ q }: { q: DrillQuestion }) {
   const lang = p.lang === 'en' ? 'en' : undefined
   const [title, subtitle] = p.title ? splitTitle(p.title) : [q.source.label, null]
   return (
-    <article className="sa-doc sa-pass-doc" aria-labelledby={titleId} data-testid="rd-prov-passage">
+    <article
+      className="sa-doc sa-pass-doc"
+      aria-labelledby={titleId}
+      data-testid="rd-prov-passage"
+      tabIndex={scrolls ? 0 : undefined}
+    >
       <header className="sa-doc-head">
         <span className="sa-doc-tag">
           <span>{q.section}</span>
@@ -1861,7 +2066,8 @@ function PassPage({
   run: { at: number; of: number } | null
   onZoom: (dir: 1 | -1) => void
   onRotate: () => void
-  onInspect: () => void
+  /** Opens the enlarged page; `from` is the control focus goes back to. */
+  onInspect: (from: HTMLElement) => void
   onStatus: (s: FigureStatus) => void
   onRetry: () => void
 }) {
@@ -1931,7 +2137,7 @@ function PassPage({
             className="sa-tool"
             aria-haspopup="dialog"
             disabled={status !== 'ready'}
-            onClick={onInspect}
+            onClick={(e) => onInspect(e.currentTarget)}
           >
             <Maximize2 size={15} strokeWidth={1.75} aria-hidden />
             Förstora figur

@@ -18,8 +18,11 @@
 // fold survives a move between doors; only Navigering (4) folds the list
 // and opens the account, and the way back to Idag (1) unfolds it again.
 // Framsteg opens on its overview from its door and on Historik from Idag's
-// "Alla pass i Framsteg". A started pass leaves the frame (Samtal.tsx); while
-// a gate stands over the hub, the frame under it is inert.
+// "Alla pass i Framsteg". A started pass leaves the frame (Samtal.tsx) and
+// comes back to it handed in: Provpass then shows the hand-in (PassHanded)
+// in place of the hub, and its way back — or, once it has failed, the
+// Provpass door — returns to the hub. While a gate stands over the hub,
+// the frame under it is inert.
 
 import { PanelLeftClose, PanelLeftOpen, UserRound } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -38,7 +41,7 @@ import { type FramstegTab, SamtalFramsteg } from './SamtalFramsteg'
 import { SamtalHome } from './SamtalHome'
 import { SamtalOva } from './SamtalOva'
 import { DoorIcon, Mark, words } from './SamtalParts'
-import { SamtalProvpassHub, SamtalResult } from './SamtalProvpass'
+import { type HandedPass, PassHanded, SamtalProvpassHub, SamtalResult } from './SamtalProvpass'
 import { SamtalRepetera } from './SamtalRepetera'
 
 type Page = 'idag' | 'ova' | 'repetera' | 'provpass' | 'resultat' | 'framsteg'
@@ -106,14 +109,23 @@ export function SamtalFrame({
   onTheme,
   onStartPass,
   passNotice = null,
+  passHanded = null,
+  onPassBack,
 }: DirectionProps & {
   /** A pass was started from the hub: the screen runs it (Samtal.tsx). */
   onStartPass?: (passId: string) => void
   /** Said once on the hub: the last pass was given up. */
   passNotice?: 'void' | null
+  /** A pass handed in, waiting for its result or refused: Provpass shows
+   *  it in place of the hub. */
+  passHanded?: { pass: HandedPass; failed: boolean } | null
+  /** From the hand-in back to the hub. */
+  onPassBack?: () => void
 }) {
   const { data, actions } = useDirectionData()
   const page = pageOf(screen)
+  // What the page shows: Provpass shows a handed-in pass in place of its hub.
+  const view = page === 'provpass' && passHanded ? 'handed' : page
   const current = PAGE_DOOR[page]
   const preview = previews(data.home)
   const ovaDue = data.home.ovaDue
@@ -153,20 +165,27 @@ export function SamtalFrame({
     return () => window.removeEventListener('keydown', onKey, true)
   }, [live, width])
 
-  // A door the reader chose: the new page's heading takes focus.
+  // A door the reader chose: the new page's heading takes focus. From a
+  // hand-in back to the hub — its way back, or the Provpass door once the
+  // hand-in has failed — the hub's question takes it.
   const chosen = useRef(false)
+  const toHub = useCallback(() => {
+    chosen.current = true
+    onPassBack?.()
+  }, [onPassBack])
   const go = useCallback(
     (d: Destination) => {
       setMenu(false)
       chosen.current = d !== PAGE_DOOR[page] || page === 'repetera' || page === 'resultat'
       if (d === 'framsteg') setFramstegTab('oversikt')
+      if (d === 'provpass' && passHanded?.failed) toHub()
       actions.go(d)
     },
-    [actions, page],
+    [actions, page, passHanded, toHub],
   )
   const closeMenu = useCallback(() => setMenu(false), [])
   const pageRef = useRef<HTMLDivElement>(null)
-  // biome-ignore lint/correctness/useExhaustiveDependencies: on a new page only
+  // biome-ignore lint/correctness/useExhaustiveDependencies: on a new page or view only
   useEffect(() => {
     if (!chosen.current) return
     chosen.current = false
@@ -175,13 +194,21 @@ export function SamtalFrame({
       (h) => h.closest('[hidden]') == null,
     )
     if (live) heading?.focus({ preventScroll: true })
-  }, [page])
+  }, [view])
 
   const body =
     page === 'ova' ? (
       <SamtalOva width={width} live={live} />
     ) : page === 'repetera' ? (
       <SamtalRepetera width={width} live={live} />
+    ) : page === 'provpass' && passHanded ? (
+      <PassHanded
+        pass={passHanded.pass}
+        failed={passHanded.failed}
+        width={width}
+        live={live}
+        onBack={toHub}
+      />
     ) : page === 'provpass' ? (
       <SamtalProvpassHub
         width={width}

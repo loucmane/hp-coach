@@ -183,3 +183,99 @@ The brief asks for any node process to run as `NODE_OPTIONS=--max-old-space-size
 ## Beads hand-off
 
 - One completion note on the bead, then parked `deferred` with the assignee cleared, confirmed with `bd show`; then `gc runtime drain-ack`. Not closed: review and delivery are the coordinator's.
+
+## Round 2 — review hpf-3lt1 (HOLD, four P2)
+
+Session `ci-wisp-5vlue9g`, 2026-10-20. `gc hook --claim --json` returned `hpf-qr0p.25` (route `hpfetcher/gc.implementation-worker`); `bd show` matched the id, the status (`in_progress`), the assignee and `gc.routed_to`. The worktree was clean at `21a10186a32c8e7cb534d165d465b8d0ecabffb5` (the untracked root dotfiles are the sandbox's placeholders, as in round 1). The review report was read first from `scratch/hpf-qr0p.25/review-hpf-3lt1.md`.
+
+**Write set kept.** Modified: `Samtal.test.tsx`, `Samtal.tsx`, `SamtalFramsteg.tsx`, `SamtalNav.tsx`, `SamtalProvpass.tsx`, `samtal.css`, and this worklog. No shared kit file, spec or other direction was touched. Uncommitted.
+
+**Red first.** Every new test was written before any source change and run against the source at `21a1018`: **30 failed | 331 passed (361)**, plus **6 unhandled errors** (the refused hand-in's exception escaping the runner: from the click handler for the reader, from a passive effect for the clock). Each failure was for the reason it tests (traces checked). The sweep's register-gate test passed on the old code (marked "already safe" below). Two cases added after that run — Space in a pane, and the Provpass door as a way out — were proven red against mutants (6 of 6 failed: the pane check removed from Space; the door's return to the hub disabled), then the code was restored (`rg MUTANT` finds nothing).
+
+Paths below are under `app/src/components/devbake/redesign/f-samtal/`; line numbers are at the final tree.
+
+### Fix 1 — a refused hand-in no longer traps the reader
+
+- **Hand-in, once.** `SamtalProvpass.tsx:852` `handIn`: the `handed` latch stays; the answers and flags are frozen into a `HandedPass` (type at `:1807`) and given to the screen (`onHandIn`), which ends the run; then `actions.submitProvpass()` is called inside `try`/`catch` (`:868`), and a returned promise's rejection is observed too (`:873`, `settlesLater` at `:792`). Either failure calls `onHandInFailed`. Nothing resends: there is no retry, and the clock cannot fire again because the runner is gone. The clock path (`:877`) calls the latest `handIn` through a ref.
+- **The run ends at the hand-in.** `Samtal.tsx:63–87`: `handed` (`{ pass, failed }`); `handIn` sets `run = null`; `refused` marks only the pass on show (a late rejection for another pass changes nothing); `toHub` clears it; a screen change clears it, as it does the run.
+- **The frame and its doors come back.** `SamtalNav.tsx:204`: Provpass shows `PassHanded` in place of the hub (`view` at `:128`). Its "Till Provpass" and Enter, and once the hand-in has failed the Provpass door (`:181`), return to the hub; the hub's question then takes focus (the focus effect now runs per view, `:197`).
+- **What the reader sees.** `SamtalProvpass.tsx:1825` `PassHanded`, in the frame's column, with its heading focused (on the hand-in, and again when it fails):
+  - while the host settles it, "Lämnar in …" with `role="status"` "N av M frågor besvarade. Resultatet öppnas när det är klart." (same as before, but now with the doors);
+  - refused: "Passet kunde inte lämnas in." (h1), `role="alert"` "Något gick fel när passet skulle lämnas in, så det finns inget resultat att visa.", a quiet line that the answers stay as they were, cannot be changed and cannot be handed in again from here, the one action "Till Provpass ↵" (Enter at `:1841`), and `AnswerRecord` (`:1905`). The record is the overview's cells as a read-only list (no buttons): letters, flags, "N av M besvarade · K markerade", and reader text per cell ("Fråga 9, XYZ, svar B, markerad"). CSS: `samtal.css:4397–4411` (`.sa-overview--record`, `.sa-cell--still`).
+- **Keys and key scope let go.** The runner, with its capture listener and its `data-rd-keyscope` (now only while live, `:1148`), unmounts at the hand-in. The handler also checks the latch before it prevents anything (`:966`), so a handed-in pass never swallows a key.
+- **Tests** (both widths):
+  - Through the real host (`Redesign2026Bakeoff` on Samtal screen 9). The harness's `onSelect` throws once on the request for screen 10, which is how the bake-off's `submitProvpass` fails; no module mock. A second run lets the clock reach zero under fake timers. Test `Samtal.test.tsx:2451`, by the reader and by the clock: the error is visible (h1 and alert); the record shows "16 av 40 besvarade · 2 markerade", all 40 items, no buttons, question 9 flagged and 17 "obesvarad"; the doors are not inert; the heading has focus. A letter and five more seconds hand nothing in, so there is exactly one request for screen 10. → on the focused heading moves the switcher to 10, ← brings back the fresh hub, and `2` switches the direction.
+  - `:2497` is the way out: "Till Provpass", Enter or the Provpass door, by the reader and by the clock. Each leads to the hub with its question focused and still one hand-in, and the doors lead on.
+  - Provider level: `:1930` checks that, once handed in, the frame and doors are back, the heading has focus, no key scope remains, and digits and arrows are not prevented. `:1951` covers a promise that rejects: "Lämnar in …" first, then the refusal with B recorded on question 17, sent once.
+  - The round-1 hand-in tests (`:1915`, the clock at `:2203` and `:2224`, the shared contract) are unchanged and green.
+
+### Fix 2 — the weekly chart reads only weeks it has, and the sweep
+
+- `SamtalFramsteg.tsx:357–360`: the chosen week is clamped against the current series when it is read (`at = min(chosen, weekly.length − 1)`); a shorter series keeps its last week.
+- Test `Samtal.test.tsx:2797` (both widths): Home, then End (week 12 of 12). The provider then replaces the series with two scored weeks: the readout shows the last of the two (1,3), two dots are drawn, and ← reads the first (1,1). Red at `21a1018`: `TypeError: Cannot read properties of undefined (reading 'score')` in `WeeklyTrend`.
+- **Sweep.** Every retained index or selection in screens 9–11, tested by choosing the last entry, then a shorter, still-populated collection:
+
+| Retained | Where | Result | Test |
+|---|---|---|---|
+| The question on screen | `PassRunner` `index`, clamped to `at` | already safe | `:2049` (question 40, then 30 questions) |
+| The enlarged page over a question that goes | `PassRunner` `showing` (`:934`) | fixed: it used to leave the pass inert (fix 4) | `:2185` (question 29, then 20 questions) |
+| The chosen week | `WeeklyTrend` | fixed | `:2797` |
+| The chosen half | hub: `chosen` gives way to a listed half (`:215`) | fixed: no half used to be pressed while the other half's pass was offered | `:1809` |
+| The gate's pass | hub `asking`, held by value | already safe: the gate stays whole, and the start is the host's call ("kan inte öppnas här just nu") | `:1822` |
+| Answers and flags (by qid), page views and loads (by src), zoom steps (fixed lists), the Framsteg tab (two fixed views), folds (booleans) | — | not indexes into provider lists | — |
+
+### Fix 3 — a scroll pane with focus keeps its arrows
+
+- `SamtalProvpass.tsx:784` `inPane` recognises two kinds of pane. One is the conversation's own column when it has focus itself (`.sa-thread--pass` on the desktop, `.sa-ppass-scroll` on the phone). The other is anywhere in the document beside the question (`.sa-pass-doc`: the passage, the DTK page and its pan).
+- In the capture handler (`:969`), arrows in a pane are not prevented, so they scroll natively and, with Shift, select; they do not move the question. Space there scrolls. The digits and 0 are still prevented whatever has focus, and the pass's key scope keeps a pane's arrows from the switcher.
+- `:1995`: the desktop passage, which scrolls on its own, is a keyboard stop (`tabIndex={0}`, so a keyboard can reach and scroll it; axe's scrollable-region-focusable).
+- Test `Samtal.test.tsx:2519` (both widths), through the real host:
+  - **Data.** The fixtures' running pass is quantitative and has no passage. The test spies on `useBakeoffDirectionData` (`vi.spyOn` on the module, restored after each test) so that the real hook's value comes back with question 17 replaced by a reading question with its passage. Everything else is the real host.
+  - **Checks.** Question 17 is answered first. The panes are the passage (focused) and the thread on the desktop, and the one scroll on the phone. In each, ←, →, ⇧←, ⇧→ and Space are not prevented, question 17 stays, and the host stays on screen 9. 1, 5, 8 and 0 are prevented, the direction stays f and side by side stays off. The DTK pan still pans, and outside a pane → still moves the question.
+  - **Red at `21a1018`.** On the desktop the passage could not take focus; on the phone the arrows were prevented and moved the question.
+  - **jsdom note.** jsdom cannot focus a scroller without a tabindex, so for the thread and the phone's scroll the key is dispatched on the pane itself. That is what a browser does when the scroller has focus: Firefox, and Chrome's keyboard-focusable scrollers.
+
+### Fix 4 — focus comes back from the enlarged page
+
+- `SamtalProvpass.tsx:934–953`: `inspect(from)` saves the opener (`PassPage` passes `e.currentTarget`, `:2140`). The inspector shows only while its question has the page (`showing`), and the pass's `inert` follows it.
+- Once it closes and the inert is gone (a passive effect, as `SamtalQuant.tsx:279–293` does), focus returns to "Förstora figur". If that control went with the page, or is disabled, focus goes to the question (its turn, named by its heading).
+- A page that goes from under the inspector now closes it; it used to leave the pass inert with no dialog. A pass that ends under it (the clock) unmounts the runner, and the hand-in's heading takes focus.
+- Tests (both widths):
+  - `:2166`, Escape and "Stäng figur": while open, the close button has focus and the pass is inert; after closing there is no dialog, the pass is not inert, focus is on "Förstora figur" and question 29 is still on screen.
+  - `:2185`: the list shrinks to 20 under the inspector. It closes, "Fråga 20 · KVA" is on screen, the pass is not inert and the question has focus. Red at `21a1018`: the pass stayed inert.
+  - `:2254`: the clock runs out under the enlarged page. The pass is handed in once, the dialog is gone, and "Lämnar in …" has focus.
+
+### Proposed copy (round 2)
+
+"Passet kunde inte lämnas in." · "Något gick fel när passet skulle lämnas in, så det finns inget resultat att visa." · "Dina svar står kvar nedan, som de var. De kan inte ändras, och passet kan inte lämnas in igen härifrån." · "Till Provpass" (as on the result) · "Dina svar" (quiet divider) · "Svarsöversikt" (as in the running pass) · per cell for a reader: "Fråga N, SEKTION, svar X[, markerad]" / "…, obesvarad".
+
+The raw exception text is not shown, because it is the host's wording and may be English or technical. The owner may want it under a disclosure.
+
+### Notes for the coordinator and the owner
+
+- **Behaviour changes.**
+  - "Lämnar in …" now stands in the frame with its doors; in round 1 it was in focus mode with no way out. A host that never settles therefore cannot trap the reader. In the bake-off it is never seen, because the result opens at once.
+  - In a focused scroll pane, Space now scrolls (it used to move on once answered), and ←/→ there no longer change the question.
+  - The desktop passage is a Tab stop.
+- **Spec gap 2, updated.** An observable failure (a throw or a rejection) is now said, with the answers. There is still no "sparat" claim, no settlement status and no resubmit, because the kit has no safe signal for one.
+- **No shared test failed**, and none was edited.
+- **Browser self-check: not run.** It is not in this round's VERIFY, and an ad-hoc harness is not allowed. The coordinator's visual pass should add the refused hand-in (both widths and themes, the record's cells) and the passage's focus ring.
+- **Playbook proposal — gas-city-coordinator — 2026-10-20.** To test a host action that fails through the real bake-off, have the harness's `onSelect` throw for the screen the action requests (`submitProvpass` asks for 10). The real action then throws, with no module mock. Count those requests to prove "called once".
+
+### Verification (round 2, final tree, never `cd`)
+
+- `pnpm -C app typecheck`: **clean**.
+- `pnpm -C app lint`: **0 errors, 0 warnings**, 512 files. The 4 infos are pre-existing and outside `f-samtal/`.
+- `pnpm -C app test src/components/devbake/redesign/f-samtal/Samtal.test.tsx`: **365 passed (365)**, 36 more than round 1's 329.
+- `pnpm -C app test`: **109 files, 2713 passed (2713)**, the 2677 at the candidate plus these 36.
+
+### Round 2 source fingerprints (SHA-256, under `app/src/components/devbake/redesign/f-samtal/`)
+
+| File | SHA-256 |
+|---|---|
+| `Samtal.test.tsx` | `1e051a44485b9d915d15b212d14173adac31ea0bf80a657602442052ca792e1b` |
+| `Samtal.tsx` | `fff0da30a174c613adae90c944bd1f12ad1b395812385db2fcaebb0138b96a2a` |
+| `SamtalFramsteg.tsx` | `f5ebd018e4bd9c444ac50cb881e1e2f0be7c293e1ce639bd1eb9c04576a2995d` |
+| `SamtalNav.tsx` | `7dd9115a84b5e90a9b0451faee81eefb945d77fe35ac3cd45fd95e2a68dccef2` |
+| `SamtalProvpass.tsx` | `df1c6383785344839a013f0961c02de4b4d27949cdec2c4a756946f963e1cb73` |
+| `samtal.css` | `7fb424ba90a7ffea4efa4f86ecfb7f85a7ddf00eed592320ef0d2885f4496f19` |

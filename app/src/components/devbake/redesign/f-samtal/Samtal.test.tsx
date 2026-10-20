@@ -31,7 +31,14 @@
 //     did not start, figures that hold the answer while loading or failed;
 //     the result with its basis, sections and history; Framsteg's
 //     observation, ledger, weeks and rhythm, its tabs and Historik, and all
-//     of it on sparse data.
+//     of it on sparse data;
+//   - batch 2's review (hpf-3lt1): a hand-in the host refuses — by the
+//     reader or by the clock, through the real host — is said with the
+//     answers as they stood, read-only, the doors, the way out and the
+//     switcher's keys back and nothing sent twice; a scroll pane with focus
+//     keeps its arrows; the enlarged page gives focus back to its opener;
+//     the weekly chart, the halves and the register keep to the
+//     collections the provider has now.
 
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
@@ -49,6 +56,7 @@ import {
   stubLayout,
   visible,
 } from '@/components/devbake/redesign/contract'
+import * as kit from '@/components/devbake/redesign/directionData'
 import {
   DirectionDataProvider,
   drillQuestion,
@@ -1552,6 +1560,29 @@ function withRunning(patch: Partial<ProvRunningView>): DirectionData {
   return withProv((p) => ({ running: { ...p.running, ...patch } }))
 }
 
+/** The fixtures, Framsteg changed by `patch`. */
+function withFram(patch: Partial<DirectionData['framsteg']>): DirectionData {
+  const base = fixtureDirectionData()
+  return { ...base, framsteg: { ...base.framsteg, ...patch } }
+}
+
+/** Opens the enlarged page on question 29, the first DTK page, once the
+ *  page has loaded; its opener has focus, as a click gives it. */
+function inspectPage(): HTMLElement {
+  fireEvent.click(cell(29))
+  fireEvent.load(within(screen.getByTestId('rd-prov-figure')).getByRole('img'))
+  const open = screen.getByRole('button', { name: 'Förstora figur' })
+  open.focus()
+  fireEvent.click(open)
+  return open
+}
+
+/** The running pass's main region: inert while a gate or the enlarged page
+ *  stands over it. */
+function passMain(): Element | null {
+  return screen.getByTestId('rd-prov-running').querySelector('.sa-pass-main')
+}
+
 /** Samtal on `data` at `s`, with spied actions. `update` serves new data
  *  (and a screen) to the same tree, as a provider re-render does. */
 function mountOn(data: DirectionData, s: AppScreenKey, width: WidthKey) {
@@ -1775,6 +1806,40 @@ describe.each(WIDTHS)('F · Samtal, %s: Provpass', (width) => {
     expect(screen.getByRole('dialog')).toHaveTextContent('Kvantitativ · 38 frågor · 55 minuter')
   })
 
+  it('the hub: the last half chosen, then a provider with one half left — the hub shows a half it can name', () => {
+    const { update } = mountOn(fixtureDirectionData(), 9, width)
+    fireEvent.click(screen.getByTestId('rd-prov-half-verbal'))
+    fireEvent.click(screen.getByTestId('rd-prov-half-kvant'))
+    update(withProv((p) => ({ hub: { ...p.hub, halves: p.hub.halves.slice(0, 1) } })))
+    expect(screen.queryByTestId('rd-prov-half-kvant')).toBeNull()
+    expect(screen.getByTestId('rd-prov-half-verbal')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('rd-prov-pass-host-2025-verb2')).toHaveTextContent(
+      'Hösten 2025 · Provpass 2',
+    )
+    expect(screen.queryByTestId('rd-prov-pass-host-2025-kvant1')).toBeNull()
+  })
+
+  it('the gate for the last pass in the register stays whole when the register shrinks under it; starting it is the host’s call', () => {
+    const { actions, update } = mountOn(fixtureDirectionData(), 9, width)
+    const register = screen.getAllByTestId(/^rd-prov-pass-/)
+    fireEvent.click(register[register.length - 1])
+    const name = 'Hösten 2025 · Provpass 2'
+    expect(screen.getByRole('dialog', { name })).toBeInTheDocument()
+    update(
+      withProv((p) => ({
+        hub: { ...p.hub, passes: p.hub.passes.filter((x) => x.id !== 'host-2025:kvant2') },
+      })),
+    )
+    expect(screen.getByRole('dialog', { name })).toHaveTextContent(
+      'Kvantitativ · 40 frågor · 55 minuter',
+    )
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    expect(actions.startProvpass).toHaveBeenCalledWith('host-2025:kvant2')
+    expect(screen.getByTestId('rd-prov-unavailable')).toHaveTextContent(
+      'kan inte öppnas här just nu',
+    )
+  })
+
   it('running: a choice is the answer at once and stays changeable; nothing is graded or explained', () => {
     const { actions } = mountOn(fixtureDirectionData(), 9, width)
     startOffer()
@@ -1858,6 +1923,53 @@ describe.each(WIDTHS)('F · Samtal, %s: Provpass', (width) => {
     expect(handing).toHaveTextContent('Lämnar in …')
     expect(handing).toHaveTextContent('16 av 40 frågor besvarade.')
     key('a')
+    key('Enter')
+    expect(actions.submitProvpass).toHaveBeenCalledTimes(1)
+  })
+
+  it('running: handed in, the pass lets go — the frame and its doors come back, its word has focus, and the keys are free again', () => {
+    const { actions } = mountOn(fixtureDirectionData(), 9, width)
+    startOffer()
+    fireEvent.click(screen.getByTestId('rd-prov-submit'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    const handing = screen.getByTestId('rd-prov-handing')
+    expect(document.activeElement).toBe(
+      within(handing).getByRole('heading', { level: 1, name: 'Lämnar in …' }),
+    )
+    for (const d of DESTINATIONS) {
+      expect(screen.getByTestId(`rd-nav-${d.id}`).closest('[inert]')).toBeNull()
+    }
+    expect(screen.getByTestId('rd-nav-provpass')).toHaveAttribute('aria-current', 'page')
+    // No key scope and no capture of its own: the switcher's keys pass.
+    expect(document.querySelector('[data-rd-keyscope]')).toBeNull()
+    for (const k of ['1', '0', 'ArrowLeft', 'ArrowRight']) {
+      expect(fireEvent.keyDown(window, { key: k })).toBe(true)
+    }
+    expect(actions.submitProvpass).toHaveBeenCalledTimes(1)
+  })
+
+  it('running: a hand-in the host refuses later (its promise rejects) is said, with the answers as they stood, read-only; it is sent once', async () => {
+    const { actions } = mountOn(fixtureDirectionData(), 9, width)
+    vi.mocked(actions.submitProvpass).mockImplementation(() => Promise.reject(new Error('offline')))
+    startOffer()
+    fireEvent.click(screen.getByTestId('rd-prov-option-B'))
+    fireEvent.click(screen.getByTestId('rd-prov-submit'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    expect(screen.getByTestId('rd-prov-handing')).toHaveTextContent('Lämnar in …')
+    await act(async () => {})
+    expect(screen.queryByTestId('rd-prov-handing')).toBeNull()
+    const failed = screen.getByTestId('rd-prov-failed')
+    expect(within(failed).getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Passet kunde inte lämnas in.',
+    )
+    expect(within(failed).getByRole('alert')).toHaveTextContent(
+      'Något gick fel när passet skulle lämnas in',
+    )
+    const record = within(failed).getByTestId('rd-prov-record')
+    expect(record).toHaveTextContent('17 av 40 besvarade · 2 markerade')
+    expect(within(record).getByText('Fråga 17, KVA, svar B')).toBeInTheDocument()
+    expect(within(record).getByText('Fråga 30, DTK, obesvarad')).toBeInTheDocument()
+    expect(within(record).queryAllByRole('button')).toHaveLength(0)
     key('Enter')
     expect(actions.submitProvpass).toHaveBeenCalledTimes(1)
   })
@@ -2051,6 +2163,40 @@ describe.each(WIDTHS)('F · Samtal, %s: Provpass', (width) => {
     expect(cell(21)).toHaveTextContent('B')
   })
 
+  it.each([
+    'Escape',
+    'Stäng figur',
+  ])('running: the enlarged page closed with %s gives focus back to "Förstora figur", the pass in reach again', (how) => {
+    mountOn(fixtureDirectionData(), 9, width)
+    startOffer()
+    inspectPage()
+    const dialog = screen.getByRole('dialog')
+    const close = within(dialog).getByRole('button', { name: 'Stäng figur' })
+    expect(document.activeElement).toBe(close)
+    expect(passMain()).toHaveAttribute('inert')
+    if (how === 'Escape') fireEvent.keyDown(close, { key: 'Escape' })
+    else fireEvent.click(close)
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(passMain()).not.toHaveAttribute('inert')
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Förstora figur' }))
+    expect(onQuestion()).toBe('Fråga 29 · DTK')
+  })
+
+  it('running: when the enlarged page’s question goes from under it, the page closes, the pass is in reach and the question has focus', () => {
+    const { update } = mountOn(fixtureDirectionData(), 9, width)
+    startOffer()
+    inspectPage()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
+    // The provider's list shrinks to twenty: question 29 and its page are gone.
+    update(withRunning({ questions: RUN.questions.slice(0, 20), grid: RUN.grid.slice(0, 20) }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(onQuestion()).toBe('Fråga 20 · KVA')
+    expect(passMain()).not.toHaveAttribute('inert')
+    expect(document.activeElement).toBe(
+      screen.getByTestId('rd-prov-running').querySelector('.sa-turn--pass'),
+    )
+  })
+
   describe('the clock', () => {
     afterEach(() => vi.useRealTimers())
 
@@ -2105,6 +2251,21 @@ describe.each(WIDTHS)('F · Samtal, %s: Provpass', (width) => {
       expect(screen.getByTestId('rd-prov-timer')).toHaveTextContent('31:10')
     })
 
+    it('runs out under the enlarged page: the page closes, the pass is handed in once and the hand-in’s word has focus', () => {
+      vi.useFakeTimers()
+      const { actions } = mountOn(withRunning({ remainingSeconds: 3 }), 9, width)
+      startOffer()
+      inspectPage()
+      act(() => {
+        vi.advanceTimersByTime(3000)
+      })
+      expect(actions.submitProvpass).toHaveBeenCalledTimes(1)
+      expect(screen.queryByRole('dialog')).toBeNull()
+      expect(document.activeElement).toBe(
+        screen.getByRole('heading', { level: 1, name: 'Lämnar in …' }),
+      )
+    })
+
     it('a pass already out of time when it starts cannot continue and makes no result', () => {
       const { actions } = mountOn(withRunning({ remainingSeconds: 0 }), 9, width)
       startOffer()
@@ -2123,9 +2284,25 @@ describe.each(WIDTHS)('F · Samtal in the bake-off, %s: Provpass', (width) => {
     vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
     vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(848)
   })
-  afterEach(() => vi.restoreAllMocks())
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.restoreAllMocks()
+  })
 
-  function Host({ s = 9, bare = true }: { s?: AppScreenKey; bare?: boolean }) {
+  /** The host's hand-in made to fail: while armed, the next request for
+   *  screen 10 — the one the bake-off's submitProvpass makes — throws, once.
+   *  Every screen asked for is kept. */
+  type Fault = { armed: boolean; asked: AppScreenKey[] }
+
+  function Host({
+    s = 9,
+    bare = true,
+    fault,
+  }: {
+    s?: AppScreenKey
+    bare?: boolean
+    fault?: Fault
+  }) {
     const [sel, setSel] = useState<Selection>({
       d: 'f',
       s,
@@ -2136,9 +2313,72 @@ describe.each(WIDTHS)('F · Samtal in the bake-off, %s: Provpass', (width) => {
     })
     return (
       <div data-testid="host" data-screen={sel.s} data-direction={sel.d} data-sbs={String(sel.sbs)}>
-        <Redesign2026Bakeoff sel={sel} onSelect={(next) => setSel((x) => ({ ...x, ...next }))} />
+        <Redesign2026Bakeoff
+          sel={sel}
+          onSelect={(next) => {
+            if (fault && next.s != null) fault.asked.push(next.s)
+            if (fault?.armed && next.s === 10) {
+              fault.armed = false
+              throw new Error('Inlämningen nådde inte fram.')
+            }
+            setSel((x) => ({ ...x, ...next }))
+          }}
+        />
       </div>
     )
+  }
+
+  /** Through the real host: the offered pass started, then handed in — by
+   *  the reader through the hand-in gate, or by the clock at zero — and the
+   *  host's submitProvpass throws. `handIns` counts the host's hand-ins. */
+  async function refusedHandIn(by: 'reader' | 'time') {
+    const fault: Fault = { armed: true, asked: [] }
+    render(<Host fault={fault} />)
+    await screen.findByTestId('rd-samtal', {}, { timeout: 5000 })
+    if (by === 'time') vi.useFakeTimers()
+    startOffer()
+    if (by === 'reader') {
+      fireEvent.click(screen.getByTestId('rd-prov-submit'))
+      fireEvent.click(screen.getByTestId('rd-confirm'))
+    } else {
+      act(() => {
+        vi.setSystemTime(Date.now() + RUN.remainingSeconds * 1000)
+        vi.advanceTimersByTime(1000)
+      })
+    }
+    return {
+      host: screen.getByTestId('host'),
+      handIns: () => fault.asked.filter((s) => s === 10).length,
+    }
+  }
+
+  /** The bake-off's own running pass with a reading question where the
+   *  reader stands (question 17): the fixtures run a quantitative pass,
+   *  which has no passage. The real host still renders and switches; only
+   *  the answer of its data hook is changed (vi.restoreAllMocks undoes it). */
+  function readingInHostPass() {
+    const real = kit.useBakeoffDirectionData
+    const reading = D.drills.reading.questions[0]
+    const served = new WeakMap<DirectionData, DirectionData>()
+    vi.spyOn(kit, 'useBakeoffDirectionData').mockImplementation((args) => {
+      const value = real(args)
+      let data = served.get(value.data)
+      if (!data) {
+        const { running } = value.data.provpass
+        data = {
+          ...value.data,
+          provpass: {
+            ...value.data.provpass,
+            running: {
+              ...running,
+              questions: running.questions.map((q, i) => (i === running.current ? reading : q)),
+            },
+          },
+        }
+        served.set(value.data, data)
+      }
+      return { ...value, data }
+    })
   }
 
   it('the switcher’s digits and arrows never leave a running pass, wherever focus is', async () => {
@@ -2206,6 +2446,136 @@ describe.each(WIDTHS)('F · Samtal in the bake-off, %s: Provpass', (width) => {
     expect(host).toHaveAttribute('data-screen', '11')
     fireEvent.click(screen.getByTestId('rd-nav-provpass'))
     expect(screen.queryByText('Provpasset avbröts och blev ogiltigt.')).toBeNull()
+  })
+
+  it.each([
+    'reader',
+    'time',
+  ] as const)('handed in by the %s and refused by the host: the error, the answers as they stood and the doors; nothing is sent again; the switcher’s keys work again', async (by) => {
+    const { host, handIns } = await refusedHandIn(by)
+    expect(handIns()).toBe(1)
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+    const failed = screen.getByTestId('rd-prov-failed')
+    const heading = within(failed).getByRole('heading', { level: 1 })
+    expect(heading).toHaveTextContent('Passet kunde inte lämnas in.')
+    expect(within(failed).getByRole('alert')).toHaveTextContent(
+      'Något gick fel när passet skulle lämnas in',
+    )
+    if (by === 'time') expect(failed).toHaveTextContent('Tiden är ute.')
+    // The answers as they stood, read-only.
+    const record = within(failed).getByTestId('rd-prov-record')
+    expect(record).toHaveTextContent('16 av 40 besvarade · 2 markerade')
+    expect(within(record).getAllByRole('listitem')).toHaveLength(RUN.questions.length)
+    expect(within(record).getByText(/^Fråga 9, XYZ, svar [A-E], markerad$/)).toBeInTheDocument()
+    expect(within(record).getByText('Fråga 17, KVA, obesvarad')).toBeInTheDocument()
+    expect(within(record).queryAllByRole('button')).toHaveLength(0)
+    // The frame is back with its doors in reach, the heading in focus.
+    for (const d of DESTINATIONS) {
+      expect(screen.getByTestId(`rd-nav-${d.id}`).closest('[inert]')).toBeNull()
+    }
+    expect(document.activeElement).toBe(heading)
+    // Nothing hands it in again: not a letter, not the clock.
+    key('a')
+    if (by === 'time') {
+      act(() => {
+        vi.advanceTimersByTime(5000)
+      })
+    }
+    expect(handIns()).toBe(1)
+    // The switcher's keys reach the switcher again, from the page too.
+    fireEvent.keyDown(heading, { key: 'ArrowRight' })
+    expect(host).toHaveAttribute('data-screen', '10')
+    expect(screen.getByTestId('rd-prov-result')).toBeInTheDocument()
+    fireEvent.keyDown(document.body, { key: 'ArrowLeft' })
+    expect(host).toHaveAttribute('data-screen', '9')
+    expect(screen.queryByTestId('rd-prov-failed')).toBeNull()
+    expect(screen.getByTestId('rd-prov-start')).toBeInTheDocument()
+    fireEvent.keyDown(document.body, { key: '2' })
+    expect(host).toHaveAttribute('data-direction', 'b')
+  })
+
+  it.each([
+    ['reader', 'Till Provpass'],
+    ['time', 'Till Provpass'],
+    ['reader', 'Enter'],
+    ['time', 'Enter'],
+    ['reader', 'the Provpass door'],
+    ['time', 'the Provpass door'],
+  ] as const)('handed in by the %s and refused: %s is the way out to the hub, whose question takes focus; the doors lead on', async (by, way) => {
+    const { host, handIns } = await refusedHandIn(by)
+    if (way === 'Enter') key('Enter')
+    else if (way === 'the Provpass door') fireEvent.click(screen.getByTestId('rd-nav-provpass'))
+    else fireEvent.click(screen.getByRole('button', { name: /^Till Provpass/ }))
+    expect(screen.queryByTestId('rd-prov-failed')).toBeNull()
+    const lead = screen.getByRole('heading', { level: 1 })
+    expect(lead).toHaveTextContent('Det här passet har du sett minst.')
+    expect(document.activeElement).toBe(lead)
+    expect(host).toHaveAttribute('data-screen', '9')
+    expect(handIns()).toBe(1)
+    fireEvent.click(screen.getByTestId('rd-nav-framsteg'))
+    expect(host).toHaveAttribute('data-screen', '11')
+  })
+
+  it('a scroll pane with focus keeps its arrows, with Shift too, and Space — they scroll it natively and leave the question — while the digits and 0 never leave the pass', async () => {
+    readingInHostPass()
+    render(<Host />)
+    await screen.findByTestId('rd-samtal', {}, { timeout: 5000 })
+    const host = screen.getByTestId('host')
+    startOffer()
+    expect(onQuestion()).toBe('Fråga 17 · LÄS')
+    // Answered, so that Space would move on outside a pane.
+    key('a')
+    expect(dockStatus()).toContain('Ditt svar: A')
+    const running = screen.getByTestId('rd-prov-running')
+    // Desktop: the passage beside the question and the conversation's own
+    // column; phone: the pass's one scroll. (jsdom focuses only what has a
+    // tabindex; the keys go to the pane either way, as a browser sends them
+    // to a scroll pane that has focus.)
+    const panes =
+      width === 'desktop'
+        ? [
+            screen.getByTestId('rd-prov-passage'),
+            running.querySelector<HTMLElement>('.sa-thread--pass'),
+          ]
+        : [running.querySelector<HTMLElement>('.sa-ppass-scroll')]
+    for (const pane of panes) {
+      if (!pane) throw new Error('no scroll pane')
+      pane.focus()
+      // The passage is a stop of its own, so a keyboard can reach and scroll it.
+      if (pane.dataset.testid === 'rd-prov-passage') expect(document.activeElement).toBe(pane)
+      for (const init of [
+        { key: 'ArrowRight' },
+        { key: 'ArrowLeft' },
+        { key: 'ArrowRight', shiftKey: true },
+        { key: 'ArrowLeft', shiftKey: true },
+        { key: ' ' },
+      ]) {
+        // Not prevented: the pane scrolls, or selects, as it would anywhere.
+        expect(fireEvent.keyDown(pane, init)).toBe(true)
+        expect(onQuestion()).toBe('Fråga 17 · LÄS')
+        expect(host).toHaveAttribute('data-screen', '9')
+      }
+      for (const k of ['1', '5', '8', '0']) {
+        expect(fireEvent.keyDown(pane, { key: k })).toBe(false)
+        expect(host).toHaveAttribute('data-direction', 'f')
+        expect(host).toHaveAttribute('data-sbs', 'false')
+        expect(screen.getByTestId('rd-prov-running')).toBeInTheDocument()
+      }
+    }
+    if (width === 'desktop') {
+      // The DTK page's pan keeps its arrows too (it pans them itself).
+      fireEvent.click(cell(29))
+      const pan = within(screen.getByTestId('rd-prov-figure')).getByRole('region')
+      pan.focus()
+      fireEvent.keyDown(pan, { key: 'ArrowRight' })
+      expect(onQuestion()).toBe('Fråga 29 · DTK')
+      expect(host).toHaveAttribute('data-screen', '9')
+      fireEvent.click(cell(17))
+    }
+    // Outside a pane the arrows still turn the question.
+    key('ArrowRight')
+    expect(onQuestion()).toBe('Fråga 18 · KVA')
+    expect(host).toHaveAttribute('data-screen', '9')
   })
 })
 
@@ -2422,6 +2792,26 @@ describe.each(WIDTHS)('F · Samtal, %s: Framsteg', (width) => {
     expect(within(table).getAllByText('inga svar')).toHaveLength(
       W.filter((w) => w.score == null).length,
     )
+  })
+
+  it('the weeks: the last week chosen, then a provider with two scored weeks — the chart reads a week it has', () => {
+    const { update } = mountOn(fixtureDirectionData(), 11, width)
+    const W = FRAM.weekly
+    const chart = screen.getByRole('figure', { name: 'Veckorna' })
+    chart.focus()
+    fireEvent.keyDown(chart, { key: 'Home' })
+    fireEvent.keyDown(chart, { key: 'End' })
+    const last = W[W.length - 1]
+    expect(chart).toHaveAccessibleDescription(
+      `Veckan från ${weekOf(last.weekStart)}: ${fmtScore(last.score as number)}`,
+    )
+    const two = W.slice(-2).map((w, i) => ({ ...w, score: i ? 1.3 : 1.1 }))
+    update(withFram({ weekly: two }))
+    const now = screen.getByRole('figure', { name: 'Veckorna' })
+    expect(now).toHaveAccessibleDescription(`Veckan från ${weekOf(two[1].weekStart)}: 1,3`)
+    expect(now.querySelectorAll('.sa-trend-dot')).toHaveLength(2)
+    fireEvent.keyDown(now, { key: 'ArrowLeft' })
+    expect(now).toHaveAccessibleDescription(`Veckan från ${weekOf(two[0].weekStart)}: 1,1`)
   })
 
   it('Översikt and Historik are tabs: ←/→, Home and End move between them, claimed from the switcher', () => {

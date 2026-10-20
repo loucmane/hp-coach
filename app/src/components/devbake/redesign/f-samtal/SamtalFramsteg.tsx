@@ -354,7 +354,10 @@ function WeeklyTrend({ weekly }: { weekly: FramstegView['weekly'] }) {
   const tableId = useId()
   const box = useRef<HTMLElement>(null)
   const [w, setW] = useState(0)
-  const [at, setAt] = useState<number | null>(null)
+  const [chosen, setAt] = useState<number | null>(null)
+  // The week chosen is read against the weeks there are now: a shorter
+  // series from the provider keeps a week it has (its last).
+  const at = chosen == null || weekly.length === 0 ? null : Math.min(chosen, weekly.length - 1)
   const [table, setTable] = useState(false)
   const observed = weekly
     .map((x, i) => ({ i, v: x.score }))

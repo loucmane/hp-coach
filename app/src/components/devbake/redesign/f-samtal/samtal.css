@@ -4392,6 +4392,24 @@
     0 0 0 3px var(--sa-ink);
 }
 
+/* A refused hand-in's answers as they stood: the overview's cells, with
+ * nothing to press. */
+[data-rd='samtal'] .sa-overview--record {
+  margin: 0;
+}
+
+[data-rd='samtal'] .sa-cell--still {
+  cursor: default;
+}
+
+[data-rd='samtal'] .sa-cell--still:hover {
+  background: var(--sa-card);
+}
+
+[data-rd='samtal'] .sa-cell--still[data-answered='true']:hover {
+  background: var(--sa-you);
+}
+
 /* A passage in a pass: the ¶ numbers are marks, not controls. */
 [data-rd='samtal'] .sa-pnum--still {
   cursor: default;
