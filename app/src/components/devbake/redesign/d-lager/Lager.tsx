@@ -32,8 +32,10 @@ import {
   type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
 import { LagerDrill } from './LagerDrill'
+import { LagerFramsteg } from './LagerFramsteg'
 import { LagerHome } from './LagerHome'
 import { LagerOva } from './LagerOva'
+import { LagerProvpass, LagerProvResult, LagerProvRunner } from './LagerProvpass'
 import { LagerQuant } from './LagerQuant'
 import { LagerRepetera } from './LagerRepetera'
 
@@ -53,10 +55,16 @@ const NAV_SCROLL = 150
 
 export function Lager(props: DirectionProps) {
   useWebFonts('lager', FONTS)
+  const { data, actions } = useDirectionData()
+  const [activePass, setActivePass] = useState<string | null>(null)
+  useEffect(() => {
+    if (props.screen !== 9) setActivePass(null)
+  }, [props.screen])
+  const running = props.screen === 9 && activePass === data.provpass.running.passId
   const scrollPositions = useRef(new Map<string, number>())
   // The field drains while reading and warms back when the text is done.
   const [doneWarm, setDoneWarm] = useState(false)
-  const drill = [2, 3, 6, 7].includes(props.screen)
+  const drill = [2, 3, 6, 7].includes(props.screen) || running
   return (
     <div
       data-rd="lager"
@@ -74,12 +82,29 @@ export function Lager(props: DirectionProps) {
         <i className="la-field-calm" />
         <i className="la-field-grain" />
       </div>
-      {props.screen === 6 || props.screen === 7 ? (
+      {running ? (
+        <LagerProvRunner
+          key={data.provpass.running.passId}
+          run={data.provpass.running}
+          width={props.width}
+          live={props.live}
+          onAbort={() => setActivePass(null)}
+        />
+      ) : props.screen === 6 || props.screen === 7 ? (
         <LagerQuant key={props.screen} {...props} onDone={setDoneWarm} />
       ) : drill ? (
         <LagerDrill {...props} onDone={setDoneWarm} />
       ) : (
-        <LagerFrame {...props} scrollPositions={scrollPositions.current} />
+        <LagerFrame
+          {...props}
+          scrollPositions={scrollPositions.current}
+          pendingPass={activePass}
+          onCancelPass={() => setActivePass(null)}
+          onStartPass={(id) => {
+            actions.startProvpass(id)
+            setActivePass(id)
+          }}
+        />
       )}
     </div>
   )
@@ -101,19 +126,40 @@ function LagerFrame({
   onScreen,
   onTheme,
   scrollPositions,
-}: DirectionProps & { scrollPositions: Map<string, number> }) {
+  onStartPass,
+  pendingPass,
+  onCancelPass,
+}: DirectionProps & {
+  scrollPositions: Map<string, number>
+  onStartPass: (id: string) => void
+  pendingPass: string | null
+  onCancelPass: () => void
+}) {
   const { actions } = useDirectionData()
   // Screen 4 shows the chrome's other state: menu open, and on desktop the
   // page scrolled a little, which is what shrinks the dock.
   const [menu, setMenu] = useState(screen === 4)
   const [scrolled, setScrolled] = useState(false)
-  const [dest, setDest] = useState<Destination>(screen === 5 || screen === 8 ? 'ova' : 'idag')
+  const destination: Destination =
+    screen === 5 || screen === 8
+      ? 'ova'
+      : screen === 9 || screen === 10
+        ? 'provpass'
+        : screen === 11
+          ? 'framsteg'
+          : 'idag'
+  const [dest, setDest] = useState<Destination>(destination)
   const scrollRef = useRef<HTMLDivElement>(null)
-  const scrollKey = screen === 8 && dest === 'ova' ? 'repetera' : dest
+  const scrollKey =
+    screen === 8 && dest === 'ova'
+      ? 'repetera'
+      : screen === 10 && dest === 'provpass'
+        ? 'resultat'
+        : dest
   useEffect(() => {
     setMenu(screen === 4)
-    setDest(screen === 5 || screen === 8 ? 'ova' : 'idag')
-  }, [screen])
+    setDest(destination)
+  }, [screen, destination])
   useLayoutEffect(() => {
     const el = scrollRef.current
     if (!el) return
@@ -166,6 +212,21 @@ function LagerFrame({
       ) : (
         <LagerOva width={width} live={live} account={corner} />
       )
+    ) : dest === 'provpass' ? (
+      screen === 10 ? (
+        <LagerProvResult width={width} live={live} account={corner} />
+      ) : (
+        <LagerProvpass
+          width={width}
+          live={live}
+          account={corner}
+          onStart={onStartPass}
+          pending={pendingPass}
+          onCancel={onCancelPass}
+        />
+      )
+    ) : dest === 'framsteg' ? (
+      <LagerFramsteg width={width} live={live} account={corner} />
     ) : (
       <Stub dest={dest} width={width} live={live} account={corner} />
     )

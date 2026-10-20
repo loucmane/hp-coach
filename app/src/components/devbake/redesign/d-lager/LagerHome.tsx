@@ -77,7 +77,9 @@ export function LagerHome({
   useKeyMap({ Enter: onResume }, live && RESUME != null)
   const phone = width === 'phone'
   const left = RESUME ? RESUME.total - RESUME.answered : 0
-  const primary = PLAN.items.find((i) => i.primary) ?? PLAN.items[0]
+  const upcoming = PLAN.items.filter((item) => !item.completed)
+  const primary = upcoming.find((i) => i.primary) ?? upcoming[0]
+  const allComplete = PLAN.allComplete || (PLAN.items.length > 0 && upcoming.length === 0)
   // Sheets rise into place one by one (the field and the glass stay still).
   const rise = live ? ' la-rise' : ''
   const paused = RESUME?.pausedAt?.replace('Idag · ', 'idag ')
@@ -89,7 +91,9 @@ export function LagerHome({
       <p className="la-sub">
         {RESUME
           ? `Du är mitt i ${RESUME.section === 'LÄS' ? 'en LÄS-text' : 'en övning'} – ${word(left)} frågor kvar.`
-          : 'Dagens övning väntar.'}
+          : allComplete
+            ? 'Dagens plan är klar.'
+            : 'Dagens övning väntar.'}
         {primary ? ` Sedan står ${primary.title.toLowerCase()} på tur.` : ''}
       </p>
     </div>
@@ -156,14 +160,15 @@ export function LagerHome({
       <section className="la-side-sec" aria-labelledby="la-plan-h">
         <div className="la-side-head">
           <h2 className="la-h" id="la-plan-h">
-            Sedan
+            {allComplete ? 'Klart för idag' : 'Sedan'}
           </h2>
           <span className="la-meta">
-            {PLAN.items.length} delar · {PLAN.minutes} min
+            {upcoming.length} delar kvar · {upcoming.reduce((sum, item) => sum + item.minutes, 0)}{' '}
+            min
           </span>
         </div>
         <ol>
-          {PLAN.items.map((item, i) => (
+          {upcoming.map((item, i) => (
             <li key={item.id}>
               <button
                 type="button"
