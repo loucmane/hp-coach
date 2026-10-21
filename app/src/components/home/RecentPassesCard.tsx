@@ -13,10 +13,7 @@ import { Link } from '@tanstack/react-router'
 
 import type { SessionHistoryRow } from '@/api/hooks/useSessions'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
-
-function passLabel(row: SessionHistoryRow): string {
-  return row.kind === 'adaptive_review' ? 'Rep' : (row.sections ?? 'Övning')
-}
+import { passLabel } from '@/lib/sessionLabel'
 
 function passRoute(row: SessionHistoryRow): '/drill' | '/repetition' {
   return row.kind === 'adaptive_review' ? '/repetition' : '/drill'

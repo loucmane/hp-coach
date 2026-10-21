@@ -17,6 +17,7 @@ import { type SessionHistoryRow, useSessionHistory } from '@/api/hooks/useSessio
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
+import { passLabel } from '@/lib/sessionLabel'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
 
 export const Route = createFileRoute('/historik')({
@@ -47,11 +48,6 @@ function formatDate(iso: string | null): string {
 
 // Only these kinds' routes reconstruct ?done; others are filtered out.
 const LISTABLE = new Set(['drill', 'adaptive_review'])
-
-function passLabel(row: SessionHistoryRow): string {
-  if (row.kind === 'adaptive_review') return 'Repetition'
-  return row.sections ?? 'Övning'
-}
 
 function HistorikRoute() {
   const navigate = useNavigate()

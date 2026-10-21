@@ -1,5 +1,16 @@
 import { attemptTimeMs, formatDrillTime, type TimedDrillSection } from '@/lib/timedDrill'
-import { paceNote, uhrTimeMs } from '@/lib/uhrPacing'
+import { uhrTimeMs } from '@/lib/uhrPacing'
+
+function timeDifference(elapsed: number, budget: number): string {
+  const diff = Math.floor(elapsed / 1000) - Math.floor(budget / 1000)
+  if (diff === 0) return 'i takt'
+  const minutes = Math.floor(Math.abs(diff) / 60)
+  const seconds = Math.abs(diff) % 60
+  const amount = [minutes ? `${minutes} min` : '', seconds ? `${seconds} s` : '']
+    .filter(Boolean)
+    .join(' ')
+  return `${amount} ${diff > 0 ? 'mer' : 'kvar'}`
+}
 
 export function TempoLine({
   section,
@@ -27,7 +38,7 @@ export function TempoLine({
       }}
     >
       {complete && elapsed !== null && budget !== null
-        ? `${formatDrillTime(elapsed)} · UHR:s tid ${formatDrillTime(budget)} · ${paceNote(elapsed, budget)}`
+        ? `${formatDrillTime(elapsed)} · UHR:s tid ${formatDrillTime(budget)} · ${timeDifference(elapsed, budget)}`
         : 'Tiden för hela övningen är inte tillgänglig än.'}
     </p>
   )

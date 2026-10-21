@@ -57,6 +57,16 @@ describe('pickCandidate', () => {
     expect(c?.href).toBe('/repetition?qid=q3')
   })
 
+  it.each([
+    ['ORD · PÅ TID', 'ORD på tid', 'section=ORD&timed=1'],
+    ['LÄS · PÅ TID', 'LÄS på tid', 'section=L%C3%84S&timed=1'],
+    ['ORD · ORDBANK', 'Ordbank', 'section=ORD&words=1'],
+  ])('preserves the mode of %s in the resume link', (sections, subject, query) => {
+    const c = pickCandidate([drill({ sections, currentQuestionId: 'q&3' })], null)
+    expect(c?.subject).toBe(subject)
+    expect(c?.href).toBe(`/drill?${query}&qid=q%263`)
+  })
+
   it('maps a lesson bookmark to a search-param + hash href (never a 404 path)', () => {
     const c = pickCandidate([], lesson())
     expect(c?.subject).toBe('XYZ-lektion')

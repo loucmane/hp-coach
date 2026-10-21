@@ -1,7 +1,27 @@
 import { type Question, questionsInSection } from '@/data/questions'
+import { ORD_WORDS_SECTIONS } from '@/lib/ordWords'
 import { uhrTimeMs } from '@/lib/uhrPacing'
 
 export type TimedDrillSection = 'ORD' | 'LÄS'
+
+/** Stored mode identity: a plain ORD plan can have the same size as a timed one. */
+export function timedSections(section: TimedDrillSection): string {
+  return `${section} · PÅ TID`
+}
+
+export function parseTimedSections(raw: string | null | undefined): TimedDrillSection | null {
+  const marker = raw?.toUpperCase()
+  if (marker === timedSections('ORD')) return 'ORD'
+  if (marker === timedSections('LÄS')) return 'LÄS'
+  return null
+}
+
+/** For section-based links/display only. Adoption must compare the full marker. */
+export function sessionSectionCode(raw: string | null | undefined): string {
+  const marker = raw?.toUpperCase() ?? ''
+  if (marker === ORD_WORDS_SECTIONS) return 'ORD'
+  return parseTimedSections(marker) ?? marker
+}
 
 export function timedDrill(section: string): {
   section: TimedDrillSection

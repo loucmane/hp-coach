@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { AttemptInput } from '@/api/hooks/useAttempts'
 import type { ActiveSession, SessionStartInput, SessionUpdatePatch } from '@/api/hooks/useSessions'
+import { pickCandidate } from '@/components/home/useResumptionCandidate'
 import type { AnswerLetter, Question } from '@/data/questions'
 import { endedSessionIdsThisTab } from '@/lib/endedSessions'
 
@@ -258,6 +259,30 @@ beforeEach(() => {
 afterEach(() => vi.useRealTimers())
 
 describe('timed drill route with the real SessionPlayer', () => {
+  it.each(['ORD', 'LÄS'])('decodes the stored %s timed marker', (section) => {
+    expect(validate({ section: `${section} · PÅ TID` })).toEqual({ section, timed: true })
+  })
+
+  it.each([
+    false,
+    true,
+  ])('does not adopt ORD across timed modes (initial timed: %s)', async (timed) => {
+    h.search = validate({ section: 'ORD', timed, start: true })
+    const view = await start()
+    await answer(true, 240_000)
+    await next()
+    const oldId = h.session?.id
+    view.unmount()
+    h.search = validate({ section: 'ORD', timed: !timed, start: true })
+    await start()
+    expect(h.start).toHaveBeenCalledTimes(2)
+    expect(h.session?.id).not.toBe(oldId)
+    expect(h.session?.position).toBe(0)
+    expect(h.session?.sections).toBe(timed ? 'ORD' : 'ORD · PÅ TID')
+    if (!timed) expect(screen.getByRole('timer')).toHaveTextContent('3:00')
+    else expect(screen.queryByRole('timer')).toBeNull()
+  })
+
   it('accepts the literal ?timed=1 after the real router parses the URL', async () => {
     const { defaultParseSearch } =
       await vi.importActual<typeof import('@tanstack/react-router')>('@tanstack/react-router')
@@ -309,13 +334,13 @@ describe('timed drill route with the real SessionPlayer', () => {
     expect(h.search).toEqual(expect.objectContaining({ section: 'ORD', timed: true, done: 1 }))
     expect(h.search.qid).toBeUndefined()
     expect(screen.queryByRole('timer')).toBeNull()
-    expect(screen.getByTestId('drill-tempo')).toHaveTextContent('2:40 · UHR:s tid 3:00 · i takt')
+    expect(screen.getByTestId('drill-tempo')).toHaveTextContent('2:40 · UHR:s tid 3:00 · 20 s kvar')
     view.unmount()
     await act(async () => {
       mount()
     })
     expect(screen.getByTestId('result')).toBeInTheDocument()
-    expect(screen.getByTestId('drill-tempo')).toHaveTextContent('2:40 · UHR:s tid 3:00 · i takt')
+    expect(screen.getByTestId('drill-tempo')).toHaveTextContent('2:40 · UHR:s tid 3:00 · 20 s kvar')
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: 'Öva igen' }))
     })
@@ -350,6 +375,13 @@ describe('timed drill route with the real SessionPlayer', () => {
     const qid = h.search.qid
     view.unmount()
     act(() => vi.advanceTimersByTime(600_000))
+    const candidate = pickCandidate([h.session as ActiveSession], null)
+    const { defaultParseSearch } =
+      await vi.importActual<typeof import('@tanstack/react-router')>('@tanstack/react-router')
+    h.search = validate(
+      defaultParseSearch(new URL(candidate?.href ?? '', 'https://example.test').search),
+    )
+    expect(h.search.timed).toBe(true)
     await start()
     expect(h.start).toHaveBeenCalledTimes(1)
     expect(h.search.qid).toBe(qid)
@@ -358,17 +390,9 @@ describe('timed drill route with the real SessionPlayer', () => {
     expect(screen.getByRole('timer')).toHaveTextContent('2:30')
   })
 
-  it('keeps the existing adaptive-review return alongside a tempo line', async () => {
-    h.search = validate({ section: 'ORD', timed: true, start: true, ar: true, back: 'XYZ' })
-    await start()
-    for (let i = 0; i < 10; i++) {
-      await answer()
-      await next()
-    }
-    expect(screen.getByTestId('adaptive-review-return')).toHaveTextContent(
-      'Tillbaka till din övning',
-    )
-    expect(screen.getByTestId('drill-tempo')).toHaveTextContent('2:40')
+  it('keeps a real framework detour untimed even if a timed flag is supplied', () => {
+    const search = validate({ framework: 'ORD-ROOT-001', ar: true, back: 'XYZ', timed: true })
+    expect(search).toEqual({ framework: 'ORD-ROOT-001', ar: true, back: 'XYZ' })
   })
 
   it('leaves ordinary drills untimed, including their result', async () => {

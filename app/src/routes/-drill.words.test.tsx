@@ -375,7 +375,7 @@ describe('word rounds with the real SessionPlayer', () => {
     h.search = validate({ section: 'ORD', timed, start: true })
     await start()
     expect(h.start).toHaveBeenCalledTimes(2)
-    expect(h.session?.sections).toBe('ORD')
+    expect(h.session?.sections).toBe(timed ? 'ORD · PÅ TID' : 'ORD')
   })
 
   it('resumes the exact paused word round through Home and keeps updating the deck', async () => {
@@ -415,5 +415,56 @@ describe('word rounds with the real SessionPlayer', () => {
     })
     expect(h.start).not.toHaveBeenCalled()
     expect(window.localStorage.length).toBe(0)
+    expect(screen.getByRole('link', { name: 'Logga in' })).toHaveAttribute('href', '/sign-in')
+  })
+
+  it('drops qids removed from the word index and resumes on a live position', async () => {
+    const view = await start()
+    await answer()
+    await next()
+    const oldId = h.session?.id
+    view.unmount()
+    __resetOrdWordsCache()
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () =>
+        Response.json({
+          version: 1,
+          words: h.bank
+            .filter((q) => q.section === 'ORD' && q.number >= 7)
+            .map((q) => ({ id: q.qid, qids: [q.qid], roots: [] })),
+        }),
+      ),
+    )
+    await start()
+    expect(h.start).toHaveBeenCalledTimes(1)
+    expect(h.session?.id).toBe(oldId)
+    expect(['ORD-7', 'ORD-8', 'ORD-9']).toContain(
+      screen.getByTestId('question').getAttribute('data-qid'),
+    )
+    await answer()
+    await next()
+    expect(screen.queryByTestId('drill-idle')).toBeNull()
+  })
+
+  it('starts a fresh word round when every saved qid is gone from the index', async () => {
+    const view = await start()
+    const oldId = h.session?.id
+    view.unmount()
+    __resetOrdWordsCache()
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () =>
+        Response.json({
+          version: 1,
+          words: ['ORD-10', 'ORD-11'].map((id) => ({ id, qids: [id], roots: [] })),
+        }),
+      ),
+    )
+    await start()
+    expect(h.start).toHaveBeenCalledTimes(2)
+    expect(h.session?.id).not.toBe(oldId)
+    expect(h.session?.plan).toEqual(['ORD-10', 'ORD-11'])
+    expect(h.search.qid).toBe('ORD-10')
   })
 })
