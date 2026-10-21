@@ -67,10 +67,10 @@ beforeEach(() => {
 })
 
 describe('lesson worked example wiring', () => {
-  it('retains the authored trap example until a real example successfully replaces it', async () => {
+  it('omits the authored narrative before opening and after loading a signed-in example', async () => {
     render(<TrapCard entry={entry} section="NOG" />)
     fireEvent.click(screen.getByText('Pattern'))
-    expect(screen.getByText('Authored setup')).toBeInTheDocument()
+    expect(screen.queryByText('Authored setup')).not.toBeInTheDocument()
     fireEvent.click(screen.getByText('Ett exempel, steg för steg'))
     await screen.findByText('Real example')
     expect(screen.queryByText('Authored setup')).not.toBeInTheDocument()
@@ -90,6 +90,9 @@ describe('lesson worked example wiring', () => {
     fireEvent.click(screen.getByText('Ett exempel, steg för steg'))
     await screen.findByText('Exemplet kunde inte hämtas.')
     expect(screen.getByText('Authored setup')).toBeInTheDocument()
+    const summary = screen.getByText('Ett exempel, steg för steg').closest('summary')!
+    expect(summary.parentElement).toContainElement(screen.getByText('Authored setup'))
+    expect(screen.getByRole('button', { name: 'Försök igen' })).toBeInTheDocument()
   })
 
   it('leaves the authored trap narrative for signed-out readers', async () => {

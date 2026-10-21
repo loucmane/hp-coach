@@ -1,25 +1,28 @@
 import type { Section } from '@/data/questions'
 
 const key = (userId: string, section: Section) =>
-  `hpc-worked-examples-v1:${encodeURIComponent(userId)}:${section}`
+  `hpc-worked-examples-v2:${encodeURIComponent(userId)}:${section}`
 
-function readCount(userId: string, section: Section): number {
+function readCompleted(userId: string, section: Section): Set<string> {
   try {
-    const value = Number(localStorage.getItem(key(userId, section)))
-    return Number.isSafeInteger(value) && value >= 0 ? value : 0
+    const value: unknown = JSON.parse(localStorage.getItem(key(userId, section)) ?? '[]')
+    return Array.isArray(value) && value.every((qid) => typeof qid === 'string' && qid.length > 0)
+      ? new Set(value)
+      : new Set()
   } catch {
-    return 0
+    return new Set()
   }
 }
 
 export function readWorkedExampleLevel(userId: string, section: Section): number {
-  return Math.min(readCount(userId, section), 2)
+  return Math.min(readCompleted(userId, section).size, 2)
 }
 
-export function completeWorkedExample(userId: string, section: Section): void {
+export function completeWorkedExample(userId: string, section: Section, qid: string): void {
   try {
-    const count = Math.min(readCount(userId, section) + 1, Number.MAX_SAFE_INTEGER)
-    localStorage.setItem(key(userId, section), String(count))
+    const completed = readCompleted(userId, section)
+    completed.add(qid)
+    localStorage.setItem(key(userId, section), JSON.stringify([...completed]))
   } catch {
     // Local progress is optional; storage restrictions never interrupt a lesson.
   }

@@ -8,18 +8,45 @@ describe('worked example fading', () => {
     vi.restoreAllMocks()
   })
 
-  it('counts completed examples per user and section, capped at level two', () => {
+  it('counts distinct completed questions per user and section, capped at level two', () => {
     expect(readWorkedExampleLevel('alice', 'NOG')).toBe(0)
-    completeWorkedExample('alice', 'NOG')
+    completeWorkedExample('alice', 'NOG', 'first')
     expect(readWorkedExampleLevel('alice', 'NOG')).toBe(1)
     expect(readWorkedExampleLevel('bob', 'NOG')).toBe(0)
     expect(readWorkedExampleLevel('alice', 'KVA')).toBe(0)
-    completeWorkedExample('alice', 'NOG')
-    completeWorkedExample('alice', 'NOG')
+    completeWorkedExample('alice', 'NOG', 'first')
+    expect(readWorkedExampleLevel('alice', 'NOG')).toBe(1)
+    completeWorkedExample('alice', 'NOG', 'second')
+    completeWorkedExample('alice', 'NOG', 'third')
     expect(readWorkedExampleLevel('alice', 'NOG')).toBe(2)
   })
 
-  it('tolerates unavailable storage and malformed counters', () => {
+  it('ignores legacy counters because they do not identify completed questions', () => {
+    localStorage.setItem('hpc-worked-examples-v1:alice:NOG', '2')
+    expect(readWorkedExampleLevel('alice', 'NOG')).toBe(0)
+    completeWorkedExample('alice', 'NOG', 'first')
+    expect(readWorkedExampleLevel('alice', 'NOG')).toBe(1)
+  })
+
+  it.each([
+    'not json',
+    '-2',
+    '1.5',
+    '{}',
+    '[null]',
+    '[1]',
+    '[""]',
+  ])('tolerates malformed stored question sets: %s', (value) => {
+    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(value)
+    expect(readWorkedExampleLevel('alice', 'NOG')).toBe(0)
+  })
+
+  it('deduplicates persisted question IDs', () => {
+    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue('["first", "first"]')
+    expect(readWorkedExampleLevel('alice', 'NOG')).toBe(1)
+  })
+
+  it('tolerates unavailable storage', () => {
     vi.spyOn(Storage.prototype, 'getItem').mockReturnValue('not a count')
     expect(readWorkedExampleLevel('alice', 'NOG')).toBe(0)
     vi.mocked(Storage.prototype.getItem).mockReturnValue('-2')
@@ -33,6 +60,6 @@ describe('worked example fading', () => {
       throw new Error('blocked')
     })
     expect(readWorkedExampleLevel('alice', 'NOG')).toBe(0)
-    expect(() => completeWorkedExample('alice', 'NOG')).not.toThrow()
+    expect(() => completeWorkedExample('alice', 'NOG', 'first')).not.toThrow()
   })
 })
