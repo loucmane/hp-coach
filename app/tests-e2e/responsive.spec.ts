@@ -153,7 +153,7 @@ test('Daily Home renders the prescriptive plan card at studio', async ({ page })
   // See home.spec.ts:40's comment — without a recent mock per half, the
   // scheduler prescribes the Kallelse summons and, on a mock-only day,
   // DailyPlanCard renders null. Seed both halves fresh, and clear
-  // mistakes/sessions (an all-resolved user can land on "Klart för idag"
+  // mistakes/sessions (an all-resolved user can land on the completed plan
   // instead), so this test gets the ordinary numbered plan deterministically.
   await clearMistakes(page)
   await seedMockResults(page)

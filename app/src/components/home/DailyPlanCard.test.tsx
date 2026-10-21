@@ -204,13 +204,48 @@ describe('DailyPlanCard — day-zero first-drill panel', () => {
   })
 })
 
-describe('DailyPlanCard — "Klart för idag" completion copy', () => {
-  it('speaks Swedish and does not over-claim ("Dagens klart.", never "Perfect game.")', () => {
-    const plan = makePlan([{ ...drillItem, completed: true }], 6)
+describe('DailyPlanCard — completed plan with a way to continue', () => {
+  it.each([
+    { items: [drillItem], summary: '1 punkt avklarad · ~6 min.' },
+    { items: [staleRepItem, drillItem], summary: '2 punkter avklarade · ~9 min.' },
+  ])('keeps the completed item and minute counts: $summary', ({ items, summary }) => {
+    const plan = makePlan(
+      items.map((item) => ({ ...item, completed: true })),
+      0,
+    )
     render(<DailyPlanCard plan={plan} allComplete />)
 
     const panel = screen.getByTestId('daily-plan-complete')
-    expect(within(panel).getByText('Dagens klart.')).toBeInTheDocument()
+    expect(
+      within(panel).getByRole('heading', { level: 2, name: 'Allt i dagens plan är gjort' }),
+    ).toBeInTheDocument()
+    expect(panel).toHaveTextContent(summary)
     expect(within(panel).queryByText(/perfect game/i)).not.toBeInTheDocument()
+    expect(
+      within(panel).getByRole('link', { name: 'Vill du fortsätta? Öva en sektion →' }),
+    ).toHaveAttribute('href', '/ova')
+  })
+
+  it('never tells a student who wants to continue to stop for the day', () => {
+    render(<DailyPlanCard plan={makePlan([{ ...drillItem, completed: true }], 0)} allComplete />)
+    expect(screen.getByTestId('daily-plan-complete')).not.toHaveTextContent(
+      /idag · klart|idag klart|klart för idag|dagens klart|räcker|vila|du har gjort dagens/i,
+    )
+  })
+
+  it('continues through the supplied router callback without a full-page navigation', () => {
+    const onNavigate = vi.fn()
+    render(
+      <DailyPlanCard
+        plan={makePlan([{ ...drillItem, completed: true }], 0)}
+        allComplete
+        onNavigate={onNavigate}
+      />,
+    )
+    const link = within(screen.getByTestId('daily-plan-complete')).getByRole('link', {
+      name: 'Vill du fortsätta? Öva en sektion →',
+    })
+    expect(fireEvent.click(link)).toBe(false)
+    expect(onNavigate).toHaveBeenCalledExactlyOnceWith('/ova')
   })
 })

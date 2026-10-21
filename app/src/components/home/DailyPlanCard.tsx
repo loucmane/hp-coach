@@ -9,7 +9,7 @@
 // "mark complete", no regenerate affordance. Completed rows dim and
 // strike, a live-only extension of the M3 mock.
 //
-// When every item is complete, the section flips to "Klart för idag".
+// When every item is complete, show the completed plan and a link to keep practicing.
 
 import { motion } from 'motion/react'
 
@@ -139,7 +139,7 @@ export function DailyPlanCard({
     )
   }
   if (plan && allComplete) {
-    return <CompletePanel plan={plan} />
+    return <CompletePanel plan={plan} onNavigate={onNavigate} />
   }
 
   // Ghost-loading fix: the queries the plan depends on errored and no
@@ -481,7 +481,13 @@ function PlanRow({
   )
 }
 
-function CompletePanel({ plan }: { plan: DailyPlan }) {
+function CompletePanel({
+  plan,
+  onNavigate,
+}: {
+  plan: DailyPlan
+  onNavigate?: (href: string) => void
+}) {
   const ark = useArketMotion()
   const totalMinutes = plan.items.reduce((sum, i) => sum + i.estimatedMinutes, 0)
   // Same sheet as the plan card — on an all-complete day the Klart
@@ -493,30 +499,8 @@ function CompletePanel({ plan }: { plan: DailyPlan }) {
       layoutId={ark.rm ? undefined : ARK_KORT_LAYOUT_ID}
       transition={ark.arket}
     >
-      <DrillRailSection
-        meta={
-          <>
-            <strong>Idag</strong>
-            klart
-          </>
-        }
-        delay={220}
-      >
-        <h2 className="hpc-m3-h">Klart för idag</h2>
-        <h3
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontStyle: 'italic',
-            fontWeight: 400,
-            fontSize: 'clamp(32px, 4vw, 48px)',
-            lineHeight: 1.05,
-            letterSpacing: '-0.01em',
-            margin: '4px 0 14px',
-            color: 'var(--ink)',
-          }}
-        >
-          Dagens klart.
-        </h3>
+      <DrillRailSection meta={<strong>Idag</strong>} delay={220}>
+        <h2 className="hpc-m3-h">Allt i dagens plan är gjort</h2>
         <p
           style={{
             fontSize: 15,
@@ -526,7 +510,21 @@ function CompletePanel({ plan }: { plan: DailyPlan }) {
           }}
         >
           {plan.items.length} {plan.items.length === 1 ? 'punkt avklarad' : 'punkter avklarade'} · ~
-          {totalMinutes} min. Vill du ha mer? Plocka en sektion eller vila — du har gjort dagens.
+          {totalMinutes} min.
+        </p>
+        <p className="hpc-m3-plan-r">
+          <a
+            href="/ova"
+            onClick={(event) => {
+              if (onNavigate) {
+                event.preventDefault()
+                onNavigate('/ova')
+              }
+            }}
+            style={{ color: 'var(--accent)', textDecoration: 'underline', textUnderlineOffset: 4 }}
+          >
+            Vill du fortsätta? Öva en sektion →
+          </a>
         </p>
       </DrillRailSection>
     </motion.section>

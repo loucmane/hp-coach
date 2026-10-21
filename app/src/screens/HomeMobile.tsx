@@ -56,7 +56,7 @@ type HomeMobileProps = {
    *  DailyPlanCard's own comment for why the ghost rows must not persist
    *  forever. Has no effect once a plan (cached or fresh) is present. */
   planError?: boolean
-  /** True iff every plan item is complete. Drives the "Klart för idag" state. */
+  /** True iff every plan item is complete. Shows the completed plan and a way to continue. */
   allComplete?: boolean
   /** Whole minutes ACTUALLY practiced today (lib/scoring
    *  minutesPracticedToday) — the "minuter idag" numeral. An elapsed

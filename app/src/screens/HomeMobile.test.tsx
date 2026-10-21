@@ -2,11 +2,11 @@
 //
 //   - Plan is null while resolving → skeleton state
 //   - Plan provided → DailyPlanCard rendered with the items
-//   - allComplete → "Klart för idag" panel
+//   - allComplete → completed plan with a link to continue practicing
 //   - Streak badge logic preserved (chrome, not part of the plan flow)
 //   - No regenerate affordance (the daily plan is authoritative)
 
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { __resetMockEvents, loadMockEvents } from '@/lib/mockEvents'
@@ -127,11 +127,31 @@ describe('HomeMobile — plan rendering', () => {
     expect(screen.getByText(/~14 min · uppskattat/i)).toBeInTheDocument()
   })
 
-  it('renders the "Klart för idag" complete panel when allComplete is true', () => {
-    render(<HomeMobile forceLayout="phone" plan={makePlan()} allComplete />)
-    expect(screen.getByTestId('daily-plan-complete')).toBeInTheDocument()
-    expect(screen.getByText('Dagens klart.')).toBeInTheDocument()
+  it('renders the completed plan with a working way to continue when allComplete is true', () => {
+    const onPlanItemNavigate = vi.fn()
+    const plan = makePlan()
+    plan.items = plan.items.map((item) => ({ ...item, completed: true }))
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={plan}
+        allComplete
+        onPlanItemNavigate={onPlanItemNavigate}
+      />,
+    )
+    const panel = screen.getByTestId('daily-plan-complete')
+    expect(
+      within(panel).getByRole('heading', { level: 2, name: 'Allt i dagens plan är gjort' }),
+    ).toBeInTheDocument()
+    expect(panel).toHaveTextContent('3 punkter avklarade · ~14 min.')
+    expect(panel).not.toHaveTextContent(
+      /idag · klart|idag klart|klart för idag|dagens klart|räcker|vila|du har gjort dagens/i,
+    )
     expect(screen.queryByTestId('daily-plan-card')).not.toBeInTheDocument()
+    fireEvent.click(
+      within(panel).getByRole('link', { name: 'Vill du fortsätta? Öva en sektion →' }),
+    )
+    expect(onPlanItemNavigate).toHaveBeenCalledExactlyOnceWith('/ova')
   })
 
   it('hides "Dagens plan" entirely on a mock-only day (the Kallelse IS the plan)', () => {

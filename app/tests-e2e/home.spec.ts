@@ -50,7 +50,7 @@ authedTest('Daily Home renders the prescriptive plan card', async ({ page }) => 
   // same deterministic scheduler outcome instead of whatever state a
   // prior test/run left behind:
   //   - clearMistakes: an all-mistakes-resolved (or leftover-session)
-  //     user can land on "Klart för idag" (DailyPlanCard's `allComplete`
+  //     user can land on the completed plan (DailyPlanCard's `allComplete`
   //     branch renders `daily-plan-complete`, not `daily-plan-card`).
   //   - seedMockResults: a never-mocked (or mock-stale) user gets a
   //     mock-only day, on which DailyPlanCard intentionally renders null
