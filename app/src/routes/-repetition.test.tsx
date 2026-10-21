@@ -12,10 +12,10 @@
 //   - a fresh round's stored plan carries each new question's source, and a
 //     resume answers against exactly that source — never one re-derived
 //     from the due list, which changes between pause and resume;
-//   - the links last only once the server stores them: until then only the
-//     visit that picked the round has them, the device keeps none, and a
-//     round whose links are lost plays on as plain questions — whatever
-//     the trap index does — grading nothing, never ending;
+//   - links are stored in the creation call, with no later PUT; remounts
+//     and another device retain them without local storage;
+//   - legacy rounds whose links were lost still play on as plain questions
+//     — whatever the trap index does — grading nothing, never ending;
 //   - a resume picks up at the saved cursor and skips a question whose
 //     mistake left the due list without ending the round;
 //   - a fresh round never treats the questions just answered as unseen;
@@ -32,7 +32,7 @@ import type { Mistake } from '@/api/hooks/useMistakes'
 import type { ExposureMap } from '@/api/hooks/useMockResults'
 import type { ActiveSession, SessionStartInput, SessionUpdatePatch } from '@/api/hooks/useSessions'
 import type * as SessionPlayerModule from '@/components/session/SessionPlayer'
-import type { SessionPlayerProps } from '@/components/session/SessionPlayer'
+import { SessionPlayer, type SessionPlayerProps } from '@/components/session/SessionPlayer'
 import { EXCLUDED_QUESTIONS } from '@/data/figureOverrides'
 import { ANSWER_LETTERS, type AnswerLetter, loadBank, type Question } from '@/data/questions'
 import { endedSessionIdsThisTab } from '@/lib/endedSessions'
@@ -222,7 +222,7 @@ function activeRound(id: number, plan: string[]): ActiveSession {
     kind: 'adaptive_review',
     sections: 'alla',
     position: 0,
-    currentQuestionId: plan[0] ?? null,
+    currentQuestionId: null,
     plan,
     device: null,
     startedAt: null,
@@ -263,19 +263,13 @@ async function resume(entries: string[], position?: number): Promise<string[]> {
   return questions.map((q) => q.qid)
 }
 
-/** The plans the route asked to store, in call order. */
-function linkedPlans(): Array<{ sessionId: number; plan: string[] }> {
-  return h.link.mock.calls.map(([vars]) => vars as { sessionId: number; plan: string[] })
-}
-
-/** Start a fresh round the way SessionPlayer does — pick it, then create
- *  its session with the plain qids — and return what the session stores
- *  once the route has linked it. */
+/** Start a fresh round through the player's picker/encoder contract. */
 async function startRound(view: ReturnType<typeof render>) {
   const plan = await pick()
-  h.session = activeRound(7, plan)
+  const stored = player().planEntries?.(plan.map(question)) ?? plan
+  h.session = activeRound(7, stored)
   view.rerender(<Screen />)
-  return { plan, stored: linkedPlans().at(-1)?.plan ?? plan }
+  return { plan, stored }
 }
 
 /** Leave and come back: a new mount adopts the stored session. */
@@ -422,64 +416,98 @@ describe('/repetition — samma fälla, ny fråga', () => {
   })
 })
 
-describe('/repetition — a fresh round stores its links', () => {
-  it('stores each new question with the mistake it repeats, once the session exists', async () => {
-    const view = render(<Screen />)
-    const plan = await pick()
-    expect(plan).toEqual([las[1].qid, ord.qid])
-    // SessionPlayer has not created the session yet: nothing to link.
-    expect(h.link).not.toHaveBeenCalled()
+describe('/repetition — creation stores links atomically (real SessionPlayer)', () => {
+  async function startLive() {
+    const view = renderLive()
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('drill-start'))
+    })
+    expect(await shownQid()).toBe(las[1].qid)
+    return view
+  }
 
-    h.session = activeRound(7, plan)
-    view.rerender(<Screen />)
-    const linked = [`${las[1].qid}~${las[0].qid}`, ord.qid]
-    expect(linkedPlans()).toEqual([{ sessionId: 7, plan: linked }])
-
-    // Once the session stores the links, nothing is sent again.
-    h.session = activeRound(7, linked)
-    view.rerender(<Screen />)
-    view.rerender(<Screen />)
-    expect(h.link).toHaveBeenCalledTimes(1)
-  })
-
-  it('writes the links again whenever the session shows up without them', async () => {
-    // A failed write, or a slower response of SessionPlayer's own that puts
-    // the plain plan back in the cache.
-    h.link.mockImplementation((_vars: unknown, options?: { onSettled?: () => void }) =>
-      options?.onSettled?.(),
-    )
-    const view = render(<Screen />)
-    const plan = await pick()
-    const linked = [`${las[1].qid}~${las[0].qid}`, ord.qid]
-    h.session = activeRound(7, plan)
-    view.rerender(<Screen />)
-    h.session = activeRound(7, linked)
-    view.rerender(<Screen />)
-    h.session = activeRound(7, plan)
-    view.rerender(<Screen />)
-    expect(linkedPlans()).toEqual([
-      { sessionId: 7, plan: linked },
-      { sessionId: 7, plan: linked },
-    ])
-  })
-
-  it('never links a session that is not this open round', async () => {
-    const view = render(<Screen />)
-    const plan = await pick()
-    h.session = activeRound(8, [ord.qid, las[1].qid])
-    view.rerender(<Screen />)
-    h.session = { ...activeRound(7, plan), endedAt: '2026-10-20T21:00:00Z' }
-    view.rerender(<Screen />)
+  it('creates the linked plan in its first write, without a post-creation PUT', async () => {
+    await startLive()
+    const plan = [`${las[1].qid}~${las[0].qid}`, ord.qid]
+    expect(h.startSession).toHaveBeenCalledExactlyOnceWith({
+      kind: 'adaptive_review',
+      sections: 'alla',
+      plan,
+      device: expect.any(String),
+    })
+    expect(h.session?.plan).toEqual(plan)
+    expect(h.session?.currentQuestionId).toBe(las[1].qid)
     expect(h.link).not.toHaveBeenCalled()
   })
 
-  it('has nothing to store for a round without new questions', async () => {
+  it('an immediate remount retains the source and resumes without creating another session', async () => {
+    const view = await startLive()
+    view.unmount()
+    renderLive()
+    expect(await shownQid()).toBe(las[1].qid)
+    expect(screen.getByTestId('repetition-sibling-label')).toBeInTheDocument()
+    await answer(las[1], false)
+    expect(h.review.mock.calls).toEqual([[{ id: 101, correct: false }]])
+    expect(h.startSession).toHaveBeenCalledTimes(1)
+    expect(h.link).not.toHaveBeenCalled()
+  })
+
+  it('another device resumes from the create response alone, before any cursor PATCH', async () => {
+    // Simulate leaving after POST succeeded, before the cursor write lands.
+    h.updateSession.mockImplementation(() => {})
+    const view = await startLive()
+    const persisted = JSON.stringify(h.session)
+    view.unmount()
+    h.search = { start: true }
+    window.localStorage.clear()
     h.traps = {}
-    const view = render(<Screen />)
-    const plan = await pick()
-    expect(plan).toEqual([las[0].qid, ord.qid])
-    h.session = activeRound(7, plan)
-    view.rerender(<Screen />)
+    h.trapLoad = 'failed'
+    h.due = [mistake(102, ord.qid), mistake(103, las[2].qid), mistake(101, las[0].qid)]
+    h.session = JSON.parse(persisted) as ActiveSession
+    expect(h.session.currentQuestionId).toBeNull()
+    renderLive()
+    expect(await shownQid()).toBe(las[1].qid)
+    await answer(las[1], true)
+    expect(h.review.mock.calls).toEqual([[{ id: 101, correct: true }]])
+    expect(h.startSession).toHaveBeenCalledTimes(1)
+    expect(h.link).not.toHaveBeenCalled()
+    expect(h.record).not.toHaveBeenCalled()
+  })
+
+  it('creates plain qids for same-question repetition', async () => {
+    h.traps = {}
+    h.search = { start: true }
+    renderLive()
+    expect(await shownQid()).toBe(las[0].qid)
+    expect(h.startSession).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({ plan: [las[0].qid, ord.qid] }),
+    )
+    expect(h.link).not.toHaveBeenCalled()
+  })
+})
+
+describe('SessionPlayer — callers without planEntries', () => {
+  it.each([
+    'drill',
+    'mock_diagnostic',
+  ] as const)('%s still creates plain-qid plans', async (kind) => {
+    h.realPlayer = true
+    render(
+      <SessionPlayer
+        sessionKind={kind}
+        pickQuestions={() => [las[0], ord]}
+        idleEyebrow="Öva"
+        idleHeadline="Öva"
+        idleSubcopy="Öva"
+        activeTab="ova"
+        autoStart
+      />,
+      { wrapper: Providers },
+    )
+    expect(await shownQid()).toBe(las[0].qid)
+    expect(h.startSession).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({ kind, plan: [las[0].qid, ord.qid] }),
+    )
     expect(h.link).not.toHaveBeenCalled()
   })
 })
@@ -732,38 +760,28 @@ describe('/repetition — a resume never reopens an answered question (real Sess
 })
 
 describe('/repetition — a round whose links never reached the server (real SessionPlayer)', () => {
-  // Misses A, B and C share a trap, so a round started in the real player
-  // plays new questions X, Y and Z. SessionPlayer stores them as plain qids,
-  // and only the route's later write adds the links: until it lands, only
-  // the visit that picked the round has them.
-  async function startLiveRound() {
+  // Cached old bundles could create plain-qid rounds and lose their later
+  // PUT. Keep those existing sessions playable for the compatibility release.
+  function legacyRound() {
     h.traps = oneTrap()
-    const [a, b, c] = las.map((q) => q.qid)
+    const [a, b, c, x, y, z] = las.map((q) => q.qid)
     h.due = [mistake(101, a), mistake(102, b), mistake(103, c)]
+    h.session = activeRound(7, [x, y, z])
+    h.search = { qid: x }
     const view = renderLive()
-    await act(async () => {
-      fireEvent.click(screen.getByTestId('drill-start'))
-    })
-    const x = await shownQid()
-    const [, y, z] = h.session?.plan ?? []
-    if (!x || !y || !z) throw new Error('the round did not start')
     return { view, b, c, x, y, z }
   }
 
-  it('links lost across a remount: the round plays on as plain questions, grades nothing and does not end', async () => {
-    // The write fails, and nothing on this device keeps the links.
-    h.link.mockImplementation((_vars: unknown, options?: { onSettled?: () => void }) =>
-      options?.onSettled?.(),
-    )
-    const { view, b, c, x, y, z } = await startLiveRound()
+  it('a legacy unlinked round survives a remount, plays on and grades nothing', async () => {
+    const { view, b, c, x, y, z } = legacyRound()
+    expect(await shownQid()).toBe(x)
     expect(h.session?.plan).toEqual([x, y, z])
     await answer(question(x), true)
     await next()
-    // The visit that picked the round still knows X's source.
-    expect(h.review.mock.calls).toEqual([[{ id: 101, correct: true }]])
+    expect(h.review).not.toHaveBeenCalled()
 
-    // X answered right moved A out of the due list. The student leaves on
-    // Y, and the server still holds plain qids.
+    // A was resolved elsewhere. The student leaves on Y, and the old
+    // session still holds plain qids.
     h.due = [mistake(102, b), mistake(103, c)]
     h.review.mockClear()
     h.link.mockClear()
