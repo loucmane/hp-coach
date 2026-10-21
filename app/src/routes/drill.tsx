@@ -25,8 +25,10 @@ import { type DrillClockState, QuietClock } from '@/components/drill/QuietClock'
 import { TempoLine } from '@/components/drill/TempoLine'
 import { AdaptiveReviewOffer } from '@/components/session/AdaptiveReviewOffer'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
+import { EXCLUDED_QUESTIONS } from '@/data/figureOverrides'
 import { entryHeadword, loadFramework } from '@/data/frameworks'
 import { findQuestion, loadBank, type Question, type Section } from '@/data/questions'
+import { WORKED_EXAMPLE_QIDS } from '@/data/workedExamples.generated'
 import { logAdaptiveEvent } from '@/lib/adaptiveEvents'
 import { encodeTreatedMarker } from '@/lib/adaptiveReview'
 import {
@@ -840,7 +842,14 @@ async function pickFrameworkQuestions(section: Section, frameworkId: string) {
   const out = []
   for (const qid of entry.example_questions) {
     const q = bank.find((x) => x.qid === qid)
-    if (q && q.parsing_status === 'complete' && q.options) out.push(q)
+    if (
+      q &&
+      q.parsing_status === 'complete' &&
+      q.options &&
+      !EXCLUDED_QUESTIONS.has(qid) &&
+      !WORKED_EXAMPLE_QIDS.has(qid)
+    )
+      out.push(q)
   }
   return out
 }
@@ -859,7 +868,13 @@ async function pickWeakTrapsQuestions(section: Section, frameworkIds: string[]) 
     for (const qid of byId.get(fid)?.example_questions ?? []) {
       if (seen.has(qid)) continue
       const q = bank.find((x) => x.qid === qid)
-      if (q && q.parsing_status === 'complete' && q.options) {
+      if (
+        q &&
+        q.parsing_status === 'complete' &&
+        q.options &&
+        !EXCLUDED_QUESTIONS.has(qid) &&
+        !WORKED_EXAMPLE_QIDS.has(qid)
+      ) {
         out.push(q)
         seen.add(qid)
       }

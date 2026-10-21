@@ -31,6 +31,7 @@ import type { Section } from '@/data/questions'
 import { ExampleQuestions } from './ExampleQuestions'
 import { MarkAsReadPill } from './MarkAsReadPill'
 import { PracticeLink } from './PracticeLink'
+import { WorkedExample } from './WorkedExample'
 
 export function TrapCard({
   entry,
@@ -171,7 +172,10 @@ export function TrapCard({
           </p>
         </div>
 
-        {entry.worked_example && <WorkedExample example={entry.worked_example} />}
+        <WorkedExample
+          entryId={entry.id}
+          fallback={entry.worked_example && <AuthoredExample example={entry.worked_example} />}
+        />
 
         {entry.counter_example && (
           <LabelledBlock label="När fällan inte gäller">
@@ -251,7 +255,7 @@ function LabelledBlock({ label, children }: { label: string; children: React.Rea
   )
 }
 
-function WorkedExample({ example }: { example: NonNullable<TrapEntry['worked_example']> }) {
+function AuthoredExample({ example }: { example: NonNullable<TrapEntry['worked_example']> }) {
   const beats: Array<{
     label: string
     text: string

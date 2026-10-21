@@ -8,6 +8,7 @@ import { beforeAll, describe, expect, it } from 'vitest'
 
 import type { ExposureMap } from '@/api/hooks/useMockResults'
 import { loadBank, type Question } from '@/data/questions'
+import { WORKED_EXAMPLES } from '@/data/workedExamples.generated'
 import { seededRng } from './drill'
 import {
   computeMockSummary,
@@ -18,6 +19,26 @@ import {
 } from './mock'
 
 // ── Fixture builder ─────────────────────────────────────────────────
+
+it('excludes worked examples from synthetic passes but keeps authentic passes intact', () => {
+  for (const example of WORKED_EXAMPLES) {
+    const worked = q({ qid: example.qid, section: example.section, number: 1 })
+    const ordinary = { ...worked, qid: 'ordinary', number: 2 }
+    expect(
+      pickSynthetic(
+        [worked, ordinary],
+        {},
+        example.section === 'MEK' ? 'verbal' : 'kvant',
+        () => 0,
+      ),
+    ).toEqual([ordinary])
+    expect(resolveAuthentic([worked, ordinary], worked.exam_id, worked.provpass)).toEqual([
+      worked,
+      ordinary,
+    ])
+    expect(listAuthenticPasses([worked, ordinary], {})[0].presented).toBe(2)
+  }
+})
 
 function q(overrides: Partial<Question> & Pick<Question, 'qid' | 'section' | 'number'>): Question {
   return {

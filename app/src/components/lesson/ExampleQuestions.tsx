@@ -10,39 +10,52 @@
 // lesson page itself never spoils the answer letter.
 
 import { Link } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { MathText } from '@/components/MathText'
 import { Eyebrow } from '@/components/primitives'
 import { loadBank, type Question } from '@/data/questions'
+import { WORKED_EXAMPLE_QIDS } from '@/data/workedExamples.generated'
 
 // Memoised qid → Question lookup. `loadBank()` is itself memoised, so
 // this is a thin index built once per session.
 let bankIndex: Promise<Map<string, Question>> | null = null
 function getBankIndex(): Promise<Map<string, Question>> {
   if (!bankIndex) {
-    bankIndex = loadBank().then((bank) => {
+    const pending = loadBank().then((bank) => {
       const m = new Map<string, Question>()
       for (const q of bank) m.set(q.qid, q)
       return m
+    })
+    bankIndex = pending
+    pending.catch(() => {
+      if (bankIndex === pending) bankIndex = null
     })
   }
   return bankIndex
 }
 
 export function ExampleQuestions({ qids }: { qids: string[] }) {
-  const [questions, setQuestions] = useState<(Question | null)[]>(() => qids.map(() => null))
+  const drillQids = useMemo(() => qids.filter((qid) => !WORKED_EXAMPLE_QIDS.has(qid)), [qids])
+  const [questions, setQuestions] = useState<Map<string, Question>>(new Map())
 
   useEffect(() => {
     let alive = true
-    getBankIndex().then((idx) => {
-      if (!alive) return
-      setQuestions(qids.map((qid) => idx.get(qid) ?? null))
-    })
+    if (drillQids.length === 0) return
+    getBankIndex()
+      .then((idx) => {
+        if (!alive) return
+        setQuestions(idx)
+      })
+      .catch(() => {
+        /* A gated bank may be unavailable while signed out. */
+      })
     return () => {
       alive = false
     }
-  }, [qids])
+  }, [drillQids])
+
+  if (drillQids.length === 0) return null
 
   return (
     <div style={{ marginTop: 28 }}>
@@ -57,8 +70,8 @@ export function ExampleQuestions({ qids }: { qids: string[] }) {
           gap: 10,
         }}
       >
-        {qids.map((qid, i) => {
-          const q = questions[i]
+        {drillQids.map((qid) => {
+          const q = questions.get(qid)
           return (
             <li key={qid}>
               <Link

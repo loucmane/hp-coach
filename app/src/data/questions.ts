@@ -19,6 +19,7 @@
 
 import { contentFetch } from './contentSource'
 import { EXCLUDED_QUESTIONS, SUPPRESSED_FIGURES } from './figureOverrides'
+import { WORKED_EXAMPLE_QIDS } from './workedExamples.generated'
 
 export const PROVPASS_KEYS = ['verb1', 'verb2', 'kvant1', 'kvant2'] as const
 export type Provpass = (typeof PROVPASS_KEYS)[number]
@@ -181,7 +182,8 @@ export function questionsInSection(bank: readonly Question[], section: Section):
       q.options &&
       // Figure-audit override: drop questions whose load-bearing figure is
       // broken (data/figureOverrides.ts + docs/figure-audit.md).
-      !EXCLUDED_QUESTIONS.has(q.qid),
+      !EXCLUDED_QUESTIONS.has(q.qid) &&
+      !WORKED_EXAMPLE_QIDS.has(q.qid),
   )
 }
 

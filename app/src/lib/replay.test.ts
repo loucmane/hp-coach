@@ -28,6 +28,7 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vite
 import type { Mistake } from '@/api/hooks/useMistakes'
 import { EXCLUDED_QUESTIONS } from '@/data/figureOverrides'
 import { loadBank, type Question } from '@/data/questions'
+import { WORKED_EXAMPLE_QIDS, WORKED_EXAMPLES } from '@/data/workedExamples.generated'
 
 import {
   type PlanLink,
@@ -106,6 +107,20 @@ function mistake(questionId: string, errorCount = 1): Mistake {
 }
 
 describe('pickReplayQuestions', () => {
+  it('never chooses a worked example as a new sibling', async () => {
+    const example = WORKED_EXAMPLES[0]
+    const source = bank.find(
+      (q) => q.section === example.section && playable(q) && !WORKED_EXAMPLE_QIDS.has(q.qid),
+    ) as Question
+    const [item] = await pickReplayQuestions([mistake(source.qid)], 10, {
+      traps: {
+        trapOf: () => example.entryId,
+        qidsFor: () => [source.qid, example.qid],
+      },
+    })
+    expect(item.question.qid).toBe(source.qid)
+    expect(item.sibling).toBe(false)
+  })
   it('resolves due qids to fully-parsed Question objects', async () => {
     const due = ordQids.map((q) => mistake(q))
     const items = await pickReplayQuestions(due, 10)

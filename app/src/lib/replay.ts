@@ -33,6 +33,7 @@ import type { Mistake } from '@/api/hooks/useMistakes'
 import type { ExposureMap } from '@/api/hooks/useMockResults'
 import { EXCLUDED_QUESTIONS } from '@/data/figureOverrides'
 import { findQuestion, loadBank, type Question } from '@/data/questions'
+import { WORKED_EXAMPLE_QIDS } from '@/data/workedExamples.generated'
 import { EMPTY_TRAP_INDEX, loadTrapIndex, type TrapIndex } from '@/lib/trapIndex'
 
 /** Single source of truth for the per-session repetition queue size.
@@ -131,7 +132,12 @@ function pickSibling(
 /** Fully parsed and not withheld by the figure audit — what a drill
  *  would serve (see questionsInSection). */
 function playable(q: Question): boolean {
-  return q.parsing_status === 'complete' && !!q.options && !EXCLUDED_QUESTIONS.has(q.qid)
+  return (
+    q.parsing_status === 'complete' &&
+    !!q.options &&
+    !EXCLUDED_QUESTIONS.has(q.qid) &&
+    !WORKED_EXAMPLE_QIDS.has(q.qid)
+  )
 }
 
 /** Joins a new question to the question it repeats in a stored plan entry.
