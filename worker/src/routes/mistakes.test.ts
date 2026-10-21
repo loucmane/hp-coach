@@ -872,7 +872,7 @@ describe('exam-aware review routes', () => {
   it('keeps overdue-first ordering before the last week and after the calendar ends', async () => {
     vi.setSystemTime(daysBeforeExam(7.01))
     await seedQueue()
-    for (const now of [daysBeforeExam(7.01), new Date(2027, 3, 11)]) {
+    for (const now of [daysBeforeExam(7.01), new Date(2027, 9, 25)]) {
       vi.setSystemTime(now)
       const { body } = await getDue('exam-user')
       expect(body.mistakes.map((row) => row.questionId)).toEqual(

@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { Mono } from '@/components/primitives'
 import { loadProvteknik } from '@/data/frameworks'
 import { UHR_DELPROV, UHR_ORDER, uhrTimeMs } from '@/lib/uhrPacing'
@@ -8,9 +10,21 @@ import { ProvteknikCard } from './ProvteknikCard'
 // recommendations rather than introducing a second timing source.
 const PASS_MINUTES = UHR_ORDER.slice(0, 4).reduce((sum, s) => sum + UHR_DELPROV[s].minutes, 0)
 
-/** A reading surface only. It deliberately mounts no lesson progress hooks. */
+/** Reference material: intentionally not tracked in lesson progress. */
 export function ProvteknikReader() {
   const chapter = loadProvteknik()
+
+  useEffect(() => {
+    const hash = window.location.hash.slice(1)
+    if (!chapter.entries.some((entry) => entry.id === hash)) return
+    const frame = requestAnimationFrame(() => {
+      const card = document.getElementById(hash)
+      if (!(card instanceof HTMLDetailsElement)) return
+      card.open = true
+      card.scrollIntoView({ block: 'start', behavior: 'smooth' })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [chapter])
 
   return (
     <div
@@ -64,8 +78,8 @@ export function ProvteknikReader() {
   )
 }
 
-function formatAverageTime(section: string): string {
-  const seconds = Math.round((uhrTimeMs(section, 1) ?? 0) / 1000)
+export function formatAverageTime(averageSeconds: number): string {
+  const seconds = Math.round(averageSeconds)
   return seconds < 60 ? `${seconds} s` : `${Math.floor(seconds / 60)} min ${seconds % 60} s`
 }
 
@@ -102,7 +116,9 @@ function PacingTable() {
             <td style={{ whiteSpace: 'nowrap', paddingRight: 8 }}>
               {UHR_DELPROV[section].minutes} min
             </td>
-            <td style={{ whiteSpace: 'nowrap' }}>{formatAverageTime(section)}</td>
+            <td style={{ whiteSpace: 'nowrap' }}>
+              {formatAverageTime((uhrTimeMs(section, 1) ?? 0) / 1000)}
+            </td>
           </tr>
         ))}
       </tbody>

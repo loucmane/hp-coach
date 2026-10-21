@@ -230,6 +230,38 @@ describe('first-pass Home integration', () => {
 })
 
 describe('first-run flow', () => {
+  it('lists both upcoming 2027 sittings on the Prov step', () => {
+    render(<Welcome />)
+    next()
+
+    expect(screen.getByRole('heading', { name: 'Vilket prov siktar du på?' })).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: /Vårprov|Höstprov/ })).toHaveLength(2)
+    expect(screen.getByRole('button', { name: /Vårprov 27/ })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    expect(screen.getByRole('button', { name: /Höstprov 27/ })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    )
+  })
+
+  it('preselects and saves Höstprov 27 after the spring sitting has passed', async () => {
+    vi.setSystemTime(new Date(2027, 3, 11, 12))
+    h.prefs = { targetSittingId: 'var-2027' }
+    render(<Welcome />)
+    next()
+
+    expect(screen.queryByRole('button', { name: /Vårprov 27/ })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Höstprov 27/ })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    next()
+    await screen.findByRole('heading', { name: 'Hur mycket tid passar dig?' })
+    expect(h.setSitting).toHaveBeenCalledWith('host-2027')
+  })
+
   it('seeds an upcoming saved sitting and minutes without writing unchanged values', async () => {
     vi.setSystemTime(new Date(2026, 8, 1, 12))
     h.prefs = { targetSittingId: 'var-2027', dailyMinutes: 45 }
