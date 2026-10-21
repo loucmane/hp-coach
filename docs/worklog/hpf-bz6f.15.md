@@ -53,3 +53,47 @@
 - Final app typecheck after the last test edit: PASS. Final diff whitespace check: PASS. Final status contains exactly the six accepted repository paths, all unstaged.
 
 SITTING DONE: hpf-bz6f.15
+
+## Round 2
+
+### Contract and decisions — 2026-10-21
+
+- Claimed the same bead for its accepted P2 fix at clean head `2774a8006674b88cf0678cca1fc1302718815887`; no molecule is attached. Dependencies are present.
+- Add a guarded `hpc-exam-owner` marker in `useSyncedPrefs.ts`, using Clerk's `useAuth().userId`. Backfill only a local sitting owned by the signed-in user; unknown identity, missing ownership, or another owner leaves it display-only.
+- Mark explicit sitting writes and accepted server hydration. Preserve the prior value's owner when a failed PATCH rolls back; unknown server ids must not relabel an unchanged device value.
+- Add red-first ownership regressions, then run the app typecheck, lint, and full suite. Worker files are unchanged this round. The existing `AuthQueryProvider` already swaps caches across identities at this head.
+- Leave changes uncommitted and record one DONE note for coordinator parking and delivery, as the accepted bead contract specifies.
+
+### Red-first evidence
+
+- Before production edits: `app/` → `pnpm test src/api/useSyncedPrefs.test.tsx` exited 1, with 8 failures and 10 passes. Both A-to-B scenarios (server hydration and explicit local choice) PATCHed A's sitting into B; missing markers, unknown identities, and unreadable markers also permitted backfill. Explicit writes and hydration did not record ownership.
+- After the ownership fix: `pnpm test src/api/useSyncedPrefs.test.tsx src/routes/mer.test.tsx` passed all 23 tests.
+- Strengthened the marker-write failure test by seeding another account's marker: 1 failure / 17 passes demonstrated that catching `setItem` alone retained the stale owner. Clear the old marker before replacing it; a failed replacement now leaves the sitting unowned. The full suite includes this final assertion.
+
+### Implementation and verification
+
+- Hook-local helpers wrap marker reads, removals, and writes in try/catch. Explicit sitting changes and accepted non-null server hydration record the current Clerk identity; rollback restores the previous sitting and owner together.
+- Backfill requires a nonempty current user id equal to the stored marker. The existing once-per-mount guard, local-first UI, null rollback, and server precedence remain in place. Unknown server ids do not reassign ownership of a rejected value.
+- `pnpm lint`: PASS, with the same four informational diagnostics in untouched devbake files. Initial new-test formatting diagnostics were corrected. Typecheck caught missing annotations in storage mocks; those were corrected before the final run.
+- `git --no-optional-locks diff --check`: PASS. Full app suite and final typecheck are in progress.
+
+### Playbook-proposal — gas-city-coordinator
+
+- 2026-10-21: Symptom: a storage-failure test with empty storage passed, while a failed owner-marker replacement retained a previous account's ownership of a new value. Cause: catching a marker write error does not invalidate an existing marker. Rule: seed another account's marker in persistence-failure regressions; invalidate it before replacement and restore value/owner together on rollback.
+- The proposal queue `~/scratch/skill-gotchas/gas-city-coordinator.md` is outside this managed session's writable roots. This durable copy is for coordinator transfer, following the astra-relay fallback for managed workers.
+
+### Final verification — 2026-10-21
+
+- App `pnpm typecheck`: PASS after the test-mock annotation fixes.
+- App `pnpm lint`: PASS, four unchanged informational diagnostics.
+- App `pnpm test --maxWorkers=2`: 116 files passed / 1 failed; 4,143 tests passed / 1 failed in 112.22 seconds. All 18 hook tests and 5 Mer tests passed. The only failure is the unchanged trap-index generator check (`spawnSync /usr/bin/node EPERM`), also blocked in round 1. The coordinator must execute that check outside the sandbox.
+- No worker files changed in round 2, so the worker checks were not repeated. The round-1 worker evidence remains above.
+- Source self-review confirms the admitted scope: only `app/src/api/useSyncedPrefs.ts`, `app/src/api/useSyncedPrefs.test.tsx`, and this worklog differ from the round-2 starting head. The classified worklog is also updated.
+- Implementation head remains `2774a8006674b88cf0678cca1fc1302718815887` plus uncommitted round-2 changes. Independent cross-vendor re-review at the eventual commit is pending. The coordinator owns staging/signing, host verification, delivery, parking, and closure.
+
+### Delivery boundary — round 2
+
+- Staging the three changed accepted paths was attempted once and refused: the shared Git worktree `index.lock` is on a read-only filesystem outside this sandbox. All round-2 changes remain unstaged and uncommitted. No permission workaround or signing/commit command was attempted.
+- The accepted round-2 contract requires a final DONE note and coordinator parking. No worker status/assignee change, closure, or drain that could release the active bead is performed.
+
+SITTING R2 DONE: hpf-bz6f.15

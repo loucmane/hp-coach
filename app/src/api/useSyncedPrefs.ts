@@ -14,6 +14,7 @@
 // of truth. A second device focuses → useUserPrefs refetches → another
 // hydration pass picks up the change.
 
+import { useAuth } from '@clerk/clerk-react'
 import { useEffect, useRef } from 'react'
 
 import type { Density, FontKey, PaletteKey, ThemeMode } from '@/lib/tokens'
@@ -24,12 +25,35 @@ import { useUiStore } from '@/stores/uiStore'
 
 import { useUpdateUserPrefs, useUserPrefs } from './hooks/useUserPrefs'
 
+// The exam store is device-wide. Only migrate a choice whose owner is known;
+// legacy choices and choices left by another account remain display-only.
+const SITTING_OWNER_KEY = 'hpc-exam-owner'
+
+function readSittingOwner(): string | null {
+  try {
+    return localStorage.getItem(SITTING_OWNER_KEY)
+  } catch {
+    return null
+  }
+}
+
+function writeSittingOwner(userId: string | null | undefined) {
+  try {
+    // A failed replacement must not leave the previous account as owner.
+    localStorage.removeItem(SITTING_OWNER_KEY)
+    if (userId) localStorage.setItem(SITTING_OWNER_KEY, userId)
+  } catch {
+    // Storage can be unavailable; explicit preference writes still reach the API.
+  }
+}
+
 /**
  * Mount once at the top of the signed-in tree. Watches the prefs query;
  * on every successful fetch, mirrors the server values into local stores
  * (idempotent — re-applying the same value is a no-op).
  */
 export function useHydratePrefs() {
+  const { userId } = useAuth()
   const prefs = useUserPrefs()
   const { mutate: updatePrefs } = useUpdateUserPrefs()
   const lastHydrated = useRef<number | null>(null)
@@ -66,7 +90,15 @@ export function useHydratePrefs() {
       // Only apply if the id is one we know about; setSitting silently
       // ignores unknowns, so this is safe.
       setSitting(prefs.data.targetSittingId as Parameters<typeof setSitting>[0])
-    } else if (prefs.data.targetSittingId === null && !sittingBackfilled.current) {
+      if (useExamStore.getState().sittingId === prefs.data.targetSittingId) {
+        writeSittingOwner(userId)
+      }
+    } else if (
+      prefs.data.targetSittingId === null &&
+      !sittingBackfilled.current &&
+      userId &&
+      readSittingOwner() === userId
+    ) {
       // Migrate an explicit local choice only. useSitting's default and
       // calendar roll-forward are read-side values, never saved choices.
       const local = useExamStore.getState().sittingId
@@ -87,6 +119,7 @@ export function useHydratePrefs() {
     setSmartDrill,
     setSitting,
     updatePrefs,
+    userId,
   ])
 }
 
@@ -96,6 +129,7 @@ export function useHydratePrefs() {
  * that resolves once the server confirms (or rejects on failure).
  */
 export function useSyncedPrefs() {
+  const { userId } = useAuth()
   const update = useUpdateUserPrefs()
 
   const setCoach = useCoachStore((s) => s.setCoach)
@@ -140,11 +174,20 @@ export function useSyncedPrefs() {
     setFont: writeThrough(setFont, () => setFont(fontLocal), 'font'),
     setDensity: writeThrough(setDensity, () => setDensity(densityLocal), 'density'),
     setSmartDrill: writeThrough(setSmartDrill, () => setSmartDrill(smartDrillLocal), 'smartDrill'),
-    setSitting: writeThrough(
-      setSitting,
-      () => useExamStore.setState({ sittingId: sittingLocal }),
-      'targetSittingId',
-    ),
+    setSitting: (next: Parameters<typeof setSitting>[0]) => {
+      const previousOwner = readSittingOwner()
+      return writeThrough(
+        (id: typeof next) => {
+          setSitting(id)
+          if (useExamStore.getState().sittingId === id) writeSittingOwner(userId)
+        },
+        () => {
+          useExamStore.setState({ sittingId: sittingLocal })
+          writeSittingOwner(previousOwner)
+        },
+        'targetSittingId',
+      )(next)
+    },
     isPending: update.isPending,
     isError: update.isError,
   }
