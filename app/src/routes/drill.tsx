@@ -6,15 +6,22 @@
 // The state machine, lifecycle, and UI live in <SessionPlayer>; this
 // file is just config.
 
+import { useIsMutating, useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useAdaptiveReview } from '@/api/hooks/useAdaptiveReview'
 import { useAbility, useItemStats } from '@/api/hooks/useItemStats'
 import { useDueMistakes, useRecordMistake } from '@/api/hooks/useMistakes'
-import { useActiveSession } from '@/api/hooks/useSessions'
+import {
+  useActiveSession,
+  useActiveSessionOfKind,
+  useSessionAttempts,
+} from '@/api/hooks/useSessions'
 import { useTopTraps } from '@/api/hooks/useTopTraps'
-import { DrillResult } from '@/components/drill/DrillResult'
+import { DrillResult, type DrillSummary } from '@/components/drill/DrillResult'
+import { type DrillClockState, QuietClock } from '@/components/drill/QuietClock'
+import { TempoLine } from '@/components/drill/TempoLine'
 import { AdaptiveReviewOffer } from '@/components/session/AdaptiveReviewOffer'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { entryHeadword, loadFramework } from '@/data/frameworks'
@@ -30,6 +37,14 @@ import {
 import { sectionDoorLayoutId, useFirstContentSignal } from '@/lib/motion'
 import { REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
+import {
+  attemptTimeMs,
+  formatDrillTime,
+  isTimedDrillPlan,
+  pickTimedDrillQuestions,
+  type TimedDrillSection,
+  timedDrill,
+} from '@/lib/timedDrill'
 import { useUiStore } from '@/stores/uiStore'
 
 const DRILL_SECTIONS = ['ORD', 'LÄS', 'MEK', 'ELF', 'XYZ', 'KVA', 'NOG', 'DTK'] as const
@@ -56,6 +71,8 @@ type DrillSearch = {
    *  idle Start button would use (adopt-active-session included); direct
    *  /drill navigation without this flag keeps the idle screen. */
   start?: true
+  /** Opt-in UHR-paced ORD set or one four-question LÄS text. */
+  timed?: true
 }
 
 function validateSearch(input: Record<string, unknown>): DrillSearch {
@@ -109,6 +126,15 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
   if (input.start === '1' || input.start === true) {
     out.start = true
   }
+  if (
+    (input.timed === '1' || input.timed === 1 || input.timed === true) &&
+    timedDrill(out.section ?? 'ORD') &&
+    !out.framework &&
+    !out.mixed &&
+    !out.weak
+  ) {
+    out.timed = true
+  }
   return out
 }
 
@@ -150,6 +176,13 @@ export const Route = createFileRoute('/drill')({
 })
 
 function DrillScreen() {
+  const { section, timed } = Route.useSearch()
+  // Changing the opt-in mode starts a new clock/player lifetime. Ordinary
+  // drills keep their existing lifetime and all their other route facets.
+  return <DrillSession key={timed ? `timed-${section ?? 'ORD'}` : 'untimed'} />
+}
+
+function DrillSession() {
   const {
     section: sectionFromUrl,
     qid,
@@ -160,8 +193,11 @@ function DrillScreen() {
     ar,
     back,
     start,
+    timed,
   } = Route.useSearch()
   const section: DrillSection = sectionFromUrl ?? 'ORD'
+  const timing = timed ? timedDrill(section) : null
+  const [clock, setClock] = useState<DrillClockState | null>(null)
   const navigate = useNavigate()
   // Boot-veil content signal (#305 owner verdict) — /drill has no Skrift
   // block; its plan/question set is synchronous local data, so by the
@@ -172,7 +208,7 @@ function DrillScreen() {
   // detour: plain section drills, not the detour itself (`framework`/`ar`),
   // a direct-link (`qid`), a weak-traps or mixed pass, or a reconstructed
   // `done` view.
-  const isNormalDrill = !framework && !qid && !weak && !mixed && !ar && !done
+  const isNormalDrill = !timed && !framework && !qid && !weak && !mixed && !ar && !done
   const adaptive = useAdaptiveReview()
 
   // `?weak=1` — the user's weakest traps in this section, off the live
@@ -190,6 +226,17 @@ function DrillScreen() {
   // instead of stepping back through 10 individual questions).
   const setUrlQid = useCallback(
     (next: string | null) => {
+      if (timed) {
+        const now = Date.now()
+        setClock((prev) =>
+          next === null
+            ? null
+            : {
+                elapsedMs: prev ? prev.elapsedMs : 0,
+                runningSince: now,
+              },
+        )
+      }
       navigate({
         to: '/drill',
         search: (prev: DrillSearch) => ({
@@ -202,8 +249,20 @@ function DrillScreen() {
         replace: true,
       })
     },
-    [navigate],
+    [navigate, timed],
   )
+
+  const pauseClock = useCallback(() => {
+    const now = Date.now()
+    setClock((prev) => {
+      if (!prev || prev.runningSince === null) return prev
+      return {
+        elapsedMs:
+          prev.elapsedMs === null ? null : prev.elapsedMs + Math.max(0, now - prev.runningSince),
+        runningSince: null,
+      }
+    })
+  }, [])
 
   // On completion, stamp `?done=<sessionId>` (keeping the section so
   // "öva igen" re-picks the same one) so a refresh reconstructs the Klart.
@@ -211,6 +270,7 @@ function DrillScreen() {
   // surface the "Tillbaka till din övning" continuation.
   const onComplete = useCallback(
     (sessionId: number) => {
+      setClock(null)
       if (ar) logAdaptiveEvent('detour_completed', { framework_id: framework })
       navigate({
         to: '/drill',
@@ -219,6 +279,7 @@ function DrillScreen() {
           done: sessionId,
           ar: prev.ar,
           back: prev.back,
+          timed: prev.timed,
         }),
         replace: true,
       })
@@ -268,8 +329,32 @@ function DrillScreen() {
   // distinguishes "deep-link from outside" (no session yet) from
   // "session in progress" (don't flip).
   const activeSession = useActiveSession()
+  const activeDrill = useActiveSessionOfKind('drill')
+  // SessionPlayer normally resumes by section alone. A timed drill also
+  // needs its exact size/passage, so resolve the bank before mounting it.
+  // This shares the player's query cache; ordinary drills do no extra load.
+  const timedBank = useQuery({
+    queryKey: ['question-bank'],
+    queryFn: loadBank,
+    staleTime: Number.POSITIVE_INFINITY,
+    enabled: !!timing && !done,
+  })
+  const resumeAttempts = useSessionAttempts(timing && !done ? (activeDrill.data?.id ?? null) : null)
+  const canResumeTimed = !!(
+    timing &&
+    timedBank.data &&
+    activeDrill.data?.plan &&
+    activeDrill.data.sections === section &&
+    isTimedDrillPlan(
+      activeDrill.data.plan
+        .map((id) => findQuestion(timedBank.data, id))
+        .filter((q): q is Question => !!q),
+      timing.section,
+    ) &&
+    activeDrill.data.plan.length === timing.count
+  )
   const directLinkQid =
-    qid && (!activeSession.data || activeSession.data.sections !== section) ? qid : null
+    !timing && qid && (!activeSession.data || activeSession.data.sections !== section) ? qid : null
 
   // Resolve the framework entry's display name (e.g. "för-" for
   // ORD-ROOT-001) so the idle screen shows what the user is about to
@@ -362,6 +447,18 @@ function DrillScreen() {
       qids.map((q) => findQuestion(b, q)).filter((q): q is Question => q !== undefined),
     )
 
+  const resolveTimedPlan = async (qids: string[]) => {
+    const questions = await resolvePlan(qids)
+    const attempts = await resumeAttempts.refetch()
+    setClock({ elapsedMs: attemptTimeMs(attempts.data), runningSince: null })
+    return questions
+  }
+
+  const pickTimedQuestions = async () => {
+    setClock(null)
+    return timing ? pickTimedDrillQuestions(await loadBank(), timing.section) : []
+  }
+
   // Session `sections` metadata. For an adaptive-review detour (`ar`), ride
   // the treated marker on this field (encodeTreatedMarker) so the completed
   // session row is recoverable as "treated" — same free-form-field trick
@@ -416,28 +513,49 @@ function DrillScreen() {
       <RepetitionHint count={dueCount} />
     ) : null
 
-  return (
+  if (timing && !done && (activeDrill.isPending || timedBank.isPending)) {
+    return <p role="status">Laddar övning …</p>
+  }
+  if (timing && !done && !timedBank.data) {
+    return (
+      <p>
+        Kunde inte hämta övningen. <Link to="/ova">Tillbaka till Öva</Link>
+      </p>
+    )
+  }
+
+  const player = (
     <SessionPlayer
       sessionKind="drill"
       sections={sessionSections}
       activeTab="ova"
-      pickQuestions={pickQuestions}
-      idleEyebrow={idleEyebrow}
+      pickQuestions={timing ? pickTimedQuestions : pickQuestions}
+      idleEyebrow={timing ? 'Övning på tid' : idleEyebrow}
       idleHeadline={idleHeadline}
-      idleSubcopy={idleSubcopy}
-      idleMeta={idleMeta}
-      emptyCopy={emptyCopy}
+      idleSubcopy={
+        timing?.section === 'LÄS' ? 'En hel text med fyra frågor från riktiga prov.' : idleSubcopy
+      }
+      idleMeta={
+        timing
+          ? `${timing.count} frågor · riktmärke ${formatDrillTime(timing.budgetMs)} · klockan pausar under återkoppling`
+          : idleMeta
+      }
+      emptyCopy={
+        timing?.section === 'LÄS'
+          ? 'Ingen hel LÄS-text med fyra frågor är tillgänglig just nu.'
+          : emptyCopy
+      }
       idleExtra={idleExtra}
-      urlSyncedQid={{ qid: qid ?? null, setQid: setUrlQid }}
+      urlSyncedQid={{ qid: timing && !canResumeTimed ? null : (qid ?? null), setQid: setUrlQid }}
       completedSessionId={done ?? null}
       onComplete={onComplete}
-      resolvePlan={resolvePlan}
+      resolvePlan={timing ? (canResumeTimed ? resolveTimedPlan : undefined) : resolvePlan}
       adaptiveOffer={adaptiveOffer}
       // Hub-door path: the Öva row already expressed the intent (this
       // section, standard drill) — begin immediately, no idle stop. A
       // stale `?done` means we're LOOKING at a completed pass's Klart,
       // not entering; reconstruction wins.
-      autoStart={!!start && !done}
+      autoStart={(!!start || (!!timing && !!qid)) && !done}
       // The section-door shared element: plain section drills only —
       // framework/qid/weak/mixed surfaces headline something other than
       // the section code, so there is no honest door there.
@@ -447,22 +565,91 @@ function DrillScreen() {
           : undefined
       }
       renderDone={
-        ar && back
-          ? ({ summary, onReplay, onHome }) => (
-              <DrillResult
-                summary={summary}
-                onReplay={onReplay}
-                onHome={onHome}
-                continuation={<BackToOriginalDrill section={back} />}
-              />
-            )
+        timing || (ar && back)
+          ? ({ summary, onReplay, onHome }) =>
+              timing ? (
+                <TimedDrillResult
+                  section={timing.section}
+                  questionCount={timing.count}
+                  sessionId={done ?? null}
+                  summary={summary}
+                  onReplay={onReplay}
+                  onHome={onHome}
+                  back={ar ? back : undefined}
+                />
+              ) : (
+                <DrillResult
+                  summary={summary}
+                  onReplay={onReplay}
+                  onHome={onHome}
+                  continuation={back ? <BackToOriginalDrill section={back} /> : undefined}
+                />
+              )
           : undefined
       }
+      onCorrect={timing ? pauseClock : undefined}
       onWrong={(q) => {
+        if (timing) pauseClock()
         // Fire-and-forget: a failed mistake-write doesn't block the UX.
         recordMistake.mutate({ questionId: q.qid })
       }}
     />
+  )
+  if (!timing) return player
+  return (
+    <div
+      style={{
+        height: '100%',
+        minHeight: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        // Reserve a strip so the fixed clock never covers a question/control.
+        paddingTop: clock && !done ? 44 : 0,
+        boxSizing: 'border-box',
+      }}
+    >
+      {clock && !done && <QuietClock budgetMs={timing.budgetMs} {...clock} />}
+      {player}
+    </div>
+  )
+}
+
+function TimedDrillResult({
+  section,
+  questionCount,
+  sessionId,
+  summary,
+  onReplay,
+  onHome,
+  back,
+}: {
+  section: TimedDrillSection
+  questionCount: number
+  sessionId: number | null
+  summary: DrillSummary
+  onReplay: () => void
+  onHome: () => void
+  back?: DrillSection
+}) {
+  const { data: attempts, refetch } = useSessionAttempts(sessionId)
+  const pendingWrites = useIsMutating()
+  // The last answer/end are fire-and-forget. Refresh once those writes
+  // settle too, so a result opened before the POST lands can gain its time.
+  useEffect(() => {
+    if (sessionId !== null && pendingWrites === 0) void refetch()
+  }, [sessionId, pendingWrites, refetch])
+  return (
+    <div style={{ height: '100%', minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+      <TempoLine section={section} questionCount={questionCount} attempts={attempts} />
+      <div style={{ flex: 1, minHeight: 0 }}>
+        <DrillResult
+          summary={summary}
+          onReplay={onReplay}
+          onHome={onHome}
+          continuation={back ? <BackToOriginalDrill section={back} /> : undefined}
+        />
+      </div>
+    </div>
   )
 }
 
