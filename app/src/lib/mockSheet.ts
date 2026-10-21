@@ -9,6 +9,8 @@
 //                                              on that question, across every
 //                                              visit (revisits accumulate,
 //                                              they don't reset).
+//   flagged: Set<qid>                      — locally marked uncertainty,
+//                                              separate from answers/grading.
 //   current: { qid, enteredAt } | null      — the question in view right now
 //                                              and when the visit started, so
 //                                              `leave`/`settle` can compute
@@ -19,6 +21,8 @@
 //                         clock. If another question was already current
 //                         (caller forgot to `leave` first), its elapsed time
 //                         up to `now` is flushed first so no time is lost.
+//   flag(qid) / unflag(qid) — mark uncertainty without picking an answer
+//                         or changing the question's dwell clock.
 //   pick(qid, letter, now?) — record an answer. Latest pick per qid wins
 //                         (overwrites), Not a dwell event by itself — dwell
 //                         only advances on enter/leave/settle boundaries.
@@ -40,11 +44,12 @@ export type MockSheetAnswer = {
 export type MockSheetState = {
   answers: Map<string, MockSheetAnswer>
   dwellMs: Map<string, number>
+  flagged: Set<string>
   current: { qid: string; enteredAt: number } | null
 }
 
 export function createMockSheet(): MockSheetState {
-  return { answers: new Map(), dwellMs: new Map(), current: null }
+  return { answers: new Map(), dwellMs: new Map(), flagged: new Set(), current: null }
 }
 
 function addDwell(state: MockSheetState, qid: string, ms: number): Map<string, number> {
@@ -65,6 +70,7 @@ function flushCurrent(state: MockSheetState, now: number): Map<string, number> {
 export type MockSheetAction =
   | { type: 'enter'; qid: string; now?: number }
   | { type: 'pick'; qid: string; letter: string; now?: number }
+  | { type: 'flag' | 'unflag'; qid: string; now?: number }
   | { type: 'leave'; now?: number }
   | { type: 'settle'; now?: number }
 
@@ -84,6 +90,13 @@ export function mockSheetReducer(state: MockSheetState, action: MockSheetAction)
       const answers = new Map(state.answers)
       answers.set(action.qid, { letter: action.letter, lastAt: now })
       return { ...state, answers }
+    }
+    case 'flag':
+    case 'unflag': {
+      const flagged = new Set(state.flagged)
+      if (action.type === 'flag') flagged.add(action.qid)
+      else flagged.delete(action.qid)
+      return { ...state, flagged }
     }
     case 'leave': {
       const dwellMs = flushCurrent(state, now)
@@ -173,5 +186,50 @@ export function sheetFromAttempts(rows: readonly MockAttemptRow[]): MockSheetSta
       dwellMs.set(row.questionId, (dwellMs.get(row.questionId) ?? 0) + ms)
     }
   }
-  return { answers, dwellMs, current: null }
+  return { answers, dwellMs, flagged: new Set(), current: null }
+}
+
+// Flags are a browser-local aid, not part of attempts or the versioned
+// score breakdown. Namespace by both identity and session; unresolved or
+// signed-out identities must never share a fallback key.
+function mockFlagsKey(userId: string, sessionId: number): string {
+  return `hpc-mock-flags-v1:${JSON.stringify([userId, sessionId])}`
+}
+
+export function loadMockFlags(userId: string | null | undefined, sessionId: number): Set<string> {
+  if (!userId) return new Set()
+  try {
+    const raw = window.localStorage.getItem(mockFlagsKey(userId, sessionId))
+    const value: unknown = raw == null ? null : JSON.parse(raw)
+    if (Array.isArray(value) && value.every((qid) => typeof qid === 'string')) {
+      return new Set(value)
+    }
+  } catch {
+    // Disabled storage, invalid JSON or SSR: continue with an empty flag set.
+  }
+  return new Set()
+}
+
+export function saveMockFlags(
+  userId: string | null | undefined,
+  sessionId: number,
+  flagged: ReadonlySet<string>,
+): void {
+  if (!userId) return
+  try {
+    const key = mockFlagsKey(userId, sessionId)
+    if (flagged.size === 0) window.localStorage.removeItem(key)
+    else window.localStorage.setItem(key, JSON.stringify([...flagged]))
+  } catch {
+    // Full or disabled storage must not interrupt a pass; in-memory flags work.
+  }
+}
+
+export function clearMockFlags(userId: string | null | undefined, sessionId: number): void {
+  if (!userId) return
+  try {
+    window.localStorage.removeItem(mockFlagsKey(userId, sessionId))
+  } catch {
+    // The pass can still finish if browser storage is unavailable.
+  }
 }

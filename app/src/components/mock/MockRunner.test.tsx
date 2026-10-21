@@ -9,14 +9,19 @@
 // test proves it end-to-end through MockRunner specifically, so a future
 // change to either shared component that reintroduces a leak fails here.
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { ComponentProps } from 'react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { Question } from '@/data/questions'
-import { createMockSheet, mockSheetReducer } from '@/lib/mockSheet'
+import { createMockSheet, loadMockFlags, mockSheetReducer, saveMockFlags } from '@/lib/mockSheet'
 import { MockRunner, type MockRunnerSession } from './MockRunner'
+
+let userId: string | null | undefined = 'student-a'
+vi.mock('@clerk/clerk-react', () => ({
+  useAuth: () => ({ userId }),
+}))
 
 vi.mock('@/data/explanations', () => ({
   loadExplanation: async () => null,
@@ -109,10 +114,17 @@ function renderRunner(overrides: Partial<ComponentProps<typeof MockRunner>> = {}
 }
 
 beforeEach(() => {
+  userId = 'student-a'
+  localStorage.clear()
   submitAttemptMutate.mockClear()
   recordMistakeMutate.mockClear()
   updateSessionMutate.mockClear()
   submitMockResultMutate.mockClear()
+})
+
+afterEach(() => {
+  vi.unstubAllGlobals()
+  vi.restoreAllMocks()
 })
 
 describe('MockRunner — no correctness leak', () => {
@@ -329,5 +341,194 @@ describe('MockRunner — reload-adopt props (initialSheet/initialIndex/durationM
     const clock = await screen.findByTestId('mock-countdown')
     // Just-mounted remaining time should read close to 03:00, never 55:00.
     expect(clock.textContent).toMatch(/^0[0-3]:/)
+  })
+})
+
+describe('MockRunner — uncertainty flags', () => {
+  it('toggles Osäker and gives flagged cells a visible and accessible mark', async () => {
+    const user = userEvent.setup()
+    renderRunner()
+    const toggle = screen.getByRole('button', { name: 'Osäker' })
+    expect(toggle).toHaveAttribute('aria-pressed', 'false')
+    await user.click(toggle)
+    expect(toggle).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('mock-cell-1')).toHaveTextContent('?')
+    expect(screen.getByTestId('mock-cell-1')).toHaveAccessibleName(/osäker/i)
+    expect(screen.getByTestId('mock-cell-1')).toHaveAttribute('data-answered', 'false')
+    await user.click(screen.getByTestId('mock-cell-2'))
+    expect(screen.getByRole('button', { name: 'Osäker' })).toHaveAttribute('aria-pressed', 'false')
+    await user.click(screen.getByTestId('mock-cell-1'))
+    await user.click(screen.getByRole('button', { name: 'Osäker' }))
+    expect(screen.getByTestId('mock-cell-1')).not.toHaveTextContent('?')
+    expect(loadMockFlags('student-a', 42)).toEqual(new Set())
+    expect(recordMistakeMutate).not.toHaveBeenCalled()
+    expect(submitAttemptMutate).not.toHaveBeenCalled()
+  })
+
+  it('uses M without changing Enter, repeat, modifier, or text-input behavior', async () => {
+    const user = userEvent.setup()
+    renderRunner()
+    const toggle = screen.getByRole('button', { name: 'Osäker' })
+    await user.keyboard('{Enter}')
+    expect(toggle).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getByTestId('mock-cell-1')).toHaveAttribute('data-current', 'true')
+    await user.keyboard('m')
+    expect(toggle).toHaveAttribute('aria-pressed', 'true')
+    fireEvent.keyDown(window, { key: 'm', repeat: true })
+    fireEvent.keyDown(window, { key: 'm', ctrlKey: true })
+    const input = document.createElement('input')
+    document.body.appendChild(input)
+    fireEvent.keyDown(input, { key: 'm' })
+    input.remove()
+    expect(toggle).toHaveAttribute('aria-pressed', 'true')
+    await user.keyboard('M')
+    expect(toggle).toHaveAttribute('aria-pressed', 'false')
+    expect(submitAttemptMutate).not.toHaveBeenCalled()
+  })
+
+  it('restores flags on reload alongside answers rebuilt from attempts', async () => {
+    const user = userEvent.setup()
+    const first = renderRunner()
+    await user.click(screen.getByRole('button', { name: 'Osäker' }))
+    first.unmount()
+    const initialSheet = mockSheetReducer(createMockSheet(), {
+      type: 'pick',
+      qid: 'q1',
+      letter: 'A',
+    })
+    renderRunner({ initialSheet })
+    expect(screen.getByRole('button', { name: 'Osäker' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('mock-cell-1')).toHaveAttribute('data-answered', 'true')
+    expect(screen.getByTestId('mock-cell-1')).toHaveTextContent('?')
+  })
+
+  it('isolates flags when the mounted runner changes session or account', async () => {
+    const user = userEvent.setup()
+    const { rerender, onSettled, onVoid } = renderRunner()
+    await user.click(screen.getByRole('button', { name: 'Osäker' }))
+    const renderFor = (session: MockRunnerSession) => (
+      <MockRunner
+        plan={PLAN}
+        session={session}
+        seenBefore={0}
+        onSettled={onSettled}
+        onVoid={onVoid}
+      />
+    )
+    rerender(renderFor({ ...SESSION, id: 43 }))
+    expect(screen.getByRole('button', { name: 'Osäker' })).toHaveAttribute('aria-pressed', 'false')
+    rerender(renderFor(SESSION))
+    expect(screen.getByRole('button', { name: 'Osäker' })).toHaveAttribute('aria-pressed', 'true')
+    userId = 'student-b'
+    rerender(renderFor(SESSION))
+    expect(screen.getByRole('button', { name: 'Osäker' })).toHaveAttribute('aria-pressed', 'false')
+    await user.click(screen.getByTestId('mock-cell-2'))
+    await user.click(screen.getByRole('button', { name: 'Osäker' }))
+    expect(loadMockFlags('student-a', 42)).toEqual(new Set(['q1']))
+    expect(loadMockFlags('student-b', 42)).toEqual(new Set(['q2']))
+  })
+
+  it('queues flagged correct and wrong answers once on hand-in, excluding unflagged correct', async () => {
+    vi.stubGlobal('confirm', () => true)
+    const user = userEvent.setup()
+    renderRunner()
+    await user.click(screen.getByRole('button', { name: 'Osäker' }))
+    await user.click(screen.getByTestId('option-A')) // flagged correct
+    await user.click(screen.getByTestId('mock-cell-2'))
+    await user.click(screen.getByRole('button', { name: 'Osäker' }))
+    await user.click(screen.getByTestId('option-A')) // flagged wrong, only one enqueue
+    await user.click(screen.getByTestId('mock-cell-3'))
+    await user.click(screen.getByTestId('option-A')) // confident correct
+    expect(recordMistakeMutate).not.toHaveBeenCalled()
+    await user.click(screen.getByTestId('mock-submit'))
+    await user.click(screen.getByTestId('mock-submit')) // settled guard
+    expect(recordMistakeMutate.mock.calls).toEqual([[{ questionId: 'q1' }], [{ questionId: 'q2' }]])
+    expect(loadMockFlags('student-a', 42)).toEqual(new Set())
+    expect(localStorage.length).toBe(0)
+    expect(submitAttemptMutate.mock.calls[0][0]).toEqual({
+      sessionId: 42,
+      questionId: 'q1',
+      selectedAnswer: 'A',
+      correct: true,
+      timeTakenMs: expect.any(Number),
+    })
+    const result = submitMockResultMutate.mock.calls[0][0] as {
+      breakdown: unknown
+      correct: number
+    }
+    expect(result.correct).toBe(2)
+    expect(Object.keys(result.breakdown as object).sort()).toEqual([
+      'missedQids',
+      'perSection',
+      'version',
+    ])
+    expect(JSON.stringify(result)).not.toMatch(/flag|uncertain/i)
+  })
+
+  it('excludes unflagged correct answers and flagged blanks on hand-in', async () => {
+    vi.stubGlobal('confirm', () => true)
+    const user = userEvent.setup()
+    renderRunner()
+    await user.click(screen.getByRole('button', { name: 'Osäker' }))
+    await user.click(screen.getByTestId('option-A'))
+    await user.click(screen.getByRole('button', { name: 'Osäker' }))
+    await user.click(screen.getByTestId('mock-cell-3'))
+    await user.click(screen.getByRole('button', { name: 'Osäker' }))
+    await user.click(screen.getByTestId('mock-submit'))
+    expect(recordMistakeMutate).not.toHaveBeenCalled()
+  })
+
+  it('queues a restored flagged correct answer and clears flags on timeout exactly once', async () => {
+    saveMockFlags('student-a', 42, new Set(['q1']))
+    const initialSheet = mockSheetReducer(createMockSheet(), {
+      type: 'pick',
+      qid: 'q1',
+      letter: 'A',
+    })
+    renderRunner({
+      initialSheet,
+      session: { ...SESSION, startedAt: new Date(Date.now() - 56 * 60_000) },
+    })
+    await waitFor(() => expect(submitMockResultMutate).toHaveBeenCalledTimes(1))
+    expect(recordMistakeMutate.mock.calls).toEqual([[{ questionId: 'q1' }]])
+    expect(localStorage.length).toBe(0)
+  })
+
+  it('clears flags on abandon and retains only existing wrong-answer behavior', async () => {
+    vi.stubGlobal('confirm', () => true)
+    const user = userEvent.setup()
+    const { onVoid } = renderRunner()
+    await user.click(screen.getByRole('button', { name: 'Osäker' }))
+    await user.click(screen.getByTestId('option-A')) // flagged correct, must not enqueue
+    await user.click(screen.getByTestId('mock-cell-2'))
+    await user.click(screen.getByTestId('option-A')) // wrong, existing behavior
+    await user.click(screen.getByTestId('mock-abandon'))
+    expect(recordMistakeMutate.mock.calls).toEqual([[{ questionId: 'q2' }]])
+    expect(localStorage.length).toBe(0)
+    expect(submitMockResultMutate).not.toHaveBeenCalled()
+    expect(onVoid).toHaveBeenCalledOnce()
+  })
+
+  it.each([
+    'mock-submit',
+    'mock-abandon',
+  ])('keeps local flags when %s is cancelled', async (action) => {
+    vi.stubGlobal('confirm', () => false)
+    const user = userEvent.setup()
+    renderRunner()
+    await user.click(screen.getByRole('button', { name: 'Osäker' }))
+    await user.click(screen.getByTestId(action))
+    expect(loadMockFlags('student-a', 42)).toEqual(new Set(['q1']))
+    expect(recordMistakeMutate).not.toHaveBeenCalled()
+  })
+
+  it('keeps the in-memory toggle working when localStorage writes fail', async () => {
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('quota')
+    })
+    const user = userEvent.setup()
+    renderRunner()
+    await user.click(screen.getByRole('button', { name: 'Osäker' }))
+    expect(screen.getByRole('button', { name: 'Osäker' })).toHaveAttribute('aria-pressed', 'true')
   })
 })
