@@ -4,6 +4,7 @@
 export const EXAM_SITTINGS: ReadonlyArray<{ id: string; date: Date }> = [
   { id: 'host-2026', date: new Date(2026, 9, 18) },
   { id: 'var-2027', date: new Date(2027, 3, 10) },
+  { id: 'host-2027', date: new Date(2027, 9, 24) },
 ]
 
 /** Saved sitting through its whole exam day, otherwise the next sitting.

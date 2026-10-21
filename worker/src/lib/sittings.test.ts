@@ -22,6 +22,7 @@ describe('worker sitting calendar', () => {
 
   it('honours a saved future sitting even when another sitting is sooner', () => {
     expect(examFor('var-2027', new Date(2026, 8, 1))).toEqual(new Date(2027, 3, 10))
+    expect(examFor('host-2027', new Date(2026, 8, 1))).toEqual(new Date(2027, 9, 24))
   })
 
   it.each([null, undefined, 'unknown'])('falls back to the next sitting for %s', (id) => {
@@ -37,12 +38,32 @@ describe('worker sitting calendar', () => {
     expect(examFor(null, new Date(2027, 3, 10, 23, 59, 59))).toEqual(new Date(2027, 3, 10))
   })
 
+  it('keeps a saved spring sitting through its whole exam day', () => {
+    expect(examFor('var-2027', new Date(2027, 3, 10, 23, 59, 59))).toEqual(new Date(2027, 3, 10))
+  })
+
   it.each([
     'host-2026',
     'var-2027',
     'unknown',
     null,
+    undefined,
+  ])('rolls an expired, missing or unknown target (%s) to autumn after spring', (id) => {
+    expect(examFor(id, new Date(2027, 3, 11))).toEqual(new Date(2027, 9, 24))
+  })
+
+  it.each(['host-2027', null])('keeps the final sitting through its whole exam day (%s)', (id) => {
+    expect(examFor(id, new Date(2027, 9, 24, 23, 59, 59))).toEqual(new Date(2027, 9, 24))
+  })
+
+  it.each([
+    'host-2026',
+    'var-2027',
+    'host-2027',
+    'unknown',
+    null,
+    undefined,
   ])('returns null after the calendar ends, even for a saved id (%s)', (id) => {
-    expect(examFor(id, new Date(2027, 3, 11))).toBeNull()
+    expect(examFor(id, new Date(2027, 9, 25))).toBeNull()
   })
 })

@@ -26,6 +26,7 @@ export type ExamSitting = {
 export const EXAM_SITTINGS: ReadonlyArray<ExamSitting> = [
   { id: 'host-2026', label: 'Höstprov 26', date: new Date(2026, 9, 18) }, // Sun 18 Oct 2026
   { id: 'var-2027', label: 'Vårprov 27', date: new Date(2027, 3, 10) }, //  Sat 10 Apr 2027
+  { id: 'host-2027', label: 'Höstprov 27', date: new Date(2027, 9, 24) }, // Sun 24 Oct 2027
 ]
 
 const SV_WEEKDAYS = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'] as const

@@ -86,8 +86,8 @@ describe('useExamStore + useSitting + useDaysRemaining', () => {
   })
   it('falls back to the last configured sitting once every sitting is over', () => {
     useExamStore.getState().setSitting('host-2026')
-    const now = new Date(2027, 3, 11, 0, 30)
-    expect(sittingAt(now).id).toBe('var-2027')
+    const now = new Date(2027, 9, 25, 0, 30)
+    expect(sittingAt(now).id).toBe('host-2027')
     expect(daysAt(now)).toBe(-1)
   })
   it('reads the system clock when no instant is passed', () => {
