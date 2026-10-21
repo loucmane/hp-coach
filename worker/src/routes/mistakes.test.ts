@@ -13,7 +13,7 @@
 
 import { eq } from 'drizzle-orm'
 import { Hono } from 'hono'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { getDb } from '../db/client'
 import { mistakes, sessions, users } from '../db/schema'
@@ -44,27 +44,34 @@ async function seedMistake(
     status?: string
     nextReviewAt?: Date | null
     errorCount7d?: number
+    intervalMinutes?: number
+    lapseIntervalMinutes?: number | null
     /** When set, controls the row's lastErrorAt — the "touched today"
      *  signal scope=pile reads. Omitted → defaults to `now` (a fresh
      *  mistake). Pass a prior-day Date to model an older, dormant miss. */
     lastErrorAt?: Date
   },
-): Promise<{ userId: number }> {
+): Promise<{ userId: number; id: number }> {
   const db = getDb(d1_ as unknown as D1Database)
   let [user] = await db.select().from(users).where(eq(users.clerkUserId, clerkUserId))
   if (!user) {
     ;[user] = await db.insert(users).values({ clerkUserId }).returning()
   }
-  await db.insert(mistakes).values({
-    userId: user.id,
-    questionId: opts.questionId,
-    status: opts.status ?? 'active',
-    errorCount7d: opts.errorCount7d ?? 1,
-    intervalMinutes: 10,
-    lastErrorAt: opts.lastErrorAt ?? new Date(),
-    nextReviewAt: opts.nextReviewAt === undefined ? new Date(Date.now() - 1000) : opts.nextReviewAt,
-  })
-  return { userId: user.id }
+  const [row] = await db
+    .insert(mistakes)
+    .values({
+      userId: user.id,
+      questionId: opts.questionId,
+      status: opts.status ?? 'active',
+      errorCount7d: opts.errorCount7d ?? 1,
+      intervalMinutes: opts.intervalMinutes ?? 10,
+      lapseIntervalMinutes: opts.lapseIntervalMinutes ?? null,
+      lastErrorAt: opts.lastErrorAt ?? new Date(),
+      nextReviewAt:
+        opts.nextReviewAt === undefined ? new Date(Date.now() - 1000) : opts.nextReviewAt,
+    })
+    .returning()
+  return { userId: user.id, id: row.id }
 }
 
 async function getDue(asUser: string, query: Record<string, string> = {}) {
@@ -76,6 +83,10 @@ async function getDue(asUser: string, query: Record<string, string> = {}) {
 
 beforeEach(() => {
   d1 = makeTestD1()
+})
+
+afterEach(() => {
+  vi.useRealTimers()
 })
 
 describe('GET /api/mistakes/due — scope param', () => {
@@ -460,7 +471,9 @@ describe('PATCH /api/mistakes/:id/review — a repeat answered on a question wit
     expect(await listed('u30', `scope=pile&dayStart=${dayStart}`)).toEqual([])
   })
 
-  it('correct at the 30-day cap graduates the row', async () => {
+  it('correct at the 30-day cap graduates the row when the next exam is more than sixty days away', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date(2027, 0, 10))
     const id = await seedRow('u31', {
       questionId: 'var-2026-kvant1-NOG-002',
       intervalMinutes: 30 * DAY_MIN,
@@ -676,6 +689,248 @@ describe('PUT /api/mistakes/round/:sessionId — a round stores the mistake each
       expect((await link('u47', id, body)).status).toBe(400)
     }
     expect((await sessionById(id)).plan).toEqual(PLAIN)
+  })
+})
+
+describe('exam-aware review routes', () => {
+  const DAY_MIN = 24 * 60
+  const DAY_MS = 86_400_000
+  const EXAM = new Date(2027, 3, 10)
+  const daysBeforeExam = (days: number) => new Date(EXAM.getTime() - days * DAY_MS)
+
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(daysBeforeExam(20))
+  })
+
+  async function target(asUser: string, targetSittingId: string | null) {
+    const db = getDb(d1 as unknown as D1Database)
+    await db.update(users).set({ targetSittingId }).where(eq(users.clerkUserId, asUser))
+  }
+
+  async function answer(path: string, id: number, questionId: string) {
+    const { app, env } = appFor('exam-user')
+    const res = await app.request(
+      path === 'by-question' ? '/by-question' : `/${id}${path === 'review' ? '/review' : ''}`,
+      {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(
+          path === 'by-question'
+            ? { questionId, resolve: true }
+            : path === 'review'
+              ? { correct: true }
+              : { resolve: true },
+        ),
+      },
+      env,
+    )
+    expect(res.status).toBe(200)
+    const db = getDb(d1 as unknown as D1Database)
+    const [row] = await db.select().from(mistakes).where(eq(mistakes.id, id))
+    return row
+  }
+
+  describe.each(['review', 'by-question', 'id'])('%s', (path) => {
+    it.each([
+      'var-2027',
+      'host-2026',
+      null,
+      'unknown',
+    ])('caps the persisted due time using the saved or fallback exam (%s)', async (saved) => {
+      const questionId = 'q-exam-cap'
+      const { id } = await seedMistake(d1, 'exam-user', {
+        questionId,
+        intervalMinutes: 16 * DAY_MIN,
+      })
+      await target('exam-user', saved)
+      const row = await answer(path, id, questionId)
+      expect(row.status).toBe('active')
+      expect(row.intervalMinutes).toBe(30 * DAY_MIN)
+      expect(row.nextReviewAt).toEqual(daysBeforeExam(5))
+    })
+
+    it('reads this user’s saved later sitting instead of the earliest or another user’s', async () => {
+      vi.setSystemTime(new Date(2026, 9, 1))
+      const questionId = 'q-later-target'
+      const { id } = await seedMistake(d1, 'exam-user', {
+        questionId,
+        intervalMinutes: 16 * DAY_MIN,
+      })
+      await target('exam-user', 'var-2027')
+      await seedMistake(d1, 'other-user', { questionId })
+      await target('other-user', 'host-2026')
+      const row = await answer(path, id, questionId)
+      expect(row.nextReviewAt).toEqual(new Date(Date.now() + 30 * DAY_MS))
+    })
+
+    it('holds a capped row active until its final-week confirmation', async () => {
+      const questionId = 'q-graduate'
+      const { id } = await seedMistake(d1, 'exam-user', {
+        questionId,
+        intervalMinutes: 30 * DAY_MIN,
+      })
+      expect((await answer(path, id, questionId)).status).toBe('active')
+      vi.setSystemTime(daysBeforeExam(5))
+      expect((await answer(path, id, questionId)).status).toBe('resolved')
+    })
+
+    it.each([
+      'var-2027',
+      null,
+    ])('graduates a capped row with a distant saved or fallback exam (%s)', async (saved) => {
+      vi.setSystemTime(daysBeforeExam(90))
+      const questionId = 'q-distant-graduate'
+      const { id } = await seedMistake(d1, 'exam-user', {
+        questionId,
+        intervalMinutes: 30 * DAY_MIN,
+      })
+      await target('exam-user', saved)
+      expect((await answer(path, id, questionId)).status).toBe('resolved')
+    })
+
+    it.each([
+      1, 0.5, 0, -0.5,
+    ])('correct answers leave due and pile with %s days before the exam', async (left) => {
+      vi.setSystemTime(daysBeforeExam(left))
+      const dayStart = String(new Date().setHours(0, 0, 0, 0))
+      for (const [intervalMinutes, lapseIntervalMinutes, nextInterval] of [
+        [10, null, DAY_MIN],
+        [8 * DAY_MIN, null, 16 * DAY_MIN],
+        [10, 30 * DAY_MIN, 15 * DAY_MIN],
+        [30 * DAY_MIN, null, null],
+      ] as const) {
+        const questionId = `q-final-day-${intervalMinutes}-${lapseIntervalMinutes}`
+        const { id } = await seedMistake(d1, 'exam-user', {
+          questionId,
+          intervalMinutes,
+          lapseIntervalMinutes,
+        })
+        for (const scope of ['due', 'pile']) {
+          expect((await getDue('exam-user', { scope, dayStart })).body.mistakes).toMatchObject([
+            { questionId },
+          ])
+        }
+        const row = await answer(path, id, questionId)
+        expect(row.status).toBe(nextInterval === null ? 'resolved' : 'active')
+        if (nextInterval !== null) {
+          expect(row.intervalMinutes).toBe(nextInterval)
+          expect(row.nextReviewAt).toEqual(new Date(Date.now() + nextInterval * 60_000))
+          expect(row.lapseIntervalMinutes).toBeNull()
+        }
+        for (const scope of ['due', 'pile']) {
+          expect((await getDue('exam-user', { scope, dayStart })).body.mistakes).toEqual([])
+        }
+      }
+    })
+
+    it('caps lapse recovery and clears the stash', async () => {
+      vi.setSystemTime(daysBeforeExam(10))
+      const questionId = 'q-exam-lapse'
+      const { id } = await seedMistake(d1, 'exam-user', {
+        questionId,
+        intervalMinutes: 10,
+        lapseIntervalMinutes: 30 * DAY_MIN,
+      })
+      const row = await answer(path, id, questionId)
+      expect(row.intervalMinutes).toBe(15 * DAY_MIN)
+      expect(row.lapseIntervalMinutes).toBeNull()
+      expect(row.nextReviewAt).toEqual(daysBeforeExam(5))
+    })
+  })
+
+  async function seedQueue() {
+    for (const [suffix, intervalMinutes, errorCount7d, days] of [
+      ['old', 8 * DAY_MIN, 50, 12],
+      ['low', 10, 1, 9],
+      ['high-new', 10, 3, 8],
+      ['high-old', 10, 3, 10],
+    ] as const) {
+      await seedMistake(d1, 'exam-user', {
+        questionId: `var-2026-verb1-ORD-${suffix}`,
+        intervalMinutes,
+        errorCount7d,
+        nextReviewAt: daysBeforeExam(days),
+      })
+    }
+  }
+
+  it.each([
+    'due',
+    'pile',
+    'all',
+  ])('orders scope=%s by consolidation, misses, then due time at exactly seven days', async (scope) => {
+    vi.setSystemTime(daysBeforeExam(7))
+    await seedQueue()
+    const { res, body } = await getDue('exam-user', { scope })
+    expect(res.status).toBe(200)
+    expect(body.mistakes.map((row) => row.questionId)).toEqual(
+      ['high-old', 'high-new', 'low', 'old'].map((suffix) => `var-2026-verb1-ORD-${suffix}`),
+    )
+  })
+
+  it('keeps overdue-first ordering before the last week and after the calendar ends', async () => {
+    vi.setSystemTime(daysBeforeExam(7.01))
+    await seedQueue()
+    for (const now of [daysBeforeExam(7.01), new Date(2027, 3, 11)]) {
+      vi.setSystemTime(now)
+      const { body } = await getDue('exam-user')
+      expect(body.mistakes.map((row) => row.questionId)).toEqual(
+        ['old', 'high-old', 'low', 'high-new'].map((suffix) => `var-2026-verb1-ORD-${suffix}`),
+      )
+    }
+  })
+
+  it('keeps limit, section, due-time, status and user filters before last-week sorting', async () => {
+    vi.setSystemTime(daysBeforeExam(7))
+    await seedQueue()
+    await seedMistake(d1, 'exam-user', {
+      questionId: 'var-2026-verb1-ORD-future',
+      intervalMinutes: 0,
+      nextReviewAt: daysBeforeExam(6),
+    })
+    await seedMistake(d1, 'exam-user', {
+      questionId: 'var-2026-verb1-ORD-resolved',
+      intervalMinutes: 0,
+      status: 'resolved',
+    })
+    await seedMistake(d1, 'exam-user', {
+      questionId: 'var-2026-kvant1-XYZ-other-section',
+      intervalMinutes: 0,
+    })
+    await seedMistake(d1, 'other-user', {
+      questionId: 'var-2026-verb1-ORD-other-user',
+      intervalMinutes: 0,
+    })
+    const { body } = await getDue('exam-user', { limit: '2', section: 'ORD' })
+    expect(body.mistakes.map((row) => row.questionId)).toEqual([
+      'var-2026-verb1-ORD-high-old',
+      'var-2026-verb1-ORD-high-new',
+    ])
+  })
+
+  it('uses the saved later exam for queue ordering too', async () => {
+    vi.setSystemTime(new Date(2026, 9, 15))
+    await seedMistake(d1, 'exam-user', {
+      questionId: 'old-consolidated',
+      intervalMinutes: 8 * DAY_MIN,
+      nextReviewAt: new Date(2026, 9, 10),
+    })
+    await seedMistake(d1, 'exam-user', {
+      questionId: 'new-unconsolidated',
+      intervalMinutes: 10,
+      nextReviewAt: new Date(2026, 9, 14),
+    })
+    await target('exam-user', 'var-2027')
+    expect((await getDue('exam-user')).body.mistakes.map((row) => row.questionId)).toEqual([
+      'old-consolidated',
+      'new-unconsolidated',
+    ])
+    await target('exam-user', 'host-2026')
+    expect((await getDue('exam-user')).body.mistakes.map((row) => row.questionId)).toEqual([
+      'new-unconsolidated',
+      'old-consolidated',
+    ])
   })
 })
 

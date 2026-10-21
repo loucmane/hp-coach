@@ -182,3 +182,118 @@ describe('full ladder progression', () => {
     expect(steps).toBe(7)
   })
 })
+
+describe('exam-aware spacing', () => {
+  const DAY_MS = 86_400_000
+  const EXAM = new Date('2027-04-10T00:00:00Z')
+  const daysBeforeExam = (days: number) => new Date(EXAM.getTime() - days * DAY_MS)
+
+  it('caps an overshooting due time at five days before the exam, preserving the rung', () => {
+    expect(nextOnCorrect(16 * FIRST_INTERVAL_MINUTES, daysBeforeExam(20), null, EXAM)).toEqual({
+      graduated: false,
+      intervalMinutes: MAX_INTERVAL_MINUTES,
+      nextReviewAt: daysBeforeExam(5),
+      lapseIntervalMinutes: null,
+    })
+  })
+
+  it('also brings a review due exactly at the exam forward', () => {
+    const out = nextOnCorrect(4 * FIRST_INTERVAL_MINUTES, daysBeforeExam(8), null, EXAM)
+    expect(out).toMatchObject({ graduated: false, nextReviewAt: daysBeforeExam(5) })
+  })
+
+  it('keeps a due time already inside the final week', () => {
+    const out = nextOnCorrect(8 * FIRST_INTERVAL_MINUTES, daysBeforeExam(20), null, EXAM)
+    expect(out).toMatchObject({ graduated: false, nextReviewAt: daysBeforeExam(4) })
+  })
+
+  it.each([
+    [6, 5],
+    [5.5, 1],
+    [3, 1],
+  ])('with %s days left, uses a pre-exam anchor %s days before the exam', (left, anchor) => {
+    const out = nextOnCorrect(8 * FIRST_INTERVAL_MINUTES, daysBeforeExam(left), null, EXAM)
+    expect(out).toMatchObject({ graduated: false, nextReviewAt: daysBeforeExam(anchor) })
+    if (out.graduated) throw new Error('Unexpected graduation')
+    expect(out.nextReviewAt.getTime()).toBeGreaterThan(daysBeforeExam(left).getTime())
+    expect(out.nextReviewAt.getTime()).toBeLessThan(EXAM.getTime())
+  })
+
+  it.each([
+    1, 0.5, 0, -0.5,
+  ])('keeps the normal ladder when no future anchor remains (%s days before the exam)', (left) => {
+    const now = daysBeforeExam(left)
+    for (const rung of [
+      0,
+      RELEARN_MINUTES,
+      FIRST_INTERVAL_MINUTES,
+      8 * FIRST_INTERVAL_MINUTES,
+      MAX_INTERVAL_MINUTES,
+    ]) {
+      for (const stash of [null, MAX_INTERVAL_MINUTES]) {
+        const out = nextOnCorrect(rung, now, stash, EXAM)
+        expect(out).toEqual(nextOnCorrect(rung, now, stash))
+        if (!out.graduated) expect(out.nextReviewAt.getTime()).toBeGreaterThan(now.getTime())
+      }
+    }
+  })
+
+  it('caps a lapse recovery without losing its rung or retaining the consumed stash', () => {
+    expect(nextOnCorrect(RELEARN_MINUTES, daysBeforeExam(10), MAX_INTERVAL_MINUTES, EXAM)).toEqual({
+      graduated: false,
+      intervalMinutes: 15 * FIRST_INTERVAL_MINUTES,
+      nextReviewAt: daysBeforeExam(5),
+      lapseIntervalMinutes: null,
+    })
+  })
+
+  it.each([
+    MAX_INTERVAL_MINUTES,
+    MAX_INTERVAL_MINUTES * 2,
+  ])('holds graduation from rung %s until a final-week review', (rung) => {
+    const out = nextOnCorrect(rung, daysBeforeExam(20), null, EXAM)
+    expect(out).toMatchObject({
+      graduated: false,
+      intervalMinutes: MAX_INTERVAL_MINUTES,
+      nextReviewAt: daysBeforeExam(5),
+    })
+    expect(nextOnCorrect(MAX_INTERVAL_MINUTES, daysBeforeExam(5), null, EXAM)).toEqual({
+      graduated: true,
+    })
+  })
+
+  it.each([60.001, 90, 180])('graduates at the cap when the exam is %s days away', (left) => {
+    expect(nextOnCorrect(MAX_INTERVAL_MINUTES, daysBeforeExam(left), null, EXAM)).toEqual({
+      graduated: true,
+    })
+  })
+
+  it('holds graduation at the inclusive sixty-day boundary without shortening the normal due time', () => {
+    expect(nextOnCorrect(MAX_INTERVAL_MINUTES, daysBeforeExam(60), null, EXAM)).toMatchObject({
+      graduated: false,
+      intervalMinutes: MAX_INTERVAL_MINUTES,
+      nextReviewAt: daysBeforeExam(30),
+    })
+  })
+
+  it('allows graduation at the inclusive seven-day boundary, but not just before it', () => {
+    expect(nextOnCorrect(MAX_INTERVAL_MINUTES, daysBeforeExam(7), null, EXAM).graduated).toBe(true)
+    expect(nextOnCorrect(MAX_INTERVAL_MINUTES, daysBeforeExam(7.001), null, EXAM).graduated).toBe(
+      false,
+    )
+  })
+
+  it.each([
+    null,
+    undefined,
+    new Date('2026-05-07T00:00:00Z'),
+    NOW,
+  ])('keeps the original ladder and graduation without a future exam (%s)', (exam) => {
+    for (const rung of [0, RELEARN_MINUTES, FIRST_INTERVAL_MINUTES, MAX_INTERVAL_MINUTES]) {
+      expect(nextOnCorrect(rung, NOW, null, exam)).toEqual(nextOnCorrect(rung, NOW))
+      expect(nextOnCorrect(rung, NOW, MAX_INTERVAL_MINUTES, exam)).toEqual(
+        nextOnCorrect(rung, NOW, MAX_INTERVAL_MINUTES),
+      )
+    }
+  })
+})
