@@ -37,7 +37,8 @@
 // only timestamp the rest of the system reads — interval lives on the
 // row only so the next call can compute the doubling.
 // With an upcoming exam, cap due timestamps before it without changing
-// ladder rungs. Keep capped items active until their final-week review.
+// ladder rungs. Within sixty days, keep capped items active until their
+// final-week review. Once the last anchor passes, use the normal due time.
 
 const MIN = 1
 const HOUR = 60 * MIN
@@ -114,8 +115,9 @@ export function nextOnWrong(
  * With no stash the behaviour is unchanged: from 0 (or any sub-1d step)
  * jump to FIRST_INTERVAL; from there double; already at the cap means
  * this correct was the long-haul confirmation, so the mistake graduates.
- * With `examAt`, hold graduation until the last week and bring any due
- * time at/after the exam forward. Omitted or past dates keep the old rules.
+ * With `examAt` within two maximum intervals, hold graduation until the
+ * last week. Bring due times at/after the exam forward while a future
+ * anchor remains. Omitted or past dates keep the old rules.
  */
 export function nextOnCorrect(
   prevIntervalMinutes: number,
@@ -136,7 +138,8 @@ export function nextOnCorrect(
       lapseIntervalMinutes: null,
     }
   }
-  const holdForExam = examAt != null && examAt.getTime() - now.getTime() > 7 * DAY * 60_000
+  const minutesUntilExam = examAt == null ? 0 : (examAt.getTime() - now.getTime()) / 60_000
+  const holdForExam = minutesUntilExam > 7 * DAY && minutesUntilExam <= 2 * MAX_INTERVAL_MINUTES
   if (prevIntervalMinutes >= MAX_INTERVAL_MINUTES && !holdForExam) {
     return { graduated: true }
   }
@@ -163,9 +166,9 @@ function beforeExam(due: Date, now: Date, examAt?: Date | null): Date {
     fiveDaysBefore.getTime() - now.getTime() >= DAY * 60_000
       ? fiveDaysBefore
       : addMinutes(examAt, -DAY)
-  // In the final day there is no future calendar anchor left: due now
-  // keeps the review before the exam without writing a past timestamp.
-  return new Date(Math.max(now.getTime(), anchor.getTime()))
+  // Once the last anchor passes, keep the normal ladder due time so a
+  // correct answer leaves today's pile instead of becoming due again now.
+  return anchor.getTime() > now.getTime() ? anchor : due
 }
 
 function addMinutes(d: Date, m: number): Date {

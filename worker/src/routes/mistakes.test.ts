@@ -471,9 +471,9 @@ describe('PATCH /api/mistakes/:id/review — a repeat answered on a question wit
     expect(await listed('u30', `scope=pile&dayStart=${dayStart}`)).toEqual([])
   })
 
-  it('correct at the 30-day cap graduates the row after the configured exam calendar ends', async () => {
+  it('correct at the 30-day cap graduates the row when the next exam is more than sixty days away', async () => {
     vi.useFakeTimers({ toFake: ['Date'] })
-    vi.setSystemTime(new Date(2027, 3, 11))
+    vi.setSystemTime(new Date(2027, 0, 10))
     const id = await seedRow('u31', {
       questionId: 'var-2026-kvant1-NOG-002',
       intervalMinutes: 30 * DAY_MIN,
@@ -773,6 +773,55 @@ describe('exam-aware review routes', () => {
       expect((await answer(path, id, questionId)).status).toBe('active')
       vi.setSystemTime(daysBeforeExam(5))
       expect((await answer(path, id, questionId)).status).toBe('resolved')
+    })
+
+    it.each([
+      'var-2027',
+      null,
+    ])('graduates a capped row with a distant saved or fallback exam (%s)', async (saved) => {
+      vi.setSystemTime(daysBeforeExam(90))
+      const questionId = 'q-distant-graduate'
+      const { id } = await seedMistake(d1, 'exam-user', {
+        questionId,
+        intervalMinutes: 30 * DAY_MIN,
+      })
+      await target('exam-user', saved)
+      expect((await answer(path, id, questionId)).status).toBe('resolved')
+    })
+
+    it.each([
+      1, 0.5, 0, -0.5,
+    ])('correct answers leave due and pile with %s days before the exam', async (left) => {
+      vi.setSystemTime(daysBeforeExam(left))
+      const dayStart = String(new Date().setHours(0, 0, 0, 0))
+      for (const [intervalMinutes, lapseIntervalMinutes, nextInterval] of [
+        [10, null, DAY_MIN],
+        [8 * DAY_MIN, null, 16 * DAY_MIN],
+        [10, 30 * DAY_MIN, 15 * DAY_MIN],
+        [30 * DAY_MIN, null, null],
+      ] as const) {
+        const questionId = `q-final-day-${intervalMinutes}-${lapseIntervalMinutes}`
+        const { id } = await seedMistake(d1, 'exam-user', {
+          questionId,
+          intervalMinutes,
+          lapseIntervalMinutes,
+        })
+        for (const scope of ['due', 'pile']) {
+          expect((await getDue('exam-user', { scope, dayStart })).body.mistakes).toMatchObject([
+            { questionId },
+          ])
+        }
+        const row = await answer(path, id, questionId)
+        expect(row.status).toBe(nextInterval === null ? 'resolved' : 'active')
+        if (nextInterval !== null) {
+          expect(row.intervalMinutes).toBe(nextInterval)
+          expect(row.nextReviewAt).toEqual(new Date(Date.now() + nextInterval * 60_000))
+          expect(row.lapseIntervalMinutes).toBeNull()
+        }
+        for (const scope of ['due', 'pile']) {
+          expect((await getDue('exam-user', { scope, dayStart })).body.mistakes).toEqual([])
+        }
+      }
     })
 
     it('caps lapse recovery and clears the stash', async () => {

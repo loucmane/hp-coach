@@ -62,3 +62,20 @@ SPACING DONE: hpf-bz6f.5
 - Host follow-up is unchanged: rerun the blocked app trap-index test, stage/sign the changes, obtain independent exact-head review and park the bead. Do not retry staging or the sandbox-blocked check here. The specific bead contract requires a DONE note and stop, with no closure, status/assignee change or drain that would release this assignment.
 
 SPACING DONE: hpf-bz6f.5
+
+## Round 2 — 2026-10-21
+
+- Starting head: `b222865520f1a5dbd78230dbfd9a3ffae95928c0`, clean in the assigned writable worktree. Dependencies are installed. The earlier sandbox-root blocker is resolved in this managed launch.
+- Accepted changes supersede the Round 1 decisions above: when the final pre-exam anchor is no longer in the future, retain the normal ladder due time so a correct answer leaves the due and pile scopes. Suppress graduation only with more than seven and at most sixty days remaining; retain final-week graduation and the existing timestamp cap.
+- Regression plan: exam-eve midnight/noon and exam-day midnight/noon across all three answer routes, including fresh mistakes, ladder advancement, lapse recovery and cap graduation; unit tests for the inclusive sixty-day boundary and distant exams.
+- Delivery remains uncommitted for coordinator signing/review. Only accepted files will change; no status/assignee changes or bead closure.
+- Red first: from `worker/`, `pnpm test src/lib/srs.test.ts src/routes/mistakes.test.ts --maxWorkers=1` failed with 18 failed / 101 passed (2 files). Five unit failures showed immediate exam-eve due times and graduation suppressed beyond sixty days; thirteen route failures reproduced those outcomes through persisted rows. Exam-day cases already passed and remain regression coverage.
+- Green focused: `pnpm test src/lib/srs.test.ts src/lib/sittings.test.ts src/routes/mistakes.test.ts --maxWorkers=1` passed, 3 files / 130 tests. The route matrix verifies both due and pile become empty after a correct answer for fresh, advanced, lapsed and graduating rows, at midnight/noon on exam eve/day.
+- Full worker verification: `pnpm typecheck` passed; `pnpm lint` passed (62 files); `pnpm test --maxWorkers=1` passed, 25 files / 496 tests (14.05 seconds). App `pnpm typecheck` passed; `pnpm lint` passed (543 files, four existing informational suggestions in untouched development components). Full app tests are running.
+- Implementation changes are limited to `worker/src/lib/srs.ts`; regression coverage changes only `worker/src/lib/srs.test.ts` and `worker/src/routes/mistakes.test.ts`. Calendar and route production code are unchanged. `git --no-optional-locks diff --check` passed.
+- Full app verification: `pnpm test --maxWorkers=1` completed in 201.99 seconds with 113 files passed / 1 failed and 4,074 tests passed / 1 failed. The sole failure is the unchanged `src/lib/trapIndex.test.ts` generator check: `spawnSync /usr/bin/node EPERM`. This sandbox result does not verify the generator; coordinator must run `pnpm test src/lib/trapIndex.test.ts` from `app/` on the host. No workaround or retry was attempted.
+- Final inspection: exactly four admitted repository files changed; cached diff is empty and HEAD remains `b222865520f1a5dbd78230dbfd9a3ffae95928c0`. Changes are unstaged and uncommitted. Staging was not retried because the worktree Git metadata remains outside this launch's writable roots, as recorded in the prior staging refusal.
+- Coordinator handoff: stage/sign the four changed files, run the sandbox-blocked app check, arrange independent exact-head cross-vendor review, and park the bead. Round 1's HOLD is addressed by implementation and tests here, but no independent PASS is claimed. No closure, status/assignee change, drain, merge or publication was performed.
+- Existing playbook proposals (Biome helper naming here and the managed claim/worktree mismatch in the classified worklog) remain available for coordinator forwarding. No new reusable gotcha was encountered in this fix round.
+
+SPACING R2 DONE: hpf-bz6f.5

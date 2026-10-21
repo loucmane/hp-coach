@@ -211,13 +211,31 @@ describe('exam-aware spacing', () => {
     [6, 5],
     [5.5, 1],
     [3, 1],
-    [0.5, 0.5],
   ])('with %s days left, uses a pre-exam anchor %s days before the exam', (left, anchor) => {
     const out = nextOnCorrect(8 * FIRST_INTERVAL_MINUTES, daysBeforeExam(left), null, EXAM)
     expect(out).toMatchObject({ graduated: false, nextReviewAt: daysBeforeExam(anchor) })
     if (out.graduated) throw new Error('Unexpected graduation')
-    expect(out.nextReviewAt.getTime()).toBeGreaterThanOrEqual(daysBeforeExam(left).getTime())
+    expect(out.nextReviewAt.getTime()).toBeGreaterThan(daysBeforeExam(left).getTime())
     expect(out.nextReviewAt.getTime()).toBeLessThan(EXAM.getTime())
+  })
+
+  it.each([
+    1, 0.5, 0, -0.5,
+  ])('keeps the normal ladder when no future anchor remains (%s days before the exam)', (left) => {
+    const now = daysBeforeExam(left)
+    for (const rung of [
+      0,
+      RELEARN_MINUTES,
+      FIRST_INTERVAL_MINUTES,
+      8 * FIRST_INTERVAL_MINUTES,
+      MAX_INTERVAL_MINUTES,
+    ]) {
+      for (const stash of [null, MAX_INTERVAL_MINUTES]) {
+        const out = nextOnCorrect(rung, now, stash, EXAM)
+        expect(out).toEqual(nextOnCorrect(rung, now, stash))
+        if (!out.graduated) expect(out.nextReviewAt.getTime()).toBeGreaterThan(now.getTime())
+      }
+    }
   })
 
   it('caps a lapse recovery without losing its rung or retaining the consumed stash', () => {
@@ -244,11 +262,17 @@ describe('exam-aware spacing', () => {
     })
   })
 
-  it('holds a distant capped item at thirty days without pulling it past its normal due time', () => {
-    expect(nextOnCorrect(MAX_INTERVAL_MINUTES, daysBeforeExam(90), null, EXAM)).toMatchObject({
+  it.each([60.001, 90, 180])('graduates at the cap when the exam is %s days away', (left) => {
+    expect(nextOnCorrect(MAX_INTERVAL_MINUTES, daysBeforeExam(left), null, EXAM)).toEqual({
+      graduated: true,
+    })
+  })
+
+  it('holds graduation at the inclusive sixty-day boundary without shortening the normal due time', () => {
+    expect(nextOnCorrect(MAX_INTERVAL_MINUTES, daysBeforeExam(60), null, EXAM)).toMatchObject({
       graduated: false,
       intervalMinutes: MAX_INTERVAL_MINUTES,
-      nextReviewAt: daysBeforeExam(60),
+      nextReviewAt: daysBeforeExam(30),
     })
   })
 
