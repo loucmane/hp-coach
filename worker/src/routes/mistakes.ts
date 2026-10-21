@@ -30,11 +30,22 @@ import { and, desc, eq, gte, isNull, lte, or, sql } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
-import { getDb } from '../db/client'
-import { mistakes, sessions } from '../db/schema'
+import { type Db, getDb } from '../db/client'
+import { mistakes, sessions, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
+import { examFor } from '../lib/sittings'
 import { nextOnCorrect, nextOnWrong, RELEARN_MINUTES } from '../lib/srs'
 import type { Env, Vars } from '../types'
+
+/** One preference read, scoped to the authenticated user's provisioned id. */
+async function userExam(db: Db, userId: number, now: Date): Promise<Date | null> {
+  const [user] = await db
+    .select({ targetSittingId: users.targetSittingId })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1)
+  return examFor(user?.targetSittingId, now)
+}
 
 const RecordBody = z
   .object({
@@ -205,11 +216,17 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // then most-frequent stumbles (errorCount desc) as the tiebreaker.
   // This keeps the queue from accumulating — long-overdue items rise
   // to the top instead of being buried under recent mistakes.
+  // In the final exam week, least-consolidated and most-missed come
+  // first instead. Scope/section/user filters and the limit still apply.
   .get('/due', zValidator('query', DueQuery), async (c) => {
     const { section, limit, scope, dayStart } = c.req.valid('query')
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
     const now = new Date()
+    const examAt = await userExam(db, userId, now)
+    // examFor keeps today's sitting through the exam day, so a slightly
+    // negative offset here still belongs to its final-week ordering.
+    const examWeek = examAt != null && examAt.getTime() - now.getTime() <= 7 * 86_400_000
 
     // The scope-specific gate on top of (userId, status='active'):
     //   - "all"  → no gate (whole active queue).
@@ -256,7 +273,11 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       .where(and(...conds))
       // SQLite sorts NULL first under ASC by default, which is what we
       // want here — legacy rows surface immediately.
-      .orderBy(mistakes.nextReviewAt, desc(mistakes.errorCount7d))
+      .orderBy(
+        ...(examWeek
+          ? [mistakes.intervalMinutes, desc(mistakes.errorCount7d), mistakes.nextReviewAt]
+          : [mistakes.nextReviewAt, desc(mistakes.errorCount7d)]),
+      )
       .limit(limit)
     return c.json({ mistakes: rows })
   })
@@ -293,10 +314,13 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       if (!existing) {
         return c.json({ mistake: null })
       }
+      const now = new Date()
+      const examAt = await userExam(db, userId, now)
       const outcome = nextOnCorrect(
         existing.intervalMinutes ?? 0,
-        new Date(),
+        now,
         existing.lapseIntervalMinutes ?? null,
+        examAt,
       )
       if (outcome.graduated) {
         const [row] = await db
@@ -375,10 +399,13 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     if (existing.status !== 'active') {
       return c.json({ mistake: existing })
     }
+    const now = new Date()
+    const examAt = await userExam(db, userId, now)
     const outcome = nextOnCorrect(
       existing.intervalMinutes ?? 0,
-      new Date(),
+      now,
       existing.lapseIntervalMinutes ?? null,
+      examAt,
     )
     if (outcome.graduated) {
       const [row] = await db
@@ -487,10 +514,13 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       return c.json({ error: { code: 'not_found', message: 'Mistake not found' } }, 404)
     }
 
+    const now = new Date()
+    const examAt = await userExam(db, userId, now)
     const outcome = nextOnCorrect(
       existing.intervalMinutes ?? 0,
-      new Date(),
+      now,
       existing.lapseIntervalMinutes ?? null,
+      examAt,
     )
 
     if (outcome.graduated) {

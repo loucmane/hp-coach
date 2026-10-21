@@ -36,6 +36,8 @@
 // in the same currency as the day-scale steps. `nextReviewAt` is the
 // only timestamp the rest of the system reads — interval lives on the
 // row only so the next call can compute the doubling.
+// With an upcoming exam, cap due timestamps before it without changing
+// ladder rungs. Keep capped items active until their final-week review.
 
 const MIN = 1
 const HOUR = 60 * MIN
@@ -112,11 +114,14 @@ export function nextOnWrong(
  * With no stash the behaviour is unchanged: from 0 (or any sub-1d step)
  * jump to FIRST_INTERVAL; from there double; already at the cap means
  * this correct was the long-haul confirmation, so the mistake graduates.
+ * With `examAt`, hold graduation until the last week and bring any due
+ * time at/after the exam forward. Omitted or past dates keep the old rules.
  */
 export function nextOnCorrect(
   prevIntervalMinutes: number,
   now: Date = new Date(),
   lapseIntervalMinutes: number | null = null,
+  examAt?: Date | null,
 ): CorrectOutcome {
   const stash = lapseIntervalMinutes ?? 0
   if (stash > 0) {
@@ -127,11 +132,12 @@ export function nextOnCorrect(
     return {
       graduated: false,
       intervalMinutes: resumed,
-      nextReviewAt: addMinutes(now, resumed),
+      nextReviewAt: beforeExam(addMinutes(now, resumed), now, examAt),
       lapseIntervalMinutes: null,
     }
   }
-  if (prevIntervalMinutes >= MAX_INTERVAL_MINUTES) {
+  const holdForExam = examAt != null && examAt.getTime() - now.getTime() > 7 * DAY * 60_000
+  if (prevIntervalMinutes >= MAX_INTERVAL_MINUTES && !holdForExam) {
     return { graduated: true }
   }
   const next =
@@ -141,9 +147,25 @@ export function nextOnCorrect(
   return {
     graduated: false,
     intervalMinutes: next,
-    nextReviewAt: addMinutes(now, next),
+    nextReviewAt: beforeExam(addMinutes(now, next), now, examAt),
     lapseIntervalMinutes: null,
   }
+}
+
+/** Only shorten a timestamp that would miss the exam. Already-pre-exam
+ * reviews, especially those in the final week, retain their due time. */
+function beforeExam(due: Date, now: Date, examAt?: Date | null): Date {
+  if (!examAt || examAt.getTime() <= now.getTime() || due.getTime() < examAt.getTime()) {
+    return due
+  }
+  const fiveDaysBefore = addMinutes(examAt, -5 * DAY)
+  const anchor =
+    fiveDaysBefore.getTime() - now.getTime() >= DAY * 60_000
+      ? fiveDaysBefore
+      : addMinutes(examAt, -DAY)
+  // In the final day there is no future calendar anchor left: due now
+  // keeps the review before the exam without writing a past timestamp.
+  return new Date(Math.max(now.getTime(), anchor.getTime()))
 }
 
 function addMinutes(d: Date, m: number): Date {
