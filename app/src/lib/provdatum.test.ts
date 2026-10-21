@@ -45,7 +45,8 @@ describe('getProvdatum', () => {
 
   it('returns null only once every configured sitting is over', () => {
     expect(getProvdatum(new Date(2027, 3, 10, 23, 30))?.days).toBe(0)
-    expect(getProvdatum(new Date(2027, 3, 11, 0, 30))).toBeNull()
+    expect(getProvdatum(new Date(2027, 9, 24, 23, 30))?.days).toBe(0)
+    expect(getProvdatum(new Date(2027, 9, 25, 0, 30))).toBeNull()
   })
 
   it('reads the system clock when no instant is passed', () => {
