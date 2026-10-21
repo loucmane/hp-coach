@@ -13,6 +13,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { getDb } from '../db/client'
 import { type AttemptSource, attempts, sessions, users } from '../db/schema'
 import { classifyAttempt } from '../lib/provenance'
+import { examFor } from '../lib/sittings'
 import { makeTestD1, type ShimD1 } from '../lib/testD1'
 import type { Env, Vars } from '../types'
 import { meRoute } from './me'
@@ -124,6 +125,31 @@ describe('GET /api/me/stats — timeMsToday (Home "minuter idag" stat)', () => {
 
     const { body } = await getStats()
     expect(body.stats.timeMsToday).toBe(120_000)
+  })
+})
+
+describe('PATCH /api/me/prefs — targetSittingId', () => {
+  it('persists the chosen sitting for exam-aware spacing, even when another exam is sooner', async () => {
+    const { app, env } = appFor('user_sitting')
+    const patch = await app.request(
+      '/prefs',
+      {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ targetSittingId: 'var-2027' }),
+      },
+      env,
+    )
+    expect(patch.status).toBe(200)
+    expect(await patch.json()).toMatchObject({ prefs: { targetSittingId: 'var-2027' } })
+
+    const read = await app.request('/prefs', {}, env)
+    expect(read.status).toBe(200)
+    const body = (await read.json()) as { prefs: { targetSittingId: string | null } }
+    expect(body.prefs.targetSittingId).toBe('var-2027')
+    const now = new Date(2026, 8, 1)
+    expect(examFor(null, now)).toEqual(new Date(2026, 9, 18))
+    expect(examFor(body.prefs.targetSittingId, now)).toEqual(new Date(2027, 3, 10))
   })
 })
 
