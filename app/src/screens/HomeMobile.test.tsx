@@ -73,7 +73,7 @@ function makePlan(overrides: Partial<DailyPlan> = {}): DailyPlan {
 }
 
 describe('HomeMobile — plan rendering', () => {
-  it('offers a return time only after the whole plan is complete, directly after the complete panel', () => {
+  it('offers a collapsed calendar link after the complete panel and preserves the continue link', () => {
     localStorage.clear()
     const now = new Date(2026, 4, 18, 18)
     const recentPasses = [new Date(2026, 4, 18, 7, 52), new Date(2026, 4, 17, 10)].map(
@@ -89,14 +89,31 @@ describe('HomeMobile — plan rendering', () => {
     )
     const props = { forceLayout: 'phone' as const, plan: makePlan(), recentPasses, now }
     const view = render(<HomeMobile {...props} />)
-    expect(screen.queryByText('När kör du nästa gång?')).not.toBeInTheDocument()
+    const invitation = 'Lägg morgondagens pass i kalendern →'
+    expect(screen.queryByTestId('return-prompt')).not.toBeInTheDocument()
     view.rerender(<HomeMobile {...props} allComplete />)
-    expect(screen.getByText('När kör du nästa gång?')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: invitation })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /I morgon/ })).not.toBeInTheDocument()
+    expect(
+      within(screen.getByTestId('daily-plan-complete')).getByRole('link', {
+        name: 'Vill du fortsätta? Öva en sektion →',
+      }),
+    ).toHaveAttribute('href', '/ova')
+    expect(view.container.textContent).not.toMatch(/nästa gång|klart för idag|räcker/i)
     expect(screen.getByTestId('daily-plan-complete').nextElementSibling).toBe(
       screen.getByTestId('return-prompt'),
     )
     view.rerender(<HomeMobile {...props} allComplete plan={null} />)
-    expect(screen.queryByText('När kör du nästa gång?')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('return-prompt')).not.toBeInTheDocument()
+    view.rerender(<HomeMobile {...props} allComplete />)
+    fireEvent.click(screen.getByRole('button', { name: invitation }))
+    expect(screen.getByRole('button', { name: 'I morgon 07:50 (som idag)' })).toHaveFocus()
+    expect(view.container.textContent).not.toMatch(/nästa gång|klart för idag|räcker/i)
+    fireEvent.click(screen.getByRole('button', { name: 'Inte nu' }))
+    expect(screen.queryByTestId('return-prompt')).not.toBeInTheDocument()
+    view.rerender(<HomeMobile {...props} />)
+    view.rerender(<HomeMobile {...props} allComplete />)
+    expect(screen.queryByTestId('return-prompt')).not.toBeInTheDocument()
   })
 
   it('renders the skeleton state when no plan is provided', () => {

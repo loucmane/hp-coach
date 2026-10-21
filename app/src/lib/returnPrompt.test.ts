@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
   buildReturnCalendar,
+  canShowReturnPrompt,
   claimReturnPrompt,
   googleCalendarUrl,
   returnSummary,
@@ -138,9 +139,34 @@ describe('calendar export', () => {
   })
 })
 
-describe('per-user daily presentation flag', () => {
+describe('per-user daily choice flag', () => {
   beforeEach(() => localStorage.clear())
   afterEach(() => vi.restoreAllMocks())
+
+  it('checks availability without claiming until an explicit choice', () => {
+    expect(canShowReturnPrompt('student-a', now)).toBe(true)
+    expect(canShowReturnPrompt('student-a', now)).toBe(true)
+    expect(localStorage.getItem('hpc-return-prompt:student-a')).toBeNull()
+    expect(claimReturnPrompt('student-a', now)).toBe(true)
+    expect(canShowReturnPrompt('student-a', now)).toBe(false)
+    expect(canShowReturnPrompt('student-b', now)).toBe(true)
+    expect(canShowReturnPrompt('student-a', new Date(2026, 9, 22))).toBe(true)
+  })
+
+  it('does not offer a choice when identity or readable storage is unavailable', () => {
+    expect(canShowReturnPrompt('', now)).toBe(false)
+    expect(
+      canShowReturnPrompt('a', now, {
+        getItem: () => {
+          throw new Error('denied')
+        },
+      }),
+    ).toBe(false)
+    vi.spyOn(window, 'localStorage', 'get').mockImplementation(() => {
+      throw new Error('storage unavailable')
+    })
+    expect(canShowReturnPrompt('a', now)).toBe(false)
+  })
 
   it('consumes the local day once, independently per user and across midnight', () => {
     const late = new Date(2026, 9, 21, 23, 59)

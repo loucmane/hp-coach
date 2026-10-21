@@ -116,9 +116,27 @@ export function googleCalendarUrl(event: ReturnEvent, timezone: string): string 
   return `https://calendar.google.com/calendar/render?${params}`
 }
 
-/** Mark on presentation, not on dismissal: ignoring must not cause re-asking.
+/** Read only: viewing or expanding the invitation does not consume the day.
+ * Suppress the offer if its per-user daily state cannot be read. */
+export function canShowReturnPrompt(
+  userId: string,
+  now: Date,
+  storage?: Pick<Storage, 'getItem'>,
+): boolean {
+  if (!userId) return false
+  try {
+    const target = storage ?? window.localStorage
+    return (
+      target.getItem(`hpc-return-prompt:${encodeURIComponent(userId)}`) !== returnPromptDay(now)
+    )
+  } catch {
+    return false
+  }
+}
+
+/** Claim only on dismissal or time choice, rechecking the browser-local day.
  * Storage access is inside try/catch, including the browser property getter.
- * Fail closed when the daily limit cannot be persisted. Local to this browser. */
+ * Fail closed when the daily limit cannot be persisted. */
 export function claimReturnPrompt(
   userId: string,
   now: Date,

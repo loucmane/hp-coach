@@ -4,6 +4,7 @@ import { type CSSProperties, useEffect, useRef, useState } from 'react'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import {
   buildReturnCalendar,
+  canShowReturnPrompt,
   claimReturnPrompt,
   googleCalendarUrl,
   hasEarlierPractice,
@@ -86,17 +87,19 @@ function DailyReturnPrompt({
   now: Date
   event: ReturnEvent
 }) {
-  const attempted = useRef(false)
-  const [stage, setStage] = useState<'hidden' | 'ask' | 'chosen'>('hidden')
+  const [stage, setStage] = useState<'hidden' | 'collapsed' | 'ask' | 'chosen'>(() =>
+    canShowReturnPrompt(userId, now) ? 'collapsed' : 'hidden',
+  )
+  const choiceRef = useRef<HTMLButtonElement>(null)
+  const downloadRef = useRef<HTMLAnchorElement>(null)
   // Freeze the offered time/content across background query refreshes.
   const [offer] = useState(() => ({ event, createdAt: now }))
   const [download, setDownload] = useState<string | null>(null)
 
   useEffect(() => {
-    if (attempted.current) return
-    attempted.current = true
-    if (claimReturnPrompt(userId, now)) setStage('ask')
-  }, [userId, now])
+    if (stage === 'ask') choiceRef.current?.focus()
+    if (stage === 'chosen' && download) downloadRef.current?.focus()
+  }, [stage, download])
 
   useEffect(() => {
     if (stage !== 'chosen') return
@@ -116,22 +119,44 @@ function DailyReturnPrompt({
   return (
     <DrillRailSection meta={null} testid="return-prompt">
       <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--muted)' }}>
-        {stage === 'ask' ? (
-          <>
-            <p style={{ margin: '0 0 4px' }}>När kör du nästa gång?</p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 20px' }}>
-              <button type="button" style={word} onClick={() => setStage('chosen')}>
-                I morgon {time} (som idag)
-              </button>
-              <button type="button" style={word} onClick={() => setStage('hidden')}>
-                Inte nu
-              </button>
-            </div>
-          </>
+        {stage === 'collapsed' ? (
+          <button
+            type="button"
+            style={{
+              ...word,
+              textAlign: 'left',
+              textDecoration: 'underline',
+              textUnderlineOffset: 4,
+            }}
+            onClick={() => setStage('ask')}
+          >
+            Lägg morgondagens pass i kalendern →
+          </button>
+        ) : stage === 'ask' ? (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 20px' }}>
+            <button
+              ref={choiceRef}
+              type="button"
+              style={word}
+              onClick={() => setStage(claimReturnPrompt(userId, now) ? 'chosen' : 'hidden')}
+            >
+              I morgon {time} (som idag)
+            </button>
+            <button
+              type="button"
+              style={word}
+              onClick={() => {
+                claimReturnPrompt(userId, now)
+                setStage('hidden')
+              }}
+            >
+              Inte nu
+            </button>
+          </div>
         ) : (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 20px' }}>
             {download && (
-              <a href={download} download="hp-coach.ics" style={word}>
+              <a ref={downloadRef} href={download} download="hp-coach.ics" style={word}>
                 Lägg i kalendern (.ics)
               </a>
             )}
