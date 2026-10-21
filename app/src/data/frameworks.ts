@@ -143,6 +143,37 @@ export type Lexicon = {
 
 export type Framework = TrapCatalog | TacticCatalog | ConstraintCatalog | ProtocolCatalog | Lexicon
 
+/** Cross-section reading only: never part of section practice or progress. */
+export type ProvteknikEntry = {
+  id: string
+  delprov: Section | null
+  headline: string
+  body: string
+  steps?: string[]
+  table?: [label: string, meaning: string][]
+}
+
+export type ProvteknikChapter = {
+  chapter: 'provteknik'
+  entries: ProvteknikEntry[]
+}
+
+let provteknikCache: Promise<ProvteknikChapter | null> | null = null
+
+/** Independent from FILENAMES so section consumers keep their existing scope. */
+export async function loadProvteknik(): Promise<ProvteknikChapter | null> {
+  if (provteknikCache) return provteknikCache
+  provteknikCache = (async () => {
+    const res = await fetch('/frameworks/provteknik.json')
+    if (!res.ok) {
+      if (res.status === 404) return null
+      throw new Error(`failed to load Provteknik: HTTP ${res.status}`)
+    }
+    return (await res.json()) as ProvteknikChapter
+  })()
+  return provteknikCache
+}
+
 const FILENAMES: Partial<Record<Section, string>> = {
   NOG: 'nog_traps.json',
   KVA: 'kva_traps.json',
@@ -237,4 +268,5 @@ export function entryHeadword(
 export function __resetFrameworkCache(): void {
   cache.clear()
   prereqsCache = null
+  provteknikCache = null
 }
