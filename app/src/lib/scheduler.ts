@@ -393,7 +393,7 @@ export function generateDailyPlan(signals: SchedulerSignals): DailyPlan {
         section: 'ORD',
         framework: 'ORD-ROOT-010',
         headline: 'Första passet',
-        rationale: 'Klart för idag. Imorgon kan du prova en kort diagnos.',
+        rationale: 'Vill du fortsätta? Öva en sektion →',
         estimatedMinutes: 0,
         href: '/lektion?section=ORD#ORD-ROOT-010',
         completed: true,

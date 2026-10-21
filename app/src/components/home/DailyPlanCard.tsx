@@ -105,17 +105,35 @@ export function DailyPlanCard({
           <h2 className="hpc-m3-h">Dagens plan</h2>
           <a
             href={firstPass.href}
+            className="hpc-m3-plan-t"
             onClick={(event) => {
               if (onNavigate) {
                 event.preventDefault()
                 onNavigate(firstPass.href)
               }
             }}
-            style={{ color: 'var(--ink)' }}
+            style={{ color: 'var(--ink)', textDecoration: 'underline', textUnderlineOffset: 4 }}
           >
             Första passet · klart ✓
           </a>
-          <p style={{ color: 'var(--ink-2)' }}>{firstPass.rationale}</p>
+          <p className="hpc-m3-plan-r">
+            <a
+              href="/ova"
+              onClick={(event) => {
+                if (onNavigate) {
+                  event.preventDefault()
+                  onNavigate('/ova')
+                }
+              }}
+              style={{
+                color: 'var(--accent)',
+                textDecoration: 'underline',
+                textUnderlineOffset: 4,
+              }}
+            >
+              Vill du fortsätta? Öva en sektion →
+            </a>
+          </p>
         </DrillRailSection>
       </section>
     )

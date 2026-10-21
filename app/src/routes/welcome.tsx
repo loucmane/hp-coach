@@ -2,15 +2,15 @@
 import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
-import { useActiveSessionOfKind, useUpdateSession } from '@/api/hooks/useSessions'
+import { useActiveSessionOfKind } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
-import { useUpdateUserPrefs } from '@/api/hooks/useUserPrefs'
+import { useUpdateUserPrefs, useUserPrefs } from '@/api/hooks/useUserPrefs'
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { Btn, Eyebrow } from '@/components/primitives'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { type LexiconEntry, loadFramework } from '@/data/frameworks'
 import { loadBank, type Question } from '@/data/questions'
-import { daysUntil, EXAM_SITTINGS, nextSitting } from '@/lib/dates'
+import { daysUntil, EXAM_SITTINGS, nextSitting, resolveSitting } from '@/lib/dates'
 import {
   DAILY_MINUTES,
   FIRST_SESSION_ROOT,
@@ -42,22 +42,33 @@ function WelcomeRoute() {
   const palette = useUiStore((s) => s.palette)
   const { setMode, setPalette, setSitting } = useSyncedPrefs()
   const updatePrefs = useUpdateUserPrefs()
+  const prefs = useUserPrefs()
   const stats = useStats()
   const active = useActiveSessionOfKind('onboarding')
-  const updateSession = useUpdateSession()
   const { user } = useUser()
   const firstName = user?.firstName ?? user?.fullName?.split(' ')[0] ?? null
   const [step, setStep] = useState<Step>('theme')
-  const [sitting, chooseSitting] = useState(() => nextSitting()?.id ?? null)
-  const [minutes, chooseMinutes] = useState(20)
+  // Saved values may arrive after mount. Derive untouched choices from them,
+  // but preserve any explicit choice while a preference refetch is in flight.
+  const [chosenSitting, chooseSitting] = useState<string | null>(null)
+  const [chosenMinutes, chooseMinutes] = useState<number | null>(null)
+  const sitting = chosenSitting ?? resolveSitting(prefs.data?.targetSittingId)?.id ?? null
+  const savedMinutes = DAILY_MINUTES.find((value) => value === prefs.data?.dailyMinutes)
+  const minutes = chosenMinutes ?? savedMinutes ?? 20
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [root, setRoot] = useState<LexiconEntry | null>(null)
   const [questions, setQuestions] = useState<Question[]>([])
   const [loadRound, setLoadRound] = useState(0)
   const [qid, setQid] = useState<string | null>(null)
-  const [finished, setFinished] = useState(false)
   const heading = useRef<HTMLHeadingElement>(null)
+  const resumed = useRef(false)
+
+  useEffect(() => {
+    if (!active.data || resumed.current) return
+    resumed.current = true
+    setStep((current) => (current === 'session' || current === 'done' ? current : 'pattern'))
+  }, [active.data])
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: focus the new heading whenever the visible step changes
   useEffect(() => {
@@ -94,9 +105,6 @@ function WelcomeRoute() {
 
   const home = () => {
     markWelcomed()
-    if (step === 'session' && !finished && active.data) {
-      updateSession.mutate({ id: active.data.id, patch: { end: true } })
-    }
     navigate({ to: '/' })
   }
   const afterMinutes = () => {
@@ -107,8 +115,9 @@ function WelcomeRoute() {
     setStep((stats.data?.attempts.total ?? 0) > 0 && !active.data ? 'done' : 'pattern')
   }
   const saveSitting = async () => {
+    if (!prefs.data) return
     setError(null)
-    if (!sitting) {
+    if (!sitting || sitting === prefs.data.targetSittingId) {
       setStep('minutes')
       return
     }
@@ -123,7 +132,11 @@ function WelcomeRoute() {
     }
   }
   const saveMinutes = () => {
-    if (!stats.data || active.isPending) return
+    if (!prefs.data || !stats.data || active.isPending) return
+    if (minutes === prefs.data.dailyMinutes) {
+      afterMinutes()
+      return
+    }
     setSaving(true)
     setError(null)
     updatePrefs.mutate(
@@ -139,52 +152,37 @@ function WelcomeRoute() {
   }
 
   if (step === 'session') {
-    const origin = qid ? firstSessionOrigin(qid) : null
     return (
-      <div style={{ flex: 1, minWidth: 0 }}>
-        {!finished && (
-          <div style={{ padding: '16px 24px', color: 'var(--ink-2)' }}>
-            {origin && (
-              <p aria-live="polite" data-testid="first-session-origin">
-                {origin}
-              </p>
-            )}
-            <SkipButton onClick={home} />
-          </div>
+      <SessionPlayer
+        sessionKind="onboarding"
+        sections="ORD"
+        activeTab="ova"
+        autoStart
+        pickQuestions={() => questions}
+        resolvePlan={async (ids) => {
+          const bank = await loadBank()
+          const resolved = ids.map((id) => bank.find((q) => q.qid === id))
+          // A stale stored plan must never produce a false three-question win.
+          return ids.length === 3 &&
+            new Set(ids).size === 3 &&
+            resolved.every((q) => q && firstSessionOrigin(q.qid) && q.options?.length)
+            ? (resolved as Question[])
+            : []
+        }}
+        urlSyncedQid={{ qid, setQid }}
+        onComplete={markWelcomed}
+        idleEyebrow="Första passet · ORD"
+        idleHeadline="Tre ord från riktiga prov"
+        idleSubcopy="Ta ett ord i taget. Du får läsa förklaringen efter varje fråga."
+        emptyCopy="Frågorna kunde inte laddas. Du kan hoppa över och komma tillbaka senare."
+        renderDone={({ summary }) => (
+          <WelcomeDone
+            line={firstSessionDoneLine(summary.questions, summary.picks)}
+            questions={summary.questions}
+            onHome={home}
+          />
         )}
-        <SessionPlayer
-          sessionKind="onboarding"
-          sections="ORD"
-          activeTab="ova"
-          autoStart
-          pickQuestions={() => questions}
-          resolvePlan={async (ids) => {
-            const bank = await loadBank()
-            const resolved = ids.map((id) => bank.find((q) => q.qid === id))
-            // A stale stored plan must never produce a false three-question win.
-            return ids.length === 3 &&
-              new Set(ids).size === 3 &&
-              resolved.every((q) => q && firstSessionOrigin(q.qid) && q.options?.length)
-              ? (resolved as Question[])
-              : []
-          }}
-          urlSyncedQid={{ qid, setQid }}
-          onComplete={() => {
-            setFinished(true)
-            markWelcomed()
-          }}
-          idleEyebrow="Första passet · ORD"
-          idleHeadline="Tre ord från riktiga prov"
-          idleSubcopy="Ta ett ord i taget. Du får läsa förklaringen efter varje fråga."
-          emptyCopy="Frågorna kunde inte laddas. Du kan hoppa över och komma tillbaka senare."
-          renderDone={({ summary }) => (
-            <WelcomeDone
-              line={firstSessionDoneLine(summary.questions, summary.picks)}
-              onHome={home}
-            />
-          )}
-        />
-      </div>
+      />
     )
   }
 
@@ -318,15 +316,47 @@ function WelcomeRoute() {
           </PickerRow>
         )}
         {step === 'pattern' && root && (
-          <section aria-label="Ordmönster" style={{ color: 'var(--ink)', lineHeight: 1.7 }}>
-            <h2>{root.root}</h2>
-            <p>{root.meaning}</p>
-            <p>Till exempel: {root.example_words.slice(0, 3).join(', ')}.</p>
-            <p>
+          <section
+            aria-label="Ordmönster"
+            style={{ display: 'grid', gap: 16, color: 'var(--ink)', lineHeight: 1.7 }}
+          >
+            <h2
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(28px, 2vw + 16px, 40px)',
+                fontWeight: 500,
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
+                margin: 0,
+              }}
+            >
+              {root.root}
+            </h2>
+            <p
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 20,
+                fontStyle: 'italic',
+                lineHeight: 1.4,
+                color: 'var(--ink-2)',
+                margin: 0,
+              }}
+            >
+              {root.meaning}
+            </p>
+            <div>
+              <Eyebrow>Exempel</Eyebrow>
+              <ul style={{ margin: '8px 0 0', paddingLeft: 24 }}>
+                {root.example_words.slice(0, 3).map((word) => (
+                  <li key={word}>{word}</li>
+                ))}
+              </ul>
+            </div>
+            <p style={{ margin: 0 }}>
               Tänk på skillnaden mellan betydlig och obetydlig. Prova sedan samma ledtråd i tre ord
               från högskoleprovet.
             </p>
-            <p style={{ color: 'var(--ink-2)' }}>
+            <p style={{ color: 'var(--muted)', fontSize: 14, margin: 0 }}>
               Det här första passet är till för att prova. Det påverkar inte din prognos.
             </p>
           </section>
@@ -348,6 +378,15 @@ function WelcomeRoute() {
             Försök igen
           </Btn>
         )}
+        {(step === 'sitting' || step === 'minutes') && prefs.isError && (
+          <Btn
+            onClick={() => {
+              void prefs.refetch()
+            }}
+          >
+            Hämta dina val igen
+          </Btn>
+        )}
         <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 24 }}>
           {step === 'pattern' ? (
             <Btn disabled={!root || questions.length !== 3} onClick={() => setStep('session')}>
@@ -355,7 +394,11 @@ function WelcomeRoute() {
             </Btn>
           ) : (
             <Btn
-              disabled={saving || (step === 'minutes' && (!stats.data || active.isPending))}
+              disabled={
+                saving ||
+                ((step === 'sitting' || step === 'minutes') && !prefs.data) ||
+                (step === 'minutes' && (!stats.data || active.isPending))
+              }
               onClick={() => {
                 if (step === 'theme') {
                   setError(null)
@@ -374,7 +417,19 @@ function WelcomeRoute() {
   )
 }
 
-function WelcomeDone({ line, onHome }: { line: string | null; onHome: () => void }) {
+function WelcomeDone({
+  line,
+  questions = [],
+  onHome,
+}: {
+  line: string | null
+  questions?: readonly Question[]
+  onHome: () => void
+}) {
+  const origins = questions.flatMap((q) => {
+    const origin = firstSessionOrigin(q.qid)
+    return origin ? [origin.replace('Högskoleprovet ', '')] : []
+  })
   const heading = useRef<HTMLHeadingElement>(null)
   useEffect(() => {
     markWelcomed()
@@ -390,14 +445,22 @@ function WelcomeDone({ line, onHome }: { line: string | null; onHome: () => void
       >
         {line ?? 'Du är igång.'}
       </h1>
+      {line && origins.length === 3 && (
+        <p style={{ color: 'var(--muted)', fontSize: 14, lineHeight: 1.6 }}>
+          Frågorna kom från högskoleprovet {origins[0]}, {origins[1]} och {origins[2]}.
+        </p>
+      )}
       <p style={{ color: 'var(--ink-2)', lineHeight: 1.6 }}>
-        {line
-          ? 'Det räcker för idag. Imorgon kan du prova en kort diagnos.'
-          : 'Dina val går att ändra när som helst.'}
+        {line ? 'Imorgon väntar en kort diagnos.' : 'Dina val går att ändra när som helst.'}
       </p>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+      <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 24 }}>
         <Btn onClick={onHome}>Till Hem</Btn>
-        <SkipButton onClick={onHome} />
+        <a
+          href="/ova"
+          style={{ color: 'var(--ink)', textDecoration: 'underline', textUnderlineOffset: 4 }}
+        >
+          Fortsätt öva nu →
+        </a>
       </div>
     </section>
   )

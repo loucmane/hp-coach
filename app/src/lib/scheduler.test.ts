@@ -81,6 +81,7 @@ describe('generateDailyPlan — rule 5 (cold start)', () => {
       expect.objectContaining({
         id: `onboarding-${TODAY}`,
         headline: 'Första passet',
+        rationale: 'Vill du fortsätta? Öva en sektion →',
         completed: true,
         href: '/lektion?section=ORD#ORD-ROOT-010',
       }),

@@ -1,11 +1,11 @@
-import { act, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, renderHook, screen, waitFor, within } from '@testing-library/react'
 import type { ComponentType } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { DailyPlanCard } from '@/components/home/DailyPlanCard'
 import type { SessionPlayerProps } from '@/components/session/SessionPlayer'
 import type { Question } from '@/data/questions'
 import { useDailyPlan } from '@/hooks/useDailyPlan'
-import { FIRST_SESSION_QIDS } from '@/lib/firstSession'
+import { FIRST_SESSION_FALLBACK, FIRST_SESSION_QIDS } from '@/lib/firstSession'
 import { type DailyPlan, generateDailyPlan, loadPlan, savePlan } from '@/lib/scheduler'
 import { Route } from './welcome'
 
@@ -13,6 +13,7 @@ const h = vi.hoisted(() => ({
   navigate: vi.fn(),
   setSitting: vi.fn(),
   update: vi.fn(),
+  prefs: {} as { targetSittingId?: string; dailyMinutes?: number } | undefined,
   stats: {
     data: { attempts: { total: 0 } } as { attempts: { total: number } } | undefined,
     isError: false,
@@ -36,7 +37,7 @@ vi.mock('@/api/useSyncedPrefs', () => ({
 }))
 vi.mock('@/api/hooks/useUserPrefs', () => ({
   useUpdateUserPrefs: () => ({ mutate: h.update }),
-  useUserPrefs: () => ({ data: {} }),
+  useUserPrefs: () => ({ data: h.prefs }),
 }))
 vi.mock('@/api/hooks/useStats', () => ({ useStats: () => h.stats }))
 vi.mock('@/api/hooks/useSessions', () => ({
@@ -112,6 +113,7 @@ beforeEach(() => {
   h.update.mockImplementation((_patch, callbacks) => callbacks.onSuccess())
   h.stats.data = { attempts: { total: 0 } }
   h.stats.isError = false
+  h.prefs = {}
   h.active = null
   h.player = null
   h.planMode = false
@@ -172,8 +174,16 @@ describe('first-pass Home integration', () => {
     const navigate = vi.fn()
     const card = render(<DailyPlanCard plan={saved} allComplete onNavigate={navigate} />)
     const link = screen.getByRole('link', { name: /Första passet/ })
+    expect(link.className).toBe('hpc-m3-plan-t')
+    expect(link.style.textDecoration).toBe('underline')
+    expect(link).toHaveStyle({ textDecoration: 'underline' })
     fireEvent.click(link)
     expect(navigate).toHaveBeenCalledWith('/lektion?section=ORD#ORD-ROOT-010')
+    const practice = screen.getByRole('link', { name: 'Vill du fortsätta? Öva en sektion →' })
+    expect(practice).toHaveAttribute('href', '/ova')
+    fireEvent.click(practice)
+    expect(navigate).toHaveBeenLastCalledWith('/ova')
+    expect(screen.queryByText(/klart för idag|räcker/i)).not.toBeInTheDocument()
     expect(screen.queryByTestId('daily-plan-first-cta')).not.toBeInTheDocument()
     card.unmount()
     first.unmount()
@@ -190,6 +200,62 @@ describe('first-pass Home integration', () => {
 })
 
 describe('first-run flow', () => {
+  it('seeds an upcoming saved sitting and minutes without writing unchanged values', async () => {
+    vi.setSystemTime(new Date(2026, 8, 1, 12))
+    h.prefs = { targetSittingId: 'var-2027', dailyMinutes: 45 }
+    render(<Welcome />)
+    next()
+    expect(screen.getByRole('button', { name: /Vårprov 27/ })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    expect(screen.getByRole('button', { name: /Höstprov 26/ })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    )
+    next()
+    await screen.findByRole('heading', { name: 'Hur mycket tid passar dig?' })
+    expect(screen.getByRole('button', { name: '45 minuter' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    next()
+    await screen.findByText('icke, inte')
+    expect(h.setSitting).not.toHaveBeenCalled()
+    expect(h.update).not.toHaveBeenCalled()
+  })
+
+  it('waits for delayed saved prefs before allowing a preference save', async () => {
+    h.prefs = undefined
+    const view = render(<Welcome />)
+    next()
+    expect(screen.getByRole('button', { name: /Fortsätt/ })).toBeDisabled()
+    h.prefs = { targetSittingId: 'var-2027', dailyMinutes: 45 }
+    view.rerender(<Welcome />)
+    next()
+    await screen.findByRole('heading', { name: 'Hur mycket tid passar dig?' })
+    expect(screen.getByRole('button', { name: '45 minuter' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    next()
+    await screen.findByText('icke, inte')
+    expect(h.update).not.toHaveBeenCalled()
+    expect(h.setSitting).not.toHaveBeenCalled()
+  })
+
+  it('rolls past sittings forward and defaults unsupported minutes to 20', async () => {
+    h.prefs = { targetSittingId: 'host-2026', dailyMinutes: 60 }
+    await toMinutes()
+    expect(h.setSitting).toHaveBeenCalledWith('var-2027')
+    expect(screen.getByRole('button', { name: '20 minuter' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    next()
+    expect(h.update).toHaveBeenCalledWith({ dailyMinutes: 20 }, expect.anything())
+  })
+
   it('keeps the palette first, saves the next sitting and chosen minutes, and teaches the root', async () => {
     await toMinutes()
     expect(h.setSitting).toHaveBeenCalledWith('var-2027')
@@ -199,25 +265,26 @@ describe('first-run flow', () => {
     next()
     expect(h.update).toHaveBeenCalledWith({ dailyMinutes: 30 }, expect.anything())
     expect(await screen.findByText('icke, inte')).toBeInTheDocument()
+    const pattern = screen.getByRole('region', { name: 'Ordmönster' })
+    expect(within(pattern).getByRole('heading', { name: 'o-' })).toHaveStyle({
+      fontFamily: 'var(--font-display)',
+      fontSize: 'clamp(28px, 2vw + 16px, 40px)',
+    })
+    expect(within(pattern).getByRole('list')).toHaveTextContent('obetydlig')
     expect(screen.queryByText(/Diagnos/)).not.toBeInTheDocument()
   })
 
-  it('mounts an onboarding player with the exact plan, origin labels and no mistake writes', async () => {
+  it('mounts the whole-page onboarding player without a welcome wrapper or strip', async () => {
     await toSession()
     expect(h.player).toMatchObject({ sessionKind: 'onboarding', sections: 'ORD', autoStart: true })
     expect(h.player?.onWrong).toBeUndefined()
     expect((await h.player?.pickQuestions())?.map((q) => q.qid)).toEqual(FIRST_SESSION_QIDS)
     expect(await h.player?.resolvePlan?.([...FIRST_SESSION_QIDS])).toHaveLength(3)
     expect(await h.player?.resolvePlan?.(['unknown', ...FIRST_SESSION_QIDS.slice(1)])).toEqual([])
-    for (const qid of FIRST_SESSION_QIDS) {
-      act(() => h.player?.urlSyncedQid?.setQid(qid))
-      expect(screen.getByTestId('first-session-origin')).toHaveTextContent(
-        `Högskoleprovet hösten ${qid.split('-')[1]}`,
-      )
-    }
-    fireEvent.click(screen.getByRole('button', { name: 'Hoppa över' }))
-    expect(h.navigate).toHaveBeenCalledWith({ to: '/' })
-    expect(localStorage.getItem('hpc-welcomed')).toBe('1')
+    const player = screen.getByTestId('first-player')
+    expect(player.parentElement?.parentElement === document.body).toBe(true)
+    expect(screen.queryByTestId('first-session-origin')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Hoppa över' })).not.toBeInTheDocument()
   })
 
   it.each([
@@ -240,8 +307,34 @@ describe('first-run flow', () => {
       }),
     ).toBeInTheDocument()
     expect(screen.queryByText(/fel|2 av 3/)).not.toBeInTheDocument()
+    expect(screen.getByText('Imorgon väntar en kort diagnos.')).toBeInTheDocument()
+    expect(screen.queryByText(/räcker|klart för idag/i)).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Fortsätt öva nu →' })).toHaveAttribute('href', '/ova')
+    expect(
+      screen.getByText(
+        'Frågorna kom från högskoleprovet hösten 2016, hösten 2021 och hösten 2025.',
+      ),
+    ).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Till Hem' }))
     expect(h.navigate).toHaveBeenCalledWith({ to: '/' })
+  })
+
+  it('labels the actual completed plan when a fallback question was played', async () => {
+    await toSession()
+    const played = [h.bank[0], h.bank[1], { ...h.bank[2], qid: FIRST_SESSION_FALLBACK }]
+    render(
+      h.player?.renderDone?.({
+        summary: { questions: played, picks: ['B', 'B', 'B'] },
+        onReplay: vi.fn(),
+        onHome: vi.fn(),
+      }),
+    )
+    expect(
+      screen.getByText(
+        'Frågorna kom från högskoleprovet hösten 2016, hösten 2021 och hösten 2013.',
+      ),
+    ).toBeInTheDocument()
+    expect(screen.queryByText(/hösten 2025/)).not.toBeInTheDocument()
   })
 
   it('skips the session for an existing account on a new device', async () => {
@@ -273,8 +366,20 @@ describe('first-run flow', () => {
   it('resumes an existing first pass even though its earlier answers count as effort', async () => {
     h.stats.data = { attempts: { total: 1 } }
     h.active = { id: 7 }
-    await toSession()
+    render(<Welcome />)
+    fireEvent.click(await screen.findByRole('button', { name: /Prova tre frågor/ }))
+    await screen.findByTestId('first-player')
     expect(h.player?.resolvePlan).toBeDefined()
+    expect(h.setSitting).not.toHaveBeenCalled()
+    expect(h.update).not.toHaveBeenCalled()
+  })
+
+  it('resumes when the active session arrives after mount', async () => {
+    const view = render(<Welcome />)
+    h.active = { id: 7 }
+    view.rerender(<Welcome />)
+    expect(await screen.findByRole('button', { name: /Prova tre frågor/ })).toBeInTheDocument()
+    expect(screen.queryByText('Palett')).not.toBeInTheDocument()
   })
 
   it('keeps the minutes choice recoverable after a failed save', async () => {

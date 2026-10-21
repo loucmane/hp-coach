@@ -76,6 +76,34 @@ beforeEach(() => {
 })
 
 describe('onboarding assessment exclusion', () => {
+  it('reads plans only for ended onboarding sessions, using the user-kind index', async () => {
+    const { app, env } = appFor('query_shape')
+    const prepare = vi.spyOn(d1, 'prepare')
+    const res = await app.request('/stats?firstTry=1', {}, env)
+    expect(res.status).toBe(200)
+    const queries = prepare.mock.calls.map(([query]) => query)
+    const history = queries.filter((query) => query.includes('from "attempts"'))
+    expect(history.length).toBeGreaterThan(0)
+    expect(history.every((query) => !query.includes('"plan"'))).toBe(true)
+    const plans = queries.filter((query) => query.includes('"plan"'))
+    expect(plans).toHaveLength(1)
+    expect(plans[0]).toContain('from "sessions"')
+    expect(plans[0]).toContain('"sessions"."user_id" = ?')
+    expect(plans[0]).toContain('"sessions"."kind" = ?')
+    expect(plans[0]).toContain('"sessions"."ended_at" is not null')
+    const explained = await d1
+      .prepare(`EXPLAIN QUERY PLAN ${plans[0]}`)
+      .bind(1, 'onboarding')
+      .all<{ detail: string }>()
+    expect(explained.results.some((row) => row.detail.includes('idx_sessions_user_kind'))).toBe(
+      true,
+    )
+    prepare.mockClear()
+    await app.request('/stats', {}, env)
+    expect(prepare.mock.calls.some(([query]) => query.includes('"plan"'))).toBe(false)
+    prepare.mockRestore()
+  })
+
   it('never marks a retired partial pass or repeated answers as a completed first pass', async () => {
     const { app, env } = appFor('partial')
     const db = getDb(d1 as unknown as D1Database)

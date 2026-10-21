@@ -9,7 +9,7 @@
 // through to the SPA's typed client.
 
 import { zValidator } from '@hono/zod-validator'
-import { and, asc, count, eq, gte, inArray, isNull, lte, or, sql } from 'drizzle-orm'
+import { and, asc, count, eq, gte, inArray, isNotNull, isNull, lte, or, sql } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
@@ -443,8 +443,6 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
           createdAt: attempts.createdAt,
           source: attempts.source,
           kind: sessions.kind,
-          endedAt: sessions.endedAt,
-          plan: sessions.plan,
         })
         .from(attempts)
         .leftJoin(sessions, eq(attempts.sessionId, sessions.id))
@@ -485,15 +483,29 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       // Completion, not merely retirement: all three planned questions
       // must be answered. This opt-in scheduling signal keeps the default
       // assessment response (and its golden fixture) unchanged.
+      // Fetch the JSON plans once per ended first pass, using
+      // idx_sessions_user_kind, rather than once per retained attempt.
+      const completedSessions = await db
+        .select({ id: sessions.id, plan: sessions.plan, endedAt: sessions.endedAt })
+        .from(sessions)
+        .where(
+          and(
+            eq(sessions.userId, userId),
+            eq(sessions.kind, 'onboarding'),
+            isNotNull(sessions.endedAt),
+          ),
+        )
       const onboarding = new Map<number, { plan: string[]; answered: Set<string>; endedAt: Date }>()
+      for (const session of completedSessions) {
+        if (!session.endedAt || session.plan?.length !== 3) continue
+        onboarding.set(session.id, {
+          plan: session.plan,
+          answered: new Set(),
+          endedAt: session.endedAt,
+        })
+      }
       for (const a of history) {
-        if (a.kind !== 'onboarding' || !a.endedAt || a.plan?.length !== 3) continue
-        let entry = onboarding.get(a.sessionId)
-        if (!entry) {
-          entry = { plan: a.plan, answered: new Set(), endedAt: a.endedAt }
-          onboarding.set(a.sessionId, entry)
-        }
-        entry.answered.add(a.questionId)
+        onboarding.get(a.sessionId)?.answered.add(a.questionId)
       }
       for (const { plan, answered, endedAt } of onboarding.values()) {
         if (new Set(plan).size !== 3 || !plan.every((qid) => answered.has(qid))) continue

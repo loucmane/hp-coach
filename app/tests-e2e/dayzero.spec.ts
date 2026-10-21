@@ -9,7 +9,7 @@
 //
 // The flow under test — the first signed-in minute as one thread:
 //   1. palette → exam sitting → minutes per day
-//   2. one ORD root card → three labelled authentic HP questions
+//   2. one ORD root card → three authentic HP questions in the normal drill
 //   3. true completion sentence → one completed, clickable first pass on Home
 //   4. reload keeps the completed plan; no diagnostic or mock on day zero
 
@@ -61,9 +61,8 @@ test('day zero: preferences → ORD root → three real questions → completed 
     const qids = ['host-2016-verb2-ORD-004', 'host-2021-verb2-ORD-003', 'host-2025-verb2-ORD-010']
     for (const qid of qids) {
       await expect(page.getByTestId('drill-question')).toHaveAttribute('data-qid', qid, { timeout: 30_000 })
-      await expect(page.getByTestId('first-session-origin')).toHaveText(
-        `Högskoleprovet hösten ${qid.split('-')[1]}`,
-      )
+      await expect(page.getByTestId('first-session-origin')).toHaveCount(0)
+      await expect(page.getByRole('button', { name: 'Hoppa över' })).toHaveCount(0)
       const correctLetter = await page.evaluate((id) => {
         const bank = (window as unknown as { __HPC_BANK__: { qid: string; answer: string }[] }).__HPC_BANK__
         return bank.find((q) => q.qid === id)?.answer ?? null
@@ -80,6 +79,10 @@ test('day zero: preferences → ORD root → three real questions → completed 
     await expect(page.getByRole('heading', {
       name: 'Du klarade 3 av 3 frågor från riktiga högskoleprov',
     })).toBeVisible()
+    await expect(page.getByText(
+      'Frågorna kom från högskoleprovet hösten 2016, hösten 2021 och hösten 2025.',
+    )).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Fortsätt öva nu →' })).toHaveAttribute('href', '/ova')
     await page.getByRole('button', { name: 'Till Hem' }).click()
     await expect(page.getByTestId('home-greeting')).toBeVisible({ timeout: 15_000 })
     await expect(page.getByRole('link', { name: /Första passet/ })).toHaveAttribute(
@@ -87,6 +90,7 @@ test('day zero: preferences → ORD root → three real questions → completed 
     )
     await expect(page.getByTestId('kallelse-start')).toHaveCount(0)
     await expect(page.getByTestId('daily-plan-first-cta')).toHaveCount(0)
+    await expect(page.getByRole('link', { name: 'Vill du fortsätta? Öva en sektion →' })).toHaveAttribute('href', '/ova')
     // The completed day-zero plan survives a fresh page load.
     await page.reload()
     await expect(page.getByRole('link', { name: /Första passet/ })).toBeVisible({ timeout: 20_000 })
