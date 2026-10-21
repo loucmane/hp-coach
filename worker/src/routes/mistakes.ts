@@ -31,7 +31,7 @@ import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { getDb } from '../db/client'
-import { mistakes } from '../db/schema'
+import { mistakes, sessions } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
 import { nextOnCorrect, nextOnWrong, RELEARN_MINUTES } from '../lib/srs'
 import type { Env, Vars } from '../types'
@@ -50,7 +50,39 @@ const PatchBody = z
   })
   .strict()
 
+const ReviewBody = z
+  .object({
+    correct: z.boolean(),
+  })
+  .strict()
+
 const IdParam = z.object({ id: z.coerce.number().int().positive() })
+
+const RoundParam = z.object({ sessionId: z.coerce.number().int().positive() })
+
+const RoundBody = z
+  .object({
+    // The bounds of a stored plan (routes/sessions.ts StartBody).
+    plan: z.array(z.string().min(1).max(80)).min(1).max(500),
+  })
+  .strict()
+
+/** A Repetera round's plan entry is a plain qid, or "<qid>~<sourceQid>" for
+ *  a new question that repeats the mistake on sourceQid. The app writes and
+ *  reads these (app/src/lib/replay.ts planEntry / parsePlanEntry). */
+const PLAN_LINK = '~'
+
+/** The question a plan entry plays. */
+function planQuestion(entry: string): string {
+  const at = entry.indexOf(PLAN_LINK)
+  return at < 0 ? entry : entry.slice(0, at)
+}
+
+/** A plain qid, or exactly one link between two non-empty qids. */
+function isPlanEntry(entry: string): boolean {
+  const parts = entry.split(PLAN_LINK)
+  return parts.length === 1 || (parts.length === 2 && parts.every((part) => part.length > 0))
+}
 
 const DueQuery = z
   .object({
@@ -285,6 +317,147 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         .where(eq(mistakes.id, existing.id))
         .returning()
       return c.json({ mistake: row })
+    },
+  )
+
+  // PATCH /api/mistakes/:id/review — { correct } (hpf-bz6f.2). Repetera
+  // repeats a LÄS/MEK/ELF/quant miss through a NEW question with the same
+  // trap ("Samma fälla, ny fråga"), so the answer arrives on a different
+  // questionId than the row's and the question-keyed paths would miss it
+  // (or, on a wrong answer, record the new question as a mistake of its
+  // own). The client addresses the source mistake by row id instead, and
+  // this route moves THAT row the way the existing paths move a
+  // same-question repeat, so the due / pile scopes stay right:
+  //   - correct → nextOnCorrect, as in /by-question: advance, resume after
+  //     a lapse, or graduate at the cap. Only an active row moves; one
+  //     resolved meanwhile (e.g. on another device) is left as it is.
+  //   - wrong   → the lapse POST / applies to an existing row: relearn
+  //     rung + banked height, errorCount7d + 1, lastErrorAt = now, status
+  //     back to 'active' — the item stays on today's pile. Never an
+  //     insert: a miss on the new question lapses the ORIGINAL mistake.
+  // Same ownership rule as /:id: another user's row is a 404.
+  .patch('/:id/review', zValidator('param', IdParam), zValidator('json', ReviewBody), async (c) => {
+    const { id } = c.req.valid('param')
+    const { correct } = c.req.valid('json')
+    const db = getDb(c.env.DB)
+    const userId = await ensureUserRow(db, c.var.userId)
+
+    const [existing] = await db
+      .select()
+      .from(mistakes)
+      .where(and(eq(mistakes.id, id), eq(mistakes.userId, userId)))
+      .limit(1)
+    if (!existing) {
+      return c.json({ error: { code: 'not_found', message: 'Mistake not found' } }, 404)
+    }
+
+    if (!correct) {
+      const now = new Date()
+      const wrong = nextOnWrong(now, {
+        intervalMinutes: existing.intervalMinutes ?? 0,
+        lapseIntervalMinutes: existing.lapseIntervalMinutes ?? null,
+      })
+      const [row] = await db
+        .update(mistakes)
+        .set({
+          status: 'active',
+          errorCount7d: (existing.errorCount7d ?? 0) + 1,
+          lastErrorAt: now,
+          intervalMinutes: wrong.intervalMinutes,
+          nextReviewAt: wrong.nextReviewAt,
+          lapseIntervalMinutes: wrong.lapseIntervalMinutes > 0 ? wrong.lapseIntervalMinutes : null,
+        })
+        .where(eq(mistakes.id, existing.id))
+        .returning()
+      return c.json({ mistake: row })
+    }
+
+    if (existing.status !== 'active') {
+      return c.json({ mistake: existing })
+    }
+    const outcome = nextOnCorrect(
+      existing.intervalMinutes ?? 0,
+      new Date(),
+      existing.lapseIntervalMinutes ?? null,
+    )
+    if (outcome.graduated) {
+      const [row] = await db
+        .update(mistakes)
+        .set({ status: 'resolved' })
+        .where(eq(mistakes.id, existing.id))
+        .returning()
+      return c.json({ mistake: row })
+    }
+    const [row] = await db
+      .update(mistakes)
+      .set({
+        intervalMinutes: outcome.intervalMinutes,
+        nextReviewAt: outcome.nextReviewAt,
+        // Consume/clear any stashed lapse height (null on every correct).
+        lapseIntervalMinutes: outcome.lapseIntervalMinutes,
+      })
+      .where(eq(mistakes.id, existing.id))
+      .returning()
+    return c.json({ mistake: row })
+  })
+
+  // PUT /api/mistakes/round/:sessionId — { plan } (hpf-bz6f.2). Stores which
+  // mistake each new question of an open Repetera round repeats, so a
+  // resume (on this device or another) answers every one against THAT
+  // mistake — never one re-derived from whatever is due by then, which
+  // changes between a pause and a resume.
+  //
+  // The link lives in the round's own stored plan (sessions.plan; no schema
+  // change): a new question as "<qid>~<sourceQid>", every other entry as a
+  // plain qid, so older plans read exactly as before. SessionPlayer creates
+  // the session with plain qids, and /repetition writes the links here once
+  // it exists. This route only annotates: the session must be the user's
+  // open adaptive_review round, and every entry must keep the question
+  // stored at its place, so what the round plays never changes. Another
+  // user's session is a 404, as everywhere.
+  .put(
+    '/round/:sessionId',
+    zValidator('param', RoundParam),
+    zValidator('json', RoundBody),
+    async (c) => {
+      const { sessionId } = c.req.valid('param')
+      const { plan } = c.req.valid('json')
+      const db = getDb(c.env.DB)
+      const userId = await ensureUserRow(db, c.var.userId)
+
+      const owned = and(eq(sessions.id, sessionId), eq(sessions.userId, userId))
+      const [session] = await db.select().from(sessions).where(owned).limit(1)
+      if (!session) {
+        return c.json({ error: { code: 'not_found', message: 'Session not found' } }, 404)
+      }
+      if (session.kind !== 'adaptive_review') {
+        return c.json(
+          { error: { code: 'invalid_kind', message: 'Session is not a repetition round' } },
+          400,
+        )
+      }
+      const stored = session.plan ?? []
+      const samePlay =
+        plan.length === stored.length &&
+        plan.every(
+          (entry, i) => isPlanEntry(entry) && planQuestion(entry) === planQuestion(stored[i]),
+        )
+      if (!samePlay) {
+        return c.json(
+          { error: { code: 'plan_mismatch', message: 'A round can only link its own questions' } },
+          400,
+        )
+      }
+      // Still open at the write, too: a round ended meanwhile keeps its plan.
+      const [row] = await db
+        .update(sessions)
+        .set({ plan })
+        .where(and(owned, isNull(sessions.endedAt)))
+        .returning()
+      if (!row) {
+        return c.json({ error: { code: 'ended', message: 'The round has ended' } }, 400)
+      }
+      return c.json({ session: row })
     },
   )
 
