@@ -184,7 +184,11 @@ async function setFrameworkStatus(
   // No-op writes shouldn't churn `lastTransitionAt` — the column names a
   // TRANSITION, and a scheduler reading "how long in this state" would be
   // wrong if every re-read reset the clock.
-  if (existing.status === status) return status
+  // An undated retaining row needs its first evidence timestamp, otherwise
+  // the earlier-day promotion gate could never open for that legacy row.
+  if (existing.status === status && (status !== 'retaining' || existing.lastTransitionAt != null)) {
+    return status
+  }
   await db
     .update(frameworkProgress)
     .set({ status, lastTransitionAt: now })
@@ -268,9 +272,8 @@ export async function applyMasteryOutcome(
     .limit(1)
 
   const now = new Date()
-  const elapsed = existing?.lastUpdatedAt
-    ? Math.max(0, now.getTime() - existing.lastUpdatedAt.getTime())
-    : 0
+  const lastUpdatedAt = existing?.lastUpdatedAt?.getTime() ?? Number.NaN
+  const elapsed = Number.isFinite(lastUpdatedAt) ? Math.max(0, now.getTime() - lastUpdatedAt) : 0
   const prior = existing?.score ?? MASTERY_PRIOR
   const decayed = MASTERY_PRIOR + (prior - MASTERY_PRIOR) * 2 ** (-elapsed / MASTERY_HALF_LIFE_MS)
   const score = nextMasteryScore(decayed, correct)

@@ -4,6 +4,7 @@
 // routes/attempts.test.ts and routes/lessonReads.test.ts also prove these
 // transitions through the production grading and reading routes.
 
+import { sql } from 'drizzle-orm'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { getDb } from '../db/client'
@@ -114,7 +115,7 @@ describe('dated mastery evidence', () => {
     expect((await answer()).status).toBe('retaining')
   })
 
-  it('does not treat an undated retaining row as earlier-day evidence', async () => {
+  it('dates an undated retaining row on a capped answer before promoting on a later day', async () => {
     await db.insert(mastery).values({ userId, section: 'KVA', layer1Id, score: 1 })
     await db.insert(frameworkProgress).values({
       userId,
@@ -123,6 +124,13 @@ describe('dated mastery evidence', () => {
       lastTransitionAt: null,
     })
     expect((await answer()).status).toBe('retaining')
+    expect((await db.select().from(frameworkProgress))[0].lastTransitionAt).toEqual(dayOne)
+    vi.setSystemTime(new Date('2026-10-01T23:59:59Z'))
+    expect((await answer()).status).toBe('retaining')
+    expect((await db.select().from(frameworkProgress))[0].lastTransitionAt).toEqual(dayOne)
+    vi.setSystemTime(dayTwo)
+    expect((await answer()).status).toBe('mastered')
+    expect((await db.select().from(frameworkProgress))[0].lastTransitionAt).toEqual(dayTwo)
   })
 
   it.each([
@@ -147,6 +155,21 @@ describe('dated mastery evidence', () => {
       .insert(mastery)
       .values({ userId, section: 'KVA', layer1Id, score: 0.8, lastUpdatedAt: dayTwo })
     expect((await answer()).score).toBe(0.86)
+  })
+
+  it.each([
+    [true, 0.86],
+    [false, 0.56],
+  ])('skips decay for an invalid timestamp before folding correct=%s', async (correct, expected) => {
+    await db.insert(mastery).values({ userId, section: 'KVA', layer1Id, score: 0.8 })
+    // SQLite permits legacy malformed timestamp values; Drizzle maps them to Invalid Date.
+    await db.run(sql`UPDATE mastery SET last_updated_at = 'invalid-date'`)
+    const [before] = await db.select().from(mastery)
+    expect(Number.isNaN(before.lastUpdatedAt?.getTime())).toBe(true)
+    expect((await answer(correct)).score).toBe(expected)
+    const [stored] = await db.select().from(mastery)
+    expect(stored.score).toBe(expected)
+    expect(stored.lastUpdatedAt).toEqual(dayOne)
   })
 
   it('derives stale mastered rows as retaining after 30 days without writing either table', async () => {

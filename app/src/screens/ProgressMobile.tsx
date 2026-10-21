@@ -63,6 +63,7 @@ type ProgressMobileProps = {
   error?: boolean
   /** Only supplied once progress and all eight framework catalogs are available. */
   patternsHeld?: { mastered: number; total: number }
+  userId?: string | null
 }
 
 const RETRY_LINE = 'Gick inte att hämta just nu — försöker igen automatiskt.'
@@ -78,7 +79,13 @@ function fmtSv(score: number | null): string {
 
 const CONF_SV = { low: 'låg', medium: 'medel', high: 'hög' } as const
 
-export function ProgressMobile({ stats, loading, error, patternsHeld }: ProgressMobileProps) {
+export function ProgressMobile({
+  stats,
+  loading,
+  error,
+  patternsHeld,
+  userId,
+}: ProgressMobileProps) {
   const viewport = useViewport()
   const days = useDaysRemaining()
   const sitting = useSitting()
@@ -165,7 +172,9 @@ export function ProgressMobile({ stats, loading, error, patternsHeld }: Progress
               </SkriftLine>
             )}
           </Skrift>
-          {patternsHeld && <PatternsHeldLine {...patternsHeld} />}
+          {patternsHeld && (
+            <PatternsHeldLine key={userId ?? ''} userId={userId} {...patternsHeld} />
+          )}
         </DrillRailSection>
 
         {/* ── Prognos över tid — sparkline vs the goal ────────────── */}
@@ -960,13 +969,22 @@ const mono11 = {
   fontVariantNumeric: 'tabular-nums' as const,
 }
 
-function PatternsHeldLine({ mastered, total }: { mastered: number; total: number }) {
-  const [peak, setPeak] = useState(readPatternsHeld)
-  const count = Math.max(mastered, peak)
+function PatternsHeldLine({
+  mastered,
+  total,
+  userId,
+}: {
+  mastered: number
+  total: number
+  userId?: string | null
+}) {
+  const [peak, setPeak] = useState(() => readPatternsHeld(userId))
+  const highWater = userId ? Math.max(mastered, peak) : mastered
+  const count = Math.min(highWater, total)
   useEffect(() => {
-    // State also preserves the peak for this mounted screen if storage fails.
-    setPeak(rememberPatternsHeld(count))
-  }, [count])
+    // The parent keys this state by user, including when storage is unavailable.
+    if (userId) setPeak(rememberPatternsHeld(highWater, userId))
+  }, [highWater, userId])
   return (
     <MonoNote style={{ marginTop: 12 }}>
       Mönster som sitter: {count} av {total}

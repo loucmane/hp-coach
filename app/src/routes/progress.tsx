@@ -3,6 +3,7 @@
 // Wired to /api/me/stats. The screen renders muted placeholders while
 // the query is in-flight so the layout doesn't snap on hydration.
 
+import { useAuth } from '@clerk/clerk-react'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
@@ -26,6 +27,7 @@ function ProgressRoute() {
   // Skrift block; its placeholder-while-loading UI is the route's own
   // primary content, present at mount.
   useFirstContentSignal()
+  const { userId } = useAuth()
   const navigate = useNavigate()
   const stats = useStats()
   const progress = useFrameworkProgress()
@@ -58,6 +60,7 @@ function ProgressRoute() {
         }}
       >
         <ProgressMobile
+          userId={userId}
           stats={stats.data}
           loading={stats.isPending}
           error={stats.isError}
