@@ -7,12 +7,30 @@
 
 import { beforeAll, describe, expect, it } from 'vitest'
 
-import { findQuestion, loadBank, type Question } from './questions'
+import {
+  findQuestion,
+  loadBank,
+  type Question,
+  questionsInSection,
+  SECTION_KEYS,
+} from './questions'
+import { WORKED_EXAMPLE_QIDS } from './workedExamples.generated'
 
 let bank: readonly Question[]
 
 beforeAll(async () => {
   bank = await loadBank()
+})
+
+it('withholds worked examples from section pools while retaining direct lookup', () => {
+  for (const section of SECTION_KEYS) {
+    expect(
+      questionsInSection(bank, section)
+        .filter((q) => WORKED_EXAMPLE_QIDS.has(q.qid))
+        .map((q) => q.qid),
+    ).toEqual([])
+  }
+  for (const qid of WORKED_EXAMPLE_QIDS) expect(findQuestion(bank, qid)).toBeDefined()
 })
 
 describe('findQuestion', () => {

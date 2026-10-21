@@ -18,7 +18,9 @@
 // drills. See pickSynthetic for the group-then-greedy-then-swap algorithm.
 
 import type { ExposureMap, MockBreakdown, MockHalf } from '@/api/hooks/useMockResults'
+import { EXCLUDED_QUESTIONS } from '@/data/figureOverrides'
 import type { Provpass, Question, Section } from '@/data/questions'
+import { WORKED_EXAMPLE_QIDS } from '@/data/workedExamples.generated'
 
 export type PassOption = {
   examId: string
@@ -262,7 +264,12 @@ export function pickSynthetic(
   const out: Question[] = []
   for (const [section, quota] of quotas) {
     const pool = bank.filter(
-      (q) => q.section === section && q.parsing_status === 'complete' && q.options,
+      (q) =>
+        q.section === section &&
+        q.parsing_status === 'complete' &&
+        q.options &&
+        !EXCLUDED_QUESTIONS.has(q.qid) &&
+        !WORKED_EXAMPLE_QIDS.has(q.qid),
     )
     const atomic = GROUP_ATOMIC_SECTIONS.has(section)
     out.push(...pickSectionQuota(pool, quota, exposure, rng, atomic))

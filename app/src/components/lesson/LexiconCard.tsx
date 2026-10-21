@@ -14,6 +14,7 @@ import type { LexiconEntry } from '@/data/frameworks'
 import { ExampleQuestions } from './ExampleQuestions'
 import { MarkAsReadPill } from './MarkAsReadPill'
 import { PracticeLink } from './PracticeLink'
+import { WorkedExample } from './WorkedExample'
 
 export function LexiconCard({
   entry,
@@ -133,6 +134,7 @@ export function LexiconCard({
             </li>
           ))}
         </ul>
+        <WorkedExample entryId={entry.id} />
         {hasExampleQuestions && <ExampleQuestions qids={entry.example_questions} />}
         <div
           style={{

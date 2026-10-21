@@ -27,6 +27,7 @@ import type { Section } from '@/data/questions'
 import { ExampleQuestions } from './ExampleQuestions'
 import { MarkAsReadPill } from './MarkAsReadPill'
 import { PracticeLink } from './PracticeLink'
+import { WorkedExample } from './WorkedExample'
 
 type AnyProtocolEntry = TacticEntry | ConstraintEntry | ProtocolEntryType
 
@@ -194,6 +195,7 @@ export function ProtocolCard({
           </>
         )}
 
+        <WorkedExample entryId={entry.id} />
         {entry.example_questions && entry.example_questions.length > 0 && (
           <ExampleQuestions qids={entry.example_questions} />
         )}
