@@ -26,6 +26,8 @@ export type SessionHistoryRow = {
   id: number
   kind: SessionKind
   sections: string | null
+  /** Optional for cached responses and a frontend deployed before the worker. */
+  startedAt?: string | null
   endedAt: string | null
   total: number
   correct: number
@@ -171,6 +173,7 @@ export function useUpdateSession() {
       // what the plan's completion derives from.
       if (vars.patch.end) {
         qc.invalidateQueries({ queryKey: STATS_KEY })
+        qc.invalidateQueries({ queryKey: SESSION_HISTORY_KEY })
       }
     },
   })

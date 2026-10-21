@@ -92,6 +92,7 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         id: sessions.id,
         kind: sessions.kind,
         sections: sessions.sections,
+        startedAt: sessions.startedAt,
         endedAt: sessions.endedAt,
         planLen: sql<number | null>`json_array_length(${sessions.plan})`,
         total: sql<number>`count(${attempts.id})`,
