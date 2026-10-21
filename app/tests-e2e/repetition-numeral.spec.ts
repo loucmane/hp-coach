@@ -227,52 +227,76 @@ test('due station: column-aligned, still through throttled refetch, no detached 
     uploadThroughput: (750 * 1024) / 8,
   })
 
-  // Per-animation-frame recorder on the numeral: rect + presence.
+  type Frame = {
+    numeral: Box | null
+    station: Box | null
+    scrollY: number
+    transform: string | null
+  }
+  // Record both rects and the projection transform alongside scroll, so
+  // a failure distinguishes sticky-band movement from a projected numeral.
   await page.evaluate(() => {
     const w = window as unknown as {
-      __rec: Array<{ x: number; y: number } | null>
+      __rec: Frame[]
       __recStop: boolean
     }
     w.__rec = []
     w.__recStop = false
+    const rect = (el: Element | null): Box | null => {
+      if (!el) return null
+      const b = el.getBoundingClientRect()
+      return {
+        x: +b.x.toFixed(1),
+        y: +b.y.toFixed(1),
+        w: +b.width.toFixed(1),
+        h: +b.height.toFixed(1),
+      }
+    }
     const step = () => {
       if (w.__recStop) return
       const el = document.querySelector('[data-testid="due-station-numeral"]')
-      if (el) {
-        const b = el.getBoundingClientRect()
-        w.__rec.push({ x: +b.x.toFixed(1), y: +b.y.toFixed(1) })
-      } else {
-        w.__rec.push(null)
-      }
+      w.__rec.push({
+        numeral: rect(el),
+        station: rect(document.querySelector('[data-testid="due-station"]')),
+        scrollY: window.scrollY,
+        transform: el ? getComputedStyle(el).transform : null,
+      })
       requestAnimationFrame(step)
     }
     requestAnimationFrame(step)
   })
 
-  const qid1 = new URL(page.url()).searchParams.get('qid') ?? ''
-  const correct1 = answerOf.get(qid1)
-  expect(correct1, `answer for ${qid1}`).toBeTruthy()
-  await page.getByTestId(`option-${correct1}`).click()
-  // Reader scrolls into the explanation while the (throttled) pile
-  // refetch is still in flight — the roll lands scrolled.
-  await page.mouse.wheel(0, 600)
-  // Wait out the throttled resolve → invalidate → refetch → roll.
-  await expect(page.getByTestId('due-station-numeral')).toHaveText('2', { timeout: 15_000 })
-  await page.waitForTimeout(1200) // let any (illegal) spring play out
-
-  const rec = await page.evaluate(() => {
-    const w = window as unknown as {
-      __rec: Array<{ x: number; y: number } | null>
-      __recStop: boolean
-    }
-    w.__recStop = true
-    return w.__rec
-  })
+  let rec: Frame[] = []
+  try {
+    const qid1 = new URL(page.url()).searchParams.get('qid') ?? ''
+    const correct1 = answerOf.get(qid1)
+    expect(correct1, `answer for ${qid1}`).toBeTruthy()
+    await page.getByTestId(`option-${correct1}`).click()
+    // Reader scrolls into the explanation while the (throttled) pile
+    // refetch is still in flight — the roll lands scrolled.
+    await page.mouse.wheel(0, 600)
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY), { message: 'reader scrolled after wheel' })
+      .toBeGreaterThan(0)
+    // Wait out the throttled resolve → invalidate → refetch → roll.
+    await expect(page.getByTestId('due-station-numeral')).toHaveText('2', { timeout: 15_000 })
+    await page.waitForTimeout(1200) // let any (illegal) spring play out
+  } finally {
+    rec = await page.evaluate(() => {
+      const w = window as unknown as { __rec: Frame[]; __recStop: boolean }
+      w.__recStop = true
+      return w.__rec
+    })
+    await testInfo.attach('due-station-refetch-frames', {
+      body: JSON.stringify(rec),
+      contentType: 'application/json',
+    })
+  }
   expect(rec.length).toBeGreaterThan(30)
-  const gaps = rec.filter((f) => f === null).length
+  const gaps = rec.filter((f) => f.numeral === null).length
   expect(gaps, 'numeral unmounted mid-refetch (would teleport/fly the numeral)').toBe(0)
-  const xs = new Set(rec.map((f) => f && f.x))
-  const ys = new Set(rec.map((f) => f && f.y))
+  const xs = new Set(rec.map((f) => f.numeral && f.numeral.x))
+  const ys = new Set(rec.map((f) => f.numeral && f.numeral.y))
   const spanOf = (s: Set<number | null>) => {
     const v = [...s].filter((n): n is number => n != null)
     return Math.max(...v) - Math.min(...v)
