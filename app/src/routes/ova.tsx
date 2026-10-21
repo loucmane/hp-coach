@@ -241,6 +241,13 @@ function OvaRoute() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 16 }}>
               <Link
                 to="/drill"
+                search={{ section: 'ORD', words: true, start: true }}
+                style={timedLink}
+              >
+                Ordbank · 10 ord
+              </Link>
+              <Link
+                to="/drill"
                 search={{ section: 'ORD', timed: true, start: true }}
                 style={timedLink}
               >

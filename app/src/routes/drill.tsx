@@ -6,6 +6,7 @@
 // The state machine, lifecycle, and UI live in <SessionPlayer>; this
 // file is just config.
 
+import { useUser } from '@clerk/clerk-react'
 import { useIsMutating, useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -35,6 +36,8 @@ import {
   pickMixedDrillQuestions,
 } from '@/lib/drill'
 import { sectionDoorLayoutId, useFirstContentSignal } from '@/lib/motion'
+import { readOrdDeck, recordOrdAnswer } from '@/lib/ordDeck'
+import { loadOrdWords, ORD_WORDS_SECTIONS, pickOrdWords } from '@/lib/ordWords'
 import { REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
 import {
@@ -73,6 +76,8 @@ type DrillSearch = {
   start?: true
   /** Opt-in UHR-paced ORD set or one four-question LÄS text. */
   timed?: true
+  /** Per-user spaced ORD word rounds. */
+  words?: true
 }
 
 function validateSearch(input: Record<string, unknown>): DrillSearch {
@@ -81,6 +86,10 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
   if (typeof raw === 'string' && (DRILL_SECTIONS as readonly string[]).includes(raw)) {
     out.section = raw as DrillSection
   }
+  // Home carries the stored sections marker in its resume URL. Decode it
+  // here so that a resumed round keeps both ORD and the word-deck behavior.
+  const wordResume = typeof raw === 'string' && raw.toUpperCase() === ORD_WORDS_SECTIONS
+  if (wordResume) out.section = 'ORD'
   // A.6V.4 — `?qid=` direct-link. When present, the drill flow loads
   // ONLY this one question (single-element plan). Lets the user jump
   // straight to a specific question for variant-comparison passes or
@@ -135,6 +144,18 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
   ) {
     out.timed = true
   }
+  if (
+    (input.words === '1' || input.words === 1 || input.words === true || wordResume) &&
+    (out.section ?? 'ORD') === 'ORD' &&
+    !out.timed &&
+    !out.framework &&
+    !out.mixed &&
+    !out.weak &&
+    !out.ar
+  ) {
+    out.section = 'ORD'
+    out.words = true
+  }
   return out
 }
 
@@ -176,13 +197,23 @@ export const Route = createFileRoute('/drill')({
 })
 
 function DrillScreen() {
-  const { section, timed } = Route.useSearch()
+  const { section, timed, words } = Route.useSearch()
+  if (words) return <WordDrillSession />
   // Changing the opt-in mode starts a new clock/player lifetime. Ordinary
   // drills keep their existing lifetime and all their other route facets.
   return <DrillSession key={timed ? `timed-${section ?? 'ORD'}` : 'untimed'} />
 }
 
-function DrillSession() {
+// Only the word-bank mode needs a Clerk identity. Key its player by user so
+// switching accounts cannot continue a prior user's round or write its deck.
+function WordDrillSession() {
+  const { user, isLoaded } = useUser()
+  if (!isLoaded) return <p role="status">Laddar ordbanken …</p>
+  if (!user) return <p>Logga in för att öva i din ordbank.</p>
+  return <DrillSession key={user.id} wordUserId={user.id} />
+}
+
+function DrillSession({ wordUserId }: { wordUserId?: string }) {
   const {
     section: sectionFromUrl,
     qid,
@@ -194,6 +225,7 @@ function DrillSession() {
     back,
     start,
     timed,
+    words,
   } = Route.useSearch()
   const section: DrillSection = sectionFromUrl ?? 'ORD'
   const timing = timed ? timedDrill(section) : null
@@ -208,7 +240,7 @@ function DrillSession() {
   // detour: plain section drills, not the detour itself (`framework`/`ar`),
   // a direct-link (`qid`), a weak-traps or mixed pass, or a reconstructed
   // `done` view.
-  const isNormalDrill = !timed && !framework && !qid && !weak && !mixed && !ar && !done
+  const isNormalDrill = !words && !timed && !framework && !qid && !weak && !mixed && !ar && !done
   const adaptive = useAdaptiveReview()
 
   // `?weak=1` — the user's weakest traps in this section, off the live
@@ -280,6 +312,7 @@ function DrillSession() {
           ar: prev.ar,
           back: prev.back,
           timed: prev.timed,
+          words: prev.words,
         }),
         replace: true,
       })
@@ -330,6 +363,17 @@ function DrillSession() {
   // "session in progress" (don't flip).
   const activeSession = useActiveSession()
   const activeDrill = useActiveSessionOfKind('drill')
+  const wordIndex = useQuery({
+    queryKey: ['ord-words'],
+    queryFn: loadOrdWords,
+    staleTime: Number.POSITIVE_INFINITY,
+    enabled: !!words,
+  })
+  const wordIdByQid = useMemo(
+    () => new Map(wordIndex.data?.flatMap((word) => word.qids.map((id) => [id, word.id] as const))),
+    [wordIndex.data],
+  )
+  const canResumeWords = activeDrill.data?.sections === ORD_WORDS_SECTIONS
   // SessionPlayer normally resumes by section alone. A timed drill also
   // needs its exact size/passage, so resolve the bank before mounting it.
   // This shares the player's query cache; ordinary drills do no extra load.
@@ -354,7 +398,9 @@ function DrillSession() {
     activeDrill.data.plan.length === timing.count
   )
   const directLinkQid =
-    !timing && qid && (!activeSession.data || activeSession.data.sections !== section) ? qid : null
+    !words && !timing && qid && (!activeSession.data || activeSession.data.sections !== section)
+      ? qid
+      : null
 
   // Resolve the framework entry's display name (e.g. "för-" for
   // ORD-ROOT-001) so the idle screen shows what the user is about to
@@ -459,11 +505,24 @@ function DrillSession() {
     return timing ? pickTimedDrillQuestions(await loadBank(), timing.section) : []
   }
 
+  const pickWordsQuestions = async () =>
+    pickOrdWords(wordIndex.data ?? [], await loadBank(), readOrdDeck(wordUserId))
+  const resolveWordPlan = async (qids: string[]) =>
+    (await resolvePlan(qids)).filter((q) => q.section === 'ORD' && wordIdByQid.has(q.qid))
+  const gradeWord = (q: Question, correct: boolean) => {
+    const wordId = wordIdByQid.get(q.qid)
+    if (words && wordId) recordOrdAnswer(wordUserId, wordId, q.qid, correct)
+  }
+
   // Session `sections` metadata. For an adaptive-review detour (`ar`), ride
   // the treated marker on this field (encodeTreatedMarker) so the completed
   // session row is recoverable as "treated" — same free-form-field trick
   // MockRunner uses, NO schema migration. Otherwise the plain section code.
-  const sessionSections = ar && framework ? encodeTreatedMarker(section, framework) : section
+  const sessionSections = words
+    ? ORD_WORDS_SECTIONS
+    : ar && framework
+      ? encodeTreatedMarker(section, framework)
+      : section
 
   const frameworkDisplay = frameworkHeadword ?? framework
   const idleEyebrow = directLinkQid
@@ -506,13 +565,23 @@ function DrillSession() {
 
   // Detour idle: surface the lektion anchor so the user can refresh the
   // pattern before drilling it. Otherwise the normal repetition hint.
-  const idleExtra =
-    ar && framework ? (
-      <LektionAnchorLink section={section} frameworkId={framework} />
-    ) : !directLinkQid && !framework && dueCount > 0 ? (
-      <RepetitionHint count={dueCount} />
-    ) : null
+  const idleExtra = words ? null : ar && framework ? (
+    <LektionAnchorLink section={section} frameworkId={framework} />
+  ) : !directLinkQid && !framework && dueCount > 0 ? (
+    <RepetitionHint count={dueCount} />
+  ) : null
 
+  if (words && wordIndex.isPending) return <p role="status">Laddar ordbanken …</p>
+  if (words && !wordIndex.data) {
+    return (
+      <p>
+        Kunde inte hämta ordbanken.{' '}
+        <button type="button" onClick={() => void wordIndex.refetch()}>
+          Försök igen
+        </button>
+      </p>
+    )
+  }
   if (timing && !done && (activeDrill.isPending || timedBank.isPending)) {
     return <p role="status">Laddar övning …</p>
   }
@@ -529,38 +598,57 @@ function DrillSession() {
       sessionKind="drill"
       sections={sessionSections}
       activeTab="ova"
-      pickQuestions={timing ? pickTimedQuestions : pickQuestions}
-      idleEyebrow={timing ? 'Övning på tid' : idleEyebrow}
-      idleHeadline={idleHeadline}
+      pickQuestions={words ? pickWordsQuestions : timing ? pickTimedQuestions : pickQuestions}
+      idleEyebrow={words ? 'Ordbank' : timing ? 'Övning på tid' : idleEyebrow}
+      idleHeadline={words ? '10 ord i taget' : idleHeadline}
       idleSubcopy={
-        timing?.section === 'LÄS' ? 'En hel text med fyra frågor från riktiga prov.' : idleSubcopy
+        words
+          ? 'Ord som är dags att repetera kommer först, sedan nya ord från riktiga prov.'
+          : timing?.section === 'LÄS'
+            ? 'En hel text med fyra frågor från riktiga prov.'
+            : idleSubcopy
       }
       idleMeta={
-        timing
-          ? `${timing.count} frågor · riktmärke ${formatDrillTime(timing.budgetMs)} · klockan pausar under återkoppling`
-          : idleMeta
+        words
+          ? 'Upp till 10 ord · framsteg sparas i den här webbläsaren'
+          : timing
+            ? `${timing.count} frågor · riktmärke ${formatDrillTime(timing.budgetMs)} · klockan pausar under återkoppling`
+            : idleMeta
       }
       emptyCopy={
-        timing?.section === 'LÄS'
-          ? 'Ingen hel LÄS-text med fyra frågor är tillgänglig just nu.'
-          : emptyCopy
+        words
+          ? 'Inga ord att öva just nu. Kom tillbaka när det är dags att repetera.'
+          : timing?.section === 'LÄS'
+            ? 'Ingen hel LÄS-text med fyra frågor är tillgänglig just nu.'
+            : emptyCopy
       }
       idleExtra={idleExtra}
-      urlSyncedQid={{ qid: timing && !canResumeTimed ? null : (qid ?? null), setQid: setUrlQid }}
+      urlSyncedQid={{
+        qid: (words && !canResumeWords) || (timing && !canResumeTimed) ? null : (qid ?? null),
+        setQid: setUrlQid,
+      }}
       completedSessionId={done ?? null}
       onComplete={onComplete}
-      resolvePlan={timing ? (canResumeTimed ? resolveTimedPlan : undefined) : resolvePlan}
+      resolvePlan={
+        words
+          ? resolveWordPlan
+          : timing
+            ? canResumeTimed
+              ? resolveTimedPlan
+              : undefined
+            : resolvePlan
+      }
       adaptiveOffer={adaptiveOffer}
       // Hub-door path: the Öva row already expressed the intent (this
       // section, standard drill) — begin immediately, no idle stop. A
       // stale `?done` means we're LOOKING at a completed pass's Klart,
       // not entering; reconstruction wins.
-      autoStart={(!!start || (!!timing && !!qid)) && !done}
+      autoStart={(!!start || ((!!words || !!timing) && !!qid)) && !done}
       // The section-door shared element: plain section drills only —
       // framework/qid/weak/mixed surfaces headline something other than
       // the section code, so there is no honest door there.
       door={
-        !directLinkQid && !framework && !weak && !mixed
+        !words && !directLinkQid && !framework && !weak && !mixed
           ? { layoutId: sectionDoorLayoutId(section), code: section }
           : undefined
       }
@@ -587,9 +675,10 @@ function DrillSession() {
               )
           : undefined
       }
-      onCorrect={timing ? pauseClock : undefined}
+      onCorrect={words ? (q) => gradeWord(q, true) : timing ? pauseClock : undefined}
       onWrong={(q) => {
         if (timing) pauseClock()
+        gradeWord(q, false)
         // Fire-and-forget: a failed mistake-write doesn't block the UX.
         recordMistake.mutate({ questionId: q.qid })
       }}
