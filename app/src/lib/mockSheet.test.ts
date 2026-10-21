@@ -1,13 +1,16 @@
 // mockSheet reducer — dwell accumulation across revisits, change-answer
 // last-wins, and the summary adapter.
 
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
+  clearMockFlags,
   createMockSheet,
   dwellFor,
+  loadMockFlags,
   type MockSheetState,
   mockSheetReducer,
+  saveMockFlags,
   sheetFromAttempts,
   toSummarySheet,
 } from './mockSheet'
@@ -17,6 +20,38 @@ function reduce(state: MockSheetState, ...actions: Parameters<typeof mockSheetRe
 }
 
 describe('mockSheetReducer', () => {
+  it('flags and unflags independently of answers and dwell, without mutating prior states', () => {
+    const original = reduce(
+      createMockSheet(),
+      { type: 'enter', qid: 'q1', now: 1000 },
+      { type: 'pick', qid: 'q1', letter: 'A', now: 1100 },
+    )
+    const flagged = reduce(original, { type: 'flag', qid: 'q1' }, { type: 'flag', qid: 'q2' })
+    const unflagged = reduce(flagged, { type: 'unflag', qid: 'q1' })
+    expect(original.flagged).toEqual(new Set())
+    expect(flagged.flagged).toEqual(new Set(['q1', 'q2']))
+    expect(unflagged.flagged).toEqual(new Set(['q2']))
+    expect(unflagged.answers).toEqual(original.answers)
+    expect(unflagged.dwellMs).toEqual(original.dwellMs)
+    expect(unflagged.current).toEqual(original.current)
+  })
+
+  it('keeps flags through navigation and settle so the caller can queue uncertain answers', () => {
+    const state = reduce(
+      createMockSheet(),
+      { type: 'flag', qid: 'q1' },
+      { type: 'enter', qid: 'q1', now: 1000 },
+      { type: 'leave', now: 2000 },
+      { type: 'enter', qid: 'q2', now: 2000 },
+      { type: 'settle', now: 2500 },
+    )
+    expect(state.flagged).toEqual(new Set(['q1']))
+    expect(state.dwellMs.get('q1')).toBe(1000)
+    expect(state.dwellMs.get('q2')).toBe(500)
+    expect(state.current).toBeNull()
+    expect(toSummarySheet(state).get('q1')).toEqual({ letter: null, timeMs: 1000 })
+  })
+
   it('enter starts a dwell clock; leave flushes elapsed time', () => {
     let s = createMockSheet()
     s = reduce(s, { type: 'enter', qid: 'q1', now: 1000 })
@@ -139,6 +174,7 @@ describe('sheetFromAttempts', () => {
     expect(state.answers.get('q1')).toEqual({ letter: 'A', lastAt: 10 })
     expect(state.answers.get('q2')).toEqual({ letter: 'B', lastAt: 20 })
     expect(state.current).toBeNull()
+    expect(state.flagged).toEqual(new Set())
   })
 
   it('a later attempt for the same qid overwrites the earlier one (latest pick wins)', () => {
@@ -185,5 +221,56 @@ describe('sheetFromAttempts', () => {
       { questionId: 'q1', selectedAnswer: 'A', timeTakenMs: 100, createdAt: '12345' },
     ])
     expect(state.answers.get('q1')?.lastAt).toBe(12345)
+  })
+})
+
+describe('local mock flags', () => {
+  beforeEach(() => localStorage.clear())
+  afterEach(() => vi.restoreAllMocks())
+
+  it('persists and clears flags for exactly one account and session', () => {
+    saveMockFlags('student-a', 42, new Set(['q1', 'q2']))
+    saveMockFlags('student-a', 43, new Set(['q3']))
+    saveMockFlags('student-b', 42, new Set(['q4']))
+    expect(loadMockFlags('student-a', 42)).toEqual(new Set(['q1', 'q2']))
+    expect(loadMockFlags('student-a', 43)).toEqual(new Set(['q3']))
+    expect(loadMockFlags('student-b', 42)).toEqual(new Set(['q4']))
+    clearMockFlags('student-a', 42)
+    expect(loadMockFlags('student-a', 42)).toEqual(new Set())
+    expect(loadMockFlags('student-a', 43)).toEqual(new Set(['q3']))
+    expect(loadMockFlags('student-b', 42)).toEqual(new Set(['q4']))
+  })
+
+  it('does not persist flags in a shared anonymous namespace while identity is unresolved', () => {
+    saveMockFlags(undefined, 42, new Set(['q1']))
+    saveMockFlags(null, 42, new Set(['q2']))
+    clearMockFlags(null, 42)
+    expect(loadMockFlags(undefined, 42)).toEqual(new Set())
+    expect(loadMockFlags(null, 42)).toEqual(new Set())
+    expect(localStorage.length).toBe(0)
+  })
+
+  it.each(['not json', '{}', '["q1", 7]', 'null'])('ignores malformed storage: %s', (value) => {
+    saveMockFlags('student-a', 42, new Set(['q1']))
+    const key = localStorage.key(0)
+    expect(key).not.toBeNull()
+    localStorage.setItem(key as string, value)
+    expect(loadMockFlags('student-a', 42)).toEqual(new Set())
+  })
+
+  it('survives storage being disabled or full, including a throwing storage getter', () => {
+    const unavailable = () => {
+      throw new Error('storage unavailable')
+    }
+    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(unavailable)
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(unavailable)
+    vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(unavailable)
+    expect(loadMockFlags('student-a', 42)).toEqual(new Set())
+    expect(() => saveMockFlags('student-a', 42, new Set(['q1']))).not.toThrow()
+    expect(() => clearMockFlags('student-a', 42)).not.toThrow()
+    vi.spyOn(window, 'localStorage', 'get').mockImplementation(unavailable)
+    expect(loadMockFlags('student-a', 42)).toEqual(new Set())
+    expect(() => saveMockFlags('student-a', 42, new Set(['q1']))).not.toThrow()
+    expect(() => clearMockFlags('student-a', 42)).not.toThrow()
   })
 })

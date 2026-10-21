@@ -13,6 +13,7 @@
 // job. This component is self-contained given a resolved `plan` and a
 // `session` — see the Props type.
 
+import { useAuth } from '@clerk/clerk-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useSubmitAttempt } from '@/api/hooks/useAttempts'
@@ -34,10 +35,13 @@ import { useCountdown } from '@/hooks/useCountdown'
 import { useViewport } from '@/hooks/useViewport'
 import { computeMockSummary } from '@/lib/mock'
 import {
+  clearMockFlags,
   createMockSheet,
   dwellFor,
+  loadMockFlags,
   type MockSheetState,
   mockSheetReducer,
+  saveMockFlags,
   toSummarySheet,
 } from '@/lib/mockSheet'
 import { sectionLongLabel } from '@/lib/sectionRailLabel'
@@ -102,7 +106,16 @@ function sectionBoundaries(
   return out
 }
 
-export function MockRunner({
+export function MockRunner(props: Props) {
+  const { userId } = useAuth()
+  // A different account or session gets its own answer sheet and settlement
+  // guard, even if a parent reuses this component without unmounting it.
+  return (
+    <MockRunnerPass key={JSON.stringify([userId, props.session.id])} {...props} userId={userId} />
+  )
+}
+
+function MockRunnerPass({
   plan,
   session,
   seenBefore,
@@ -111,15 +124,24 @@ export function MockRunner({
   initialSheet,
   initialIndex,
   durationMsOverride,
-}: Props) {
+  userId,
+}: Props & { userId: string | null | undefined }) {
   const viewport = useViewport()
   const isPhone = viewport === 'phone'
 
   const [index, setIndex] = useState(() =>
     initialIndex != null ? Math.min(Math.max(initialIndex, 0), Math.max(plan.length - 1, 0)) : 0,
   )
-  const [sheet, setSheet] = useState<MockSheetState>(() => initialSheet ?? createMockSheet())
+  const [sheet, setSheet] = useState<MockSheetState>(() => ({
+    ...(initialSheet ?? createMockSheet()),
+    flagged: loadMockFlags(userId, session.id),
+  }))
   const settledRef = useRef(false)
+
+  useEffect(() => {
+    // A queued render after hand-in must not recreate the cleared storage key.
+    if (!settledRef.current) saveMockFlags(userId, session.id, sheet.flagged)
+  }, [userId, session.id, sheet.flagged])
 
   const updateSession = useUpdateSession()
   const submitAttempt = useSubmitAttempt()
@@ -168,13 +190,27 @@ export function MockRunner({
     [index, plan, session.id, updateSession],
   )
 
+  const toggleFlag = useCallback(() => {
+    if (!q || settledRef.current) return
+    setSheet((s) =>
+      mockSheetReducer(s, {
+        type: s.flagged.has(q.qid) ? 'unflag' : 'flag',
+        qid: q.qid,
+      }),
+    )
+  }, [q])
+
   const recordFinalMistakes = useCallback(
-    (finalSheet: MockSheetState) => {
+    (finalSheet: MockSheetState, includeFlaggedCorrect = false) => {
       for (const question of plan) {
         const letter = finalSheet.answers.get(question.qid)?.letter ?? null
-        // Blanks: no attempt, no mistake. Only finally-wrong ANSWERED
-        // questions feed the mistake queue.
-        if (letter != null && letter !== question.answer) {
+        // Hand-in also queues uncertain correct answers. Blanks never enter
+        // Repetera; abandon keeps only the existing wrong-answer behavior.
+        if (
+          letter != null &&
+          (letter !== question.answer ||
+            (includeFlaggedCorrect && finalSheet.flagged.has(question.qid)))
+        ) {
           recordMistake.mutate({ questionId: question.qid })
         }
       }
@@ -190,7 +226,8 @@ export function MockRunner({
     const summarySheet = toSummarySheet(settled, summaryTimestamp)
     const summary = computeMockSummary(plan, summarySheet)
 
-    recordFinalMistakes(settled)
+    clearMockFlags(userId, session.id)
+    recordFinalMistakes(settled, true)
     // SEQUENCED, not concurrent: the worker rejects POST /api/mock-results
     // for a session that isn't ended yet (400 not_ended), so the result POST
     // must wait for the end-session PATCH to commit. Fired concurrently these
@@ -228,23 +265,25 @@ export function MockRunner({
     seenBefore,
     submitMockResult,
     onSettled,
+    userId,
   ])
 
   const abandon = useCallback(() => {
     if (settledRef.current) return
     settledRef.current = true
     const settled = mockSheetReducer(sheet, { type: 'settle' })
+    clearMockFlags(userId, session.id)
     recordFinalMistakes(settled)
     updateSession.mutate({ id: session.id, patch: { end: true } })
     onVoid()
-  }, [sheet, recordFinalMistakes, updateSession, session.id, onVoid])
+  }, [sheet, recordFinalMistakes, updateSession, session.id, onVoid, userId])
 
   // Auto-submit exactly once when the countdown expires.
   useEffect(() => {
     if (countdown.expired) settle()
   }, [countdown.expired, settle])
 
-  // Keyboard: a–e pick, ←/→ navigate. No graded phase, no Enter-advance.
+  // Keyboard: a–e pick, ←/→ navigate, M toggles uncertainty. No Enter-advance.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null
@@ -255,6 +294,11 @@ export function MockRunner({
         return
       if (e.metaKey || e.ctrlKey || e.altKey) return
       const key = e.key.toUpperCase()
+      if (key === 'M') {
+        e.preventDefault()
+        if (!e.repeat) toggleFlag()
+        return
+      }
       if (['A', 'B', 'C', 'D', 'E'].includes(key)) {
         e.preventDefault()
         pick(key as AnswerLetter)
@@ -270,7 +314,7 @@ export function MockRunner({
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [pick, goTo, index])
+  }, [pick, goTo, index, toggleFlag])
 
   const handleSubmitClick = useCallback(() => {
     const unanswered = plan.filter(
@@ -310,8 +354,10 @@ export function MockRunner({
       plan={plan}
       boundaries={boundaries}
       answers={sheet.answers}
+      flagged={sheet.flagged}
       currentIndex={index}
       onJump={goTo}
+      onToggleFlag={toggleFlag}
     />
   )
 
@@ -426,20 +472,36 @@ function MockGrid({
   plan,
   boundaries,
   answers,
+  flagged,
   currentIndex,
   onJump,
+  onToggleFlag,
 }: {
   plan: Question[]
   boundaries: Array<{ section: Section; start: number; end: number }>
   answers: Map<string, { letter: string; lastAt: number }>
+  flagged: ReadonlySet<string>
   currentIndex: number
   onJump: (index: number) => void
+  onToggleFlag: () => void
 }) {
   return (
     <div
       data-testid="mock-grid"
       style={{ padding: 'var(--pad-sm) var(--pad-md)', borderBottom: '1px solid var(--hairline)' }}
     >
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 4 }}>
+        <Btn
+          size="sm"
+          variant={flagged.has(plan[currentIndex].qid) ? 'soft' : 'secondary'}
+          aria-pressed={flagged.has(plan[currentIndex].qid)}
+          aria-keyshortcuts="M"
+          title="Markera eller avmarkera som osäker (M)"
+          onClick={onToggleFlag}
+        >
+          <span aria-hidden="true">?</span> Osäker
+        </Btn>
+      </div>
       <div
         style={{
           display: 'flex',
@@ -460,6 +522,7 @@ function MockGrid({
         {plan.map((question, i) => {
           const answered = answers.get(question.qid)?.letter != null
           const isCurrent = i === currentIndex
+          const isFlagged = flagged.has(question.qid)
           return (
             <button
               key={question.qid}
@@ -467,8 +530,10 @@ function MockGrid({
               data-testid={`mock-cell-${i + 1}`}
               data-answered={answered ? 'true' : 'false'}
               data-current={isCurrent ? 'true' : 'false'}
+              aria-label={`Fråga ${i + 1}${isFlagged ? ', osäker' : ''}`}
               onClick={() => onJump(i)}
               style={{
+                position: 'relative',
                 fontFamily: 'var(--font-mono)',
                 fontSize: 11,
                 height: 28,
@@ -479,6 +544,14 @@ function MockGrid({
               }}
             >
               {i + 1}
+              {isFlagged && (
+                <span
+                  aria-hidden="true"
+                  style={{ position: 'absolute', top: 0, right: 2, fontSize: 10 }}
+                >
+                  ?
+                </span>
+              )}
             </button>
           )
         })}
