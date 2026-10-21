@@ -326,7 +326,7 @@ describe('timed drill route with the real SessionPlayer', () => {
     await answer(true, 20_000)
     await next()
     view.unmount()
-    h.session = { ...h.session!, sections: section, startedAt: '2026-10-21T23:59:59.999Z' }
+    h.session = { ...h.session!, sections: section, startedAt: '2026-10-21T17:22:40.999Z' }
     const id = h.session.id
     const qid = h.session.currentQuestionId
     h.search = validate({ section, timed: true, start: true })
@@ -340,6 +340,8 @@ describe('timed drill route with the real SessionPlayer', () => {
   it.each([
     null,
     'invalid',
+    '2026-10-21T17:22:41.000Z',
+    '2026-10-21T17:22:42.000Z',
     '2026-10-22T00:00:00.000Z',
     '2026-10-23T00:00:00.000Z',
   ])('does not adopt an unmarked session with start time %s as timed', async (startedAt) => {
@@ -425,7 +427,7 @@ describe('timed drill route with the real SessionPlayer', () => {
     const view = await start()
     expect(h.session?.plan).toHaveLength(10)
     view.unmount()
-    h.session = { ...h.session!, startedAt: '2026-10-21T23:59:59.999Z' }
+    h.session = { ...h.session!, startedAt: '2026-10-21T17:22:40.999Z' }
     h.search = validate({ section: 'LÄS', timed: true, start: true })
     await start()
     expect(h.start).toHaveBeenCalledTimes(2)

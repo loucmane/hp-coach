@@ -2,8 +2,8 @@ import { attemptTimeMs, formatDrillTime, type TimedDrillSection } from '@/lib/ti
 import { uhrTimeMs } from '@/lib/uhrPacing'
 
 function timeDifference(elapsed: number, budget: number): string {
-  if (Math.abs(elapsed - budget) <= 2000) return 'i takt'
   const diff = Math.floor(elapsed / 1000) - Math.floor(budget / 1000)
+  if (Math.abs(diff) <= 2) return 'i takt'
   const minutes = Math.floor(Math.abs(diff) / 60)
   const seconds = Math.abs(diff) % 60
   const amount = [minutes ? `${minutes} min` : '', seconds ? `${seconds} s` : '']

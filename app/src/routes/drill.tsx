@@ -408,7 +408,7 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
       // Before mode markers shipped, timed plans used the plain section.
       (activeDrill.data.sections === timing.section &&
         activeDrill.data.startedAt &&
-        Date.parse(activeDrill.data.startedAt) < Date.parse('2026-10-22T00:00:00Z'))) &&
+        Date.parse(activeDrill.data.startedAt) < Date.parse('2026-10-21T17:22:41Z'))) &&
     isTimedDrillPlan(
       activeDrill.data.plan
         .map((id) => findQuestion(timedBank.data, id))

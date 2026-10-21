@@ -44,3 +44,26 @@
 - Playbook proposal for `astra-relay` is above and needs forwarding to the permanent gotcha intake.
 
 FOLLOWUPS DONE: hpf-bz6f.20
+
+## Round 2 — 2026-10-21
+
+- Accepted the round-2 contract at clean HEAD `b0108c9b83cc897c39487a22a24b9a0b5ea05217`. No molecule is attached. Item 5 moved to `hpf-bz6f.22` and remains outside this round.
+- Decisions: use the accepted marker release time, `2026-10-21T17:22:41Z`, as the exclusive legacy-adoption cutoff; compare tempo tolerance with the whole-second difference displayed to the learner; change only the generator executable bit.
+- Regression tests first: pre-marker fixtures now precede the actual cutoff by 1 ms; plain sessions at and just after release must not be adopted; 182,001 and 182,500 ms must read `i takt`, with 183,000 ms outside tolerance.
+- Leave changes uncommitted and hand off through one final bead note. The coordinator owns parking, review, signing, and delivery under the accepted contract.
+- Red first: `pnpm test src/routes/-drill.timed.test.tsx src/components/drill/TempoLine.test.tsx --maxWorkers=2` — 4 failed, 34 passed. Both at/after-release cases incorrectly resumed the old plain session; both fractional-second cases displayed `2 s mer` instead of `i takt`. Implementation changed only after reproducing those failures.
+- Green focused run: `pnpm test src/routes/-drill.timed.test.tsx src/components/drill/TempoLine.test.tsx src/components/lesson/WorkedExample.test.tsx src/data/workedExamples.test.ts --maxWorkers=2` — 4 files, 60 tests passed, exit 0. This includes the worked-example generator parity check.
+- `chmod +x scripts/build_worked_examples.mjs` succeeded. Git diff shows only mode `100644 → 100755` for that script, with no content or generated-manifest changes.
+- `pnpm lint` passed (581 files; four existing informational suggestions). `git diff --check` passed. Full app tests and typecheck are in progress.
+
+## Round 2 final verification and handoff — 2026-10-21
+
+- `pnpm typecheck`: exit 0. `pnpm lint`: exit 0. Focused regressions and worked-example checks: 60/60 passed.
+- Full `pnpm test --maxWorkers=2` finished in 102.64 seconds: **4,348 passed, 1 failed; 136 files passed, 1 failed**. The sole failure is `src/lib/trapIndex.test.ts` generator parity, blocked by `spawnSync /usr/bin/node EPERM`. This repeats the documented sandbox child-process limit; the coordinator must run the full suite on the host. No workaround attempted. Tests used the default TMPDIR as the round-2 contract directs.
+- All three requested fixes are implemented. Legacy plain sessions are eligible only strictly before `2026-10-21T17:22:41Z`; tests preserve pre-release ORD/LÄS resumption and reject plain sessions at/after release. Tempo uses the same floored-second difference for tolerance and display; 182,500 ms reads `i takt`, and 183,000 ms reads `3 s mer`. Generator mode is `100755`, with its content unchanged.
+- Changes are limited to the two implementation files, their two test files, the generator mode, and this worklog. The classified worklog is also updated. No worker files or dependencies changed.
+- Delivery remains **uncommitted and unstaged** on HEAD `b0108c9b83cc897c39487a22a24b9a0b5ea05217`. The Git index resolves to `/home/loucmane/dev/hpfetcher/.git/worktrees/hpf-bz6f.20/index`, outside writable roots; staging/signing require the coordinator. No commit or signer invoked.
+- Independent review of round 2 remains pending. Coordinator next: host suite rerun, staging/commit, independent review at the resulting head, parking and delivery. Per the accepted contract, leave bead status/assignee unchanged and finish with one DONE note; do not close or drain this active bead.
+- No new playbook gotcha arose in round 2. The earlier `astra-relay` proposal remains above for forwarding.
+
+FOLLOWUPS R2 DONE: hpf-bz6f.20
