@@ -19,6 +19,12 @@ describe('TempoLine', () => {
     [222_000, '3:42 · UHR:s tid 3:00 · 42 s mer'],
     [162_000, '2:42 · UHR:s tid 3:00 · 18 s kvar'],
     [180_000, '3:00 · UHR:s tid 3:00 · i takt'],
+    [178_000, '2:58 · UHR:s tid 3:00 · i takt'],
+    [179_000, '2:59 · UHR:s tid 3:00 · i takt'],
+    [181_000, '3:01 · UHR:s tid 3:00 · i takt'],
+    [182_000, '3:02 · UHR:s tid 3:00 · i takt'],
+    [177_999, '2:57 · UHR:s tid 3:00 · 3 s kvar'],
+    [182_001, '3:02 · UHR:s tid 3:00 · 2 s mer'],
     [282_000, '4:42 · UHR:s tid 3:00 · 1 min 42 s mer'],
   ])('describes %i ms with one UHR mention', (total, copy) => {
     render(

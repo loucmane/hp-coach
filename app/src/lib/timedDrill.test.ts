@@ -36,6 +36,8 @@ describe('timed delprov drills', () => {
     expect(parseTimedSections('ord · på tid')).toBe('ORD')
     expect(sessionSectionCode('ORD · ORDBANK')).toBe('ORD')
     expect(sessionSectionCode('kva')).toBe('KVA')
+    expect(sessionSectionCode('ar:ORD:FW')).toBe('ORD')
+    expect(sessionSectionCode('ar:LÄS:FW')).toBe('LÄS')
     expect(sessionSectionCode(null)).toBe('')
     for (const raw of ['ORD', 'LÄS', 'ORD · ORDBANK', 'XYZ · PÅ TID', 'ORD · PÅ TID EXTRA', null]) {
       expect(parseTimedSections(raw)).toBeNull()

@@ -61,6 +61,8 @@ describe('pickCandidate', () => {
     ['ORD · PÅ TID', 'ORD på tid', 'section=ORD&timed=1'],
     ['LÄS · PÅ TID', 'LÄS på tid', 'section=L%C3%84S&timed=1'],
     ['ORD · ORDBANK', 'Ordbank', 'section=ORD&words=1'],
+    ['ar:ORD:FW', 'ORD · repetition', 'section=ORD&framework=FW&ar=1'],
+    ['ar:LÄS:FW & 1', 'LÄS · repetition', 'section=L%C3%84S&framework=FW%20%26%201&ar=1'],
   ])('preserves the mode of %s in the resume link', (sections, subject, query) => {
     const c = pickCandidate([drill({ sections, currentQuestionId: 'q&3' })], null)
     expect(c?.subject).toBe(subject)
