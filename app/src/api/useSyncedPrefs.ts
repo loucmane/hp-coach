@@ -31,7 +31,9 @@ import { useUpdateUserPrefs, useUserPrefs } from './hooks/useUserPrefs'
  */
 export function useHydratePrefs() {
   const prefs = useUserPrefs()
+  const { mutate: updatePrefs } = useUpdateUserPrefs()
   const lastHydrated = useRef<number | null>(null)
+  const sittingBackfilled = useRef(false)
 
   // Local store setters
   const setCoach = useCoachStore((s) => s.setCoach)
@@ -60,10 +62,20 @@ export function useHydratePrefs() {
     // the server explicitly carries a boolean (never clobber the default with
     // an undefined from an older row).
     if (typeof prefs.data.smartDrill === 'boolean') setSmartDrill(prefs.data.smartDrill)
-    if (prefs.data.targetSittingId) {
+    if (prefs.data.targetSittingId != null) {
       // Only apply if the id is one we know about; setSitting silently
       // ignores unknowns, so this is safe.
       setSitting(prefs.data.targetSittingId as Parameters<typeof setSitting>[0])
+    } else if (prefs.data.targetSittingId === null && !sittingBackfilled.current) {
+      // Migrate an explicit local choice only. useSitting's default and
+      // calendar roll-forward are read-side values, never saved choices.
+      const local = useExamStore.getState().sittingId
+      if (local !== null) {
+        sittingBackfilled.current = true
+        // mutate handles failure without rejecting an effect's promise.
+        // Keep the local choice and don't retry on subsequent hydration.
+        updatePrefs({ targetSittingId: local })
+      }
     }
   }, [
     applyServerTheme,
@@ -74,6 +86,7 @@ export function useHydratePrefs() {
     setDensity,
     setSmartDrill,
     setSitting,
+    updatePrefs,
   ])
 }
 
@@ -103,27 +116,35 @@ export function useSyncedPrefs() {
   const setSmartDrill = useUiStore((s) => s.setSmartDrill)
   const smartDrillLocal = useUiStore((s) => s.smartDrill)
 
+  const setSitting = useExamStore((s) => s.setSitting)
+  const sittingLocal = useExamStore((s) => s.sittingId)
+
   // One write-through helper, parameterised by which axis is changing.
-  // Captures the previous local value so we can roll back on failure.
+  // Rollback restores the captured value, including a previously unset sitting.
   const writeThrough =
-    <V>(apply: (v: V) => void, revert: V, patchKey: string) =>
+    <V>(apply: (v: V) => void, rollback: () => void, patchKey: string) =>
     async (next: V) => {
       apply(next)
       try {
         await update.mutateAsync({ [patchKey]: next } as Parameters<typeof update.mutateAsync>[0])
       } catch (err) {
-        apply(revert)
+        rollback()
         throw err
       }
     }
 
   return {
-    setCoach: writeThrough(setCoach, coachLocal, 'coach'),
-    setPalette: writeThrough(setPalette, paletteLocal, 'palette'),
-    setMode: writeThrough(setMode, modeLocal, 'mode'),
-    setFont: writeThrough(setFont, fontLocal, 'font'),
-    setDensity: writeThrough(setDensity, densityLocal, 'density'),
-    setSmartDrill: writeThrough(setSmartDrill, smartDrillLocal, 'smartDrill'),
+    setCoach: writeThrough(setCoach, () => setCoach(coachLocal), 'coach'),
+    setPalette: writeThrough(setPalette, () => setPalette(paletteLocal), 'palette'),
+    setMode: writeThrough(setMode, () => setMode(modeLocal), 'mode'),
+    setFont: writeThrough(setFont, () => setFont(fontLocal), 'font'),
+    setDensity: writeThrough(setDensity, () => setDensity(densityLocal), 'density'),
+    setSmartDrill: writeThrough(setSmartDrill, () => setSmartDrill(smartDrillLocal), 'smartDrill'),
+    setSitting: writeThrough(
+      setSitting,
+      () => useExamStore.setState({ sittingId: sittingLocal }),
+      'targetSittingId',
+    ),
     isPending: update.isPending,
     isError: update.isError,
   }

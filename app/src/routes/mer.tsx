@@ -19,6 +19,7 @@ import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
+import { daysUntil, EXAM_SITTINGS } from '@/lib/dates'
 import { isDevSurface } from '@/lib/devSurface'
 import { LEGAL_LINK_STYLE, LEGAL_LINKS } from '@/lib/legal'
 import { PALETTES, type PaletteKey } from '@/lib/tokens'
@@ -96,6 +97,9 @@ function MerRoute() {
             </SettingRow>
             <SettingRow label="Urval">
               <SmartDrillWords />
+            </SettingRow>
+            <SettingRow label="Prov">
+              <SittingWords />
             </SettingRow>
           </DrillRailSection>
 
@@ -257,6 +261,28 @@ function Word({
     >
       {children}
     </button>
+  )
+}
+
+function SittingWords() {
+  const sitting = useSitting()
+  const synced = useSyncedPrefs()
+  return (
+    <>
+      {EXAM_SITTINGS.filter((s) => daysUntil(s.date) >= 0).map((s) => (
+        <Word
+          key={s.id}
+          active={s.id === sitting.id}
+          onClick={() => {
+            // The synced setter restores the previous choice on failure.
+            void synced.setSitting(s.id).catch(() => {})
+          }}
+          ariaLabel={`Prov: ${s.label}`}
+        >
+          {s.label}
+        </Word>
+      ))}
+    </>
   )
 }
 
