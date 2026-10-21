@@ -39,19 +39,69 @@ import { PROVTEKNIK } from '@/data/frameworks'
 import { SECTION_KEYS } from '@/data/questions'
 import { UHR_DELPROV, UHR_ORDER } from '@/lib/uhrPacing'
 import { PickerBody, Route, validateSearch } from '@/routes/lektion'
-import { ProvteknikReader } from './ProvteknikReader'
+import { formatAverageTime, ProvteknikReader } from './ProvteknikReader'
 
 beforeEach(() => {
   vi.clearAllMocks()
   vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('offline')))
   routeState.search = {}
+  window.history.replaceState(null, '', '/')
 })
 afterEach(() => {
+  window.history.replaceState(null, '', '/')
   vi.unstubAllGlobals()
   vi.useRealTimers()
 })
 
+describe('formatAverageTime', () => {
+  it.each([
+    [59, '59 s'],
+    [60, '1 min 0 s'],
+    [61, '1 min 1 s'],
+    [59.6, '1 min 0 s'],
+  ])('formats %s seconds as %s', (seconds, expected) => {
+    expect(formatAverageTime(seconds)).toBe(expected)
+  })
+})
+
 describe('ProvteknikReader', () => {
+  it('opens and scrolls to the card linked in the initial URL without recording progress', () => {
+    vi.useFakeTimers()
+    window.history.replaceState(null, '', '/lektion?chapter=provteknik#PROV-002')
+    const { container } = render(<ProvteknikReader />)
+    const card = container.querySelector('#PROV-002') as HTMLDetailsElement
+    const scroll = vi.fn(() => expect(card.open).toBe(true))
+    card.scrollIntoView = scroll
+
+    act(() => vi.advanceTimersToNextFrame())
+
+    expect(card.open).toBe(true)
+    expect(container.querySelectorAll('details[open]')).toHaveLength(1)
+    expect(scroll).toHaveBeenCalledExactlyOnceWith({ block: 'start', behavior: 'smooth' })
+    expect(routeState.progressHook).not.toHaveBeenCalled()
+    expect(fetch).not.toHaveBeenCalled()
+  })
+
+  it.each(['PROV-999', 'unrelated'])('ignores an unknown chapter hash: %s', (hash) => {
+    vi.useFakeTimers()
+    window.history.replaceState(null, '', `/lektion?chapter=provteknik#${hash}`)
+    const { container } = render(
+      <>
+        <details id="unrelated">
+          <summary>Unrelated card</summary>
+        </details>
+        <ProvteknikReader />
+      </>,
+    )
+    const scroll = vi.fn()
+    for (const card of container.querySelectorAll('details')) card.scrollIntoView = scroll
+
+    act(() => vi.advanceTimersToNextFrame())
+
+    expect(container.querySelectorAll('details[open]')).toHaveLength(0)
+    expect(scroll).not.toHaveBeenCalled()
+  })
+
   it('renders collapsed native cards immediately offline, without practice or credit', () => {
     const data = PROVTEKNIK
     const { container } = render(<ProvteknikReader />)
