@@ -1,5 +1,19 @@
-import { fireEvent, render, renderHook, screen, waitFor, within } from '@testing-library/react'
-import type { ComponentType } from 'react'
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRouter,
+  RouterContextProvider,
+} from '@tanstack/react-router'
+import {
+  createEvent,
+  fireEvent,
+  renderHook,
+  render as renderUI,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
+import type { ComponentType, ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { DailyPlanCard } from '@/components/home/DailyPlanCard'
 import type { SessionPlayerProps } from '@/components/session/SessionPlayer'
@@ -28,7 +42,8 @@ const h = vi.hoisted(() => ({
   putPlan: vi.fn(),
 }))
 vi.mock('@clerk/clerk-react', () => ({ useUser: () => ({ user: { firstName: 'Kim' } }) }))
-vi.mock('@tanstack/react-router', () => ({
+vi.mock('@tanstack/react-router', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@tanstack/react-router')>()),
   createFileRoute: () => (options: unknown) => ({ options }),
   useNavigate: () => h.navigate,
 }))
@@ -89,6 +104,21 @@ vi.mock('@/components/session/SessionPlayer', () => ({
 }))
 
 const Welcome = Route.options.component as ComponentType
+function render(ui: ReactNode) {
+  const router = createRouter({
+    routeTree: createRootRoute(),
+    history: createMemoryHistory(),
+  })
+  const navigate = vi.spyOn(router, 'navigate').mockResolvedValue(undefined)
+  const view = renderUI(ui, {
+    wrapper: ({ children }) => (
+      <RouterContextProvider router={router}>{children}</RouterContextProvider>
+    ),
+  })
+  return { ...view, navigate }
+}
+
+const stopNudge = /idag · klart|klart för idag|räcker|dagens klart/i
 const next = () => fireEvent.click(screen.getByRole('button', { name: /Fortsätt/ }))
 async function toMinutes() {
   render(<Welcome />)
@@ -183,7 +213,7 @@ describe('first-pass Home integration', () => {
     expect(practice).toHaveAttribute('href', '/ova')
     fireEvent.click(practice)
     expect(navigate).toHaveBeenLastCalledWith('/ova')
-    expect(screen.queryByText(/klart för idag|räcker/i)).not.toBeInTheDocument()
+    expect(card.container).not.toHaveTextContent(stopNudge)
     expect(screen.queryByTestId('daily-plan-first-cta')).not.toBeInTheDocument()
     card.unmount()
     first.unmount()
@@ -298,25 +328,63 @@ describe('first-run flow', () => {
       onHome: vi.fn(),
     })
     render(result)
-    expect(
-      screen.getByRole('heading', {
-        name:
-          picks[0] === 'B'
-            ? 'Du klarade 3 av 3 frågor från riktiga högskoleprov'
-            : 'Du har gjort dina första 3 frågor från riktiga högskoleprov',
-      }),
-    ).toBeInTheDocument()
+    const heading = screen.getByRole('heading', {
+      level: 1,
+      name:
+        picks[0] === 'B'
+          ? 'Du klarade 3 av 3 frågor från riktiga högskoleprov'
+          : 'Du har gjort dina första 3 frågor från riktiga högskoleprov',
+    })
+    expect(heading).toHaveFocus()
+    // This JSDOM drops viewport-based clamp() font sizes. Check the responsive
+    // size in the host browser; toHaveStyle would normalize it to an empty value.
+    expect(heading).toHaveStyle({
+      fontFamily: 'var(--font-display)',
+      fontWeight: 500,
+      lineHeight: 1.1,
+      color: 'var(--ink)',
+      margin: 0,
+    })
+    const completion = heading.closest('section')
+    expect(completion).toHaveStyle({ display: 'flex', justifyContent: 'center' })
+    expect(completion?.firstElementChild).toHaveStyle({ width: '100%', maxWidth: 720 })
     expect(screen.queryByText(/fel|2 av 3/)).not.toBeInTheDocument()
-    expect(screen.getByText('Imorgon väntar en kort diagnos.')).toBeInTheDocument()
-    expect(screen.queryByText(/räcker|klart för idag/i)).not.toBeInTheDocument()
+    expect(completion).not.toHaveTextContent(stopNudge)
     expect(screen.getByRole('link', { name: 'Fortsätt öva nu →' })).toHaveAttribute('href', '/ova')
-    expect(
+    const ordered = [
+      screen.getByText('Din start'),
+      heading,
       screen.getByText(
         'Frågorna kom från högskoleprovet hösten 2016, hösten 2021 och hösten 2025.',
       ),
-    ).toBeInTheDocument()
+      screen.getByText('Imorgon väntar en kort diagnos.'),
+      screen.getByRole('button', { name: 'Till Hem' }),
+      screen.getByRole('link', { name: 'Fortsätt öva nu →' }),
+    ]
+    for (let index = 1; index < ordered.length; index++) {
+      expect(
+        ordered[index - 1].compareDocumentPosition(ordered[index]) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy()
+    }
     fireEvent.click(screen.getByRole('button', { name: 'Till Hem' }))
     expect(h.navigate).toHaveBeenCalledWith({ to: '/' })
+  })
+
+  it('continues through the router without reloading the document', async () => {
+    await toSession()
+    const done = render(
+      h.player?.renderDone?.({
+        summary: { questions: h.bank, picks: ['B', 'B', 'B'] },
+        onReplay: vi.fn(),
+        onHome: vi.fn(),
+      }),
+    )
+    const link = screen.getByRole('link', { name: 'Fortsätt öva nu →' })
+    const click = createEvent.click(link, { button: 0 })
+    fireEvent(link, click)
+    expect(click.defaultPrevented).toBe(true)
+    expect(done.navigate).toHaveBeenCalledWith(expect.objectContaining({ to: '/ova' }))
   })
 
   it('labels the actual completed plan when a fallback question was played', async () => {

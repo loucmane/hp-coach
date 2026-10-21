@@ -101,7 +101,7 @@ export function DailyPlanCard({
   if (firstPass) {
     return (
       <section data-testid="daily-plan-complete">
-        <DrillRailSection meta={<strong>Idag · klart</strong>} delay={220}>
+        <DrillRailSection meta={<strong>Idag</strong>} delay={220}>
           <h2 className="hpc-m3-h">Dagens plan</h2>
           <a
             href={firstPass.href}

@@ -1,6 +1,6 @@
 // Day zero: personal preferences, a small ORD pattern, three real questions.
 import { useUser } from '@clerk/clerk-react'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
 import { useActiveSessionOfKind } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
@@ -436,31 +436,52 @@ function WelcomeDone({
     heading.current?.focus()
   }, [])
   return (
-    <section style={{ padding: 'clamp(28px, 6vw, 64px)', maxWidth: 720, color: 'var(--ink)' }}>
-      <Eyebrow>Din start</Eyebrow>
-      <h1
-        ref={heading}
-        tabIndex={-1}
-        style={{ fontFamily: 'var(--font-display)', fontWeight: 500, lineHeight: 1.2 }}
+    <section
+      style={{
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        padding: 'clamp(40px, 8vh, 96px) clamp(28px, 5vw, 80px)',
+        color: 'var(--ink)',
+      }}
+    >
+      <div
+        style={{ width: '100%', maxWidth: 720, display: 'flex', flexDirection: 'column', gap: 28 }}
       >
-        {line ?? 'Du är igång.'}
-      </h1>
-      {line && origins.length === 3 && (
-        <p style={{ color: 'var(--muted)', fontSize: 14, lineHeight: 1.6 }}>
-          Frågorna kom från högskoleprovet {origins[0]}, {origins[1]} och {origins[2]}.
+        <header style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <Eyebrow>Din start</Eyebrow>
+          <h1
+            ref={heading}
+            tabIndex={-1}
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontWeight: 500,
+              fontSize: 'clamp(32px, 6vw, 56px)',
+              lineHeight: 1.1,
+              color: 'var(--ink)',
+              margin: 0,
+            }}
+          >
+            {line ?? 'Du är igång.'}
+          </h1>
+          {line && origins.length === 3 && (
+            <p style={{ color: 'var(--muted)', fontSize: 14, lineHeight: 1.6, margin: 0 }}>
+              Frågorna kom från högskoleprovet {origins[0]}, {origins[1]} och {origins[2]}.
+            </p>
+          )}
+        </header>
+        <p style={{ color: 'var(--ink-2)', fontSize: 18, lineHeight: 1.55, margin: 0 }}>
+          {line ? 'Imorgon väntar en kort diagnos.' : 'Dina val går att ändra när som helst.'}
         </p>
-      )}
-      <p style={{ color: 'var(--ink-2)', lineHeight: 1.6 }}>
-        {line ? 'Imorgon väntar en kort diagnos.' : 'Dina val går att ändra när som helst.'}
-      </p>
-      <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 24 }}>
-        <Btn onClick={onHome}>Till Hem</Btn>
-        <a
-          href="/ova"
-          style={{ color: 'var(--ink)', textDecoration: 'underline', textUnderlineOffset: 4 }}
-        >
-          Fortsätt öva nu →
-        </a>
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 24 }}>
+          <Btn onClick={onHome}>Till Hem</Btn>
+          <Link
+            to="/ova"
+            style={{ color: 'var(--ink)', textDecoration: 'underline', textUnderlineOffset: 4 }}
+          >
+            Fortsätt öva nu →
+          </Link>
+        </div>
       </div>
     </section>
   )
