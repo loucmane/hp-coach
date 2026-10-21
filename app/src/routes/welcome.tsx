@@ -1,176 +1,425 @@
-// /welcome — first-time visual-preference picker.
-//
-// Phase A.6V. The Edition Strip lives in the running head once the
-// app is open, so technically the user could discover it themselves
-// — but starting day one in the default Sand/Editorial/Light look
-// without ever knowing the palettes exist is
-// the kind of "I had no idea this existed" friction we keep hitting
-// with editorial chrome. So we show the picker once, at full canvas,
-// as a chapter-opening composition: "Make it yours. (You can change
-// any of this later from the top of every page.)"
-//
-// Gated by the `hpc-welcomed` localStorage flag, written on Fortsätt.
-// Existing dogfood users with state already in `hpc-ui` will never
-// see this — they're presumed welcomed.
-//
-// Composition mirrors HomeMobile's editorial register: section
-// eyebrow / hero headline / three picker rows / single CTA. No
-// modal, no animation; one long page the user scrolls if needed.
-
+// Day zero: personal preferences, a small ORD pattern, three real questions.
 import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useEffect, useRef, useState } from 'react'
+import { useActiveSessionOfKind, useUpdateSession } from '@/api/hooks/useSessions'
+import { useStats } from '@/api/hooks/useStats'
+import { useUpdateUserPrefs } from '@/api/hooks/useUserPrefs'
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { Btn, Eyebrow } from '@/components/primitives'
+import { SessionPlayer } from '@/components/session/SessionPlayer'
+import { type LexiconEntry, loadFramework } from '@/data/frameworks'
+import { loadBank, type Question } from '@/data/questions'
+import { daysUntil, EXAM_SITTINGS, nextSitting } from '@/lib/dates'
+import {
+  DAILY_MINUTES,
+  FIRST_SESSION_ROOT,
+  firstSessionDoneLine,
+  firstSessionOrigin,
+  pickFirstSessionQuestions,
+} from '@/lib/firstSession'
 import { useFirstContentSignal } from '@/lib/motion'
 import type { PaletteKey } from '@/lib/tokens'
 import { WELCOMED_KEY } from '@/lib/welcome'
 import { useUiStore } from '@/stores/uiStore'
 
-export const Route = createFileRoute('/welcome')({
-  component: WelcomeRoute,
-})
+export const Route = createFileRoute('/welcome')({ component: WelcomeRoute })
+
+type Step = 'theme' | 'sitting' | 'minutes' | 'pattern' | 'session' | 'done'
+
+function markWelcomed() {
+  try {
+    localStorage.setItem(WELCOMED_KEY, '1')
+  } catch {
+    /* Storage is optional. */
+  }
+}
 
 function WelcomeRoute() {
-  // Boot-veil content signal (#305 owner verdict) — a fresh sign-up can
-  // cold-boot directly into /welcome (SignedInTree's redirect); no
-  // Skrift block, the picker is present at mount.
   useFirstContentSignal()
   const navigate = useNavigate()
   const mode = useUiStore((s) => s.mode)
   const palette = useUiStore((s) => s.palette)
-  // Write-through setters: local store (instant paint) + PATCH to the
-  // server prefs row. Raw uiStore setters were a bug here — choices made
-  // in onboarding never reached the server, so the next useHydratePrefs
-  // pass reverted them (owner-reported on staging 2026-07-11: dark+spalt
-  // picked in /welcome, reverted on reload).
-  const { setMode, setPalette } = useSyncedPrefs()
+  const { setMode, setPalette, setSitting } = useSyncedPrefs()
+  const updatePrefs = useUpdateUserPrefs()
+  const stats = useStats()
+  const active = useActiveSessionOfKind('onboarding')
+  const updateSession = useUpdateSession()
   const { user } = useUser()
   const firstName = user?.firstName ?? user?.fullName?.split(' ')[0] ?? null
+  const [step, setStep] = useState<Step>('theme')
+  const [sitting, chooseSitting] = useState(() => nextSitting()?.id ?? null)
+  const [minutes, chooseMinutes] = useState(20)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [root, setRoot] = useState<LexiconEntry | null>(null)
+  const [questions, setQuestions] = useState<Question[]>([])
+  const [loadRound, setLoadRound] = useState(0)
+  const [qid, setQid] = useState<string | null>(null)
+  const [finished, setFinished] = useState(false)
+  const heading = useRef<HTMLHeadingElement>(null)
 
-  const onContinue = () => {
-    try {
-      localStorage.setItem(WELCOMED_KEY, '1')
-    } catch (_) {
-      /* private-mode storage failure → fall through; we just re-prompt */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: focus the new heading whenever the visible step changes
+  useEffect(() => {
+    heading.current?.focus()
+  }, [step])
+  // biome-ignore lint/correctness/useExhaustiveDependencies: loadRound is the explicit retry trigger
+  useEffect(() => {
+    if (step !== 'pattern') return
+    let alive = true
+    setError(null)
+    Promise.all([loadFramework('ORD'), loadBank()])
+      .then(([framework, bank]) => {
+        if (!alive) return
+        const entry =
+          framework?.family === 'ord_roots'
+            ? framework.entries.find((item) => item.id === FIRST_SESSION_ROOT)
+            : null
+        const picked = pickFirstSessionQuestions(bank)
+        if (!entry || picked.length !== 3) {
+          setError('Första passet kunde inte laddas. Du kan försöka igen eller hoppa över.')
+          return
+        }
+        setRoot(entry)
+        setQuestions(picked)
+      })
+      .catch(() => {
+        if (alive)
+          setError('Första passet kunde inte laddas. Du kan försöka igen eller hoppa över.')
+      })
+    return () => {
+      alive = false
+    }
+  }, [step, loadRound])
+
+  const home = () => {
+    markWelcomed()
+    if (step === 'session' && !finished && active.data) {
+      updateSession.mutate({ id: active.data.id, patch: { end: true } })
     }
     navigate({ to: '/' })
   }
+  const afterMinutes = () => {
+    setSaving(false)
+    setError(null)
+    // An in-flight first pass can resume even though its first answer has
+    // already increased effort. An established account skips the lesson.
+    setStep((stats.data?.attempts.total ?? 0) > 0 && !active.data ? 'done' : 'pattern')
+  }
+  const saveSitting = async () => {
+    setError(null)
+    if (!sitting) {
+      setStep('minutes')
+      return
+    }
+    setSaving(true)
+    try {
+      await setSitting(sitting)
+      setStep('minutes')
+    } catch {
+      setError('Det gick inte att spara provet. Försök igen eller hoppa över.')
+    } finally {
+      setSaving(false)
+    }
+  }
+  const saveMinutes = () => {
+    if (!stats.data || active.isPending) return
+    setSaving(true)
+    setError(null)
+    updatePrefs.mutate(
+      { dailyMinutes: minutes },
+      {
+        onSuccess: afterMinutes,
+        onError: () => {
+          setSaving(false)
+          setError('Det gick inte att spara tiden. Försök igen eller hoppa över.')
+        },
+      },
+    )
+  }
+
+  if (step === 'session') {
+    const origin = qid ? firstSessionOrigin(qid) : null
+    return (
+      <div style={{ flex: 1, minWidth: 0 }}>
+        {!finished && (
+          <div style={{ padding: '16px 24px', color: 'var(--ink-2)' }}>
+            {origin && (
+              <p aria-live="polite" data-testid="first-session-origin">
+                {origin}
+              </p>
+            )}
+            <SkipButton onClick={home} />
+          </div>
+        )}
+        <SessionPlayer
+          sessionKind="onboarding"
+          sections="ORD"
+          activeTab="ova"
+          autoStart
+          pickQuestions={() => questions}
+          resolvePlan={async (ids) => {
+            const bank = await loadBank()
+            const resolved = ids.map((id) => bank.find((q) => q.qid === id))
+            // A stale stored plan must never produce a false three-question win.
+            return ids.length === 3 &&
+              new Set(ids).size === 3 &&
+              resolved.every((q) => q && firstSessionOrigin(q.qid) && q.options?.length)
+              ? (resolved as Question[])
+              : []
+          }}
+          urlSyncedQid={{ qid, setQid }}
+          onComplete={() => {
+            setFinished(true)
+            markWelcomed()
+          }}
+          idleEyebrow="Första passet · ORD"
+          idleHeadline="Tre ord från riktiga prov"
+          idleSubcopy="Ta ett ord i taget. Du får läsa förklaringen efter varje fråga."
+          emptyCopy="Frågorna kunde inte laddas. Du kan hoppa över och komma tillbaka senare."
+          renderDone={({ summary }) => (
+            <WelcomeDone
+              line={firstSessionDoneLine(summary.questions, summary.picks)}
+              onHome={home}
+            />
+          )}
+        />
+      </div>
+    )
+  }
+
+  if (step === 'done') return <WelcomeDone line={null} onHome={home} />
+
+  const title =
+    step === 'theme'
+      ? firstName
+        ? `${firstName}, gör den till din.`
+        : 'Gör den till din.'
+      : step === 'sitting'
+        ? 'Vilket prov siktar du på?'
+        : step === 'minutes'
+          ? 'Hur mycket tid passar dig?'
+          : 'Ett litet o- vänder betydelsen'
 
   return (
     <div
       style={{
         flex: 1,
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        // Centered single column, max-width matching the editorial
-        // canvas elsewhere. Picker rows breathe at this width without
-        // forcing eye-tracking jumps across studio-wide rails.
+        justifyContent: 'center',
         padding: 'clamp(40px, 8vh, 96px) clamp(28px, 5vw, 80px)',
-        gap: 'clamp(28px, 4vh, 48px)',
       }}
     >
       <div
-        style={{
-          width: '100%',
-          maxWidth: 720,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 'clamp(28px, 4vh, 48px)',
-        }}
+        style={{ width: '100%', maxWidth: 720, display: 'flex', flexDirection: 'column', gap: 28 }}
       >
-        {/* Masthead — same eyebrow / hero pattern as HomeMobile. */}
         <header style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <Eyebrow>HP · Coach</Eyebrow>
+          <Eyebrow>{step === 'pattern' ? 'Första passet · cirka 2 minuter' : 'HP · Coach'}</Eyebrow>
           <h1
+            ref={heading}
+            tabIndex={-1}
             style={{
               fontFamily: 'var(--font-display)',
               fontWeight: 500,
-              fontSize: 'clamp(36px, 6vw, 56px)',
-              lineHeight: 1.05,
-              letterSpacing: '-0.01em',
+              fontSize: 'clamp(32px, 6vw, 56px)',
+              lineHeight: 1.1,
               color: 'var(--ink)',
               margin: 0,
             }}
           >
-            {firstName ? `${firstName}, gör den till din.` : 'Gör den till din.'}
+            {title}
           </h1>
-          <p
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(16px, 1.6vw, 19px)',
-              lineHeight: 1.55,
-              color: 'var(--ink-2)',
-              maxWidth: '38ch',
-              margin: 0,
-            }}
-          >
-            Två val. Du kan ändra dem under Mer → Inställningar när som helst — det här är bara en
-            mjuk start.
+          <p style={{ color: 'var(--ink-2)', fontSize: 18, lineHeight: 1.55, margin: 0 }}>
+            {step === 'theme'
+              ? 'Börja med färgerna. Du kan ändra dem under Mer → Inställningar när som helst.'
+              : step === 'sitting'
+                ? 'Välj provet du vill öva inför. Det går att ändra senare.'
+                : step === 'minutes'
+                  ? 'Välj en lagom stund per dag. Du kan alltid ändra dig.'
+                  : 'Leta efter början av ordet. Den kan ge dig en ledtråd till betydelsen.'}
           </p>
         </header>
-
-        {/* Mode picker — light or dark, single binary choice. */}
-        <PickerRow label="Belysning">
-          <PickerOption
-            label="ljust"
-            sublabel="dag · papper på bord"
-            active={mode === 'light'}
-            onClick={() => setMode('light')}
-          />
-          <PickerOption
-            label="mörkt"
-            sublabel="kväll · bläck på pergament"
-            active={mode === 'dark'}
-            onClick={() => setMode('dark')}
-          />
-        </PickerRow>
-
-        {/* Palette picker — the five product palettes, default first. */}
-        <PickerRow label="Palett">
-          <PaletteOption
-            p="spalt"
-            label="spalt"
-            sub="sval blågrön · standard"
-            active={palette === 'spalt'}
-            onClick={() => setPalette('spalt')}
-          />
-          <PaletteOption
-            p="sand"
-            label="sand"
-            sub="varm tan"
-            active={palette === 'sand'}
-            onClick={() => setPalette('sand')}
-          />
-          <PaletteOption
-            p="sage"
-            label="sage"
-            sub="grönaktig"
-            active={palette === 'sage'}
-            onClick={() => setPalette('sage')}
-          />
-          <PaletteOption
-            p="ink"
-            label="ink"
-            sub="indigo · mörk"
-            active={palette === 'ink'}
-            onClick={() => setPalette('ink')}
-          />
-          <PaletteOption
-            p="rose"
-            label="rose"
-            sub="mjuk rosa"
-            active={palette === 'rose'}
-            onClick={() => setPalette('rose')}
-          />
-        </PickerRow>
-
-        {/* CTA — large, primary. Mirrors the start button on /drill. */}
-        <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: 16 }}>
-          <Btn onClick={onContinue}>Fortsätt →</Btn>
+        {step === 'theme' && (
+          <>
+            <PickerRow label="Belysning">
+              <PickerOption
+                label="ljust"
+                sublabel="dag · papper på bord"
+                active={mode === 'light'}
+                onClick={() => {
+                  void setMode('light').catch(() =>
+                    setError('Det gick inte att spara belysningen.'),
+                  )
+                }}
+              />
+              <PickerOption
+                label="mörkt"
+                sublabel="kväll · bläck på pergament"
+                active={mode === 'dark'}
+                onClick={() => {
+                  void setMode('dark').catch(() => setError('Det gick inte att spara belysningen.'))
+                }}
+              />
+            </PickerRow>
+            <PickerRow label="Palett">
+              {(
+                [
+                  ['spalt', 'sval blågrön · standard'],
+                  ['sand', 'varm tan'],
+                  ['sage', 'grönaktig'],
+                  ['ink', 'indigo · mörk'],
+                  ['rose', 'mjuk rosa'],
+                ] as const
+              ).map(([p, sub]) => (
+                <PaletteOption
+                  key={p}
+                  p={p}
+                  label={p}
+                  sub={sub}
+                  active={palette === p}
+                  onClick={() => {
+                    void setPalette(p).catch(() => setError('Det gick inte att spara paletten.'))
+                  }}
+                />
+              ))}
+            </PickerRow>
+          </>
+        )}
+        {step === 'sitting' && (
+          <PickerRow label="Prov">
+            {EXAM_SITTINGS.filter((s) => daysUntil(s.date) >= 0).map((s) => (
+              <PickerOption
+                key={s.id}
+                label={s.label}
+                sublabel={s.date.toLocaleDateString('sv-SE', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                })}
+                active={sitting === s.id}
+                onClick={() => chooseSitting(s.id)}
+              />
+            ))}
+            {!nextSitting() && (
+              <p>Nästa provdatum är inte publicerat här än. Du kan välja det senare.</p>
+            )}
+          </PickerRow>
+        )}
+        {step === 'minutes' && (
+          <PickerRow label="Minuter per dag">
+            {DAILY_MINUTES.map((m) => (
+              <PickerOption
+                key={m}
+                label={`${m} minuter`}
+                active={minutes === m}
+                onClick={() => chooseMinutes(m)}
+              />
+            ))}
+          </PickerRow>
+        )}
+        {step === 'pattern' && root && (
+          <section aria-label="Ordmönster" style={{ color: 'var(--ink)', lineHeight: 1.7 }}>
+            <h2>{root.root}</h2>
+            <p>{root.meaning}</p>
+            <p>Till exempel: {root.example_words.slice(0, 3).join(', ')}.</p>
+            <p>
+              Tänk på skillnaden mellan betydlig och obetydlig. Prova sedan samma ledtråd i tre ord
+              från högskoleprovet.
+            </p>
+            <p style={{ color: 'var(--ink-2)' }}>
+              Det här första passet är till för att prova. Det påverkar inte din prognos.
+            </p>
+          </section>
+        )}
+        {error && (
+          <p role="alert" style={{ color: 'var(--ink-2)' }}>
+            {error}
+          </p>
+        )}
+        {step === 'pattern' && error && (
+          <Btn onClick={() => setLoadRound((n) => n + 1)}>Försök igen</Btn>
+        )}
+        {step === 'minutes' && stats.isError && (
+          <Btn
+            onClick={() => {
+              void stats.refetch()
+            }}
+          >
+            Försök igen
+          </Btn>
+        )}
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 24 }}>
+          {step === 'pattern' ? (
+            <Btn disabled={!root || questions.length !== 3} onClick={() => setStep('session')}>
+              Prova tre frågor →
+            </Btn>
+          ) : (
+            <Btn
+              disabled={saving || (step === 'minutes' && (!stats.data || active.isPending))}
+              onClick={() => {
+                if (step === 'theme') {
+                  setError(null)
+                  setStep('sitting')
+                } else if (step === 'sitting') void saveSitting()
+                else saveMinutes()
+              }}
+            >
+              {saving ? 'Sparar…' : 'Fortsätt →'}
+            </Btn>
+          )}
+          <SkipButton onClick={home} />
         </div>
       </div>
     </div>
+  )
+}
+
+function WelcomeDone({ line, onHome }: { line: string | null; onHome: () => void }) {
+  const heading = useRef<HTMLHeadingElement>(null)
+  useEffect(() => {
+    markWelcomed()
+    heading.current?.focus()
+  }, [])
+  return (
+    <section style={{ padding: 'clamp(28px, 6vw, 64px)', maxWidth: 720, color: 'var(--ink)' }}>
+      <Eyebrow>Din start</Eyebrow>
+      <h1
+        ref={heading}
+        tabIndex={-1}
+        style={{ fontFamily: 'var(--font-display)', fontWeight: 500, lineHeight: 1.2 }}
+      >
+        {line ?? 'Du är igång.'}
+      </h1>
+      <p style={{ color: 'var(--ink-2)', lineHeight: 1.6 }}>
+        {line
+          ? 'Det räcker för idag. Imorgon kan du prova en kort diagnos.'
+          : 'Dina val går att ändra när som helst.'}
+      </p>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+        <Btn onClick={onHome}>Till Hem</Btn>
+        <SkipButton onClick={onHome} />
+      </div>
+    </section>
+  )
+}
+
+function SkipButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        border: 0,
+        background: 'transparent',
+        color: 'var(--ink-2)',
+        textDecoration: 'underline',
+        cursor: 'pointer',
+        padding: '12px 0',
+        font: 'inherit',
+      }}
+    >
+      Hoppa över
+    </button>
   )
 }
 

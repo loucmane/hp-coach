@@ -133,6 +133,23 @@ describe('POST /api/attempts — the attempt row', () => {
 })
 
 describe('POST /api/attempts — mastery writer', () => {
+  it('counts onboarding as effort without changing mastery or framework progress', async () => {
+    const { userId, sessionId } = await seedSession('user_a')
+    await db().update(sessions).set({ kind: 'onboarding' }).where(eq(sessions.id, sessionId))
+    const res = await post({
+      sessionId,
+      questionId: 'host-2016-verb2-ORD-004',
+      selectedAnswer: 'A',
+      correct: true,
+      layer1Ids: ['ORD-ROOT-010'],
+    })
+    expect(res.status).toBe(201)
+    expect(await masteryRows(userId)).toEqual([])
+    expect(await progressRow(userId, 'ORD-ROOT-010')).toBeNull()
+    const [user] = await db().select().from(users).where(eq(users.id, userId))
+    expect(user.attemptsTotal).toBe(1)
+  })
+
   it('creates a mastery row keyed by (section, layer1Id) on the first tagged attempt', async () => {
     const { userId, sessionId } = await seedSession('user_a')
     await post({

@@ -7,15 +7,18 @@
 // after ~120 days (lib/retention.ts), so this endpoint's counts silently
 // shrink as old attempts age out — by design, documented on the route.
 
+import { eq } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { getDb } from '../db/client'
 import { type AttemptSource, attempts, sessions, users } from '../db/schema'
+import { FITTED_KINDS } from '../lib/fit'
 import { classifyAttempt } from '../lib/provenance'
 import { examFor } from '../lib/sittings'
 import { makeTestD1, type ShimD1 } from '../lib/testD1'
 import type { Env, Vars } from '../types'
+import { attemptsRoute } from './attempts'
 import { meRoute } from './me'
 
 let d1: ShimD1
@@ -70,6 +73,115 @@ async function seedAttempt(
 
 beforeEach(() => {
   d1 = makeTestD1()
+})
+
+describe('onboarding assessment exclusion', () => {
+  it('never marks a retired partial pass or repeated answers as a completed first pass', async () => {
+    const { app, env } = appFor('partial')
+    const db = getDb(d1 as unknown as D1Database)
+    const [user] = await db.insert(users).values({ clerkUserId: 'partial' }).returning()
+    const plan = ['host-2016-verb2-ORD-004', 'host-2021-verb2-ORD-003', 'host-2025-verb2-ORD-010']
+    const [session] = await db
+      .insert(sessions)
+      .values({ userId: user.id, kind: 'onboarding', plan, endedAt: new Date() })
+      .returning()
+    for (let i = 0; i < 3; i++) {
+      await db
+        .insert(attempts)
+        .values({ userId: user.id, sessionId: session.id, questionId: plan[0], correct: true })
+    }
+    const body = (await (await app.request('/stats?firstTry=1', {}, env)).json()) as {
+      stats: { onboardingCompletedAt?: string }
+    }
+    expect(body.stats.onboardingCompletedAt).toBeUndefined()
+  })
+
+  it('retains effort and exposure, but supplies no assessment or first-try signal', async () => {
+    const { app, env } = appFor('user_first')
+    const api = new Hono<{ Bindings: Env; Variables: Vars }>()
+      .use('*', async (c, next) => {
+        c.set('userId', 'user_first')
+        await next()
+      })
+      .route('/', attemptsRoute)
+    await app.request('/stats', {}, env)
+    const db = getDb(d1 as unknown as D1Database)
+    const [user] = await db.select().from(users)
+    const qids = ['host-2016-verb2-ORD-004', 'host-2021-verb2-ORD-003', 'host-2025-verb2-ORD-010']
+    const [session] = await db
+      .insert(sessions)
+      .values({ userId: user.id, kind: 'onboarding', plan: qids })
+      .returning()
+    for (const questionId of qids) {
+      const res = await api.request(
+        '/',
+        {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: session.id,
+            questionId,
+            correct: true,
+            selectedAnswer: 'A',
+            timeTakenMs: 1000,
+          }),
+        },
+        env,
+      )
+      expect(res.status).toBe(201)
+    }
+    const read = async () => {
+      const body = (await (await app.request('/stats?firstTry=1', {}, env)).json()) as {
+        stats: {
+          attempts: { total: number; today: number; thisWeek: number }
+          streakDays: number
+          timeMsToday: number
+          accuracy7d: number | null
+          bySection: Record<string, { attempts90d: number; firstTry90d: number }>
+          weekly: Array<{ attempts: number }>
+          attemptsDaily: Array<{ n: number }>
+          onboardingCompletedAt?: string
+        }
+      }
+      return body.stats
+    }
+    const stats = await read()
+    expect(stats.attempts).toEqual({ total: 3, today: 3, thisWeek: 3 })
+    expect(stats.streakDays).toBe(1)
+    expect(stats.timeMsToday).toBe(3000)
+    expect(stats.accuracy7d).toBeNull()
+    expect(stats.bySection.ORD).toMatchObject({
+      attemptsToday: 3,
+      attempts7d: 0,
+      correct7d: 0,
+      attempts7to14d: 0,
+      attempts90d: 0,
+      avgTimeMs: null,
+      lastAttemptedAt: null,
+      firstTry90d: 0,
+      firstTry7d: 0,
+      estimateBasis: { authentic: 0, synthetic: 0 },
+    })
+    expect(stats.weekly.every((w: { attempts: number }) => w.attempts === 0)).toBe(true)
+    expect(stats.attemptsDaily.at(-1)?.n).toBe(3)
+    expect(stats.onboardingCompletedAt).toBeUndefined()
+    expect(FITTED_KINDS.has('onboarding')).toBe(false)
+    const endedAt = new Date(Math.floor(Date.now() / 1000) * 1000)
+    await db.update(sessions).set({ endedAt }).where(eq(sessions.id, session.id))
+    expect((await read()).onboardingCompletedAt).toBe(endedAt.toISOString())
+    const other = appFor('another_student')
+    const unrelated = (await (
+      await other.app.request('/stats?firstTry=1', {}, other.env)
+    ).json()) as { stats: { onboardingCompletedAt?: string } }
+    expect(unrelated.stats.onboardingCompletedAt).toBeUndefined()
+    const exposure = await getExposure('user_first')
+    expect(exposure.body.exposure[qids[0]].n).toBe(1)
+    // A later ordinary retry is effort/assessment, never an unseen first try.
+    await seedAttempt('user_first', qids[0], new Date(Date.now() + 1000))
+    const retried = await read()
+    expect(retried.bySection.ORD.attempts90d).toBe(1)
+    expect(retried.bySection.ORD.firstTry90d).toBe(0)
+  })
 })
 
 describe('GET /api/me/exposure', () => {

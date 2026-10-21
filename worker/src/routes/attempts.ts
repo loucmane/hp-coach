@@ -79,7 +79,7 @@ export const attemptsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     // Verify the session belongs to this user. Cheap query; prevents the
     // SPA from accidentally posting against a stale id from another login.
     const [session] = await db
-      .select({ id: sessions.id })
+      .select({ id: sessions.id, kind: sessions.kind })
       .from(sessions)
       .where(and(eq(sessions.id, body.sessionId), eq(sessions.userId, userId)))
       .limit(1)
@@ -141,7 +141,7 @@ export const attemptsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     // of them for an authentic answer, only the explanation's framework_id
     // for a synthetic one, none for an unknown one.
     const section = extractSection(body.questionId)
-    if (section) {
+    if (section && session.kind !== 'onboarding') {
       for (const layer1Id of masteryLayer1Ids(body.questionId, source, body.layer1Ids)) {
         await applyMasteryOutcome(db, userId, section, layer1Id, body.correct)
       }

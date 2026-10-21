@@ -8,14 +8,10 @@
 // the finally block so the dev instance doesn't accumulate residue.
 //
 // The flow under test — the first signed-in minute as one thread:
-//   1. fresh sign-in → the /welcome picker (one soft gate, one button)
-//   2. Fortsätt → Daily Home shows ONE obvious first action
-//      ("Börja här", the FirstDayPanel) — and NOT the 55-min Provpass
-//      summons that anchored day zero before P2.2
-//   3. tap → lands IN the first question (?start=1 direct start, no
-//      idle interstitial)
-//   4. answer → the genomgång (PedagogyPanel) renders — the idiom the
-//      landing taught, delivered for real.
+//   1. palette → exam sitting → minutes per day
+//   2. one ORD root card → three labelled authentic HP questions
+//   3. true completion sentence → one completed, clickable first pass on Home
+//   4. reload keeps the completed plan; no diagnostic or mock on day zero
 
 import { createClerkClient } from '@clerk/backend'
 import { clerk, setupClerkTestingToken } from '@clerk/testing/playwright'
@@ -24,7 +20,7 @@ import { expect, test } from '@playwright/test'
 // Fresh browser state — no shared storageState, no shared user.
 test.use({ storageState: { cookies: [], origins: [] } })
 
-test('day zero: fresh account → one first action → first question → genomgång', async ({
+test('day zero: preferences → ORD root → three real questions → completed first pass', async ({
   page,
 }, testInfo) => {
   // Same mobile-emulation Clerk-refresh flake as drill.spec.ts — the
@@ -54,44 +50,47 @@ test('day zero: fresh account → one first action → first question → genomg
     await expect(fortsatt).toBeVisible({ timeout: 20_000 })
     await fortsatt.click()
 
-    // ── 2 · Daily Home: one door, no Provpass summons ───────────────
+    await expect(page.getByRole('heading', { name: 'Vilket prov siktar du på?' })).toBeVisible()
+    await fortsatt.click()
+    await expect(page.getByRole('heading', { name: 'Hur mycket tid passar dig?' })).toBeVisible()
+    await page.getByRole('button', { name: '20 minuter' }).click()
+    await fortsatt.click()
+    await expect(page.getByRole('heading', { name: 'Ett litet o- vänder betydelsen' })).toBeVisible()
+    await page.getByRole('button', { name: /Prova tre frågor/ }).click()
+
+    const qids = ['host-2016-verb2-ORD-004', 'host-2021-verb2-ORD-003', 'host-2025-verb2-ORD-010']
+    for (const qid of qids) {
+      await expect(page.getByTestId('drill-question')).toHaveAttribute('data-qid', qid, { timeout: 30_000 })
+      await expect(page.getByTestId('first-session-origin')).toHaveText(
+        `Högskoleprovet hösten ${qid.split('-')[1]}`,
+      )
+      const correctLetter = await page.evaluate((id) => {
+        const bank = (window as unknown as { __HPC_BANK__: { qid: string; answer: string }[] }).__HPC_BANK__
+        return bank.find((q) => q.qid === id)?.answer ?? null
+      }, qid)
+      expect(correctLetter, `missing authentic answer for ${qid}`).not.toBeNull()
+      const saved = page.waitForResponse((response) =>
+        response.url().endsWith('/api/attempts') && response.request().method() === 'POST' && response.status() === 201,
+      )
+      await page.getByTestId(`option-${correctLetter}`).click()
+      await saved
+      await expect(page.getByTestId('pedagogy-panel')).toBeVisible({ timeout: 10_000 })
+      await page.getByTestId('drill-next').click()
+    }
+    await expect(page.getByRole('heading', {
+      name: 'Du klarade 3 av 3 frågor från riktiga högskoleprov',
+    })).toBeVisible()
+    await page.getByRole('button', { name: 'Till Hem' }).click()
     await expect(page.getByTestId('home-greeting')).toBeVisible({ timeout: 15_000 })
-    const firstCta = page.getByTestId('daily-plan-first-cta')
-    await expect(firstCta).toBeVisible({ timeout: 20_000 })
-    await expect(firstCta).toHaveText(/Starta första övningen/)
-    // The pre-P2.2 day-zero bug: the Kallelse summoned a 55-minute mock
-    // as the stranger's first action. It must NOT render on day zero.
+    await expect(page.getByRole('link', { name: /Första passet/ })).toHaveAttribute(
+      'href', '/lektion?section=ORD#ORD-ROOT-010',
+    )
     await expect(page.getByTestId('kallelse-start')).toHaveCount(0)
+    await expect(page.getByTestId('daily-plan-first-cta')).toHaveCount(0)
+    // The completed day-zero plan survives a fresh page load.
+    await page.reload()
+    await expect(page.getByRole('link', { name: /Första passet/ })).toBeVisible({ timeout: 20_000 })
 
-    // ── 3 · the door lands IN the first question ────────────────────
-    await firstCta.click()
-    await expect(page).toHaveURL(/\/diagnostik/, { timeout: 10_000 })
-    // Direct start (?start=1): the first option renders without any
-    // "Starta övning" tap. Cold bank load can take a while on CI.
-    const optionA = page.getByTestId('option-A')
-    await expect(optionA).toBeVisible({ timeout: 30_000 })
-
-    // ── 4 · answer → the genomgång renders ──────────────────────────
-    // Resolve the correct letter by the question's STABLE IDENTITY, not
-    // by its rendered prompt text (hpf-ay8). The old recipe matched
-    // drill-prompt's textContent against the bank, which misses 100% of
-    // the time for a promptless ELF cloze — the DOM shows the synthesized
-    // 'Lucka N' headword while the bank row's prompt is '' — and is
-    // exposed on NOG, whose stem is only the parsed sub-question. Day
-    // zero's first question is chosen by the adaptive plan and is NOT
-    // pinned, so that class was sampled at random and the failure read as
-    // flakiness. The determinism belongs here, in the resolver.
-    const qid = await page.getByTestId('drill-question').getAttribute('data-qid')
-    expect(qid, 'first diagnostic question carries no data-qid').toBeTruthy()
-    const correctLetter = await page.evaluate((id) => {
-      const bank = (window as unknown as { __HPC_BANK__: { qid: string; answer: string }[] })
-        .__HPC_BANK__
-      return bank.find((q) => q.qid === id)?.answer ?? null
-    }, qid)
-    expect(correctLetter, `could not resolve answer for qid "${qid}"`).not.toBeNull()
-    await page.getByTestId(`option-${correctLetter}`).click()
-
-    await expect(page.getByTestId('pedagogy-panel')).toBeVisible({ timeout: 10_000 })
   } finally {
     await clerkApi.users.deleteUser(user.id).catch(() => {
       // Best-effort cleanup — a leaked +clerk_test user is inert.
