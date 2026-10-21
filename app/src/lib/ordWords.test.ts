@@ -1,5 +1,6 @@
 import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -11,8 +12,33 @@ import { __resetOrdWordsCache, loadOrdWords, type OrdWord, pickOrdWords } from '
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..')
 const readJson = (file: string) => JSON.parse(readFileSync(path.join(REPO, file), 'utf8'))
+// This Node-only builder lives outside Vite's app root. Load it through Node,
+// just like its CLI, without executing main or writing the public manifest.
+const { buildOrdWords } = createRequire(import.meta.url)(
+  path.join(REPO, 'scripts/build_ord_words.mjs'),
+) as { buildOrdWords: (questions: Question[], roots: unknown) => OrdWord[] }
 
 describe('public ORD index', () => {
+  it('rejects distinct headwords that differ only in case', () => {
+    const questions = [
+      { ...question('a'), prompt: 'ord' },
+      { ...question('b'), prompt: 'Ord' },
+    ]
+    expect(() => buildOrdWords(questions, { entries: [] })).toThrow(/case.*collision.*a.*b/i)
+  })
+
+  it('merges exact repeated headwords after whitespace and Unicode normalization', () => {
+    expect(
+      buildOrdWords(
+        [
+          { ...question('b'), prompt: ' å  ord ' },
+          { ...question('a'), prompt: 'a\u030a ord' },
+        ],
+        { entries: [{ id: 'root', example_questions: ['b'] }] },
+      ),
+    ).toEqual([{ id: 'a', qids: ['a', 'b'], roots: ['root'] }])
+  })
+
   it('matches the deterministic generator in a child process', () => {
     expect(() =>
       execFileSync(

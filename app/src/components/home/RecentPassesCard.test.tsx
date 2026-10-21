@@ -27,6 +27,21 @@ function row(over: Partial<SessionHistoryRow> = {}): SessionHistoryRow {
 }
 
 describe('RecentPassesCard', () => {
+  it('shows plain labels for timed passes and word rounds', () => {
+    render(
+      <RecentPassesCard
+        passes={[
+          row({ id: 1, sections: 'ORD · PÅ TID' }),
+          row({ id: 2, sections: 'LÄS · PÅ TID' }),
+          row({ id: 3, sections: 'ORD · ORDBANK' }),
+        ]}
+      />,
+    )
+    expect(screen.getByTestId('home-recent-pass-1')).toHaveTextContent('ORD på tid')
+    expect(screen.getByTestId('home-recent-pass-2')).toHaveTextContent('LÄS på tid')
+    expect(screen.getByTestId('home-recent-pass-3')).toHaveTextContent('Ordbank')
+  })
+
   it('renders nothing when there are no completed passes', () => {
     render(<RecentPassesCard passes={[]} />)
     expect(screen.queryByTestId('home-recent-passes')).not.toBeInTheDocument()

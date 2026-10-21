@@ -9,6 +9,9 @@
 import { useLessonProgress } from '@/api/hooks/useLessonProgress'
 import { useActiveSessions } from '@/api/hooks/useSessions'
 import { type DeviceKind, deviceLabel } from '@/lib/device'
+import { ORD_WORDS_SECTIONS } from '@/lib/ordWords'
+import { passLabel } from '@/lib/sessionLabel'
+import { parseTimedSections, sessionSectionCode } from '@/lib/timedDrill'
 
 // Sessions older than this read as "för gammal" — demoted, never hidden
 // (an ADHD-PI user may still mean to come back), and the resume route
@@ -60,12 +63,15 @@ export function pickCandidate(
     if (!qid || total === 0) continue
     const progress = `vid fråga ${Math.min(s.position + 1, total)} av ${total}`
     if (s.kind === 'drill') {
-      const section = (s.sections ?? '').toUpperCase()
+      const section = sessionSectionCode(s.sections)
+      const timed = parseTimedSections(s.sections)
+      const words = s.sections?.toUpperCase() === ORD_WORDS_SECTIONS
+      const mode = timed ? '&timed=1' : words ? '&words=1' : ''
       out.push({
-        subject: section ? `${section}-övning` : 'Övning',
+        subject: timed || words ? passLabel(s) : section ? `${section}-övning` : 'Övning',
         progress,
         href: section
-          ? `/drill?section=${section}&qid=${encodeURIComponent(qid)}`
+          ? `/drill?section=${encodeURIComponent(section)}${mode}&qid=${encodeURIComponent(qid)}`
           : `/drill?qid=${encodeURIComponent(qid)}`,
         device: s.device,
         freshAt: toMs(s.startedAt),

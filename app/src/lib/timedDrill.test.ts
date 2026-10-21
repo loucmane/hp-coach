@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest'
 
 import { loadBank, type Question } from '@/data/questions'
-import { isTimedDrillPlan, pickTimedDrillQuestions, timedDrill } from './timedDrill'
+import {
+  isTimedDrillPlan,
+  parseTimedSections,
+  pickTimedDrillQuestions,
+  sessionSectionCode,
+  timedDrill,
+  timedSections,
+} from './timedDrill'
 
 function question(number: number, overrides: Partial<Question> = {}): Question {
   return {
@@ -20,6 +27,21 @@ function question(number: number, overrides: Partial<Question> = {}): Question {
 }
 
 describe('timed delprov drills', () => {
+  it('decodes only full timed markers and gives mode markers their base section', () => {
+    for (const section of ['ORD', 'LÄS'] as const) {
+      expect(timedSections(section)).toBe(`${section} · PÅ TID`)
+      expect(parseTimedSections(timedSections(section))).toBe(section)
+      expect(sessionSectionCode(timedSections(section))).toBe(section)
+    }
+    expect(parseTimedSections('ord · på tid')).toBe('ORD')
+    expect(sessionSectionCode('ORD · ORDBANK')).toBe('ORD')
+    expect(sessionSectionCode('kva')).toBe('KVA')
+    expect(sessionSectionCode(null)).toBe('')
+    for (const raw of ['ORD', 'LÄS', 'ORD · ORDBANK', 'XYZ · PÅ TID', 'ORD · PÅ TID EXTRA', null]) {
+      expect(parseTimedSections(raw)).toBeNull()
+    }
+  })
+
   it('can select both accepted drill shapes from the shipped bank', async () => {
     const bank = await loadBank()
     for (const section of ['ORD', 'LÄS'] as const) {

@@ -44,9 +44,11 @@ import {
   attemptTimeMs,
   formatDrillTime,
   isTimedDrillPlan,
+  parseTimedSections,
   pickTimedDrillQuestions,
   type TimedDrillSection,
   timedDrill,
+  timedSections,
 } from '@/lib/timedDrill'
 import { useUiStore } from '@/stores/uiStore'
 
@@ -90,6 +92,8 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
   // here so that a resumed round keeps both ORD and the word-deck behavior.
   const wordResume = typeof raw === 'string' && raw.toUpperCase() === ORD_WORDS_SECTIONS
   if (wordResume) out.section = 'ORD'
+  const timedResume = typeof raw === 'string' ? parseTimedSections(raw) : null
+  if (timedResume) out.section = timedResume
   // A.6V.4 — `?qid=` direct-link. When present, the drill flow loads
   // ONLY this one question (single-element plan). Lets the user jump
   // straight to a specific question for variant-comparison passes or
@@ -136,7 +140,7 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
     out.start = true
   }
   if (
-    (input.timed === '1' || input.timed === 1 || input.timed === true) &&
+    (input.timed === '1' || input.timed === 1 || input.timed === true || timedResume) &&
     timedDrill(out.section ?? 'ORD') &&
     !out.framework &&
     !out.mixed &&
@@ -209,7 +213,13 @@ function DrillScreen() {
 function WordDrillSession() {
   const { user, isLoaded } = useUser()
   if (!isLoaded) return <p role="status">Laddar ordbanken …</p>
-  if (!user) return <p>Logga in för att öva i din ordbank.</p>
+  if (!user) {
+    return (
+      <p>
+        <Link to="/sign-in">Logga in</Link> för att öva i din ordbank.
+      </p>
+    )
+  }
   return <DrillSession key={user.id} wordUserId={user.id} />
 }
 
@@ -373,7 +383,11 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
     () => new Map(wordIndex.data?.flatMap((word) => word.qids.map((id) => [id, word.id] as const))),
     [wordIndex.data],
   )
-  const canResumeWords = activeDrill.data?.sections === ORD_WORDS_SECTIONS
+  // A vanished word plan starts a fresh round immediately. Partial plans
+  // still resolve below, and SessionPlayer seeks/clamps to a live question.
+  const canResumeWords =
+    activeDrill.data?.sections === ORD_WORDS_SECTIONS &&
+    activeDrill.data.plan?.some((id) => wordIdByQid.has(id))
   // SessionPlayer normally resumes by section alone. A timed drill also
   // needs its exact size/passage, so resolve the bank before mounting it.
   // This shares the player's query cache; ordinary drills do no extra load.
@@ -388,7 +402,7 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
     timing &&
     timedBank.data &&
     activeDrill.data?.plan &&
-    activeDrill.data.sections === section &&
+    activeDrill.data.sections === timedSections(timing.section) &&
     isTimedDrillPlan(
       activeDrill.data.plan
         .map((id) => findQuestion(timedBank.data, id))
@@ -517,12 +531,15 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
   // Session `sections` metadata. For an adaptive-review detour (`ar`), ride
   // the treated marker on this field (encodeTreatedMarker) so the completed
   // session row is recoverable as "treated" — same free-form-field trick
-  // MockRunner uses, NO schema migration. Otherwise the plain section code.
+  // MockRunner uses, NO schema migration. Timed sessions have their own marker
+  // so exact-string adoption keeps both timed and untimed drills separate.
   const sessionSections = words
     ? ORD_WORDS_SECTIONS
-    : ar && framework
-      ? encodeTreatedMarker(section, framework)
-      : section
+    : timing
+      ? timedSections(timing.section)
+      : ar && framework
+        ? encodeTreatedMarker(section, framework)
+        : section
 
   const frameworkDisplay = frameworkHeadword ?? framework
   const idleEyebrow = directLinkQid
@@ -631,7 +648,9 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
       onComplete={onComplete}
       resolvePlan={
         words
-          ? resolveWordPlan
+          ? canResumeWords
+            ? resolveWordPlan
+            : undefined
           : timing
             ? canResumeTimed
               ? resolveTimedPlan
