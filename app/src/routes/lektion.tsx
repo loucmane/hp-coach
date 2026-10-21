@@ -19,6 +19,7 @@ import { useEffect, useMemo } from 'react'
 import { useDueMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
 import { LessonReader } from '@/components/lesson/LessonReader'
+import { ProvteknikReader } from '@/components/lesson/ProvteknikReader'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Mono } from '@/components/primitives'
@@ -27,9 +28,11 @@ import { SECTION_KEYS, type Section } from '@/data/questions'
 import { uppslagDoorLayoutId, useArketMotion, useFirstContentSignal } from '@/lib/motion'
 import { computeSectionScore, formatScore, rankWeakness } from '@/lib/scoring'
 
-type Search = { section?: Section }
+type Search = { section?: Section; chapter?: 'provteknik' }
 
-function validateSearch(input: Record<string, unknown>): Search {
+export function validateSearch(input: Record<string, unknown>): Search {
+  // A chapter link wins over an old section query; never mount both readers.
+  if (input.chapter === 'provteknik') return { chapter: 'provteknik' }
   const raw = input.section
   if (typeof raw === 'string' && (SECTION_KEYS as readonly string[]).includes(raw)) {
     return { section: raw as Section }
@@ -63,7 +66,7 @@ function LektionRoute() {
   // has no Skrift block at the picker/reader entry; content is local
   // framework data, ready by mount.
   useFirstContentSignal()
-  const { section } = Route.useSearch()
+  const { section, chapter } = Route.useSearch()
   const navigate = useNavigate()
   // Esc-to-parent: reader → picker, picker → home. Status line shows
   // "esc tillbaka" so the gesture is discoverable; this wires it. The
@@ -74,13 +77,14 @@ function LektionRoute() {
       if (e.key !== 'Escape') return
       if ((e.target as HTMLElement | null)?.closest('[data-palette-open]')) return
       e.preventDefault()
-      if (section) navigate({ to: '/lektion' })
+      if (section || chapter) navigate({ to: '/lektion' })
       else navigate({ to: '/' })
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [section, navigate])
+  }, [section, chapter, navigate])
 
+  if (chapter) return <ProvteknikShell />
   if (section) return <ReaderShell section={section} />
   return <PickerShell />
 }
@@ -216,10 +220,38 @@ export function PickerBody() {
         </p>
       </header>
 
+      <Link
+        to="/lektion"
+        search={{ chapter: 'provteknik' }}
+        className="reveal"
+        style={{
+          ...shortcutRow,
+          marginTop: 'clamp(32px, 4vw + 16px, 64px)',
+          animationDelay: '60ms',
+        }}
+      >
+        <span>
+          <span style={shortcutLabel}>Provteknik</span>
+          <span
+            style={{
+              display: 'block',
+              fontFamily: 'var(--font-display)',
+              fontSize: 15,
+              lineHeight: 1.4,
+              color: 'var(--ink-2)',
+              marginTop: 6,
+            }}
+          >
+            Så fördelar du tiden och tar dig an frågorna på provet.
+          </span>
+        </span>
+        <span style={shortcutMeta}>läs →</span>
+      </Link>
+
       <ul
         className="reveal"
         style={{
-          marginTop: 'clamp(32px, 4vw + 16px, 64px)',
+          marginTop: 0,
           padding: 0,
           listStyle: 'none',
           animationDelay: '120ms',
@@ -380,6 +412,24 @@ const shortcutMeta: React.CSSProperties = {
 }
 
 // ── Reader ─────────────────────────────────────────────────────────
+
+function ProvteknikShell() {
+  return (
+    <MobileFrame activeTab="uppslag">
+      <Page
+        runningHead={['HP · COACH', 'Uppslag · Provteknik']}
+        status={{
+          mode: 'UPPSLAG',
+          context: 'Provteknik',
+          hints: ['esc tillbaka', '⌘k palett'],
+        }}
+      >
+        <ProvteknikReader />
+        <BackToPicker />
+      </Page>
+    </MobileFrame>
+  )
+}
 
 function ReaderShell({ section }: { section: Section }) {
   return (

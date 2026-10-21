@@ -143,6 +143,92 @@ export type Lexicon = {
 
 export type Framework = TrapCatalog | TacticCatalog | ConstraintCatalog | ProtocolCatalog | Lexicon
 
+/** Cross-section reading only: never part of section practice or progress. */
+export type ProvteknikEntry = {
+  id: string
+  delprov: Section | null
+  headline: string
+  body: string
+  steps?: string[]
+  table?: [label: string, meaning: string][]
+}
+
+export type ProvteknikChapter = {
+  chapter: 'provteknik'
+  entries: ProvteknikEntry[]
+}
+
+// Lives in TypeScript because frameworks/*.json is reserved for section catalogs and prerequisites.
+export const PROVTEKNIK: ProvteknikChapter = {
+  chapter: 'provteknik',
+  entries: [
+    {
+      id: 'PROV-001',
+      delprov: null,
+      headline: 'Svara på alla frågor',
+      body: 'På högskoleprovet ger rätt svar en poäng. Fel svar kostar inga poäng, så lämna aldrig en fråga obesvarad. Stryk de alternativ du vet är fel och välj bland resten.',
+      steps: [
+        'Skriv ditt svar i svarshäftet direkt och kontrollera att numret stämmer.',
+        'Håll koll på tiden för hela provpasset. Du får bara arbeta med det pass som pågår.',
+        'Kontrollera innan provtiden är slut att alla frågor har ett svar i svarshäftet.',
+      ],
+    },
+    {
+      id: 'PROV-002',
+      delprov: null,
+      headline: 'Sätt en gräns och gå vidare',
+      body: 'Bestäm i förväg hur lång tid du ger en fråga. Utgå från tiderna nedan när du övar och prova en gräns som hjälper dig att hinna hela delprovet. Snittet är ingen gräns för varje fråga. En text eller figur tar tid att läsa första gången, men används till flera frågor.',
+      steps: [
+        'Första varvet: lös det du kan. När du når din gräns utan att komma vidare, välj ditt bästa svar och markera frågan i provhäftet.',
+        'Gå vidare direkt. Lägg inte mer tid på samma fråga nu.',
+        'Andra varvet: återvänd till de markerade frågorna om du har tid kvar i provpasset. Börja med dem du tror att du kan lösa.',
+      ],
+    },
+    {
+      id: 'PROV-003',
+      delprov: 'LÄS',
+      headline: 'Läs frågorna före texten',
+      body: 'Börja med att läsa frågorna (inte alternativen) som hör till texten, så vet du vad du ska leta efter. Läs sedan texten med frågorna i bakhuvudet. Kontrollera varje svar mot vad texten faktiskt säger, även om ett annat alternativ låter rimligt.',
+    },
+    {
+      id: 'PROV-004',
+      delprov: 'DTK',
+      headline: 'Lär känna figuren först',
+      body: 'Den första frågan till en figur tar ofta längst tid: du behöver förstå rubrik, axlar, enheter och teckenförklaring. Det arbetet hjälper dig med resten av frågorna till samma figur. Ligger svarsalternativen långt från varandra kan du avrunda till jämna tal, till exempel 47 till 50, och göra ett överslag. Ligger de nära varandra behöver du räkna noggrant.',
+    },
+    {
+      id: 'PROV-005',
+      delprov: 'NOG',
+      headline: 'Pröva ett påstående i taget',
+      body: 'I NOG ska du avgöra om informationen räcker för ett entydigt svar, alltså bara ett möjligt svar. Ett säkert nej räknas också som ett entydigt svar. Du behöver inte alltid räkna fram svaret. Grundinformationen i frågan gäller hela tiden, men du får inte låna något från påstående (1) när du prövar (2) ensamt.',
+      steps: [
+        'Pröva (1) ensamt. Räcker det för ett entydigt svar?',
+        'Börja om och pröva (2) ensamt. Räcker det för ett entydigt svar?',
+        'Räcker bara (1), välj A. Räcker bara (2), välj B. Räcker båda var för sig, välj D.',
+        'Om inget räcker ensamt, pröva (1) och (2) tillsammans. Räcker de nu, välj C. Annars välj E.',
+      ],
+      table: [
+        ['A', 'i (1) men ej i (2)'],
+        ['B', 'i (2) men ej i (1)'],
+        ['C', 'i (1) tillsammans med (2)'],
+        ['D', 'i (1) och (2) var för sig'],
+        ['E', 'ej genom de båda påståendena'],
+      ],
+    },
+    {
+      id: 'PROV-006',
+      delprov: 'KVA',
+      headline: 'Prova enkla tal först',
+      body: 'När du jämför två uttryck med en okänd variabel, börja med att sätta in enkla tal: 0, 1, −1, ett bråk som 1/2 och ett stort tal. Använd bara tal som frågans villkor tillåter. Blir jämförelsen olika för två tillåtna värden väljer du D (informationen är otillräcklig). Ger alla dina exempel samma resultat är det ett tecken, inte ett bevis. Fundera kort på om det gäller för alla tillåtna värden innan du väljer A, B eller C.',
+    },
+  ],
+}
+
+/** Independent from FILENAMES so section consumers keep their existing scope. */
+export function loadProvteknik(): ProvteknikChapter {
+  return PROVTEKNIK
+}
+
 const FILENAMES: Partial<Record<Section, string>> = {
   NOG: 'nog_traps.json',
   KVA: 'kva_traps.json',
