@@ -1,4 +1,5 @@
 import { type Question, questionsInSection } from '@/data/questions'
+import { decodeTreatedMarker } from '@/lib/adaptiveReview'
 import { ORD_WORDS_SECTIONS } from '@/lib/ordWords'
 import { uhrTimeMs } from '@/lib/uhrPacing'
 
@@ -18,6 +19,8 @@ export function parseTimedSections(raw: string | null | undefined): TimedDrillSe
 
 /** For section-based links/display only. Adoption must compare the full marker. */
 export function sessionSectionCode(raw: string | null | undefined): string {
+  const detour = decodeTreatedMarker(raw ?? null)
+  if (detour) return detour.section.toUpperCase()
   const marker = raw?.toUpperCase() ?? ''
   if (marker === ORD_WORDS_SECTIONS) return 'ORD'
   return parseTimedSections(marker) ?? marker

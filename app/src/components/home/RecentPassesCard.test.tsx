@@ -1,18 +1,38 @@
 import { render, screen } from '@testing-library/react'
-import type { ReactNode } from 'react'
+import type { FunctionComponent, ReactNode } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 
 import type { SessionHistoryRow } from '@/api/hooks/useSessions'
 
+const history = vi.hoisted(() => ({ rows: [] as SessionHistoryRow[] }))
+
 // Stub Link → plain anchor so the card renders without a router.
 vi.mock('@tanstack/react-router', () => ({
+  createFileRoute: () => (options: unknown) => ({ options }),
+  useNavigate: () => vi.fn(),
   Link: ({ children, ...rest }: { children: ReactNode; [k: string]: unknown }) => {
     const { to: _to, search: _search, ...attrs } = rest as Record<string, unknown>
     return <a {...attrs}>{children}</a>
   },
 }))
+vi.mock('@/api/hooks/useSessions', () => ({
+  useSessionHistory: () => ({ data: history.rows, isPending: false }),
+}))
+vi.mock('@/components/MobileFrame', () => ({
+  MobileFrame: ({ children }: { children: ReactNode }) => children,
+}))
+vi.mock('@/components/Page', () => ({
+  Page: ({ children }: { children: ReactNode }) => children,
+}))
+vi.mock('@/stores/examStore', () => ({
+  useSitting: () => ({ label: 'Hösten 2026' }),
+  useDaysRemaining: () => 10,
+}))
 
+import { Route as HistoryRoute } from '@/routes/historik'
 import { RecentPassesCard } from './RecentPassesCard'
+
+const Historik = HistoryRoute.options.component as FunctionComponent
 
 function row(over: Partial<SessionHistoryRow> = {}): SessionHistoryRow {
   return {
@@ -27,6 +47,22 @@ function row(over: Partial<SessionHistoryRow> = {}): SessionHistoryRow {
 }
 
 describe('RecentPassesCard', () => {
+  it('uses short repetition labels on Home and full labels in Historik', () => {
+    history.rows = [row({ kind: 'adaptive_review' }), row({ id: 2, sections: 'ar:ORD:FW' })]
+    render(
+      <>
+        <RecentPassesCard passes={history.rows} />
+        <Historik />
+      </>,
+    )
+    expect(screen.getByTestId('home-recent-pass-1').querySelector('.hpc-m3-tag')?.textContent).toBe(
+      'Rep',
+    )
+    expect(screen.getByTestId('historik-pass-1')).toHaveTextContent('Repetition')
+    expect(screen.getByTestId('home-recent-pass-2')).toHaveTextContent('ORD · repetition')
+    expect(screen.getByTestId('historik-pass-2')).toHaveTextContent('ORD · repetition')
+  })
+
   it('shows plain labels for timed passes and word rounds', () => {
     render(
       <RecentPassesCard

@@ -8,6 +8,7 @@
 
 import { useLessonProgress } from '@/api/hooks/useLessonProgress'
 import { useActiveSessions } from '@/api/hooks/useSessions'
+import { decodeTreatedMarker } from '@/lib/adaptiveReview'
 import { type DeviceKind, deviceLabel } from '@/lib/device'
 import { ORD_WORDS_SECTIONS } from '@/lib/ordWords'
 import { passLabel } from '@/lib/sessionLabel'
@@ -66,9 +67,16 @@ export function pickCandidate(
       const section = sessionSectionCode(s.sections)
       const timed = parseTimedSections(s.sections)
       const words = s.sections?.toUpperCase() === ORD_WORDS_SECTIONS
-      const mode = timed ? '&timed=1' : words ? '&words=1' : ''
+      const detour = decodeTreatedMarker(s.sections)
+      const mode = timed
+        ? '&timed=1'
+        : words
+          ? '&words=1'
+          : detour
+            ? `&framework=${encodeURIComponent(detour.framework_id)}&ar=1`
+            : ''
       out.push({
-        subject: timed || words ? passLabel(s) : section ? `${section}-övning` : 'Övning',
+        subject: timed || words || detour ? passLabel(s) : section ? `${section}-övning` : 'Övning',
         progress,
         href: section
           ? `/drill?section=${encodeURIComponent(section)}${mode}&qid=${encodeURIComponent(qid)}`

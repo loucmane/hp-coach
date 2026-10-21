@@ -64,7 +64,7 @@ export function RecentPassesCard({ passes }: { passes: readonly SessionHistoryRo
               background: 'var(--panel)',
             }}
           >
-            <span className="hpc-m3-tag">{passLabel(row)}</span>
+            <span className="hpc-m3-tag">{passLabel(row, { short: true })}</span>
             <div
               style={{
                 fontFamily: 'var(--font-display)',

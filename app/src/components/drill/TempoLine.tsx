@@ -3,7 +3,7 @@ import { uhrTimeMs } from '@/lib/uhrPacing'
 
 function timeDifference(elapsed: number, budget: number): string {
   const diff = Math.floor(elapsed / 1000) - Math.floor(budget / 1000)
-  if (diff === 0) return 'i takt'
+  if (Math.abs(diff) <= 2) return 'i takt'
   const minutes = Math.floor(Math.abs(diff) / 60)
   const seconds = Math.abs(diff) % 60
   const amount = [minutes ? `${minutes} min` : '', seconds ? `${seconds} s` : '']

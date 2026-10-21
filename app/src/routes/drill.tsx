@@ -129,7 +129,7 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
     out.done = done
   }
   // `?ar=1` — adaptive-review detour marker (task #16).
-  if (input.ar === '1' || input.ar === true) {
+  if (input.ar === '1' || input.ar === 1 || input.ar === true) {
     out.ar = true
   }
   // `?back=<section>` — original drill section to return to after a detour.
@@ -404,7 +404,11 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
     timing &&
     timedBank.data &&
     activeDrill.data?.plan &&
-    activeDrill.data.sections === timedSections(timing.section) &&
+    (activeDrill.data.sections === timedSections(timing.section) ||
+      // Before mode markers shipped, timed plans used the plain section.
+      (activeDrill.data.sections === timing.section &&
+        activeDrill.data.startedAt &&
+        Date.parse(activeDrill.data.startedAt) < Date.parse('2026-10-21T17:22:41Z'))) &&
     isTimedDrillPlan(
       activeDrill.data.plan
         .map((id) => findQuestion(timedBank.data, id))
@@ -538,7 +542,9 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
   const sessionSections = words
     ? ORD_WORDS_SECTIONS
     : timing
-      ? timedSections(timing.section)
+      ? canResumeTimed
+        ? (activeDrill.data?.sections ?? timedSections(timing.section))
+        : timedSections(timing.section)
       : ar && framework
         ? encodeTreatedMarker(section, framework)
         : section

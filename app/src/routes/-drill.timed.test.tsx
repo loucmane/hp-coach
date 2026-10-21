@@ -55,6 +55,10 @@ vi.mock('@/data/questions', async (original) => ({
   ...(await original<typeof import('@/data/questions')>()),
   loadBank: async () => h.bank,
 }))
+vi.mock('@/data/frameworks', async (original) => ({
+  ...(await original<typeof import('@/data/frameworks')>()),
+  loadFramework: async () => null,
+}))
 vi.mock('@/api/hooks/useSessions', async () => {
   const { useSyncExternalStore } = await import('react')
   const subscribe = (notify: () => void) => {
@@ -289,6 +293,67 @@ describe('timed drill route with the real SessionPlayer', () => {
     expect(validate(defaultParseSearch('?section=ORD&timed=1')).timed).toBe(true)
   })
 
+  it('resumes an adaptive-review detour through the Home URL and real search parser', async () => {
+    const view = await start()
+    await answer(true, 20_000)
+    await next()
+    view.unmount()
+    h.session = { ...h.session!, sections: 'ar:ORD:ORD-ROOT-001' }
+    const candidate = pickCandidate([h.session], null)
+    const { defaultParseSearch } =
+      await vi.importActual<typeof import('@tanstack/react-router')>('@tanstack/react-router')
+    h.search = validate(
+      defaultParseSearch(new URL(candidate?.href ?? '', 'https://example.test').search),
+    )
+    expect(h.search).toEqual({
+      section: 'ORD',
+      framework: 'ORD-ROOT-001',
+      ar: true,
+      qid: h.session.currentQuestionId,
+    })
+    await start()
+    expect(h.start).toHaveBeenCalledTimes(1)
+    expect(screen.getByTestId('question')).toHaveAttribute('data-qid', h.session.currentQuestionId)
+    expect(screen.queryByRole('timer')).toBeNull()
+  })
+
+  it.each([
+    'ORD',
+    'LÄS',
+  ])('adopts a pre-marker %s timed plan with its cursor and elapsed time', async (section) => {
+    h.search = validate({ section, timed: true, start: true })
+    const view = await start()
+    await answer(true, 20_000)
+    await next()
+    view.unmount()
+    h.session = { ...h.session!, sections: section, startedAt: '2026-10-21T17:22:40.999Z' }
+    const id = h.session.id
+    const qid = h.session.currentQuestionId
+    h.search = validate({ section, timed: true, start: true })
+    await start()
+    expect(h.start).toHaveBeenCalledTimes(1)
+    expect(h.session?.id).toBe(id)
+    expect(screen.getByTestId('question')).toHaveAttribute('data-qid', qid)
+    expect(screen.getByRole('timer')).toHaveTextContent(section === 'ORD' ? '2:40' : '8:28')
+  })
+
+  it.each([
+    null,
+    'invalid',
+    '2026-10-21T17:22:41.000Z',
+    '2026-10-21T17:22:42.000Z',
+    '2026-10-22T00:00:00.000Z',
+    '2026-10-23T00:00:00.000Z',
+  ])('does not adopt an unmarked session with start time %s as timed', async (startedAt) => {
+    const view = await start()
+    view.unmount()
+    h.session = { ...h.session!, sections: 'ORD', startedAt }
+    h.search = validate({ section: 'ORD', timed: true, start: true })
+    await start()
+    expect(h.start).toHaveBeenCalledTimes(2)
+    expect(h.session?.sections).toBe('ORD · PÅ TID')
+  })
+
   it('validates opt-in and ignores unsupported modes and false values', () => {
     expect(validate({ timed: '1' }).timed).toBe(true)
     expect(validate({ section: 'LÄS', timed: true }).timed).toBe(true)
@@ -362,6 +427,7 @@ describe('timed drill route with the real SessionPlayer', () => {
     const view = await start()
     expect(h.session?.plan).toHaveLength(10)
     view.unmount()
+    h.session = { ...h.session!, startedAt: '2026-10-21T17:22:40.999Z' }
     h.search = validate({ section: 'LÄS', timed: true, start: true })
     await start()
     expect(h.start).toHaveBeenCalledTimes(2)

@@ -29,6 +29,7 @@ function ExampleSummary({ children }: { children: ReactNode }) {
     <summary
       className="hpc-btn"
       style={{
+        transform: 'none',
         cursor: 'pointer',
         minHeight: 44,
         display: 'flex',
@@ -215,27 +216,24 @@ function Reader({
               </li>
             ))}
           </ol>
+          <div aria-live="polite" aria-relevant="additions">
+            {!done && independent && <p>Försök själv först.</p>}
+            {done && <p>Svar: {data.question.answer}</p>}
+          </div>
           {!done && (
-            <>
-              {independent && <p>Försök själv först.</p>}
-              <button type="button" className="hpc-btn" onClick={reveal} style={pillStyle}>
-                {independent ? 'Visa steget' : 'Nästa steg'}
-              </button>
-            </>
+            <button type="button" className="hpc-btn" onClick={reveal} style={pillStyle}>
+              {independent ? 'Visa steget' : 'Nästa steg'}
+            </button>
           )}
-          {done && (
-            <>
-              <p>Svar: {data.question.answer}</p>
-              {data.detail.map((step) => (
-                <details key={step.n} style={{ marginBlock: 12 }}>
-                  <ExampleSummary>{step.title ?? 'Fördjupning'}</ExampleSummary>
-                  <p style={{ whiteSpace: 'pre-wrap' }}>
-                    <MathText>{step.text}</MathText>
-                  </p>
-                </details>
-              ))}
-            </>
-          )}
+          {done &&
+            data.detail.map((step) => (
+              <details key={step.n} style={{ marginBlock: 12 }}>
+                <ExampleSummary>{step.title ?? 'Fördjupning'}</ExampleSummary>
+                <p style={{ whiteSpace: 'pre-wrap' }}>
+                  <MathText>{step.text}</MathText>
+                </p>
+              </details>
+            ))}
         </div>
       )}
     </details>

@@ -9,12 +9,16 @@ describe('session labels shared by Home and history', () => {
     ['ORD · ORDBANK', 'Ordbank'],
     ['ORD', 'ORD'],
     ['XYZ', 'XYZ'],
+    ['ar:ORD:FW', 'ORD · repetition'],
+    ['ar:LÄS:LÄS-TRAP-001', 'LÄS · repetition'],
     [null, 'Övning'],
   ])('labels %s as %s', (sections, label) => {
     expect(passLabel({ kind: 'drill', sections })).toBe(label)
   })
 
-  it('keeps the repetition label', () => {
-    expect(passLabel({ kind: 'adaptive_review', sections: 'ORD' })).toBe('Rep')
+  it('uses the full repetition label by default and offers a short form for Home', () => {
+    const row = { kind: 'adaptive_review', sections: 'ORD' }
+    expect(passLabel(row)).toBe('Repetition')
+    expect(passLabel(row, { short: true })).toBe('Rep')
   })
 })
