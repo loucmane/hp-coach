@@ -238,6 +238,22 @@ function OvaRoute() {
                 )
               })}
             </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 16 }}>
+              <Link
+                to="/drill"
+                search={{ section: 'ORD', timed: true, start: true }}
+                style={timedLink}
+              >
+                ORD på tid · 10 frågor, 3 min
+              </Link>
+              <Link
+                to="/drill"
+                search={{ section: 'LÄS', timed: true, start: true }}
+                style={timedLink}
+              >
+                En LÄS-text på tid · ca 9 min
+              </Link>
+            </div>
             <Link
               to="/drill"
               search={{ mixed: true, start: true }}
@@ -371,4 +387,12 @@ const laneCta = {
   textTransform: 'uppercase' as const,
   color: 'var(--accent)',
   textDecoration: 'none' as const,
+}
+
+const timedLink = {
+  fontFamily: 'var(--font-mono)',
+  fontSize: 12,
+  color: 'var(--muted)',
+  textDecoration: 'underline',
+  textUnderlineOffset: 3,
 }
