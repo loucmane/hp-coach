@@ -137,6 +137,10 @@ export type SessionPlayerProps = {
   sections?: string
   /** Resolves to the plan when the user clicks Start. */
   pickQuestions: () => Promise<Question[]> | Question[]
+  /** Encode the picked questions for the initial session write, in the
+   *  same order. Defaults to plain qids; Repetera includes source links.
+   *  Called immediately after pickQuestions, before any rerender is required. */
+  planEntries?: (picked: Question[]) => string[]
   /** Hero copy on the idle screen — e.g. "10 synonymfrågor från riktiga prov." */
   idleEyebrow: string
   idleHeadline: string
@@ -399,7 +403,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
       const session = await startSession.mutateAsync({
         kind: props.sessionKind,
         sections: props.sections,
-        plan: picked.map((q) => q.qid),
+        plan: props.planEntries?.(picked) ?? picked.map((q) => q.qid),
         device: currentDevice(),
       })
       setSessionId(session.id)

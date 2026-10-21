@@ -20,11 +20,10 @@
 // The link is stored with the round (planEntry: "X~A" in the session's
 // plan), and a resume reads exactly that link back (prunePlan). It is never
 // re-derived from the due list, whose order and members change between a
-// pause and a resume. It lasts once the server has stored it, and only then:
-// until that write lands, only the visit that picked the round knows it. A
-// round whose links are lost plays its new questions on as plain questions
-// and grades none of them; it never ends for want of its links or of the
-// trap index.
+// pause and a resume. New rounds store links in the session creation call.
+// An older round whose links were lost plays its new questions on as plain
+// questions and grades none of them; it never ends for want of its links
+// or of the trap index.
 //
 // Only a question that repeats a due mistake is ever graded. A question the
 // round has already answered (before its cursor) is history: kept for the
@@ -161,8 +160,8 @@ export function parsePlanEntry(entry: string): { qid: string; sourceQid: string 
   return { qid: entry.slice(0, at), sourceQid: entry.slice(at + 1) }
 }
 
-/** Whether a stored plan carries any link. The server stores a round's
- *  links whole (PUT /api/mistakes/round/:sessionId), so a plan with one
+/** Whether a stored plan carries any link. A round's links are stored
+ *  together at creation (older bundles used a later PUT), so a plan with one
  *  link has them all, and a plan with none either had no new question or
  *  never got its links. */
 function hasPlanLinks(entries: readonly string[]): boolean {
@@ -250,6 +249,9 @@ export function prunePlan(
       claimed.add(source.id)
       out.push({ qid, sourceQid, sibling, mistakeId: source.id })
     } else if (linksLost && mayBeNew(qid)) {
+      // hpf-bz6f.12 follow-up: remove this legacy fallback with the worker
+      // PUT after one release, once cached old bundles no longer create
+      // unlinked rounds.
       out.push({ qid, sourceQid, sibling, mistakeId: null })
     }
   })

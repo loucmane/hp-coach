@@ -17,24 +17,16 @@
 // has already answered is history: a stale ?qid= never reopens it, and an
 // answer on any question without a live mapping records nothing.
 //
-// The links travel with the round. SessionPlayer stores the session's plan
-// as plain qids, so once that session exists the route rewrites each new
-// question's entry as "X~A" (PUT /api/mistakes/round/:sessionId), and again
-// whenever the session shows up without them. They last once that write
-// lands, and only then: nothing keeps them on the device. A resume, here or
-// on another device, answers against exactly those sources; one that finds
-// them lost plays the round's new questions on as plain questions, grades
-// none of them, and never ends the round for want of them.
+// The links travel with the round from its first write: planEntries encodes
+// each new question as "X~A" in the session creation call. A resume, here or
+// on another device, answers against exactly those stored sources. Older
+// bundles could leave unlinked rounds; those still play on as plain
+// questions, grading none of the questions whose sources are unknown.
 
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
-import {
-  type Mistake,
-  useDueMistakes,
-  useLinkRound,
-  useReviewMistake,
-} from '@/api/hooks/useMistakes'
+import { type Mistake, useDueMistakes, useReviewMistake } from '@/api/hooks/useMistakes'
 import { type ExposureMap, useExposure } from '@/api/hooks/useMockResults'
 import { useActiveSessionOfKind } from '@/api/hooks/useSessions'
 import { canAdoptActiveSession } from '@/components/session/canAdoptSession'
@@ -49,7 +41,6 @@ import {
   type ReplayItem,
   resolveReplayPlan,
   resumeQid,
-  samePlay,
 } from '@/lib/replay'
 
 type RepetitionSearch = { qid?: string; done?: number; start?: true; section?: Section }
@@ -95,7 +86,6 @@ function RepetitionScreen() {
   const due = useDueMistakes(section)
   const exposure = useExposure()
   const reviewMistake = useReviewMistake()
-  const { mutate: linkRound } = useLinkRound()
   const roundSession = useActiveSessionOfKind('adaptive_review').data
   const navigate = useNavigate()
 
@@ -106,8 +96,14 @@ function RepetitionScreen() {
   // answer handlers and the sibling label. It holds live items only: an
   // answered question, or one whose link was lost, is never in it.
   const [round, setRound] = useState<ReadonlyMap<string, ReplayItem>>(() => new Map())
+  // begin() calls the encoder immediately after awaiting the picker. Its
+  // props still belong to the render before the pick, so read the new map
+  // through a ref instead of waiting for setRound's next render.
+  const roundRef = useRef<ReadonlyMap<string, ReplayItem>>(new Map())
   const playRound = useCallback((items: readonly ReplayItem[]) => {
-    setRound(new Map(items.map((item) => [item.question.qid, item])))
+    const next = new Map(items.map((item) => [item.question.qid, item]))
+    roundRef.current = next
+    setRound(next)
   }, [])
   const current = urlQid ? round.get(urlQid) : undefined
 
@@ -131,35 +127,6 @@ function RepetitionScreen() {
     )
       ? resumeQid(urlQid, roundSession.plan, roundSession.position, roundSession.currentQuestionId)
       : (urlQid ?? null)
-
-  // The links of the round this visit picked (lib/replay.ts planEntry);
-  // null when the round has none to store, or when this visit resumed a
-  // stored round. SessionPlayer creates the session from plain qids right
-  // after the pick, so the links are written once that session shows up
-  // here, and again whenever it shows up without them: after a failed
-  // write, or when a slower response of SessionPlayer's own puts the plain
-  // plan back in the cache. Nothing else keeps them. They last once the
-  // write lands; a visit that ends first takes them along, and a resume
-  // then plays those questions as plain ones (resolvePlan below).
-  const linkedPlan = useRef<string[] | null>(null)
-  const linking = useRef(false)
-  useEffect(() => {
-    const plan = linkedPlan.current
-    const stored = roundSession?.plan
-    if (!plan || !roundSession || !stored || roundSession.endedAt != null) return
-    // Only this round's session, and only while it lacks the links.
-    if (!samePlay(stored, plan) || stored.every((entry, i) => entry === plan[i])) return
-    if (linking.current) return
-    linking.current = true
-    linkRound(
-      { sessionId: roundSession.id, plan },
-      {
-        onSettled: () => {
-          linking.current = false
-        },
-      },
-    )
-  }, [roundSession, linkRound])
 
   // Questions answered on this visit → when, in epoch seconds like the
   // exposure map's `last`.
@@ -215,11 +182,9 @@ function RepetitionScreen() {
   )
 
   // On completion, stamp `?done=<sessionId>` so a refresh reconstructs
-  // the Klart. instead of cold-starting a new repetition pass. A finished
-  // round has no links left to write.
+  // the Klart. instead of cold-starting a new repetition pass.
   const onComplete = useCallback(
     (sessionId: number) => {
-      linkedPlan.current = null
       navigate({ to: '/repetition', search: { done: sessionId }, replace: true })
     },
     [navigate],
@@ -290,12 +255,10 @@ function RepetitionScreen() {
           // /repetition's sessions (kind=adaptive_review) are
           // mistake-backed; /drill's resolvePlan doesn't prune.
           //
-          // A stored plan whose links never landed (the write failed or is
-          // still in flight, or the visit that picked the round is gone) is
-          // read as it is: its new questions play on as plain questions and
-          // grade nothing, and neither that nor the trap index can end the
-          // round. A resumed round has no links of this visit's to write.
-          linkedPlan.current = null
+          // Older bundles could create a round whose later link write
+          // never landed. Read those plans as stored: their new questions
+          // play on as plain questions and grade nothing. Neither that
+          // nor the trap index can end the round.
           const resumed = await resolveReplayPlan(entries, await dueNow(), position)
           // Nothing left from the saved cursor on: the round is over. Treat
           // the session as complete rather than replaying an answered
@@ -315,11 +278,14 @@ function RepetitionScreen() {
             exposure: await exposureNow(),
           })
           playRound(items)
-          // Only a new question carries a link; without one, the plain
-          // plan SessionPlayer stores is already exact.
-          linkedPlan.current = items.some((item) => item.sibling) ? items.map(planEntry) : null
           return items.map((item) => item.question)
         }}
+        planEntries={(picked) =>
+          picked.map((q) => {
+            const item = roundRef.current.get(q.qid)
+            return item ? planEntry(item) : q.qid
+          })
+        }
         idleEyebrow="Repetition"
         idleHeadline="Dina missar"
         idleSubcopy={

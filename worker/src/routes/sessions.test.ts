@@ -66,6 +66,39 @@ beforeEach(() => {
   d1 = makeTestD1()
 })
 
+describe('POST /api/sessions', () => {
+  it('stores linked repetition entries verbatim in the create and active-session responses', async () => {
+    const { app, env } = appFor('user_a')
+    const plan = ['X~A', 'Y~B', 'ORD-1']
+    const created = await app.request(
+      '/',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ kind: 'adaptive_review', sections: 'alla', plan, device: 'phone' }),
+      },
+      env,
+    )
+    expect(created.status).toBe(201)
+    const { session } = (await created.json()) as { session: { id: number; plan: string[] } }
+    expect(session.plan).toEqual(plan)
+
+    // A separate client reads the first write, without any linking PUT or
+    // cursor PATCH in between. Check the database too, not just the echo.
+    const stored = await getDb(d1 as unknown as D1Database)
+      .select()
+      .from(sessions)
+    expect(stored).toHaveLength(1)
+    expect(stored[0].plan).toEqual(plan)
+    const otherDevice = appFor('user_a')
+    const active = await otherDevice.app.request('/active', {}, otherDevice.env)
+    expect(active.status).toBe(200)
+    expect(await active.json()).toMatchObject({
+      sessions: [{ id: session.id, plan, position: 0, currentQuestionId: null }],
+    })
+  })
+})
+
 describe('GET /api/sessions/history', () => {
   it('excludes mock sessions', async () => {
     const drillId = await seedCompletedSession('user_a', 'drill')
