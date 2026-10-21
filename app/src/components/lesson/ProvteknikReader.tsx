@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react'
-
 import { Mono } from '@/components/primitives'
-import { loadProvteknik, type ProvteknikChapter } from '@/data/frameworks'
+import { loadProvteknik } from '@/data/frameworks'
 import { UHR_DELPROV, UHR_ORDER, uhrTimeMs } from '@/lib/uhrPacing'
 
 import { ProvteknikCard } from './ProvteknikCard'
@@ -12,27 +10,7 @@ const PASS_MINUTES = UHR_ORDER.slice(0, 4).reduce((sum, s) => sum + UHR_DELPROV[
 
 /** A reading surface only. It deliberately mounts no lesson progress hooks. */
 export function ProvteknikReader() {
-  const [chapter, setChapter] = useState<ProvteknikChapter | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [failed, setFailed] = useState(false)
-
-  useEffect(() => {
-    let alive = true
-    loadProvteknik()
-      .then((data) => {
-        if (!alive) return
-        setChapter(data)
-        setLoading(false)
-      })
-      .catch(() => {
-        if (!alive) return
-        setFailed(true)
-        setLoading(false)
-      })
-    return () => {
-      alive = false
-    }
-  }, [])
+  const chapter = loadProvteknik()
 
   return (
     <div
@@ -71,27 +49,24 @@ export function ProvteknikReader() {
             marginTop: 16,
           }}
         >
-          Fördela tiden, gå vidare när du fastnar och ge varje fråga en chans.
+          Fördela tiden, gå vidare när du fastnar och svara på varje fråga.
         </p>
       </header>
-      {loading ? (
-        <p role="status">Laddar provteknik…</p>
-      ) : failed ? (
-        <p role="alert">Kunde inte ladda provtekniken. Försök ladda om sidan.</p>
-      ) : !chapter?.entries.length ? (
-        <p>Provtekniken är inte tillgänglig just nu.</p>
-      ) : (
-        chapter.entries.map((entry) => (
-          <ProvteknikCard key={entry.id} entry={entry}>
-            {/* Stable authored IDs attach the shared, live pacing data to
-                the rules and time-management entries without JSON copies. */}
-            {entry.id === 'PROV-001' && <p>Ett vanligt provpass är {PASS_MINUTES} minuter.</p>}
-            {entry.id === 'PROV-002' && <PacingTable />}
-          </ProvteknikCard>
-        ))
-      )}
+      {chapter.entries.map((entry) => (
+        <ProvteknikCard key={entry.id} entry={entry}>
+          {/* Stable authored IDs attach the shared, live pacing data to
+              the rules and time-management entries without copying it. */}
+          {entry.id === 'PROV-001' && <p>Ett vanligt provpass är {PASS_MINUTES} minuter.</p>}
+          {entry.id === 'PROV-002' && <PacingTable />}
+        </ProvteknikCard>
+      ))}
     </div>
   )
+}
+
+function formatAverageTime(section: string): string {
+  const seconds = Math.round((uhrTimeMs(section, 1) ?? 0) / 1000)
+  return seconds < 60 ? `${seconds} s` : `${Math.floor(seconds / 60)} min ${seconds % 60} s`
 }
 
 function PacingTable() {
@@ -127,7 +102,7 @@ function PacingTable() {
             <td style={{ whiteSpace: 'nowrap', paddingRight: 8 }}>
               {UHR_DELPROV[section].minutes} min
             </td>
-            <td style={{ whiteSpace: 'nowrap' }}>{(uhrTimeMs(section, 1) ?? 0) / 1000} s</td>
+            <td style={{ whiteSpace: 'nowrap' }}>{formatAverageTime(section)}</td>
           </tr>
         ))}
       </tbody>

@@ -1,17 +1,13 @@
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { __resetFrameworkCache, loadProvteknik, wiredSections } from './frameworks'
+import { loadProvteknik, PROVTEKNIK, wiredSections } from './frameworks'
 import { SECTION_KEYS } from './questions'
-
-function chapterData() {
-  return JSON.parse(readFileSync(path.resolve('..', 'frameworks/provteknik.json'), 'utf8'))
-}
 
 describe('Provteknik content', () => {
   it('has unique stable IDs, plain text and valid optional lists and tables', () => {
-    const chapter = chapterData()
+    const chapter = PROVTEKNIK
     expect(chapter.chapter).toBe('provteknik')
     expect(chapter.entries).toHaveLength(6)
     const ids = new Set<string>()
@@ -38,7 +34,7 @@ describe('Provteknik content', () => {
         }
       }
     }
-    expect(chapter.entries.map((entry: { delprov: string | null }) => entry.delprov)).toEqual([
+    expect(chapter.entries.map((entry) => entry.delprov)).toEqual([
       null,
       null,
       'LÄS',
@@ -52,39 +48,33 @@ describe('Provteknik content', () => {
     const bank = JSON.parse(readFileSync(path.resolve('public/data/host-ver1-2019.json'), 'utf8'))
     const nog = bank.find((q: { qid: string }) => q.qid === 'host-ver1-2019-kvant1-NOG-023')
     expect(nog).toBeDefined()
-    const entry = chapterData().entries.find((e: { delprov: string }) => e.delprov === 'NOG')
-    expect(entry.table).toEqual(
+    const entry = PROVTEKNIK.entries.find((e) => e.delprov === 'NOG')
+    expect(entry?.table).toEqual(
       nog.options.map((option: { letter: string; text: string }) => [option.letter, option.text]),
     )
+  })
+
+  it('quotes the question bank’s printed KVA D option verbatim', () => {
+    const bank = JSON.parse(readFileSync(path.resolve('public/data/host-ver1-2019.json'), 'utf8'))
+    const kva = bank.find((q: { qid: string }) => q.qid === 'host-ver1-2019-kvant1-KVA-013')
+    expect(kva).toBeDefined()
+    const option = kva.options.find((o: { letter: string }) => o.letter === 'D')
+    expect(option).toBeDefined()
+    const entry = PROVTEKNIK.entries.find((e) => e.delprov === 'KVA')
+    const quotedOption = entry?.body.match(/D \(([^)]+)\)/)?.[1]
+    expect(quotedOption).toBe(option.text)
   })
 })
 
 describe('loadProvteknik', () => {
-  beforeEach(() => __resetFrameworkCache())
   afterEach(() => vi.unstubAllGlobals())
 
-  it('memoises a separate static request without changing the wired sections', async () => {
-    const data = chapterData()
-    const fetcher = vi.fn().mockResolvedValue(new Response(JSON.stringify(data)))
+  it('provides the chapter synchronously offline without changing the wired sections', () => {
+    const fetcher = vi.fn().mockResolvedValue(new Response('', { status: 404 }))
     vi.stubGlobal('fetch', fetcher)
-    const results = await Promise.all([loadProvteknik(), loadProvteknik()])
-    expect(results).toEqual([data, data])
-    await loadProvteknik()
-    expect(fetcher).toHaveBeenCalledTimes(1)
-    expect(fetcher).toHaveBeenCalledWith('/frameworks/provteknik.json')
+    expect(loadProvteknik()).toBe(PROVTEKNIK)
+    expect(loadProvteknik()).toBe(PROVTEKNIK)
+    expect(fetcher).not.toHaveBeenCalled()
     expect(wiredSections().sort()).toEqual([...SECTION_KEYS].sort())
-  })
-
-  it('returns null for a missing chapter', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('', { status: 404 })))
-    await expect(loadProvteknik()).resolves.toBeNull()
-  })
-
-  it('reports server and network failures', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('', { status: 503 })))
-    await expect(loadProvteknik()).rejects.toThrow('503')
-    __resetFrameworkCache()
-    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('offline')))
-    await expect(loadProvteknik()).rejects.toThrow('offline')
   })
 })

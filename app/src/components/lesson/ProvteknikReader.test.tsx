@@ -1,5 +1,3 @@
-import { readFileSync } from 'node:fs'
-import path from 'node:path'
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -37,19 +35,15 @@ vi.mock('@/api/hooks/useStats', () => ({ useStats: () => ({ data: undefined }) }
 vi.mock('@/api/hooks/useMistakes', () => ({ useDueMistakes: () => ({ data: undefined }) }))
 vi.mock('@/api/hooks/useLessonProgress', () => ({ usePutLessonProgress: routeState.progressHook }))
 
-import { __resetFrameworkCache } from '@/data/frameworks'
+import { PROVTEKNIK } from '@/data/frameworks'
 import { SECTION_KEYS } from '@/data/questions'
-import { UHR_DELPROV, UHR_ORDER, uhrTimeMs } from '@/lib/uhrPacing'
+import { UHR_DELPROV, UHR_ORDER } from '@/lib/uhrPacing'
 import { PickerBody, Route, validateSearch } from '@/routes/lektion'
 import { ProvteknikReader } from './ProvteknikReader'
 
-function chapterData() {
-  return JSON.parse(readFileSync(path.resolve('public/frameworks/provteknik.json'), 'utf8'))
-}
-
 beforeEach(() => {
-  __resetFrameworkCache()
   vi.clearAllMocks()
+  vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('offline')))
   routeState.search = {}
 })
 afterEach(() => {
@@ -57,19 +51,13 @@ afterEach(() => {
   vi.useRealTimers()
 })
 
-function serveChapter() {
-  const data = chapterData()
-  const fetcher = vi.fn().mockResolvedValue(new Response(JSON.stringify(data)))
-  vi.stubGlobal('fetch', fetcher)
-  return { data, fetcher }
-}
-
 describe('ProvteknikReader', () => {
-  it('loads collapsed native cards, renders steps and the NOG table, without practice or credit', async () => {
-    const { data, fetcher } = serveChapter()
+  it('renders collapsed native cards immediately offline, without practice or credit', () => {
+    const data = PROVTEKNIK
     const { container } = render(<ProvteknikReader />)
-    expect(screen.getByRole('status')).toHaveTextContent('Laddar')
-    await screen.findByText(data.entries[0].headline)
+    expect(screen.getByText(data.entries[0].headline)).toBeInTheDocument()
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
     const cards = container.querySelectorAll('details')
     expect(cards).toHaveLength(data.entries.length)
     for (const [index, card] of Array.from(cards).entries()) {
@@ -84,50 +72,42 @@ describe('ProvteknikReader', () => {
     expect(nog).toHaveTextContent('i (1) och (2) var för sig')
     expect(screen.getAllByRole('list').length).toBeGreaterThan(0)
     expect(screen.queryByText(/Markera som läst|Öva detta|Öva denna/)).not.toBeInTheDocument()
-    expect(fetcher).toHaveBeenCalledTimes(1)
+    expect(fetch).not.toHaveBeenCalled()
     expect(routeState.progressHook).not.toHaveBeenCalled()
   })
 
-  it('derives pass duration and every recommended time from the shared pacing data', async () => {
-    serveChapter()
+  it('shows a 55-minute pass and every recommended time from the shared pacing data', () => {
     const { container } = render(<ProvteknikReader />)
-    await screen.findByText('Sätt en gräns och gå vidare')
     for (const card of container.querySelectorAll('details')) card.open = true
-    const passMinutes = UHR_ORDER.slice(0, 4).reduce((sum, s) => sum + UHR_DELPROV[s].minutes, 0)
-    expect(screen.getByText(`Ett vanligt provpass är ${passMinutes} minuter.`)).toBeInTheDocument()
+    expect(screen.getByText('Ett vanligt provpass är 55 minuter.')).toBeInTheDocument()
     const table = screen.getByRole('table', { name: 'UHR:s rekommenderade tider' })
     for (const section of UHR_ORDER) {
       const row = within(table).getByRole('rowheader', { name: section }).closest('tr')
       expect(row).toHaveTextContent(`${UHR_DELPROV[section].minutes} min`)
       expect(row).toHaveTextContent(`${UHR_DELPROV[section].questions}`)
-      expect(row).toHaveTextContent(`${(uhrTimeMs(section, 1) ?? 0) / 1000} s`)
     }
-    expect(
-      screen.getByText(/ett genomsnitt, inte en tidsgräns för varje fråga/),
-    ).toBeInTheDocument()
+    expect(screen.getByText(/Snittet är ingen gräns för varje fråga/)).toBeInTheDocument()
   })
 
-  it('shows a readable error without exposing diagnostics', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('internal diagnostic')))
-    render(<ProvteknikReader />)
-    expect(await screen.findByRole('alert')).toHaveTextContent('Kunde inte ladda provtekniken')
-    expect(screen.queryByText(/internal diagnostic/)).not.toBeInTheDocument()
-  })
-
-  it.each([
-    null,
-    { chapter: 'provteknik', entries: [] },
-  ])('handles unavailable content: %j', async (data) => {
-    vi.stubGlobal(
-      'fetch',
-      vi
-        .fn()
-        .mockResolvedValue(
-          data === null ? new Response('', { status: 404 }) : new Response(JSON.stringify(data)),
-        ),
-    )
-    render(<ProvteknikReader />)
-    expect(await screen.findByText('Provtekniken är inte tillgänglig just nu.')).toBeInTheDocument()
+  it('formats average times as seconds below a minute and minutes plus seconds otherwise', () => {
+    const { container } = render(<ProvteknikReader />)
+    for (const card of container.querySelectorAll('details')) card.open = true
+    const table = screen.getByRole('table', { name: 'UHR:s rekommenderade tider' })
+    const averages = {
+      ORD: '18 s',
+      LÄS: '2 min 12 s',
+      MEK: '48 s',
+      ELF: '2 min 12 s',
+      XYZ: '1 min 0 s',
+      KVA: '1 min 0 s',
+      NOG: '1 min 40 s',
+      DTK: '1 min 55 s',
+    }
+    for (const [section, average] of Object.entries(averages)) {
+      const row = within(table).getByRole('rowheader', { name: section }).closest('tr')
+      expect(row).not.toBeNull()
+      expect(within(row as HTMLElement).getAllByRole('cell')[2].textContent).toBe(average)
+    }
   })
 })
 
@@ -152,20 +132,19 @@ describe('lektion chapter routing', () => {
   })
 
   it('opens the chapter without mounting the bookmark writer and Escape returns to the picker', async () => {
-    const { data, fetcher } = serveChapter()
+    const data = PROVTEKNIK
     routeState.search = { chapter: 'provteknik' }
     const Component = Route.options.component
     if (!Component) throw new Error('Missing route component')
     render(<Component />)
-    const headline = await screen.findByText(data.entries[0].headline)
+    const headline = screen.getByText(data.entries[0].headline)
     vi.useFakeTimers()
     const card = headline.closest('details') as HTMLDetailsElement
     fireEvent.click(card.querySelector('summary') as HTMLElement)
     fireEvent(card, new Event('toggle'))
     await act(async () => vi.advanceTimersByTime(1000))
     expect(routeState.progressHook).not.toHaveBeenCalled()
-    expect(fetcher).toHaveBeenCalledTimes(1)
-    expect(fetcher).toHaveBeenCalledWith('/frameworks/provteknik.json')
+    expect(fetch).not.toHaveBeenCalled()
     fireEvent.keyDown(document.body, { key: 'Escape' })
     expect(routeState.navigate).toHaveBeenCalledWith({ to: '/lektion' })
   })

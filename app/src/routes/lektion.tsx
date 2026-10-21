@@ -223,7 +223,12 @@ export function PickerBody() {
       <Link
         to="/lektion"
         search={{ chapter: 'provteknik' }}
-        style={{ ...shortcutRow, marginTop: 'clamp(32px, 4vw + 16px, 64px)' }}
+        className="reveal"
+        style={{
+          ...shortcutRow,
+          marginTop: 'clamp(32px, 4vw + 16px, 64px)',
+          animationDelay: '60ms',
+        }}
       >
         <span>
           <span style={shortcutLabel}>Provteknik</span>
