@@ -23,6 +23,7 @@ import {
   prescribeMock,
   type SchedulerSignals,
   savePlan,
+  staleAfterOnboarding,
 } from './scheduler'
 import type { SectionScore } from './scoring'
 
@@ -73,6 +74,46 @@ describe('localDateString', () => {
 })
 
 describe('generateDailyPlan — rule 5 (cold start)', () => {
+  it('offers one completed, clickable first session today and the diagnostic tomorrow', () => {
+    const today = generateDailyPlan(signals({ onboardingCompletedDate: TODAY, daysToExam: 20 }))
+    expect(today.version).toBe(12)
+    expect(today.items).toEqual([
+      expect.objectContaining({
+        id: `onboarding-${TODAY}`,
+        headline: 'Första passet',
+        rationale: 'Vill du fortsätta? Öva en sektion →',
+        completed: true,
+        href: '/lektion?section=ORD#ORD-ROOT-010',
+      }),
+    ])
+    expect(today.estimatedMinutes).toBe(0)
+    const tomorrow = generateDailyPlan(
+      signals({
+        now: new Date(2026, 4, 19),
+        onboardingCompletedDate: TODAY,
+        daysToExam: 19,
+      }),
+    )
+    expect(tomorrow.items[0].href).toBe('/diagnostik?start=1')
+    expect(tomorrow.items[0].completed).toBe(false)
+    const completedSignals = signals({ onboardingCompletedDate: TODAY })
+    expect(staleAfterOnboarding(generateDailyPlan(signals()), completedSignals)).toBe(true)
+    expect(staleAfterOnboarding(today, completedSignals)).toBe(false)
+    expect(
+      staleAfterOnboarding(
+        tomorrow,
+        signals({ now: new Date(2026, 4, 19), onboardingCompletedDate: TODAY }),
+      ),
+    ).toBe(false)
+  })
+
+  it('does not replace an established student plan with onboarding', () => {
+    const plan = generateDailyPlan(
+      signals({ onboardingCompletedDate: TODAY, sectionScores: [score('ORD')] }),
+    )
+    expect(plan.items.some((item) => item.id.startsWith('onboarding-'))).toBe(false)
+  })
+
   it('emits a single "Börja här" first-drill item when no signal exists at all', () => {
     const plan = generateDailyPlan(signals())
     expect(plan.items).toHaveLength(1)
@@ -304,8 +345,8 @@ describe('generateDailyPlan — rule 2 with a pulled-forward prerequisite (hpf-0
     })
   })
 
-  it('bumps the stored plan schema to v11 so plans cached before leverage ordering regenerate', () => {
-    expect(PLAN_SCHEMA_VERSION).toBe(11)
+  it('keeps plans cached before leverage ordering invalidated', () => {
+    expect(PLAN_SCHEMA_VERSION).toBeGreaterThanOrEqual(11)
   })
 })
 

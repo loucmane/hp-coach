@@ -29,7 +29,7 @@ import type { Env, Vars } from '../types'
 
 const StartBody = z
   .object({
-    kind: z.enum(['drill', 'mock', 'mock_diagnostic', 'lesson', 'adaptive_review']),
+    kind: z.enum(['drill', 'mock', 'mock_diagnostic', 'lesson', 'adaptive_review', 'onboarding']),
     sections: z.string().max(120).optional(),
     // Ordered qids that make up this session's plan — so a resume on
     // another device replays the exact sequence. Optional (mock_diagnostic
@@ -101,7 +101,12 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       .from(sessions)
       .leftJoin(attempts, eq(attempts.sessionId, sessions.id))
       .where(
-        and(eq(sessions.userId, userId), isNotNull(sessions.endedAt), ne(sessions.kind, 'mock')),
+        and(
+          eq(sessions.userId, userId),
+          isNotNull(sessions.endedAt),
+          ne(sessions.kind, 'mock'),
+          ne(sessions.kind, 'onboarding'),
+        ),
       )
       .groupBy(sessions.id)
       .orderBy(desc(sessions.endedAt))

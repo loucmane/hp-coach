@@ -9,7 +9,7 @@
 // through to the SPA's typed client.
 
 import { zValidator } from '@hono/zod-validator'
-import { and, asc, count, eq, gte, inArray, isNull, lte, or, sql } from 'drizzle-orm'
+import { and, asc, count, eq, gte, inArray, isNotNull, isNull, lte, or, sql } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
@@ -108,7 +108,9 @@ function firstTries(answers: readonly KindedAnswer[]): KindedAnswer[] {
   }
   const out: KindedAnswer[] = []
   for (const { first, answer } of byQuestion.values()) {
-    if (first.kind !== 'adaptive_review') out.push(answer)
+    // A taught onboarding example has already been seen. Its later retry
+    // must not become an unseen first try either.
+    if (first.kind !== 'adaptive_review' && first.kind !== 'onboarding') out.push(answer)
   }
   return out
 }
@@ -262,12 +264,14 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         correct: sql<number>`coalesce(sum(${attempts.correct}), 0)`,
       })
       .from(attempts)
+      .leftJoin(sessions, eq(attempts.sessionId, sessions.id))
       .where(
         and(
           eq(attempts.userId, userId),
           gte(attempts.createdAt, weekStart),
           // An accuracy is assessment: authentic and synthetic answers only.
           inArray(attempts.source, ASSESSED_SOURCES),
+          sql`coalesce(${sessions.kind}, '') != 'onboarding'`,
         ),
       )
 
@@ -337,8 +341,10 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         timeTakenMs: attempts.timeTakenMs,
         createdAt: attempts.createdAt,
         source: attempts.source,
+        kind: sessions.kind,
       })
       .from(attempts)
+      .leftJoin(sessions, eq(attempts.sessionId, sessions.id))
       .where(and(eq(attempts.userId, userId), gte(attempts.createdAt, ninetyDayStart)))
 
     type SectionAgg = {
@@ -399,7 +405,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       }
       // Everything below feeds the section score, trend, confidence,
       // recency and pace: authentic and synthetic answers, never unknown.
-      if (a.source === 'unknown') continue
+      if (a.source === 'unknown' || a.kind === 'onboarding') continue
       const correct = a.correct ? 1 : 0
       agg.attempts90d += 1
       agg.correct90d += correct
@@ -427,6 +433,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     // answers, never unknown. They are a subset of the 90d window, so when the
     // section's estimateBasis is calibrated, so are its first tries.
     let firstTryBySection: Record<Section, FirstTryAgg> | null = null
+    let onboardingCompletedAt: string | null = null
     if (firstTry) {
       const history = await db
         .select({
@@ -473,6 +480,39 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         }
       }
       firstTryBySection = bySectionFirst
+      // Completion, not merely retirement: all three planned questions
+      // must be answered. This opt-in scheduling signal keeps the default
+      // assessment response (and its golden fixture) unchanged.
+      // Fetch the JSON plans once per ended first pass, using
+      // idx_sessions_user_kind, rather than once per retained attempt.
+      const completedSessions = await db
+        .select({ id: sessions.id, plan: sessions.plan, endedAt: sessions.endedAt })
+        .from(sessions)
+        .where(
+          and(
+            eq(sessions.userId, userId),
+            eq(sessions.kind, 'onboarding'),
+            isNotNull(sessions.endedAt),
+          ),
+        )
+      const onboarding = new Map<number, { plan: string[]; answered: Set<string>; endedAt: Date }>()
+      for (const session of completedSessions) {
+        if (!session.endedAt || session.plan?.length !== 3) continue
+        onboarding.set(session.id, {
+          plan: session.plan,
+          answered: new Set(),
+          endedAt: session.endedAt,
+        })
+      }
+      for (const a of history) {
+        onboarding.get(a.sessionId)?.answered.add(a.questionId)
+      }
+      for (const { plan, answered, endedAt } of onboarding.values()) {
+        if (new Set(plan).size !== 3 || !plan.every((qid) => answered.has(qid))) continue
+        const timestamp = endedAt.toISOString()
+        if (!onboardingCompletedAt || timestamp > onboardingCompletedAt)
+          onboardingCompletedAt = timestamp
+      }
     }
 
     const bySection: Record<
@@ -539,7 +579,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       weeklySynthetic.push(0)
     }
     for (const a of recentAttempts) {
-      if (a.source === 'unknown') continue
+      if (a.source === 'unknown' || a.kind === 'onboarding') continue
       const ts = a.createdAt instanceof Date ? a.createdAt.getTime() : 0
       // Find bucket index. weekly[0] starts WEEKS weeks ago. Anything
       // older falls outside the 12w window — skip.
@@ -607,6 +647,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
           resolved: resolvedRow?.c ?? 0,
         },
         accuracy7d,
+        ...(firstTry && onboardingCompletedAt ? { onboardingCompletedAt } : {}),
         streakDays,
         timeMsToday,
         bySection,

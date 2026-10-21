@@ -19,12 +19,19 @@ import { STATS_KEY } from './useStats'
 const ACTIVE_SESSIONS_KEY = ['sessions', 'active'] as const
 const SESSION_HISTORY_KEY = ['sessions', 'history'] as const
 
-export type SessionKind = 'drill' | 'mock' | 'mock_diagnostic' | 'lesson' | 'adaptive_review'
+export type SessionKind =
+  | 'drill'
+  | 'mock'
+  | 'mock_diagnostic'
+  | 'lesson'
+  | 'adaptive_review'
+  | 'onboarding'
 
 /** One completed pass in the drill-history list. */
 export type SessionHistoryRow = {
   id: number
-  kind: SessionKind
+  // The history endpoint deliberately excludes the first-run session.
+  kind: Exclude<SessionKind, 'onboarding'>
   sections: string | null
   /** Optional for cached responses and a frontend deployed before the worker. */
   startedAt?: string | null

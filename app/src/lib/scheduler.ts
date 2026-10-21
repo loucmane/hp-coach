@@ -92,7 +92,8 @@ export type PlanItem = {
  *    before this could still introduce KVA-TRAP-014 ahead of
  *    XYZ-TRAP-005.
  *  - v11: coverage × learner misses orders new lessons (hpf-0026.3). */
-export const PLAN_SCHEMA_VERSION = 11
+// v12: the first real pass is a completed day-zero item; diagnostic tomorrow.
+export const PLAN_SCHEMA_VERSION = 12
 
 export type DailyPlan = {
   /** Schema version — see `PLAN_SCHEMA_VERSION`. Older plans are
@@ -151,6 +152,8 @@ export type PrereqPullForward = {
 }
 
 export type SchedulerSignals = {
+  /** Local date of the latest completed first pass, never an assessment. */
+  onboardingCompletedDate?: string | null
   /** Drives the plan's `date` field and the staleness comparisons in
    *  `daysSinceLastAttempt` (which is already computed in the
    *  SectionScores — `now` here is only for the date string). */
@@ -382,6 +385,22 @@ export function generateDailyPlan(signals: SchedulerSignals): DailyPlan {
   const date = localDateString(now)
   const hasAnyAttempt = sectionScores.some((s) => s.score != null)
 
+  if (!hasAnyAttempt && dueMistakeCount === 0 && signals.onboardingCompletedDate === date) {
+    return finalize(date, [
+      {
+        id: `onboarding-${date}`,
+        kind: 'lesson',
+        section: 'ORD',
+        framework: 'ORD-ROOT-010',
+        headline: 'Första passet',
+        rationale: 'Vill du fortsätta? Öva en sektion →',
+        estimatedMinutes: 0,
+        href: '/lektion?section=ORD#ORD-ROOT-010',
+        completed: true,
+      },
+    ])
+  }
+
   // Rule 0 — Provpass anchor. When a mock is due, it becomes the day's
   // ANCHOR: item 1, plus at most one cheap due-repetition item, nothing
   // else. Takes priority over cold start too — the baseline "never
@@ -510,6 +529,16 @@ export function generateDailyPlan(signals: SchedulerSignals): DailyPlan {
   applyHotTrapBoost(items, signals.hotTrap)
 
   return finalize(date, items)
+}
+
+/** A cold plan can predate the first pass on this or another device. */
+export function staleAfterOnboarding(plan: DailyPlan, signals: SchedulerSignals): boolean {
+  return (
+    signals.onboardingCompletedDate === localDateString(signals.now) &&
+    signals.dueMistakeCount === 0 &&
+    signals.sectionScores.every((score) => score.score == null) &&
+    !plan.items.some((item) => item.id === `onboarding-${plan.date}`)
+  )
 }
 
 /** Move the hot trap's own drill item to position 0, in place. A trap

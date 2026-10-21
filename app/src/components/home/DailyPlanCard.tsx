@@ -96,6 +96,48 @@ export function DailyPlanCard({
   pileMistakeCount,
 }: DailyPlanCardProps) {
   const ark = useArketMotion()
+  const firstPass =
+    plan?.items.length === 1 && plan.items[0].id.startsWith('onboarding-') ? plan.items[0] : null
+  if (firstPass) {
+    return (
+      <section data-testid="daily-plan-complete">
+        <DrillRailSection meta={<strong>Idag</strong>} delay={220}>
+          <h2 className="hpc-m3-h">Dagens plan</h2>
+          <a
+            href={firstPass.href}
+            className="hpc-m3-plan-t"
+            onClick={(event) => {
+              if (onNavigate) {
+                event.preventDefault()
+                onNavigate(firstPass.href)
+              }
+            }}
+            style={{ color: 'var(--ink)', textDecoration: 'underline', textUnderlineOffset: 4 }}
+          >
+            Första passet · klart ✓
+          </a>
+          <p className="hpc-m3-plan-r">
+            <a
+              href="/ova"
+              onClick={(event) => {
+                if (onNavigate) {
+                  event.preventDefault()
+                  onNavigate('/ova')
+                }
+              }}
+              style={{
+                color: 'var(--accent)',
+                textDecoration: 'underline',
+                textUnderlineOffset: 4,
+              }}
+            >
+              Vill du fortsätta? Öva en sektion →
+            </a>
+          </p>
+        </DrillRailSection>
+      </section>
+    )
+  }
   if (plan && allComplete) {
     return <CompletePanel plan={plan} />
   }

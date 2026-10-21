@@ -101,6 +101,23 @@ describe('POST /api/sessions', () => {
 })
 
 describe('GET /api/sessions/history', () => {
+  it('accepts onboarding sessions and keeps their completed runs out of history', async () => {
+    const { app, env } = appFor('user_a')
+    const res = await app.request(
+      '/',
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ kind: 'onboarding', sections: 'ORD', plan: ['q1', 'q2', 'q3'] }),
+      },
+      env,
+    )
+    expect(res.status).toBe(201)
+    await seedCompletedSession('user_b', 'onboarding')
+    const history = await getHistory('user_b')
+    expect(history.body.sessions).toEqual([])
+  })
+
   it('returns the original startedAt timestamp for each completed pass, scoped to its user', async () => {
     const id = await seedCompletedSession('user_a', 'drill', new Date('2026-10-21T05:52:00Z'))
     await seedCompletedSession('user_b', 'drill')

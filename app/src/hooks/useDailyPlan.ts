@@ -77,6 +77,7 @@ import {
   prescribeMock,
   type SchedulerSignals,
   savePlan,
+  staleAfterOnboarding,
 } from '@/lib/scheduler'
 import { computeSectionScore, type SectionScore, type SectionStats } from '@/lib/scoring'
 import { useDaysRemaining } from '@/stores/examStore'
@@ -175,6 +176,14 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   // over. See the recompute effect below for the event-driven trigger.
   const [now, setNow] = useState(initialNow)
   const today = useMemo(() => localDateString(now), [now])
+  // The opt-in stats response carries the completion timestamp. Tolerate
+  // older workers/caches that omit it; it is separate from section scores.
+  const completedAt =
+    stats.data && 'onboardingCompletedAt' in stats.data ? stats.data.onboardingCompletedAt : null
+  const onboardingCompletedDate =
+    typeof completedAt === 'string' && Number.isFinite(Date.parse(completedAt))
+      ? localDateString(new Date(completedAt))
+      : null
   // Same exam-date source NavRail renders ("Höstprov 26 · N dagar") —
   // reused, not reinvented, so the scheduler's cadence and the nav
   // clock never disagree about how many days remain.
@@ -317,6 +326,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       daysToExam,
       hotTrap,
       mockDeferredForToday,
+      onboardingCompletedDate,
     )
     setPrescription(prescribeMock(signals))
 
@@ -327,7 +337,8 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
     // defer is active, an adopted plan that still holds a mock item is treated
     // as stale and we fall through to regenerate the ordinary plan instead.
     const staleWhenDeferred = (p: DailyPlan) =>
-      mockDeferredForToday && p.items.some((i) => i.kind === 'mock')
+      (mockDeferredForToday && p.items.some((i) => i.kind === 'mock')) ||
+      staleAfterOnboarding(p, signals)
 
     // 1. Server plan present → adopt verbatim (server wins), mirror local.
     const remote = serverPlan.data
@@ -363,6 +374,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       daysToExam,
       hotTrap,
       mockDeferredForToday,
+      onboardingCompletedDate,
     )
     savePlan(fresh.plan)
     putServerPlan.mutate(fresh.plan)
@@ -380,6 +392,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
     daysToExam,
     hotTrap,
     mockDeferredForToday,
+    onboardingCompletedDate,
   ])
 
   // Re-run derivation when due count, stats, or the (cross-device) read
@@ -426,6 +439,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
         daysToExam,
         hotTrap,
         suppressMock,
+        onboardingCompletedDate,
       )
       savePlan(fresh.plan)
       putServerPlan.mutate(fresh.plan)
@@ -452,6 +466,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       mockResults.data,
       daysToExam,
       hotTrap,
+      onboardingCompletedDate,
     ],
   )
 
@@ -508,6 +523,7 @@ function buildSchedulerSignals(
   // "Inte idag" defer — when true the scheduler skips Rule 0 (the Provpass
   // anchor) so the ordinary day generates. See SchedulerSignals.suppressMock.
   suppressMock = false,
+  onboardingCompletedDate: string | null = null,
 ): SchedulerSignals {
   const sectionScores: SectionScore[] = SECTION_KEYS.map((s) =>
     computeSectionScore(s, bySection[s], now),
@@ -522,6 +538,7 @@ function buildSchedulerSignals(
     daysToExam,
     hotTrap,
     suppressMock,
+    onboardingCompletedDate,
   }
 }
 
@@ -536,6 +553,7 @@ function buildPlan(
   daysToExam: number,
   hotTrap: { framework_id: string } | null,
   suppressMock = false,
+  onboardingCompletedDate: string | null = null,
 ): { plan: DailyPlan; prescription: MockPrescription } {
   const signals = buildSchedulerSignals(
     now,
@@ -547,6 +565,7 @@ function buildPlan(
     daysToExam,
     hotTrap,
     suppressMock,
+    onboardingCompletedDate,
   )
   const base = generateDailyPlan(signals)
   const prescription = prescribeMock(signals)
@@ -734,6 +753,7 @@ export function isItemComplete(
   // stays actionable" posture as the lesson branch's missing-framework case.
   mockHistory: MockHistoryEntry[] = [],
 ): boolean {
+  if (item.id === `onboarding-${plan.date}`) return true
   if (item.kind === 'repetition') return dueCount === 0
   if (item.kind === 'lesson') {
     // No framework hint resolved → can't auto-complete (rare edge case
