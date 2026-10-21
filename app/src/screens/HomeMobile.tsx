@@ -30,6 +30,7 @@ import { Kallelse } from '@/components/home/Kallelse'
 import { ProvpassStatusLine } from '@/components/home/ProvpassStatusLine'
 import { RecentPassesCard } from '@/components/home/RecentPassesCard'
 import { ResumptionPanel } from '@/components/home/ResumptionPanel'
+import { ReturnPrompt } from '@/components/home/ReturnPrompt'
 import { TopTrapsCard } from '@/components/home/TopTrapsCard'
 import { MobileFrame, type TabKey } from '@/components/MobileFrame'
 import { ConfirmSheet } from '@/components/mock/ConfirmSheet'
@@ -339,6 +340,7 @@ export function HomeMobile({
             dueMistakeCount={dueMistakeCount}
             pileMistakeCount={pileMistakeCount}
           />
+          {allComplete && plan && <ReturnPrompt plan={plan} history={recentPasses} now={now} />}
 
           <TopTrapsCard traps={topTraps} />
 

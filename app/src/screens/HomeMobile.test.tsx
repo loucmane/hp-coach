@@ -13,6 +13,11 @@ import { __resetMockEvents, loadMockEvents } from '@/lib/mockEvents'
 import { type DailyPlan, type MockPrescription, PLAN_SCHEMA_VERSION } from '@/lib/scheduler'
 import { HomeMobile } from './HomeMobile'
 
+vi.mock('@clerk/clerk-react', () => ({ useAuth: () => ({ userId: 'home-student' }) }))
+// History rows are real input to the return prompt; the journal's router
+// links are covered in RecentPassesCard.test.tsx.
+vi.mock('@/components/home/RecentPassesCard', () => ({ RecentPassesCard: () => null }))
+
 // HomeMobile is prop-driven in these tests (no QueryClient / Clerk
 // providers). The resumption surfaces read server state via this hook,
 // so stub it to "nothing resumable" — resumption rendering is covered by
@@ -68,6 +73,32 @@ function makePlan(overrides: Partial<DailyPlan> = {}): DailyPlan {
 }
 
 describe('HomeMobile — plan rendering', () => {
+  it('offers a return time only after the whole plan is complete, directly after the complete panel', () => {
+    localStorage.clear()
+    const now = new Date(2026, 4, 18, 18)
+    const recentPasses = [new Date(2026, 4, 18, 7, 52), new Date(2026, 4, 17, 10)].map(
+      (startedAt, id) => ({
+        id,
+        kind: 'drill' as const,
+        sections: 'ORD',
+        startedAt: startedAt.toISOString(),
+        endedAt: new Date(startedAt.getTime() + 600_000).toISOString(),
+        total: 10,
+        correct: 7,
+      }),
+    )
+    const props = { forceLayout: 'phone' as const, plan: makePlan(), recentPasses, now }
+    const view = render(<HomeMobile {...props} />)
+    expect(screen.queryByText('När kör du nästa gång?')).not.toBeInTheDocument()
+    view.rerender(<HomeMobile {...props} allComplete />)
+    expect(screen.getByText('När kör du nästa gång?')).toBeInTheDocument()
+    expect(screen.getByTestId('daily-plan-complete').nextElementSibling).toBe(
+      screen.getByTestId('return-prompt'),
+    )
+    view.rerender(<HomeMobile {...props} allComplete plan={null} />)
+    expect(screen.queryByText('När kör du nästa gång?')).not.toBeInTheDocument()
+  })
+
   it('renders the skeleton state when no plan is provided', () => {
     render(<HomeMobile forceLayout="phone" />)
     expect(screen.getByTestId('daily-plan-skeleton')).toBeInTheDocument()

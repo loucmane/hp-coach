@@ -37,7 +37,7 @@ async function getHistory(asUser = 'user_a') {
 
 // Seed a COMPLETED session (endedAt set, plan length === answered attempts)
 // of a given kind — the shape /history's completion filter requires.
-async function seedCompletedSession(clerkUserId: string, kind: string) {
+async function seedCompletedSession(clerkUserId: string, kind: string, startedAt = new Date()) {
   const db = getDb(d1 as unknown as D1Database)
   const [user] = await db
     .insert(users)
@@ -49,6 +49,7 @@ async function seedCompletedSession(clerkUserId: string, kind: string) {
     .values({
       userId: user.id,
       kind,
+      startedAt,
       endedAt: new Date(),
       plan: ['q1'],
     })
@@ -100,6 +101,17 @@ describe('POST /api/sessions', () => {
 })
 
 describe('GET /api/sessions/history', () => {
+  it('returns the original startedAt timestamp for each completed pass, scoped to its user', async () => {
+    const id = await seedCompletedSession('user_a', 'drill', new Date('2026-10-21T05:52:00Z'))
+    await seedCompletedSession('user_b', 'drill')
+    const db = getDb(d1 as unknown as D1Database)
+    const stored = await db.select().from(sessions)
+    const expected = stored.find((row) => row.id === id)?.startedAt?.toISOString()
+    expect(expected).toBeDefined()
+    const { body } = await getHistory()
+    expect(body.sessions).toEqual([expect.objectContaining({ id, startedAt: expected })])
+  })
+
   it('excludes mock sessions', async () => {
     const drillId = await seedCompletedSession('user_a', 'drill')
     await seedCompletedSession('user_a', 'mock')
