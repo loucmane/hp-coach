@@ -2,9 +2,10 @@
 //
 // The Öva due-count is ONE object that never stops existing: it lives
 // in the nav rail (expanded folio / collapsed spine corner) everywhere,
-// and physically travels — TRUE layoutId under RouteScene's root
-// LayoutGroup — into the drill/repetition header station when you enter
-// those surfaces, and back when you leave. A2's law: exactly one
+// and re-seats in the drill/repetition header station when you enter
+// those surfaces, and back when you leave. The rail retains its layoutId;
+// the sticky header opts out of projection so scrolling cannot animate
+// a false position change while the due count refetches. A2's law: exactly one
 // station owns it at a time, and a station the numeral has left holds
 // an exact-width reserve (mono digits are 1ch each) so nothing reflows
 // on departure or arrival (reference fix 3).
@@ -34,6 +35,7 @@ import { DUE_NUMERAL_LAYOUT_ID, useArketMotion } from '@/lib/motion'
 export function DueNumeral({
   count,
   away = false,
+  flight = true,
   size,
   color = 'var(--accent)',
   testid,
@@ -41,6 +43,8 @@ export function DueNumeral({
 }: {
   count: number
   away?: boolean
+  /** Sticky header stations must not participate in shared layout projection. */
+  flight?: boolean
   size: number
   color?: string
   testid?: string
@@ -66,7 +70,7 @@ export function DueNumeral({
   return (
     <motion.span
       data-testid={testid}
-      layoutId={ark.rm ? undefined : DUE_NUMERAL_LAYOUT_ID}
+      layoutId={flight && !ark.rm ? DUE_NUMERAL_LAYOUT_ID : undefined}
       // Freeze the layout projection to a STABLE dependency so the numeral
       // NEVER re-projects on a count change — position moves only on a
       // genuine station change. Fix B (owner 2026-07-13): with
@@ -85,7 +89,10 @@ export function DueNumeral({
       // dead with or without this dependency, so the freeze is not the
       // killer either). The motion-settle e2e's settle-parity contract
       // (destination rects equal static layout) holds. Resurrecting the
-      // animated flight is a separate investigation.
+      // animated flight is a separate investigation. The sticky header
+      // now opts out entirely: page-coordinate projection can mistake a
+      // scroll during refetch for numeral movement (hpf-bz6f.14). A frozen
+      // layoutDependency alone does not isolate it from projection passes.
       layoutDependency={DUE_NUMERAL_LAYOUT_ID}
       transition={ark.arket}
       style={{
@@ -114,9 +121,9 @@ export function DueNumeral({
  */
 export function DueHeaderStation() {
   const viewport = useViewport()
-  // The header station is a flight destination of the rail numeral, so it
+  // The header station takes over from the rail numeral, so it
   // MUST read the same source — today's PILE (scope=pile), the same "att
-  // repetera" number the rail shows — or the number would jump when it flies
+  // repetera" number the rail shows — or the number would jump when it moves
   // between stations.
   const due = usePileMistakes()
   const count = due.data?.length ?? 0
@@ -135,7 +142,7 @@ export function DueHeaderStation() {
     //     the numeral teleported); and (c) ghosted: RouteScene's exit
     //     clone kept the fixed div, which pinned "N att repetera" OVER
     //     the incoming page during every cross-family exit.
-    // Sticky is in-flow (projection measures it, so the flight lives),
+    // Sticky is in-flow (the numeral opts out of layout projection),
     // pins at the viewport top while the body scrolls (no scroll yank),
     // and its horizontal frame is the same centered 880px column as
     // .hpc-studydesk — column-aligned at every width. A zero-height
@@ -196,7 +203,7 @@ export function DueHeaderStation() {
             transform: 'translateZ(0)',
           }}
         >
-          <DueNumeral count={count} size={15} testid="due-station-numeral" />
+          <DueNumeral count={count} size={15} flight={false} testid="due-station-numeral" />
           <span
             style={{
               fontFamily: 'var(--font-mono)',
