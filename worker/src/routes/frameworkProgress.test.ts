@@ -1,9 +1,9 @@
 // Exercise production route registration/auth and real Drizzle SQL over the
 // existing in-memory D1 harness. Only Clerk verification and Sentry are stubbed.
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { getDb } from '../db/client'
-import { frameworkProgress } from '../db/schema'
+import { frameworkProgress, mastery } from '../db/schema'
 import worker from '../index'
 import { ensureUserRow } from '../lib/ensureUser'
 import { FRAMEWORK_STATUSES, readFrameworkProgress } from '../lib/progress'
@@ -22,12 +22,16 @@ const older = new Date('2026-10-01T10:00:00Z')
 const newer = new Date('2026-10-02T10:00:00Z')
 
 beforeEach(() => {
+  vi.useFakeTimers({ toFake: ['Date'] })
+  vi.setSystemTime(new Date('2026-11-02T10:00:00Z'))
   env = { DB: makeTestD1(), ENVIRONMENT: 'dev' } as unknown as Env
   verifyToken.mockReset().mockImplementation(async (token: string) => {
     if (token !== 'user_a' && token !== 'user_b') throw new Error('Invalid token')
     return { sub: token }
   })
 })
+
+afterEach(() => vi.useRealTimers())
 
 async function seed(
   rows: Array<{ layer1Id: string; status: string; lastTransitionAt: Date | null }>,
@@ -58,6 +62,39 @@ async function get(asUser = 'user_a', query = '') {
 }
 
 describe('GET /api/framework-progress', () => {
+  it('uses the newest mastery evidence per framework and isolates it by user', async () => {
+    const userId = await seed(
+      ['stale', 'fresh', 'legacy', 'undated', 'lesson'].map((layer1Id) => ({
+        layer1Id,
+        status: layer1Id === 'lesson' ? 'learning' : 'mastered',
+        lastTransitionAt: older,
+      })),
+    )
+    const db = getDb(env.DB)
+    const other = await ensureUserRow(db, 'user_b')
+    const fresh = new Date('2026-11-01T10:00:00Z')
+    await db.insert(mastery).values([
+      { userId, section: 'KVA', layer1Id: 'stale', score: 1, lastUpdatedAt: older },
+      { userId: other, section: 'KVA', layer1Id: 'stale', score: 1, lastUpdatedAt: fresh },
+      { userId, section: 'KVA', layer1Id: 'fresh', score: 1, lastUpdatedAt: fresh },
+      { userId, section: 'NOG', layer1Id: 'fresh', score: 1, lastUpdatedAt: older },
+      { userId, section: 'KVA', layer1Id: 'undated', score: 1, lastUpdatedAt: null },
+      { userId, section: 'KVA', layer1Id: 'lesson', score: 1, lastUpdatedAt: older },
+    ])
+    const { progress } = await get()
+    expect(Object.fromEntries(progress.map((row) => [row.layer1Id, row.status]))).toEqual({
+      stale: 'retaining',
+      fresh: 'mastered',
+      legacy: 'mastered',
+      undated: 'mastered',
+      lesson: 'learning',
+    })
+    expect(progress.every((row) => row.lastTransitionAt === older.toISOString())).toBe(true)
+    expect(
+      (await db.select().from(frameworkProgress)).filter((row) => row.status === 'mastered'),
+    ).toHaveLength(4)
+  })
+
   it('returns an empty list for a fresh user, including through the shared reader', async () => {
     expect(await get()).toEqual({ progress: [] })
     const db = getDb(env.DB)

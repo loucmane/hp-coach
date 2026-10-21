@@ -22,11 +22,12 @@
 //              drill / lesson actions.
 //   REPETITION quiet mono ledger line: queue + lifetime volume.
 //
-// All numbers derive from /api/me/stats via lib/scoring.ts. Swedish
+// Scores derive from /api/me/stats via lib/scoring.ts; the optional patterns
+// count comes from framework progress and all eight catalogs. Swedish
 // comma-decimals throughout (formatScoreSv precedent from M3H).
 
 import { Link } from '@tanstack/react-router'
-import { type ReactNode, useMemo, useState } from 'react'
+import { type ReactNode, useEffect, useMemo, useState } from 'react'
 
 import type { Stats, WeeklyBucket } from '@/api/hooks/useStats'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
@@ -34,6 +35,7 @@ import { Skrift, SkriftLine, SkriftRule } from '@/components/motion/Skrift'
 import { ConsistencyHeat } from '@/components/progress/ConsistencyHeat'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
+import { readPatternsHeld, rememberPatternsHeld } from '@/lib/patternsHeld'
 import {
   computeHonestDelta,
   computeHonestProjected,
@@ -59,6 +61,8 @@ type ProgressMobileProps = {
    *  settles true→false in a way the block can act on. React Query's own
    *  retry/focus-refetch recovers it; no manual retry affordance. */
   error?: boolean
+  /** Only supplied once progress and all eight framework catalogs are available. */
+  patternsHeld?: { mastered: number; total: number }
 }
 
 const RETRY_LINE = 'Gick inte att hämta just nu — försöker igen automatiskt.'
@@ -74,7 +78,7 @@ function fmtSv(score: number | null): string {
 
 const CONF_SV = { low: 'låg', medium: 'medel', high: 'hög' } as const
 
-export function ProgressMobile({ stats, loading, error }: ProgressMobileProps) {
+export function ProgressMobile({ stats, loading, error, patternsHeld }: ProgressMobileProps) {
   const viewport = useViewport()
   const days = useDaysRemaining()
   const sitting = useSitting()
@@ -161,6 +165,7 @@ export function ProgressMobile({ stats, loading, error }: ProgressMobileProps) {
               </SkriftLine>
             )}
           </Skrift>
+          {patternsHeld && <PatternsHeldLine {...patternsHeld} />}
         </DrillRailSection>
 
         {/* ── Prognos över tid — sparkline vs the goal ────────────── */}
@@ -953,6 +958,20 @@ const mono11 = {
   fontSize: 11,
   color: 'var(--muted)',
   fontVariantNumeric: 'tabular-nums' as const,
+}
+
+function PatternsHeldLine({ mastered, total }: { mastered: number; total: number }) {
+  const [peak, setPeak] = useState(readPatternsHeld)
+  const count = Math.max(mastered, peak)
+  useEffect(() => {
+    // State also preserves the peak for this mounted screen if storage fails.
+    setPeak(rememberPatternsHeld(count))
+  }, [count])
+  return (
+    <MonoNote style={{ marginTop: 12 }}>
+      Mönster som sitter: {count} av {total}
+    </MonoNote>
+  )
 }
 
 function MonoNote({ children, style }: { children: ReactNode; style?: React.CSSProperties }) {

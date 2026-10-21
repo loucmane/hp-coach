@@ -13,7 +13,7 @@
 
 import { and, eq } from 'drizzle-orm'
 import { Hono } from 'hono'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { getDb } from '../db/client'
 import { attempts, frameworkProgress, mastery, sessions, users } from '../db/schema'
@@ -93,8 +93,12 @@ const KVA_QID = 'var-2024-kvant1-KVA-013'
 const FABRICATED_KVA_QID = 'var-2024-kvant1-KVA-002'
 
 beforeEach(() => {
+  vi.useFakeTimers({ toFake: ['Date'] })
+  vi.setSystemTime(new Date('2026-10-01T10:00:00Z'))
   d1 = makeTestD1()
 })
+
+afterEach(() => vi.useRealTimers())
 
 describe('POST /api/attempts — the attempt row', () => {
   it('records the attempt and bumps the lifetime counter', async () => {
@@ -274,7 +278,7 @@ describe('POST /api/attempts — framework_progress writer', () => {
     expect(row?.lastTransitionAt).toBeInstanceOf(Date)
   })
 
-  it('climbs practicing → retaining → mastered as the score accumulates', async () => {
+  it('caps same-day practice at retaining and masters in a next-day session', async () => {
     const { userId, sessionId } = await seedSession('user_a')
     const correct = () =>
       post({
@@ -291,12 +295,28 @@ describe('POST /api/attempts — framework_progress writer', () => {
     expect((await progressRow(userId, 'KVA-NEG-001'))?.status).toBe('retaining')
     await correct()
     await correct()
+    expect((await progressRow(userId, 'KVA-NEG-001'))?.status).toBe('retaining')
+    await db().update(sessions).set({ endedAt: new Date() }).where(eq(sessions.id, sessionId))
+    vi.setSystemTime(new Date('2026-10-02T10:00:00Z'))
+    const [nextSession] = await db().insert(sessions).values({ userId, kind: 'drill' }).returning()
+    expect(
+      (
+        await post({
+          sessionId: nextSession.id,
+          questionId: KVA_QID,
+          selectedAnswer: 'B',
+          correct: true,
+          layer1Ids: ['KVA-NEG-001'],
+        })
+      ).status,
+    ).toBe(201)
     expect((await progressRow(userId, 'KVA-NEG-001'))?.status).toBe('mastered')
   })
 
   it('demotes out of mastered when the evidence stops supporting it', async () => {
     const { userId, sessionId } = await seedSession('user_a')
     for (let i = 0; i < 4; i++) {
+      if (i === 3) vi.setSystemTime(new Date('2026-10-02T10:00:00Z'))
       await post({
         sessionId,
         questionId: KVA_QID,

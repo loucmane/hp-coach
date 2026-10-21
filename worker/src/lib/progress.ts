@@ -30,9 +30,10 @@
 // i.e. "no opinion") does that honestly: the score can only approach the
 // mastered band after a RUN of correct answers, because each observation
 // moves it just MASTERY_ALPHA of the remaining distance. From cold it
-// takes four consecutive corrects to cross MASTERED_AT, and a single miss
-// drops it well back — which is the behaviour you want from something the
-// scheduler will use to decide what to stop showing the user.
+// takes four consecutive corrects to cross MASTERED_AT. That numeric band
+// alone is not mastery: promotion also needs retaining evidence from an
+// earlier UTC day. Evidence decays toward the prior between attempts, and
+// a miss can lower the internal rung so the scheduler can offer a reprise.
 //
 // Seeding from the outcome instead (score = 1 on a first correct) would
 // have been simpler and would have been a lie.
@@ -50,6 +51,11 @@ export const MASTERY_PRIOR = 0.5
 export const RETAINING_AT = 0.75
 /** Score at or above which a framework counts as mastered. */
 export const MASTERED_AT = 0.85
+const DAY_MS = 86_400_000
+/** After 30 days, half the score's distance from the neutral prior remains. */
+const MASTERY_HALF_LIFE_MS = 30 * DAY_MS
+/** Read-time freshness window; no stored transition is changed by a read. */
+const MASTERY_FRESH_FOR_MS = 30 * DAY_MS
 
 /** The state machine documented on the `framework_progress` table. */
 export const FRAMEWORK_STATUSES = [
@@ -85,11 +91,31 @@ export async function readFrameworkProgress(
     .where(eq(frameworkProgress.userId, userId))
     .orderBy(desc(frameworkProgress.lastTransitionAt), desc(frameworkProgress.id))
 
+  // Evidence can span sections or duplicate legacy rows: newest dated
+  // update wins for this user and framework. No row/date means no decay.
+  const evidence = await db
+    .select({ layer1Id: mastery.layer1Id, lastUpdatedAt: mastery.lastUpdatedAt })
+    .from(mastery)
+    .where(eq(mastery.userId, userId))
+    .orderBy(desc(mastery.lastUpdatedAt), desc(mastery.id))
+  const newest = new Map<string, Date | null>()
+  for (const row of evidence) {
+    if (!newest.has(row.layer1Id)) newest.set(row.layer1Id, row.lastUpdatedAt)
+  }
+  const now = Date.now()
   const seen = new Set<string>()
   return rows.flatMap((row) => {
     if (seen.has(row.layer1Id)) return []
     seen.add(row.layer1Id)
-    const status = FRAMEWORK_STATUSES.find((known) => known === row.status) ?? 'untaught'
+    let status = FRAMEWORK_STATUSES.find((known) => known === row.status) ?? 'untaught'
+    const lastUpdatedAt = newest.get(row.layer1Id)
+    if (
+      status === 'mastered' &&
+      lastUpdatedAt != null &&
+      now - lastUpdatedAt.getTime() > MASTERY_FRESH_FOR_MS
+    ) {
+      status = 'retaining'
+    }
     return [{ ...row, status }]
   })
 }
@@ -142,17 +168,17 @@ async function setFrameworkStatus(
   userId: number,
   layer1Id: string,
   status: FrameworkStatus,
+  now = new Date(),
 ): Promise<FrameworkStatus> {
   const [existing] = await db
     .select()
     .from(frameworkProgress)
     .where(and(eq(frameworkProgress.userId, userId), eq(frameworkProgress.layer1Id, layer1Id)))
+    .orderBy(desc(frameworkProgress.lastTransitionAt), desc(frameworkProgress.id))
     .limit(1)
 
   if (!existing) {
-    await db
-      .insert(frameworkProgress)
-      .values({ userId, layer1Id, status, lastTransitionAt: new Date() })
+    await db.insert(frameworkProgress).values({ userId, layer1Id, status, lastTransitionAt: now })
     return status
   }
   // No-op writes shouldn't churn `lastTransitionAt` — the column names a
@@ -161,7 +187,7 @@ async function setFrameworkStatus(
   if (existing.status === status) return status
   await db
     .update(frameworkProgress)
-    .set({ status, lastTransitionAt: new Date() })
+    .set({ status, lastTransitionAt: now })
     .where(eq(frameworkProgress.id, existing.id))
   return status
 }
@@ -208,7 +234,10 @@ export async function unmarkFrameworkTaught(
 
 /**
  * Fold one graded answer into `mastery` for (section, layer1Id), then
- * re-band `framework_progress` from the resulting score.
+ * re-band `framework_progress` from the resulting score and dated evidence.
+ * A first promotion to mastered needs retaining on an earlier UTC day;
+ * repeating a block today cannot manufacture that evidence. This is a
+ * two-day proxy, not proof of interleaving (the schema has no such history).
  *
  * Practising a framework the user never opened in the lektion is fine and
  * lands them straight on `practicing` — plenty of users learn a pattern
@@ -228,16 +257,37 @@ export async function applyMasteryOutcome(
     .where(
       and(eq(mastery.userId, userId), eq(mastery.section, section), eq(mastery.layer1Id, layer1Id)),
     )
+    .orderBy(desc(mastery.lastUpdatedAt), desc(mastery.id))
     .limit(1)
 
-  const score = nextMasteryScore(existing?.score, correct)
+  const [progress] = await db
+    .select()
+    .from(frameworkProgress)
+    .where(and(eq(frameworkProgress.userId, userId), eq(frameworkProgress.layer1Id, layer1Id)))
+    .orderBy(desc(frameworkProgress.lastTransitionAt), desc(frameworkProgress.id))
+    .limit(1)
+
   const now = new Date()
+  const elapsed = existing?.lastUpdatedAt
+    ? Math.max(0, now.getTime() - existing.lastUpdatedAt.getTime())
+    : 0
+  const prior = existing?.score ?? MASTERY_PRIOR
+  const decayed = MASTERY_PRIOR + (prior - MASTERY_PRIOR) * 2 ** (-elapsed / MASTERY_HALF_LIFE_MS)
+  const score = nextMasteryScore(decayed, correct)
   if (existing) {
     await db.update(mastery).set({ score, lastUpdatedAt: now }).where(eq(mastery.id, existing.id))
   } else {
     await db.insert(mastery).values({ userId, section, layer1Id, score, lastUpdatedAt: now })
   }
 
-  const status = await setFrameworkStatus(db, userId, layer1Id, statusForScore(score))
+  let band = statusForScore(score)
+  const retainedEarlier =
+    progress?.status === 'retaining' &&
+    progress.lastTransitionAt != null &&
+    Math.floor(progress.lastTransitionAt.getTime() / DAY_MS) < Math.floor(now.getTime() / DAY_MS)
+  if (band === 'mastered' && progress?.status !== 'mastered' && !retainedEarlier) {
+    band = 'retaining'
+  }
+  const status = await setFrameworkStatus(db, userId, layer1Id, band, now)
   return { score, status }
 }
