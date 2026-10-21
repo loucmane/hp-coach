@@ -1,20 +1,25 @@
 // Unit tests for the mastery EWMA + framework-progress ladder.
 //
-// These are the pure halves of lib/progress.ts. The db-touching halves
-// (applyMasteryOutcome / markFrameworkTaught) are proved end-to-end in
-// routes/attempts.test.ts and routes/lessonReads.test.ts against the real
-// in-memory D1 shim.
+// Pure score tests plus dated writer/reader evidence against in-memory D1.
+// routes/attempts.test.ts and routes/lessonReads.test.ts also prove these
+// transitions through the production grading and reading routes.
 
-import { describe, expect, it } from 'vitest'
+import { sql } from 'drizzle-orm'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { getDb } from '../db/client'
+import { frameworkProgress, mastery, users } from '../db/schema'
 import {
+  applyMasteryOutcome,
   MASTERED_AT,
   MASTERY_ALPHA,
   MASTERY_PRIOR,
   nextMasteryScore,
   RETAINING_AT,
+  readFrameworkProgress,
   statusForScore,
 } from './progress'
+import { makeTestD1 } from './testD1'
 
 describe('nextMasteryScore', () => {
   it('seeds a brand-new item from the neutral prior, not from the outcome', () => {
@@ -56,6 +61,134 @@ describe('nextMasteryScore', () => {
     expect(statusForScore(s)).toBe('retaining')
     s = nextMasteryScore(s, true)
     expect(statusForScore(s)).toBe('mastered')
+  })
+})
+
+describe('dated mastery evidence', () => {
+  let db: ReturnType<typeof getDb>
+  let userId: number
+  const dayOne = new Date('2026-10-01T23:59:00Z')
+  const dayTwo = new Date('2026-10-02T00:01:00Z')
+  const layer1Id = 'KVA-NEG-001'
+  const answer = (correct = true) => applyMasteryOutcome(db, userId, 'KVA', layer1Id, correct)
+
+  beforeEach(async () => {
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(dayOne)
+    db = getDb(makeTestD1() as unknown as D1Database)
+    const [user] = await db.insert(users).values({ clerkUserId: 'mastery-test' }).returning()
+    userId = user.id
+  })
+
+  afterEach(() => vi.useRealTimers())
+
+  it('caps a whole sitting at retaining, without resetting its transition time', async () => {
+    for (let i = 0; i < 10; i++) await answer()
+    expect(await readFrameworkProgress(db, userId)).toEqual([
+      { layer1Id, status: 'retaining', lastTransitionAt: dayOne },
+    ])
+    vi.setSystemTime(new Date('2026-10-01T23:59:59Z'))
+    expect((await answer()).status).toBe('retaining')
+    const [stored] = await db.select().from(frameworkProgress)
+    expect(stored.lastTransitionAt).toEqual(dayOne)
+  })
+
+  it('promotes on the next UTC day and keeps supported mastery on subsequent answers', async () => {
+    for (let i = 0; i < 4; i++) await answer()
+    vi.setSystemTime(dayTwo)
+    expect((await answer()).status).toBe('mastered')
+    expect((await answer()).status).toBe('mastered')
+    const [stored] = await db.select().from(frameworkProgress)
+    expect(stored.lastTransitionAt).toEqual(dayTwo)
+  })
+
+  it.each([
+    'learning',
+    'practicing',
+    'untaught',
+  ])('does not promote a legacy high score directly from %s', async (status) => {
+    await db.insert(mastery).values({ userId, section: 'KVA', layer1Id, score: 1 })
+    await db
+      .insert(frameworkProgress)
+      .values({ userId, layer1Id, status, lastTransitionAt: dayOne })
+    vi.setSystemTime(dayTwo)
+    expect((await answer()).status).toBe('retaining')
+  })
+
+  it('dates an undated retaining row on a capped answer before promoting on a later day', async () => {
+    await db.insert(mastery).values({ userId, section: 'KVA', layer1Id, score: 1 })
+    await db.insert(frameworkProgress).values({
+      userId,
+      layer1Id,
+      status: 'retaining',
+      lastTransitionAt: null,
+    })
+    expect((await answer()).status).toBe('retaining')
+    expect((await db.select().from(frameworkProgress))[0].lastTransitionAt).toEqual(dayOne)
+    vi.setSystemTime(new Date('2026-10-01T23:59:59Z'))
+    expect((await answer()).status).toBe('retaining')
+    expect((await db.select().from(frameworkProgress))[0].lastTransitionAt).toEqual(dayOne)
+    vi.setSystemTime(dayTwo)
+    expect((await answer()).status).toBe('mastered')
+    expect((await db.select().from(frameworkProgress))[0].lastTransitionAt).toEqual(dayTwo)
+  })
+
+  it.each([
+    [true, 0.825],
+    [false, 0.525],
+  ])('decays toward the prior before folding correct=%s after 30 days', async (correct, expected) => {
+    await db
+      .insert(mastery)
+      .values({ userId, section: 'KVA', layer1Id, score: 1, lastUpdatedAt: dayOne })
+    await db.insert(frameworkProgress).values({ userId, layer1Id, status: 'mastered' })
+    const later = new Date(dayOne.getTime() + 30 * 86_400_000)
+    vi.setSystemTime(later)
+    const result = await answer(correct)
+    expect(result.score).toBe(expected)
+    expect(result.status).toBe(correct ? 'retaining' : 'practicing')
+    const [stored] = await db.select().from(mastery)
+    expect(stored.lastUpdatedAt).toEqual(later)
+  })
+
+  it('does not amplify a score when the previous timestamp is in the future', async () => {
+    await db
+      .insert(mastery)
+      .values({ userId, section: 'KVA', layer1Id, score: 0.8, lastUpdatedAt: dayTwo })
+    expect((await answer()).score).toBe(0.86)
+  })
+
+  it.each([
+    [true, 0.86],
+    [false, 0.56],
+  ])('skips decay for an invalid timestamp before folding correct=%s', async (correct, expected) => {
+    await db.insert(mastery).values({ userId, section: 'KVA', layer1Id, score: 0.8 })
+    // SQLite permits legacy malformed timestamp values; Drizzle maps them to Invalid Date.
+    await db.run(sql`UPDATE mastery SET last_updated_at = 'invalid-date'`)
+    const [before] = await db.select().from(mastery)
+    expect(Number.isNaN(before.lastUpdatedAt?.getTime())).toBe(true)
+    expect((await answer(correct)).score).toBe(expected)
+    const [stored] = await db.select().from(mastery)
+    expect(stored.score).toBe(expected)
+    expect(stored.lastUpdatedAt).toEqual(dayOne)
+  })
+
+  it('derives stale mastered rows as retaining after 30 days without writing either table', async () => {
+    await db
+      .insert(mastery)
+      .values({ userId, section: 'KVA', layer1Id, score: 1, lastUpdatedAt: dayOne })
+    await db
+      .insert(frameworkProgress)
+      .values({ userId, layer1Id, status: 'mastered', lastTransitionAt: dayOne })
+    const beforeMastery = await db.select().from(mastery)
+    const beforeProgress = await db.select().from(frameworkProgress)
+    vi.setSystemTime(new Date(dayOne.getTime() + 30 * 86_400_000))
+    expect((await readFrameworkProgress(db, userId))[0].status).toBe('mastered')
+    vi.setSystemTime(new Date(dayOne.getTime() + 30 * 86_400_000 + 1_000))
+    expect(await readFrameworkProgress(db, userId)).toEqual([
+      { layer1Id, status: 'retaining', lastTransitionAt: dayOne },
+    ])
+    expect(await db.select().from(mastery)).toEqual(beforeMastery)
+    expect(await db.select().from(frameworkProgress)).toEqual(beforeProgress)
   })
 })
 
