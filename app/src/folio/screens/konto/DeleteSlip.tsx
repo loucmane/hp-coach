@@ -46,6 +46,15 @@ export function DeleteSlip({
         event.preventDefault()
         if (!inFlight) onClose()
       }}
+      onClose={(event) => {
+        // Strict Mode cleanup can queue a close event before the effect reopens it.
+        if (event.currentTarget.open) return
+        // Repeated Escape can close the native dialog even after cancel was prevented.
+        if (inFlight) {
+          event.currentTarget.showModal()
+          status.current?.focus({ preventScroll: true })
+        } else onClose()
+      }}
       onClick={(event) => {
         if (inFlight || event.target !== event.currentTarget) return
         const bounds = event.currentTarget.getBoundingClientRect()

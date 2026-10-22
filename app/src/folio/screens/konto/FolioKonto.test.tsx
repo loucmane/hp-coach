@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import axe from 'axe-core'
+import { StrictMode } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { COACH_BLURBS } from '@/lib/voice'
 import { useCoachStore } from '@/stores/coachStore'
@@ -65,7 +66,7 @@ function openSlip() {
   const opener = screen.getByTestId('konto-delete')
   opener.focus()
   fireEvent.click(opener)
-  return { opener, dialog: screen.getByRole('dialog', { name: 'Radera konto' }) }
+  return { opener, dialog: screen.getByRole<HTMLDialogElement>('dialog', { name: 'Radera konto' }) }
 }
 function arm() {
   fireEvent.change(screen.getByTestId('konto-delete-confirm'), { target: { value: 'radera' } })
@@ -335,6 +336,7 @@ describe('Folio Konto', () => {
   })
   it('keeps real tool, help and legal links with native modified-click behavior', async () => {
     mount('mer')
+    await waitFor(() => expect(screen.getByRole('heading', { name: 'Övningen' })).toHaveFocus())
     for (const path of ['diagnostik', 'prov', 'avancerat', 'coach']) {
       const link = screen.getByTestId(`mer-tool-${path}`)
       expect(link).toHaveAttribute('href', `/${path}`)
@@ -433,7 +435,7 @@ describe('Folio Konto', () => {
   })
 })
 
-describe('Mer landing after hydration', () => {
+describe('Konto and Mer landing after hydration', () => {
   let headingY: number
   let scrollY: number
   const tick = (ms = 32) => act(() => vi.advanceTimersByTime(ms))
@@ -456,6 +458,28 @@ describe('Mer landing after hydration', () => {
         ? new DOMRect(0, headingY - scrollY, 500, 42)
         : measure.call(this)
     })
+  })
+
+  it.each([
+    false,
+    true,
+  ])('never scrolls Konto on load or hydration (initially loading: %s)', (loading) => {
+    state.identityLoaded = !loading
+    state.prefsPending = loading
+    scrollY = 180
+    const { rerender } = render(<FolioKonto entry="konto" />)
+    tick(1200)
+    expect(window.scrollTo).not.toHaveBeenCalled()
+    state.identityLoaded = true
+    state.prefsPending = false
+    headingY += 110
+    rerender(<FolioKonto entry="konto" />)
+    act(() => useExamStore.getState().setSitting('host-2027'))
+    tick(1200)
+    expect(window.scrollTo).not.toHaveBeenCalled()
+    expect(scrollIntoView).not.toHaveBeenCalled()
+    expect(scrollY).toBe(180)
+    expect(screen.getByRole('heading', { name: 'Övningen' })).not.toHaveFocus()
   })
 
   it.each([
@@ -593,13 +617,22 @@ describe('Folio deletion slip', () => {
     await user.keyboard(' ')
     await waitFor(() => expect(state.deleteAccount).toHaveBeenCalledTimes(1))
   })
-  it.each(['cancel', 'escape', 'backdrop'])('closes through %s and returns focus', (kind) => {
+  it.each([
+    'cancel',
+    'escape',
+    'backdrop',
+    'native close',
+  ])('closes through %s and returns focus', (kind) => {
     mount()
     const { opener, dialog } = openSlip()
     if (kind === 'cancel') fireEvent.click(within(dialog).getByRole('button', { name: 'Avbryt' }))
     if (kind === 'escape') fireEvent(dialog, new Event('cancel', { cancelable: true }))
     if (kind === 'backdrop') fireEvent.click(dialog, { clientX: -1, clientY: -1 })
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    if (kind === 'native close') {
+      dialog.close()
+      fireEvent(dialog, new Event('close'))
+    }
+    expect(dialog).not.toBeInTheDocument()
     expect(opener).toHaveFocus()
   })
   it('does not close when dialog content or its interior is clicked', () => {
@@ -608,6 +641,27 @@ describe('Folio deletion slip', () => {
     fireEvent.click(dialog, { clientX: 0, clientY: 0 })
     fireEvent.click(within(dialog).getByText(/Allt raderas direkt/))
     expect(dialog).toBeInTheDocument()
+  })
+  it('ignores the queued cleanup close event after Strict Mode reopens the dialog', () => {
+    vi.useFakeTimers()
+    const close = vi.spyOn(HTMLDialogElement.prototype, 'close').mockImplementation(function (
+      this: HTMLDialogElement,
+    ) {
+      this.open = false
+      setTimeout(() => this.dispatchEvent(new Event('close')), 0)
+    })
+    render(
+      <StrictMode>
+        <FolioKonto entry="konto" />
+      </StrictMode>,
+    )
+    const { dialog } = openSlip()
+    expect(close).toHaveBeenCalledTimes(1)
+    expect(dialog).toHaveAttribute('open')
+    act(() => vi.runOnlyPendingTimers())
+    expect(dialog).toBeInTheDocument()
+    expect(dialog).toHaveAttribute('open')
+    expect(screen.getByTestId('konto-delete-confirm')).toHaveFocus()
   })
   it('requires a fresh confirmation after cancelling and reopening', () => {
     mount()
@@ -683,6 +737,58 @@ describe('Folio deletion slip', () => {
     fireEvent.click(screen.getByTestId('konto-delete-submit'))
     await screen.findByTestId('konto-delete-done')
     expect(state.deleteAccount).toHaveBeenCalledTimes(2)
+  })
+  it.each([
+    'delete',
+    'sign-out',
+  ])('recovers native closure during %s and allows closing after failure', async (stage) => {
+    const deletion = deferred<{ ok: true; deleted: true }>()
+    const signingOut = deferred<void>()
+    state.deleteAccount.mockReturnValueOnce(deletion.promise)
+    state.signOut.mockReturnValueOnce(signingOut.promise)
+    const showModal = vi.spyOn(HTMLDialogElement.prototype, 'showModal')
+    mount()
+    const { dialog, opener } = openSlip()
+    fireEvent.click(arm())
+    if (stage === 'sign-out') await act(async () => deletion.resolve({ ok: true, deleted: true }))
+    const status = within(dialog).getByText(
+      stage === 'delete' ? 'Raderar…' : 'Kontot är raderat. Loggar ut…',
+      { selector: 'p' },
+    )
+    const nativeClose = () => {
+      // The browser clears open before delivering the non-cancelable close event.
+      dialog.close()
+      status.blur()
+      fireEvent(dialog, new Event('close'))
+    }
+    for (let attempt = 0; attempt < 2; attempt++) {
+      nativeClose()
+      expect(dialog).toHaveAttribute('open')
+      expect(status).toBeVisible()
+      expect(status).toHaveFocus()
+    }
+    expect(showModal).toHaveBeenCalledTimes(3)
+    expect(state.deleteAccount).toHaveBeenCalledTimes(1)
+    await act(async () => {
+      if (stage === 'delete') deletion.reject(new Error('offline'))
+      else signingOut.reject(new Error('offline'))
+    })
+    const failure =
+      stage === 'delete'
+        ? 'Kunde inte radera kontot. Inget raderades — försök igen.'
+        : 'Kontot är raderat, men det gick inte att logga ut.'
+    expect(within(dialog).getByText(failure)).toBeVisible()
+    nativeClose()
+    expect(dialog).not.toBeInTheDocument()
+    expect(opener).toHaveFocus()
+    expect(screen.getByText(failure)).toBeVisible()
+    const reopened = openSlip().dialog
+    expect(reopened).toHaveAttribute('open')
+    expect(within(reopened).getByText(failure)).toBeVisible()
+    expect(screen.getByTestId('konto-delete-confirm')).toHaveValue('')
+    expect(screen.getByTestId('konto-delete-submit')).toBeDisabled()
+    expect(state.deleteAccount).toHaveBeenCalledTimes(1)
+    expect(state.signOut).toHaveBeenCalledTimes(stage === 'delete' ? 0 : 1)
   })
   it('never repeats a successful deletion when Clerk sign-out fails', async () => {
     state.signOut.mockRejectedValueOnce(new Error('Clerk unavailable'))

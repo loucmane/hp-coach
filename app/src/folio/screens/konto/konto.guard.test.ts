@@ -213,6 +213,17 @@ describe('Konto isolation', () => {
     expect(cssColourViolations(css)).toEqual([])
     expect(css).toMatch(/::backdrop\s*\{\s*background:\s*var\(--fa-scrim\)/)
   })
+  it('removes outlines only from programmatically focused section headings, preserving control rings', () => {
+    const css = read('./konto.css').replace(/\/\*[\s\S]*?\*\//g, '')
+    const rules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    const suppressed = rules
+      .filter(([, , body]) => /outline:\s*none\s*;/.test(body))
+      .map(([, selector]) => selector.trim())
+    expect(suppressed).toEqual(["[data-folio] .fa-konto h2[tabindex='-1']:focus"])
+    expect(css).toMatch(
+      /\[data-folio\] \.fa-konto :focus-visible\s*\{\s*outline: 2px solid var\(--fa-ink\);/,
+    )
+  })
   it.each([
     '--fa-focus',
     '--fa-ok',

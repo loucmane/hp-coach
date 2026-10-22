@@ -156,3 +156,52 @@ FOLIO KONTO R2 DONE: hpf-qr0p.49.9
 - Owner visual approval remains mandatory before merge. Forward the playbook proposal above into the astra-relay queue. Per the accepted round-3 contract, leave bead status/assignee unchanged and stop after the final DONE note; coordinator parks it. No worker close or drain that could release unfinished delivery into the pool.
 
 FOLIO KONTO R3 DONE: hpf-qr0p.49.9
+
+## 2026-10-23 — Round 4 start
+
+### Findings and decisions
+
+- Accepted three-item round-4 brief at clean HEAD `97389451c7cd3d085036deb9cc5345bbf6b77f2a`; same worktree/write set, no molecule. Keep changes uncommitted for coordinator delivery.
+- Suppress outlines only on programmatically focused section h2 headings. Preserve keyboard control rings and existing screen-reader focus management.
+- Handle native dialog close during deletion/sign-out by reopening modally and restoring status focus. Once the request settles, normal closing must unmount the slip, restore opener focus and expose the main failure status so it can reopen.
+- Add no-scroll coverage for the Konto entry with both immediately ready and delayed identity/preferences. Use the existing geometry/timer fixture through the full landing/correction interval.
+- [S:worker|W:hpf-qr0p.49.9|H:round-4-inspect|E:accepted contract and source] Regression tests added before product changes; red run next.
+
+### Red-first evidence
+
+- Before product changes, `app/: pnpm test src/folio/screens/konto/FolioKonto.test.tsx src/folio/screens/konto/konto.guard.test.ts --maxWorkers=2` produced 4 expected failures and 87 passes (3.85 seconds): missing heading outline suppression, idle native close leaving the slip mounted, and forced native closure during deletion/sign-out leaving it closed. Both new Konto no-scroll cases already pass, protecting existing behavior through delayed hydration.
+- The first run also exposed an existing navigation test timing race: it programmatically focused a support link before the Mer landing frame, then awaited user-event keyboard dispatch, allowing the frame to steal focus before Enter. The test now waits for the initial landing as the other Mer tests do. The corrected red run above isolates the four requested defects.
+- [S:worker|W:hpf-qr0p.49.9|H:round-4-red|E:4 failures / 87 passes before product edits] Product changes now add the scoped heading rule and native close handler; green verification next.
+
+- Initial implementation passes all 118 focused tests across seven files (4.84 seconds). Review found the app runs in React Strict Mode: effect cleanup closes the dialog before setup reopens it, so the later native close event could dismiss the fresh dialog. A new queued-close regression failed (1 failure / 61 skipped, 1.20 seconds). The handler now ignores close events while the dialog is already open, preserving the reopened instance; actual forced closures still recover modal status focus.
+
+### Playbook proposals — astra-relay
+
+- 2026-10-23: Adding native dialog close handling made a Strict Mode dialog disappear immediately after opening. Cause: effect cleanup calls close, queuing a native event; effect setup reopens the same node before that event arrives. Rule: ignore stale close events when the dialog is already open, and test the asynchronous event under Strict Mode rather than using an open-attribute-only dialog shim.
+- 2026-10-23: A keyboard-link test intermittently sent Enter to a heading instead of the programmatically focused link. Cause: the asynchronous initial landing frame ran between direct focus and user-event keyboard dispatch. Rule: await the initial landing before testing subsequent keyboard navigation, or model the real input that cancels landing.
+- The requested `~/scratch/skill-gotchas/` queue is outside this session's explicit writable roots (also established in earlier rounds). Proposals are retained here for coordinator forwarding; no forbidden-path write or temporary substitute attempted.
+
+### Verification and reviewable source identity
+
+- All three requested changes are implemented. Non-interactive section headings keep programmatic focus without an outline; interactive controls retain their focus-visible rings. Native deletion/sign-out closures reopen the modal and refocus status; settled failures close/unmount normally and allow reopening. Konto does not scroll on initial load or delayed identity/preferences/sitting hydration.
+- `app/: pnpm typecheck` — PASS.
+- `app/: pnpm lint` — PASS, 705 files, four existing informational devbake findings only. An initial formatting error in added test tables was corrected before this passing run.
+- `app/: pnpm test` with default parallelism and no `--maxWorkers` — 5,191 PASS, one existing trap-index generator check blocked by `spawnSync /usr/bin/node EPERM`; 176 passed files / one failed file, 37.10 seconds. Includes all seven new cases and the corrected navigation test. Coordinator must rerun the generator on the host; no suppression or workaround.
+- `git diff --check` — PASS. Four admitted source/test files plus repository worklog changed; no worker/dependency changes. Build result follows below.
+- HEAD remains `97389451c7cd3d085036deb9cc5345bbf6b77f2a` on `codex/hpf-qr0p.49.9-konto-and-mer-in-folio`. Changes are unstaged/uncommitted: shared worktree Git metadata is outside the writable roots and read-only (established in prior rounds, no retry). No commit, signer, push or merge attempted.
+- SHA-256 of each changed source/test file:
+  - `app/src/folio/screens/konto/DeleteSlip.tsx`: `0c360d8c346a9f8ca2367c745fc1a818cb9f8d71ca89d428ccf568cb230731e8`
+  - `app/src/folio/screens/konto/FolioKonto.test.tsx`: `96de0c07e0f05f6be8d996dad39eca3b6ac191b6afc72f0e8ac7957feff42626`
+  - `app/src/folio/screens/konto/konto.css`: `ff6fce3522219a007167b4f0cf56a7f17c6344c57669f3402757f1dbd6614f6b`
+  - `app/src/folio/screens/konto/konto.guard.test.ts`: `257f11c28f0aa4bd1dc4277473ddbeefb0df2d196a0a31da9b1184342ecf6e78`
+- [S:worker|W:hpf-qr0p.49.9|H:round-4-verify|E:5191 tests PASS; one sandbox-blocked generator; typecheck/lint PASS] Production build and final handoff next.
+
+### Final handoff (supersedes round-4 in-progress state)
+
+- `app/: pnpm build` — PASS: TypeScript and Vite; 3,330 modules; Vite stage 8.27 seconds; 269 PWA precache entries. Existing route-test-file and large-chunk warnings remain.
+- Re-read the bead before delivery: round-4 contract and admitted write set are unchanged. All requested source/test work is complete, uncommitted and unstaged for coordinator delivery. No independent review verdict exists for this delta yet; round-3 PASS does not cover it.
+- Coordinator next: stage/sign, rerun the sandbox-blocked trap-index generator check on the host, and obtain fresh independent exact-head review. Validate real Chrome repeated Escape during deletion and sign-out, failure visibility/reopen, Strict Mode opening, and heading/control focus appearance on desktop/phone in light/dark. Unit shims do not prove native top-layer behavior or browser rendering.
+- Owner visual approval remains mandatory before merge; no worker merge/publish/close. Forward the astra-relay proposals above into the permanent proposal queue. Per accepted delivery rules, leave bead status/assignee unchanged and stop after the final DONE note; coordinator parks it. Do not drain an in-progress bead back into the pool.
+- [S:worker|W:hpf-qr0p.49.9|H:round-4-handoff|E:build/typecheck/lint PASS; 5191 full-suite passes plus one sandbox-blocked check] Ready for coordinator delivery.
+
+FOLIO KONTO R4 DONE: hpf-qr0p.49.9
