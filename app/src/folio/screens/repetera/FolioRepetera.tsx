@@ -1,5 +1,6 @@
 import { ChevronRight } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import { REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { formatSwedishDateShort } from '@/lib/scoring'
 import { MissRow } from './MissRow'
 import { type NavigateHref, RepeteraLink, RepeteraQueue } from './RepeteraQueue'
@@ -127,26 +128,21 @@ export default function FolioRepetera(props: Props) {
                     <span className="fa-meta">{view.pile} i dagens hög</span>
                   ) : null}
                 </div>
-                {view.due.length ? (
-                  <div className="fa-part-block">
-                    <h3 className="fa-part" id="fa-rep-now">
-                      Redo nu
-                    </h3>
-                    <ol aria-labelledby="fa-rep-now">
-                      {view.due.map((item) => (
-                        <MissRow key={item.mistakeId} item={item} navigateHref={navigateHref} />
-                      ))}
-                    </ol>
-                  </div>
-                ) : null}
-                <LaterPart
+                <MissPart
+                  items={view.due}
+                  previewSize={REPETITION_SESSION_SIZE}
+                  navigateHref={navigateHref}
+                  id="fa-rep-now"
+                  title="Redo nu"
+                />
+                <MissPart
                   items={view.laterToday}
                   folded={view.ready > 0}
                   navigateHref={navigateHref}
                   id="fa-rep-later"
                   title="Senare idag"
                 />
-                <LaterPart
+                <MissPart
                   items={view.laterDays}
                   folded={view.ready > 0}
                   navigateHref={navigateHref}
@@ -205,15 +201,17 @@ export default function FolioRepetera(props: Props) {
   )
 }
 
-function LaterPart({
+function MissPart({
   items,
-  folded,
+  folded = false,
+  previewSize = 5,
   navigateHref,
   id,
   title,
 }: {
   items: RepeteraItem[]
-  folded: boolean
+  folded?: boolean
+  previewSize?: number
   navigateHref: NavigateHref
   id: string
   title: string
@@ -240,11 +238,11 @@ function LaterPart({
       ) : null}
       <div id={`${id}-content`} hidden={folded && !open}>
         <ol id={`${id}-list`} aria-labelledby={id}>
-          {(showAll ? items : items.slice(0, 5)).map((item) => (
+          {(showAll ? items : items.slice(0, previewSize)).map((item) => (
             <MissRow key={item.mistakeId} item={item} navigateHref={navigateHref} />
           ))}
         </ol>
-        {items.length > 5 ? (
+        {items.length > previewSize ? (
           <button
             type="button"
             className="fa-more"

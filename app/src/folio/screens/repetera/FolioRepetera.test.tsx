@@ -177,12 +177,62 @@ describe('Folio Repetera overview', () => {
     expect(navigate).not.toHaveBeenCalled()
   })
 
-  it('keeps all ready rows and folds the later preview and its expansion control together', () => {
+  it.each([
+    11, 44,
+  ])('previews the first ten of %s due rows in queue order with a keyboard toggle', async (count) => {
+    const user = userEvent.setup()
+    const ready = Array.from({ length: count }, (_, i) => miss(count - i))
+    h.pile = [...ready].reverse()
+    h.bank = ready.map((row) => ({
+      qid: row.questionId,
+      section: 'ORD',
+      number: row.id,
+      prompt: `ord ${row.id}`,
+    })) as Question[]
+    render(<FolioRepetera {...props()} dueMistakes={ready} />)
+    expect(screen.getByRole('heading', { name: `10 av ${count} missar` })).toBeVisible()
+    const list = screen.getByRole('list', { name: 'Redo nu' })
+    const rowLabels = () =>
+      within(list)
+        .getAllByRole('link')
+        .map((link) => link.textContent)
+    const preview = ready.slice(0, 10).map((row) => `ORDord ${row.id}nu`)
+    expect(rowLabels()).toEqual(preview)
+    const more = screen.getByRole('button', { name: `Visa alla ${count}` })
+    expect(more).toHaveAttribute('type', 'button')
+    expect(more).toHaveAttribute('aria-expanded', 'false')
+    expect(list.id).not.toBe('')
+    expect(more).toHaveAttribute('aria-controls', list.id)
+    within(list).getAllByRole('link').at(-1)?.focus()
+    await user.tab()
+    expect(more).toHaveFocus()
+    await user.keyboard('{Enter}')
+    expect(more).toHaveTextContent('Visa färre')
+    expect(more).toHaveAttribute('aria-expanded', 'true')
+    expect(rowLabels()).toEqual(ready.map((row) => `ORDord ${row.id}nu`))
+    await user.keyboard(' ')
+    expect(more).toHaveTextContent(`Visa alla ${count}`)
+    expect(more).toHaveAttribute('aria-expanded', 'false')
+    expect(rowLabels()).toEqual(preview)
+    expect(navigate).not.toHaveBeenCalled()
+  })
+
+  it.each([1, 10])('shows all %s due rows without an unnecessary expansion button', (count) => {
+    const ready = Array.from({ length: count }, (_, i) => miss(i + 1))
+    h.pile = ready
+    render(<FolioRepetera {...props()} dueMistakes={ready} />)
+    expect(within(screen.getByRole('list', { name: 'Redo nu' })).getAllByRole('link')).toHaveLength(
+      count,
+    )
+    expect(screen.queryByRole('button', { name: /Visa alla|Visa färre/ })).not.toBeInTheDocument()
+  })
+
+  it('caps ready rows and folds the later preview and its expansion control together', () => {
     const ready = Array.from({ length: 12 }, (_, i) => miss(i + 1))
     h.pile = Array.from({ length: 6 }, (_, i) => miss(i + 20, 'ORD', new Date(2026, 9, 22, 14)))
     render(<FolioRepetera {...props()} dueMistakes={ready} />)
     expect(within(screen.getByRole('list', { name: 'Redo nu' })).getAllByRole('link')).toHaveLength(
-      12,
+      10,
     )
     expect(screen.queryByRole('list', { name: 'Senare idag' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Visa alla 6' })).not.toBeInTheDocument()
