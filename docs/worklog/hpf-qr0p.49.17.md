@@ -28,3 +28,28 @@
 - Coordinator checks still required: rerun the trap-index generator consistency check outside the sandbox; run `pnpm test:e2e tests-e2e/dayzero.spec.ts tests-e2e/home.spec.ts` with the authorized local stack/auth setup; capture a real local-stack lesson-resume visual check and obtain the owner's visual OK before merge. E2E was not run here because its global setup calls Clerk's network APIs and the accepted worker contract requires offline work. No credentials were read or changed.
 - Review disposition: self-inspected diff only; independent cross-vendor exact-head review remains pending after coordinator commit. Bead status/assignee/closure remain coordinator-owned. No new playbook gotcha was discovered; the observed child-process limitation is already documented in the accepted contract.
 - 2026-10-23: Staging was attempted once and refused because the worktree index resides under the main repository's read-only Git metadata (`index.lock`: read-only filesystem). Changes remain unstaged and uncommitted; coordinator must stage them. This sandbox limitation is already covered by the astra-relay playbook. No workaround or signing attempt was made.
+
+## Round 2 — 2026-10-23
+
+### Findings and decisions
+
+- Started clean at the accepted round-1 head `43e61f2a7fff23db5ecbac6b97c39d57dbbd51a9`. No molecule controls this bead. Round 2 asks only to remove the redundant neutral lesson progress from the Folio Idag subtitle.
+- Keep named progress and the existing `vid ` stripping in `useShellData.ts`. The classic panel already presents `NOG-lektion · pausad` as its headline and neutral progress on a separate metadata line, so no classic production change is needed; rerun its existing known/loading/unknown rendering tests.
+- Add mapper expectations for neutral and named lesson progress and update loading/unknown adapter expectations before editing production code. Run the focused regression, typecheck, lint, full app suite once without `--maxWorkers`, and build. Follow the accepted default-TMPDIR instruction. Leave source changes uncommitted and hand delivery back to the coordinator.
+
+### Verification
+
+- Red-first: `pnpm test src/folio/data/mappers.test.ts src/components/home/useResumptionCandidate.test.tsx --maxWorkers=2` failed with 3 failed / 33 passed. The pure neutral-progress case and both loading/unknown adapter cases expected `Fortsätt NOG-lektion` but received `Fortsätt NOG-lektion, pågående lektion`. Named-title and classic-panel cases passed.
+- Implemented a mapper-only condition: neutral `pågående lektion` renders the subject alone; specific progress retains the existing comma and text. Repeating the focused command passed all 36 tests in two files. Existing classic-panel tests cover known/loading/unknown states and unchanged resume links.
+- `pnpm lint` passed: 694 files checked, no fixes, four existing informational diagnostics in untouched devbake files.
+- `pnpm typecheck` passed.
+- Required full `pnpm test`, with default TMPDIR and no `--maxWorkers`, completed in 45.43s: 171 test files passed / one failed; 5,099 tests passed / one failed. The sole failure was the unchanged `src/lib/trapIndex.test.ts` generator consistency check, reporting `spawnSync /usr/bin/node EPERM`. The accepted brief identifies this sandbox limitation and instructs reporting it for a coordinator rerun.
+- `pnpm build` passed, including TypeScript, Vite (3,323 modules), and PWA service-worker generation (266 precache entries). Non-fatal warnings concern test files under routes and chunks above 500 kB; no build configuration or generated source changes were needed.
+- `git diff --check` passed. Final source diff contains only `app/src/folio/data/mappers.ts` and `app/src/folio/data/mappers.test.ts`, plus this worklog. No worker files or dependencies changed; worker checks do not apply.
+
+### Handoff
+
+- Round 2 is implemented and self-reviewed as an uncommitted delta on `43e61f2a7fff23db5ecbac6b97c39d57dbbd51a9`. The fallback now reads `Fortsätt NOG-lektion`; a resolved title still reads `Fortsätt NOG-lektion, Två påståenden`. Classic panel regressions pass without production changes.
+- Changes remain unstaged: `git rev-parse --git-path index` resolves to `/home/loucmane/dev/hpfetcher/.git/worktrees/hpf-qr0p.49.17/index`, outside the writable worktree and under read-only Git metadata. The prior round already recorded staging refusal; this round did not retry or work around it. No commit, push, merge, signing, or status/assignee change was attempted.
+- Coordinator delivery: stage and commit; rerun the trap-index generator consistency check outside the sandbox; obtain the required review on the new exact head and real-local-stack owner visual OK before merge. The brief reports a Claude PASS for round 1; it is not a review of this uncommitted round-2 delta. Authenticated E2E/visual work remains on the authorized local stack, outside this offline worker.
+- Both repository and classified worklogs contain round-2 evidence. No new playbook gotcha was discovered; generator subprocess and Git-index restrictions were already documented.

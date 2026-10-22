@@ -8,7 +8,9 @@ export function shellSubtitles(input: ShellInput): Record<Destination, string> {
   const first = plan?.find((item) => !item.completed)
   return {
     idag: resume
-      ? `Fortsätt ${resume.subject}, ${resume.progress}`
+      ? resume.progress === 'pågående lektion'
+        ? `Fortsätt ${resume.subject}`
+        : `Fortsätt ${resume.subject}, ${resume.progress}`
       : first
         ? done > 0
           ? `${done} av ${plan?.length} steg klara`

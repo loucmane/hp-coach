@@ -71,6 +71,14 @@ describe('shellSubtitles', () => {
       shellSubtitles({ ...empty, resume: { subject: 'LÄS', progress: 'fråga 3 av 10' } }).idag,
     ).toBe('Fortsätt LÄS, fråga 3 av 10')
   })
+  it.each([
+    ['pågående lektion', 'Fortsätt NOG-lektion'],
+    ['Två påståenden', 'Fortsätt NOG-lektion, Två påståenden'],
+  ])('only includes specific lesson progress in the subtitle: %s', (progress, expected) => {
+    expect(shellSubtitles({ ...empty, resume: { subject: 'NOG-lektion', progress } }).idag).toBe(
+      expected,
+    )
+  })
   it('names the first item and counts completed steps', () => {
     const plan = [
       { title: 'Läs tabellen', completed: false },
@@ -223,7 +231,7 @@ describe('read-only shell adapters', () => {
       }
     }
     const { result } = renderHook(() => useFolioShellData())
-    expect(result.current.subtitles.idag).toBe('Fortsätt NOG-lektion, pågående lektion')
+    expect(result.current.subtitles.idag).toBe('Fortsätt NOG-lektion')
     expect(result.current.subtitles.idag).not.toMatch(/NOG-TRAP-\d+/)
   })
 
