@@ -57,7 +57,16 @@
 
 import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { type CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  type CSSProperties,
+  lazy,
+  Suspense,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 import type { MockHalf, MockMode } from '@/api/hooks/useMockResults'
 import { useExposure, useMockResults } from '@/api/hooks/useMockResults'
@@ -76,6 +85,7 @@ import { Page } from '@/components/Page'
 import { Btn } from '@/components/primitives'
 import { TermHint } from '@/components/ui/TermHint'
 import { findQuestion, loadBank, type Question } from '@/data/questions'
+import { FolioHostContext } from '@/folio/host'
 import { useViewport, type Viewport } from '@/hooks/useViewport'
 import { isDevSurface } from '@/lib/devSurface'
 import { seededRng } from '@/lib/drill'
@@ -84,6 +94,9 @@ import { listAuthenticPasses, type PassOption, pickSynthetic, resolveAuthentic }
 import { logMockEvent } from '@/lib/mockEvents'
 import { sheetFromAttempts } from '@/lib/mockSheet'
 import { useFirstContentSignal } from '@/lib/motion'
+
+const FolioProvpass = lazy(() => import('@/folio/screens/prov/FolioProvpass'))
+const FolioProvResult = lazy(() => import('@/folio/screens/prov/FolioProvResult'))
 
 export type ProvSearch = {
   result?: number
@@ -210,6 +223,7 @@ function ProvRoute() {
   // Boot-veil content signal (#305 owner verdict) — /prov has no Skrift
   // block; the picker/instructions view renders from local data at mount.
   useFirstContentSignal()
+  const inFolio = useContext(FolioHostContext)
   const navigate = useNavigate()
   const { result: resultId, devMinutes, half: prescribedHalf } = Route.useSearch()
   const resultsQuery = useMockResults()
@@ -239,6 +253,9 @@ function ProvRoute() {
   const [passes, setPasses] = useState<PassOption[]>([])
   const [running, setRunning] = useState<RunningState | null>(null)
   const [voidNotice, setVoidNotice] = useState(false)
+  const [resultFlags, setResultFlags] = useState<{ resultId: number; flagged: string[] } | null>(
+    null,
+  )
   // The authentic pass the picker auto-picked (a sitting tap resolves to
   // its least-seen pass) and stashed for the confirm sheet + start flow.
   // null in synthetic mode (there is no single sitting).
@@ -391,7 +408,8 @@ function ProvRoute() {
     )
   }
 
-  const handleSettled = (result: { id: number }) => {
+  const handleSettled = (result: { id: number }, extras: { flagged: string[] }) => {
+    setResultFlags({ resultId: result.id, flagged: extras.flagged })
     setRunning(null)
     setPhase('picker')
     navigate({ to: '/prov', search: { result: result.id } })
@@ -402,6 +420,30 @@ function ProvRoute() {
     setRunning(null)
     setPhase('picker')
     setVoidNotice(true)
+  }
+
+  const navigateHref = (href: string) => {
+    const url = new URL(href, window.location.origin)
+    navigate({
+      to: url.pathname as never,
+      search: Object.fromEntries(url.searchParams) as never,
+      hash: url.hash.slice(1),
+    })
+  }
+
+  if (inFolio && resultId != null) {
+    return (
+      <Suspense fallback={<p role="status">Laddar resultatet …</p>}>
+        <FolioProvResult
+          key={resultId}
+          resultId={resultId}
+          results={resultsQuery}
+          bank={bank}
+          flags={resultFlags?.resultId === resultId ? resultFlags : null}
+          navigateHref={navigateHref}
+        />
+      </Suspense>
+    )
   }
 
   // Deep-link to a result takes priority over the idle flow — refresh-
@@ -433,6 +475,39 @@ function ProvRoute() {
         onSettled={handleSettled}
         onVoid={handleVoid}
       />
+    )
+  }
+
+  if (inFolio) {
+    return (
+      <Suspense fallback={<p role="status">Laddar provpassen …</p>}>
+        <FolioProvpass
+          half={half}
+          mode={mode}
+          onHalfChange={setHalf}
+          onModeChange={setMode}
+          passes={passes}
+          ready={bank != null && exposureQuery.data != null}
+          voidNotice={voidNotice}
+          results={resultsQuery}
+          navigateHref={navigateHref}
+          startAuthentic={(pass) => {
+            setVoidNotice(false)
+            startAuthentic(pass)
+          }}
+          startSynthetic={() => {
+            setVoidNotice(false)
+            startSynthetic()
+          }}
+          beginRun={beginRun}
+          slipOpen={phase === 'instructions'}
+          pendingPass={pendingPass}
+          onDismiss={() => setPhase('picker')}
+          pending={startSession.isPending}
+          error={startSession.isError}
+          durationMs={resolveDurationMs(devMinutes)}
+        />
+      </Suspense>
     )
   }
 
