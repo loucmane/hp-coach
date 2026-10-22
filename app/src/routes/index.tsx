@@ -7,13 +7,14 @@
 
 import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useContext, useEffect, useMemo, useState } from 'react'
 import { useDueMistakes, usePileMistakes } from '@/api/hooks/useMistakes'
 import { useMockResults } from '@/api/hooks/useMockResults'
 import { useSessionHistory } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
 import { useTopTraps } from '@/api/hooks/useTopTraps'
 import { AccountMenu } from '@/components/account/AccountMenu'
+import { FolioHostContext } from '@/folio/host'
 import { useDailyPlan } from '@/hooks/useDailyPlan'
 import { type DiagnosticMemory, loadDiagnosticMemory } from '@/lib/diagnosticMemory'
 import { TAB_ROUTE } from '@/lib/nav'
@@ -21,11 +22,14 @@ import { computeHonestDelta, computeHonestProjected, minutesPracticedToday } fro
 import { daysSinceVisit, loadPreviousVisit, markVisit } from '@/lib/visitMemory'
 import { HomeMobile } from '@/screens/HomeMobile'
 
+const FolioIdag = lazy(() => import('@/folio/screens/idag/FolioIdag'))
+
 export const Route = createFileRoute('/')({
   component: HomeRoute,
 })
 
 function HomeRoute() {
+  const inFolio = useContext(FolioHostContext)
   const navigate = useNavigate()
   const stats = useStats()
   const { plan, allComplete, mockPrescription, deferMock, isError: planError } = useDailyPlan()
@@ -47,13 +51,15 @@ function HomeRoute() {
   // TODAY'S PILE (usePileMistakes) so it matches the desktop rail/header
   // numeral exactly — rolls up on a fresh miss, down on a correct
   // repetition.
-  const pileCount = usePileMistakes().data?.length
+  const pileMistakes = usePileMistakes()
+  const pileCount = pileMistakes.data?.length
   const ovaDueCount = pileCount ?? 0
   // LIVE ripe-now ("redo nu") count — the actionable slice the daily-plan
   // repetition row plays. Threaded into HomeMobile → DailyPlanCard as the
   // playable N; the pile above is the context total M ("N av M"). Same
   // query keys useDailyPlan already reads, so React Query dedupes.
-  const dueMistakeCount = useDueMistakes().data?.length
+  const dueMistakes = useDueMistakes()
+  const dueMistakeCount = dueMistakes.data?.length
   const topTraps = useTopTraps()
   const recentPasses = useSessionHistory()
 
@@ -121,6 +127,41 @@ function HomeRoute() {
     const search: Record<string, string> = {}
     for (const [k, v] of new URLSearchParams(query)) search[k] = v
     navigate({ to: path as never, search: search as never })
+  }
+
+  if (inFolio) {
+    return (
+      <Suspense fallback={<p role="status">Laddar …</p>}>
+        <FolioIdag
+          plan={plan}
+          planError={planError}
+          allComplete={allComplete}
+          mockPrescription={mockPrescription}
+          deferMock={deferMock}
+          minutesToday={minutesToday}
+          projected={projected}
+          projectedDelta={projectedDelta}
+          bySection={stats.data?.bySection}
+          attemptsDaily={stats.data?.attemptsDaily}
+          topTraps={topTraps}
+          history={recentPasses.data ?? []}
+          firstName={firstName}
+          dueCount={dueMistakeCount}
+          pileCount={pileCount}
+          dueMistakes={dueMistakes.data}
+          pileMistakes={pileMistakes.data}
+          navigateHref={(href) => {
+            // Resume lessons retain their entry anchor as well as the section.
+            const url = new URL(href, window.location.origin)
+            navigate({
+              to: url.pathname as never,
+              search: Object.fromEntries(url.searchParams) as never,
+              hash: url.hash.slice(1),
+            })
+          }}
+        />
+      </Suspense>
+    )
   }
 
   return (
