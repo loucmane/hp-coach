@@ -559,7 +559,7 @@ it.each([
       if (phone && reading && index === 1) {
         expect(scroll).not.toHaveBeenCalled()
       } else {
-        expect(scroll).toHaveBeenCalledExactlyOnceWith({ top: 0 })
+        expect(scroll).toHaveBeenCalledExactlyOnceWith({ top: 0, behavior: 'instant' })
         expect(scroll.mock.invocationCallOrder[0]).toBeLessThan(
           focus.mock.invocationCallOrder[focusIndex],
         )
@@ -635,7 +635,7 @@ it.each([
   try {
     mount()
     await questionReady()
-    expect(window.scrollTo).toHaveBeenCalledExactlyOnceWith({ top: 0 })
+    expect(window.scrollTo).toHaveBeenCalledExactlyOnceWith({ top: 0, behavior: 'instant' })
     const question = screen.getByRole('region', { name: 'Uppgift 1' })
     const questionCalls = focus.mock.calls.filter((_, i) => focus.mock.contexts[i] === question)
     expect(questionCalls.length).toBeGreaterThan(0)
