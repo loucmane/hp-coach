@@ -6,6 +6,7 @@ export type DrillOption = { letter: AnswerLetter; text: string; figure?: DrillOp
 export type DrillFigure = DrillOptionFigure & { kind: 'svg' | 'raster' }
 export type DrillPassage = Passage & {
   title?: string
+  instruction?: string
   lang: 'sv' | 'en'
   synthetic: boolean
   unitId?: string

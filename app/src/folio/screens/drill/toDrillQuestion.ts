@@ -2,7 +2,31 @@ import type { Question } from '@/data/questions'
 import { formatPass, formatSitting } from '@/lib/examNames'
 import { isP5Qid } from '@/lib/provenance'
 import { parsePassage } from './drillCore'
-import type { DrillQuestion } from './types'
+import type { DrillPassage, DrillQuestion } from './types'
+
+function readingPassage(q: Question, authentic: boolean): DrillPassage | null {
+  if (!q.context) return null
+  const passage: DrillPassage = {
+    ...parsePassage(q.context),
+    lang: q.section === 'ELF' ? 'en' : 'sv',
+    synthetic: !authentic,
+  }
+  if (q.section !== 'LÄS' && q.section !== 'ELF') return passage
+  const paragraphs = [...passage.paragraphs]
+  if (
+    q.section === 'ELF' &&
+    /^(?:In the following text|Read (?:the |this |following)|AND HERE ARE SOME SHORTER TEXTS)/i.test(
+      paragraphs[0]?.trim() ?? '',
+    )
+  ) {
+    passage.instruction = paragraphs.shift()
+  }
+  const first = paragraphs[0]
+  if (first?.trim() && first.length <= 90 && !/[.!?]$/.test(first.trim())) {
+    passage.title = paragraphs.shift()
+  }
+  return { ...passage, paragraphs }
+}
 
 /** Copy of the prototype adapter, with provenance taken from the product qid. */
 export function toDrillQuestion(
@@ -31,13 +55,7 @@ export function toDrillQuestion(
             }
           : null,
       })) ?? null,
-    passage: q.context
-      ? {
-          ...parsePassage(q.context),
-          lang: q.section === 'ELF' ? 'en' : 'sv',
-          synthetic: !authentic,
-        }
-      : null,
+    passage: readingPassage(q, authentic),
     figure: q.figure
       ? {
           src: q.figure.src,

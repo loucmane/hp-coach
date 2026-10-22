@@ -381,7 +381,7 @@ function Cites({
           key={n}
           type="button"
           className="fa-cite"
-          data-testid={`fa-cite-${n}`}
+          data-testid={`rd-cite-${n}`}
           data-fa-cite={`${source}:${n}`}
           onClick={() => act.cite(n, source)}
           aria-label={`Visa stycke ${n} i texten`}

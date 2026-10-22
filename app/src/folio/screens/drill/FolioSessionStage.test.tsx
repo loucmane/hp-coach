@@ -456,29 +456,29 @@ describe('Folio through the real SessionPlayer', () => {
     key('a')
     expect(h.submit).toHaveBeenCalledTimes(1)
   })
-  it.each([
-    'LÄS',
-    'ELF',
-    'DTK',
-  ] as const)('uses classic controls for %s even under Folio', async (section) => {
+  it.each(['LÄS', 'ELF', 'DTK'] as const)('uses Folio controls for %s', async (section) => {
     h.phone = true
     h.bank = [fixture(1, section)]
     mount()
     await screen.findByTestId('option-A')
     await act(async () => {})
-    expect(screen.queryByTestId('fa-lock')).toBeNull()
+    expect(screen.getByTestId('fa-lock')).toBeInTheDocument()
     key('a')
+    expect(h.submit).not.toHaveBeenCalled()
+    key('Enter')
     expect(h.submit).toHaveBeenCalledTimes(1)
   })
   it('switches between Folio and classic questions in one plan', async () => {
     h.phone = true
-    h.bank = [fixture(), fixture(2, 'DTK'), fixture(3)]
+    h.bank = [fixture(), { ...fixture(2, 'DTK'), options: null }, fixture(3)]
     mount()
     await questionReady()
     key('a')
     key('Enter')
     key('Enter')
     expect(screen.queryByTestId('fa-lock')).toBeNull()
+    // An options-less item stays classic; its existing keyboard path can advance.
+    expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', h.bank[1].qid)
     key('a')
     key('Enter')
     await questionReady()
@@ -554,8 +554,8 @@ it.each([
   }
 })
 
-it('keeps drill CSS local and uses neutral ink for errors', () => {
-  const css = readFileSync('src/folio/screens/drill/drill.css', 'utf8').replace(
+it.each(['drill.css', 'reading.css'])('keeps %s local and uses neutral ink for errors', (file) => {
+  const css = readFileSync(`src/folio/screens/drill/${file}`, 'utf8').replace(
     /\/\*[\s\S]*?\*\//g,
     '',
   )

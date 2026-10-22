@@ -1,12 +1,15 @@
-import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
+import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { SessionKind } from '@/api/hooks/useSessions'
 import type { AnswerLetter, Question } from '@/data/questions'
+import { useViewport } from '@/hooks/useViewport'
 import { DrillHead, TacticNote, Verdict } from './DrillHead'
 import { useDrillCore } from './drillCore'
 import { drillSeam } from './drillSeam'
 import { Facit } from './Facit'
+import { FigureViewer } from './FigureViewer'
 import { GradedOptions, Options } from './Options'
 import { QuantPage } from './QuantPage'
+import { ReadingSpread } from './ReadingSpread'
 import { folioBlock } from './seam'
 import { toDrillQuestion } from './toDrillQuestion'
 import type { DrillFigure } from './types'
@@ -72,20 +75,26 @@ function BlockStage({
   const root = useRef<HTMLDivElement>(null)
   const problem = useRef<HTMLElement>(null)
   const verdict = useRef<HTMLHeadingElement>(null)
+  const phone = useViewport() === 'phone'
+  const [viewerOpen, setViewerOpen] = useState(false)
   const feedback = view.phase === 'feedback'
   const q = view.question
+  const reading = ['LÄS', 'ELF', 'DTK'].includes(q.section)
   const seam = drillSeam(sessionKind, q.section)
+  const closeViewer = useCallback(() => {
+    setViewerOpen(false)
+  }, [])
 
   // Focus follows the question and verdict; disclosure buttons retain native Enter.
   useEffect(() => {
-    if (!q.qid || suspended) return
+    if (!q.qid || suspended || viewerOpen) return
     const target = feedback ? verdict.current : problem.current
-    // The phone feedback follows the question in document flow. Reveal the
-    // focused verdict instead of leaving keyboard users above it off-screen.
-    target?.focus()
-  }, [q.qid, feedback, suspended])
+    // Reading starts above the phone question; preserve that reading position.
+    // Feedback and a closed figure viewer return focus to the verdict.
+    target?.focus({ preventScroll: phone && reading && !feedback })
+  }, [q.qid, feedback, suspended, viewerOpen, phone, reading])
   useEffect(() => {
-    if (suspended) return
+    if (suspended || viewerOpen) return
     const onKey = (event: KeyboardEvent) => {
       if (event.defaultPrevented || event.repeat || event.metaKey || event.ctrlKey || event.altKey)
         return
@@ -116,7 +125,7 @@ function BlockStage({
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [act, view.phase, view.letters, suspended])
+  }, [act, view.phase, view.letters, suspended, viewerOpen])
 
   const action = (
     <div className="fa-actionbar">
@@ -141,64 +150,85 @@ function BlockStage({
   )
   return (
     <div
-      className="fa-drill fa-quant"
+      className={`fa-drill fa-quant${reading ? ' rd-drill' : ''}`}
       data-testid="drill-question"
       data-qid={q.qid}
       data-phase={view.phase}
       ref={root}
       inert={suspended || undefined}
     >
-      <DrillHead seam={seam} index={index} total={plan.length} />
-      <div className={feedback ? 'fa-feedback-spread' : 'fa-qsheet'}>
-        <section
-          className="fa-qcol"
-          ref={problem}
-          tabIndex={-1}
-          aria-label={`Uppgift ${index + 1}`}
-        >
-          <QuantPage
-            q={q}
-            n={index + 1}
-            hang
-            passageRef={refs.para}
-            flashPara={view.flashPara}
-            figure={q.figure ? <QuestionFigure key={q.figure.src} figure={q.figure} /> : null}
+      <div className="rd-stage-content" inert={viewerOpen || undefined}>
+        <DrillHead seam={seam} index={index} total={plan.length} />
+        {reading ? (
+          <ReadingSpread
+            view={view}
+            act={act}
+            refs={refs}
+            questions={questions}
+            phone={phone}
+            index={index}
+            total={plan.length}
+            frameworks={frameworks}
+            action={action}
+            problem={problem}
+            verdict={verdict}
+            onZoom={() => setViewerOpen(true)}
+            suspended={suspended || viewerOpen}
           />
-          {feedback ? (
-            <GradedOptions key={q.qid} view={view} all />
-          ) : (
-            <>
-              <Options view={view} act={act} />
-              <p className="fa-keys">
-                A–{view.letters.at(-1) ?? 'E'} välj · ⇧ + bokstav stryk · Enter svara
-              </p>
-              {action}
-            </>
-          )}
-        </section>
-        {feedback ? (
-          <section className="fa-recto-body" aria-label="Facit">
-            <Verdict
-              view={view}
-              focusRef={(node) => {
-                verdict.current = node
-              }}
-            />
-            <Facit
-              key={q.qid}
-              view={view}
-              act={act}
-              refs={refs}
-              frameworks={frameworks}
-              active={null}
-              point={() => {}}
-            />
-            {action}
-          </section>
         ) : (
-          <TacticNote key={q.qid} explanation={view.explanation} variant="margin" />
+          <div className={feedback ? 'fa-feedback-spread' : 'fa-qsheet'}>
+            <section
+              className="fa-qcol"
+              ref={problem}
+              tabIndex={-1}
+              aria-label={`Uppgift ${index + 1}`}
+            >
+              <QuantPage
+                q={q}
+                n={index + 1}
+                hang
+                passageRef={refs.para}
+                flashPara={view.flashPara}
+                figure={q.figure ? <QuestionFigure key={q.figure.src} figure={q.figure} /> : null}
+              />
+              {feedback ? (
+                <GradedOptions key={q.qid} view={view} all />
+              ) : (
+                <>
+                  <Options view={view} act={act} />
+                  <p className="fa-keys">
+                    A–{view.letters.at(-1) ?? 'E'} välj · ⇧ + bokstav stryk · Enter svara
+                  </p>
+                  {action}
+                </>
+              )}
+            </section>
+            {feedback ? (
+              <section className="fa-recto-body" aria-label="Facit">
+                <Verdict
+                  view={view}
+                  focusRef={(node) => {
+                    verdict.current = node
+                  }}
+                />
+                <Facit
+                  key={q.qid}
+                  view={view}
+                  act={act}
+                  refs={refs}
+                  frameworks={frameworks}
+                  active={null}
+                  point={() => {}}
+                />
+                {action}
+              </section>
+            ) : (
+              <TacticNote key={q.qid} explanation={view.explanation} variant="margin" />
+            )}
+          </div>
         )}
       </div>
+      {viewerOpen && q.figure ? <FigureViewer figure={q.figure} onClose={closeViewer} /> : null}
     </div>
   )
 }

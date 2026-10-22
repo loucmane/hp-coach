@@ -38,14 +38,11 @@ const ORDINALS: Record<string, number> = {
 
 const ORDINAL_RE = new RegExp(`(${Object.keys(ORDINALS).join('|')})\\s+stycket`, 'giu')
 
-/** The quotations in a text. Swedish typography opens and closes with the
- *  same ”, so quotes are the odd-numbered pieces between them — a regex
- *  would happily take the gap between two quotations for a third. Only
- *  quotes of 12+ characters count (single words are too ambiguous). */
+/** Pair each opener with its closer, including Swedish symmetric quotes,
+ * English curly quotes and the bank's ASCII quotes. Short words are ambiguous. */
 function quotations(text: string): string[] {
-  return text
-    .split('”')
-    .filter((_, i, all) => i % 2 === 1 && i < all.length - 1)
+  return [...text.matchAll(/"([^"\n]+)"|“([^”\n]+)”|”([^”\n]+)”/g)]
+    .map((m) => m[1] ?? m[2] ?? m[3])
     .filter((q) => q.trim().length >= 12)
 }
 // Years and proper names: kept only when exactly one paragraph has them.

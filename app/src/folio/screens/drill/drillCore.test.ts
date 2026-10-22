@@ -8,13 +8,35 @@ import { act, renderHook } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import {
+  citeParagraphs,
   type DrillController,
   type DrillCoreOptions,
   explanationCites,
+  findQuotes,
   LOCAL_CONTROLLER,
   useDrillCore,
 } from './drillCore'
 import type { DrillQuestion } from './types'
+
+it('locates ASCII, English and Swedish quotations without citing text between quotes', () => {
+  const paragraphs = [
+    'En inledning.',
+    'ett långt citat ur texten',
+    'en annan citerad mening',
+    'texten mellan citaten',
+  ]
+  for (const [open, close] of [
+    ['"', '"'],
+    ['“', '”'],
+    ['”', '”'],
+  ]) {
+    const text = `${open}ett långt citat ur texten${close} texten mellan citaten ${open}en annan citerad mening${close}`
+    expect(citeParagraphs(text, paragraphs)).toEqual([2, 3])
+    expect(findQuotes(text, paragraphs).map((m) => m.para)).toEqual([2, 3])
+  }
+  expect(citeParagraphs('"inledning"', paragraphs)).toEqual([])
+  expect(citeParagraphs('andra styckets början', paragraphs)).toEqual([2])
+})
 
 function question(
   qid: string,
