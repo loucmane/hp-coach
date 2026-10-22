@@ -97,3 +97,28 @@ FOLIO FOUNDATION R2 DONE: hpf-qr0p.49.1
 - Bead status and assignee remain unchanged. Per the accepted contract, stop after the DONE note; coordinator owns parking/closure and lifecycle completion. No commit, merge or publication performed.
 
 FOLIO FOUNDATION R3 DONE: hpf-qr0p.49.1
+
+## Round 4 inspection and decisions — 2026-10-22
+
+- Claimed the test-only round at clean head 708c21a0edfa696a5922501679a1049574a3df5c; no molecule. Only the root boundary test and worklogs will change.
+- The root selector matcher misses functional pseudo-classes and universal descendants; its leaf-rule matcher also includes a preceding semicolon-terminated at-statement in the selector. Add failing planted cases first, including the actual Spalt palette selector, then extend the guard without changing CSS or product code.
+- Keep commas inside one-level functional pseudo-classes intact while splitting selector lists. Add allowed scoped-shell/custom-property cases to check that the broader matcher does not reject legitimate CSS.
+- Leave the diff uncommitted; coordinator owns staging/signing, host verification, independent review and owner visual approval. Preserve bead status and assignee under the accepted round contract.
+
+## Round 4 implementation and focused verification — 2026-10-22
+
+- Red first: pnpm test src/routes/-root-direction-shell.test.ts --maxWorkers=2 produced 12 expected failures and 54 passes. All twelve new forbidden cases failed against the original guard, including the actual Spalt selector, comma-separated :not/:is/:where arguments, grouped selectors, universal descendants/direct children, and rules after at-statements (also inside media queries).
+- Extended the root matcher to accept one-level functional pseudo-classes and universal descendants/direct children. Selector-list splitting preserves commas inside those pseudo-classes. The leaf-rule matcher excludes semicolon-terminated at-statements from the following selector.
+- The same focused command passed all 66 tests after the fix. Five new allowed cases preserve scoped shell typography and custom properties. All three real stylesheets remain clean under the strengthened guard.
+- pnpm typecheck passed. pnpm lint passed after applying its requested formatting to the changed test; four pre-existing informational diagnostics remain in unchanged devbake files. git diff --check passed. Full app suite is running.
+- Only the root boundary test and this repository worklog changed. No CSS, product, worker or dependency changes. Git metadata is outside writable roots at /home/loucmane/dev/hpfetcher/.git/worktrees/hpf-qr0p.49.1; staging/signing remains with the coordinator.
+
+## Round 4 delivery handoff — 2026-10-22
+
+- Full app pnpm test --maxWorkers=2: 140 files passed, one failed; 4,519 tests passed, one failed (4,520 total). The only failure is the existing trapIndex.test.ts generator check: spawnSync /usr/bin/node EPERM. This matches the documented sandbox limit; the coordinator must rerun it on the host. No bypass attempted.
+- Typecheck, lint and whitespace checks passed; focused boundary suite passed 66/66. This test-only round changes no CSS or product code. Worker checks and production build were not required for this scope.
+- Exact base remains 708c21a0edfa696a5922501679a1049574a3df5c. Two repository files changed: the root boundary test and this worklog; the classified worklog was also appended. Changes are uncommitted and unstaged because Git metadata is outside writable roots.
+- Coordinator next: stage/sign, run the host generator verification and obtain independent exact-head review to resolve the round-3 HOLD. Existing real-stack desktop/phone light/dark and owner visual-approval gates still apply before merge. No independent review of round 4 has occurred in this worker session.
+- Preserve status and assignee, then stop after the DONE note under the accepted delivery contract; coordinator owns parking/closure and lifecycle completion. No commit, push, merge or publication performed. No new playbook gotcha: the subprocess and external Git metadata limits are already documented.
+
+FOLIO FOUNDATION R4 DONE: hpf-qr0p.49.1

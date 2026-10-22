@@ -71,13 +71,15 @@ describe('Folio production boundary', () => {
 
   function inheritedRootRules(css: string): string[] {
     const uncommented = css.replace(/\/\*[\s\S]*?\*\//g, '')
-    // Inspect each selector in each leaf rule, including rules nested in media
-    // queries and root selectors qualified by theme/palette attributes.
-    return [...uncommented.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    // Match qualified roots and their universal descendants, allowing one level
+    // of parentheses in functional pseudo-classes.
+    const rootSelector =
+      /^\[data-folio\](?:\[[^\]]*\]|:(?:not|is|where)\([^()]*\)|[.:#][\w-]+)*(?:\s+\*|\s*>\s*\*)?$/
+    // Inspect leaf rules inside at-rule blocks; exclude preceding at-statements
+    // from the selector and preserve commas inside functional pseudo-classes.
+    return [...uncommented.matchAll(/([^{};]+)\{([^{}]*)\}/g)]
       .filter((rule) =>
-        rule[1]
-          .split(',')
-          .some((selector) => /^\[data-folio\](?:\[[^\]]*\]|[.:#][\w-]+)*$/.test(selector.trim())),
+        rule[1].split(/,(?![^()]*\))/).some((selector) => rootSelector.test(selector.trim())),
       )
       .filter((rule) =>
         /(?:^|;)\s*(?:font[\w-]*|line-height|color|text-rendering|-webkit-font-smoothing|interpolate-size)\s*:/.test(
@@ -126,6 +128,18 @@ describe('Folio production boundary', () => {
     '[data-folio], .x { font-family: serif; }',
     '.x, [data-folio] { color: red; }',
     '[data-folio][data-theme="dark"] { color: red; }',
+    "[data-folio][data-palette='spalt']:not([data-theme='dark']) { color: red; }",
+    '[data-folio]:not(.light, .dark) { color: red; }',
+    '[data-folio]:is(.light, .dark) { color: red; }',
+    '[data-folio]:where(.light, .dark) { color: red; }',
+    '.x, [data-folio]:not(.light):is(.dark, .auto), .y { color: red; }',
+    '[data-folio] * { color: red; }',
+    '[data-folio] > * { color: red; }',
+    '[data-folio]>* { font-family: serif; }',
+    '[data-folio]:where(.light, .dark) > * { line-height: 1.5; }',
+    '@layer x;\n[data-folio] { color: red; }',
+    '@layer x; @layer y; [data-folio] { color: red; }',
+    '@media (min-width: 768px) { @layer x;\n[data-folio] { color: red; } }',
     '@media (min-width: 768px) { [data-folio], .x { line-height: 1.5; } }',
     '[data-folio] { --fa-ink: red; } [data-folio], .x { font: 16px serif; }',
   ])('recognizes typography inherited by unported routes: %s', (css) => {
@@ -135,6 +149,11 @@ describe('Folio production boundary', () => {
   it.each([
     '[data-folio] { --fa-serif: serif; --fa-ink: red; color-scheme: light; }',
     '[data-folio] .fa-side, [data-folio] .fa-menu { color: red; font-family: serif; }',
+    '[data-folio]:not(.dark) .fa-side { color: red; }',
+    '[data-folio]:is(.light, .dark) > .fa-menu { color: red; }',
+    '[data-folio] .fa-side * { color: red; }',
+    '[data-folio]:where(.light, .dark) { --fa-ink: red; color-scheme: light; }',
+    '@layer x;\n[data-folio] .fa-side { color: red; }',
     '/* [data-folio] { color: red; } */',
   ])('permits scoped shell typography and custom properties: %s', (css) => {
     expect(inheritedRootRules(css)).toEqual([])
