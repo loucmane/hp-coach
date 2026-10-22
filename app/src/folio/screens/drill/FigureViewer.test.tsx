@@ -7,8 +7,9 @@ import { FigureViewer } from './FigureViewer'
 afterEach(() => vi.restoreAllMocks())
 
 it('rotates with the button and R, fits the rotated box and preserves zoom while rotating', () => {
-  vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(800)
-  vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockReturnValue(600)
+  vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue(
+    new DOMRect(0, 0, 800, 600),
+  )
   render(
     <FigureViewer
       figure={{ kind: 'raster', src: 'plate.jpg', alt: 'Diagram', width: 700, height: 1000 }}
@@ -50,8 +51,9 @@ it('rotates with the button and R, fits the rotated box and preserves zoom while
 })
 
 it('refits a rotated figure when the viewport changes and pans its zoomed box', () => {
-  const width = vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(800)
-  const height = vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockReturnValue(600)
+  const bounds = vi
+    .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+    .mockReturnValue(new DOMRect(0, 0, 800, 600))
   render(
     <FigureViewer
       figure={{ kind: 'raster', src: 'plate.jpg', alt: 'Diagram', width: 700, height: 1000 }}
@@ -59,8 +61,7 @@ it('refits a rotated figure when the viewport changes and pans its zoomed box', 
     />,
   )
   fireEvent.keyDown(document.body, { key: 'r' })
-  width.mockReturnValue(400)
-  height.mockReturnValue(700)
+  bounds.mockReturnValue(new DOMRect(0, 0, 400, 700))
   fireEvent(window, new Event('resize'))
   const box = screen.getByRole('img').parentElement!
   expect(box.style.width).toBe('400px')
@@ -79,6 +80,38 @@ it('refits a rotated figure when the viewport changes and pans its zoomed box', 
   fireEvent.pointerUp(area, { pointerId: 1 })
   fireEvent.pointerMove(area, { pointerId: 1, clientX: 20, clientY: 20 })
   expect(area.scrollLeft).toBe(70)
+})
+
+it.each([
+  { width: 800.75, height: 600.75 },
+  { width: 400.75, height: 700.75 },
+])('fits within fractional viewport dimensions $width x $height at every rotation', ({
+  width,
+  height,
+}) => {
+  vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(Math.round(width))
+  vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockReturnValue(Math.round(height))
+  vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue(
+    new DOMRect(0, 0, width, height),
+  )
+  render(
+    <FigureViewer
+      figure={{ kind: 'raster', src: 'plate.jpg', alt: 'Diagram', width: 700, height: 1000 }}
+      onClose={vi.fn()}
+    />,
+  )
+  const box = screen.getByRole('img').parentElement!
+  for (const rotation of [0, 90, 180, 270]) {
+    fireEvent.click(screen.getByRole('button', { name: 'Förstora' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Anpassa' }))
+    const aspect = rotation === 90 || rotation === 270 ? 1000 / 700 : 700 / 1000
+    expect(Number.parseFloat(box.style.width)).toBeLessThanOrEqual(Math.floor(width))
+    expect(Number.parseFloat(box.style.height)).toBeLessThanOrEqual(Math.floor(height))
+    expect(Number.parseFloat(box.style.width)).toBeCloseTo(
+      Math.min(Math.floor(width), Math.floor(height) * aspect),
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Rotera figur 90 grader' }))
+  }
 })
 
 it('traps focus, supports zoom and reset, and releases document scrolling', async () => {

@@ -99,6 +99,7 @@ function BlockStage({
   const root = useRef<HTMLDivElement>(null)
   const problem = useRef<HTMLElement>(null)
   const verdict = useRef<HTMLHeadingElement>(null)
+  const previousQuestion = useRef<string | null>(null)
   const phone = useViewport() === 'phone'
   const [viewerOpen, setViewerOpen] = useState(false)
   const [viewerRotation, setViewerRotation] = useState(0)
@@ -111,14 +112,19 @@ function BlockStage({
   }, [])
 
   // Focus follows the question and verdict; disclosure buttons retain native Enter.
-  // biome-ignore lint/correctness/useExhaustiveDependencies: the phone layout remounts the focus target.
   useEffect(() => {
+    const firstInBlock = previousQuestion.current === null
+    const newQuestion = previousQuestion.current !== q.qid
+    // Record transitions even while suspended so restoring focus cannot reset scroll.
+    previousQuestion.current = q.qid
     if (!q.qid || suspended || viewerOpen) return
+    if (!feedback && newQuestion && (firstInBlock || !phone || !reading)) {
+      window.scrollTo({ top: 0 })
+    }
     const target = feedback ? verdict.current : problem.current
-    // Preserve the shell and reading position when announcing a question.
-    // Feedback still scrolls the verdict into view.
+    // Question focus preserves the intentional page position; feedback still scrolls.
     target?.focus({ preventScroll: !feedback })
-  }, [q.qid, feedback, suspended, viewerOpen, phone])
+  }, [q.qid, feedback, suspended, viewerOpen, phone, reading])
   useEffect(() => {
     if (suspended || viewerOpen) return
     const onKey = (event: KeyboardEvent) => {

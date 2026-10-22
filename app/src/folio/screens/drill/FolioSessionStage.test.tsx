@@ -91,6 +91,7 @@ function fixture(n = 1, section: Question['section'] = 'ORD'): Question {
 }
 beforeEach(() => {
   vi.clearAllMocks()
+  vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
   // History traversals are asynchronous in jsdom. Keep one completed test's
   // marker consumption from opening the next mounted session's leave sheet.
   vi.spyOn(window.history, 'back').mockImplementation(() => {})
@@ -517,6 +518,92 @@ describe('Folio through the real SessionPlayer', () => {
   })
 })
 
+it.each([
+  { section: 'XYZ', phone: false },
+  { section: 'NOG', phone: true },
+  { section: 'DTK', phone: false },
+  { section: 'LÄS', phone: true },
+  { section: 'ELF', phone: true },
+  { section: 'DTK', phone: true },
+] as const)('starts new $section questions at the top except within phone reading blocks, phone=$phone', async ({
+  section,
+  phone,
+}) => {
+  h.phone = phone
+  const reading = ['LÄS', 'ELF', 'DTK'].includes(section)
+  h.bank = [1, 2, 3].map((n) => ({
+    ...fixture(n, section),
+    context: section === 'LÄS' || section === 'ELF' ? `Text ${n < 3 ? 1 : 2}.` : null,
+    figure:
+      section === 'DTK' ? { src: `plate-${n < 3 ? 1 : 2}.jpg`, aspect_ratio: 0.7 } : undefined,
+  }))
+  const scroll = vi.mocked(window.scrollTo)
+  const focus = vi.spyOn(HTMLElement.prototype, 'focus')
+  try {
+    mount()
+    await questionReady()
+    for (let index = 1; index < h.bank.length; index++) {
+      scroll.mockClear()
+      key('a')
+      key('Enter')
+      expect(scroll).not.toHaveBeenCalled()
+      focus.mockClear()
+      fireEvent.click(screen.getByTestId('drill-next'))
+      await questionReady()
+      expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', h.bank[index].qid)
+      const question = screen.getByRole('region', { name: `Uppgift ${index + 1}` })
+      expect(question).toHaveFocus()
+      const focusIndex = focus.mock.contexts.indexOf(question)
+      expect(focusIndex).toBeGreaterThanOrEqual(0)
+      expect(focus.mock.calls[focusIndex]).toEqual([{ preventScroll: true }])
+      if (phone && reading && index === 1) {
+        expect(scroll).not.toHaveBeenCalled()
+      } else {
+        expect(scroll).toHaveBeenCalledExactlyOnceWith({ top: 0 })
+        expect(scroll.mock.invocationCallOrder[0]).toBeLessThan(
+          focus.mock.invocationCallOrder[focusIndex],
+        )
+      }
+    }
+  } finally {
+    focus.mockRestore()
+  }
+})
+
+it.each([
+  false,
+  true,
+])('does not reset scroll when the figure viewer closes, phone=%s', async (phone) => {
+  h.phone = phone
+  h.bank = [{ ...fixture(1, 'DTK'), figure: { src: 'plate.jpg', aspect_ratio: 0.7 } }]
+  mount()
+  await questionReady()
+  vi.mocked(window.scrollTo).mockClear()
+  fireEvent.click(screen.getByRole('button', { name: 'Förstora' }))
+  expect(screen.getByRole('dialog')).toBeInTheDocument()
+  fireEvent.click(screen.getByRole('button', { name: 'Stäng' }))
+  expect(screen.queryByRole('dialog')).toBeNull()
+  expect(screen.getByRole('region', { name: 'Uppgift 1' })).toHaveFocus()
+  expect(window.scrollTo).not.toHaveBeenCalled()
+})
+
+it.each([
+  false,
+  true,
+])('does not reset scroll when the leave sheet closes, phone=%s', async (phone) => {
+  h.phone = phone
+  h.bank = [fixture(1, 'NOG')]
+  mount()
+  await questionReady()
+  vi.mocked(window.scrollTo).mockClear()
+  fireEvent.click(screen.getByRole('button', { name: 'Avsluta' }))
+  expect(screen.getByTestId('session-leave-sheet')).toBeInTheDocument()
+  fireEvent.click(screen.getByTestId('session-leave-continue'))
+  expect(screen.queryByTestId('session-leave-sheet')).toBeNull()
+  expect(screen.getByRole('region', { name: 'Uppgift 1' })).toHaveFocus()
+  expect(window.scrollTo).not.toHaveBeenCalled()
+})
+
 it('retains question focus when switching between desktop and phone layouts', async () => {
   const props = {
     plan: [{ ...fixture(1, 'DTK'), figure: { src: 'plate.jpg', aspect_ratio: 0.7 } }],
@@ -529,10 +616,12 @@ it('retains question focus when switching between desktop and phone layouts', as
   }
   const { rerender } = render(<FolioSessionStage {...props} />)
   await questionReady()
+  vi.mocked(window.scrollTo).mockClear()
   for (const phone of [true, false]) {
     h.phone = phone
     rerender(<FolioSessionStage {...props} />)
     expect(screen.getByRole('region', { name: 'Uppgift 1' })).toHaveFocus()
+    expect(window.scrollTo).not.toHaveBeenCalled()
   }
 })
 
@@ -546,6 +635,7 @@ it.each([
   try {
     mount()
     await questionReady()
+    expect(window.scrollTo).toHaveBeenCalledExactlyOnceWith({ top: 0 })
     const question = screen.getByRole('region', { name: 'Uppgift 1' })
     const questionCalls = focus.mock.calls.filter((_, i) => focus.mock.contexts[i] === question)
     expect(questionCalls.length).toBeGreaterThan(0)

@@ -23,7 +23,11 @@ export function FigureViewer({
   useLayoutEffect(() => {
     const element = area.current
     if (!element) return
-    const measure = () => setViewport({ width: element.clientWidth, height: element.clientHeight })
+    const measure = () => {
+      const { width, height } = element.getBoundingClientRect()
+      // Rounded client sizes can exceed the available area and trigger scrollbars at fit.
+      setViewport({ width: Math.floor(width), height: Math.floor(height) })
+    }
     measure()
     // The tools can wrap independently of a window resize (e.g. text zoom).
     const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure)

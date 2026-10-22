@@ -204,3 +204,34 @@ var-2026-verb2-LÄS-017.steps.1.text: 2 → 1
 - Final typecheck, lint, production build and whitespace checks passed. All nine changed repository files are inside the admitted write set. Read back the bead before handoff: the round 4 contract is unchanged and the bead remains in progress for coordinator parking and the delivery gates above.
 - The astra-relay playbook proposal about numeric CSS geometry assertions is recorded above for coordinator relay; the requested scratch proposal directory is outside the managed writable roots.
 - [S:codex-1|W:hpf-qr0p.49.11|H:handoff-r4|E:5 initial red failures plus responsive-focus red regression; 93 drill passes; final app 4722 passes and one sandbox EPERM; typecheck/lint/build pass; staging read-only; uncommitted on 284d15c184197653776a7b7a592a08ce09772256]
+
+## 2026-10-22 — round 5 start
+
+- Claimed the existing assignment at clean base 189e1fff0a40403badd4abbc35e49da46c5001a1. No molecule controls sequencing. The accepted round 5 contract is limited to deliberate new-question scrolling and conservative figure-viewer fit measurement.
+- Track question identity within the existing keyed block: reset to the page top before question focus on a new question, except subsequent phone reading questions in the same block. Keep feedback scrolling and focus restoration on viewer/leave-sheet close and responsive layout changes.
+- Added regression tests before implementation through the existing SessionPlayer and viewer test hosts, including fractional viewport dimensions, same-block reading preservation, new-block reset, focus ordering and restoration without scrolling.
+- [S:codex-1|W:hpf-qr0p.49.11|H:inspect-r5|E:accepted design and block/focus/measurement paths inspected; regression tests added before source edits]
+
+### Round 5 implementation and regression evidence
+
+- The focus effect remembers the previous question within the existing keyed block. A new question in the question phase calls `window.scrollTo({ top: 0 })` before focusing with `preventScroll: true`. Subsequent phone LÄS/ELF/DTK questions in the same block retain page position; a new block resets it. Tracking identity separately from focus eligibility prevents viewer/leave-sheet closure or responsive remounts from causing another reset. Feedback still focuses the verdict with `preventScroll: false`.
+- The viewer measures `getBoundingClientRect()` and floors both dimensions before calculating fit. Existing rotation, zoom, resize and pan behavior is retained. New tests deliberately supply rounded client dimensions larger than the fractional rectangle, checking fit in all four orientations and after zoom/reset.
+- Red-first command: `pnpm test src/folio/screens/drill/FolioSessionStage.test.tsx src/folio/screens/drill/FigureViewer.test.tsx --maxWorkers=2` — **10 expected failures / 42 passes** after correcting a test selector to the existing Förstora label. The failures cover absent initial/next/new-block resets and width/height overflow at fractional sizes. Preservation tests for same-block phone reading, viewer close, suspension clear and breakpoint changes passed before the fix.
+- After implementation: `pnpm test src/folio/screens/drill --maxWorkers=2` — **8 files / 105 tests passed**. Final lint passes with the four pre-existing informational devbake diagnostics only; removed the now-unneeded focus dependency suppression. Whitespace validation passed. Full app tests, typecheck and build are in progress.
+
+### Round 5 playbook proposal for coordinator relay
+
+- 2026-10-22, astra-relay: A question-focus change to preventScroll hid the loss of the previous implicit page reset because collapsing feedback clamped the browser scroll position. Keep scroll transitions explicit and keyed to question/block identity; test reset calls after Next as well as preservation on modal/suspension restoration, and include tall questions in host visual checks. The requested scratch proposal directory is outside the managed writable roots, so this uses the playbook's worker-worklog fallback.
+
+### Round 5 delivery boundaries
+
+- `pnpm typecheck`, final `pnpm lint`, and `pnpm build` passed. The production build generated Vite and PWA assets, retaining existing route-test discovery and chunk-size warnings. No worker files or dependencies changed.
+- Staging the five admitted changed files failed because the linked worktree index lock in `/home/loucmane/dev/hpfetcher/.git/worktrees/hpf-qr0p.49.11/` is read-only. Changes remain unstaged and uncommitted on 189e1fff0a40403badd4abbc35e49da46c5001a1. No alternate metadata path, signing, push, merge, bead closure or status/assignee change was attempted.
+- Coordinator retains parking, staging/signing, host verification of the generator check, independent exact-head review, and desktop/phone light/dark visual checks with owner approval before merge. In particular, check a tall phone quant question after Next and a fractional viewer size with classic scrollbars. There is no new implementation SHA or review verdict for round 5 yet.
+
+### Round 5 final verification and handoff
+
+- Full `pnpm test --maxWorkers=2`: **4734 passed / 1 failed; 152 files passed / 1 failed**, including all **105 drill tests** passing. The sole failure is the existing trap-index generator check: `spawnSync /usr/bin/node EPERM`. The sandbox blocks that child process; the coordinator must run this check on the host.
+- Typecheck, lint, build and whitespace checks passed. All five changed repository files are within the admitted write set. Re-read the bead before handoff: the round 5 contract is unchanged. Deliver uncommitted on 189e1fff0a40403badd4abbc35e49da46c5001a1; the coordinator handles parking and the gates above.
+- The astra-relay playbook proposal about explicit question scrolling and misleading document-height clamping is preserved above for coordinator relay because the scratch proposal path is outside the sandbox.
+- [S:codex-1|W:hpf-qr0p.49.11|H:handoff-r5|E:10 red regressions; 105 drill passes; app 4734 passes and one sandbox EPERM; typecheck/lint/build pass; staging read-only; uncommitted on 189e1fff0a40403badd4abbc35e49da46c5001a1]
