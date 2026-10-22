@@ -68,6 +68,7 @@ import { FolioShell } from '@/folio/FolioShell'
 import { endedSessionIdsThisTab } from '@/lib/endedSessions'
 import { useUiStore } from '@/stores/uiStore'
 import { formatViolations, runAxe } from '@/test/a11y'
+import FolioSessionStage from './FolioSessionStage'
 
 function fixture(n = 1, section: Question['section'] = 'ORD'): Question {
   return {
@@ -90,6 +91,7 @@ function fixture(n = 1, section: Question['section'] = 'ORD'): Question {
 }
 beforeEach(() => {
   vi.clearAllMocks()
+  vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
   // History traversals are asynchronous in jsdom. Keep one completed test's
   // marker consumption from opening the next mounted session's leave sheet.
   vi.spyOn(window.history, 'back').mockImplementation(() => {})
@@ -456,29 +458,29 @@ describe('Folio through the real SessionPlayer', () => {
     key('a')
     expect(h.submit).toHaveBeenCalledTimes(1)
   })
-  it.each([
-    'LÄS',
-    'ELF',
-    'DTK',
-  ] as const)('uses classic controls for %s even under Folio', async (section) => {
+  it.each(['LÄS', 'ELF', 'DTK'] as const)('uses Folio controls for %s', async (section) => {
     h.phone = true
     h.bank = [fixture(1, section)]
     mount()
     await screen.findByTestId('option-A')
     await act(async () => {})
-    expect(screen.queryByTestId('fa-lock')).toBeNull()
+    expect(screen.getByTestId('fa-lock')).toBeInTheDocument()
     key('a')
+    expect(h.submit).not.toHaveBeenCalled()
+    key('Enter')
     expect(h.submit).toHaveBeenCalledTimes(1)
   })
   it('switches between Folio and classic questions in one plan', async () => {
     h.phone = true
-    h.bank = [fixture(), fixture(2, 'DTK'), fixture(3)]
+    h.bank = [fixture(), { ...fixture(2, 'DTK'), options: null }, fixture(3)]
     mount()
     await questionReady()
     key('a')
     key('Enter')
     key('Enter')
     expect(screen.queryByTestId('fa-lock')).toBeNull()
+    // An options-less item stays classic; its existing keyboard path can advance.
+    expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', h.bank[1].qid)
     key('a')
     key('Enter')
     await questionReady()
@@ -514,6 +516,180 @@ describe('Folio through the real SessionPlayer', () => {
     ).toBeInTheDocument()
     expect(h.submit).toHaveBeenCalledTimes(1)
   })
+})
+
+it.each([
+  { section: 'XYZ', phone: false },
+  { section: 'NOG', phone: true },
+  { section: 'DTK', phone: false },
+  { section: 'LÄS', phone: true },
+  { section: 'ELF', phone: true },
+  { section: 'DTK', phone: true },
+] as const)('starts new $section questions at the top except within phone reading blocks, phone=$phone', async ({
+  section,
+  phone,
+}) => {
+  h.phone = phone
+  const reading = ['LÄS', 'ELF', 'DTK'].includes(section)
+  h.bank = [1, 2, 3].map((n) => ({
+    ...fixture(n, section),
+    context: section === 'LÄS' || section === 'ELF' ? `Text ${n < 3 ? 1 : 2}.` : null,
+    figure:
+      section === 'DTK' ? { src: `plate-${n < 3 ? 1 : 2}.jpg`, aspect_ratio: 0.7 } : undefined,
+  }))
+  const scroll = vi.mocked(window.scrollTo)
+  const focus = vi.spyOn(HTMLElement.prototype, 'focus')
+  try {
+    mount()
+    await questionReady()
+    for (let index = 1; index < h.bank.length; index++) {
+      scroll.mockClear()
+      key('a')
+      key('Enter')
+      expect(scroll).not.toHaveBeenCalled()
+      focus.mockClear()
+      fireEvent.click(screen.getByTestId('drill-next'))
+      await questionReady()
+      expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', h.bank[index].qid)
+      const question = screen.getByRole('region', { name: `Uppgift ${index + 1}` })
+      expect(question).toHaveFocus()
+      const focusIndex = focus.mock.contexts.indexOf(question)
+      expect(focusIndex).toBeGreaterThanOrEqual(0)
+      expect(focus.mock.calls[focusIndex]).toEqual([{ preventScroll: true }])
+      if (phone && reading && index === 1) {
+        expect(scroll).not.toHaveBeenCalled()
+      } else {
+        expect(scroll).toHaveBeenCalledExactlyOnceWith({ top: 0 })
+        expect(scroll.mock.invocationCallOrder[0]).toBeLessThan(
+          focus.mock.invocationCallOrder[focusIndex],
+        )
+      }
+    }
+  } finally {
+    focus.mockRestore()
+  }
+})
+
+it.each([
+  false,
+  true,
+])('does not reset scroll when the figure viewer closes, phone=%s', async (phone) => {
+  h.phone = phone
+  h.bank = [{ ...fixture(1, 'DTK'), figure: { src: 'plate.jpg', aspect_ratio: 0.7 } }]
+  mount()
+  await questionReady()
+  vi.mocked(window.scrollTo).mockClear()
+  fireEvent.click(screen.getByRole('button', { name: 'Förstora' }))
+  expect(screen.getByRole('dialog')).toBeInTheDocument()
+  fireEvent.click(screen.getByRole('button', { name: 'Stäng' }))
+  expect(screen.queryByRole('dialog')).toBeNull()
+  expect(screen.getByRole('region', { name: 'Uppgift 1' })).toHaveFocus()
+  expect(window.scrollTo).not.toHaveBeenCalled()
+})
+
+it.each([
+  false,
+  true,
+])('does not reset scroll when the leave sheet closes, phone=%s', async (phone) => {
+  h.phone = phone
+  h.bank = [fixture(1, 'NOG')]
+  mount()
+  await questionReady()
+  vi.mocked(window.scrollTo).mockClear()
+  fireEvent.click(screen.getByRole('button', { name: 'Avsluta' }))
+  expect(screen.getByTestId('session-leave-sheet')).toBeInTheDocument()
+  fireEvent.click(screen.getByTestId('session-leave-continue'))
+  expect(screen.queryByTestId('session-leave-sheet')).toBeNull()
+  expect(screen.getByRole('region', { name: 'Uppgift 1' })).toHaveFocus()
+  expect(window.scrollTo).not.toHaveBeenCalled()
+})
+
+it('retains question focus when switching between desktop and phone layouts', async () => {
+  const props = {
+    plan: [{ ...fixture(1, 'DTK'), figure: { src: 'plate.jpg', aspect_ratio: 0.7 } }],
+    index: 0,
+    picked: null,
+    graded: false,
+    onPick: h.submit,
+    onNext: vi.fn(),
+    sessionKind: 'drill' as const,
+  }
+  const { rerender } = render(<FolioSessionStage {...props} />)
+  await questionReady()
+  vi.mocked(window.scrollTo).mockClear()
+  for (const phone of [true, false]) {
+    h.phone = phone
+    rerender(<FolioSessionStage {...props} />)
+    expect(screen.getByRole('region', { name: 'Uppgift 1' })).toHaveFocus()
+    expect(window.scrollTo).not.toHaveBeenCalled()
+  }
+})
+
+it.each([
+  false,
+  true,
+])('focuses a DTK question without scrolling but scrolls to feedback, phone=%s', async (phone) => {
+  h.phone = phone
+  h.bank = [{ ...fixture(1, 'DTK'), figure: { src: 'plate.jpg', aspect_ratio: 0.7 } }]
+  const focus = vi.spyOn(HTMLElement.prototype, 'focus')
+  try {
+    mount()
+    await questionReady()
+    expect(window.scrollTo).toHaveBeenCalledExactlyOnceWith({ top: 0 })
+    const question = screen.getByRole('region', { name: 'Uppgift 1' })
+    const questionCalls = focus.mock.calls.filter((_, i) => focus.mock.contexts[i] === question)
+    expect(questionCalls.length).toBeGreaterThan(0)
+    expect(questionCalls.every(([options]) => options?.preventScroll === true)).toBe(true)
+    key('a')
+    key('Enter')
+    const verdict = screen.getByTestId('fa-verdict')
+    expect(verdict).toHaveFocus()
+    expect(focus.mock.calls.filter((_, i) => focus.mock.contexts[i] === verdict)).toContainEqual([
+      { preventScroll: false },
+    ])
+  } finally {
+    focus.mockRestore()
+  }
+})
+
+it.each([
+  false,
+  true,
+])('restores earlier ELF gaps without resetting the current choice, late=%s', async (late) => {
+  const context = 'A title\n\nWe 31_____ it, then 32_____ it and 33_____ it.'
+  const plan = [
+    fixture(),
+    ...[31, 32, 33].map((n) => ({
+      ...fixture(n, 'ELF'),
+      prompt: '',
+      context,
+    })),
+  ]
+  const props = {
+    plan,
+    index: 3,
+    picked: null,
+    graded: false,
+    onPick: h.submit,
+    onNext: vi.fn(),
+    sessionKind: 'drill' as const,
+  }
+  const picks = ['A', 'B', 'A', null] as const
+  const { container, rerender } = render(<FolioSessionStage {...props} picks={late ? [] : picks} />)
+  await questionReady()
+  key('b')
+  if (late) rerender(<FolioSessionStage {...props} picks={picks} />)
+  expect(screen.getByTestId('drill-prompt')).toHaveTextContent('Lucka 33')
+  expect(container.querySelector('[data-gap="31"]')).toHaveAttribute('data-state', 'wrong')
+  expect(container.querySelector('[data-gap="31"] s')).toHaveTextContent('skynda')
+  expect(container.querySelector('[data-gap="32"]')).toHaveAttribute('data-state', 'right')
+  expect(container.querySelector('[data-gap="32"] .rd-gapword')).toHaveTextContent('fundera')
+  expect(screen.getByTestId('option-B')).toHaveAttribute('aria-pressed', 'true')
+  expect(h.submit).not.toHaveBeenCalled()
+  key('Enter')
+  expect(container.querySelector('[data-gap="33"]')).toHaveAttribute('data-state', 'wrong')
+  expect(container.querySelector('[data-gap="31"] s')).toHaveTextContent('skynda')
+  expect(h.submit).toHaveBeenCalledTimes(1)
 })
 
 it.each([
@@ -554,8 +730,8 @@ it.each([
   }
 })
 
-it('keeps drill CSS local and uses neutral ink for errors', () => {
-  const css = readFileSync('src/folio/screens/drill/drill.css', 'utf8').replace(
+it.each(['drill.css', 'reading.css'])('keeps %s local and uses neutral ink for errors', (file) => {
+  const css = readFileSync(`src/folio/screens/drill/${file}`, 'utf8').replace(
     /\/\*[\s\S]*?\*\//g,
     '',
   )

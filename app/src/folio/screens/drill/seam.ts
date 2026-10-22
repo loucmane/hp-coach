@@ -5,7 +5,10 @@ import type { Question } from '@/data/questions'
 export const LazyFolioSessionStage = lazy(() => import('@/folio/screens/drill/FolioSessionStage'))
 
 export function supportsFolioDrill(q: Question | undefined): boolean {
-  return !!q && ['ORD', 'MEK', 'XYZ', 'KVA', 'NOG'].includes(q.section)
+  return (
+    !!q?.options?.length &&
+    ['ORD', 'MEK', 'XYZ', 'KVA', 'NOG', 'LÄS', 'ELF', 'DTK'].includes(q.section)
+  )
 }
 
 /** Half-open contiguous block, matching the product's DTK block convention. */
@@ -16,6 +19,7 @@ export function folioBlock(
   const q = plan[index]
   const same = (other: Question | undefined) =>
     !!other &&
+    other.section === q.section &&
     supportsFolioDrill(other) &&
     (q.context
       ? other.context === q.context
