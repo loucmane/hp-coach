@@ -52,6 +52,7 @@ function SectionEntry({
           </span>
         </span>
         <span className="fa-plan-why">{s.gloss}</span>
+        {suggested ? <span className="fa-basis">föreslagen</span> : null}
         {basis ? <span className="fa-basis">{basis}</span> : null}
         {waiting ? (
           <span className="fa-entry-note" data-testid={`ova-due-${s.section}`}>

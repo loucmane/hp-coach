@@ -114,6 +114,8 @@ describe('Folio Öva screen', () => {
     ).toBeInTheDocument()
     expect(within(screen.getByTestId('ova-section-KVA')).getByText('1,0')).toBeInTheDocument()
     expect(screen.getByTestId('ova-section-KVA')).toHaveAccessibleName(/föreslagen/)
+    expect(within(screen.getByTestId('ova-section-KVA')).getByText('föreslagen')).toBeVisible()
+    expect(screen.getAllByText('föreslagen')).toHaveLength(1)
     fireEvent.keyDown(document.body, { key: 'Enter' })
     expect(navigateHref).toHaveBeenLastCalledWith('/drill?section=KVA&start=1')
     rerender(<FolioOva {...withSuggestion('ORD')} />)
@@ -121,6 +123,9 @@ describe('Folio Öva screen', () => {
       SECTION_KEYS.map((s) => `ova-section-${s}`),
     )
     expect(screen.getByRole('link', { name: 'Börja med ORD' })).toHaveClass('fa-btn')
+    expect(within(screen.getByTestId('ova-section-ORD')).getByText('föreslagen')).toBeVisible()
+    expect(within(screen.getByTestId('ova-section-KVA')).queryByText('föreslagen')).toBeNull()
+    expect(screen.getAllByText('föreslagen')).toHaveLength(1)
     fireEvent.keyDown(document.body, { key: 'Enter' })
     expect(navigateHref).toHaveBeenLastCalledWith('/drill?section=ORD&start=1')
     expect(container.querySelectorAll('.fa-btn')).toHaveLength(1)
@@ -256,6 +261,55 @@ describe('Folio Öva screen', () => {
     unmount()
     fireEvent.keyDown(document.body, { key: 'Enter' })
     expect(navigateHref).toHaveBeenCalledTimes(1)
+  })
+
+  it.each([
+    'all',
+    'stats',
+    'pile',
+    'due',
+  ] as const)('keeps the lead neutral and Enter inactive while %s loads, including after a ready render', (key) => {
+    const ready = props({ pile: { data: rows('ORD', 2) }, due: { data: rows('ORD', 1) } })
+    const loading = {
+      ...ready,
+      ...(key === 'all'
+        ? { stats: { isPending: true }, pile: { isPending: true }, due: { isPending: true } }
+        : { [key]: { isPending: true } }),
+    }
+    const { container, rerender } = render(<FolioOva {...loading} />)
+    expect(fireEvent.keyDown(document.body, { key: 'Enter' })).toBe(true)
+    expect(navigateHref).not.toHaveBeenCalled()
+    expect(container.querySelectorAll('.fa-btn, .fa-kbd')).toHaveLength(0)
+    expect(screen.getByRole('heading', { level: 2, name: /Laddar/ })).toBeVisible()
+    expect(screen.getByTestId('ova-repetition')).toHaveAttribute('href', '/repetition')
+
+    rerender(<FolioOva {...ready} />)
+    expect(screen.getByRole('link', { name: 'Börja repetera' })).toHaveClass('fa-btn')
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    expect(navigateHref).toHaveBeenCalledExactlyOnceWith('/repetition?start=1')
+    navigateHref.mockClear()
+
+    rerender(<FolioOva {...loading} />)
+    expect(fireEvent.keyDown(document.body, { key: 'Enter' })).toBe(true)
+    expect(navigateHref).not.toHaveBeenCalled()
+    expect(container.querySelectorAll('.fa-btn, .fa-kbd')).toHaveLength(0)
+  })
+
+  it.each([
+    'stats',
+    'pile',
+    'due',
+  ] as const)('retains the visible queue and counts after a failed %s background refetch', (key) => {
+    const cached = props({ pile: { data: rows('ORD', 2) } })
+    const { rerender } = render(<FolioOva {...cached} />)
+    const queueLine = 'Inget är redo just nu — 2 missar i dagens hög blir redo senare.'
+    expect(screen.getByText(queueLine)).toBeVisible()
+    rerender(<FolioOva {...cached} {...{ [key]: { ...cached[key], isError: true } }} />)
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+    expect(screen.getByText(queueLine)).toBeVisible()
+    expect(screen.getByTestId('ova-due-ORD')).toHaveTextContent('2 missar väntar i Repetera')
+    expect(screen.getByRole('link', { name: 'Börja blandad övning' })).toHaveClass('fa-btn')
+    expect(screen.queryByText('föreslagen')).not.toBeInTheDocument()
   })
 
   it('preserves Enter on focused links and modified clicks', async () => {

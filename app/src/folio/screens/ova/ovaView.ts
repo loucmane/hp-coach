@@ -54,13 +54,13 @@ export type OvaView = {
   dayZero: boolean
   relearned: boolean
   lead: {
-    kind: 'repetera' | 'section' | 'mixed'
     eyebrow: string
     title: string
     detail: string | null
-    label: string
-    href: string
-  }
+  } & (
+    | { kind: 'loading'; label: null; href: null }
+    | { kind: 'repetera' | 'section' | 'mixed'; label: string; href: string }
+  )
   repetition: {
     pile: number | null
     dueNow: number | null
@@ -104,7 +104,7 @@ const minuteWord = (n: number) => (n === 1 ? 'minut' : 'minuter')
 /** Keep unknown query results distinct from a known empty queue. */
 export function buildOvaView(input: OvaInput, now = new Date()): OvaView {
   const queries = [input.stats, input.pile, input.due]
-  const state = queries.some((q) => q.isError)
+  const state = queries.some((q) => q.isError && q.data === undefined)
     ? 'error'
     : queries.some((q) => q.isPending || q.data === undefined)
       ? 'loading'
@@ -145,35 +145,44 @@ export function buildOvaView(input: OvaInput, now = new Date()): OvaView {
   const dayZero = input.stats.data?.attempts.total === 0
   const relearned = (input.stats.data?.mistakes.resolved ?? 0) > 0 && pile === 0
   const lead: OvaView['lead'] =
-    round > 0
+    state === 'loading'
       ? {
-          kind: 'repetera',
-          eyebrow: 'Repetera · de äldsta först',
-          title: `${dueNow != null && dueNow > round ? `${round} av ${dueNow}` : round} ${missWord(round)}, ungefär ${minutes} ${minuteWord(minutes)}`,
-          detail:
-            pile != null && dueNow != null && pile > dueNow
-              ? `${pile - dueNow} ${missWord(pile - dueNow)} till väntar i dagens hög och blir redo senare.`
-              : null,
-          label: 'Börja repetera',
-          href: repetition.href,
+          kind: 'loading',
+          eyebrow: 'Övning',
+          title: 'Laddar dina övningar…',
+          detail: null,
+          label: null,
+          href: null,
         }
-      : suggestedSection
+      : round > 0
         ? {
-            kind: 'section',
-            eyebrow: `Förslag · ${suggestedSection.section}`,
-            title: suggestedSection.name,
-            detail: suggestedSection.gloss,
-            label: `Börja med ${suggestedSection.section}`,
-            href: suggestedSection.href,
+            kind: 'repetera',
+            eyebrow: 'Repetera · de äldsta först',
+            title: `${dueNow != null && dueNow > round ? `${round} av ${dueNow}` : round} ${missWord(round)}, ungefär ${minutes} ${minuteWord(minutes)}`,
+            detail:
+              pile != null && dueNow != null && pile > dueNow
+                ? `${pile - dueNow} ${missWord(pile - dueNow)} till väntar i dagens hög och blir redo senare.`
+                : null,
+            label: 'Börja repetera',
+            href: repetition.href,
           }
-        : {
-            kind: 'mixed',
-            eyebrow: 'Börja här',
-            title: 'Blandad övning',
-            detail: `${mixed.questions} frågor över alla åtta delprov`,
-            label: 'Börja blandad övning',
-            href: mixed.href,
-          }
+        : suggestedSection
+          ? {
+              kind: 'section',
+              eyebrow: `Förslag · ${suggestedSection.section}`,
+              title: suggestedSection.name,
+              detail: suggestedSection.gloss,
+              label: `Börja med ${suggestedSection.section}`,
+              href: suggestedSection.href,
+            }
+          : {
+              kind: 'mixed',
+              eyebrow: 'Börja här',
+              title: 'Blandad övning',
+              detail: `${mixed.questions} frågor över alla åtta delprov`,
+              label: 'Börja blandad övning',
+              href: mixed.href,
+            }
   const queueLine =
     state !== 'ready' || round > 0
       ? null

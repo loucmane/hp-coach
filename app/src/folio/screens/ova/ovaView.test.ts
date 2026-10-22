@@ -146,6 +146,54 @@ describe('Folio Öva view', () => {
     expect(failed.queueLine).toBeNull()
   })
 
+  it.each([
+    'stats',
+    'pile',
+    'due',
+  ] as const)('waits for %s before choosing an actionable lead', (key) => {
+    const view = buildOvaView(
+      input({
+        stats: {
+          data: {
+            attempts: { total: 20 },
+            mistakes: { resolved: 0 },
+            bySection: { KVA: section(20, 4) },
+          },
+        },
+        pile: { data: rows('ORD', 2) },
+        due: { data: rows('ORD', 1) },
+        [key]: {},
+      }),
+      now,
+    )
+    expect(view.state).toBe('loading')
+    expect(view.lead).toMatchObject({ kind: 'loading', href: null, label: null })
+    expect(view.lead.title).toMatch(/Laddar/)
+  })
+
+  it.each([
+    'stats',
+    'pile',
+    'due',
+  ] as const)('keeps cached data and the queue line when the %s refetch fails', (key) => {
+    const cached = input({
+      stats: {
+        data: {
+          attempts: { total: 20 },
+          mistakes: { resolved: 2 },
+          bySection: { KVA: section(20, 4) },
+        },
+      },
+      pile: { data: rows('KVA', 2) },
+    })
+    const view = buildOvaView({ ...cached, [key]: { ...cached[key], isError: true } }, now)
+    expect(view.state).toBe('ready')
+    expect(view.statusLine).toBeNull()
+    expect(view.queueLine).toContain('2 missar')
+    expect(view.sections[5]).toMatchObject({ score: 0.4, waiting: 2, dueNow: 0 })
+    expect(view).toEqual(buildOvaView(cached, now))
+  })
+
   it('does not invent section counts when only one queue resolves', () => {
     const view = buildOvaView(
       input({ pile: { isError: true }, due: { data: rows('ORD', 1) } }),

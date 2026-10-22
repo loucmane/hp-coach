@@ -83,18 +83,20 @@ export function OvaLead({ view, navigateHref }: { view: OvaView; navigateHref: N
       </h2>
       {lead.detail ? <p className="fa-lead-sub">{lead.detail}</p> : null}
       <div className="fa-resume-foot">
-        <OvaLink
-          ref={primary}
-          className="fa-btn fa-btn--big"
-          href={lead.href}
-          navigateHref={navigateHref}
-          data-testid={lead.kind === 'repetera' ? 'ova-repetition' : undefined}
-        >
-          {lead.label}
-          <kbd className="fa-kbd" aria-hidden>
-            ↵
-          </kbd>
-        </OvaLink>
+        {lead.kind !== 'loading' ? (
+          <OvaLink
+            ref={primary}
+            className="fa-btn fa-btn--big"
+            href={lead.href}
+            navigateHref={navigateHref}
+            data-testid={lead.kind === 'repetera' ? 'ova-repetition' : undefined}
+          >
+            {lead.label}
+            <kbd className="fa-kbd" aria-hidden>
+              ↵
+            </kbd>
+          </OvaLink>
+        ) : null}
         <OvaLink
           className="fa-link"
           href="/repetition"
