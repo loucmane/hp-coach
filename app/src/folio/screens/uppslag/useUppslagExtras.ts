@@ -1,12 +1,11 @@
-import { useQueries, useQuery } from '@tanstack/react-query'
+import { useQueries } from '@tanstack/react-query'
 import { useLocation } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
-import { type LessonProgress, usePutLessonProgress } from '@/api/hooks/useLessonProgress'
+import { useLessonProgress, usePutLessonProgress } from '@/api/hooks/useLessonProgress'
 import { useLessonReadsQuery } from '@/api/hooks/useLessonReadsApi'
 import { useDueMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
 import { useTopTraps } from '@/api/hooks/useTopTraps'
-import { useApiClient } from '@/api/useApiClient'
 import { loadFramework } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import { useLessonReads } from '@/hooks/useLessonReads'
@@ -26,21 +25,7 @@ export function useUppslagExtras() {
   useEffect(() => {
     if (!serverReads.isPending) setReadsReady(true)
   }, [serverReads.isPending])
-  const api = useApiClient()
-  // Share the bookmark cache and write-through mutation with the classic reader,
-  // but fall back immediately on a failed GET in this screen.
-  const bookmark = useQuery({
-    queryKey: ['lesson-progress'],
-    queryFn: async () => {
-      const res = await api.api['lesson-progress'].$get()
-      if (!res.ok) throw new Error(`GET /api/lesson-progress failed: ${res.status}`)
-      const body = await res.json()
-      return (body.progress ?? null) as LessonProgress | null
-    },
-    retry: false,
-    refetchInterval: 180_000,
-    refetchIntervalInBackground: false,
-  })
+  const bookmark = useLessonProgress()
   const putProgress = usePutLessonProgress()
   const stats = useStats()
   const due = useDueMistakes()

@@ -82,3 +82,32 @@ FOLIO UPPSLAG DONE: hpf-qr0p.49.8
 - Bead status and assignee remain unchanged under the accepted delivery contract. The coordinator parks the bead after the DONE note. Playbook proposal is recorded above for transfer to `astra-relay`.
 
 FOLIO UPPSLAG R2 DONE: hpf-qr0p.49.8
+
+## Round 3 — 2026-10-22
+
+- Clean starting HEAD: `2d39524200f7eb291c59a2b6b8499e329560e9eb`; assigned branch and unchanged admitted write set confirmed. No molecule. Round 2 has host-green checks and a Claude PASS according to the accepted brief; this round needs fresh verification.
+- Translate the four known ORD origins, preserving unknown text. Render an explicit unread action and read/undo label with one accessible name and no pressed state. Pin the desktop recto to zero with its own viewport-height scroll.
+- Reuse `useLessonProgress()` directly instead of duplicating its query function/options. This supersedes round 2's local no-retry policy: both readers will inherit the same query-client retries. Test two observers in both mounting orders, retry success and exhausted retries.
+- Added red-first UI and query regressions plus a desktop scroll-boundary guard before product changes. Delivery remains uncommitted; coordinator owns staging/signing, independent review and owner visual approval.
+
+### Round-3 red-first evidence
+
+- `pnpm test src/folio/screens/uppslag --maxWorkers=2 --reporter=dot` before product edits: **9 failed, 38 passed**. Failures covered the unread label, phone ORD origin, all four known origin translations, exhausted-retry count, Folio-first shared-query arrival, and desktop top offset. Unknown-origin fallback and classic-first mounting already passed.
+- The mounted-query regression used both real query hooks with one QueryClient. With Folio first, the old local `retry: false` prevented the transient failure from recovering and the reader selected the first lesson instead of the server bookmark. Reusing `useLessonProgress()` makes both mounting orders recover to `NOG-C` with two GET attempts and one cache entry/two observers.
+- After product edits: **3 files, 47 tests passed**, 7.86 seconds. Includes exact visible/accessibility names before read, after read and after undo, translated/unknown origins, shared retry recovery/exhaustion, CSS boundary, existing router history and axe checks. The checkmark is decorative; the read accessible name is “Läst · Ångra”.
+- Initial lint found only formatting in the new parameterized test plus four pre-existing informational notices. Applied the requested test formatting; full-suite, typecheck, final lint and build results follow in delivery evidence.
+
+### Playbook-proposal — astra-relay (round 3)
+
+- 2026-10-22 — Symptom: a shared-query retry regression passed with the classic reader mounted first but failed with Folio first, opening the wrong lesson. Cause: two query implementations used the same key with different retry options. Rule: reuse one hook/options definition and test concurrent observers in both mounting orders with a transient failed request; checking cache reuse alone misses the conflict. Retained here for coordinator transfer because `~/scratch/skill-gotchas/` is outside this worker's writable roots.
+
+### Round-3 delivery — 2026-10-22
+
+- All four requested changes are complete. This supersedes round 2's English-origin, stable-toggle-name, 56px-top and local-no-retry behavior. Known origins are Swedish with raw fallback; the read control says “Markera som läst” / “Läst ✓ · Ångra” without `aria-pressed`, retaining `lesson-mark-as-read` and `data-read`; desktop recto sticks at `top: 0` with `max-height: 100dvh` and its own scrolling; bookmark reads reuse `useLessonProgress()`.
+- Focused regression: **47 passed**, including the eight added cases. Full app suite after final test formatting: `pnpm test --maxWorkers=2 --reporter=dot` — **162 files passed, 1 failed; 4,886 tests passed, 1 failed**, 225.99 seconds. Only failure: existing `src/lib/trapIndex.test.ts` generator parity check, denied with `spawnSync /usr/bin/node EPERM`. Coordinator must rerun that check on the host. No sandbox bypass attempted.
+- `pnpm typecheck` — **passed**. Final `pnpm lint` — **passed**, with four pre-existing informational notices. `pnpm build` — **passed**, including PWA generation; existing route-test discovery and chunk-size warnings remain. `git diff --check` — **passed**. No worker/dependency changes; no worker suite required.
+- Delivery HEAD remains `2d39524200f7eb291c59a2b6b8499e329560e9eb` on `codex/hpf-qr0p.49.8-uppslag-in-folio`, in `/home/loucmane/dev/hpfetcher-worktrees/hpf-qr0p.49.8`. The six changed repository files are admitted. Round-3 changes are **uncommitted and unstaged**; HEAD does not contain them. The worktree Git index is outside the writable roots (prior staging refusal documented above), so coordinator staging/signing remains required.
+- Review disposition: round-3 independent review pending. Coordinator next: stage/commit, host generator parity check, independent Claude review at the exact delivery head, desktop/phone light/dark checks on the real stack (ORD origin, read/undo wording and flush-top scrollable recto), and owner visual OK before merge. No browser/visual PASS claimed. Authenticated E2E remains a host check for the reason recorded in round 1.
+- Bead status and assignee remain unchanged under the accepted delivery contract. Coordinator owns parking and delivery after the DONE note. The new `astra-relay` playbook proposal above needs transfer from this worklog because its scratch destination is outside writable roots.
+
+FOLIO UPPSLAG R3 DONE: hpf-qr0p.49.8

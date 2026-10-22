@@ -5,6 +5,13 @@ import type { TrapEntry } from '@/data/frameworks'
 import { type NavigateHref, UppslagLink } from './UppslagContents'
 import type { UppslagChapter, UppslagEntry } from './uppslagView'
 
+const ORIGIN = new Map([
+  ['Germanic', 'germanskt ursprung'],
+  ['Latin', 'latinskt ursprung'],
+  ['Greek', 'grekiskt ursprung'],
+  ['French', 'franskt ursprung'],
+])
+
 export function ReadToggle({ open, toggleRead }: { open: UppslagEntry; toggleRead: () => void }) {
   return (
     <button
@@ -12,10 +19,15 @@ export function ReadToggle({ open, toggleRead }: { open: UppslagEntry; toggleRea
       className="fa-ghost fa-up-read"
       data-testid="lesson-mark-as-read"
       data-read={open.read}
-      aria-pressed={open.read}
       onClick={toggleRead}
     >
-      {open.read ? <span aria-hidden>✓ </span> : null}Läst
+      {open.read ? (
+        <>
+          Läst <span aria-hidden>✓</span> · Ångra
+        </>
+      ) : (
+        'Markera som läst'
+      )}
     </button>
   )
 }
@@ -90,7 +102,7 @@ function Article({ open, phone }: { open: UppslagEntry; phone: boolean }) {
           <MathText>{e.root}</MathText>
         </H>
         <p className="fa-up-origin">
-          <MathText>{e.origin}</MathText>
+          <MathText>{ORIGIN.get(e.origin) ?? e.origin}</MathText>
         </p>
         <p className="fa-up-meaning">
           <MathText>{e.meaning}</MathText>

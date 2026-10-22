@@ -10,6 +10,7 @@ import {
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { type ComponentType, type FunctionComponent, type ReactNode, useState } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { useLessonProgress } from '@/api/hooks/useLessonProgress'
 import type { Framework, Lexicon, ProtocolCatalog, TrapCatalog } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import { WORKED_EXAMPLE_QIDS } from '@/data/workedExamples.generated'
@@ -265,12 +266,18 @@ describe('Folio Uppslag', () => {
     fireEvent.keyDown(document.body, { key: 'k' })
     const read = screen.getByTestId('lesson-mark-as-read')
     expect(read).toHaveAttribute('data-read', 'false')
+    expect(read).toHaveTextContent(/^Markera som läst$/)
+    expect(read).toHaveAccessibleName('Markera som läst')
+    expect(read).not.toHaveAttribute('aria-pressed')
     fireEvent.click(read)
-    expect(read).toHaveAttribute('aria-pressed', 'true')
-    expect(read).toHaveAccessibleName('Läst')
+    expect(read).toHaveAttribute('data-read', 'true')
+    expect(read).toHaveTextContent(/^Läst ✓ · Ångra$/)
+    expect(read).toHaveAccessibleName('Läst · Ångra')
+    expect(read).not.toHaveAttribute('aria-pressed')
     fireEvent.click(read)
     expect(read).toHaveAttribute('data-read', 'false')
-    expect(read).toHaveAccessibleName('Läst')
+    expect(read).toHaveTextContent(/^Markera som läst$/)
+    expect(read).toHaveAccessibleName('Markera som läst')
     expect(container.querySelectorAll('.fa-btn')).toHaveLength(1)
   })
 
@@ -355,13 +362,30 @@ describe('Folio Uppslag', () => {
     state.viewport = 'phone'
     const { container } = mount('ORD')
     expect(screen.getByRole('heading', { level: 1, name: 'för-' })).toHaveClass('fa-up-root')
-    expect(screen.getByText('Germanic')).toBeInTheDocument()
+    expect(screen.getByText('germanskt ursprung')).toBeInTheDocument()
     expect(container.textContent?.indexOf('för-')).toBeLessThan(
       container.textContent?.indexOf('Kapitlen') ?? 0,
     )
     fireEvent.click(screen.getByRole('button', { name: /Innehåll/ }))
     expect(screen.getByTestId('fa-uppslag-entry-ORD-A')).toHaveFocus()
     expect(state.worked).not.toHaveBeenCalled()
+  })
+
+  it.each([
+    ['Germanic', 'germanskt ursprung'],
+    ['Latin', 'latinskt ursprung'],
+    ['Greek', 'grekiskt ursprung'],
+    ['French', 'franskt ursprung'],
+    ['Arabic', 'Arabic'],
+  ])('renders ORD origin %s as %s', async (origin, label) => {
+    const { client } = mount('ORD')
+    act(() =>
+      client.setQueryData(['folio-lesson', 'ORD'], {
+        ...lexicon,
+        entries: [{ ...lexicon.entries[0], origin }],
+      }),
+    )
+    expect(await within(screen.getByTestId('fa-lesson')).findByText(label)).toBeInTheDocument()
   })
 
   it('debounces the arrival bookmark and subsequent changes, retaining history state', async () => {
@@ -426,7 +450,7 @@ describe('Folio Uppslag', () => {
     expect(state.getReads).toHaveBeenCalledTimes(1)
   })
 
-  it('falls back after the first bookmark failure even when the client normally retries', async () => {
+  it('falls back after exhausting the shared bookmark retry policy', async () => {
     state.bookmarkPending = true
     state.getBookmark.mockRejectedValue(new Error('offline'))
     const client = makeClient()
@@ -437,7 +461,39 @@ describe('Folio Uppslag', () => {
       </QueryClientProvider>,
     )
     await screen.findByTestId('fa-lesson')
-    expect(state.getBookmark).toHaveBeenCalledTimes(1)
+    expect(state.getBookmark).toHaveBeenCalledTimes(4)
+  })
+
+  it.each([
+    'classic-first',
+    'folio-first',
+  ] as const)('shares bookmark retries and results with another reader mounted %s', async (order) => {
+    state.bookmarkPending = true
+    const progress = { section: 'NOG', frameworkId: 'NOG-C' }
+    state.getBookmark
+      .mockRejectedValueOnce(new Error('temporary failure'))
+      .mockResolvedValue({ ok: true, json: async () => ({ progress }) })
+    const client = makeClient()
+    client.setDefaultOptions({ queries: { retry: 1, retryDelay: 5, staleTime: Infinity } })
+    function SharedReader() {
+      const bookmark = useLessonProgress()
+      return <p data-testid="shared-bookmark">{bookmark.data?.frameworkId}</p>
+    }
+    render(
+      <QueryClientProvider client={client}>
+        {order === 'classic-first' && <SharedReader />}
+        <FolioUppslag section="NOG" navigateHref={navigateHref} />
+        {order === 'folio-first' && <SharedReader />}
+      </QueryClientProvider>,
+    )
+    await waitFor(() => {
+      expect(screen.getByTestId('fa-uppslag-entry-NOG-C')).toHaveAttribute('aria-current', 'page')
+      expect(screen.getByTestId('shared-bookmark')).toHaveTextContent('NOG-C')
+    })
+    expect(state.getBookmark).toHaveBeenCalledTimes(2)
+    const queries = client.getQueryCache().findAll({ queryKey: ['lesson-progress'] })
+    expect(queries).toHaveLength(1)
+    expect(queries[0].getObserversCount()).toBe(2)
   })
 
   it.each([

@@ -55,6 +55,16 @@ describe('Uppslag isolation', () => {
     expect(css).toMatch(/\.fa-up-root\s*\{[^}]*font-size: var\(--fa-t44\)/)
   })
 
+  it('pins the desktop recto to the top of the shell and keeps its primary action scrollable', () => {
+    const css = read('./uppslag.css')
+    const recto = css.match(/\.fa-uppslag\.fa-up-spread > \.fa-recto\s*\{([^}]+)\}/)?.[1]
+    expect(recto).toBeDefined()
+    expect(recto).toMatch(/position:\s*sticky\s*;/)
+    expect(recto).toMatch(/\btop:\s*0\s*;/)
+    expect(recto).toMatch(/max-height:\s*100dvh\s*;/)
+    expect(recto).toMatch(/overflow-y:\s*auto\s*;/)
+  })
+
   it('keeps screen code independent and leaves Escape to the route', () => {
     for (const file of [
       'FolioUppslag.tsx',
