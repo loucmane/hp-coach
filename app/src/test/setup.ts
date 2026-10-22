@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url'
 
 import '@testing-library/jest-dom/vitest'
 import { cleanup } from '@testing-library/react'
-import { afterEach } from 'vitest'
+import { afterEach, vi } from 'vitest'
 
 afterEach(() => {
   cleanup()
@@ -41,6 +41,9 @@ if (typeof window !== 'undefined' && !window.matchMedia) {
 // innerWidth to a phone width aligns `useViewport()` with that intent
 // without touching every test.
 if (typeof window !== 'undefined') {
+  // jsdom exposes scrollTo but only reports a not-implemented error.
+  // Tests asserting scroll behaviour may install their own spies.
+  window.scrollTo = vi.fn()
   Object.defineProperty(window, 'innerWidth', { configurable: true, value: 390 })
   Object.defineProperty(window, 'innerHeight', { configurable: true, value: 844 })
 }

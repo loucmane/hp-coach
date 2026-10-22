@@ -128,6 +128,18 @@ afterEach(() => {
 })
 
 describe('MockRunner — no correctness leak', () => {
+  it('passes a snapshot of flags to onSettled before clearing persisted flags', async () => {
+    saveMockFlags(userId, SESSION.id, new Set(['q1', 'q3']))
+    const user = userEvent.setup()
+    const { onSettled } = renderRunner()
+    vi.stubGlobal('confirm', () => true)
+    await user.click(screen.getByTestId('mock-submit'))
+    expect(onSettled).toHaveBeenCalledWith(
+      { id: 99 },
+      { flagged: ['q1', 'q3'], answers: new Map() },
+    )
+    expect(loadMockFlags(userId, SESSION.id).size).toBe(0)
+  })
   it('never renders rätt/fel verdict text after a pick', async () => {
     const user = userEvent.setup()
     renderRunner()
@@ -216,6 +228,41 @@ describe('MockRunner — keyboard', () => {
 })
 
 describe('MockRunner — settle', () => {
+  it('captures the last pick at hand-in even while its attempt POST is pending', async () => {
+    let releaseAttempt: (() => void) | undefined
+    let persisted = false
+    submitAttemptMutate.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          releaseAttempt = () => {
+            persisted = true
+            resolve()
+          }
+        }),
+    )
+    let releaseResult: (() => void) | undefined
+    submitMockResultMutate.mockImplementationOnce((_input, opts) => {
+      releaseResult = () => opts?.onSuccess?.({ id: 99 })
+    })
+    vi.stubGlobal('confirm', () => true)
+    const user = userEvent.setup()
+    const { onSettled } = renderRunner()
+    await user.click(await screen.findByTestId('option-B'))
+    await user.click(screen.getByTestId('mock-submit'))
+    expect(persisted).toBe(false)
+    expect(submitMockResultMutate).toHaveBeenCalledWith(
+      expect.objectContaining({ answered: 1, correct: 0 }),
+      expect.anything(),
+    )
+    // Any later UI activity must not alter the snapshot already handed in.
+    await user.click(screen.getByTestId('option-A'))
+    releaseResult?.()
+    expect(onSettled).toHaveBeenCalledWith(
+      { id: 99 },
+      { flagged: [], answers: new Map([['q1', 'B']]) },
+    )
+    releaseAttempt?.()
+  })
   it('submit posts the mock result and calls onSettled', async () => {
     vi.stubGlobal('confirm', () => true)
     const user = userEvent.setup()
