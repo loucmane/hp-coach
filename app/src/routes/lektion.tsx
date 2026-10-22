@@ -93,12 +93,13 @@ function LektionRoute() {
       <Suspense fallback={<p role="status">Laddar …</p>}>
         <FolioUppslag
           section={section}
-          navigateHref={(href) => {
+          navigateHref={(href, options) => {
             const url = new URL(href, window.location.origin)
             navigate({
               to: url.pathname as never,
               search: Object.fromEntries(url.searchParams) as never,
               hash: url.hash.slice(1),
+              ...options,
             })
           }}
         />

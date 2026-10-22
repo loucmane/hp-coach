@@ -2,7 +2,7 @@ import type { ComponentProps, RefObject } from 'react'
 import { flattenMathText, MathText } from '@/components/MathText'
 import { RETRY_LINE, type UppslagChapter } from './uppslagView'
 
-export type NavigateHref = (href: string) => void
+export type NavigateHref = (href: string, options?: { replace: boolean }) => void
 
 /** Real anchors preserve open-in-new-tab and native activation. */
 export function UppslagLink({

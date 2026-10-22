@@ -8,6 +8,7 @@
   min-width: 0;
 }
 [data-folio] .fa-uppslag :is(h1, h2, h3, p, ol, ul) { margin: 0; }
+[data-folio] .fa-uppslag :is(h1, h2, h3, .fa-up-entry-title, .fa-plan-title) { overflow-wrap: anywhere; }
 [data-folio] .fa-uppslag :is(ol, ul) { list-style: none; padding: 0; }
 [data-folio] .fa-uppslag :is(a, button) { color: inherit; }
 [data-folio] .fa-uppslag a { text-decoration: none; }
@@ -57,6 +58,15 @@
 [data-folio] .fa-uppslag.fa-up-spread { display: grid; grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); min-height: 100%; }
 [data-folio] .fa-uppslag .fa-verso { min-width: 0; background: var(--fa-paper); }
 [data-folio] .fa-uppslag .fa-recto { min-width: 0; background: var(--fa-leaf); border-left: 1px solid var(--fa-rule); box-shadow: -6px 0 12px var(--fa-fold); }
+[data-folio] .fa-uppslag.fa-up-spread > .fa-recto {
+  position: sticky;
+  top: 56px;
+  align-self: start;
+  max-height: calc(100dvh - 56px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
 [data-folio] .fa-uppslag .fa-runhead { display: flex; align-items: center; justify-content: space-between; gap: var(--fa-s3); min-height: 72px; padding: var(--fa-s3) var(--fa-s8); border-bottom: 1px solid var(--fa-rule); }
 [data-folio] .fa-uppslag .fa-up-verso { max-width: calc(34em + 104px); margin: 0 auto; padding: var(--fa-s6) var(--fa-s8) var(--fa-s16) 48px; }
 [data-folio] .fa-uppslag .fa-up-body { max-width: calc(38em + 88px); margin: 0 auto; padding: var(--fa-s8) var(--fa-s8) var(--fa-s16) 44px; }
@@ -99,7 +109,6 @@
 [data-folio] .fa-uppslag .fa-up-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fa-s3) var(--fa-s6); margin-top: var(--fa-s8); padding-top: var(--fa-s4); border-top: 1px solid var(--fa-rule); }
 [data-folio] .fa-uppslag .fa-up-examples a { display: flex; justify-content: space-between; gap: var(--fa-s3); min-height: 44px; padding: var(--fa-s3) 0; border-bottom: 1px solid var(--fa-rule); font-family: var(--fa-serif); }
 [data-folio] .fa-uppslag .fa-up-examples a:hover { text-decoration: underline; text-underline-offset: 4px; }
-[data-folio] .fa-uppslag .fa-up-undo { margin-left: var(--fa-s1); font-size: var(--fa-t13); text-decoration: underline; text-underline-offset: 3px; }
 [data-folio] .fa-uppslag .fa-up-pos { color: var(--fa-ink-2); font-size: var(--fa-t15); font-variant-numeric: tabular-nums; }
 [data-folio] .fa-uppslag .fa-empty { padding: var(--fa-s6) 0; font-family: var(--fa-serif); color: var(--fa-ink-2); }
 [data-folio] .fa-uppslag .fa-colophon { padding: var(--fa-s8) 0; max-width: 34em; margin: 0 auto; text-align: center; }

@@ -1,12 +1,21 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import {
+  createBrowserHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  RouterProvider,
+  useNavigate,
+} from '@tanstack/react-router'
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
-import { type ComponentType, type ReactNode, useState } from 'react'
+import { type ComponentType, type FunctionComponent, type ReactNode, useState } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Framework, Lexicon, ProtocolCatalog, TrapCatalog } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import { WORKED_EXAMPLE_QIDS } from '@/data/workedExamples.generated'
 import { FolioHostContext } from '@/folio/host'
-import { Route } from '@/routes/lektion'
+import { useLessonReads } from '@/hooks/useLessonReads'
+import { Route, validateSearch } from '@/routes/lektion'
 import FolioUppslag from './FolioUppslag'
 
 const state = vi.hoisted(() => ({
@@ -15,6 +24,11 @@ const state = vi.hoisted(() => ({
   reads: [] as string[],
   bookmark: null as { section: string; frameworkId: string } | null,
   bookmarkPending: false,
+  searchHook: vi.fn(),
+  locationHook: vi.fn(),
+  realReads: false,
+  getReads: vi.fn(),
+  getBookmark: vi.fn(),
   due: [] as unknown[],
   traps: [] as { section: Section }[],
   search: {} as { section?: Section; chapter?: 'provteknik' },
@@ -23,36 +37,39 @@ const state = vi.hoisted(() => ({
   load: vi.fn(),
   worked: vi.fn(),
 }))
-vi.mock('@tanstack/react-router', () => ({
-  createFileRoute: () => (options: unknown) => ({ options, useSearch: () => state.search }),
-  useNavigate: () => state.navigate,
-  useLocation: ({ select }: { select: (l: { hash: string }) => unknown }) =>
-    select({ hash: state.hash }),
-  Link: ({ to, children }: { to: string; children: ReactNode }) => <a href={to}>{children}</a>,
-}))
+vi.mock('@tanstack/react-router', async (original) => {
+  const router = await original<typeof import('@tanstack/react-router')>()
+  return {
+    ...router,
+    createFileRoute: () => (options: unknown) => ({
+      options,
+      useSearch: state.searchHook,
+    }),
+    useNavigate: vi.fn(),
+    useLocation: state.locationHook,
+    Link: ({ to, children }: { to: string; children: ReactNode }) => <a href={to}>{children}</a>,
+  }
+})
 vi.mock('@/data/frameworks', async (original) => ({
   ...(await original<typeof import('@/data/frameworks')>()),
   loadFramework: state.load,
 }))
-vi.mock('@/hooks/useLessonReads', () => ({
-  useLessonReads: () => {
-    const [reads, setReads] = useState(new Set(state.reads))
-    return {
-      reads,
-      isRead: (id: string) => reads.has(id),
-      toggleRead: (id: string) =>
-        setReads((prev) => {
-          const next = new Set(prev)
-          if (next.has(id)) next.delete(id)
-          else next.add(id)
-          return next
-        }),
-    }
-  },
-}))
-vi.mock('@/api/hooks/useLessonProgress', () => ({
-  useLessonProgress: () => ({ data: state.bookmark, isPending: state.bookmarkPending }),
+vi.mock('@/hooks/useLessonReads', () => ({ useLessonReads: vi.fn() }))
+vi.mock('@/api/hooks/useLessonProgress', async (original) => ({
+  ...(await original<typeof import('@/api/hooks/useLessonProgress')>()),
   usePutLessonProgress: () => ({ mutate: state.put }),
+}))
+vi.mock('@/api/useApiClient', () => ({
+  useApiClient: () => ({
+    api: {
+      'lesson-progress': { $get: state.getBookmark },
+      'lesson-reads': {
+        $get: state.getReads,
+        $put: vi.fn(),
+        ':entryId': { $delete: vi.fn() },
+      },
+    },
+  }),
 }))
 vi.mock('@/api/hooks/useStats', () => ({ useStats: () => ({ data: undefined }) }))
 vi.mock('@/api/hooks/useMistakes', () => ({ useDueMistakes: () => ({ data: state.due }) }))
@@ -133,13 +150,37 @@ const lexicon: Lexicon = {
   ],
 }
 const catalogs: Partial<Record<Section, Framework>> = { NOG: trap, LÄS: protocol, ORD: lexicon }
+const realRouter =
+  await vi.importActual<typeof import('@tanstack/react-router')>('@tanstack/react-router')
+const { useLessonReads: realUseLessonReads } =
+  await vi.importActual<typeof import('@/hooks/useLessonReads')>('@/hooks/useLessonReads')
 const navigateHref = vi.fn()
-function mount(section?: Section, pending = false) {
+function useMockReads() {
+  const [reads, setReads] = useState(new Set(state.reads))
+  return {
+    reads,
+    isRead: (id: string) => reads.has(id),
+    toggleRead: (id: string) =>
+      setReads((prev) => {
+        const next = new Set(prev)
+        if (next.has(id)) next.delete(id)
+        else next.add(id)
+        return next
+      }),
+  }
+}
+function makeClient(pending = false) {
   const client = new QueryClient({
-    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+    defaultOptions: { queries: { retry: false, staleTime: Infinity }, mutations: { retry: false } },
   })
+  if (!state.bookmarkPending) client.setQueryData(['lesson-progress'], state.bookmark)
+  if (!state.realReads) client.setQueryData(['lesson-reads'], state.reads)
   if (!pending)
     for (const s of SECTION_KEYS) client.setQueryData(['folio-lesson', s], catalogs[s] ?? null)
+  return client
+}
+function mount(section?: Section, pending = false) {
+  const client = makeClient(pending)
   const ui = (s = section) => (
     <QueryClientProvider client={client}>
       <main data-folio lang="sv">
@@ -155,6 +196,17 @@ beforeEach(() => {
   state.reads = []
   state.bookmark = null
   state.bookmarkPending = false
+  state.searchHook.mockImplementation(() => state.search)
+  vi.mocked(useNavigate).mockImplementation(() => state.navigate)
+  state.locationHook.mockImplementation(
+    ({ select }: { select: (location: { hash: string }) => unknown }) =>
+      select({ hash: state.hash }),
+  )
+  vi.mocked(useLessonReads).mockImplementation(useMockReads)
+  state.realReads = false
+  state.getReads.mockReset().mockResolvedValue({ ok: true, json: async () => ({ entryIds: [] }) })
+  state.getBookmark.mockReset().mockImplementation(() => new Promise(() => {}))
+  localStorage.clear()
   state.due = []
   state.traps = []
   state.search = {}
@@ -165,7 +217,10 @@ beforeEach(() => {
   state.load.mockReset().mockImplementation(async (s: Section) => catalogs[s] ?? null)
   window.history.replaceState({ retained: true }, '', '/lektion')
 })
-afterEach(() => vi.useRealTimers())
+afterEach(() => {
+  vi.useRealTimers()
+  vi.restoreAllMocks()
+})
 
 describe('Folio Uppslag', () => {
   it('renders the bare index with eight chapter links and unnumbered Provteknik first', () => {
@@ -212,13 +267,15 @@ describe('Folio Uppslag', () => {
     expect(read).toHaveAttribute('data-read', 'false')
     fireEvent.click(read)
     expect(read).toHaveAttribute('aria-pressed', 'true')
-    expect(read).toHaveTextContent('Ångra')
+    expect(read).toHaveAccessibleName('Läst')
     fireEvent.click(read)
     expect(read).toHaveAttribute('data-read', 'false')
+    expect(read).toHaveAccessibleName('Läst')
     expect(container.querySelectorAll('.fa-btn')).toHaveLength(1)
   })
 
   it('ignores keyboard shortcuts on native controls, modifiers, inert content and dialogs', () => {
+    state.hash = 'NOG-A'
     mount('NOG')
     const link = screen.getByTestId('fa-uppslag-entry-NOG-B')
     for (const key of ['j', 'k', 'Enter']) fireEvent.keyDown(link, { key })
@@ -255,6 +312,10 @@ describe('Folio Uppslag', () => {
       'href',
       '/drill?section=NOG&weak=1',
     )
+    expect(screen.getByTestId('section-practice-weak')).toHaveTextContent(
+      'Öva dina vanligaste fällor',
+    )
+    expect(container.textContent).not.toMatch(/svagast|avsluta|sluta|stopp/i)
     expect(container.querySelectorAll('.fa-btn')).toHaveLength(1)
     fireEvent.keyDown(document.body, { key: 'Enter' })
     expect(navigateHref).toHaveBeenLastCalledWith('/drill?section=NOG&start=1')
@@ -265,7 +326,8 @@ describe('Folio Uppslag', () => {
   })
 
   it('renders the trap regions and the classic worked example with an authored Folio fallback', () => {
-    mount('NOG')
+    const { container } = mount('NOG')
+    expect(container.textContent).not.toMatch(/svagast|avsluta|sluta|stopp/i)
     for (const name of [
       'Så gör man ofta',
       'Varför det händer',
@@ -306,7 +368,7 @@ describe('Folio Uppslag', () => {
     vi.useFakeTimers()
     state.bookmark = { section: 'NOG', frameworkId: 'NOG-B' }
     mount('NOG')
-    expect(window.location.hash).toBe('#NOG-B')
+    expect(navigateHref).toHaveBeenCalledWith('/lektion?section=NOG#NOG-B', { replace: true })
     expect(window.history.state).toEqual({ retained: true })
     act(() => vi.advanceTimersByTime(399))
     expect(state.put).not.toHaveBeenCalled()
@@ -318,19 +380,161 @@ describe('Folio Uppslag', () => {
     )
   })
 
-  it('waits for the arriving bookmark without overwriting it, but a valid hash wins immediately', () => {
+  it('waits for the arriving bookmark without overwriting it, but a valid hash wins immediately', async () => {
     state.bookmarkPending = true
-    const { rerender, ui } = mount('NOG')
+    const { client, rerender, ui } = mount('NOG')
     expect(screen.getByRole('status')).toHaveTextContent('Laddar')
     expect(state.put).not.toHaveBeenCalled()
-    state.bookmarkPending = false
-    state.bookmark = { section: 'NOG', frameworkId: 'NOG-C' }
-    rerender(ui())
-    expect(screen.getByTestId('fa-uppslag-entry-NOG-C')).toHaveAttribute('aria-current', 'page')
+    act(() => client.setQueryData(['lesson-progress'], { section: 'NOG', frameworkId: 'NOG-C' }))
+    await waitFor(() =>
+      expect(screen.getByTestId('fa-uppslag-entry-NOG-C')).toHaveAttribute('aria-current', 'page'),
+    )
     state.hash = 'NOG-A'
     state.bookmarkPending = true
     rerender(ui())
     expect(screen.getByTestId('fa-uppslag-entry-NOG-A')).toHaveAttribute('aria-current', 'page')
+  })
+
+  it('waits for server reads to be reconciled before choosing and bookmarking the first unread', async () => {
+    state.realReads = true
+    vi.mocked(useLessonReads).mockImplementation(realUseLessonReads)
+    let finishReads!: (response: unknown) => void
+    state.getReads.mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          finishReads = resolve
+        }),
+    )
+    mount('NOG')
+    expect(screen.getByRole('status')).toHaveTextContent('Laddar')
+    expect(screen.queryByTestId('fa-lesson')).toBeNull()
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 450))
+    })
+    expect(state.put).not.toHaveBeenCalled()
+    expect(navigateHref).not.toHaveBeenCalled()
+    await act(async () =>
+      finishReads({ ok: true, json: async () => ({ entryIds: ['NOG-A', 'NOG-B'] }) }),
+    )
+    await waitFor(() =>
+      expect(screen.getByTestId('fa-uppslag-entry-NOG-C')).toHaveAttribute('aria-current', 'page'),
+    )
+    await waitFor(() =>
+      expect(state.put).toHaveBeenCalledWith(expect.objectContaining({ frameworkId: 'NOG-C' })),
+    )
+    expect(state.put).toHaveBeenCalledTimes(1)
+    expect(state.getReads).toHaveBeenCalledTimes(1)
+  })
+
+  it('falls back after the first bookmark failure even when the client normally retries', async () => {
+    state.bookmarkPending = true
+    state.getBookmark.mockRejectedValue(new Error('offline'))
+    const client = makeClient()
+    client.setDefaultOptions({ queries: { retry: 3, retryDelay: 5, staleTime: Infinity } })
+    render(
+      <QueryClientProvider client={client}>
+        <FolioUppslag section="NOG" navigateHref={navigateHref} />
+      </QueryClientProvider>,
+    )
+    await screen.findByTestId('fa-lesson')
+    expect(state.getBookmark).toHaveBeenCalledTimes(1)
+  })
+
+  it.each([
+    '',
+    '#NOG-A',
+  ])('restores arrival %s, row and J through real router Back and Forward', async (hash) => {
+    state.searchHook.mockImplementation(() => realRouter.useSearch({ strict: false }))
+    vi.mocked(useNavigate).mockImplementation(realRouter.useNavigate)
+    state.locationHook.mockImplementation(realRouter.useLocation)
+    window.history.replaceState({ retained: true }, '', `/lektion?section=NOG${hash}`)
+    const history = createBrowserHistory({ window })
+    const root = createRootRoute()
+    const lesson = createRoute({
+      getParentRoute: () => root,
+      path: '/lektion',
+      validateSearch,
+      component: Route.options.component as FunctionComponent,
+    })
+    const router = createRouter({ routeTree: root.addChildren([lesson]), history })
+    const push = vi.spyOn(window.history, 'pushState')
+    const replace = vi.spyOn(window.history, 'replaceState')
+    const client = makeClient()
+    const view = render(
+      <QueryClientProvider client={client}>
+        <FolioHostContext.Provider value>
+          <RouterProvider router={router} />
+        </FolioHostContext.Provider>
+      </QueryClientProvider>,
+    )
+    const at = async (id: string) => {
+      await waitFor(() => {
+        expect(window.location.hash).toBe(`#${id}`)
+        expect(screen.getByTestId(`fa-uppslag-entry-${id}`)).toHaveAttribute('aria-current', 'page')
+      })
+    }
+    try {
+      await at('NOG-A')
+      expect(push).not.toHaveBeenCalled()
+      fireEvent.click(screen.getByTestId('fa-uppslag-entry-NOG-B'))
+      await at('NOG-B')
+      fireEvent.keyDown(document.body, { key: 'j' })
+      await at('NOG-C')
+      expect(push).toHaveBeenCalledTimes(2)
+      act(() => history.back())
+      await at('NOG-B')
+      act(() => history.back())
+      await at('NOG-A')
+      act(() => history.forward())
+      await at('NOG-B')
+      act(() => history.forward())
+      await at('NOG-C')
+      expect(push).toHaveBeenCalledTimes(2)
+      expect(replace).toHaveBeenCalledTimes(hash ? 0 : 1)
+      fireEvent.keyDown(document.body, { key: 'k' })
+      await at('NOG-B')
+      fireEvent.click(screen.getByRole('button', { name: 'Läst – nästa fälla' }))
+      await at('NOG-C')
+      fireEvent.click(screen.getByTestId('fa-uppslag-section-ord'))
+      await at('ORD-A')
+      expect(push).toHaveBeenCalledTimes(5)
+      expect(replace).toHaveBeenCalledTimes(hash ? 0 : 1)
+      act(() => history.back())
+      await at('NOG-C')
+      act(() => history.back())
+      await at('NOG-B')
+    } finally {
+      view.unmount()
+      history.destroy()
+      client.clear()
+    }
+  })
+
+  it('resolves from cached server reads after the read hook reconciles them', () => {
+    state.realReads = true
+    vi.mocked(useLessonReads).mockImplementation(realUseLessonReads)
+    const client = makeClient()
+    client.setQueryData(['lesson-reads'], ['NOG-A', 'NOG-B'])
+    render(
+      <QueryClientProvider client={client}>
+        <FolioUppslag section="NOG" navigateHref={navigateHref} />
+      </QueryClientProvider>,
+    )
+    expect(screen.getByTestId('fa-uppslag-entry-NOG-C')).toHaveAttribute('aria-current', 'page')
+    expect(navigateHref).toHaveBeenCalledExactlyOnceWith('/lektion?section=NOG#NOG-C', {
+      replace: true,
+    })
+  })
+
+  it('falls back to local reads when the server read request fails', async () => {
+    state.realReads = true
+    vi.mocked(useLessonReads).mockImplementation(realUseLessonReads)
+    localStorage.setItem('hpc-lesson-read-NOG-A', '1')
+    state.getReads.mockRejectedValue(new Error('offline'))
+    mount('NOG')
+    await waitFor(() =>
+      expect(screen.getByTestId('fa-uppslag-entry-NOG-B')).toHaveAttribute('aria-current', 'page'),
+    )
   })
 
   it('shows neutral loading, empty and failed states', async () => {
@@ -376,6 +580,7 @@ describe('Folio Uppslag', () => {
   })
 
   it('preserves modified link clicks and focuses a contents entry after normal navigation', () => {
+    state.hash = 'NOG-A'
     mount('NOG')
     const link = screen.getByTestId('fa-uppslag-entry-NOG-B')
     fireEvent.click(link, { ctrlKey: true })

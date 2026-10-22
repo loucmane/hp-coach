@@ -13,7 +13,7 @@
 
 ## Handoff
 
-- Implementation in progress. The coordinator owns host browser checks and delivery.
+- Round 1 delivered; round 2 verification and current handoff are recorded below. The coordinator owns host browser checks and delivery.
 
 ## Implementation and evidence — 2026-10-22
 
@@ -51,3 +51,34 @@ This entry supersedes the initial pending verification/handoff snapshot above.
 - Per the accepted round-1 delivery instruction, the worker does not close or change the bead's status/assignee. The coordinator parks it on the DONE note. No new playbook gotcha was discovered beyond already documented sandbox restrictions.
 
 FOLIO UPPSLAG DONE: hpf-qr0p.49.8
+
+## Round 2 — 2026-10-22
+
+- Starting HEAD: `f85c7730573eec3b97e5090b687f36caf1fae1ff`, clean assigned branch. No molecule. Accepted round-2 scope and write set read from the bead.
+- Fix router history with a router-owned arrival replacement and one push per reader action; verify Back/Forward using the real router and browser history in Vitest.
+- Observe the shared read query within Uppslag and allow its reconciliation effect to finish before choosing the arrival entry. Keep bookmark failure fallback local to Uppslag with retries disabled. No shared-hook or worker edits.
+- Make the desktop recto sticky with independent scrolling; preserve the phone layout. Use neutral chapter-end copy, a stable read-toggle label, and wrapping for long entry titles/headings.
+- Delivery stays uncommitted. Real-stack visual checks, owner visual approval, and independent review remain coordinator gates.
+
+### Round-2 red-first evidence
+
+- Before product edits, `pnpm test src/folio/screens/uppslag/FolioUppslag.test.tsx --maxWorkers=2` produced **7 failed, 19 passed**. Failures covered the unstable read-toggle name, forbidden chapter-end copy, missing router arrival normalization, early read-set resolution, four bookmark GET attempts instead of one, and extra history replacements on both arrival variants.
+- The isolated real-router replay then reproduced the reported behavior directly: both hashless and explicit-hash arrivals failed the first Back assertion, staying on `NOG-C` instead of restoring `NOG-B`. It uses the actual route component, TanStack browser history and JSDOM history, rather than a mocked navigate-only assertion.
+- After the fixes, the focused suite passed **3 files, 39 tests**. It covers contents → J → Back → Back → Forward → Forward, K, the primary next button, chapter rows and return navigation, with exactly one push per action and only one replacement on a hashless arrival. Read tests use the real shared hooks with delayed/cached server data and a failed server request. The bookmark failure test overrides a client configured for three retries and verifies one request. Wording checks cover index, lesson and chapter end; axe covers those three states too.
+- `pnpm typecheck` passed after correcting the generic router mock typing; `pnpm lint` passed with the same four unrelated informational diagnostics. CSS isolation and `git diff --check` pass. Full suite and production build results are recorded in the delivery entry below.
+
+### Playbook-proposal — astra-relay
+
+- 2026-10-22 — Symptom: mocked navigation tests passed while browser Back lost lesson entries. Cause: a direct `history.replaceState` effect raced TanStack's queued push and rewrote the preceding entry. Rule: use the real router plus browser history for a navigation regression, assert the displayed entry and URL through Back/Forward, and count push/replacement operations. Keep arrival normalization router-owned. The proposal is retained here for coordinator transfer because `~/scratch/skill-gotchas/` is outside this managed worker's writable roots.
+
+### Round-2 delivery — 2026-10-22
+
+- All seven requested fixes are implemented. This entry supersedes the earlier round-1 history, wording exception and implementation-in-progress descriptions: history now uses only router navigation; chapter-end copy is “Öva dina vanligaste fällor”; server reads settle before entry selection/bookmark PUT; bookmark GET does not retry; the toggle keeps the name “Läst” with `aria-pressed`; long titles/headings wrap; desktop recto is sticky at 56px with viewport-bounded scrolling. Phone layout is unchanged.
+- Final focused run after the test-mock typing adjustment: `pnpm test src/folio/screens/uppslag --maxWorkers=2 --reporter=dot` — **3 files, 39 passed**, 5.42 seconds.
+- Full app suite: `pnpm test --maxWorkers=2 --reporter=dot` — **162 files passed, 1 failed; 4,878 tests passed, 1 failed**, 159.82 seconds. The only failure is the existing `src/lib/trapIndex.test.ts` generator parity subprocess, refused with `spawnSync /usr/bin/node EPERM`. No attempt to bypass the sandbox; coordinator must rerun it on the host. All six added regression cases passed in this run.
+- `pnpm typecheck` — **passed**. `pnpm lint` — **passed**, four pre-existing informational notices only. `pnpm build` — **passed**, including PWA generation; existing route-test discovery and chunk-size warnings remain. `git diff --check` — **passed**. No worker or dependency changes.
+- Delivery HEAD remains `f85c7730573eec3b97e5090b687f36caf1fae1ff` on `codex/hpf-qr0p.49.8-uppslag-in-folio`. Round-2 edits are **uncommitted and unstaged**; all eight changed repository files are admitted. The Git worktree index is outside the writable roots; the round-1 staging refusal is already documented, and no staging/signing workaround was attempted.
+- Coordinator next: stage and commit the reviewed tree, rerun the denied generator check, obtain independent Claude review at the exact delivery head, repeat desktop/phone light/dark real-stack checks (including long XYZ contents scrolling, Back/Forward, phone long-word wrapping and read-toggle state), and obtain the owner's visual OK before merge. No browser/visual PASS is claimed by this worker; authenticated E2E remains a host check as documented above.
+- Bead status and assignee remain unchanged under the accepted delivery contract. The coordinator parks the bead after the DONE note. Playbook proposal is recorded above for transfer to `astra-relay`.
+
+FOLIO UPPSLAG R2 DONE: hpf-qr0p.49.8

@@ -15,13 +15,7 @@ export function ReadToggle({ open, toggleRead }: { open: UppslagEntry; toggleRea
       aria-pressed={open.read}
       onClick={toggleRead}
     >
-      {open.read ? (
-        <>
-          <span aria-hidden>✓ </span>Läst <span className="fa-up-undo">Ångra</span>
-        </>
-      ) : (
-        'Markera som läst'
-      )}
+      {open.read ? <span aria-hidden>✓ </span> : null}Läst
     </button>
   )
 }
@@ -328,7 +322,7 @@ export function ChapterEnd({
             navigateHref={navigateHref}
             data-testid="section-practice-weak"
           >
-            Öva svagaste fällorna <span aria-hidden>→</span>
+            Öva dina vanligaste fällor <span aria-hidden>→</span>
           </UppslagLink>
         ) : null}
         <button className="fa-ghost" type="button" onClick={onBack}>

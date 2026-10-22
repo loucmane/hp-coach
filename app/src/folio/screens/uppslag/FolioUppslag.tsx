@@ -32,8 +32,9 @@ export default function FolioUppslag({
   const view = buildUppslagView({ ...extras, section, hash, bookmark: extras.bookmark.data })
   const { chapter, open } = view
   const hasRequestedEntry = chapter?.entries.some((e) => e.id === decodeHash(hash))
-  const waitingBookmark = !!open && !hasRequestedEntry && extras.bookmark.isPending
-  const id = waitingBookmark ? undefined : open?.id
+  const waitingEntry =
+    !!open && (!extras.readsReady || (!hasRequestedEntry && extras.bookmark.isPending))
+  const id = waitingEntry ? undefined : open?.id
   const [endFor, setEndFor] = useState<string | null>(null)
   const ending = !!chapter?.allRead && endFor === `${section}:${id}`
   const phone = extras.viewport === 'phone'
@@ -44,14 +45,27 @@ export default function FolioUppslag({
   const focusNext = useRef(false)
   const putRef = useRef(extras.putProgress)
   putRef.current = extras.putProgress
+  const navigateRef = useRef(navigateHref)
+  navigateRef.current = navigateHref
+  const arrivalRef = useRef<Section | null>(null)
 
   useEffect(() => {
-    if (!section || !id) return
+    if (!section || !id) {
+      arrivalRef.current = null
+      return
+    }
     setSelection({ section, hash: extras.hash, id })
-    try {
-      window.history.replaceState(window.history.state, '', `#${encodeURIComponent(id)}`)
-    } catch {
-      /* The server bookmark still works in an embedded reader. */
+    // Canonicalize a hashless arrival once, through the router. Direct browser
+    // writes here can overwrite the previous entry before a queued push lands.
+    if (extras.hash) arrivalRef.current = null
+    else if (arrivalRef.current !== section) {
+      arrivalRef.current = section
+      navigateRef.current(
+        `/lektion?section=${encodeURIComponent(section)}#${encodeURIComponent(id)}`,
+        {
+          replace: true,
+        },
+      )
     }
     const timer = setTimeout(
       () => putRef.current({ section, frameworkId: id, device: currentDevice() }),
@@ -165,11 +179,7 @@ export default function FolioUppslag({
         ) : null}
       </header>
       <div className="fa-up-body">
-        {waitingBookmark ? (
-          <CatalogNotice state="loading" />
-        ) : (
-          <CatalogNotice state={chapter.state} />
-        )}
+        {waitingEntry ? <CatalogNotice state="loading" /> : <CatalogNotice state={chapter.state} />}
         {id && open ? (
           ending ? (
             <ChapterEnd
