@@ -221,6 +221,30 @@ describe('Folio Framsteg', () => {
     expect(up).toHaveTextContent('Fler MEK-frågor ger ett tydligare underlag.')
     expect(up).not.toHaveTextContent(/Håll|2,0/)
   })
+  it.each([
+    ['ORD', 'Verbal — · Kvant 1,4'],
+    ['KVA', 'Verbal 1,4 · Kvant —'],
+  ] as const)('keeps a one-answer %s half neutral alongside its section row', (sparse, halves) => {
+    const data = stats()
+    data.bySection = { ORD: data.bySection.ORD, KVA: data.bySection.KVA } as Stats['bySection']
+    data.bySection[sparse].firstTry90d = 1
+    data.bySection[sparse].firstTryCorrect90d = 1
+    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.getByText(halves)).toBeInTheDocument()
+    expect(screen.getByTestId(`progress-section-${sparse}`)).toHaveTextContent('—')
+    expect(screen.getByTestId('progress-projected')).toHaveTextContent('1,7')
+    expect(screen.getByRole('img', { name: /Prognos 1,7 av 2,0, intervall/ })).toBeInTheDocument()
+  })
+  it('renders a shared lowest place in both the lead and the following step', () => {
+    const data = stats()
+    data.bySection = { ORD: data.bySection.ORD, XYZ: data.bySection.XYZ } as Stats['bySection']
+    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.getByTestId('folio-framsteg-next')).toHaveTextContent(
+      'ORD · Lägst, tillsammans med XYZ',
+    )
+    expect(screen.getByText('Lägst, tillsammans med ORD')).toBeInTheDocument()
+    expect(screen.queryByText(/näst lägst/i)).not.toBeInTheDocument()
+  })
   it('describes marked section rows only when the caveat is rendered', () => {
     const data = stats()
     data.bySection.LÄS.attempts90d = 0

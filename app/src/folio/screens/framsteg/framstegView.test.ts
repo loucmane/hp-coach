@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { SessionHistoryRow } from '@/api/hooks/useSessions'
 import type { Stats } from '@/api/hooks/useStats'
 import { SECTION_KEYS } from '@/data/questions'
-import type { SectionStats } from '@/lib/scoring'
+import { computeHonestProjected, type SectionStats } from '@/lib/scoring'
 import { buildFramstegView, buildTrend, focusRankLine, scoreLabel } from './framstegView'
 
 const now = new Date('2026-10-22T12:00:00Z')
@@ -55,6 +55,46 @@ describe('Framsteg real-data view', () => {
     expect(p.low).toBeGreaterThanOrEqual(0)
     expect(p.high).toBeLessThanOrEqual(2)
     expect(correct === 0 ? p.low : p.high).toBe(correct === 0 ? 0 : 2)
+  })
+  it.each([
+    'verbal',
+    'quant',
+  ] as const)('hides a %s half supported only by single answers, preserving the total and interval', (half) => {
+    const data = stats({
+      bySection: {
+        ORD: section(),
+        KVA: section(),
+      } as Stats['bySection'],
+    })
+    const sparseSection = half === 'verbal' ? 'ORD' : 'KVA'
+    data.bySection[sparseSection] = section({ firstTry90d: 1, firstTryCorrect90d: 1 })
+    const projected = computeHonestProjected(data.bySection)
+    const view = buildFramstegView({ stats: { data } }, now)
+    expect(view.prognosis[half]).toBeNull()
+    expect(view.prognosis[half === 'verbal' ? 'quant' : 'verbal']).toBeCloseTo(1.2)
+    expect(view.prognosis.total).toBe(projected.total)
+    expect(view.prognosis.band).toBe(projected.band)
+    expect(view.prognosis.low).toBe(Math.max(0, projected.total! - projected.band!))
+    expect(view.prognosis.high).toBe(Math.min(2, projected.total! + projected.band!))
+  })
+  it('requires a band in each half, not just two answers across different sections', () => {
+    const oneAnswer = section({ firstTry90d: 1, firstTryCorrect90d: 1 })
+    const data = stats({
+      bySection: {
+        ORD: oneAnswer,
+        MEK: oneAnswer,
+        XYZ: oneAnswer,
+        KVA: oneAnswer,
+      } as Stats['bySection'],
+    })
+    const view = buildFramstegView({ stats: { data } }, now)
+    expect(view.prognosis).toMatchObject({ verbal: null, quant: null, total: 2 })
+    expect(view.sections.every((s) => s.bandLabel == null)).toBe(true)
+    data.bySection.KVA = section({ firstTry90d: 2, firstTryCorrect90d: 0 })
+    const supported = buildFramstegView({ stats: { data } }, now)
+    expect(supported.prognosis.verbal).toBeNull()
+    expect(supported.prognosis.quant).toBe(computeHonestProjected(data.bySection).quant)
+    expect(supported.sections.find((s) => s.section === 'KVA')?.bandLabel).not.toBeNull()
   })
   it('names a stable delta without a figure and prints only a significant change', () => {
     const data = stats()
@@ -178,6 +218,53 @@ describe('Framsteg real-data view', () => {
     expect(view.focus.map((s) => s.section)).toEqual(['XYZ'])
     expect(view.focus[0].reason).toBe('Enda sektionen med en skattning')
     if (!view.dayZero) expect(view.primary?.label).toBe('Öva XYZ')
+  })
+  it.each([
+    [75, 75],
+    [74, 76],
+  ])('labels displayed ties as shared lowest (%s and %s correct)', (ord, xyz) => {
+    const data = stats({
+      bySection: {
+        ORD: section({ firstTryCorrect90d: ord }),
+        XYZ: section({ firstTryCorrect90d: xyz }),
+      } as Stats['bySection'],
+    })
+    const view = buildFramstegView({ stats: { data } }, now)
+    expect(view.sections.filter((s) => s.score != null).map((s) => s.scoreLabel)).toEqual([
+      '1,5',
+      '1,5',
+    ])
+    expect(view.focus.find((s) => s.section === 'ORD')?.reason).toBe('Lägst, tillsammans med XYZ')
+    expect(view.focus.find((s) => s.section === 'XYZ')?.reason).toBe('Lägst, tillsammans med ORD')
+    expect(view.primary?.reason).toMatch(/Lägst, tillsammans med/)
+  })
+  it('does not give distinct ranks to a tie above the lowest score', () => {
+    const data = stats({
+      bySection: {
+        ORD: section({ firstTryCorrect90d: 50 }),
+        MEK: section({ firstTryCorrect90d: 75 }),
+        XYZ: section({ firstTryCorrect90d: 75 }),
+      } as Stats['bySection'],
+    })
+    const view = buildFramstegView({ stats: { data } }, now)
+    expect(view.focus[0].reason).toBe('Lägsta sektionen just nu')
+    expect(view.focus.find((s) => s.section === 'MEK')?.reason).toBe('Samma nivå som XYZ')
+    expect(view.focus.find((s) => s.section === 'XYZ')?.reason).toBe('Samma nivå som MEK')
+  })
+  it('includes tied scores outside the recommendation shortlist but excludes unscored sections', () => {
+    const data = stats({
+      bySection: {
+        ORD: section(),
+        LÄS: section(),
+        MEK: section(),
+        XYZ: section({ firstTry90d: 10, firstTryCorrect90d: 6 }),
+        KVA: section({ firstTry90d: 1, firstTryCorrect90d: 1 }),
+      } as Stats['bySection'],
+    })
+    const view = buildFramstegView({ stats: { data } }, now)
+    expect(view.focus.map((s) => s.section)).toEqual(['ORD', 'LÄS', 'MEK'])
+    expect(view.focus[0].reason).toBe('Lägst, tillsammans med LÄS, MEK, XYZ')
+    expect(view.focus.every((s) => !/näst|tredje|KVA/i.test(s.reason))).toBe(true)
   })
   it('does not make a lead or following step out of single-answer sections', () => {
     const data = stats({

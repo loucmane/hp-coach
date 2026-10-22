@@ -82,3 +82,33 @@ FOLIO FRAMSTEG DONE: hpf-qr0p.49.7
 - Bead status and assignee are unchanged under the accepted handoff contract; this worker does not close or drain the in-progress bead. The round 2 astra-relay playbook proposal above is ready for coordinator relay to the permanent watcher path.
 
 FOLIO FRAMSTEG R2 DONE: hpf-qr0p.49.7
+
+## Round 3 — 2026-10-22
+
+- [S:hpfetcher/codex-2|W:hpf-qr0p.49.7|H:R3 inspect|E:clean accepted head] Claimed the round 3 contract in its assigned writable worktree. HEAD is `c7ba447b496282897db4bec6ca3f397b69a5b528`, clean, with no molecule. App dependencies are installed.
+- Decisions before implementation: mask a half only when none of its sections has a defined band, preserving the shared total and interval. Compare ties using the displayed tenths across all scored sections, including those outside the recommendation shortlist. Preserve stale/declining urgency copy. Extend the existing TSX guard to stroke, stopColor and Tailwind colour classes, with planted positive and allowed negative cases.
+- Add regression tests first, then run focused and full app checks, typecheck, lint and build. Keep changes uncommitted within the unchanged admitted write set. Coordinator delivery, independent review and owner visual approval remain required; status and assignee stay unchanged under the accepted handoff contract.
+
+## Round 3 regression evidence
+
+- [S:hpfetcher/codex-2|W:hpf-qr0p.49.7|H:R3 red|E:22 expected failures, 53 passed] Ran the three Framsteg test files before the fix: seven adapter failures for unsupported halves and displayed ties, three rendered-screen failures, and twelve planted SVG/Tailwind violations. The original 53 tests passed.
+- [S:hpfetcher/codex-2|W:hpf-qr0p.49.7|H:R3 focused|E:77 passed in 4 files] After the fixes, adapter, screen, guard and lazy-route tests pass. Covers both halves, single attempts distributed across sections, restored eligibility at two attempts (including a zero score), unchanged totals/intervals, exact and rounded ties, non-lowest ties, and ties outside the recommendation shortlist. Existing stale/decline/low-confidence checks also pass.
+- Colour guard now checks `stroke`, `stopColor` and `className`, rejecting named red, hardcoded colour values, banned tokens and built-in Tailwind palettes (including variant/opacity forms). Token colours, currentColor, neutral layout/geometry classes and unrelated product text remain allowed. Only the existing adapter and its three test files changed.
+- Lint PASS after formatting the four edited files (four pre-existing informational bake-off findings remain). Git whitespace check PASS. Full app tests and typecheck are running; production build follows typecheck.
+
+### Playbook-proposal — astra-relay (round 3)
+
+- 2026-10-22: An aggregate half-score can show `2,0` beside a section rendered as `—`. Cause: the shared projection accepts one first try, while the section display requires a non-null uncertainty band (at least two attempts). Rule: derive aggregate display eligibility from the same section-band criterion; test each half and multiple one-answer sections separately, preserving accepted total/interval mathematics. Proposal preserved here for coordinator relay because `~/scratch/skill-gotchas/` is outside this session's writable roots.
+
+## Round 3 final verification and handoff — 2026-10-22
+
+- [S:hpfetcher/codex-2|W:hpf-qr0p.49.7|H:R3 final|E:4916 passed; one known sandbox refusal] Full `app/` `pnpm test --maxWorkers=2`: **4916 passed, 1 failed**, 164 files, 163.14 seconds. The only failure is the unchanged trap-index generator check, refused with `spawnSync /usr/bin/node EPERM`. All **77** Framsteg adapter/screen/guard/route checks pass. Coordinator must rerun the generator on the host; no workaround was attempted.
+- `pnpm typecheck` PASS; `pnpm lint` PASS (four existing informational bake-off findings); `pnpm build` PASS, including TypeScript, Vite and PWA generation. The separate lazy FolioFramsteg chunk is preserved. Existing route-file and bundle-size warnings remain informational. Final `git --no-optional-locks diff --check` PASS.
+- All three accepted fixes are complete: unsupported halves render `—` while total/band/range remain unchanged; equal displayed scores share wording and names, including ties outside the shortlist; the guard covers SVG stroke/stopColor and Tailwind classes. Red-first and boundary-case evidence is above.
+- Final inspection: only `framstegView.ts`, its three test files and this repository worklog changed; all are admitted. Build introduced no tracked changes. No worker or dependency changes. Re-read the live bead before handoff; its round 3 contract and write set are unchanged.
+- HEAD remains **c7ba447b496282897db4bec6ca3f397b69a5b528**, branch `codex/hpf-qr0p.49.7-framsteg-in-folio`. Changes are **uncommitted and unstaged**: Git metadata resolves outside writable roots to `/home/loucmane/dev/hpfetcher/.git/worktrees/hpf-qr0p.49.7`. Staging/signing remain with the coordinator. No independent review of this round or visual approval is claimed.
+- Final SHA-256: `framstegView.ts` = `f8e8a6ae9078db5748f6fbc082456819ab90eeffa4c12a352d512b1bb5652246`; `framstegView.test.ts` = `279eda0b0982dab799f0a0a3bc4279e9b11a09d4c6297d358e6a0dc2d28708b7`; `FolioFramsteg.test.tsx` = `cfca8e607eadf3451c5b98c346360a523b7b31015717f5c379faf2cce2f7e136`; `framsteg.guard.test.ts` = `897bc4e8631daf8b998907b882cc5145ccd2b83bc091d20f17c469187cba107b`.
+- Supersedes pending round 3 verification above. Coordinator: park on the DONE note, rerun the host generator, stage/sign, obtain independent exact-head Claude review, complete existing flag-off browser gates and real-stack desktop/phone light/dark inspection, and obtain the owner's visual OK before merge. Include sparse-half and tied-score accounts in the visual check. Status and assignee remain unchanged per the accepted delivery contract; no worker close or drain.
+- The astra-relay playbook proposal above remains available for coordinator relay to the scratch watcher path, which is outside this sandbox.
+
+FOLIO FRAMSTEG R3 DONE: hpf-qr0p.49.7

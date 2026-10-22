@@ -6,6 +6,9 @@ import { describe, expect, it } from 'vitest'
 const read = (path: string) => readFileSync(fileURLToPath(new URL(path, import.meta.url)), 'utf8')
 const bannedColour =
   /--fa-bad|\bred\b|#[\da-f]{3,8}\b|\b(?:rgba?|hsla?|oklch|color-mix)\(|opacity\s*:/i
+// Literal Tailwind palettes bypass Folio tokens just like inline hex colours.
+const paletteClass =
+  /\b(?:bg|text|border(?:-[xytrblse])?|divide|outline|ring(?:-offset)?|shadow|fill|stroke|decoration|accent|caret|from|via|to)-(?:(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d{2,3}|black|white)\b/i
 function colourViolations(css: string, source: string): string[] {
   const violations = bannedColour.test(css) ? [css] : []
   const ast = ts.createSourceFile(
@@ -16,9 +19,18 @@ function colourViolations(css: string, source: string): string[] {
     ts.ScriptKind.TSX,
   )
   const visit = (node: ts.Node) => {
-    if (ts.isJsxAttribute(node) && ['style', 'fill', 'color'].includes(node.name.getText(ast))) {
+    if (
+      ts.isJsxAttribute(node) &&
+      ['style', 'fill', 'color', 'stroke', 'stopColor', 'className'].includes(
+        node.name.getText(ast),
+      )
+    ) {
       const value = node.initializer?.getText(ast) ?? ''
-      if (bannedColour.test(value)) violations.push(node.getText(ast))
+      if (
+        bannedColour.test(value) ||
+        (node.name.getText(ast) === 'className' && paletteClass.test(value))
+      )
+        violations.push(node.getText(ast))
     }
     ts.forEachChild(node, visit)
   }
@@ -84,6 +96,18 @@ describe('Framsteg isolation', () => {
     '<path fill={active ? "var(--fa-ink)" : "hsl(0 100% 50%)"} />',
     '<span color="red" />',
     '<span color={"oklch(50% 0.2 20)"} />',
+    '<path stroke="red" />',
+    '<path stroke={"#f00"} />',
+    '<stop stopColor="red" />',
+    '<stop stopColor={active ? "var(--fa-ink)" : "rgb(255 0 0)"} />',
+    '<span className="text-red-600" />',
+    '<span className={active ? "fa-meta" : "dark:hover:bg-red-500/20"} />',
+    '<path className="stroke-red-500" />',
+    '<span className="text-[#f00]" />',
+    '<span className="bg-[rgb(255_0_0)]" />',
+    '<span className="border-[var(--fa-bad)]" />',
+    '<span className="text-blue-500" />',
+    '<span className="hover:ring-rose-600" />',
   ])('rejects a planted inline colour: %s', (source) => {
     expect(colourViolations('', source)).not.toEqual([])
   })
@@ -91,7 +115,7 @@ describe('Framsteg isolation', () => {
     expect(
       colourViolations(
         '',
-        '<div style={{ left: "50%", width: "10%" }}><svg color="currentColor"><path fill="var(--fa-ink)" /></svg>red #f00</div>',
+        '<div className="fa-meta text-sm font-medium border-2 w-[50%] hover:underline" style={{ left: "50%", width: "10%" }}><svg color="currentColor"><path fill="var(--fa-ink)" stroke="currentColor" className="stroke-2 fill-none" /><stop stopColor="var(--fa-ink)" /></svg>red #f00</div>',
       ),
     ).toEqual([])
   })

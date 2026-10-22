@@ -13,10 +13,12 @@ import {
   honestSectionScores,
   isoWeek,
   projectionBasis,
+  QUANT_SECTIONS,
   rankWeakness,
   type SectionScore,
   scoreBand,
   sectionBasis,
+  VERBAL_SECTIONS,
   weeklyScore,
 } from '@/lib/scoring'
 import { sectionLongLabel } from '@/lib/sectionRailLabel'
@@ -56,14 +58,25 @@ export function focusRankLine(index: number, scoredCount: number): string {
   ]
 }
 
-function focusReason(s: SectionScore, index: number, displayedOrder: number[]): string {
+function focusReason(
+  s: SectionScore,
+  index: number,
+  displayedOrder: { section: Section; tenths: number }[],
+): string {
   if (s.trend != null && s.trend < -0.05) return 'På väg ner'
   if (Number.isFinite(s.daysSinceLastAttempt) && s.daysSinceLastAttempt >= 14)
     return `Inte övad på ${s.daysSinceLastAttempt} dagar`
   // Urgency also weights confidence and improving trends. Compare against
   // every displayed score before describing its position as lowest/next.
-  if (s.score != null && displayedTenths(s.score) === displayedOrder[index])
-    return focusRankLine(index, displayedOrder.length)
+  if (s.score != null) {
+    const tenths = displayedTenths(s.score)
+    const tied = displayedOrder
+      .filter((other) => other.section !== s.section && other.tenths === tenths)
+      .map((other) => other.section)
+    if (tied.length)
+      return `${tenths === displayedOrder[0]?.tenths ? 'Lägst, tillsammans med' : 'Samma nivå som'} ${tied.join(', ')}`
+    if (tenths === displayedOrder[index]?.tenths) return focusRankLine(index, displayedOrder.length)
+  }
   return 'Ett delprov att öva vidare på'
 }
 
@@ -152,6 +165,8 @@ export function buildFramstegView(input: FramstegInput, now = new Date()) {
   const scores = honestSectionScores(bySection, now).map((s) =>
     scoreBand(s.score, s.attempts90d) == null ? { ...s, score: null } : s,
   )
+  const hasHalfScore = (half: readonly Section[]) =>
+    scores.some((s) => s.score != null && half.includes(s.section))
   const projected = computeHonestProjected(bySection)
   const delta = projected.total == null ? null : computeHonestDelta(bySection)
   // The display has one decimal: never turn nonzero uncertainty into ±0,0
@@ -247,8 +262,10 @@ export function buildFramstegView(input: FramstegInput, now = new Date()) {
     }
   })
   const displayedOrder = scores
-    .flatMap((s) => (s.score == null ? [] : [displayedTenths(s.score)]))
-    .sort((a, b) => a - b)
+    .flatMap((s) =>
+      s.score == null ? [] : [{ section: s.section, tenths: displayedTenths(s.score) }],
+    )
+    .sort((a, b) => a.tenths - b.tenths)
   const focus = rankWeakness(scores)
     .slice(0, 3)
     .map((s, i) => ({
@@ -294,6 +311,9 @@ export function buildFramstegView(input: FramstegInput, now = new Date()) {
       state === 'error' ? RETRY_LINE : state === 'loading' ? 'Laddar dina framsteg…' : null,
     prognosis: {
       ...projected,
+      // Match section eligibility without changing the total or its pooled band.
+      verbal: hasHalfScore(VERBAL_SECTIONS) ? projected.verbal : null,
+      quant: hasHalfScore(QUANT_SECTIONS) ? projected.quant : null,
       scoreLabel: scoreLabel(projected.total),
       low:
         projected.total != null && displayedBand != null
