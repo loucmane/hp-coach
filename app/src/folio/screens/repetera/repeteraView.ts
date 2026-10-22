@@ -3,10 +3,10 @@ import type { ActiveSession } from '@/api/hooks/useSessions'
 import type { Stats } from '@/api/hooks/useStats'
 import { splitKvaPrompt } from '@/components/drill/KvaPrompt'
 import { canAdoptActiveSession } from '@/components/session/canAdoptSession'
-import { findQuestion, type Question, SECTION_KEYS, type Section } from '@/data/questions'
+import { findQuestion, loadBank, type Question, SECTION_KEYS, type Section } from '@/data/questions'
 import { sectionOfQid } from '@/lib/dueBySection'
 import { parseNogPrompt } from '@/lib/nogPrompt'
-import { REPETITION_SESSION_SIZE } from '@/lib/replay'
+import { parsePlanEntry, pickReplayQuestions, REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { repetitionCopy } from '@/lib/scheduler'
 import { honestSectionScores, rankWeakness } from '@/lib/scoring'
 
@@ -18,12 +18,14 @@ export type RepeteraInput = {
   pileMistakes?: readonly Mistake[]
   pileError?: boolean
   bank?: readonly Question[]
+  playableMistakeIds?: readonly number[]
   stats?: Pick<Stats, 'attempts' | 'mistakes' | 'bySection'>
   roundSession?: ActiveSession | null
   roundEnded?: boolean
 }
 export type RepeteraItem = {
-  mistakeId: number
+  mistakeId: number | null
+  questionId: string
   section: Section | null
   stem: string
   stemLang?: 'en'
@@ -48,6 +50,8 @@ export type RepeteraView = {
   pileKnown: boolean
   items: RepeteraItem[]
   due: RepeteraItem[]
+  preview: RepeteraItem[]
+  previewTitle: string
   laterToday: RepeteraItem[]
   laterDays: RepeteraItem[]
   queue: QueueSection[]
@@ -110,32 +114,51 @@ function repetitionHref(section?: Section | null, start = false): string {
   return `/repetition${search.size ? `?${search}` : ''}`
 }
 
+/** Share the session's full eligibility rule, including replacement siblings.
+ * loadBank is memoized, so the picker and stems use the same bank read. */
+export async function loadRepeteraPreview(due: readonly Mistake[]) {
+  const [bank, playable] = await Promise.all([loadBank(), pickReplayQuestions(due, due.length)])
+  return { bank, playableMistakeIds: playable.map((item) => item.mistakeId) }
+}
+
+function previewStem(questionId: string, bank?: readonly Question[]) {
+  const question = bank ? findQuestion(bank, questionId) : undefined
+  const number = Number(questionId.match(/-(\d+)$/)?.[1])
+  return {
+    questionId,
+    section: question?.section ?? sectionOfQid(questionId),
+    stem: question
+      ? questionStem(question)
+      : Number.isInteger(number) && number > 0
+        ? `Fråga ${number}`
+        : 'Fråga',
+    stemLang: question?.section === 'ELF' && question.prompt?.trim() ? ('en' as const) : undefined,
+  }
+}
+
 export function buildRepeteraView(input: RepeteraInput): RepeteraView {
   const { now, roundSession } = input
-  // The due query owns playability and order. Pile and due can be from
+  // The due query owns order; the replay picker owns playability. Pile and due can be from
   // different refetches; dedupe their union, keeping the due version first.
   const dueIds = new Set(input.dueMistakes?.map((m) => m.id))
   const rows = new Map<number, Mistake>()
   for (const row of [...(input.dueMistakes ?? []), ...(input.pileMistakes ?? [])]) {
     if (!rows.has(row.id)) rows.set(row.id, row)
   }
-  const items = [...rows.values()].map((row): RepeteraItem => {
-    const question = input.bank ? findQuestion(input.bank, row.questionId) : undefined
-    const section = question?.section ?? sectionOfQid(row.questionId)
-    const dueNow = dueIds.has(row.id)
-    // Keep a readable label while the bank loads or for an unavailable question.
-    const number = Number(row.questionId.match(/-(\d+)$/)?.[1])
-    const fallback = Number.isInteger(number) && number > 0 ? `Fråga ${number}` : 'Fråga'
-    return {
-      mistakeId: row.id,
-      section,
-      stem: question ? questionStem(question) : fallback,
-      stemLang: question?.section === 'ELF' && question.prompt?.trim() ? 'en' : undefined,
-      dueNow,
-      dueLabel: dueNow ? 'nu' : dueLabel(row.nextReviewAt, now),
-      href: repetitionHref(section, dueNow),
-    }
-  })
+  const playable = input.playableMistakeIds && new Set(input.playableMistakeIds)
+  const items = [...rows.values()]
+    .filter((row) => !dueIds.has(row.id) || !playable || playable.has(row.id))
+    .map((row): RepeteraItem => {
+      const stem = previewStem(row.questionId, input.bank)
+      const dueNow = dueIds.has(row.id)
+      return {
+        ...stem,
+        mistakeId: row.id,
+        dueNow,
+        dueLabel: dueNow ? 'nu' : dueLabel(row.nextReviewAt, now),
+        href: repetitionHref(stem.section, dueNow),
+      }
+    })
   const due = items.filter((i) => i.dueNow)
   const laterToday = items.filter((i) => !i.dueNow && i.dueLabel === 'senare idag')
   // A pile-only elapsed row can briefly precede the due query's refetch.
@@ -161,6 +184,22 @@ export function buildRepeteraView(input: RepeteraInput): RepeteraView {
     roundSession.position < roundSession.plan.length
       ? { position: roundSession.position + 1, total: roundSession.plan.length }
       : null
+  const remaining = resume ? roundSession?.plan?.slice(resume.position - 1) : undefined
+  const previewRound =
+    remaining?.length &&
+    remaining.every((entry) => typeof entry === 'string' && parsePlanEntry(entry).qid.trim())
+  const preview = previewRound
+    ? remaining.map(
+        (entry): RepeteraItem => ({
+          ...previewStem(parsePlanEntry(entry).qid, input.bank),
+          mistakeId: null,
+          dueNow: true,
+          dueLabel: 'nu',
+          // Keep the saved round's scope, including an all-sections round.
+          href: repetitionHref(input.section, true),
+        }),
+      )
+    : due
   const state =
     input.dueMistakes === undefined
       ? input.dueError
@@ -210,6 +249,8 @@ export function buildRepeteraView(input: RepeteraInput): RepeteraView {
     pileKnown,
     items,
     due,
+    preview,
+    previewTitle: previewRound ? 'Kvar i din påbörjade omgång' : 'Redo nu',
     laterToday,
     laterDays,
     queue,

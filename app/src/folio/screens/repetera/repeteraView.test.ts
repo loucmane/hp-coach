@@ -1,9 +1,20 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import type { Mistake } from '@/api/hooks/useMistakes'
 import type { ActiveSession } from '@/api/hooks/useSessions'
 import type { Stats } from '@/api/hooks/useStats'
 import type { Question } from '@/data/questions'
-import { buildRepeteraView, dueLabel, questionStem } from './repeteraView'
+import { buildTrapIndex } from '@/lib/trapIndex'
+import { buildRepeteraView, dueLabel, loadRepeteraPreview, questionStem } from './repeteraView'
+
+const h = vi.hoisted(() => ({ bank: vi.fn(), traps: vi.fn() }))
+vi.mock('@/data/questions', async (original) => ({
+  ...(await original<typeof import('@/data/questions')>()),
+  loadBank: () => h.bank(),
+}))
+vi.mock('@/lib/trapIndex', async (original) => ({
+  ...(await original<typeof import('@/lib/trapIndex')>()),
+  loadTrapIndex: () => h.traps(),
+}))
 
 const now = new Date(2026, 9, 22, 12)
 function miss(id: number, section = 'ORD', next: Date | null = null): Mistake {
@@ -32,6 +43,93 @@ const session: ActiveSession = {
 }
 
 describe('Repetera view', () => {
+  it('uses replay eligibility, retaining incomplete sources only when a playable sibling exists', async () => {
+    const due = [miss(1), miss(2), miss(3), miss(4), miss(5, 'MEK'), miss(6, 'MEK')]
+    const question = (row: Mistake, extra: Partial<Question> = {}): Question =>
+      ({
+        qid: row.questionId,
+        section: row.questionId.includes('MEK') ? 'MEK' : 'ORD',
+        number: row.id,
+        prompt: `Frågan ${row.id}`,
+        parsing_status: 'complete',
+        options: [{ letter: 'A', text: 'Ett svar' }],
+        ...extra,
+      }) as Question
+    const sibling = question(miss(7, 'MEK'))
+    const bank = [
+      question(due[1], { parsing_status: 'answer_only' }),
+      question(due[2], { options: null }),
+      question(due[3]),
+      question(due[4], { options: null }),
+      question(due[5], { parsing_status: 'answer_only' }),
+      sibling,
+    ]
+    h.bank.mockResolvedValue(bank)
+    h.traps.mockResolvedValue(
+      buildTrapIndex({
+        [due[4].questionId]: 'shared-trap',
+        [due[5].questionId]: 'shared-trap',
+        [sibling.qid]: 'shared-trap',
+      }),
+    )
+    const input = { now, dueMistakes: due, pileMistakes: due }
+    expect(buildRepeteraView(input).due.map((row) => row.mistakeId)).toEqual([1, 2, 3, 4, 5, 6])
+    const preview = await loadRepeteraPreview(due)
+    expect(preview.bank).toBe(bank)
+    const view = buildRepeteraView({ ...input, ...preview })
+    // Missing, incomplete and options-less sources are skipped; the one
+    // available sibling can rescue only the first of the last two misses.
+    expect(view.due.map((row) => row.mistakeId)).toEqual([4, 5])
+    expect(view.preview).toEqual(view.due)
+    expect(view.ready).toBe(2)
+    expect(view.queue.map((row) => [row.section, row.ready])).toEqual([
+      ['ORD', 1],
+      ['MEK', 1],
+    ])
+  })
+
+  it('keeps complete originals when the optional trap index fails', async () => {
+    const due = [miss(1)]
+    h.bank.mockResolvedValue([
+      {
+        qid: due[0].questionId,
+        section: 'ORD',
+        parsing_status: 'complete',
+        options: [{ letter: 'A', text: 'ord' }],
+      },
+    ])
+    h.traps.mockRejectedValue(new Error('offline'))
+    expect((await loadRepeteraPreview(due)).playableMistakeIds).toEqual([1])
+  })
+
+  it('previews a stored round even when its remaining questions are outside the current pile', () => {
+    const roundSession = {
+      ...session,
+      plan: ['answered-ORD-1', 'saved-ELF-3~source-ELF-8', 'saved-ORD-2'],
+    }
+    const view = buildRepeteraView({ now, dueMistakes: [], pileMistakes: [], roundSession })
+    expect(view.preview.map((row) => row.questionId)).toEqual(['saved-ELF-3', 'saved-ORD-2'])
+    expect(view.preview.map((row) => row.stem)).toEqual(['Fråga 3', 'Fråga 2'])
+    expect(view.previewTitle).toBe('Kvar i din påbörjade omgång')
+    expect(view.ready).toBe(0)
+    expect(view.state).toBe('ready')
+    expect(view.resume).toEqual({ position: 2, total: 3 })
+  })
+
+  it.each([
+    null,
+    [],
+    ['answered-ORD-1', ''],
+  ])('falls back to the due preview when the saved plan cannot be read: %j', (plan) => {
+    const view = buildRepeteraView({
+      now,
+      dueMistakes: [miss(1)],
+      roundSession: { ...session, plan },
+    })
+    expect(view.preview).toEqual(view.due)
+    expect(view.previewTitle).toBe('Redo nu')
+  })
+
   it('preserves due order, unions an independently cached pile and omits trap data', () => {
     const due = [miss(3, 'LÄS'), miss(1)]
     const later = miss(2, 'MEK', new Date(2026, 9, 22, 14))

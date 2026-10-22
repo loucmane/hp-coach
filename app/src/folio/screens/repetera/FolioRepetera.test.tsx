@@ -13,6 +13,7 @@ const h = vi.hoisted(() => ({
   bank: [] as Question[] | undefined,
   stats: undefined as Stats | undefined,
   pileError: false,
+  playableMistakeIds: undefined as number[] | undefined,
 }))
 vi.mock('./useRepeteraExtras', () => ({
   useRepeteraExtras: () => ({
@@ -22,6 +23,7 @@ vi.mock('./useRepeteraExtras', () => ({
     bank: h.bank,
     stats: h.stats,
     pileError: h.pileError,
+    playableMistakeIds: h.playableMistakeIds,
   }),
 }))
 
@@ -54,9 +56,75 @@ beforeEach(() => {
   ] as Question[]
   h.stats = undefined
   h.pileError = false
+  h.playableMistakeIds = undefined
 })
 
 describe('Folio Repetera overview', () => {
+  it('resets Visa alla after a refetch shrinks the list to the preview size', () => {
+    const ready = Array.from({ length: 11 }, (_, i) => miss(i + 1))
+    h.pile = ready
+    const result = render(<FolioRepetera {...props()} dueMistakes={ready} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Visa alla 11' }))
+    expect(screen.getByRole('button', { name: 'Visa färre' })).toBeVisible()
+    result.rerender(<FolioRepetera {...props()} dueMistakes={ready.slice(0, 10)} />)
+    expect(screen.queryByRole('button', { name: 'Visa färre' })).not.toBeInTheDocument()
+    result.rerender(<FolioRepetera {...props()} dueMistakes={ready} />)
+    expect(screen.getByRole('button', { name: 'Visa alla 11' })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    )
+    expect(
+      within(screen.getByRole('list', { name: 'Redo nu' })).getAllByRole('listitem'),
+    ).toHaveLength(10)
+  })
+
+  it('fills the first ten preview slots from playable due rows after the bank loads', () => {
+    const ready = Array.from({ length: 14 }, (_, i) => miss(i + 1))
+    h.pile = ready
+    h.bank = undefined
+    const result = render(<FolioRepetera {...props()} dueMistakes={ready} />)
+    const labels = () =>
+      within(screen.getByRole('list', { name: 'Redo nu' }))
+        .getAllByRole('link')
+        .map((link) => link.textContent)
+    expect(labels()).toEqual(ready.slice(0, 10).map((row) => `ORDFråga ${row.id}nu`))
+    h.bank = []
+    h.playableMistakeIds = ready.slice(3).map((row) => row.id)
+    result.rerender(<FolioRepetera {...props()} dueMistakes={ready} />)
+    expect(labels()).toEqual(ready.slice(3, 13).map((row) => `ORDFråga ${row.id}nu`))
+    expect(screen.getByRole('heading', { name: '10 av 11 missar' })).toBeVisible()
+  })
+
+  it('previews the remaining stored round in order, including linked questions outside the due list', () => {
+    const roundSession = {
+      id: 42,
+      sections: 'alla',
+      plan: ['answered-ORD-1', 'stored-ELF-3~source-ELF-8', 'stored-ORD-2'],
+      position: 1,
+      endedAt: null,
+    } as ActiveSession
+    h.bank?.push(
+      {
+        qid: 'stored-ELF-3',
+        section: 'ELF',
+        number: 3,
+        prompt: 'The stored question?',
+      } as Question,
+      { qid: 'stored-ORD-2', section: 'ORD', number: 2, prompt: 'lagrad' } as Question,
+    )
+    render(<FolioRepetera {...props()} roundSession={roundSession} />)
+    const list = screen.getByRole('list', { name: 'Kvar i din påbörjade omgång' })
+    const links = within(list).getAllByRole('link')
+    expect(links.map((link) => link.textContent)).toEqual([
+      'ELFThe stored question?nu',
+      'ORDlagradnu',
+    ])
+    expect(links.every((link) => link.getAttribute('href') === '/repetition?start=1')).toBe(true)
+    expect(screen.queryByRole('list', { name: 'Redo nu' })).not.toBeInTheDocument()
+    fireEvent.click(links[0])
+    expect(navigate).toHaveBeenCalledExactlyOnceWith('/repetition?start=1')
+  })
+
   it('has one primary, preserves the start id, and Enter clicks that action', () => {
     const { container } = render(<FolioRepetera {...props()} />)
     expect(screen.getByRole('heading', { level: 1, name: 'Dina missar' })).toBeInTheDocument()

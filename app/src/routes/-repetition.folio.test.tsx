@@ -1,6 +1,7 @@
 import { act, render, screen } from '@testing-library/react'
 import type { FunctionComponent } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { ActiveSession } from '@/api/hooks/useSessions'
 import type { SessionPlayerProps } from '@/components/session/SessionPlayer'
 import { FolioHostContext } from '@/folio/host'
 
@@ -10,6 +11,7 @@ const h = vi.hoisted(() => ({
   navigate: vi.fn(),
   due: vi.fn(),
   overview: vi.fn(),
+  roundSession: null as ActiveSession | null,
 }))
 vi.mock('@tanstack/react-router', () => ({
   createFileRoute: () => (options: unknown) => ({ options, useSearch: () => h.search }),
@@ -25,7 +27,9 @@ vi.mock('@/api/hooks/useMistakes', () => ({
   useReviewMistake: () => ({ mutate: vi.fn() }),
 }))
 vi.mock('@/api/hooks/useMockResults', () => ({ useExposure: () => ({ refetch: vi.fn() }) }))
-vi.mock('@/api/hooks/useSessions', () => ({ useActiveSessionOfKind: () => ({ data: null }) }))
+vi.mock('@/api/hooks/useSessions', () => ({
+  useActiveSessionOfKind: () => ({ data: h.roundSession }),
+}))
 vi.mock('@/components/session/SessionPlayer', () => ({
   SessionPlayer: (props: SessionPlayerProps) => {
     h.props = props
@@ -51,10 +55,26 @@ const page = (folio = true) => (
 beforeEach(() => {
   h.search = {}
   h.props = null
+  h.roundSession = null
   vi.clearAllMocks()
 })
 
 describe('Folio repetition boundary', () => {
+  it('passes the stored round plan and cursor to the overview unchanged', async () => {
+    h.roundSession = {
+      id: 42,
+      sections: 'alla',
+      plan: ['answered-ORD-1', 'stored-ELF-3~source-ELF-8', 'stored-ORD-2'],
+      position: 1,
+      endedAt: null,
+    } as ActiveSession
+    render(page())
+    await screen.findByTestId('folio-overview')
+    expect(h.overview).toHaveBeenLastCalledWith(
+      expect.objectContaining({ roundSession: h.roundSession }),
+    )
+  })
+
   it('shows a lazy overview for the bare route and passes the section scope', async () => {
     const result = render(page())
     expect(await screen.findByTestId('folio-overview')).toBeInTheDocument()
