@@ -1,0 +1,1100 @@
+/* Folio+ drill/quant typography and feedback, copied and scoped for production. */
+[data-folio] .fa-drill .fa-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+[data-folio] .fa-drill .fa-label {
+  font-family: var(--fa-sans);
+  font-size: var(--fa-t12);
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fa-ink-3);
+}
+
+[data-folio] .fa-drill .fa-h3 {
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t17);
+  line-height: 1.3;
+  font-weight: 560;
+  color: var(--fa-ink);
+}
+
+[data-folio] .fa-drill .fa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fa-s3);
+  min-height: 44px;
+  padding: 0 var(--fa-s6);
+  border: 0;
+  border-radius: var(--fa-r1);
+  background: var(--fa-accent-fill);
+  color: var(--fa-on-accent);
+  font-size: var(--fa-t15);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  transition: background var(--fa-d1) var(--fa-ease);
+}
+
+[data-folio] .fa-drill .fa-btn:hover {
+  background: var(--fa-accent-fill-2);
+}
+
+[data-folio] .fa-drill .fa-btn:disabled {
+  background: var(--fa-paper-3);
+  color: var(--fa-ink-3);
+  cursor: not-allowed;
+}
+
+[data-folio] .fa-drill {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+[data-folio] .fa-drill .fa-runhead {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  flex: none;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--fa-s3);
+  height: 56px;
+  padding: 0 var(--fa-s3);
+
+  background: inherit;
+}
+
+[data-folio] .fa-drill .fa-runhead::after {
+  content: '';
+  position: absolute;
+  left: var(--fa-s4);
+  right: var(--fa-s4);
+  bottom: 0;
+  height: 1px;
+  background: var(--fa-rule);
+}
+
+[data-folio] .fa-drill .fa-runhead::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 20px;
+  background: linear-gradient(to bottom, var(--fa-paper), transparent);
+  pointer-events: none;
+}
+
+[data-folio] .fa-drill .fa-runhead > :last-child {
+  justify-self: end;
+}
+
+[data-folio] .fa-drill .fa-runhead-title {
+  justify-self: center;
+  white-space: nowrap;
+}
+
+[data-folio] .fa-drill .fa-runhead--solo {
+  position: relative;
+  flex: none;
+  background: var(--fa-paper);
+}
+
+[data-folio] .fa-drill .fa-runhead-pos {
+  display: flex;
+  align-items: center;
+  gap: var(--fa-s3);
+  color: var(--fa-ink-2);
+  font-size: var(--fa-t15);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-folio] .fa-drill .fa-recto-body {
+  flex: 1;
+  width: 100%;
+  max-width: 640px;
+  padding: var(--fa-s8) var(--fa-s12) 0 44px;
+}
+
+[data-folio] .fa-drill .fa-prompt {
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t24);
+  line-height: 1.34;
+  font-weight: 450;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+  hyphens: manual;
+}
+
+[data-folio] .fa-drill .fa-prompt[data-after='true'] {
+  margin-top: var(--fa-s4);
+  font-size: var(--fa-t17);
+  line-height: 1.45;
+  font-weight: 400;
+  color: var(--fa-ink-2);
+}
+
+[data-folio] .fa-drill .fa-opts {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--fa-s6);
+  border-top: 1px solid var(--fa-rule);
+}
+
+[data-folio] .fa-drill .fa-opt {
+  position: relative;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 40px;
+  align-items: start;
+  column-gap: var(--fa-s3);
+  padding: var(--fa-s4) 0;
+  border-bottom: 1px solid var(--fa-rule);
+}
+
+[data-folio] .fa-drill .fa-opt::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: var(--fa-s4);
+  bottom: var(--fa-s4);
+  width: 2px;
+  border-radius: 1px;
+  background: transparent;
+  transition: background var(--fa-d1) var(--fa-ease);
+}
+
+[data-folio] .fa-drill .fa-opt:not([data-grade]):hover .fa-letter {
+  border-color: var(--fa-ink-2);
+  color: var(--fa-ink);
+}
+
+[data-folio] .fa-drill .fa-opt-main {
+  grid-column: 1 / 3;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: var(--fa-s3);
+  align-items: start;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-folio] .fa-drill .fa-opt-main:focus-visible {
+  outline-offset: 6px;
+}
+
+[data-folio] .fa-drill .fa-letter {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--fa-rule-2);
+  font-family: var(--fa-sans);
+  font-size: var(--fa-t13);
+  font-weight: 650;
+  color: var(--fa-ink-2);
+  transition:
+    background var(--fa-d1) var(--fa-ease),
+    color var(--fa-d1) var(--fa-ease),
+    border-color var(--fa-d1) var(--fa-ease);
+}
+
+[data-folio] .fa-drill .fa-opt-text {
+  padding-top: 3px;
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t17);
+  line-height: 1.5;
+  color: var(--fa-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+[data-folio] .fa-drill .fa-opt[data-state='selected']::before {
+  background: var(--fa-accent);
+}
+
+[data-folio] .fa-drill .fa-opt[data-state='selected'] .fa-letter,
+[data-folio] .fa-drill .fa-opt[data-state='selected']:hover .fa-letter {
+  background: var(--fa-accent-fill);
+  border-color: var(--fa-accent-fill);
+  color: var(--fa-on-accent);
+}
+
+[data-folio] .fa-drill .fa-opt[data-state='eliminated'] .fa-opt-text {
+  color: var(--fa-ink-3);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fa-ink-3);
+}
+
+[data-folio] .fa-drill .fa-opt[data-state='eliminated'] .fa-letter {
+  border-style: dashed;
+  color: var(--fa-ink-3);
+}
+
+[data-folio] .fa-drill .fa-opt-x {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fa-r1);
+  background: transparent;
+  color: var(--fa-ink-3);
+  opacity: 0.55;
+  cursor: pointer;
+  transition:
+    opacity var(--fa-d1) var(--fa-ease),
+    background var(--fa-d1) var(--fa-ease);
+}
+
+[data-folio] .fa-drill .fa-opt:hover .fa-opt-x,
+[data-folio] .fa-drill .fa-opt:focus-within .fa-opt-x,
+[data-folio] .fa-drill .fa-opt[data-state='eliminated'] .fa-opt-x {
+  opacity: 1;
+}
+
+[data-folio] .fa-drill .fa-opt-x:hover {
+  background: var(--fa-paper-3);
+  color: var(--fa-ink);
+}
+
+[data-folio] .fa-drill .fa-opt[data-grade] {
+  cursor: default;
+}
+
+[data-folio] .fa-drill .fa-opt[data-grade='right']::before {
+  background: var(--fa-ok);
+}
+
+[data-folio] .fa-drill .fa-opt[data-grade='right'] .fa-letter {
+  background: var(--fa-ok);
+  border-color: var(--fa-ok);
+  color: var(--fa-on-accent);
+}
+
+[data-folio] .fa-drill .fa-opt[data-grade='wrong']::before {
+  background: var(--fa-ink);
+}
+
+[data-folio] .fa-drill .fa-opt[data-grade='wrong'] .fa-letter {
+  background: var(--fa-ink);
+  border-color: var(--fa-ink);
+  color: var(--fa-on-accent);
+}
+
+[data-folio] .fa-drill .fa-opt[data-grade='other'] .fa-opt-text {
+  color: var(--fa-ink-2);
+}
+
+[data-folio] .fa-drill .fa-opt-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-family: var(--fa-sans);
+  font-size: var(--fa-t13);
+  font-weight: 650;
+}
+
+[data-folio] .fa-drill .fa-opt[data-grade='right'] .fa-opt-tag {
+  color: var(--fa-ok);
+}
+
+[data-folio] .fa-drill .fa-opt[data-grade='wrong'] .fa-opt-tag {
+  color: var(--fa-ink);
+}
+
+[data-folio] .fa-drill .fa-more-opts {
+  align-self: flex-start;
+  margin: var(--fa-s1) 0 0;
+}
+
+[data-folio] .fa-drill .fa-keys {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px var(--fa-s4);
+  margin-top: var(--fa-s4);
+  color: var(--fa-ink-3);
+  font-size: var(--fa-t13);
+}
+
+[data-folio] .fa-drill .fa-keys span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+[data-folio] .fa-drill .fa-actionbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--fa-s4);
+  padding: var(--fa-s3) var(--fa-s12) var(--fa-s4) 44px;
+  border-top: 1px solid var(--fa-rule);
+  background: var(--fa-paper);
+}
+
+[data-folio] .fa-drill .fa-verdict {
+  display: flex;
+  align-items: center;
+  gap: var(--fa-s3);
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t24);
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+[data-folio] .fa-drill .fa-verdict b {
+  font-weight: 600;
+}
+
+[data-folio] .fa-drill .fa-facit {
+
+}
+
+[data-folio] .fa-drill .fa-facit::before {
+  content: '';
+  display: block;
+  width: 6rem;
+  margin-top: var(--fa-s8);
+  border-top: 1px solid var(--fa-rule-2);
+}
+
+[data-folio] .fa-drill .fa-fsec {
+  margin-top: var(--fa-s8);
+}
+
+[data-folio] .fa-drill .fa-facit > .fa-fsec:first-child {
+  margin-top: var(--fa-s6);
+}
+
+[data-folio] .fa-drill .fa-fsec > .fa-h3 {
+  margin-bottom: var(--fa-s3);
+}
+
+[data-folio] .fa-drill .fa-h3--next {
+  margin-top: var(--fa-s6);
+}
+
+[data-folio] .fa-drill .fa-prose {
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t17);
+  line-height: 1.6;
+  color: var(--fa-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+[data-folio] .fa-drill .fa-prose + .fa-prose,
+[data-folio] .fa-drill .fa-sub + .fa-prose {
+  margin-top: var(--fa-s2);
+}
+
+[data-folio] .fa-drill .fa-sub {
+  display: block;
+  margin-top: var(--fa-s4);
+  font-size: var(--fa-t13);
+  font-weight: 650;
+  color: var(--fa-ink-3);
+}
+
+[data-folio] .fa-drill .fa-cites {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-top: var(--fa-s2);
+}
+
+[data-folio] .fa-drill .fa-cites-see {
+  margin-right: -4px;
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t15);
+  font-style: italic;
+  color: var(--fa-ink-3);
+}
+
+[data-folio] .fa-drill .fa-cite {
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--fa-accent-ink);
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t15);
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in oklch, var(--fa-accent-ink) 40%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: background var(--fa-d1) var(--fa-ease);
+}
+
+[data-folio] .fa-drill .fa-cite:hover {
+  text-decoration-color: currentColor;
+}
+
+[data-folio] .fa-drill .fa-stepref {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fa-accent-ink);
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--fa-accent-ink) 35%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+[data-folio] .fa-drill .fa-step {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: var(--fa-s2);
+  padding: var(--fa-s3) 0;
+}
+
+[data-folio] .fa-drill .fa-step + .fa-step {
+  border-top: 1px solid var(--fa-rule);
+}
+
+[data-folio] .fa-drill .fa-step-n {
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t19);
+  line-height: 1.15;
+  color: var(--fa-accent-ink);
+  font-variant-numeric: oldstyle-nums;
+}
+
+[data-folio] .fa-drill .fa-step[data-tier='detail'] .fa-step-n {
+  color: var(--fa-ink-3);
+}
+
+[data-folio] .fa-drill .fa-step-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px var(--fa-s3);
+}
+
+[data-folio] .fa-drill .fa-step-title {
+  font-size: var(--fa-t15);
+  font-weight: 650;
+  color: var(--fa-ink);
+}
+
+[data-folio] .fa-drill .fa-step-head .fa-cites {
+  margin-top: 0;
+}
+
+[data-folio] .fa-drill .fa-step-text {
+  margin-top: var(--fa-s1);
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t17);
+  line-height: 1.6;
+  color: var(--fa-ink-2);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+[data-folio] .fa-drill .fa-more {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fa-accent-ink);
+  font-size: var(--fa-t13);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+[data-folio] .fa-drill .fa-more:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+[data-folio] .fa-drill .fa-more svg {
+  transition: rotate var(--fa-d1) var(--fa-ease);
+}
+
+[data-folio] .fa-drill .fa-more[aria-expanded='true'] svg {
+  rotate: 90deg;
+}
+
+[data-folio] .fa-drill .fa-dis {
+  padding: var(--fa-s3) 0;
+}
+
+[data-folio] .fa-drill .fa-dis + .fa-dis {
+  border-top: 1px solid var(--fa-rule);
+}
+
+[data-folio] .fa-drill .fa-dis-head {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: var(--fa-s3);
+  align-items: start;
+}
+
+[data-folio] .fa-drill .fa-dis-head .fa-letter {
+  width: 28px;
+  height: 28px;
+  font-size: var(--fa-t12);
+}
+
+[data-folio] .fa-drill .fa-dis-opt {
+  padding-top: 2px;
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t17);
+  line-height: 1.5;
+  color: var(--fa-ink-2);
+  hyphens: manual;
+}
+
+[data-folio] .fa-drill .fa-dis-body {
+  margin: var(--fa-s2) 0 0 40px;
+}
+
+[data-folio] .fa-drill .fa-notes .fa-note-item + .fa-note-item {
+  margin-top: var(--fa-s4);
+}
+
+[data-folio] .fa-drill .fa-framework {
+  margin-top: var(--fa-s6);
+  color: var(--fa-ink-3);
+  font-size: var(--fa-t13);
+}
+
+[data-folio] .fa-drill .fa-framework b {
+  color: var(--fa-ink-2);
+  font-weight: 600;
+}
+
+[data-folio] .fa-drill .fa-margin-note {
+  font-size: var(--fa-t15);
+  line-height: 1.5;
+  color: var(--fa-ink-2);
+  text-wrap: pretty;
+}
+
+[data-folio] .fa-drill .fa-margin-note + .fa-margin-note {
+  margin-top: var(--fa-s2);
+}
+
+[data-folio] .fa-drill .fa-margin-note b {
+  font-weight: 600;
+  color: var(--fa-ink);
+}
+
+[data-folio] .fa-drill .fa-empty {
+  max-width: 36em;
+  margin-top: var(--fa-s4);
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t17);
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--fa-ink-2);
+  text-wrap: pretty;
+}
+
+[data-folio] .fa-drill .fa-gap {
+  display: inline-block;
+  width: 3.2em;
+  height: 1em;
+  margin: 0 0.15em;
+  border-bottom: 1px solid var(--fa-ink-2);
+  vertical-align: -0.12em;
+}
+
+[data-folio] .fa-drill .fa-verdict:has(.fa-verdict-after) {
+  align-items: flex-start;
+}
+
+[data-folio] .fa-drill .fa-verdict-after {
+  display: block;
+  margin-top: var(--fa-s1);
+  font-size: var(--fa-t17);
+  font-style: italic;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: var(--fa-ink-2);
+}
+
+[data-folio] .fa-drill .katex {
+  font-size: var(--fa-math-scale);
+}
+
+/* Enlarge only stacked fractions: 1.14 × 0.7 × 1.25 keeps their digits
+   near the surrounding text size without enlarging ordinary option math. */
+[data-folio] .fa-drill .fa-opt .katex .mfrac,
+[data-folio] .fa-drill .fa-dis-opt .katex .mfrac {
+  font-size: 1.25em;
+}
+
+[data-folio] .fa-drill .katex-error {
+  color: var(--fa-ink) !important;
+}
+
+[data-folio] .fa-drill .fa-qsheet {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 640px) minmax(0, 1fr);
+  padding: var(--fa-s8) var(--fa-s6) var(--fa-s16);
+}
+
+[data-folio] .fa-drill .fa-qcol {
+  grid-column: 2;
+  width: 100%;
+  max-width: 640px;
+  padding: 0 var(--fa-s12) 0 44px;
+}
+
+[data-folio] .fa-drill .fa-qcol > .fa-actionbar {
+  margin-top: var(--fa-s6);
+  padding: var(--fa-s3) 0 var(--fa-s4);
+}
+
+[data-folio] .fa-drill .fa-qnum {
+  display: inline-block;
+  width: 36px;
+  margin: 0 8px 0 -44px;
+  text-align: right;
+  font-family: var(--fa-sans);
+  font-size: var(--fa-t13);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--fa-ink-3);
+  font-variant-numeric: lining-nums tabular-nums;
+  vertical-align: baseline;
+}
+
+[data-folio] .fa-drill .fa-qprompt[data-word='true'] {
+  font-size: var(--fa-t32);
+  line-height: 1.15;
+}
+
+[data-folio] .fa-drill .fa-qprompt[data-after='true'] {
+  margin-top: var(--fa-s4);
+}
+
+[data-folio] .fa-drill .fa-qpassage {
+  margin-bottom: var(--fa-s6);
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t17);
+  line-height: 1.6;
+  color: var(--fa-ink);
+}
+
+[data-folio] .fa-drill .fa-qpassage p + p {
+  margin-top: 0.75em;
+}
+
+[data-folio] .fa-drill .fa-kva {
+  width: 100%;
+  margin-top: var(--fa-s4);
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-top: 1px solid var(--fa-rule);
+  border-bottom: 1px solid var(--fa-rule);
+}
+
+[data-folio] .fa-drill .fa-kva th {
+  padding: var(--fa-s2) var(--fa-s4) var(--fa-s1) 0;
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t15);
+  font-style: italic;
+  font-weight: 400;
+  text-align: left;
+  color: var(--fa-ink-2);
+}
+
+[data-folio] .fa-drill .fa-kva td {
+  padding: var(--fa-s1) var(--fa-s4) var(--fa-s3) 0;
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t19);
+  line-height: 1.4;
+  vertical-align: top;
+  hyphens: manual;
+}
+
+[data-folio] .fa-drill .fa-kva th + th,
+[data-folio] .fa-drill .fa-kva td + td {
+  padding-left: var(--fa-s4);
+  border-left: 1px solid var(--fa-rule);
+}
+
+[data-folio] .fa-drill .fa-nog {
+  margin-top: var(--fa-s4);
+}
+
+[data-folio] .fa-drill .fa-nog li {
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t19);
+  line-height: 1.5;
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+[data-folio] .fa-drill .fa-nog li + li {
+  margin-top: var(--fa-s2);
+}
+
+[data-folio] .fa-drill .fa-nog-n {
+  display: inline-block;
+  width: 36px;
+  margin: 0 8px 0 -44px;
+  text-align: right;
+  font-family: var(--fa-sans);
+  font-size: var(--fa-t13);
+  font-weight: 600;
+  color: var(--fa-ink-3);
+}
+
+[data-folio] .fa-drill .fa-nog-tail {
+  margin-top: var(--fa-s4);
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t17);
+  font-style: italic;
+  color: var(--fa-ink-2);
+}
+
+[data-folio] .fa-drill .fa-tactic {
+  grid-column: 3;
+  align-self: start;
+  max-width: 240px;
+  margin: var(--fa-s1) 0 0 var(--fa-s8);
+  padding-left: var(--fa-s6);
+  border-left: 1px solid var(--fa-rule);
+}
+
+[data-folio] .fa-drill .fa-tactic > .fa-h3 {
+  margin-bottom: var(--fa-s2);
+  font-size: var(--fa-t19);
+  font-style: italic;
+  font-weight: 500;
+}
+
+[data-folio] .fa-drill .fa-tactic-handle {
+  margin-bottom: 2px;
+  font-size: var(--fa-t15);
+  font-weight: 600;
+  color: var(--fa-ink);
+}
+
+[data-folio] .fa-drill .fa-tactic-fold {
+  margin-top: var(--fa-s3);
+}
+
+[data-folio] .fa-drill .fa-tactic-body {
+  margin-top: var(--fa-s1);
+  padding: 2px 0 2px var(--fa-s4);
+  border-left: 1px solid var(--fa-rule-2);
+}
+
+[data-folio] .fa-drill .fa-opt-img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 140px;
+  transition: opacity var(--fa-d1) var(--fa-ease);
+}
+
+[data-folio] .fa-drill .fa-opt[data-state='eliminated'] .fa-opt-img {
+  opacity: 0.4;
+}
+
+[data-folio] .fa-drill .fa-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0 var(--fa-s6);
+}
+
+[data-folio] .fa-drill .fa-cite::after,
+[data-folio] .fa-drill .fa-more::after,
+[data-folio] .fa-drill .fa-stepref::after,
+[data-folio] .fa-drill .fa-opt-x::after {
+  content: '';
+  position: absolute;
+}
+
+[data-folio] .fa-drill .fa-cite::after {
+  inset: -11px -6px;
+}
+
+[data-folio] .fa-drill .fa-more::after,
+[data-folio] .fa-drill .fa-opt-x::after {
+  inset: -6px -2px;
+}
+
+[data-folio] .fa-drill .fa-stepref::after {
+  inset: -10px -2px;
+}
+
+[data-folio] .fa-drill .fa-tactic--ask > aside {
+  margin-top: var(--fa-s2);
+}
+
+[data-folio] .fa-drill .fa-tactic--ask[data-open='false'] {
+  border-left-color: transparent;
+}
+
+[data-folio] .fa-drill .fa-tactic-toggle {
+  color: var(--fa-ink-3);
+}
+
+[data-folio] .fa-drill .fa-tactic-toggle:hover,
+[data-folio] .fa-drill .fa-tactic-toggle[aria-expanded='true'] {
+  color: var(--fa-accent-ink);
+}
+
+[data-folio] .fa-drill .fa-opt[data-grade='wrong'] .fa-letter {
+  background: transparent;
+  border-width: 2px;
+  color: var(--fa-ink);
+}
+
+[data-folio] .fa-drill .fa-opt[data-grade='wrong'] .fa-opt-tag {
+  color: var(--fa-ink-2);
+}
+
+[data-folio] .fa-drill .fa-opt[data-grade='wrong'] .fa-opt-tag svg {
+  color: var(--fa-ink);
+}
+
+[data-folio] .fa-drill .fa-qset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  break-inside: avoid;
+}
+
+/* Production host: document scrolling and the shell's existing focus bar. */
+[data-folio] .fa-drill {
+  min-width: 0;
+  height: auto;
+  color: var(--fa-ink);
+  font-family: var(--fa-sans);
+  font-size: var(--fa-t15);
+  line-height: 1.5;
+  font-optical-sizing: auto;
+}
+[data-folio] .fa-drill :where(h1, h2, h3, h4, p, ol, figure) {
+  margin: 0;
+}
+[data-folio] .fa-drill :where(ol) {
+  list-style: none;
+  padding: 0;
+}
+[data-folio] .fa-drill button {
+  font-family: inherit;
+}
+[data-folio] .fa-drill :focus-visible {
+  outline: 2px solid var(--fa-focus);
+  outline-offset: 3px;
+}
+[data-folio] .fa-drill .fa-runhead {
+  position: relative;
+  grid-template-columns: 1fr auto;
+  height: auto;
+  min-height: 56px;
+  padding: var(--fa-s3) var(--fa-s6);
+}
+[data-folio] .fa-drill .fa-runhead-title {
+  justify-self: start;
+}
+[data-folio] .fa-drill .fa-runhead::before {
+  content: none;
+}
+[data-folio] .fa-drill .fa-qsheet {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 640px) minmax(0, 1fr);
+  padding: var(--fa-s12) var(--fa-s6) var(--fa-s16);
+}
+[data-folio] .fa-drill .fa-qcol {
+  min-width: 0;
+}
+[data-folio] .fa-drill .fa-qcol:focus {
+  outline: none;
+}
+[data-folio] .fa-drill .fa-feedback-spread {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: var(--fa-s12) var(--fa-s6) var(--fa-s16);
+}
+[data-folio] .fa-drill .fa-feedback-spread > .fa-qcol {
+  grid-column: 1;
+  justify-self: center;
+}
+[data-folio] .fa-drill .fa-recto-body {
+  min-width: 0;
+  max-width: 640px;
+  width: 100%;
+  padding: 0 var(--fa-s12);
+  border-left: 1px solid var(--fa-rule);
+}
+[data-folio] .fa-drill .fa-verdict {
+  color: var(--fa-ink);
+}
+[data-folio] .fa-drill .fa-figure img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: 280px;
+  background: var(--fa-on-accent);
+}
+[data-folio] .fa-drill .fa-keys {
+  margin-top: var(--fa-s4);
+  color: var(--fa-ink-3);
+  font-size: var(--fa-t12);
+}
+[data-folio] .fa-drill .fa-actionbar {
+  position: static;
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--fa-s4);
+  margin-top: var(--fa-s6);
+  padding: var(--fa-s3) 0;
+  background: transparent;
+}
+[data-folio] .fa-drill .fa-prompt {
+  margin-bottom: var(--fa-s6);
+}
+[data-folio] .fa-drill .fa-fsec {
+  margin-top: var(--fa-s8);
+}
+[data-folio] .fa-drill .fa-step {
+  scroll-margin-top: 72px;
+}
+[data-folio] .fa-drill .fa-step-title {
+  font-family: var(--fa-sans);
+}
+[data-folio] .fa-drill .fa-framework {
+  margin-top: var(--fa-s6);
+}
+[data-folio] .fa-drill .fa-prose {
+  margin-top: var(--fa-s2);
+}
+[data-folio] .fa-drill .fa-note-item + .fa-note-item {
+  margin-top: var(--fa-s4);
+}
+[data-folio] .fa-drill .fa-qpassage {
+  margin-bottom: var(--fa-s6);
+}
+[data-folio] .fa-drill .fa-qpassage [data-cited='true'] {
+  background: var(--fa-mark);
+}
+[data-folio] .fa-drill .fa-nog {
+  margin: var(--fa-s4) 0;
+}
+[data-folio] .fa-drill .fa-nog-tail {
+  margin: var(--fa-s4) 0;
+}
+[data-folio] .fa-drill .fa-tactic {
+  margin-top: var(--fa-s1);
+}
+[data-folio] .fa-drill .fa-margin-note {
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t15);
+  line-height: 1.6;
+  color: var(--fa-ink-2);
+}
+@media (max-width: 1100px) {
+  [data-folio] .fa-drill .fa-qsheet {
+    grid-template-columns: minmax(0, 640px);
+    justify-content: center;
+  }
+  [data-folio] .fa-drill .fa-qcol {
+    grid-column: 1;
+  }
+  [data-folio] .fa-drill .fa-tactic {
+    grid-column: 1;
+    max-width: none;
+    margin: var(--fa-s6) var(--fa-s12) 0 44px;
+    padding: 0 0 0 var(--fa-s4);
+  }
+}
+@media (max-width: 760px) {
+  [data-folio] .fa-drill .fa-feedback-spread {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--fa-s8);
+  }
+  [data-folio] .fa-drill .fa-feedback-spread > .fa-qcol {
+    justify-self: stretch;
+  }
+  [data-folio] .fa-drill .fa-recto-body {
+    padding: var(--fa-s6) 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--fa-rule);
+    max-width: none;
+  }
+  [data-folio] .fa-drill .fa-qsheet {
+    padding: var(--fa-s8) var(--fa-s6) var(--fa-s12);
+  }
+  [data-folio] .fa-drill .fa-qcol {
+    padding: 0;
+    max-width: none;
+  }
+  [data-folio] .fa-drill .fa-qnum {
+    display: none;
+  }
+  [data-folio] .fa-drill .fa-nog li {
+    padding-left: var(--fa-s8);
+  }
+  [data-folio] .fa-drill .fa-nog-n {
+    margin-left: calc(-1 * var(--fa-s8));
+    width: var(--fa-s6);
+  }
+  [data-folio] .fa-drill .fa-tactic {
+    margin: var(--fa-s6) 0 0;
+  }
+  [data-folio] .fa-drill .fa-opt-x {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  [data-folio] .fa-drill .fa-keys {
+    display: none;
+  }
+  [data-folio] .fa-drill .fa-actionbar .fa-btn {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-folio] .fa-drill * {
+    transition: none;
+    animation: none;
+    scroll-behavior: auto;
+  }
+}
+
