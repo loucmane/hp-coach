@@ -517,6 +517,51 @@ describe('Folio through the real SessionPlayer', () => {
   })
 })
 
+it('retains question focus when switching between desktop and phone layouts', async () => {
+  const props = {
+    plan: [{ ...fixture(1, 'DTK'), figure: { src: 'plate.jpg', aspect_ratio: 0.7 } }],
+    index: 0,
+    picked: null,
+    graded: false,
+    onPick: h.submit,
+    onNext: vi.fn(),
+    sessionKind: 'drill' as const,
+  }
+  const { rerender } = render(<FolioSessionStage {...props} />)
+  await questionReady()
+  for (const phone of [true, false]) {
+    h.phone = phone
+    rerender(<FolioSessionStage {...props} />)
+    expect(screen.getByRole('region', { name: 'Uppgift 1' })).toHaveFocus()
+  }
+})
+
+it.each([
+  false,
+  true,
+])('focuses a DTK question without scrolling but scrolls to feedback, phone=%s', async (phone) => {
+  h.phone = phone
+  h.bank = [{ ...fixture(1, 'DTK'), figure: { src: 'plate.jpg', aspect_ratio: 0.7 } }]
+  const focus = vi.spyOn(HTMLElement.prototype, 'focus')
+  try {
+    mount()
+    await questionReady()
+    const question = screen.getByRole('region', { name: 'Uppgift 1' })
+    const questionCalls = focus.mock.calls.filter((_, i) => focus.mock.contexts[i] === question)
+    expect(questionCalls.length).toBeGreaterThan(0)
+    expect(questionCalls.every(([options]) => options?.preventScroll === true)).toBe(true)
+    key('a')
+    key('Enter')
+    const verdict = screen.getByTestId('fa-verdict')
+    expect(verdict).toHaveFocus()
+    expect(focus.mock.calls.filter((_, i) => focus.mock.contexts[i] === verdict)).toContainEqual([
+      { preventScroll: false },
+    ])
+  } finally {
+    focus.mockRestore()
+  }
+})
+
 it.each([
   false,
   true,

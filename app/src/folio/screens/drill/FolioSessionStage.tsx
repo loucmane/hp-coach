@@ -101,6 +101,7 @@ function BlockStage({
   const verdict = useRef<HTMLHeadingElement>(null)
   const phone = useViewport() === 'phone'
   const [viewerOpen, setViewerOpen] = useState(false)
+  const [viewerRotation, setViewerRotation] = useState(0)
   const feedback = view.phase === 'feedback'
   const q = view.question
   const reading = ['LÄS', 'ELF', 'DTK'].includes(q.section)
@@ -110,13 +111,14 @@ function BlockStage({
   }, [])
 
   // Focus follows the question and verdict; disclosure buttons retain native Enter.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: the phone layout remounts the focus target.
   useEffect(() => {
     if (!q.qid || suspended || viewerOpen) return
     const target = feedback ? verdict.current : problem.current
-    // Reading starts above the phone question; preserve that reading position.
-    // Feedback and a closed figure viewer return focus to the verdict.
-    target?.focus({ preventScroll: phone && reading && !feedback })
-  }, [q.qid, feedback, suspended, viewerOpen, phone, reading])
+    // Preserve the shell and reading position when announcing a question.
+    // Feedback still scrolls the verdict into view.
+    target?.focus({ preventScroll: !feedback })
+  }, [q.qid, feedback, suspended, viewerOpen, phone])
   useEffect(() => {
     if (suspended || viewerOpen) return
     const onKey = (event: KeyboardEvent) => {
@@ -196,7 +198,10 @@ function BlockStage({
             action={action}
             problem={problem}
             verdict={verdict}
-            onZoom={() => setViewerOpen(true)}
+            onZoom={(rotation) => {
+              setViewerRotation(rotation)
+              setViewerOpen(true)
+            }}
             suspended={suspended || viewerOpen}
           />
         ) : (
@@ -252,7 +257,9 @@ function BlockStage({
           </div>
         )}
       </div>
-      {viewerOpen && q.figure ? <FigureViewer figure={q.figure} onClose={closeViewer} /> : null}
+      {viewerOpen && q.figure ? (
+        <FigureViewer figure={q.figure} initialRotation={viewerRotation} onClose={closeViewer} />
+      ) : null}
     </div>
   )
 }

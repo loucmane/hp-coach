@@ -37,7 +37,7 @@ export function ReadingSpread({
   action: ReactNode
   problem: RefObject<HTMLElement | null>
   verdict: RefObject<HTMLHeadingElement | null>
-  onZoom: () => void
+  onZoom: (rotation: number) => void
   suspended: boolean
 }) {
   const feedback = view.phase === 'feedback'
@@ -143,11 +143,11 @@ export function ReadingSpread({
         key={q.figure?.src ?? q.qid}
         questions={questions}
         index={view.index}
-        onZoom={() => {
+        onZoom={(rotation) => {
           // Closing the viewer must reveal the verdict even after the reader
           // folded feedback away to inspect the plate.
           if (phone && feedback) setSheet('full')
-          onZoom()
+          onZoom(rotation)
         }}
       />
     ) : (

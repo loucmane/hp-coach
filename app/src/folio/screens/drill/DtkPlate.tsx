@@ -25,30 +25,51 @@ export function DtkPlate({
 }: {
   questions: readonly DrillQuestion[]
   index: number
-  onZoom: () => void
+  onZoom: (rotation: number) => void
 }) {
   const [failed, setFailed] = useState(false)
+  const [rotation, setRotation] = useState(0)
   const figure = questions[0].figure
+  const aspect = figure ? figure.width / figure.height : 1
+  const turned = rotation === 90 || rotation === 270
+  const effectiveAspect = turned ? 1 / aspect : aspect
   const cue = groupCue(index, questions.length)
   return (
     <figure className="rd-plate" data-testid="rd-plate">
       {figure && !failed ? (
         <>
-          <img
-            src={`/${figure.src}`}
-            alt={figure.alt}
-            width={figure.width}
-            height={figure.height}
-            onError={() => setFailed(true)}
-          />
-          <button
-            type="button"
-            className="fa-more rd-enlarge"
-            data-testid="question-figure"
-            onClick={onZoom}
-          >
-            Förstora
-          </button>
+          <div className="rd-figure-box" style={{ aspectRatio: String(effectiveAspect) }}>
+            <img
+              src={`/${figure.src}`}
+              alt={figure.alt}
+              width={figure.width}
+              height={figure.height}
+              style={{
+                width: turned ? `${100 * aspect}%` : '100%',
+                height: turned ? `${100 / aspect}%` : '100%',
+                transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+              }}
+              onError={() => setFailed(true)}
+            />
+          </div>
+          <div className="rd-plate-tools">
+            <button
+              type="button"
+              className="fa-more"
+              aria-label="Rotera figur 90 grader"
+              onClick={() => setRotation((r) => (r + 90) % 360)}
+            >
+              Rotera
+            </button>
+            <button
+              type="button"
+              className="fa-more"
+              data-testid="question-figure"
+              onClick={() => onZoom(rotation)}
+            >
+              Förstora
+            </button>
+          </div>
         </>
       ) : (
         <p className="fa-prose">

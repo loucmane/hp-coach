@@ -1,8 +1,85 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { expect, it, vi } from 'vitest'
+import { afterEach, expect, it, vi } from 'vitest'
 import { formatViolations, runAxe } from '@/test/a11y'
 import { FigureViewer } from './FigureViewer'
+
+afterEach(() => vi.restoreAllMocks())
+
+it('rotates with the button and R, fits the rotated box and preserves zoom while rotating', () => {
+  vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(800)
+  vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockReturnValue(600)
+  render(
+    <FigureViewer
+      figure={{ kind: 'raster', src: 'plate.jpg', alt: 'Diagram', width: 700, height: 1000 }}
+      onClose={vi.fn()}
+    />,
+  )
+  const image = screen.getByRole('img')
+  const box = image.parentElement!
+  expect(box.style.width).toBe('420px')
+  expect(box.style.height).toBe('600px')
+  expect(Number.parseFloat(box.style.aspectRatio)).toBeCloseTo(0.7)
+  fireEvent.click(screen.getByRole('button', { name: 'Rotera figur 90 grader' }))
+  expect(image.style.transform).toContain('rotate(90deg)')
+  expect(box.style.width).toBe('800px')
+  expect(box.style.height).toBe('560px')
+  expect(Number.parseFloat(box.style.aspectRatio)).toBeCloseTo(1 / 0.7)
+  // Pre-transform dimensions swap too; the visible image fills the reserved box.
+  expect(image.style.width).toBe('560px')
+  expect(image.style.height).toBe('800px')
+  fireEvent.click(screen.getByRole('button', { name: 'Förstora' }))
+  expect(box.style.width).toBe('1200px')
+  expect(box.style.height).toBe('840px')
+  fireEvent.keyDown(document.body, { key: 'r' })
+  expect(image.style.transform).toContain('rotate(180deg)')
+  expect(screen.getByRole('status')).toHaveTextContent('150 %')
+  expect(box.style.width).toBe('630px')
+  expect(Number.parseFloat(box.style.height)).toBeCloseTo(900)
+  fireEvent.keyDown(document.body, { key: 'R' })
+  expect(image.style.transform).toContain('rotate(270deg)')
+  expect(box.style.width).toBe('1200px')
+  expect(box.style.height).toBe('840px')
+  fireEvent.click(screen.getByRole('button', { name: 'Anpassa' }))
+  expect(image.style.transform).toContain('rotate(270deg)')
+  expect(box.style.width).toBe('800px')
+  expect(box.style.height).toBe('560px')
+  fireEvent.click(screen.getByRole('button', { name: 'Rotera figur 90 grader' }))
+  expect(image.style.transform).toContain('rotate(0deg)')
+  expect(Number.parseFloat(box.style.aspectRatio)).toBeCloseTo(0.7)
+})
+
+it('refits a rotated figure when the viewport changes and pans its zoomed box', () => {
+  const width = vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(800)
+  const height = vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockReturnValue(600)
+  render(
+    <FigureViewer
+      figure={{ kind: 'raster', src: 'plate.jpg', alt: 'Diagram', width: 700, height: 1000 }}
+      onClose={vi.fn()}
+    />,
+  )
+  fireEvent.keyDown(document.body, { key: 'r' })
+  width.mockReturnValue(400)
+  height.mockReturnValue(700)
+  fireEvent(window, new Event('resize'))
+  const box = screen.getByRole('img').parentElement!
+  expect(box.style.width).toBe('400px')
+  expect(box.style.height).toBe('280px')
+  fireEvent.keyDown(document.body, { key: '+' })
+  expect(box.style.width).toBe('600px')
+  expect(box.style.height).toBe('420px')
+  const area = screen.getByRole('region')
+  area.setPointerCapture = vi.fn()
+  area.scrollLeft = 30
+  area.scrollTop = 40
+  fireEvent.pointerDown(area, { pointerType: 'mouse', pointerId: 1, clientX: 100, clientY: 100 })
+  fireEvent.pointerMove(area, { pointerId: 1, clientX: 60, clientY: 70 })
+  expect(area.scrollLeft).toBe(70)
+  expect(area.scrollTop).toBe(70)
+  fireEvent.pointerUp(area, { pointerId: 1 })
+  fireEvent.pointerMove(area, { pointerId: 1, clientX: 20, clientY: 20 })
+  expect(area.scrollLeft).toBe(70)
+})
 
 it('traps focus, supports zoom and reset, and releases document scrolling', async () => {
   const user = userEvent.setup()

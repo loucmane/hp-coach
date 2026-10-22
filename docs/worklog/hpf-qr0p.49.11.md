@@ -165,3 +165,42 @@ var-2026-verb2-LÄS-017.steps.1.text: 2 → 1
 - Staging the four changed admitted files was refused because `/home/loucmane/dev/hpfetcher/.git/worktrees/hpf-qr0p.49.11/index.lock` is on a read-only filesystem. Changes are **unstaged and uncommitted** on **d573c7ea481ed2cabb9e6fcac2964d6d073eda6c**. There is no new implementation commit or independent review verdict for round 3.
 - Coordinator handoff: park the bead, stage and sign the changes, rerun the host generator check, obtain independent exact-head review, and inspect desktop/phone in light/dark before owner visual approval. The prior round's visual check and review do not cover these edits. No source changes were made outside the admitted write set; no merge, push, closure, status change, reassignment or signing was attempted.
 - [S:codex-1|W:hpf-qr0p.49.11|H:handoff-r3|E:4 red regressions; 86 focused passes; full app 4715 passes and one sandbox EPERM; typecheck/lint/build pass; staging read-only; visual and independent review gates remain]
+
+## 2026-10-22 — round 4 start
+
+- Claimed the existing assignment and read the latest round 4 contract. Clean base: 284d15c184197653776a7b7a592a08ce09772256; no molecule controls sequencing.
+- Scope: DTK inline/viewer quarter-turn controls with rotation-aware fit and pan geometry, carry inline rotation into the viewer, reset at block boundaries, and prevent question-phase focus scrolling on desktop as well as phone. Feedback keeps its scrolling focus behavior.
+- Add red-first regressions through the existing Vitest host. Keep source changes within the admitted write set and deliver uncommitted; coordinator retains parking, signing, independent review and owner visual approval.
+- [S:codex-1|W:hpf-qr0p.49.11|H:inspect-r4|E:accepted design, classic rotation geometry and current viewer/focus tests inspected]
+
+### Round 4 implementation and regression evidence
+
+- Added quiet Rotera controls to the inline DTK plate and viewer, with the requested accessible name. The viewer advertises R and rotates in quarter turns instead of using R to reset zoom. Anpassa keeps the chosen rotation and returns to fit.
+- The inline plate swaps its reserved aspect at 90/270 degrees, retains rotation between questions of the same block, and passes its rotation when opening the viewer. New blocks remount the plate and reset rotation. The viewer computes its visible box from the available viewport and rotated aspect, scales that box at each zoom, and swaps the image's pre-transform dimensions. Clipping keeps the unrotated image bounds out of the pan area; flex auto margins keep overflow reachable. ResizeObserver and window resize recompute fit.
+- Question focus now passes preventScroll: true on desktop and phone. Feedback continues to pass preventScroll: false.
+- Red-first: `pnpm test src/folio/screens/drill/FigureViewer.test.tsx src/folio/screens/drill/ReadingSpread.test.tsx src/folio/screens/drill/FolioSessionStage.test.tsx --maxWorkers=2` produced **5 expected failures / 47 passes**: two rotation integration cases, two viewer geometry cases, and desktop question focus. The existing phone focus behavior already passed.
+- After implementation and correcting numeric CSS assertions, `pnpm test src/folio/screens/drill --maxWorkers=2` passed **8 files / 92 tests**. Coverage includes all four rotations, aspect swaps, preserved zoom, fit at 270 degrees, viewport resize, drag pan/release, inline-to-viewer handoff, same-block retention, new-block reset, A–E/Enter suppression, focus trap, and desktop/phone question versus verdict focus.
+- `pnpm typecheck` passed; `pnpm lint` passed with the same four informational devbake diagnostics. `git diff --check` passed. Full app tests and production build are running.
+
+### Round 4 playbook proposal for coordinator relay
+
+- 2026-10-22, astra-relay: Rotation geometry tests failed on equivalent serialized CSS values: jsdom normalizes aspectRatio 0.7 to "0.7 / 1", and floating-point scaling serialized 900 as 900.0000000000001px. Compare numeric geometry with an appropriate tolerance and interpret CSS ratios rather than asserting the input string is preserved. The managed sandbox excludes ~/scratch/skill-gotchas/, so this proposal uses the documented worklog fallback for coordinator relay.
+
+### Round 4 focus regression correction
+
+- Final inspection caught that simplifying the focus effect dependencies would drop focus when crossing the desktop/phone breakpoint, which remounts the target. Added a regression first: `pnpm test src/folio/screens/drill/FolioSessionStage.test.tsx --maxWorkers=2 -t 'retains question focus when switching'` failed as expected (one failed, 35 skipped).
+- Retained the phone-layout dependency explicitly, with the narrow lint explanation that layout changes remount the ref target. The complete stage file then passed **36/36**. This preserves existing responsive focus behavior while adding preventScroll for question announcements.
+- The first production build passed, including PWA generation, with the existing route-test discovery and chunk-size warnings. Final checks are being refreshed after the focus dependency correction.
+
+### Round 4 delivery boundaries
+
+- Final `pnpm typecheck`, `pnpm lint` and `pnpm build` passed after the focus correction. The build generated the production assets and service worker; existing informational lint and build warnings remain. No worker files or dependencies changed.
+- Staging the nine changed admitted files was refused because `/home/loucmane/dev/hpfetcher/.git/worktrees/hpf-qr0p.49.11/index.lock` is read-only in this sandbox. Changes remain unstaged and uncommitted on 284d15c184197653776a7b7a592a08ce09772256. No new implementation SHA or independent review exists for round 4.
+- Coordinator: park the bead when the DONE note lands, stage/sign, rerun the host trap-index generator check, arrange independent review at the resulting exact head, and check the sideways DTK table inline and in the viewer at all rotations/zoom levels on desktop and phone in light/dark. Confirm the shell top bar stays in view on question focus and obtain owner visual approval before merge. No bead status/assignee change, closure, signing, push or merge was attempted.
+
+### Round 4 final verification
+
+- Final `pnpm test --maxWorkers=2`: **4722 passed / 1 failed; 152 files passed / 1 failed**, including all **93 drill tests** passing. The only failure remains `src/lib/trapIndex.test.ts` spawning the generator: `spawnSync /usr/bin/node EPERM`. This is a sandbox refusal, not a verified host pass; the coordinator must rerun it outside the sandbox. The earlier full run, before the responsive-focus regression, passed 4721 with the same single refusal.
+- Final typecheck, lint, production build and whitespace checks passed. All nine changed repository files are inside the admitted write set. Read back the bead before handoff: the round 4 contract is unchanged and the bead remains in progress for coordinator parking and the delivery gates above.
+- The astra-relay playbook proposal about numeric CSS geometry assertions is recorded above for coordinator relay; the requested scratch proposal directory is outside the managed writable roots.
+- [S:codex-1|W:hpf-qr0p.49.11|H:handoff-r4|E:5 initial red failures plus responsive-focus red regression; 93 drill passes; final app 4722 passes and one sandbox EPERM; typecheck/lint/build pass; staging read-only; uncommitted on 284d15c184197653776a7b7a592a08ce09772256]

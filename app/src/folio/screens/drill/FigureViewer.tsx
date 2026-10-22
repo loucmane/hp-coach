@@ -1,15 +1,44 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import type { DrillFigure } from './types'
 
 /** Kept inside .fa-drill so the Folio tokens and scoped rules apply. */
-export function FigureViewer({ figure, onClose }: { figure: DrillFigure; onClose: () => void }) {
+export function FigureViewer({
+  figure,
+  initialRotation = 0,
+  onClose,
+}: {
+  figure: DrillFigure
+  initialRotation?: number
+  onClose: () => void
+}) {
   const id = useId()
   const dialog = useRef<HTMLDivElement>(null)
   const close = useRef<HTMLButtonElement>(null)
   const area = useRef<HTMLElement>(null)
   const drag = useRef<{ x: number; y: number; left: number; top: number } | null>(null)
   const [zoom, setZoom] = useState(1)
+  const [rotation, setRotation] = useState(initialRotation)
+  const [viewport, setViewport] = useState({ width: 0, height: 0 })
   const [failed, setFailed] = useState(false)
+  useLayoutEffect(() => {
+    const element = area.current
+    if (!element) return
+    const measure = () => setViewport({ width: element.clientWidth, height: element.clientHeight })
+    measure()
+    // The tools can wrap independently of a window resize (e.g. text zoom).
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure)
+    observer?.observe(element)
+    window.addEventListener('resize', measure)
+    return () => {
+      observer?.disconnect()
+      window.removeEventListener('resize', measure)
+    }
+  }, [])
+  const turned = rotation === 90 || rotation === 270
+  const aspect = figure.width / figure.height
+  const effectiveAspect = turned ? 1 / aspect : aspect
+  const width = Math.min(viewport.width, viewport.height * effectiveAspect) * zoom
+  const height = width / effectiveAspect
   useEffect(() => {
     close.current?.focus()
     const previous = document.body.style.overflow
@@ -36,7 +65,7 @@ export function FigureViewer({ figure, onClose }: { figure: DrillFigure; onClose
       } else if (!event.ctrlKey && !event.metaKey && !event.altKey) {
         if (event.key === '+' || event.key === '=') setZoom((z) => Math.min(6, z + 0.5))
         else if (event.key === '-') setZoom((z) => Math.max(1, z - 0.5))
-        else if (event.key.toLowerCase() === 'r') setZoom(1)
+        else if (event.key.toLowerCase() === 'r') setRotation((r) => (r + 90) % 360)
         else return
         event.preventDefault()
       }
@@ -82,6 +111,15 @@ export function FigureViewer({ figure, onClose }: { figure: DrillFigure; onClose
         <button type="button" className="fa-more" onClick={() => setZoom(1)}>
           Anpassa
         </button>
+        <button
+          type="button"
+          className="fa-more"
+          aria-label="Rotera figur 90 grader"
+          aria-keyshortcuts="R"
+          onClick={() => setRotation((r) => (r + 90) % 360)}
+        >
+          Rotera
+        </button>
       </fieldset>
       <section
         className="rd-viewer-area"
@@ -114,18 +152,25 @@ export function FigureViewer({ figure, onClose }: { figure: DrillFigure; onClose
         {failed ? (
           <p>Figuren kunde inte laddas.</p>
         ) : (
-          <div
-            className="rd-viewer-canvas"
-            style={{ width: `${zoom * 100}%`, height: `${zoom * 100}%` }}
-          >
-            <img
-              src={`/${figure.src}`}
-              alt={figure.alt}
-              width={figure.width}
-              height={figure.height}
-              draggable={false}
-              onError={() => setFailed(true)}
-            />
+          <div className="rd-viewer-canvas">
+            <div
+              className="rd-figure-box"
+              style={{ width, height, aspectRatio: String(effectiveAspect) }}
+            >
+              <img
+                src={`/${figure.src}`}
+                alt={figure.alt}
+                width={figure.width}
+                height={figure.height}
+                style={{
+                  width: turned ? height : width,
+                  height: turned ? width : height,
+                  transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+                }}
+                draggable={false}
+                onError={() => setFailed(true)}
+              />
+            </div>
           </div>
         )}
       </section>

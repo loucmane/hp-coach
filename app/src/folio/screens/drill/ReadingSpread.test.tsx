@@ -199,6 +199,60 @@ beforeEach(() => {
 })
 
 describe('Reading through SessionPlayer and the Folio host', () => {
+  it.each([
+    false,
+    true,
+  ])('keeps DTK rotation within a block and carries it into the viewer, phone=%s', async (phone) => {
+    h.phone = phone
+    h.bank = [29, 30, 31].map((n) => ({
+      ...fixture(n, 'DTK'),
+      figure: {
+        src: n === 31 ? 'next.jpg' : 'plate.jpg',
+        aspect_ratio: 0.7,
+        kind: 'raster' as const,
+      },
+    }))
+    mount()
+    await questionReady()
+    const plate = screen.getByTestId('rd-plate')
+    const image = within(plate).getByRole('img')
+    const rotate = within(plate).getByRole('button', { name: 'Rotera figur 90 grader' })
+    for (const rotation of [90, 180, 270, 0, 90]) {
+      fireEvent.click(rotate)
+      expect(image.style.transform).toContain(`rotate(${rotation}deg)`)
+      expect(Number.parseFloat(image.parentElement!.style.aspectRatio)).toBeCloseTo(
+        rotation % 180 ? 1 / 0.7 : 0.7,
+      )
+    }
+    fireEvent.click(screen.getByTestId('question-figure'))
+    const dialog = screen.getByRole('dialog', { name: 'Förstorad figur' })
+    const viewerImage = within(dialog).getByRole('img')
+    expect(viewerImage.style.transform).toContain('rotate(90deg)')
+    key('r')
+    expect(viewerImage.style.transform).toContain('rotate(180deg)')
+    for (const letter of ['a', 'b', 'c', 'd', 'e']) key(letter)
+    key('Enter')
+    expect(h.submit).not.toHaveBeenCalled()
+    expect(screen.getByTestId('fa-lock')).toBeDisabled()
+    key('Escape')
+    key('a')
+    key('Enter')
+    key('Enter')
+    expect(screen.getByTestId('rd-plate') === plate).toBe(true)
+    expect(image.style.transform).toContain('rotate(90deg)')
+    key('a')
+    key('Enter')
+    key('Enter')
+    const nextImage = within(screen.getByTestId('rd-plate')).getByRole('img')
+    expect(nextImage).toHaveAttribute('src', '/next.jpg')
+    expect(nextImage.style.transform).toContain('rotate(0deg)')
+    expect(Number.parseFloat(nextImage.parentElement!.style.aspectRatio)).toBeCloseTo(0.7)
+    fireEvent.click(screen.getByTestId('question-figure'))
+    expect(within(screen.getByRole('dialog')).getByRole('img').style.transform).toContain(
+      'rotate(0deg)',
+    )
+  })
+
   it.each([false, true])('separates the verdict from the question, phone=%s', async (phone) => {
     h.phone = phone
     mount()
