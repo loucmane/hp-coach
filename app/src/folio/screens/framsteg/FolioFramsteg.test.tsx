@@ -245,6 +245,70 @@ describe('Folio Framsteg', () => {
     expect(screen.getByText('Lägst, tillsammans med ORD')).toBeInTheDocument()
     expect(screen.queryByText(/näst lägst/i)).not.toBeInTheDocument()
   })
+  it.each([
+    ['MEK', 'Verbal 1,4 · Kvant 1,4'],
+    ['XYZ', 'Verbal 1,4 · Kvant 1,4'],
+  ] as const)('excludes a single-answer %s from its mixed half on screen', (thin, halves) => {
+    const data = stats()
+    data.bySection = {
+      ORD: data.bySection.ORD,
+      KVA: data.bySection.KVA,
+      [thin]: { ...data.bySection[thin], firstTry90d: 1, firstTryCorrect90d: 1 },
+    } as Stats['bySection']
+    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.getByText(halves)).toBeInTheDocument()
+    expect(screen.getByTestId(`progress-section-${thin}`)).toHaveTextContent('—')
+    expect(screen.getByTestId('progress-projected')).toHaveTextContent('1,5')
+  })
+  it('renders Swedish section lists in the lead and following steps', () => {
+    const data = stats()
+    data.bySection = {
+      ORD: data.bySection.ORD,
+      LÄS: data.bySection.LÄS,
+      XYZ: data.bySection.XYZ,
+    } as Stats['bySection']
+    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.getByTestId('folio-framsteg-next')).toHaveTextContent(
+      'ORD · Lägst, tillsammans med LÄS och XYZ',
+    )
+    const following = screen.getByRole('region', { name: 'Sedan' })
+    expect(following).toHaveTextContent('Lägst, tillsammans med ORD och XYZ')
+    expect(following).toHaveTextContent('Lägst, tillsammans med ORD och LÄS')
+  })
+  it('keeps thin trends neutral in the lead, Sedan and up-steps until both weeks qualify', () => {
+    const data = stats()
+    data.bySection = {
+      ORD: { ...data.bySection.ORD, correct90d: 50 },
+      MEK: { ...data.bySection.MEK, correct90d: 60 },
+      XYZ: data.bySection.XYZ,
+    } as Stats['bySection']
+    for (const section of ['ORD', 'MEK'] as const) {
+      Object.assign(data.bySection[section], {
+        firstTry7d: 1,
+        firstTryCorrect7d: 0,
+        firstTry7to14d: 1,
+        firstTryCorrect7to14d: 1,
+      })
+    }
+    const { rerender } = render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.getByTestId('folio-framsteg-next')).not.toHaveTextContent(/på väg ner/i)
+    expect(screen.getByRole('region', { name: 'Sedan' })).not.toHaveTextContent(/på väg ner/i)
+    for (const section of ['ORD', 'MEK'] as const) {
+      expect(screen.getByTestId(`framsteg-up-${section}`)).not.toHaveTextContent('trenden pekar')
+      expect(screen.getByTestId(`progress-section-${section}`)).toHaveTextContent('Trend: —')
+      Object.assign(data.bySection[section], {
+        firstTry7d: 5,
+        firstTry7to14d: 5,
+        firstTryCorrect7to14d: 5,
+      })
+    }
+    rerender(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.getByTestId('folio-framsteg-next')).toHaveTextContent('På väg ner')
+    expect(screen.getByRole('region', { name: 'Sedan' })).toHaveTextContent('På väg ner')
+    for (const section of ['ORD', 'MEK'] as const) {
+      expect(screen.getByTestId(`framsteg-up-${section}`)).toHaveTextContent('trenden pekar ner')
+    }
+  })
   it('describes marked section rows only when the caveat is rendered', () => {
     const data = stats()
     data.bySection.LÄS.attempts90d = 0

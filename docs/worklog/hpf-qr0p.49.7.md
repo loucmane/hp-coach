@@ -112,3 +112,33 @@ FOLIO FRAMSTEG R2 DONE: hpf-qr0p.49.7
 - The astra-relay playbook proposal above remains available for coordinator relay to the scratch watcher path, which is outside this sandbox.
 
 FOLIO FRAMSTEG R3 DONE: hpf-qr0p.49.7
+
+## Round 4 — 2026-10-22
+
+- [S:hpfetcher/codex-2|W:hpf-qr0p.49.7|H:R4 inspect|E:clean accepted head] Claimed the round 4 contract in the assigned writable worktree at `b24932e7304d3e0528be3a9a9a0eb3dd508cbebc`. No molecule; app dependencies are installed. Prior round host checks, independent review and owner visual approval are recorded in the accepted brief.
+- Decisions before implementation: derive displayed half means from band-eligible section scores while preserving the shared total and interval; use Swedish conjunctions for section lists, including history lists; gate section trend signals on the shared honest scorer's two-week minimum, respecting first-try counts and its legacy fallback. Add failing regressions for mixed halves, two/three-item lists, both sparse windows, threshold boundaries and rendered lead/following/up-step copy.
+- Keep the unchanged write set and offline delivery contract. Changes remain uncommitted; coordinator handles staging/signing, host checks, review and closure. Status and assignee remain unchanged on handoff.
+
+## Round 4 regression evidence
+
+- [S:hpfetcher/codex-2|W:hpf-qr0p.49.7|H:R4 red|E:18 expected failures; 62 passed] Before the product fix, adapter/screen regressions reproduced mixed-half means including one-answer sections, comma-only section lists (including history), and upward/downward trend copy with either week below five answers. Existing no-band and single-peer cases were retained; the old mixed-half expectation was corrected to exclude the ineligible section.
+- [S:hpfetcher/codex-2|W:hpf-qr0p.49.7|H:R4 focused|E:107 passed in 4 files] Adapter, screen, guard and lazy-route checks passed after the fixes. Coverage includes both halves, equal weighting of qualifying sections including a zero at two attempts, unchanged total/band/interval, two/three-peer lists, history labels, both sparse weekly windows, exactly five attempts, first-try precedence over repeat counts, legacy counter fallback, and visible lead/Sedan/up-step behavior.
+- Preserve the existing guard's ban on the legacy projection helper: displayed half means are local to the adapter and consume only its normalized eligible scores. No guard change was needed. The shared honest delta's null/non-null result supplies weekly eligibility; this suppresses thin trend signals in ranking, reasons, table and up-steps without changing the shared scorer or aggregate prognosis.
+- Typecheck caught `Intl.ListFormat` being absent from the app's ES2020 libraries even though Vitest supported it. Replaced it with a small Swedish conjunction helper; full suite and typecheck are running on that final implementation. Lint and Git whitespace checks pass (four existing informational bake-off lint findings).
+
+### Playbook-proposal — astra-relay (round 4)
+
+- 2026-10-22: A list formatter passed Vitest but failed app typecheck with `Intl.ListFormat` missing. Cause: the test runtime supports newer Intl APIs than the app's ES2020 TypeScript libraries. Rule: check the package's configured libraries before adopting runtime APIs; for a scoped Swedish list fix, use a small local join helper and run typecheck without widening compiler configuration. Proposal preserved here for coordinator relay because `~/scratch/skill-gotchas/` is outside this worker's writable roots.
+
+## Round 4 final verification and handoff — 2026-10-22
+
+- [S:hpfetcher/codex-2|W:hpf-qr0p.49.7|H:R4 final|E:4946 passed; one known sandbox refusal] Final `app/` `pnpm test --maxWorkers=2`: **4946 passed, 1 failed**, 164 files, 170.75 seconds. The sole failure is the unchanged `src/lib/trapIndex.test.ts` generator subprocess check, refused with `spawnSync /usr/bin/node EPERM`. All **107** Framsteg adapter/screen/guard/route checks pass in this final run. No workaround or repeat of the refused check was attempted; coordinator must rerun it on the host.
+- Final `pnpm typecheck` PASS; `pnpm lint` PASS (four existing informational bake-off findings); `pnpm build` PASS including TypeScript, Vite and PWA generation. The lazy FolioFramsteg chunk remains separate. Existing route-file and bundle-size warnings remain informational.
+- All three requested fixes are complete: displayed halves average only sections with a band and remain `—` when none qualify; ties and history section lists use `och`; section trend signals require the shared scorer's minimum in both weeks before influencing recommendations or appearing in lead/Sedan/table/up-step copy. Total prognosis and its interval remain unchanged. Red-first evidence and boundary coverage are recorded above.
+- Only `framstegView.ts`, its adapter and screen tests, and this worklog changed. No worker/dependency/guard/prototype changes; no worker checks needed. Re-read the live bead before handoff and confirmed the round 4 contract and write set are unchanged.
+- HEAD remains **b24932e7304d3e0528be3a9a9a0eb3dd508cbebc**, branch `codex/hpf-qr0p.49.7-framsteg-in-folio`. Changes are **uncommitted and unstaged** because Git metadata resolves to `/home/loucmane/dev/hpfetcher/.git/worktrees/hpf-qr0p.49.7`, outside writable roots. No signing, remote mutation, merge or independent review of this round was attempted.
+- Final SHA-256: `framstegView.ts` = `0c9f424cb300b68ac0ac66be10ab745703a71255ed3ffed19aaf7ce328f4a26d`; `framstegView.test.ts` = `da32dfd164699641671e4fe3beaf82ffb0ca63496a0e5a26e464a1a581d65f85`; `FolioFramsteg.test.tsx` = `9666496d2d39a4e7d221142a2375d154ffe62a638e8e240cfa5cc0bf01bd6a1d`.
+- Supersedes pending round 4 verification above. Coordinator: park on the DONE note, rerun the generator on the host, stage/sign, obtain independent exact-head Claude review, and confirm the final visual/owner approval gate. Prior round 3 review and owner visual OK are recorded in the accepted brief; no new visual approval is claimed here. Status and assignee stay unchanged under the handoff contract; worker does not close or drain the in-progress bead.
+- The astra-relay playbook proposal above is ready for coordinator relay to the scratch watcher path, which is outside this sandbox.
+
+FOLIO FRAMSTEG R4 DONE: hpf-qr0p.49.7

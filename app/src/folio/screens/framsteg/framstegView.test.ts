@@ -93,8 +93,33 @@ describe('Framsteg real-data view', () => {
     data.bySection.KVA = section({ firstTry90d: 2, firstTryCorrect90d: 0 })
     const supported = buildFramstegView({ stats: { data } }, now)
     expect(supported.prognosis.verbal).toBeNull()
-    expect(supported.prognosis.quant).toBe(computeHonestProjected(data.bySection).quant)
+    expect(supported.prognosis.quant).toBe(0)
     expect(supported.sections.find((s) => s.section === 'KVA')?.bandLabel).not.toBeNull()
+  })
+  it.each([
+    ['verbal', 'ORD', 'MEK', 'LÄS'],
+    ['quant', 'XYZ', 'KVA', 'NOG'],
+  ] as const)('averages only band-supported sections in a mixed %s half', (half, solid, thin, second) => {
+    const data = stats({
+      bySection: {
+        ORD: section(),
+        XYZ: section(),
+        [thin]: section({ firstTry90d: 1, firstTryCorrect90d: 1 }),
+      } as Stats['bySection'],
+    })
+    const projected = computeHonestProjected(data.bySection)
+    const view = buildFramstegView({ stats: { data } }, now)
+    expect(view.sections.find((s) => s.section === solid)?.score).toBe(1.2)
+    expect(view.sections.find((s) => s.section === thin)?.bandLabel).toBeNull()
+    expect(view.prognosis[half]).toBe(1.2)
+    expect(view.prognosis.total).toBe(projected.total)
+    expect(view.prognosis.band).toBe(projected.band)
+    expect(view.prognosis.low).toBe(Math.max(0, projected.total! - projected.band!))
+    expect(view.prognosis.high).toBe(Math.min(2, projected.total! + projected.band!))
+    data.bySection[second] = section({ firstTry90d: 2, firstTryCorrect90d: 0 })
+    const withSecond = buildFramstegView({ stats: { data } }, now)
+    // A qualifying zero counts equally, even with fewer answers than the other section.
+    expect(withSecond.prognosis[half]).toBe(0.6)
   })
   it('names a stable delta without a figure and prints only a significant change', () => {
     const data = stats()
@@ -198,6 +223,62 @@ describe('Framsteg real-data view', () => {
     expect(withSparseLowerScore.focus[0].section).toBe('XYZ')
     expect(withSparseLowerScore.focus[0].reason).not.toMatch(/lägst/i)
   })
+  describe.each(['upp', 'ner'] as const)('%s trend wording', (direction) => {
+    it.each([
+      [1, 1, false],
+      [4, 5, false],
+      [5, 4, false],
+      [0, 5, false],
+      [5, 0, false],
+      [5, 5, true],
+      [6, 5, true],
+    ] as const)('requires both first-try weeks to qualify (%s, %s)', (recent, previous, eligible) => {
+      const data = stats({
+        bySection: {
+          ORD: section({
+            firstTry7d: recent,
+            firstTryCorrect7d: direction === 'upp' ? recent : 0,
+            firstTry7to14d: previous,
+            firstTryCorrect7to14d: direction === 'ner' ? previous : 0,
+          }),
+          XYZ: section({ firstTryCorrect90d: 80 }),
+        } as Stats['bySection'],
+      })
+      const view = buildFramstegView({ stats: { data } }, now)
+      const row = view.sections.find((s) => s.section === 'ORD')!
+      expect(row.trend).toBe(eligible ? direction : '—')
+      expect(row.up.text).toBe(
+        `Ett ORD-pass med fokus på missarna${eligible ? ` – trenden pekar ${direction}` : ''}.`,
+      )
+      if (eligible && direction === 'ner') {
+        expect(view.primary?.reason).toBe('ORD · På väg ner')
+      } else if (!eligible) {
+        expect(view.primary?.reason).not.toMatch(/på väg (ner|upp)/i)
+        expect(view.focus.every((s) => !/på väg (ner|upp)/i.test(s.reason))).toBe(true)
+      }
+    })
+  })
+  it.each([
+    4, 5,
+  ])('uses the legacy weekly counts when first-try fields are absent (%s)', (previous) => {
+    const data = stats({
+      bySection: {
+        ORD: section({
+          firstTry7d: undefined,
+          firstTryCorrect7d: undefined,
+          firstTry7to14d: undefined,
+          firstTryCorrect7to14d: undefined,
+          attempts7d: 5,
+          correct7d: 0,
+          attempts7to14d: previous,
+          correct7to14d: previous,
+        }),
+        XYZ: section(),
+      } as Stats['bySection'],
+    })
+    const row = buildFramstegView({ stats: { data } }, now).sections[0]
+    expect(row.trend).toBe(previous === 5 ? 'ner' : '—')
+  })
   it.each([
     0, 1,
   ])('does not present %s first tries as a scored section or ranked practice step', (n) => {
@@ -263,8 +344,20 @@ describe('Framsteg real-data view', () => {
     })
     const view = buildFramstegView({ stats: { data } }, now)
     expect(view.focus.map((s) => s.section)).toEqual(['ORD', 'LÄS', 'MEK'])
-    expect(view.focus[0].reason).toBe('Lägst, tillsammans med LÄS, MEK, XYZ')
+    expect(view.focus[0].reason).toBe('Lägst, tillsammans med LÄS, MEK och XYZ')
     expect(view.focus.every((s) => !/näst|tredje|KVA/i.test(s.reason))).toBe(true)
+  })
+  it('joins two tied peers with och in the lead and following steps', () => {
+    const data = stats({
+      bySection: { ORD: section(), LÄS: section(), XYZ: section() } as Stats['bySection'],
+    })
+    const view = buildFramstegView({ stats: { data } }, now)
+    expect(view.primary?.reason).toBe('ORD · Lägst, tillsammans med LÄS och XYZ')
+    expect(view.focus.map((s) => s.reason)).toEqual([
+      'Lägst, tillsammans med LÄS och XYZ',
+      'Lägst, tillsammans med ORD och XYZ',
+      'Lägst, tillsammans med ORD och LÄS',
+    ])
   })
   it('does not make a lead or following step out of single-answer sections', () => {
     const data = stats({
@@ -392,6 +485,31 @@ describe('Framsteg real-data view', () => {
     expect(chart.points.map((p) => p.score)).toEqual([null, 1, 1.2, null, 1.6, null])
     expect(buildTrend(buckets.slice(0, 2)).ready).toBe(false)
     expect(buildTrend([]).ready).toBe(false)
+  })
+
+  it.each([
+    ['ORD,MEK', 'ORD och MEK'],
+    ['LÄS, MEK, XYZ', 'LÄS, MEK och XYZ'],
+    ['ORD', 'ORD'],
+    ['ORD · PÅ TID', 'ORD på tid'],
+    ['ORD · ORDBANK', 'Ordbank'],
+    ['ar:LÄS:LÄS-TRAP-001', 'LÄS · repetition'],
+    [null, 'Övning'],
+  ])('formats history section lists without changing special labels (%s)', (sections, label) => {
+    const history: SessionHistoryRow[] = [
+      {
+        id: 1,
+        kind: 'drill',
+        sections,
+        endedAt: '2026-10-22T10:00:00Z',
+        total: 10,
+        correct: 8,
+      },
+    ]
+    expect(
+      buildFramstegView({ stats: { data: stats() }, history: { data: history } }, now).history[0]
+        .label,
+    ).toBe(label)
   })
 
   it('describes chart changes using the same rounded numbers the reader sees', () => {

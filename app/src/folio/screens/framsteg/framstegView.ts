@@ -39,6 +39,19 @@ const CAVEAT =
 export const RETRY_LINE = 'Gick inte att hämta just nu — försöker igen automatiskt.'
 export const scoreLabel = formatScoreSv
 
+function sectionList(sections: readonly string[]): string {
+  if (sections.length < 2) return sections[0] ?? ''
+  return `${sections.slice(0, -1).join(', ')} och ${sections[sections.length - 1]}`
+}
+
+function historyLabel(row: SessionHistoryRow): string {
+  const label = passLabel(row)
+  const sections = label.split(',').map((s) => s.trim())
+  return sections.every((s) => SECTION_KEYS.some((key) => key === s))
+    ? sectionList(sections)
+    : label
+}
+
 // Derive comparisons from the displayed decimal too: binary half-ties can
 // differ between Math.round(n * 10) and the shared toFixed(1) formatter.
 const displayedTenths = (score: number) =>
@@ -74,7 +87,7 @@ function focusReason(
       .filter((other) => other.section !== s.section && other.tenths === tenths)
       .map((other) => other.section)
     if (tied.length)
-      return `${tenths === displayedOrder[0]?.tenths ? 'Lägst, tillsammans med' : 'Samma nivå som'} ${tied.join(', ')}`
+      return `${tenths === displayedOrder[0]?.tenths ? 'Lägst, tillsammans med' : 'Samma nivå som'} ${sectionList(tied)}`
     if (tenths === displayedOrder[index]?.tenths) return focusRankLine(index, displayedOrder.length)
   }
   return 'Ett delprov att öva vidare på'
@@ -162,11 +175,21 @@ export function buildFramstegView(input: FramstegInput, now = new Date()) {
   const data = input.stats.data
   const state = queryState(input.stats)
   const bySection: Partial<Stats['bySection']> = data?.bySection ?? {}
-  const scores = honestSectionScores(bySection, now).map((s) =>
-    scoreBand(s.score, s.attempts90d) == null ? { ...s, score: null } : s,
-  )
-  const hasHalfScore = (half: readonly Section[]) =>
-    scores.some((s) => s.score != null && half.includes(s.section))
+  const scores = honestSectionScores(bySection, now).map((s) => ({
+    ...s,
+    score: scoreBand(s.score, s.attempts90d) == null ? null : s.score,
+    // A null honest delta means one week is below the scorer's minimum (5).
+    // Reuse its eligibility and first-try fallback for every section signal.
+    trend: computeHonestDelta({ [s.section]: bySection[s.section] }) == null ? null : s.trend,
+  }))
+  const halfScore = (half: readonly Section[]) => {
+    const supported = scores.flatMap((s) =>
+      s.score != null && half.includes(s.section) ? [s.score] : [],
+    )
+    return supported.length
+      ? supported.reduce((sum, score) => sum + score, 0) / supported.length
+      : null
+  }
   const projected = computeHonestProjected(bySection)
   const delta = projected.total == null ? null : computeHonestDelta(bySection)
   // The display has one decimal: never turn nonzero uncertainty into ±0,0
@@ -311,9 +334,9 @@ export function buildFramstegView(input: FramstegInput, now = new Date()) {
       state === 'error' ? RETRY_LINE : state === 'loading' ? 'Laddar dina framsteg…' : null,
     prognosis: {
       ...projected,
-      // Match section eligibility without changing the total or its pooled band.
-      verbal: hasHalfScore(VERBAL_SECTIONS) ? projected.verbal : null,
-      quant: hasHalfScore(QUANT_SECTIONS) ? projected.quant : null,
+      // Average only band-supported sections, preserving the total and pooled band.
+      verbal: halfScore(VERBAL_SECTIONS),
+      quant: halfScore(QUANT_SECTIONS),
       scoreLabel: scoreLabel(projected.total),
       low:
         projected.total != null && displayedBand != null
@@ -346,7 +369,7 @@ export function buildFramstegView(input: FramstegInput, now = new Date()) {
       .slice(0, 5)
       .map((row) => ({
         id: row.id,
-        label: passLabel(row),
+        label: historyLabel(row),
         correct: row.correct,
         total: row.total,
         when: whenLabel(row.endedAt, now),
