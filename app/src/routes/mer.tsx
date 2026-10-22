@@ -13,12 +13,13 @@
 // ⌘K remains as an accelerator, but nothing on this page NEEDS it.
 
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import type { ReactNode } from 'react'
+import { lazy, type ReactNode, Suspense, useContext } from 'react'
 
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
+import { FolioHostContext } from '@/folio/host'
 import { daysUntil, EXAM_SITTINGS } from '@/lib/dates'
 import { isDevSurface } from '@/lib/devSurface'
 import { LEGAL_LINK_STYLE, LEGAL_LINKS } from '@/lib/legal'
@@ -28,6 +29,8 @@ import { useCoachStore } from '@/stores/coachStore'
 import { DESIGN_DIRECTIONS, useDesignDirection, useDesignStore } from '@/stores/designStore'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
 import { useUiStore } from '@/stores/uiStore'
+
+const FolioKonto = lazy(() => import('@/folio/screens/konto/FolioKonto'))
 
 export const Route = createFileRoute('/mer')({
   component: MerRoute,
@@ -62,9 +65,28 @@ export const TOOLS = [
 ] as const
 
 function MerRoute() {
+  const inFolio = useContext(FolioHostContext)
   const navigate = useNavigate()
   const sitting = useSitting()
   const days = useDaysRemaining()
+
+  if (inFolio) {
+    return (
+      <Suspense fallback={<p role="status">Laddar …</p>}>
+        <FolioKonto
+          entry="mer"
+          navigateHref={(href) => {
+            const url = new URL(href, window.location.origin)
+            navigate({
+              to: url.pathname as never,
+              search: Object.fromEntries(url.searchParams) as never,
+              hash: url.hash.slice(1),
+            })
+          }}
+        />
+      </Suspense>
+    )
+  }
 
   return (
     <MobileFrame tabs={false}>

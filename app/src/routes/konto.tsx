@@ -3,14 +3,13 @@
 // block (answering the menu's single-line-ellipsis email with the full
 // address), then house-voice placeholder sections for what is coming.
 //
-// Owner law: NO account deletion anywhere on this surface, and NO embedded
-// Clerk <UserProfile /> (its hosted UI can surface a delete-account
-// affordance — the exact leak the jury flagged). Subscription management
+// Owner law: account deletion lives deep on /konto, never in a menu. No embedded
+// Clerk <UserProfile />; the app owns its explicit confirmation. Subscription management
 // lands here when P3 ships; until then it is a quiet single line.
 
 import { useClerk } from '@clerk/clerk-react'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { type CSSProperties, type ReactNode, useState } from 'react'
+import { type CSSProperties, lazy, type ReactNode, Suspense, useContext, useState } from 'react'
 
 import { downloadExport, useExportData } from '@/api/hooks/useDataExport'
 import { useDeleteAccount } from '@/api/hooks/useDeleteAccount'
@@ -18,9 +17,12 @@ import { Medallion, useAccountIdentity } from '@/components/account/AccountMenu'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
+import { FolioHostContext } from '@/folio/host'
 import { LEGAL_LINK_STYLE, LEGAL_LINKS } from '@/lib/legal'
 import { useFirstContentSignal } from '@/lib/motion'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
+
+const FolioKonto = lazy(() => import('@/folio/screens/konto/FolioKonto'))
 
 export const Route = createFileRoute('/konto')({
   component: KontoRoute,
@@ -42,12 +44,32 @@ const COMING = [
 ] as const
 
 function KontoRoute() {
+  const inFolio = useContext(FolioHostContext)
   // Boot-veil content signal (#305 owner verdict) — /konto has no Skrift
   // block; its identity/settings content is local-derived at mount.
   useFirstContentSignal()
   const identity = useAccountIdentity()
   const sitting = useSitting()
   const days = useDaysRemaining()
+  const navigate = useNavigate()
+
+  if (inFolio) {
+    return (
+      <Suspense fallback={<p role="status">Laddar …</p>}>
+        <FolioKonto
+          entry="konto"
+          navigateHref={(href) => {
+            const url = new URL(href, window.location.origin)
+            navigate({
+              to: url.pathname as never,
+              search: Object.fromEntries(url.searchParams) as never,
+              hash: url.hash.slice(1),
+            })
+          }}
+        />
+      </Suspense>
+    )
+  }
 
   return (
     <MobileFrame tabs={false}>
