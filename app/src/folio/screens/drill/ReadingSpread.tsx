@@ -78,6 +78,7 @@ export function ReadingSpread({
     <p
       className="fa-prompt"
       data-testid="drill-prompt"
+      data-after={phone && feedback ? 'true' : undefined}
       lang={q.section === 'ELF' ? 'en' : undefined}
     >
       {gaps.current != null ? (
@@ -87,18 +88,22 @@ export function ReadingSpread({
       )}
     </p>
   )
+  const verdictHeading = (
+    <Verdict
+      view={view}
+      focusRef={(node) => {
+        verdict.current = node
+      }}
+    />
+  )
   const answer = (
     <>
-      <Verdict
-        view={view}
-        focusRef={(node) => {
-          verdict.current = node
-        }}
-      />
+      {phone ? verdictHeading : null}
       {prompt}
-      <GradedOptions key={q.qid} view={view} all />
+      <GradedOptions key={`options:${q.qid}`} view={view} all />
+      {!phone ? verdictHeading : null}
       <Facit
-        key={q.qid}
+        key={`facit:${q.qid}`}
         view={view}
         act={readingAct}
         refs={refs}

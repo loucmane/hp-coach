@@ -137,3 +137,31 @@ var-2026-verb2-LÄS-017.steps.1.text: 2 → 1
 - Explicit staging of the nine changed admitted files failed because the linked worktree index lock is on a read-only filesystem. Changes remain **unstaged and uncommitted** at base **905ccfceb1d41c9c857e007e89712667160868bb**. No signing, alternative git-metadata path, push, merge, status/assignee change, or bead closure was attempted.
 - Handoff: four localized fixes and stage-side resume support are ready. The caller wiring above is still required for the production resume fix. The bank audit exposes unresolved content/extraction candidates; no claim of universal ordinal alignment is made. Coordinator applies the caller line, verifies resume through SessionPlayer and host checks, commits, obtains fresh independent exact-head review and owner desktop/phone light/dark visual approval. Round 1's review does not cover this uncommitted round.
 - [S:codex-1|W:hpf-qr0p.49.11|H:handoff-r2|E:4711 passes and one sandbox EPERM; typecheck/lint/build pass; staging read-only; caller wiring and content audit handed off]
+
+## 2026-10-22 — round 3 start
+
+- Reconfirmed the existing assignment and latest round 3 design. Clean base is d573c7ea481ed2cabb9e6fcac2964d6d073eda6c; no molecule controls this bead.
+- Scope: place the desktop verdict after graded options, preserve phone sheet order with a distinct verdict and quieter question restatement, and suppress only the programmatically focused question container's outline. Keep focus management and interactive control rings intact.
+- Added regression tests before implementation for desktop/phone order, focus retention, spacing and the narrowly scoped outline override. Existing host tests cover citations, toggles and figure-viewer focus return.
+- [S:codex-1|W:hpf-qr0p.49.11|H:inspect-r3|E:accepted design and shared styles inspected; red-first regressions added]
+
+### Round 3 changes and regression evidence
+
+- Desktop reading/DTK feedback now keeps the prompt first, followed by graded options, the verdict and Facit. The verdict has a separate top margin to introduce the answer explanation.
+- Phone feedback retains verdict → question → graded options → Facit. The verdict is explicitly block-level with a six-unit bottom margin; the prompt uses the existing smaller `data-after` restatement style.
+- Only `.rd-question[tabindex='-1']:focus` suppresses its outline, scoped to the reading drill. It outranks the shared `:focus-visible` rule without matching child controls. The general interactive ring remains unchanged; question and verdict focus, phone sheet focus and figure-viewer focus return remain covered by host tests.
+- Red-first command: `pnpm test src/folio/screens/drill/ReadingSpread.test.tsx --maxWorkers=2` — **4 expected failures / 7 passes**: desktop ordering, phone restatement styling, spacing, and the absent question focus override.
+- After implementation: `pnpm test src/folio/screens/drill --maxWorkers=2` — **8 files / 86 tests passed**. `pnpm typecheck` passed. `pnpm lint` passed after formatting the new test; its four pre-existing informational devbake diagnostics remain. `git diff --check` passed.
+- The wrong-answer regression also exposed a React duplicate-key warning from GradedOptions and Facit sharing `q.qid` as sibling keys. They now use distinct `options:` and `facit:` prefixes while retaining per-question state resets; the green run emits no duplicate-key warning.
+
+### Round 3 playbook proposal for coordinator relay
+
+- 2026-10-22, astra-relay: A wrong-answer UI regression exposed duplicate sibling keys even though the two components had different types: both used the same question ID as a reset key. Prefix per-question reset keys by component role when siblings share an ID, and exercise both right and wrong feedback when changing their order. The managed sandbox excludes `~/scratch/skill-gotchas/`; this proposal uses the playbook's documented worker-worklog fallback for coordinator relay.
+
+### Round 3 final verification and handoff
+
+- Full `pnpm test --maxWorkers=2`: **4715 passed / 1 failed; 152 files passed / 1 failed**. The only failure is the existing trap-index generator check, refused with `spawnSync /usr/bin/node EPERM`. All 86 drill tests passed. The coordinator must rerun that generator check outside the sandbox.
+- `pnpm typecheck`, `pnpm lint`, and `pnpm build` passed. Lint has four existing informational devbake diagnostics. The production build completed with the existing route-test discovery and chunk-size warnings and generated the PWA assets. No worker source or dependencies changed.
+- Staging the four changed admitted files was refused because `/home/loucmane/dev/hpfetcher/.git/worktrees/hpf-qr0p.49.11/index.lock` is on a read-only filesystem. Changes are **unstaged and uncommitted** on **d573c7ea481ed2cabb9e6fcac2964d6d073eda6c**. There is no new implementation commit or independent review verdict for round 3.
+- Coordinator handoff: park the bead, stage and sign the changes, rerun the host generator check, obtain independent exact-head review, and inspect desktop/phone in light/dark before owner visual approval. The prior round's visual check and review do not cover these edits. No source changes were made outside the admitted write set; no merge, push, closure, status change, reassignment or signing was attempted.
+- [S:codex-1|W:hpf-qr0p.49.11|H:handoff-r3|E:4 red regressions; 86 focused passes; full app 4715 passes and one sandbox EPERM; typecheck/lint/build pass; staging read-only; visual and independent review gates remain]

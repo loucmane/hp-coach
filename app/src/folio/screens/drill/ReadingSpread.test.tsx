@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import type { ComponentProps, ReactNode } from 'react'
@@ -198,6 +199,35 @@ beforeEach(() => {
 })
 
 describe('Reading through SessionPlayer and the Folio host', () => {
+  it.each([false, true])('separates the verdict from the question, phone=%s', async (phone) => {
+    h.phone = phone
+    mount()
+    await questionReady()
+    const question = screen.getByRole('region', { name: 'Uppgift 1' })
+    expect(question).toHaveFocus()
+    expect(question.firstElementChild === screen.getByTestId('drill-prompt')).toBe(true)
+    key('b')
+    expect(question).toHaveFocus()
+    key('Enter')
+    const verdict = screen.getByTestId('fa-verdict')
+    const prompt = screen.getByTestId('drill-prompt')
+    const content = phone
+      ? screen.getByTestId('rd-sheet').querySelector('.rd-sheet-body')
+      : question
+    expect(
+      Array.from(content?.children ?? [])
+        .slice(0, 4)
+        .map((node) => node.className),
+    ).toEqual(
+      phone
+        ? ['fa-verdict', 'fa-prompt', 'fa-opts', 'fa-facit']
+        : ['fa-prompt', 'fa-opts', 'fa-verdict', 'fa-facit'],
+    )
+    expect(verdict).toHaveTextContent('Fel. Rätt svar är A.')
+    expect(verdict).toHaveFocus()
+    if (phone) expect(prompt).toHaveAttribute('data-after', 'true')
+    else expect(prompt).not.toHaveAttribute('data-after')
+  })
   it.each([
     false,
     true,
@@ -358,4 +388,33 @@ describe('Reading through SessionPlayer and the Folio host', () => {
     expect(h.coreMounts.size).toBe(1)
     await accessible(container)
   })
+})
+
+function readingRule(selector: string) {
+  const css = readFileSync('src/folio/screens/drill/reading.css', 'utf8').replace(
+    /\/\*[\s\S]*?\*\//g,
+    '',
+  )
+  return (
+    [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].find((match) => match[1].trim() === selector)?.[2] ??
+    ''
+  )
+}
+
+it('separates the desktop facit and phone verdict with explicit spacing', () => {
+  expect(readingRule('[data-folio] .fa-drill .rd-question > .fa-verdict')).toMatch(
+    /margin-top:\s*var\(--fa-s8\)/,
+  )
+  const phoneVerdict = readingRule('[data-folio] .fa-drill .rd-sheet .fa-verdict')
+  expect(phoneVerdict).toMatch(/display:\s*block/)
+  expect(phoneVerdict).toMatch(/margin-bottom:\s*var\(--fa-s6\)/)
+})
+
+it('suppresses only the programmatic question frame and retains control focus rings', () => {
+  expect(readingRule("[data-folio] .fa-drill.rd-drill .rd-question[tabindex='-1']:focus")).toMatch(
+    /outline:\s*none/,
+  )
+  expect(readingRule('[data-folio] .fa-drill.rd-drill :focus-visible')).toMatch(
+    /outline:\s*2px solid var\(--fa-focus\)/,
+  )
 })

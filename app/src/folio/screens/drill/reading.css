@@ -28,6 +28,7 @@
   scroll-margin-top: 72px;
 }
 [data-folio] .fa-drill .rd-question > .fa-actionbar { margin-top: var(--fa-s6); padding-inline: 0; }
+[data-folio] .fa-drill .rd-question > .fa-verdict { margin-top: var(--fa-s8); }
 [data-folio] .fa-drill .rd-passage {
   max-width: calc(29em + 96px);
   margin: 0 auto;
@@ -93,7 +94,7 @@
 [data-folio] .fa-drill .rd-sheet-body[hidden] { display: none; }
 [data-folio] .fa-drill .rd-sheet > .fa-actionbar { flex: none; padding: var(--fa-s3) 0 var(--fa-s4); }
 [data-folio] .fa-drill .rd-sheet-return { margin-bottom: var(--fa-s4); }
-[data-folio] .fa-drill .rd-sheet .fa-verdict { margin-bottom: var(--fa-s4); }
+[data-folio] .fa-drill .rd-sheet .fa-verdict { display: block; margin-bottom: var(--fa-s6); }
 [data-folio] .fa-drill .rd-viewer {
   position: fixed;
   inset: 0;
@@ -116,3 +117,5 @@
 [data-folio] .fa-drill .rd-viewer-canvas { display: grid; place-items: center; padding: var(--fa-s4); }
 [data-folio] .fa-drill .rd-viewer img { display: block; width: 100%; height: 100%; max-width: none; object-fit: contain; filter: none; user-select: none; }
 [data-folio] .fa-drill.rd-drill :focus-visible { outline: 2px solid var(--fa-focus); outline-offset: 3px; }
+/* Keep the question announced on focus without framing the entire column. */
+[data-folio] .fa-drill.rd-drill .rd-question[tabindex='-1']:focus { outline: none; }
