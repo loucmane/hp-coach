@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Mistake } from '@/api/hooks/useMistakes'
 import type { ActiveSession } from '@/api/hooks/useSessions'
@@ -137,13 +138,102 @@ describe('Folio Repetera overview', () => {
     expect(screen.queryByText(/blir redo senare idag/)).not.toBeInTheDocument()
   })
 
-  it('shows only the section until the question bank resolves', () => {
+  it.each([
+    ['Senare idag', 22],
+    ['Kommande dagar', 23],
+  ] as const)('previews five rows in %s and expands and collapses by keyboard', async (name, day) => {
+    const user = userEvent.setup()
+    h.pile = Array.from({ length: 44 }, (_, i) => miss(i + 10, 'ORD', new Date(2026, 9, day, 14)))
+    h.bank = h.pile.map((row, i) => ({
+      qid: row.questionId,
+      section: 'ORD',
+      number: i + 10,
+      prompt: `ord ${i + 10}`,
+    })) as Question[]
+    render(<FolioRepetera {...props()} dueMistakes={[]} />)
+    const list = screen.getByRole('list', { name })
+    expect(
+      within(list)
+        .getAllByRole('link')
+        .map((link) => link.textContent),
+    ).toEqual(
+      h.pile.slice(0, 5).map((_, i) => `ORDord ${i + 10}${day === 22 ? 'senare idag' : 'imorgon'}`),
+    )
+    const more = screen.getByRole('button', { name: 'Visa alla 44' })
+    expect(more).toHaveAttribute('type', 'button')
+    expect(more).toHaveAttribute('aria-expanded', 'false')
+    expect(more).toHaveAttribute('aria-controls', list.id)
+    within(list).getAllByRole('link').at(-1)?.focus()
+    await user.tab()
+    expect(more).toHaveFocus()
+    await user.keyboard('{Enter}')
+    expect(more).toHaveTextContent('Visa färre')
+    expect(more).toHaveAttribute('aria-expanded', 'true')
+    expect(within(list).getAllByRole('listitem')).toHaveLength(44)
+    await user.keyboard(' ')
+    expect(more).toHaveTextContent('Visa alla 44')
+    expect(more).toHaveAttribute('aria-expanded', 'false')
+    expect(within(list).getAllByRole('listitem')).toHaveLength(5)
+    expect(navigate).not.toHaveBeenCalled()
+  })
+
+  it('keeps all ready rows and folds the later preview and its expansion control together', () => {
+    const ready = Array.from({ length: 12 }, (_, i) => miss(i + 1))
+    h.pile = Array.from({ length: 6 }, (_, i) => miss(i + 20, 'ORD', new Date(2026, 9, 22, 14)))
+    render(<FolioRepetera {...props()} dueMistakes={ready} />)
+    expect(within(screen.getByRole('list', { name: 'Redo nu' })).getAllByRole('link')).toHaveLength(
+      12,
+    )
+    expect(screen.queryByRole('list', { name: 'Senare idag' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Visa alla 6' })).not.toBeInTheDocument()
+    const fold = screen.getByRole('button', { name: /Visa.*redo senare/ })
+    fireEvent.click(fold)
+    const list = screen.getByRole('list', { name: 'Senare idag' })
+    expect(within(list).getAllByRole('link')).toHaveLength(5)
+    fireEvent.click(screen.getByRole('button', { name: 'Visa alla 6' }))
+    expect(within(list).getAllByRole('link')).toHaveLength(6)
+    fireEvent.click(fold)
+    expect(list).not.toBeVisible()
+    expect(screen.queryByRole('button', { name: 'Visa färre' })).not.toBeInTheDocument()
+  })
+
+  it.each([1, 5])('shows all %s later rows without an unnecessary expansion button', (count) => {
+    h.pile = Array.from({ length: count }, (_, i) => miss(i + 10, 'ORD', new Date(2026, 9, 22, 14)))
+    render(<FolioRepetera {...props()} dueMistakes={[]} />)
+    expect(
+      within(screen.getByRole('list', { name: 'Senare idag' })).getAllByRole('link'),
+    ).toHaveLength(count)
+    expect(screen.queryByRole('button', { name: /Visa alla|Visa färre/ })).not.toBeInTheDocument()
+  })
+
+  it('labels empty stems with the question number, including ELF cloze gaps', () => {
+    const rows = [miss(34, 'ELF'), miss(8, 'XYZ'), miss(35, 'ELF')]
+    h.pile = rows
+    h.bank = [
+      { qid: rows[0].questionId, section: 'ELF', number: 34, prompt: '  ' },
+      { qid: rows[1].questionId, section: 'XYZ', number: 8, prompt: null },
+      { qid: rows[2].questionId, section: 'ELF', number: 35, prompt: 'What does this mean?' },
+    ] as Question[]
+    render(<FolioRepetera {...props()} dueMistakes={rows} />)
+    expect(screen.getByText('Lucka 34')).toBeVisible()
+    expect(screen.getByText('Lucka 34')).not.toHaveAttribute('lang', 'en')
+    expect(screen.getByText('Fråga 8')).toBeVisible()
+    expect(screen.getByText('What does this mean?')).toHaveAttribute('lang', 'en')
+    expect(screen.getByRole('link', { name: /Lucka 34/ })).toHaveAttribute(
+      'href',
+      '/repetition?start=1&section=ELF',
+    )
+  })
+
+  it('shows a question label until the question bank resolves', () => {
     h.bank = undefined
     render(<FolioRepetera {...props()} />)
     expect(screen.queryByText('förnimma')).not.toBeInTheDocument()
     const ready = screen.getByRole('list', { name: 'Redo nu' })
     expect(within(ready).getAllByRole('link')).toHaveLength(2)
     expect(within(ready).getByText('ORD')).toBeVisible()
+    expect(within(ready).getByText('Fråga 1')).toBeVisible()
+    expect(within(ready).getByText('Fråga 2')).toBeVisible()
   })
 
   it('uses an honest day-zero fallback and keeps its existing test id', () => {

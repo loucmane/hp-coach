@@ -25,7 +25,8 @@ export type RepeteraInput = {
 export type RepeteraItem = {
   mistakeId: number
   section: Section | null
-  stem: string | null
+  stem: string
+  stemLang?: 'en'
   dueNow: boolean
   dueLabel: string
   href: string
@@ -82,9 +83,10 @@ export function dueLabel(at: Mistake['nextReviewAt'], now: Date): string {
 }
 
 /** A short preview of the question, never its trap or answer. */
-export function questionStem(q: { prompt: string | null; section: Section }): string | null {
+export function questionStem(q: Pick<Question, 'prompt' | 'section' | 'number'>): string {
   const prompt = q.prompt?.trim()
-  if (!prompt) return null
+  // ELF questions without a prompt are cloze gaps; the gap is the question.
+  if (!prompt) return `${q.section === 'ELF' ? 'Lucka' : 'Fråga'} ${q.number}`
   if (q.section === 'NOG') return parseNogPrompt(prompt)?.question ?? prompt
   if (q.section === 'KVA') {
     const kva = splitKvaPrompt(prompt)
@@ -121,10 +123,14 @@ export function buildRepeteraView(input: RepeteraInput): RepeteraView {
     const question = input.bank ? findQuestion(input.bank, row.questionId) : undefined
     const section = question?.section ?? sectionOfQid(row.questionId)
     const dueNow = dueIds.has(row.id)
+    // Keep a readable label while the bank loads or for an unavailable question.
+    const number = Number(row.questionId.match(/-(\d+)$/)?.[1])
+    const fallback = Number.isInteger(number) && number > 0 ? `Fråga ${number}` : 'Fråga'
     return {
       mistakeId: row.id,
       section,
-      stem: question ? questionStem(question) : null,
+      stem: question ? questionStem(question) : fallback,
+      stemLang: question?.section === 'ELF' && question.prompt?.trim() ? 'en' : undefined,
       dueNow,
       dueLabel: dueNow ? 'nu' : dueLabel(row.nextReviewAt, now),
       href: repetitionHref(section, dueNow),

@@ -219,6 +219,7 @@ function LaterPart({
   title: string
 }) {
   const [open, setOpen] = useState(false)
+  const [showAll, setShowAll] = useState(false)
   if (!items.length) return null
   return (
     <div className="fa-part-block">
@@ -230,18 +231,32 @@ function LaterPart({
           type="button"
           className="fa-more"
           aria-expanded={open}
-          aria-controls={`${id}-list`}
+          aria-controls={`${id}-content`}
           onClick={() => setOpen(!open)}
         >
           {open ? 'Dölj dem som blir redo senare' : `Visa de ${items.length} som blir redo senare`}
           <ChevronRight size={14} strokeWidth={1.75} aria-hidden />
         </button>
       ) : null}
-      <ol id={`${id}-list`} aria-labelledby={id} hidden={folded && !open}>
-        {items.map((item) => (
-          <MissRow key={item.mistakeId} item={item} navigateHref={navigateHref} />
-        ))}
-      </ol>
+      <div id={`${id}-content`} hidden={folded && !open}>
+        <ol id={`${id}-list`} aria-labelledby={id}>
+          {(showAll ? items : items.slice(0, 5)).map((item) => (
+            <MissRow key={item.mistakeId} item={item} navigateHref={navigateHref} />
+          ))}
+        </ol>
+        {items.length > 5 ? (
+          <button
+            type="button"
+            className="fa-more"
+            aria-expanded={showAll}
+            aria-controls={`${id}-list`}
+            onClick={() => setShowAll(!showAll)}
+          >
+            {showAll ? 'Visa färre' : `Visa alla ${items.length}`}
+            <ChevronRight size={14} strokeWidth={1.75} aria-hidden />
+          </button>
+        ) : null}
+      </div>
     </div>
   )
 }

@@ -62,3 +62,28 @@ FOLIO REPETERA DONE: hpf-qr0p.49.5
 - Bead status and assignee unchanged per accepted delivery contract. Coordinator owns parking and delivery; no close, commit, push, PR, merge or deployment performed. No new playbook gotcha was discovered in this round; the existing subprocess and writable-root limits are already documented.
 
 FOLIO REPETERA R2 DONE: hpf-qr0p.49.5
+
+## Round 3 — 2026-10-22
+
+- Clean starting head `a55e5031bdf24aaf4ccf1df45b84aabef000bb9f` on the declared branch. Claimed the plain bead; no molecule. Accepted scope: cap each later list at five with an accessible expand/collapse button, retain ready-round folding and the complete ready list, and supply labels for empty stems.
+- Decisions before implementation: use the existing shared later-list component and native buttons; test Enter and Space without triggering the primary action. Mirror the drill's local ELF-plus-blank-prompt cloze detection, using the actual question number. Keep ordinary prompts and local gap rendering intact.
+- Coordinator retains staging/signing, exact-head independent review, host checks, real-stack desktop/phone light/dark verification and owner visual OK. Implementation will remain uncommitted; status and assignee are not changed by this worker.
+
+## Round 3 regression evidence — 2026-10-22
+
+- Red first: `pnpm test src/folio/screens/repetera/repeteraView.test.ts src/folio/screens/repetera/FolioRepetera.test.tsx --maxWorkers=2` produced **13 failures and 31 passes** before product edits. Failures show 44 rows instead of five, missing five-row preview after unfolding, and missing fallback labels for null/empty/whitespace prompts and a pending or unavailable bank.
+- Implemented five-row previews for both later groups with `Visa alla N` / `Visa färre`, native keyboard-operable buttons and `aria-expanded`/`aria-controls`. The ready-round fold contains both the preview and its expansion control; all ready rows remain visible.
+- Empty ELF stems now read `Lucka N`; other empty stems read `Fråga N`. Pending/unavailable bank entries use the number in the question ID when available, otherwise `Fråga`. Ordinary English ELF stems retain `lang=en`; Swedish fallback labels inherit the page language. No drill import was added.
+- Final focused regression: **89/89 passed** across the Repetera view/screen/guard suites and both route suites, including classic replay/session coverage. Tests exercise Tab, Enter and Space, expansion and collapse of 44 rows, the five/six-row boundary, the complete 12-row ready list, fold behavior and blank-stem variants. One initial green-run assertion was corrected to locate the link by its stem without assuming whitespace between existing inline spans.
+- Lint passed (four pre-existing informational bake-off diagnostics). Full app tests, typecheck and build verification are in progress.
+
+## Round 3 verification and handoff — 2026-10-22
+
+- `pnpm typecheck`: passed. `pnpm lint`: passed (four pre-existing informational bake-off diagnostics). `pnpm build`: passed, including TypeScript, Vite and PWA generation; existing route-test-file and chunk-size warnings remain. Whitespace checks passed.
+- Full `pnpm test --maxWorkers=2`: **4,744 passed, 1 failed**, 152 test files, 227.51 seconds. The sole failure is the existing trap-index generator subprocess check: `spawnSync /usr/bin/node EPERM`. This is the documented sandbox limitation; no workaround attempted. Coordinator must rerun the suite on the host. Final focused regression was **89/89 passed**.
+- Six repository files changed, all admitted: `FolioRepetera.tsx`, `MissRow.tsx`, `repeteraView.ts`, the existing screen/view test files, and this worklog. No worker, dependency, CSS, route or bake-off edits. Matching evidence is appended to the classified worklog.
+- Exact delivery state: uncommitted and unstaged on `codex/hpf-qr0p.49.5-repetera-in-folio`, HEAD/base `a55e5031bdf24aaf4ccf1df45b84aabef000bb9f`. Git metadata resolves outside writable roots to `/home/loucmane/dev/hpfetcher/.git/worktrees/hpf-qr0p.49.5`, so staging/signing remains with the coordinator.
+- Review disposition: self-review complete; independent exact-head Claude review required after coordinator commit. Real-stack desktop/phone light/dark checks and owner visual OK remain required before merge. No browser validation is claimed. Suggested visual check: the 44-miss overview shows five later rows, expands to 44 and collapses again, including a visible ELF cloze label.
+- Bead status and assignee unchanged under the accepted delivery contract. Coordinator owns parking and delivery; no close, commit, push, PR, merge or deployment performed. No new playbook gotcha was discovered; subprocess and writable-root limits are already documented.
+
+FOLIO REPETERA R3 DONE: hpf-qr0p.49.5

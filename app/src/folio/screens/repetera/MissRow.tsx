@@ -14,15 +14,13 @@ export function MissRow({
       <RepeteraLink className="fa-miss" href={item.href} navigateHref={navigateHref}>
         <span className="fa-entry-code">{item.section ?? 'Fråga'}</span>
         <span className="fa-miss-body">
-          {item.stem ? (
-            <span
-              className="fa-miss-stem"
-              data-word={item.section === 'ORD' ? 'true' : undefined}
-              lang={item.section === 'ELF' ? 'en' : undefined}
-            >
-              <GapText text={item.stem} />
-            </span>
-          ) : null}
+          <span
+            className="fa-miss-stem"
+            data-word={item.section === 'ORD' ? 'true' : undefined}
+            lang={item.stemLang}
+          >
+            <GapText text={item.stem} />
+          </span>
         </span>
         <span className="fa-miss-when">{item.dueLabel}</span>
       </RepeteraLink>

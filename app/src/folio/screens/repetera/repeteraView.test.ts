@@ -124,6 +124,7 @@ describe('Repetera view', () => {
   it('uses a bank section when available, and never invents ORD for an unknown qid', () => {
     const row = { ...miss(1), questionId: 'old-item' }
     expect(buildRepeteraView({ now, dueMistakes: [row] }).queue).toEqual([])
+    expect(buildRepeteraView({ now, dueMistakes: [row] }).items[0].stem).toBe('Fråga')
     const bank = [{ qid: row.questionId, section: 'NOG', prompt: 'Vad är x?' }] as Question[]
     const view = buildRepeteraView({ now, dueMistakes: [row], bank })
     expect(view.queue[0].section).toBe('NOG')
@@ -177,29 +178,40 @@ describe('due labels use local calendar boundaries', () => {
 })
 
 describe('question stems', () => {
+  it.each([null, '', ' \n '])('labels a blank ELF stem (%s) as a cloze gap', (prompt) => {
+    expect(questionStem({ section: 'ELF', number: 34, prompt })).toBe('Lucka 34')
+  })
+  it.each([null, '', ' \n '])('labels other blank stems (%s) by question number', (prompt) => {
+    expect(questionStem({ section: 'XYZ', number: 8, prompt })).toBe('Fråga 8')
+  })
   it('uses the NOG question without the sufficiency apparatus', () => {
     expect(
       questionStem({
         section: 'NOG',
+        number: 1,
         prompt: 'Hur stor är x? (1) x > 2 (2) x < 5 Tillräcklig information för lösningen erhålls',
       }),
     ).toBe('Hur stor är x?')
   })
   it('keeps the KVA condition and both quantities', () => {
     expect(
-      questionStem({ section: 'KVA', prompt: 'x > 0 Kvantitet I: x + 1 Kvantitet II: x' }),
+      questionStem({
+        section: 'KVA',
+        number: 1,
+        prompt: 'x > 0 Kvantitet I: x + 1 Kvantitet II: x',
+      }),
     ).toBe('x > 0 · I: x + 1 · II: x')
-    expect(questionStem({ section: 'KVA', prompt: 'Kvantitet I: 2 Kvantitet II: 3' })).toBe(
-      'I: 2 · II: 3',
-    )
+    expect(
+      questionStem({ section: 'KVA', number: 2, prompt: 'Kvantitet I: 2 Kvantitet II: 3' }),
+    ).toBe('I: 2 · II: 3')
   })
   it('keeps gap markers for the local GapText and degrades absent stems gracefully', () => {
-    expect(questionStem({ section: 'MEK', prompt: 'Det var _____ att se _____ igen.' })).toBe(
-      'Det var _____ att se _____ igen.',
-    )
-    expect(questionStem({ section: 'LÄS', prompt: null })).toBeNull()
-    expect(questionStem({ section: 'NOG', prompt: '  Ett osplittrat påstående  ' })).toBe(
-      'Ett osplittrat påstående',
-    )
+    expect(
+      questionStem({ section: 'MEK', number: 1, prompt: 'Det var _____ att se _____ igen.' }),
+    ).toBe('Det var _____ att se _____ igen.')
+    expect(questionStem({ section: 'LÄS', number: 12, prompt: null })).toBe('Fråga 12')
+    expect(
+      questionStem({ section: 'NOG', number: 1, prompt: '  Ett osplittrat påstående  ' }),
+    ).toBe('Ett osplittrat påstående')
   })
 })
