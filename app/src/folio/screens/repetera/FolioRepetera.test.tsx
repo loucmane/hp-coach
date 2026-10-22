@@ -163,6 +163,22 @@ describe('Folio Repetera overview', () => {
     expect(navigate).toHaveBeenCalledExactlyOnceWith('/drill?start=1')
   })
 
+  it('waits for stats before describing an empty pile, then shows the day-zero line', () => {
+    h.pile = []
+    const result = render(<FolioRepetera {...props()} dueMistakes={[]} />)
+    expect(result.container.textContent).not.toContain('nästa repetition följer din planering')
+    expect(result.container.querySelector('.fa-empty')).not.toBeInTheDocument()
+    expect(screen.getByTestId('repetition-fallback-link')).toHaveTextContent('Börja en övning')
+    h.stats = {
+      attempts: { total: 0 },
+      mistakes: { resolved: 0, active: 0 },
+      bySection: {},
+    } as Stats
+    result.rerender(<FolioRepetera {...props()} dueMistakes={[]} />)
+    expect(screen.getByText('Här samlas dina missar från övningarna.')).toBeVisible()
+    expect(result.container.textContent).not.toContain('nästa repetition följer din planering')
+  })
+
   it('does not claim everything is relearned just because today’s pile is empty', () => {
     h.pile = []
     h.stats = {
@@ -214,5 +230,20 @@ describe('Folio Repetera overview', () => {
     expect(margin).toHaveTextContent('veckan före')
     expect(margin).toHaveTextContent('inga poängavdrag')
     expect(margin).not.toHaveTextContent('1, 2, 4, 8, 16 och 30 dagar')
+  })
+
+  it('explains the same-question fallback when no sibling is available', () => {
+    render(<FolioRepetera {...props()} />)
+    expect(screen.getByRole('complementary')).toHaveTextContent(
+      'LÄS, MEK, ELF och kvant kommer tillbaka som en ny fråga med samma fälla när det finns en, annars som samma fråga igen; ORD som samma ord.',
+    )
+  })
+
+  it('states the exam graduation-hold window in days', () => {
+    render(<FolioRepetera {...props()} />)
+    expect(screen.getByRole('complementary')).toHaveTextContent(
+      'Från 60 dagar före provet fram till sista veckan behålls även sådant du kan för en sista repetition.',
+    )
+    expect(screen.getByRole('complementary')).not.toHaveTextContent('Nära provet')
   })
 })

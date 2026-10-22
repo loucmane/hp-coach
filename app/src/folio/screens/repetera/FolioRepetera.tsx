@@ -58,7 +58,10 @@ export default function FolioRepetera(props: Props) {
       <div className="fa-page-main">
         <h1 className="fa-greet">Dina missar</h1>
         <p className="fa-day">De äldsta först, högst tio åt gången.</p>
-        <section className="fa-resume" aria-labelledby="fa-rep-lead">
+        <section
+          className="fa-resume"
+          aria-labelledby={view.state === 'empty' && !view.emptyLine ? undefined : 'fa-rep-lead'}
+        >
           {pending ? (
             <p className="fa-empty" id="fa-rep-lead" role="status">
               {view.state === 'loading'
@@ -66,9 +69,11 @@ export default function FolioRepetera(props: Props) {
                 : 'Gick inte att hämta dina missar just nu – försöker igen automatiskt.'}
             </p>
           ) : view.state === 'empty' ? (
-            <p className="fa-empty" id="fa-rep-lead">
-              {view.emptyLine}
-            </p>
+            view.emptyLine ? (
+              <p className="fa-empty" id="fa-rep-lead">
+                {view.emptyLine}
+              </p>
+            ) : null
           ) : (
             <>
               <div className="fa-resume-top">
@@ -177,14 +182,15 @@ export default function FolioRepetera(props: Props) {
             minst en dag.
           </p>
           <p>
-            LÄS, MEK, ELF och kvant kommer tillbaka som en ny fråga med samma fälla; ORD som samma
-            ord.
+            LÄS, MEK, ELF och kvant kommer tillbaka som en ny fråga med samma fälla när det finns
+            en, annars som samma fråga igen; ORD som samma ord.
           </p>
           {extras.examDate.getTime() > extras.now.getTime() ? (
             <p>
               Inför provet {formatSwedishDateShort(extras.examDate)} flyttas repetitioner som annars
               skulle hamna efter provet till veckan före, så länge det finns en repetitionstid kvar
-              före provet. Nära provet behålls även sådant du kan för en sista repetition.
+              före provet. Från 60 dagar före provet fram till sista veckan behålls även sådant du
+              kan för en sista repetition.
             </p>
           ) : null}
         </section>

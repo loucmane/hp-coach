@@ -192,7 +192,9 @@ export function buildRepeteraView(input: RepeteraInput): RepeteraView {
           ? 'Kön är tom just nu – allt du missat är återlärt.'
           : items.length === 0 && input.stats?.attempts.total === 0
             ? 'Här samlas dina missar från övningarna.'
-            : 'Inget är redo just nu – nästa repetition följer din planering.'
+            : input.stats !== undefined
+              ? 'Inget är redo just nu – nästa repetition följer din planering.'
+              : ''
   return {
     state,
     ready,

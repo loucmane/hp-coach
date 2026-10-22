@@ -239,6 +239,9 @@ function RepetitionScreen() {
             navigate({
               to: url.pathname as never,
               search: Object.fromEntries(url.searchParams) as never,
+              // The player owns this visit once it starts. Back should
+              // leave the overview entry instead of reopening that latch.
+              replace: url.pathname === '/repetition' && url.searchParams.get('start') === '1',
             })
           }}
         />

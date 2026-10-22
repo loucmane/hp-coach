@@ -108,6 +108,19 @@ describe('Repetera view', () => {
     expect(buildRepeteraView({ now, dueMistakes: [], pileMistakes: [miss(2)] }).ready).toBe(0)
   })
 
+  it('waits for stats before using the planning fallback for an empty pile', () => {
+    const input = { now, dueMistakes: [], pileMistakes: [] }
+    expect(buildRepeteraView(input).emptyLine).toBe('')
+    const stats = {
+      attempts: { total: 20 },
+      mistakes: { active: 3, resolved: 4 },
+      bySection: {},
+    } as Stats
+    expect(buildRepeteraView({ ...input, stats }).emptyLine).toBe(
+      'Inget är redo just nu – nästa repetition följer din planering.',
+    )
+  })
+
   it('uses a bank section when available, and never invents ORD for an unknown qid', () => {
     const row = { ...miss(1), questionId: 'old-item' }
     expect(buildRepeteraView({ now, dueMistakes: [row] }).queue).toEqual([])

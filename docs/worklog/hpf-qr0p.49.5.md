@@ -42,3 +42,23 @@
 - Bead status and assignee remain unchanged per the accepted delivery contract. No commit, push, PR, merge or deployment performed; coordinator owns parking and delivery.
 
 FOLIO REPETERA DONE: hpf-qr0p.49.5
+
+## Round 2 — 2026-10-22
+
+- Clean starting head `630b6ce7345f24504c253a37729417509f486363`, on the declared branch. Claimed plain bead; no molecule controls this round. Accepted round-two contract addresses four review P3s within the unchanged write set.
+- Decisions before implementation: replace overview start/resume history entries while preserving section browsing and drill navigation; retain the session latch. Qualify sibling availability, describe the graduation hold from 60 days before the exam until its final week, and withhold the empty-pile planning line until stats resolve.
+- Added regressions before product edits for both start scopes, session preservation, ordinary navigation, exact Swedish copy, and pending-stats-to-day-zero rendering. Validation in progress; coordinator retains staging/signing, independent review and owner visual approval.
+
+## Round 2 verification and handoff — 2026-10-22
+
+- Red first: `pnpm test src/folio/screens/repetera/repeteraView.test.ts src/folio/screens/repetera/FolioRepetera.test.tsx src/routes/-repetition.folio.test.tsx --maxWorkers=2` produced **8 failures and 36 passes** before product edits. Failures captured missing replacement-navigation options, the premature planning message, and both old copy strings.
+- Implemented all four requested fixes. Overview start/resume links now replace their current history entry, including scoped starts; ordinary section browsing and drill links continue to push. Existing session ownership remains latched across URL clearing. The empty-pile planning fallback waits for stats, and an absent line leaves neither an empty paragraph nor a dangling `aria-labelledby` reference. Sibling copy now includes same-question fallback; graduation-hold copy specifies 60 days before the exam through the start of its final week.
+- Final focused regression: **77/77 passed** across `src/folio/screens/repetera`, `src/routes/-repetition.folio.test.tsx`, and `src/routes/-repetition.test.tsx`, using `pnpm test ... --maxWorkers=2`. This includes the existing replay/session regressions.
+- `pnpm typecheck`: passed. `pnpm lint`: passed (four pre-existing informational bake-off diagnostics). `pnpm build`: passed, including TypeScript, Vite and PWA generation; existing route-test-file and chunk-size warnings remain. `git --no-optional-locks diff --check`: passed.
+- Full `pnpm test --maxWorkers=2`: **4,732 passed, 1 failed**, 152 test files, 149.03 seconds. The sole failure is the existing `src/lib/trapIndex.test.ts` generator check: `spawnSync /usr/bin/node EPERM`. It is the known managed-sandbox restriction; no workaround attempted. Coordinator must rerun on the host.
+- Seven repository files changed, all admitted: three product files, their three existing test files, and this worklog. No worker, dependency, CSS or bake-off changes. The classified worklog has matching evidence.
+- Exact delivery state: uncommitted and unstaged on `codex/hpf-qr0p.49.5-repetera-in-folio`, base/HEAD `630b6ce7345f24504c253a37729417509f486363`. Git metadata remains outside writable roots at `/home/loucmane/dev/hpfetcher/.git/worktrees/hpf-qr0p.49.5`; coordinator staging/signing is required.
+- Review disposition: self-review complete; independent exact-head Claude review pending after coordinator commit. Browser Back and real-stack desktop/phone light/dark checks plus owner visual OK remain coordinator gates. Tests verify the navigation options and preserve the player instance across URL clearing; no browser run is claimed.
+- Bead status and assignee unchanged per accepted delivery contract. Coordinator owns parking and delivery; no close, commit, push, PR, merge or deployment performed. No new playbook gotcha was discovered in this round; the existing subprocess and writable-root limits are already documented.
+
+FOLIO REPETERA R2 DONE: hpf-qr0p.49.5

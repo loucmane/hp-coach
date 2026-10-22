@@ -77,11 +77,47 @@ describe('Folio repetition boundary', () => {
     expect(h.navigate).toHaveBeenLastCalledWith({
       to: '/repetition',
       search: { start: '1', section: 'LÄS' },
+      replace: true,
     })
     props.navigateHref('/drill?section=KVA&start=1')
     expect(h.navigate).toHaveBeenLastCalledWith({
       to: '/drill',
       search: { section: 'KVA', start: '1' },
+      replace: false,
+    })
+  })
+  it.each([
+    ['/repetition?start=1', { start: '1' }],
+    ['/repetition?start=1&section=ORD', { start: '1', section: 'ORD' }],
+  ])('replaces the overview history entry when starting or resuming at %s', async (href, search) => {
+    const result = render(page())
+    await screen.findByTestId('folio-overview')
+    const props = h.overview.mock.lastCall?.[0] as { navigateHref: (href: string) => void }
+    props.navigateHref(href)
+    expect(h.navigate).toHaveBeenCalledExactlyOnceWith({
+      to: '/repetition',
+      search,
+      replace: true,
+    })
+    h.search = { ...search, start: true }
+    result.rerender(page())
+    const mounted = screen.getByTestId('session-player')
+    expect(h.props?.autoStart).toBe(true)
+    act(() => h.props?.urlSyncedQid?.setQid(null))
+    h.search = 'section' in search ? { section: search.section } : {}
+    result.rerender(page())
+    expect(screen.getByTestId('session-player')).toBe(mounted)
+    expect(screen.queryByTestId('folio-overview')).not.toBeInTheDocument()
+  })
+  it('keeps section browsing in history', async () => {
+    render(page())
+    await screen.findByTestId('folio-overview')
+    const props = h.overview.mock.lastCall?.[0] as { navigateHref: (href: string) => void }
+    props.navigateHref('/repetition?section=MEK')
+    expect(h.navigate).toHaveBeenCalledExactlyOnceWith({
+      to: '/repetition',
+      search: { section: 'MEK' },
+      replace: false,
     })
   })
   it.each([
