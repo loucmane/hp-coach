@@ -19,7 +19,7 @@
 
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
-import { useMemo } from 'react'
+import { lazy, Suspense, useContext, useMemo } from 'react'
 
 import { useDueMistakes, usePileMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
@@ -28,16 +28,20 @@ import { MobileFrame } from '@/components/MobileFrame'
 import { InkDryOnMount, Skrift, SkriftLine } from '@/components/motion/Skrift'
 import { Page } from '@/components/Page'
 import { SECTION_KEYS, type Section } from '@/data/questions'
+import { FolioHostContext } from '@/folio/host'
 import { countsBySection } from '@/lib/dueBySection'
 import { sectionDoorLayoutId, useArketMotion } from '@/lib/motion'
 import { TAB_ROUTE } from '@/lib/nav'
 import { computeSectionScore, rankWeakness } from '@/lib/scoring'
+
+const FolioOva = lazy(() => import('@/folio/screens/ova/FolioOva'))
 
 export const Route = createFileRoute('/ova')({
   component: OvaRoute,
 })
 
 function OvaRoute() {
+  const inFolio = useContext(FolioHostContext)
   const navigate = useNavigate()
   const stats = useStats()
   // Two vocabularies (see useMistakes.ts):
@@ -82,6 +86,26 @@ function OvaRoute() {
     const scores = SECTION_KEYS.map((s) => computeSectionScore(s, stats.data.bySection[s]))
     return rankWeakness(scores)[0]?.section ?? null
   }, [stats.data])
+
+  if (inFolio) {
+    return (
+      <Suspense fallback={<p role="status">Laddar …</p>}>
+        <FolioOva
+          stats={stats}
+          pile={pile}
+          due={due}
+          navigateHref={(href) => {
+            const url = new URL(href, window.location.origin)
+            navigate({
+              to: url.pathname as never,
+              search: Object.fromEntries(url.searchParams) as never,
+              hash: url.hash.slice(1),
+            })
+          }}
+        />
+      </Suspense>
+    )
+  }
 
   return (
     <MobileFrame
