@@ -115,6 +115,27 @@ describe('Provpass view builders', () => {
       href: '/drill?section=ORD&framework=ORD-X&start=1',
     })
   })
+  it('keeps a zero-time answered section distinct from an unvisited section', () => {
+    const view = buildResultView({
+      row: {
+        ...row,
+        breakdown: {
+          ...row.breakdown,
+          perSection: {
+            ORD: { presented: 10, correct: 0, timeMs: 0 },
+            MEK: { presented: 10, correct: 0, timeMs: 0 },
+            LÄS: { presented: 10, correct: 1, timeMs: 0 },
+            ELF: { presented: 10, correct: 0, timeMs: 1000 },
+          },
+        },
+      },
+      bank,
+      answers,
+    })
+    expect(view.sections.find((s) => s.section === 'MEK')?.note).toBe('—')
+    for (const section of ['ORD', 'LÄS', 'ELF'])
+      expect(view.sections.find((s) => s.section === section)?.note).not.toBe('—')
+  })
   it('filters history, preserves P5 disclosure and offers a new pass without misses', () => {
     const basis = {
       authentic: 39,

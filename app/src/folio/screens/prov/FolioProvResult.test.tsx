@@ -1,8 +1,11 @@
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render as renderView, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import axe from 'axe-core'
+import type { ReactElement } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { MockResultRow } from '@/api/hooks/useMockResults'
+import { createQueryClient } from '@/api/queryClient'
 import type { Question } from '@/data/questions'
 import type { MockAttemptRow } from '@/lib/mockSheet'
 import type { NormeringSitting } from '@/lib/normering'
@@ -13,10 +16,16 @@ const state = vi.hoisted(() => ({
   attempts: [] as MockAttemptRow[],
   table: null as NormeringSitting | null,
   cluster: null as TrapCluster | null,
+  viewport: 'studio',
+  getAttempts: vi.fn(),
 }))
-vi.mock('@/hooks/useViewport', () => ({ useViewport: () => 'studio' }))
-vi.mock('@/api/hooks/useSessions', () => ({
-  useSessionAttempts: () => ({ data: state.attempts, isLoading: false, isError: false }),
+vi.mock('@/hooks/useViewport', () => ({ useViewport: () => state.viewport }))
+// Keep the real query hook and adapter: the response envelope/field names
+// match worker/src/routes/sessions.ts GET /:id/attempts.
+vi.mock('@/api/useApiClient', () => ({
+  useApiClient: () => ({
+    api: { sessions: { ':id': { attempts: { $get: state.getAttempts } } } },
+  }),
 }))
 vi.mock('@/lib/normering', async (original) => ({
   ...(await original<typeof import('@/lib/normering')>()),
@@ -64,6 +73,14 @@ const row: MockResultRow = {
   },
 }
 const navigateHref = vi.fn()
+let queryClient = createQueryClient()
+function render(ui: ReactElement) {
+  return renderView(ui, {
+    wrapper: ({ children }) => (
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    ),
+  })
+}
 function props(overrides: Partial<FolioProvResultProps> = {}): FolioProvResultProps {
   return {
     resultId: 5,
@@ -75,7 +92,13 @@ function props(overrides: Partial<FolioProvResultProps> = {}): FolioProvResultPr
   }
 }
 beforeEach(() => {
+  queryClient = createQueryClient()
   navigateHref.mockClear()
+  state.viewport = 'studio'
+  state.getAttempts.mockReset().mockImplementation(async () => ({
+    ok: true,
+    json: async () => ({ attempts: state.attempts }),
+  }))
   state.cluster = null
   state.table = null
   state.attempts = [
@@ -89,7 +112,7 @@ describe('Folio Provpass result', () => {
     const { container, rerender } = render(<FolioProvResult {...props()} />)
     expect(container.querySelectorAll('.fa-btn')).toHaveLength(1)
     expect(screen.getByText('1 obesvarade')).toBeVisible()
-    const marked = screen.getByTestId('prov-res-flagged')
+    const marked = await screen.findByTestId('prov-res-flagged')
     expect(within(marked).getAllByRole('button')).toHaveLength(1)
     expect(marked).toHaveTextContent('Vilken slutsats?')
     await user.click(screen.getByRole('button', { name: /Vad betyder ordet/ }))
@@ -116,12 +139,83 @@ describe('Folio Provpass result', () => {
     expect(screen.getByText(/Härlett ur UHR/)).toBeVisible()
     const history = within(screen.getByTestId('mock-result-history')).getByRole('link')
     expect(history).toHaveAttribute('href', '/prov?result=6')
+    expect(history).toHaveTextContent('1/3')
+    expect(history).not.toHaveTextContent('0,65')
+    expect(history).not.toHaveAccessibleName(/linjär skattning/)
+    expect(screen.queryByText(/Poängen i listan/)).toBeNull()
     const pattern = within(screen.getByTestId('prov-res-pattern')).getByRole('link')
     expect(pattern).toHaveAttribute('href', '/drill?section=ORD&start=1')
     fireEvent.click(pattern, { ctrlKey: true })
     expect(navigateHref).not.toHaveBeenCalled()
     fireEvent.click(pattern)
     expect(navigateHref).toHaveBeenCalledWith('/drill?section=ORD&start=1')
+  })
+  it.each([
+    { cached: [] },
+    {
+      cached: [
+        { questionId: 'var-2024-ORD-001', selectedAnswer: 'A', timeTakenMs: 1, createdAt: 1 },
+      ],
+    },
+  ])('refreshes fresh resume-cache answers from the real API envelope: $cached', async ({
+    cached,
+  }) => {
+    const q = { ...bank[0], qid: 'var-2024-ORD-001' }
+    const result = { ...row, breakdown: { ...row.breakdown, missedQids: [q.qid] } }
+    queryClient.setQueryData(['sessions', 'attempts', row.sessionId], cached)
+    const attempts = [
+      {
+        questionId: q.qid,
+        selectedAnswer: 'A',
+        correct: true,
+        timeTakenMs: 2000,
+        createdAt: '2026-10-22T18:00:00.000Z',
+      },
+      {
+        questionId: q.qid,
+        selectedAnswer: 'B',
+        correct: false,
+        timeTakenMs: 3000,
+        createdAt: '2026-10-22T18:00:05.000Z',
+      },
+    ]
+    state.getAttempts.mockResolvedValue({ ok: true, json: async () => ({ attempts }) })
+    render(<FolioProvResult {...props({ results: { data: [result] }, bank: [q], flags: null })} />)
+    fireEvent.click(screen.getByRole('button', { name: /Vad betyder ordet/ }))
+    await waitFor(() => expect(screen.getByText(/Ditt svar: B · rätt svar:/)).toBeVisible())
+    expect(state.getAttempts).toHaveBeenCalledWith({ param: { id: '3' } })
+    expect(screen.getByText('Beta').closest('li')).toHaveAttribute('data-grade', 'wrong')
+    expect(screen.queryByText(/Ditt svar: obesvarad/)).toBeNull()
+  })
+  it('does not mislabel missing persisted answers as blank questions', async () => {
+    state.attempts = []
+    render(<FolioProvResult {...props()} />)
+    fireEvent.click(screen.getByRole('button', { name: /Vad betyder ordet/ }))
+    await waitFor(() => expect(screen.getByText(/Ditt svar kunde inte hämtas/)).toBeVisible())
+    expect(screen.queryByText(/Ditt svar: obesvarad/)).toBeNull()
+  })
+  it.each([
+    'studio',
+    'phone',
+  ])('shows no elapsed time or tempo for an unvisited section on %s', (viewport) => {
+    state.viewport = viewport
+    const result = {
+      ...row,
+      answered: row.presented,
+      breakdown: {
+        ...row.breakdown,
+        perSection: {
+          ...row.breakdown.perSection,
+          MEK: { presented: 10, correct: 0, timeMs: 0 },
+        },
+      },
+    }
+    render(<FolioProvResult {...props({ results: { data: [result] } })} />)
+    const section = within(screen.getByTestId('mock-result-pace-MEK'))
+    expect(section.getByTestId('mock-result-pace-note-MEK')).toHaveTextContent(/^—$/)
+    expect(section.getAllByRole('cell')[1]).toHaveTextContent(/^—/)
+    expect(section.getAllByRole('cell')[2]).toHaveTextContent('8:00')
+    expect(screen.queryByText('0 obesvarade')).toBeNull()
   })
   it('shows a new pass primary with no misses and a not-found state for an absent result', () => {
     const clean = { ...row, breakdown: { ...row.breakdown, missedQids: [] } }

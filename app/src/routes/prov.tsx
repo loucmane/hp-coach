@@ -369,19 +369,22 @@ function ProvRoute() {
     setPhase('instructions')
   }
 
-  const beginRun = async () => {
-    if (!bank) return
+  const beginRun = () => {
+    if (!bank) return false
     const plan =
       mode === 'authentic' && pendingPass
         ? resolveAuthentic([...bank], pendingPass.examId, pendingPass.provpass)
         : pickSynthetic([...bank], exposureQuery.data ?? {}, half, seededRng(Date.now()))
-    if (plan.length === 0) return
+    if (plan.length === 0) return false
 
     const qids = plan.map((q) => q.qid)
     const examId = mode === 'authentic' ? (pendingPass?.examId ?? '') : ''
     const provpass = mode === 'authentic' ? (pendingPass?.provpass ?? '') : ''
     const seenBefore = exposureQuery.data ? countSeenBefore(plan, exposureQuery.data) : 0
 
+    // A newly started session also updates the active-session query. Do not
+    // treat that cache update as a reload and fetch an empty resume sheet.
+    adoptDecidedRef.current = true
     startSession.mutate(
       {
         kind: 'mock',
@@ -406,6 +409,7 @@ function ProvRoute() {
         },
       },
     )
+    return true
   }
 
   const handleSettled = (result: { id: number }, extras: { flagged: string[] }) => {
@@ -492,10 +496,12 @@ function ProvRoute() {
           results={resultsQuery}
           navigateHref={navigateHref}
           startAuthentic={(pass) => {
+            startSession.reset()
             setVoidNotice(false)
             startAuthentic(pass)
           }}
           startSynthetic={() => {
+            startSession.reset()
             setVoidNotice(false)
             startSynthetic()
           }}

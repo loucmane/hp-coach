@@ -8,6 +8,7 @@ import type { PassOption } from '@/lib/mock'
 import { logMockEvent } from '@/lib/mockEvents'
 import { ConditionsSlip } from './ConditionsSlip'
 import FolioProvpass, { type FolioProvpassProps } from './FolioProvpass'
+import { ProvMargin } from './ProvMargin'
 
 const viewport = vi.hoisted(() => ({ value: 'studio' }))
 vi.mock('@/hooks/useViewport', () => ({ useViewport: () => viewport.value }))
@@ -63,9 +64,63 @@ function Hub({ ready = true }: { ready?: boolean }) {
 }
 beforeEach(() => {
   vi.clearAllMocks()
+  beginRun.mockReturnValue(true)
   viewport.value = 'studio'
 })
 describe('Folio Provpass hub and slip', () => {
+  it('releases the start guard with a neutral message when no run can be created', () => {
+    beginRun.mockReturnValue(false)
+    const onClose = vi.fn()
+    render(
+      <ConditionsSlip
+        half="verbal"
+        mode="synthetic"
+        pass={null}
+        pending={false}
+        error={false}
+        minutes={55}
+        onStart={beginRun}
+        onClose={onClose}
+      />,
+    )
+    fireEvent.click(screen.getByTestId('mock-confirm-start'))
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'Inget pass kunde startas. Välj ett annat pass eller försök igen.',
+    )
+    fireEvent.click(screen.getByTestId('mock-confirm-start'))
+    expect(beginRun).toHaveBeenCalledTimes(2)
+    fireEvent.click(screen.getByTestId('mock-confirm-dismiss'))
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
+  it.each(['mock-confirm-dismiss', 'scrim'])('dismisses via the %s pointer control', (target) => {
+    render(<Hub />)
+    fireEvent.click(screen.getByTestId('prov-start'))
+    fireEvent.click(
+      target === 'scrim'
+        ? screen.getByRole('button', { name: 'Stäng villkoren' })
+        : screen.getByTestId(target),
+    )
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(beginRun).not.toHaveBeenCalled()
+  })
+  it('lists recent raw counts and dates without a second score', () => {
+    render(
+      <ProvMargin
+        results={{
+          data: [
+            { id: 1, half: 'verbal', correct: 3, presented: 40, createdAt: '2026-10-22' } as never,
+          ],
+        }}
+        navigateHref={navigateHref}
+      />,
+    )
+    const result = screen.getByRole('link')
+    expect(result).toHaveTextContent('3/40')
+    expect(result).toHaveTextContent('22 okt')
+    expect(result).not.toHaveTextContent('0,15')
+    expect(result).not.toHaveAccessibleName(/linjär skattning/)
+    expect(screen.queryByText(/Poängen i listan/)).toBeNull()
+  })
   it('keeps focus inside the slip, blocks modified Enter and allows retry after a failed start', async () => {
     const user = userEvent.setup()
     const onClose = vi.fn()
@@ -140,7 +195,8 @@ describe('Folio Provpass hub and slip', () => {
     expect(screen.getAllByTestId(/^prov-pass-/)).toHaveLength(3)
     await user.click(screen.getByRole('button', { name: 'Visa alla 4 provtillfällen' }))
     expect(screen.getAllByTestId(/^prov-pass-/)).toHaveLength(4)
-    expect(screen.getByTestId('prov-pass-var-2024-verb1')).toHaveTextContent('sett 6 gånger')
+    expect(screen.getByTestId('prov-pass-var-2024-verb1')).toHaveTextContent('sett 3 av 40')
+    expect(screen.getByTestId('prov-pass-var-2024-verb1')).toHaveAccessibleName(/sett 3 av 40/)
   })
   it('supports synthetic kvant and keeps void notice in neutral CSS', async () => {
     const user = userEvent.setup()

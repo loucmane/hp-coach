@@ -20,11 +20,13 @@ export function ProvRegister({
         className="fa-cell"
         data-testid={`prov-pass-${p.examId}-${p.provpass}`}
         aria-pressed={view.chosen === p}
-        aria-label={`${passName(p)}, sett ${p.totalExposure} gånger${view.suggested === p ? ', minst sett' : ''}`}
+        aria-label={`${passName(p)}, sett ${p.seenBefore} av ${p.presented}${view.suggested === p ? ', minst sett' : ''}`}
         onClick={() => onPick(passKey(p))}
       >
         {phone ? <span>{formatPass(p.provpass)}</span> : null}
-        <span>sett {p.totalExposure} gånger</span>
+        <span>
+          sett {p.seenBefore} av {p.presented}
+        </span>
         {p.presented < 40 ? <span className="fa-meta">{p.presented}/40 frågor</span> : null}
       </button>
     ) : (

@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { ComponentProps, ComponentType, ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { MockResultRow } from '@/api/hooks/useMockResults'
+import type { ActiveSession } from '@/api/hooks/useSessions'
 import type { MockRunner } from '@/components/mock/MockRunner'
 import type { Question } from '@/data/questions'
 import { FolioHostContext } from '@/folio/host'
@@ -15,6 +16,10 @@ const state = vi.hoisted(() => ({
   start: vi.fn(),
   update: vi.fn(),
   bank: [] as Question[],
+  active: null as ActiveSession | null,
+  attempts: vi.fn(),
+  startError: false,
+  resetStart: vi.fn(),
 }))
 vi.mock('@tanstack/react-router', () => ({
   createFileRoute: () => (options: unknown) => ({ options, useSearch: () => state.search }),
@@ -28,9 +33,14 @@ vi.mock('@/api/hooks/useMockResults', () => ({
   useExposure: () => ({ data: state.exposure }),
 }))
 vi.mock('@/api/hooks/useSessions', () => ({
-  useActiveSessionOfKind: () => ({ data: null, isLoading: false }),
-  useSessionAttempts: () => ({ data: [], isLoading: false, isError: false }),
-  useStartSession: () => ({ mutate: state.start, isPending: false, isError: false }),
+  useActiveSessionOfKind: () => ({ data: state.active, isLoading: false }),
+  useSessionAttempts: state.attempts,
+  useStartSession: () => ({
+    mutate: state.start,
+    isPending: false,
+    isError: state.startError,
+    reset: state.resetStart,
+  }),
   useUpdateSession: () => ({ mutate: state.update }),
 }))
 vi.mock('@/data/questions', async (original) => ({
@@ -76,6 +86,12 @@ beforeEach(() => {
   state.navigate.mockClear()
   state.start.mockReset()
   state.update.mockClear()
+  state.active = null
+  state.attempts.mockReset().mockReturnValue({ data: [], isLoading: false, isError: false })
+  state.startError = false
+  state.resetStart.mockReset().mockImplementation(() => {
+    state.startError = false
+  })
   state.bank = [
     {
       qid: 'q1',
@@ -117,6 +133,56 @@ beforeEach(() => {
   )
 })
 describe('Prov route Folio branch', () => {
+  it('does not fetch resume attempts for the session it just started', async () => {
+    state.start.mockImplementation((input, options) => {
+      state.active = {
+        id: 3,
+        kind: 'mock',
+        userId: 1,
+        sections: input.sections,
+        plan: input.plan,
+        position: 0,
+        currentQuestionId: null,
+        device: null,
+        startedAt: new Date().toISOString(),
+        endedAt: null,
+      }
+      options.onSuccess(state.active)
+    })
+    renderRoute(true)
+    fireEvent.click(await screen.findByTestId('prov-start'))
+    fireEvent.click(screen.getByTestId('mock-confirm-start'))
+    expect(await screen.findByTestId('classic-runner')).toBeVisible()
+    expect(state.attempts.mock.calls.some(([id]) => id === 3)).toBe(false)
+  })
+  it('clears a previous start error when reopening the conditions', async () => {
+    const view = renderRoute(true)
+    fireEvent.click(await screen.findByTestId('prov-start'))
+    state.startError = true
+    view.rerender(
+      <FolioHostContext.Provider value={true}>
+        <Component />
+      </FolioHostContext.Provider>,
+    )
+    expect(screen.getByRole('status')).toHaveTextContent('Kunde inte starta passet')
+    fireEvent.click(screen.getByTestId('mock-confirm-dismiss'))
+    fireEvent.click(screen.getByTestId('prov-start'))
+    expect(screen.queryByText(/Kunde inte starta passet/)).toBeNull()
+    expect(state.resetStart).toHaveBeenCalledTimes(2)
+  })
+  it('lets an empty synthetic plan return to the picker and retry', async () => {
+    state.bank = []
+    renderRoute(true)
+    fireEvent.click(await screen.findByTestId('prov-mode-synthetic'))
+    fireEvent.click(screen.getByTestId('prov-start'))
+    fireEvent.click(screen.getByTestId('mock-confirm-start'))
+    expect(screen.getByRole('status')).toHaveTextContent('Inget pass kunde startas')
+    expect(state.start).not.toHaveBeenCalled()
+    fireEvent.keyDown(document.body, { key: 'Escape' })
+    expect(screen.queryByRole('dialog')).toBeNull()
+    fireEvent.click(screen.getByTestId('prov-start'))
+    expect(screen.queryByRole('status')).toBeNull()
+  })
   it('shows the Folio hub and result, while keeping classic surfaces when the host is off', async () => {
     const view = renderRoute(true)
     expect(await screen.findByTestId('folio-prov')).toBeVisible()

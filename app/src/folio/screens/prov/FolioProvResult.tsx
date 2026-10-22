@@ -163,7 +163,7 @@ export default function FolioProvResult(props: FolioProvResultProps) {
                     {s.correct}/{s.presented}
                   </td>
                   <td>
-                    {formatMs(s.timeMs)}
+                    {s.unvisited ? '—' : formatMs(s.timeMs)}
                     {phone ? (
                       <span
                         className="fa-table-sub"
@@ -194,7 +194,7 @@ export default function FolioProvResult(props: FolioProvResultProps) {
               {view.missed.length} av {row.presented}
             </span>
           </div>
-          <p className="fa-kallelse">{view.blanks} obesvarade</p>
+          {view.blanks > 0 ? <p className="fa-kallelse">{view.blanks} obesvarade</p> : null}
           {view.missed.length ? (
             <ResultErrata qids={view.missed} {...errataProps} />
           ) : (
@@ -226,12 +226,7 @@ export default function FolioProvResult(props: FolioProvResultProps) {
         <section data-testid="mock-result-history">
           <h2 className="fa-h3">Tidigare pass</h2>
           {view.history.length ? (
-            <>
-              <ResultRows rows={view.history} navigateHref={props.navigateHref} />
-              <p className="fa-footnote">
-                Poängen i listan är linjära skattningar, inte normerade.
-              </p>
-            </>
+            <ResultRows rows={view.history} navigateHref={props.navigateHref} />
           ) : (
             <p className="fa-margin-note">Inga tidigare pass av samma sort ännu.</p>
           )}

@@ -85,9 +85,9 @@ function Erratum({
             <p className="fa-facit-verdict">
               {attemptsLoading
                 ? 'Hämtar ditt svar …'
-                : attemptsError
+                : attemptsError || picked == null
                   ? 'Ditt svar kunde inte hämtas.'
-                  : `Ditt svar: ${picked ?? 'obesvarad'}`}{' '}
+                  : `Ditt svar: ${picked}`}{' '}
               · rätt svar: <span className="fa-right-letter">{q.answer}</span>.
             </p>
           </div>

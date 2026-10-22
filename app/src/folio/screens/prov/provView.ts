@@ -6,7 +6,7 @@ import type { PassOption } from '@/lib/mock'
 import type { MockSheetState } from '@/lib/mockSheet'
 import { type NormeringSitting, normedScore } from '@/lib/normering'
 import { isCalibrated } from '@/lib/provenance'
-import { formatScore, scoreFromFraction } from '@/lib/scoring'
+import { formatScore } from '@/lib/scoring'
 import type { TrapCluster } from '@/lib/trapCluster'
 import { paceNote, uhrRank, uhrTimeMs } from '@/lib/uhrPacing'
 
@@ -54,8 +54,7 @@ export function historyLabel(row: MockResultRow) {
   const when = date
     ? new Date(date).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' })
     : '—'
-  const score = row.presented > 0 ? scoreFromFraction(row.correct / row.presented) : null
-  return { when, score: scoreText(score), half: HALF_LABEL[row.half] }
+  return { when, half: HALF_LABEL[row.half] }
 }
 function sittingOrder(id: string) {
   const m = /^(var|host)-(?:ver(\d+)-)?(\d{4})(?:-(\d+))?$/.exec(id)
@@ -125,17 +124,24 @@ export function buildResultView({
           return q && !missed.includes(qid) && answers.get(qid)?.letter === q.answer
         })
       : []
-  const sections = Object.entries(row.breakdown.perSection)
-    .sort(([a], [b]) => uhrRank(a) - uhrRank(b) || a.localeCompare(b))
-    .map(([section, s]) => {
-      const uhrMs = uhrTimeMs(section, s.presented)
-      return { section, ...s, uhrMs, note: uhrMs == null ? '' : paceNote(s.timeMs, uhrMs) }
-    })
   const missCounts = new Map<string, number>()
   for (const qid of missed) {
     const section = findQuestion(bank, qid)?.section ?? sectionOfQid(qid)
     if (section) missCounts.set(section, (missCounts.get(section) ?? 0) + 1)
   }
+  const sections = Object.entries(row.breakdown.perSection)
+    .sort(([a], [b]) => uhrRank(a) - uhrRank(b) || a.localeCompare(b))
+    .map(([section, s]) => {
+      const uhrMs = uhrTimeMs(section, s.presented)
+      const unvisited = s.timeMs === 0 && s.correct === 0 && !missCounts.has(section)
+      return {
+        section,
+        ...s,
+        uhrMs,
+        unvisited,
+        note: unvisited ? '—' : uhrMs == null ? '' : paceNote(s.timeMs, uhrMs),
+      }
+    })
   const sectionPattern = [...missCounts].sort(
     ([a, x], [b, y]) => y - x || uhrRank(a) - uhrRank(b),
   )[0]

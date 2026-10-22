@@ -5,6 +5,15 @@ import { describe, expect, it } from 'vitest'
 
 const read = (name: string) => readFileSync(fileURLToPath(new URL(name, import.meta.url)), 'utf8')
 describe('Provpass isolation', () => {
+  it('stacks the slip controls above the shell scrim while leaving the outside scrim clickable', () => {
+    const css = read('./prov.css')
+    const rule = (name: string) =>
+      css.match(new RegExp(`\\[data-folio\\] \\.fa-prov \\.${name} \\{([^}]+)\\}`))?.[1] ?? ''
+    const z = (name: string) => Number(rule(name).match(/z-index:\s*(\d+)/)?.[1])
+    expect(z('fa-slip')).toBeGreaterThan(z('fa-scrim'))
+    expect(rule('fa-scrim')).not.toMatch(/pointer-events:\s*none/)
+    expect(rule('fa-slip')).not.toMatch(/pointer-events:\s*none/)
+  })
   it('loads both screens lazily after hooks while retaining the classic runner', () => {
     const source = read('../../../routes/prov.tsx')
     const ast = ts.createSourceFile(

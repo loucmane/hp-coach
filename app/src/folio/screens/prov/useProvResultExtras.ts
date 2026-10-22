@@ -9,6 +9,12 @@ import { useTrapCluster } from '@/lib/trapCluster'
 const NO_MISSES: string[] = []
 export function useProvResultExtras(row: MockResultRow | undefined) {
   const attempts = useSessionAttempts(row?.sessionId ?? null)
+  const { refetch } = attempts
+  useEffect(() => {
+    // A resumed run can leave a fresh but partial answer list in the shared
+    // five-minute cache. Completed results need the final persisted picks.
+    if (row?.sessionId != null) void refetch()
+  }, [row?.sessionId, refetch])
   const answers = useMemo(() => sheetFromAttempts(attempts.data ?? []).answers, [attempts.data])
   const examId = row?.mode === 'authentic' ? row.examId : null
   const [loaded, setLoaded] = useState<{ examId: string; table: NormeringSitting | null } | null>(
@@ -44,7 +50,7 @@ export function useProvResultExtras(row: MockResultRow | undefined) {
   }, [cluster])
   return {
     answers,
-    attemptsLoading: attempts.isLoading,
+    attemptsLoading: attempts.isLoading || attempts.isFetching,
     attemptsError: attempts.isError,
     table: loaded?.examId === examId ? loaded?.table : null,
     cluster,

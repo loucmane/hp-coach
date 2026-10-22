@@ -21,7 +21,7 @@ export type FolioProvpassProps = {
   navigateHref: NavigateHref
   startAuthentic: (pass: PassOption) => void
   startSynthetic: () => void
-  beginRun: () => void
+  beginRun: () => boolean
   slipOpen: boolean
   pendingPass: PassOption | null
   onDismiss: () => void

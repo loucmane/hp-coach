@@ -25,13 +25,12 @@ export function ResultRows({
               className="fa-result-row"
               href={`/prov?result=${r.id}`}
               navigateHref={navigateHref}
-              aria-label={`${label.half}, ${r.correct} av ${r.presented} rätt, linjär skattning ${label.score}, ${label.when}. Visa resultatet`}
+              aria-label={`${label.half}, ${r.correct} av ${r.presented} rätt, ${label.when}. Visa resultatet`}
             >
               <span>{label.half}</span>
               <span>
                 {r.correct}/{r.presented}
               </span>
-              <span>{label.score}</span>
               <span className="fa-meta">{label.when}</span>
             </ProvLink>
           </li>
@@ -64,10 +63,7 @@ export function ProvMargin({
       <section>
         <h2 className="fa-h3">Senaste passen</h2>
         {rows.length ? (
-          <>
-            <ResultRows rows={rows} navigateHref={navigateHref} />
-            <p className="fa-footnote">Poängen i listan är linjära skattningar, inte normerade.</p>
-          </>
+          <ResultRows rows={rows} navigateHref={navigateHref} />
         ) : (
           <p
             className="fa-margin-note"

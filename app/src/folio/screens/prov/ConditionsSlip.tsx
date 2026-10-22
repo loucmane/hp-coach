@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { MockHalf, MockMode } from '@/api/hooks/useMockResults'
 import type { PassOption } from '@/lib/mock'
 import { logMockEvent } from '@/lib/mockEvents'
@@ -20,10 +20,11 @@ export function ConditionsSlip({
   pending: boolean
   error: boolean
   minutes: number
-  onStart: () => void
+  onStart: () => boolean
   onClose: () => void
 }) {
   const started = useRef(false)
+  const [unavailable, setUnavailable] = useState(false)
   const shown = useRef(false)
   const panel = useRef<HTMLDivElement>(null)
   const start = useRef<HTMLButtonElement>(null)
@@ -49,8 +50,12 @@ export function ConditionsSlip({
   const confirm = () => {
     if (started.current || pending) return
     started.current = true
+    setUnavailable(false)
     logMockEvent('confirm_started')
-    onStart()
+    if (!onStart()) {
+      started.current = false
+      setUnavailable(true)
+    }
   }
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -131,7 +136,11 @@ export function ConditionsSlip({
             <li key={rule}>{rule}</li>
           ))}
         </ul>
-        {error ? (
+        {unavailable ? (
+          <p className="fa-status" role="status">
+            Inget pass kunde startas. Välj ett annat pass eller försök igen.
+          </p>
+        ) : error ? (
           <p className="fa-status" role="status">
             Kunde inte starta passet. Försök igen.
           </p>
