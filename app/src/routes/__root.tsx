@@ -22,6 +22,8 @@ import { Frame } from '@/components/Frame'
 import { PublicLanding } from '@/components/landing/PublicLanding'
 import { RouteScene } from '@/components/motion/RouteScene'
 import { Btn, Mono } from '@/components/primitives'
+import { FolioHost } from '@/folio/FolioHost'
+import { PUBLIC_ROUTES } from '@/folio/nav'
 import { hasFirstContentFired } from '@/lib/motion'
 import { isWelcomed } from '@/lib/welcome'
 import { useDesignDirection, useDesignStore } from '@/stores/designStore'
@@ -30,20 +32,6 @@ import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
 export const Route = createRootRoute({
   component: RootShell,
 })
-
-// /dev-login bootstraps a Clerk session against the worker's
-// /api/dev/login endpoint (dev/staging only). Has to be public — the
-// whole point is to render before there's a session.
-// /integritet and /villkor are public legal pages — they must render
-// logged-out (footer/landing/sign-in links reach them without a session).
-const PUBLIC_ROUTES = new Set<string>([
-  '/sign-in',
-  '/sign-up',
-  '/dev-login',
-  '/integritet',
-  '/villkor',
-  '/hjalp',
-])
 
 function RootShell() {
   const palette = useUiStore((s) => s.palette)
@@ -58,9 +46,7 @@ function RootShell() {
 
   return (
     <>
-      <Frame>
-        <ClerkGate />
-      </Frame>
+      <ClerkGate />
       {/* Both components self-gate via `isDevSurface()` — visible when
        *  `import.meta.env.DEV` OR `?dev=1` is in the URL OR the
        *  sessionStorage flag is set. Hidden in pure production
@@ -146,8 +132,17 @@ function ClerkGate() {
   }, [isLoaded])
 
   if (isLoaded) return <AuthRouter />
-  if (timedOut) return <ClerkLoadFailed />
-  return <SplashLoading />
+  if (timedOut)
+    return (
+      <Frame>
+        <ClerkLoadFailed />
+      </Frame>
+    )
+  return (
+    <Frame>
+      <SplashLoading />
+    </Frame>
+  )
 }
 
 function ClerkLoadFailed() {
@@ -211,14 +206,16 @@ function AuthRouter() {
   return (
     <>
       {isPublic ? (
-        <Outlet />
+        <Frame>
+          <Outlet />
+        </Frame>
       ) : (
         <>
           <SignedIn>
             <SignedInTree />
           </SignedIn>
           <SignedOut>
-            {location.pathname === '/' ? <PublicLanding /> : <RedirectToSignIn />}
+            <Frame>{location.pathname === '/' ? <PublicLanding /> : <RedirectToSignIn />}</Frame>
           </SignedOut>
         </>
       )}
@@ -249,9 +246,13 @@ function SignedInTree() {
   // only, exits lead) instead of sliding. See RouteScene.
   return (
     <DirectionContent pathname={location.pathname}>
-      <RouteScene>
-        <Outlet />
-      </RouteScene>
+      <FolioHost pathname={location.pathname}>
+        <Frame>
+          <RouteScene>
+            <Outlet />
+          </RouteScene>
+        </Frame>
+      </FolioHost>
     </DirectionContent>
   )
 }
@@ -275,9 +276,11 @@ export function DirectionContent({
   if (!direction || !screen) return children
   return (
     <DirectionBoundary key={`${direction}:${pathname}`} fallback={children}>
-      <Suspense fallback={<DirectionLoading />}>
-        <DirectionShell direction={direction} screen={screen} />
-      </Suspense>
+      <Frame>
+        <Suspense fallback={<DirectionLoading />}>
+          <DirectionShell direction={direction} screen={screen} />
+        </Suspense>
+      </Frame>
     </DirectionBoundary>
   )
 }

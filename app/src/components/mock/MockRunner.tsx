@@ -14,7 +14,7 @@
 // `session` — see the Props type.
 
 import { useAuth } from '@clerk/clerk-react'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 
 import { useSubmitAttempt } from '@/api/hooks/useAttempts'
 import { useRecordMistake } from '@/api/hooks/useMistakes'
@@ -31,6 +31,8 @@ import { MobileFrame } from '@/components/MobileFrame'
 import { Btn } from '@/components/primitives'
 import { dtkBlockPosition } from '@/components/session/SessionPlayer'
 import type { AnswerLetter, Question, Section } from '@/data/questions'
+import { useDismiss } from '@/folio/lib/useDismiss'
+import { useShellFocus } from '@/folio/useShellFocus'
 import { useCountdown } from '@/hooks/useCountdown'
 import { useViewport } from '@/hooks/useViewport'
 import { computeMockSummary } from '@/lib/mock'
@@ -137,6 +139,8 @@ function MockRunnerPass({
     flagged: loadMockFlags(userId, session.id),
   }))
   const settledRef = useRef(false)
+  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false)
+  const continuePass = useCallback(() => setLeaveConfirmOpen(false), [])
 
   useEffect(() => {
     // A queued render after hand-in must not recreate the cleared storage key.
@@ -285,6 +289,7 @@ function MockRunnerPass({
 
   // Keyboard: a–e pick, ←/→ navigate, M toggles uncertainty. No Enter-advance.
   useEffect(() => {
+    if (leaveConfirmOpen) return
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null
       if (
@@ -314,7 +319,7 @@ function MockRunnerPass({
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [pick, goTo, index, toggleFlag])
+  }, [pick, goTo, index, toggleFlag, leaveConfirmOpen])
 
   const handleSubmitClick = useCallback(() => {
     const unanswered = plan.filter(
@@ -330,6 +335,9 @@ function MockRunnerPass({
   const handleAbandonClick = useCallback(() => {
     if (confirm('Avbryter du blir provet ogiltigt.')) abandon()
   }, [abandon])
+
+  // Folio's exit confirms that leaving voids this pass, without pushing history.
+  useShellFocus({ active: !!q, onExit: () => setLeaveConfirmOpen(true) })
 
   if (!q) return null
 
@@ -414,8 +422,79 @@ function MockRunnerPass({
             Avbryt provpass
           </button>
         </div>
+        {leaveConfirmOpen && (
+          <MockLeaveConfirm
+            onContinue={continuePass}
+            onLeave={() => {
+              setLeaveConfirmOpen(false)
+              abandon()
+            }}
+          />
+        )}
       </div>
     </MobileFrame>
+  )
+}
+
+function MockLeaveConfirm({
+  onContinue,
+  onLeave,
+}: {
+  onContinue: () => void
+  onLeave: () => void
+}) {
+  const titleId = useId()
+  const descriptionId = useId()
+  const panel = useRef<HTMLDivElement>(null)
+  const opener = useRef(
+    document.activeElement instanceof HTMLButtonElement ? document.activeElement : null,
+  )
+  useDismiss(true, onContinue, panel, opener, true)
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, zIndex: 60 }}>
+      <button
+        type="button"
+        aria-label="Stäng bekräftelsen"
+        tabIndex={-1}
+        onClick={onContinue}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          border: 0,
+          background: 'color-mix(in oklch, var(--ink) 22%, transparent)',
+        }}
+      />
+      <div
+        ref={panel}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          padding: '20px 22px 30px',
+          borderTop: '1px solid var(--hairline)',
+          borderRadius: '24px 24px 0 0',
+          background: 'var(--panel)',
+          color: 'var(--ink)',
+        }}
+      >
+        <h2 id={titleId} className="hpc-m3-display" style={{ fontSize: 24, margin: '0 0 14px' }}>
+          Avbryt provpasset?
+        </h2>
+        <p id={descriptionId}>Avbryter du nu blir provpasset ogiltigt.</p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18, marginTop: 24 }}>
+          <Btn onClick={onContinue}>Fortsätt provpasset</Btn>
+          <Btn variant="secondary" onClick={onLeave}>
+            Avbryt provpasset
+          </Btn>
+        </div>
+      </div>
+    </div>
   )
 }
 

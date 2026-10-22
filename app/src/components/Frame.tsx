@@ -31,8 +31,9 @@
 // would break existing call-sites; keeping them as a no-op is the
 // cheapest migration path.
 
-import type { ReactNode } from 'react'
+import { type ReactNode, useContext } from 'react'
 
+import { FolioHostContext } from '@/folio/host'
 import { useViewport } from '@/hooks/useViewport'
 
 type FrameProps = {
@@ -46,6 +47,7 @@ type FrameProps = {
 }
 
 export function Frame({ children }: FrameProps) {
+  const folio = useContext(FolioHostContext)
   const viewport = useViewport()
   const isPhone = viewport === 'phone'
   const isStudio = viewport === 'studio'
@@ -64,31 +66,42 @@ export function Frame({ children }: FrameProps) {
   // min-height 100dvh, the canvas grows to fill.
   return (
     <div
-      className={`hpc-frame ${
-        isPhone ? 'hpc-frame-phone' : isStudio ? 'hpc-frame-studio' : 'hpc-frame-reader'
-      }`}
-      style={
-        isPhone
+      className={
+        folio
           ? undefined
-          : {
-              minHeight: '100dvh',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'stretch',
-              background: 'var(--panel-2)',
-            }
+          : `hpc-frame ${
+              isPhone ? 'hpc-frame-phone' : isStudio ? 'hpc-frame-studio' : 'hpc-frame-reader'
+            }`
+      }
+      style={
+        folio
+          ? { width: '100%', minWidth: 0 }
+          : isPhone
+            ? undefined
+            : {
+                minHeight: '100dvh',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'stretch',
+                background: 'var(--panel-2)',
+              }
       }
     >
+      {/* Folio owns the outer chrome, but unported screens still depend on
+          this centered desktop canvas for their width cap and gutters. */}
       <div
         className={isPhone ? undefined : 'hpc-frame-canvas'}
         style={
           isPhone
-            ? { display: 'contents' }
+            ? folio
+              ? { width: '100%', minWidth: 0 }
+              : { display: 'contents' }
             : {
                 width: '100%',
+                minWidth: folio ? 0 : undefined,
                 maxWidth: isStudio ? 'var(--canvas-max-w)' : 'var(--canvas-max-w-reader)',
                 margin: '0 auto',
-                background: 'var(--bg)',
+                background: folio ? undefined : 'var(--bg)',
                 position: 'relative',
                 flex: 1,
                 display: 'flex',

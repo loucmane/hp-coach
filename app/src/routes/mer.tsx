@@ -86,6 +86,9 @@ function MerRoute() {
 
           <DrillRailSection meta="Inställningar" delay={120}>
             <h2 className="hpc-m3-h">Tema och röst</h2>
+            <SettingRow label="Design">
+              <DesignWords />
+            </SettingRow>
             <SettingRow label="Palett">
               <PaletteWords />
             </SettingRow>
@@ -301,6 +304,25 @@ function PaletteWords() {
           {p}
         </Word>
       ))}
+    </>
+  )
+}
+
+function DesignWords() {
+  const preview = useUiStore((s) => s.folioPreview)
+  const setPreview = useUiStore((s) => s.setFolioPreview)
+  return (
+    <>
+      <Word active={!preview} onClick={() => setPreview(false)} ariaLabel="Klassisk">
+        Klassisk
+      </Word>
+      <Word
+        active={preview}
+        onClick={() => setPreview(true)}
+        ariaLabel="Ny design (förhandsvisning)"
+      >
+        Ny design (förhandsvisning)
+      </Word>
     </>
   )
 }

@@ -1,0 +1,140 @@
+[data-folio] {
+  --fa-paper: oklch(97% 0.012 85);
+  --fa-paper-2: oklch(95.2% 0.014 83);
+  --fa-paper-3: oklch(92.4% 0.016 81);
+  --fa-leaf: oklch(98.8% 0.007 88);
+  --fa-menu: oklch(99.2% 0.005 88);
+  --fa-ink: oklch(21% 0.01 60);
+  --fa-ink-2: oklch(37% 0.012 62);
+  --fa-ink-3: oklch(47.5% 0.012 65);
+  --fa-rule: oklch(86.5% 0.013 78);
+  --fa-rule-2: oklch(74% 0.014 72);
+  --fa-accent: oklch(43% 0.12 258);
+  --fa-accent-2: oklch(36% 0.115 258);
+  --fa-accent-ink: oklch(41% 0.12 258);
+  --fa-accent-soft: oklch(93.6% 0.024 255);
+  /* Filled controls: the same ink-blue in light; a deeper, quieter blue
+   * in dark, so a button never turns pastel. */
+  --fa-accent-fill: oklch(43% 0.12 258);
+  --fa-accent-fill-2: oklch(36% 0.115 258);
+  --fa-on-accent: oklch(98.6% 0.006 85);
+  /* The heavy rule (the lead, the account slip's head). */
+  --fa-rule-strong: oklch(21% 0.01 60);
+  --fa-ok: oklch(44% 0.095 152);
+  --fa-ok-soft: oklch(94% 0.03 150);
+  --fa-mark: oklch(91.5% 0.075 92);
+  --fa-focus: oklch(50% 0.16 258);
+  /* The spread's fold: a soft shade either side of the spine. */
+  --fa-fold: oklch(40% 0.02 70 / 0.05);
+  --fa-fold-2: oklch(40% 0.02 70 / 0.12);
+  --fa-scrim: oklch(21% 0.01 60 / 0.32);
+  --fa-pop:
+    0 1px 0 oklch(30% 0.02 60 / 0.04), 0 18px 40px -16px oklch(28% 0.03 60 / 0.3),
+    0 0 0 1px oklch(30% 0.02 60 / 0.07);
+
+  --fa-serif:
+    'Literata', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Liberation Serif',
+    serif;
+  --fa-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Ubuntu Sans', sans-serif;
+
+  /* Type scale — eight sizes, nothing in between. */
+  --fa-t12: 12px;
+  --fa-t13: 13px;
+  --fa-t15: 15px;
+  --fa-t17: 17px;
+  --fa-t19: 19px;
+  --fa-t24: 24px;
+  --fa-t32: 32px;
+  --fa-t44: 44px;
+  --fa-t56: 56px;
+
+  /* Space — a 4 px scale. */
+  --fa-s1: 4px;
+  --fa-s2: 8px;
+  --fa-s3: 12px;
+  --fa-s4: 16px;
+  --fa-s6: 24px;
+  --fa-s8: 32px;
+  --fa-s12: 48px;
+  --fa-s16: 64px;
+
+  --fa-r1: 6px;
+  --fa-r2: 12px;
+  --fa-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --fa-d1: 120ms;
+  --fa-d2: 180ms;
+  --fa-d-out: 100ms;
+  /* A followed ¶ link: hold the mark, then let it go. */
+  --fa-flash: 700ms;
+  /* KaTeX beside Literata: Computer Modern's x-height (0.431 em) scaled to
+   * Literata's, so math sits in the line rather than shrinking out of it.
+   * The only token batch 1 adds (spec §4); see the worklog for how it was
+   * set. */
+  --fa-math-scale: 1.14em;
+
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  background: var(--fa-paper);
+  color-scheme: light;
+}
+
+/* Unported route content retains the app's own typography and focus rings. */
+[data-folio] .fa-side,
+[data-folio] .fa-tabs,
+[data-folio] .fa-ptop,
+[data-folio] .fa-focus-bar,
+[data-folio] .fa-menu {
+  color: var(--fa-ink);
+  font-family: var(--fa-sans);
+  font-size: var(--fa-t15);
+  line-height: 1.5;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  interpolate-size: allow-keywords;
+}
+
+[data-folio][data-theme='dark'] {
+  --fa-paper: oklch(21.5% 0.009 62);
+  --fa-paper-2: oklch(19% 0.008 62);
+  --fa-paper-3: oklch(26.5% 0.01 64);
+  --fa-leaf: oklch(24.2% 0.01 64);
+  --fa-menu: oklch(28% 0.011 64);
+  /* Ink a step under white, so the page does not glow. */
+  --fa-ink: oklch(88% 0.012 85);
+  --fa-ink-2: oklch(79% 0.012 82);
+  --fa-ink-3: oklch(68% 0.012 78);
+  --fa-rule: oklch(33.5% 0.01 66);
+  --fa-rule-2: oklch(46% 0.012 68);
+  --fa-rule-strong: oklch(64% 0.012 70);
+  /* A quiet accent on warm charcoal: low chroma, never a glow. Marks and
+   * links keep the light accent; filled controls take the deep one. */
+  --fa-accent: oklch(69% 0.07 255);
+  --fa-accent-2: oklch(74% 0.065 255);
+  --fa-accent-ink: oklch(79% 0.07 255);
+  --fa-accent-soft: oklch(30% 0.03 255);
+  --fa-accent-fill: oklch(50% 0.09 256);
+  --fa-accent-fill-2: oklch(46% 0.09 256);
+  --fa-on-accent: oklch(97% 0.008 85);
+  --fa-ok: oklch(79% 0.09 152);
+  --fa-ok-soft: oklch(29% 0.035 152);
+  --fa-mark: oklch(37% 0.06 92);
+  --fa-focus: oklch(77% 0.11 255);
+  --fa-fold: oklch(0% 0 0 / 0.08);
+  --fa-fold-2: oklch(0% 0 0 / 0.2);
+  --fa-scrim: oklch(8% 0.01 60 / 0.55);
+  --fa-pop: 0 18px 44px -14px oklch(5% 0.01 60 / 0.7), 0 0 0 1px var(--fa-rule-2);
+  color-scheme: dark;
+}
+
+[data-folio] *,
+[data-folio] *::before,
+[data-folio] *::after { box-sizing: border-box; }
+[data-folio] .fa-side :focus-visible,
+[data-folio] .fa-tabs :focus-visible,
+[data-folio] .fa-ptop :focus-visible,
+[data-folio] .fa-focus-bar :focus-visible,
+[data-folio] .fa-menu :focus-visible { outline: 2px solid var(--fa-ink); outline-offset: 3px; }
