@@ -111,3 +111,33 @@ FOLIO UPPSLAG R2 DONE: hpf-qr0p.49.8
 - Bead status and assignee remain unchanged under the accepted delivery contract. Coordinator owns parking and delivery after the DONE note. The new `astra-relay` playbook proposal above needs transfer from this worklog because its scratch destination is outside writable roots.
 
 FOLIO UPPSLAG R3 DONE: hpf-qr0p.49.8
+
+## Round 4 — 2026-10-22
+
+- Clean starting HEAD: `882f564deaff34d44776cd2137d583fecff3cb9c`; assigned branch, unchanged write set and no molecule confirmed. Round 3 has host-green checks, independent PASS and owner visual approval according to the accepted brief.
+- Keep the shared bookmark hook and retry policy. Resolve Folio's fallback after the first failure and freeze it while background retries continue; verify both observer mounting orders and delayed read reconciliation.
+- Classic worked-example text uses the global `--ink`, `--ink-2`, `--muted` and `--hairline` tokens, which do not follow Folio dark mode. Scope palette aliases around this embedded component, including its figure surfaces, without editing the classic component. Check text contrast against desktop leaf and phone paper in every light/dark palette.
+- Add failing regressions before product changes. Deliver uncommitted; the coordinator owns staging/signing, host checks and the remaining review/visual gates. Default test TMPDIR retained per this round's explicit instruction.
+
+### Round-4 red-first evidence
+
+- Before product edits, `pnpm test src/folio/screens/uppslag --maxWorkers=2 --reporter=dot` produced **7 failed, 43 passed**. Four failures reproduced waiting past the first bookmark failure (including both observer orders and delayed server-read reconciliation); one caught the absent scoped example wrapper; two caught missing palette aliases and dark text contrast of **1.073:1** on Folio paper.
+- After the fixes, the same focused command passed **3 files, 50 tests**, 5.27 seconds. With a 1,000 ms retry delay, Folio opens the fallback within the first 20 ms of simulated time; the shared query still retries and delivers its recovered bookmark to the other observer without changing Folio's open entry. Pending server reads still settle before choosing the fallback.
+- The CSS guard resolves the actual palette values and example aliases and calculates relative luminance: primary, secondary and muted text each meet **4.5:1** against phone paper, desktop leaf and figure surfaces in all six light/dark palettes. Rule/button outlines use the Folio secondary rule token. This is a token-level assertion, not a rendered-browser visual approval.
+- Final lint passes after one formatting correction, with the same four unrelated informational diagnostics. Full app suite, typecheck and production build results follow in delivery evidence.
+
+### Playbook-proposal — astra-relay (round 4)
+
+- 2026-10-22 — Symptom: a shared-query fallback test passed only after retries finished while the student remained on “Laddar …” through the retry delay. Cause: `isPending` stays true between failed attempts; a test that awaits the final state misses the wait. Rule: test the first-failure UI before advancing the retry timer, separately verify that the shared query still retries, and freeze the selected fallback through retry success. Keep readiness local rather than changing shared query options. Retained here for coordinator transfer because `~/scratch/skill-gotchas/` is outside this managed worker's writable roots.
+
+### Round-4 delivery — 2026-10-22
+
+- Both requested fixes are complete. This supersedes round 3's wait-through-retry behavior: Folio settles its entry on the first failed bookmark attempt, while the shared `useLessonProgress()` query continues its normal retries. Recovered bookmark data does not turn the selected page. The embedded classic worked example has six local Folio color aliases for text, rules and figure surfaces; `WorkedExample.tsx` is unchanged.
+- Red-first: **7 expected failures, 43 passes**. Focused after fixes: **50 passed**, including both shared observer orders, first-failure fallback, exhausted retries, server-read reconciliation, wrapper scope and numeric light/dark palette contrast. All changed tests also pass in the final full run.
+- Full app suite: `pnpm test --maxWorkers=2 --reporter=dot` — **162 files passed, 1 failed; 4,889 tests passed, 1 failed**, 175.11 seconds. The sole failure is the previously documented trap-index generator parity check in `src/lib/trapIndex.test.ts`: `spawnSync /usr/bin/node EPERM`. Host coordinator must rerun it; no sandbox workaround attempted.
+- `pnpm typecheck` — **passed**. Final `pnpm lint` — **passed**, four existing informational diagnostics. `pnpm build` — **passed**, including PWA generation; existing route-test discovery and chunk-size warnings remain. `git diff --check` — **passed**. No worker/dependency changes; worker checks do not apply.
+- Delivery HEAD remains `882f564deaff34d44776cd2137d583fecff3cb9c` on `codex/hpf-qr0p.49.8-uppslag-in-folio`, worktree `/home/loucmane/dev/hpfetcher-worktrees/hpf-qr0p.49.8`. All six changed repository files are admitted. Changes are **uncommitted and unstaged**, because the worktree Git index is outside writable roots (the earlier staging refusal is recorded above). Coordinator owns staging/signing; no direct commit or credential action attempted.
+- Review disposition: independent round-4 review pending. The accepted brief records round-3 host green, Claude PASS and owner visual OK; round-4 changes need the host generator check, independent exact-head review, and real-stack desktop/phone light/dark confirmation before delivery. No new visual PASS is claimed here; authenticated E2E remains host-owned as explained in round 1. The bead retains its owner visual gate and no-auto-merge rule.
+- Bead status/assignee remain unchanged under the accepted delivery contract. Coordinator parks after the DONE note. Transfer the new `astra-relay` playbook proposal above from this worklog; scratch is outside writable roots.
+
+FOLIO UPPSLAG R4 DONE: hpf-qr0p.49.8

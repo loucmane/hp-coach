@@ -173,15 +173,17 @@ function Article({ open, phone }: { open: UppslagEntry; phone: boolean }) {
         <MathText>{open.summary ?? open.title}</MathText>
       </H>
       {body}
-      <WorkedExample
-        key={open.id}
-        entryId={open.id}
-        fallback={
-          'worked_example' in e && e.worked_example ? (
-            <AuthoredExample example={e.worked_example} Sub={Sub} />
-          ) : undefined
-        }
-      />
+      <div className="fa-up-worked">
+        <WorkedExample
+          key={open.id}
+          entryId={open.id}
+          fallback={
+            'worked_example' in e && e.worked_example ? (
+              <AuthoredExample example={e.worked_example} Sub={Sub} />
+            ) : undefined
+          }
+        />
+      </div>
       {'counter_example' in e ? (
         <Prose
           Sub={Sub}

@@ -345,6 +345,7 @@ describe('Folio Uppslag', () => {
       expect(screen.getByRole('region', { name })).toBeInTheDocument()
     expect(screen.getByText(/Det typiska felsvaret/)).toBeInTheDocument()
     expect(state.worked).toHaveBeenCalledWith('NOG-A')
+    expect(screen.getByTestId('classic-worked').parentElement).toHaveClass('fa-up-worked')
     expect(
       within(screen.getByTestId('classic-worked')).getByText('Förutsättning'),
     ).toBeInTheDocument()
@@ -450,31 +451,41 @@ describe('Folio Uppslag', () => {
     expect(state.getReads).toHaveBeenCalledTimes(1)
   })
 
-  it('falls back after exhausting the shared bookmark retry policy', async () => {
+  it('falls back on the first bookmark failure while shared retries continue', async () => {
+    vi.useFakeTimers()
     state.bookmarkPending = true
     state.getBookmark.mockRejectedValue(new Error('offline'))
     const client = makeClient()
-    client.setDefaultOptions({ queries: { retry: 3, retryDelay: 5, staleTime: Infinity } })
+    client.setDefaultOptions({ queries: { retry: 3, retryDelay: 1000, staleTime: Infinity } })
     render(
       <QueryClientProvider client={client}>
         <FolioUppslag section="NOG" navigateHref={navigateHref} />
       </QueryClientProvider>,
     )
-    await screen.findByTestId('fa-lesson')
+    expect(screen.getByRole('status')).toHaveTextContent('Laddar')
+    await act(() => vi.advanceTimersByTimeAsync(20))
+    expect(state.getBookmark).toHaveBeenCalledTimes(1)
+    expect(screen.getByTestId('fa-lesson')).toBeInTheDocument()
+    expect(screen.queryByRole('status')).toBeNull()
+    expect(screen.getByTestId('fa-uppslag-entry-NOG-A')).toHaveAttribute('aria-current', 'page')
+    await act(() => vi.advanceTimersByTimeAsync(3000))
     expect(state.getBookmark).toHaveBeenCalledTimes(4)
+    expect(screen.getByTestId('fa-uppslag-entry-NOG-A')).toHaveAttribute('aria-current', 'page')
   })
 
   it.each([
     'classic-first',
     'folio-first',
   ] as const)('shares bookmark retries and results with another reader mounted %s', async (order) => {
+    vi.useFakeTimers()
     state.bookmarkPending = true
+    state.reads = ['NOG-A']
     const progress = { section: 'NOG', frameworkId: 'NOG-C' }
     state.getBookmark
       .mockRejectedValueOnce(new Error('temporary failure'))
       .mockResolvedValue({ ok: true, json: async () => ({ progress }) })
     const client = makeClient()
-    client.setDefaultOptions({ queries: { retry: 1, retryDelay: 5, staleTime: Infinity } })
+    client.setDefaultOptions({ queries: { retry: 1, retryDelay: 1000, staleTime: Infinity } })
     function SharedReader() {
       const bookmark = useLessonProgress()
       return <p data-testid="shared-bookmark">{bookmark.data?.frameworkId}</p>
@@ -486,14 +497,52 @@ describe('Folio Uppslag', () => {
         {order === 'folio-first' && <SharedReader />}
       </QueryClientProvider>,
     )
-    await waitFor(() => {
-      expect(screen.getByTestId('fa-uppslag-entry-NOG-C')).toHaveAttribute('aria-current', 'page')
-      expect(screen.getByTestId('shared-bookmark')).toHaveTextContent('NOG-C')
-    })
+    await act(() => vi.advanceTimersByTimeAsync(20))
+    expect(state.getBookmark).toHaveBeenCalledTimes(1)
+    expect(screen.getByTestId('fa-uppslag-entry-NOG-B')).toHaveAttribute('aria-current', 'page')
+    expect(navigateHref).toHaveBeenCalledWith('/lektion?section=NOG#NOG-B', { replace: true })
+    await act(() => vi.advanceTimersByTimeAsync(1000))
+    expect(screen.getByTestId('shared-bookmark')).toHaveTextContent('NOG-C')
+    // A recovered shared bookmark must not turn the page under the Folio reader.
+    expect(screen.getByTestId('fa-uppslag-entry-NOG-B')).toHaveAttribute('aria-current', 'page')
+    expect(navigateHref).toHaveBeenCalledTimes(1)
+    expect(state.put).toHaveBeenCalledWith(expect.objectContaining({ frameworkId: 'NOG-B' }))
     expect(state.getBookmark).toHaveBeenCalledTimes(2)
     const queries = client.getQueryCache().findAll({ queryKey: ['lesson-progress'] })
     expect(queries).toHaveLength(1)
     expect(queries[0].getObserversCount()).toBe(2)
+  })
+
+  it('still reconciles server reads before choosing a failed-bookmark fallback', async () => {
+    vi.useFakeTimers()
+    state.bookmarkPending = true
+    state.realReads = true
+    vi.mocked(useLessonReads).mockImplementation(realUseLessonReads)
+    state.getBookmark.mockRejectedValue(new Error('offline'))
+    let finishReads!: (response: unknown) => void
+    state.getReads.mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          finishReads = resolve
+        }),
+    )
+    const client = makeClient()
+    client.setDefaultOptions({ queries: { retry: 1, retryDelay: 1000, staleTime: Infinity } })
+    render(
+      <QueryClientProvider client={client}>
+        <FolioUppslag section="NOG" navigateHref={navigateHref} />
+      </QueryClientProvider>,
+    )
+    await act(() => vi.advanceTimersByTimeAsync(20))
+    expect(screen.getByRole('status')).toHaveTextContent('Laddar')
+    expect(state.put).not.toHaveBeenCalled()
+    expect(navigateHref).not.toHaveBeenCalled()
+    await act(async () => {
+      finishReads({ ok: true, json: async () => ({ entryIds: ['NOG-A', 'NOG-B'] }) })
+      await vi.advanceTimersByTimeAsync(20)
+    })
+    expect(state.getBookmark).toHaveBeenCalledTimes(1)
+    expect(screen.getByTestId('fa-uppslag-entry-NOG-C')).toHaveAttribute('aria-current', 'page')
   })
 
   it.each([

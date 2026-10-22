@@ -32,8 +32,10 @@ export default function FolioUppslag({
   const view = buildUppslagView({ ...extras, section, hash, bookmark: extras.bookmark.data })
   const { chapter, open } = view
   const hasRequestedEntry = chapter?.entries.some((e) => e.id === decodeHash(hash))
-  const waitingEntry =
-    !!open && (!extras.readsReady || (!hasRequestedEntry && extras.bookmark.isPending))
+  // The shared query keeps retrying for other readers; this page can use its
+  // fallback after the first failed attempt without waiting through that delay.
+  const waitingBookmark = extras.bookmark.isPending && extras.bookmark.failureCount === 0
+  const waitingEntry = !!open && (!extras.readsReady || (!hasRequestedEntry && waitingBookmark))
   const id = waitingEntry ? undefined : open?.id
   const [endFor, setEndFor] = useState<string | null>(null)
   const ending = !!chapter?.allRead && endFor === `${section}:${id}`
