@@ -38,4 +38,29 @@ describe('Folio navigation', () => {
       expect(supportsFolio(path)).toBe(false)
     expect(supportsFolio('/mer')).toBe(true)
   })
+  it.each([
+    '/nav-bakeoff',
+    '/drill-bake-off',
+    '/explanation-bake-off',
+    '/home-phone-resume-bakeoff',
+    '/progress-bakeoff/details',
+    '/m-compare',
+    '/m-compare/details',
+    '/redesign-lab',
+    '/redesign-l12',
+    '/drill-style-a',
+    '/drill-style-c/details',
+    '/dev',
+    '/dev/account-menu-bakeoff-2',
+  ])('does not wrap the standalone design route %s', (path) => {
+    expect(supportsFolio(path)).toBe(false)
+  })
+  it.each([
+    '/prov',
+    '/drill',
+    '/lektion',
+    '/progress',
+    '/konto',
+    '/mer',
+  ])('still wraps the production route %s', (path) => expect(supportsFolio(path)).toBe(true))
 })

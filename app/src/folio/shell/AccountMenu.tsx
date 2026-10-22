@@ -1,4 +1,4 @@
-import { useClerk } from '@clerk/clerk-react'
+import { useClerk, useUser } from '@clerk/clerk-react'
 import { Link } from '@tanstack/react-router'
 import { UserRound } from 'lucide-react'
 import { useRef } from 'react'
@@ -11,14 +11,12 @@ import { ThemePicker } from './ThemePicker'
 export function AccountMenu({
   phone,
   collapsed,
-  name,
   open,
   onToggle,
   close,
 }: {
   phone: boolean
   collapsed?: boolean
-  name: string
   open: boolean
   onToggle: () => void
   close: () => void
@@ -26,6 +24,9 @@ export function AccountMenu({
   const root = useRef<HTMLDivElement>(null)
   const trigger = useRef<HTMLButtonElement>(null)
   const { signOut } = useClerk()
+  const { user } = useUser()
+  const email = user?.primaryEmailAddress?.emailAddress ?? ''
+  const name = user?.fullName?.trim() || user?.firstName?.trim() || email || 'Ditt konto'
   useDismiss(open, close, root, trigger, phone)
   return (
     <div className="fa-account-wrap">
@@ -64,8 +65,8 @@ export function AccountMenu({
             aria-label="Konto och inställningar"
           >
             <div className="fa-menu-head">
-              <b>Ditt konto</b>
-              <span>{name}</span>
+              <b>{name}</b>
+              {email && <span>{email}</span>}
             </div>
             <Link className="fa-menu-item" to={ACCOUNT_ROUTES.konto} onClick={close}>
               Konto<span className="fa-menu-hint">Namn och e-post</span>

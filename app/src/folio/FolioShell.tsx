@@ -61,7 +61,6 @@ export function FolioShell({ children }: { children: ReactNode }) {
     <AccountMenu
       phone={phone}
       collapsed={collapsed}
-      name={data.identity.name}
       open={menu}
       close={closeMenu}
       onToggle={() => setMenu((value) => !value)}

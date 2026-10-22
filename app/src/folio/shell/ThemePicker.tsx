@@ -22,7 +22,7 @@ export function ThemePicker() {
           <button
             type="button"
             aria-pressed={mode === 'light'}
-            onClick={() => synced.setMode('light')}
+            onClick={() => void synced.setMode('light').catch(() => {})}
           >
             Ljust
           </button>
@@ -30,7 +30,7 @@ export function ThemePicker() {
             type="button"
             data-testid="fa-theme-toggle"
             aria-pressed={mode === 'dark'}
-            onClick={() => synced.setMode('dark')}
+            onClick={() => void synced.setMode('dark').catch(() => {})}
           >
             Mörkt
           </button>
@@ -44,7 +44,7 @@ export function ThemePicker() {
               type="button"
               key={key}
               aria-pressed={palette === key}
-              onClick={() => synced.setPalette(key)}
+              onClick={() => void synced.setPalette(key).catch(() => {})}
             >
               {label}
             </button>

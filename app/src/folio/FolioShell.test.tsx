@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import type { ComponentProps, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -12,6 +12,16 @@ const mocks = vi.hoisted(() => ({
   signOut: vi.fn(),
   signedIn: true,
   updateSession: vi.fn(),
+  submitAttempt: vi.fn(),
+  user: {
+    fullName: 'Ada Lovelace',
+    firstName: 'Ada',
+    primaryEmailAddress: { emailAddress: 'ada@example.test' },
+  } as {
+    fullName: string | null
+    firstName: string | null
+    primaryEmailAddress: { emailAddress: string } | null
+  } | null,
 }))
 vi.mock('@tanstack/react-router', () => ({
   createRootRoute: (options: unknown) => ({ options }),
@@ -31,6 +41,7 @@ vi.mock('@tanstack/react-router', () => ({
 vi.mock('@clerk/clerk-react', () => ({
   useClerk: () => ({ signOut: mocks.signOut }),
   useAuth: () => ({ isLoaded: true, userId: 'folio-test-user' }),
+  useUser: () => ({ user: mocks.user }),
   SignedIn: ({ children }: { children: ReactNode }) => (mocks.signedIn ? children : null),
   SignedOut: ({ children }: { children: ReactNode }) => (mocks.signedIn ? null : children),
 }))
@@ -68,7 +79,9 @@ vi.mock('@/api/hooks/useMistakes', () => ({
   usePileMistakes: () => ({ data: [] }),
   useRecordMistake: () => ({ mutate: vi.fn() }),
 }))
-vi.mock('@/api/hooks/useAttempts', () => ({ useSubmitAttempt: () => ({ mutate: vi.fn() }) }))
+vi.mock('@/api/hooks/useAttempts', () => ({
+  useSubmitAttempt: () => ({ mutate: mocks.submitAttempt }),
+}))
 vi.mock('@/api/hooks/useSessions', () => ({
   useUpdateSession: () => ({ mutate: mocks.updateSession }),
 }))
@@ -101,6 +114,13 @@ beforeEach(() => {
   mocks.pathname = '/'
   mocks.phone = false
   mocks.signedIn = true
+  mocks.setMode.mockResolvedValue(undefined)
+  mocks.setPalette.mockResolvedValue(undefined)
+  mocks.user = {
+    fullName: 'Ada Lovelace',
+    firstName: 'Ada',
+    primaryEmailAddress: { emailAddress: 'ada@example.test' },
+  }
   useDesignStore.setState({ direction: null })
   useUiStore.setState({ folioPreview: false, palette: 'spalt', mode: 'light' })
 })
@@ -248,6 +268,67 @@ describe('Folio shell', () => {
     expect(document.activeElement === trigger).toBe(true)
   })
 
+  it.each([false, true])('shows Clerk identity in the account menu, phone=%s', (phone) => {
+    mocks.phone = phone
+    render(
+      <FolioShell>
+        <h1>Idag</h1>
+      </FolioShell>,
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Konto och inställningar' }))
+    const menu = within(screen.getByRole('dialog'))
+    expect(menu.getByText('Ada Lovelace')).toBeInTheDocument()
+    expect(menu.getByText('ada@example.test')).toBeInTheDocument()
+  })
+
+  it('uses email when the student has no name and a neutral fallback while loading', () => {
+    mocks.user = null
+    const view = render(
+      <FolioShell>
+        <h1>Idag</h1>
+      </FolioShell>,
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Konto och inställningar' }))
+    expect(within(screen.getByRole('dialog')).getAllByText('Ditt konto')).toHaveLength(1)
+    mocks.user = {
+      fullName: null,
+      firstName: null,
+      primaryEmailAddress: { emailAddress: 'student@example.test' },
+    }
+    view.rerender(
+      <FolioShell>
+        <h1>Idag</h1>
+      </FolioShell>,
+    )
+    expect(screen.getByTestId('fa-account-menu').querySelector('b')).toHaveTextContent(
+      'student@example.test',
+    )
+    expect(
+      screen.getByTestId('fa-account-menu').querySelector('.fa-menu-head span'),
+    ).toHaveTextContent('student@example.test')
+  })
+
+  it('handles rejected mode and palette saves', async () => {
+    const rejected = Promise.reject(new Error('offline'))
+    // Keep the red run free of an unrelated global rejection; assert that each
+    // picker action itself attaches a rejection handler to the returned save.
+    void rejected.catch(() => {})
+    const handled = vi.spyOn(rejected, 'catch')
+    mocks.setMode.mockReturnValue(rejected)
+    mocks.setPalette.mockReturnValue(rejected)
+    render(
+      <FolioShell>
+        <h1>Idag</h1>
+      </FolioShell>,
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Konto och inställningar' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Ljust' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Mörkt' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Salvia' }))
+    expect(handled).toHaveBeenCalledTimes(3)
+    await act(async () => {})
+  })
+
   it('uses the previous destination if a focus consumer has no exit callback', () => {
     function Session({ active }: { active: boolean }) {
       useShellFocus({ active })
@@ -272,27 +353,25 @@ describe('Folio shell', () => {
   it.each([
     false,
     true,
-  ])('Provpass has one main and voids only after confirmation, phone=%s', (phone) => {
+  ])('Provpass has one main and voids only after confirmation, phone=%s', async (phone) => {
     mocks.phone = phone
     const onVoid = vi.fn()
-    render(
+    const { container } = render(
       <FolioShell>
         <MockRunner
-          plan={[
-            {
-              qid: 'q1',
-              section: 'ORD',
-              number: 1,
-              exam_id: 'var-2024',
-              provpass: 'verb1',
-              prompt: 'Ord',
-              options: [{ letter: 'A', text: 'Svar' }],
-              answer: 'A',
-              context: null,
-              figure: null,
-              parsing_status: 'complete',
-            },
-          ]}
+          plan={[1, 2, 3].map((number) => ({
+            qid: `q${number}`,
+            section: 'ORD',
+            number,
+            exam_id: 'var-2024',
+            provpass: 'verb1',
+            prompt: 'Ord',
+            options: [{ letter: 'A', text: 'Svar' }],
+            answer: 'A',
+            context: null,
+            figure: null,
+            parsing_status: 'complete',
+          }))}
           session={{ id: 42, startedAt: new Date(), mode: 'synthetic', half: 'verbal' }}
           seenBefore={0}
           onSettled={vi.fn()}
@@ -302,13 +381,43 @@ describe('Folio shell', () => {
     )
     expect(screen.queryByRole('navigation')).toBeNull()
     expect(screen.getAllByRole('main')).toHaveLength(1)
+    fireEvent.keyDown(document.body, { key: 'ArrowRight' })
+    expect(screen.getByTestId('mock-cell-2')).toHaveAttribute('data-current', 'true')
+    mocks.updateSession.mockClear()
+    screen.getByTestId('fa-exit').focus()
     fireEvent.click(screen.getByTestId('fa-exit'))
-    expect(screen.getByTestId('session-leave-sheet')).toBeInTheDocument()
+    const dialog = screen.getByRole('dialog', { name: 'Avbryt provpasset?' })
+    expect(dialog).toHaveTextContent('Avbryter du nu blir provpasset ogiltigt.')
+    expect(dialog).not.toHaveTextContent('övning')
+    expect(await runAxe(container)).toEqual([])
+    const stay = within(dialog).getByRole('button', { name: 'Fortsätt provpasset' })
+    const leave = within(dialog).getByRole('button', { name: 'Avbryt provpasset' })
+    expect(stay).toHaveFocus()
+    fireEvent.keyDown(stay, { key: 'Tab', shiftKey: true })
+    expect(leave).toHaveFocus()
+    fireEvent.keyDown(leave, { key: 'Tab' })
+    expect(stay).toHaveFocus()
+    for (const key of ['a', 'b', 'c', 'd', 'e', 'ArrowLeft', 'ArrowRight', 'm']) {
+      fireEvent.keyDown(stay, { key })
+    }
+    expect(mocks.submitAttempt).not.toHaveBeenCalled()
+    expect(mocks.updateSession).not.toHaveBeenCalled()
+    expect(screen.getByTestId('mock-cell-2')).toHaveAttribute('data-current', 'true')
+    expect(screen.getByRole('button', { name: /Osäker/ })).toHaveAttribute('aria-pressed', 'false')
     expect(onVoid).not.toHaveBeenCalled()
-    fireEvent.click(screen.getByTestId('session-leave-continue'))
-    expect(screen.queryByTestId('session-leave-sheet')).toBeNull()
+    fireEvent.click(stay)
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(screen.getByTestId('fa-exit')).toHaveFocus()
+    fireEvent.keyDown(document.body, { key: 'a' })
+    fireEvent.keyDown(document.body, { key: 'm' })
+    expect(mocks.submitAttempt).toHaveBeenCalledOnce()
+    expect(screen.getByRole('button', { name: /Osäker/ })).toHaveAttribute('aria-pressed', 'true')
     fireEvent.click(screen.getByTestId('fa-exit'))
-    fireEvent.click(screen.getByTestId('session-leave-exit'))
+    fireEvent.keyDown(document.activeElement!, { key: 'Escape' })
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(onVoid).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByTestId('fa-exit'))
+    fireEvent.click(screen.getByRole('button', { name: 'Avbryt provpasset' }))
     expect(onVoid).toHaveBeenCalledOnce()
     expect(mocks.updateSession).toHaveBeenCalledWith({ id: 42, patch: { end: true } })
     expect(mocks.navigate).not.toHaveBeenCalled()

@@ -38,6 +38,11 @@ describe('direction bundle boundary', () => {
     const source = readFileSync(path.join(SRC, 'routes/__root.tsx'), 'utf8')
     expect(source).toContain("import('@/components/direction-shell/DirectionShell')")
   })
+
+  it('keeps the direction loading fallback inside the classic Frame', () => {
+    const root = readFileSync(path.join(SRC, 'routes/__root.tsx'), 'utf8')
+    expect(root).toMatch(/<Frame>\s*<Suspense fallback=\{<DirectionLoading \/>\}>/)
+  })
 })
 
 describe('Folio production boundary', () => {
@@ -48,11 +53,70 @@ describe('Folio production boundary', () => {
     })
   }
 
-  it('keeps every Folio module independent of the bake-offs', () => {
-    for (const file of files(path.join(SRC, 'folio')).filter((file) => /\.tsx?$/.test(file))) {
-      expect(readFileSync(file, 'utf8'), file).not.toMatch(
-        /(?:from\s*|import\s*\()['"][^'"]*devbake/,
-      )
+  const bakeoffImport = /(?:from\s*|import\s*\(?\s*)['"][^'"]*devbake/
+
+  it.each([
+    "import '@/components/devbake/styles.css'",
+    "@import '../../components/devbake/styles.css';",
+    "import ( '@/components/devbake/Shell')",
+    "import { Shell } from '@/components/devbake/Shell'",
+  ])('recognizes the forbidden import: %s', (source) => {
+    expect(source).toMatch(bakeoffImport)
+  })
+
+  it('keeps every Folio module and stylesheet independent of the bake-offs', () => {
+    for (const file of files(path.join(SRC, 'folio')).filter((file) =>
+      /\.(tsx?|css)$/.test(file),
+    )) {
+      expect(readFileSync(file, 'utf8'), file).not.toMatch(bakeoffImport)
+    }
+  })
+
+  it.each([
+    'routes/__root.tsx',
+    'folio/FolioHost.tsx',
+    'components/NavRail.tsx',
+    'components/MobileFrame.tsx',
+    'components/Frame.tsx',
+    'folio/useShellFocus.ts',
+    'folio/host.ts',
+  ])('%s never statically loads FolioShell', (file) => {
+    const source = ts.createSourceFile(
+      file,
+      readFileSync(path.join(SRC, file), 'utf8'),
+      ts.ScriptTarget.Latest,
+      true,
+    )
+    for (const statement of source.statements.filter(ts.isImportDeclaration)) {
+      if (statement.importClause?.isTypeOnly) continue
+      expect(statement.moduleSpecifier.getText(source)).not.toMatch(/FolioShell/)
+    }
+  })
+
+  it('shares the public-route registry with the root auth gate', () => {
+    const root = readFileSync(path.join(SRC, 'routes/__root.tsx'), 'utf8')
+    expect(root).toMatch(/import \{ PUBLIC_ROUTES \} from '@\/folio\/nav'/)
+    expect(root).not.toMatch(/const PUBLIC_ROUTES/)
+  })
+
+  it('keeps inherited type and focus rules off unported content', () => {
+    const css = readFileSync(path.join(SRC, 'folio/styles/tokens.css'), 'utf8').replace(
+      /\/\*[\s\S]*?\*\//g,
+      '',
+    )
+    const rootRules = [...css.matchAll(/(?:^|\})\s*\[data-folio\]\s*\{([^}]+)\}/g)]
+    expect(rootRules).toHaveLength(1)
+    expect(rootRules[0][1]).not.toMatch(
+      /(?:^|;)\s*(?:font[\w-]*|line-height|color|text-rendering|-webkit-font-smoothing|interpolate-size)\s*:/,
+    )
+    const focusRules = [...css.matchAll(/([^{}]+:focus-visible[^{}]*)\{/g)]
+    expect(focusRules.length).toBeGreaterThan(0)
+    for (const rule of focusRules) {
+      for (const selector of rule[1].split(',')) {
+        expect(selector.trim()).toMatch(
+          /^\[data-folio\] \.fa-(?:side|tabs|ptop|focus-bar|menu) :focus-visible$/,
+        )
+      }
     }
   })
 

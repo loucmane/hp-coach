@@ -77,6 +77,15 @@
   width: 100%;
   min-height: 100dvh;
   background: var(--fa-paper);
+  color-scheme: light;
+}
+
+/* Unported route content retains the app's own typography and focus rings. */
+[data-folio] .fa-side,
+[data-folio] .fa-tabs,
+[data-folio] .fa-ptop,
+[data-folio] .fa-focus-bar,
+[data-folio] .fa-menu {
   color: var(--fa-ink);
   font-family: var(--fa-sans);
   font-size: var(--fa-t15);
@@ -86,7 +95,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   interpolate-size: allow-keywords;
-  color-scheme: light;
 }
 
 [data-folio][data-theme='dark'] {
@@ -125,4 +133,8 @@
 [data-folio] *,
 [data-folio] *::before,
 [data-folio] *::after { box-sizing: border-box; }
-[data-folio] :focus-visible { outline: 2px solid var(--fa-ink); outline-offset: 3px; }
+[data-folio] .fa-side :focus-visible,
+[data-folio] .fa-tabs :focus-visible,
+[data-folio] .fa-ptop :focus-visible,
+[data-folio] .fa-focus-bar :focus-visible,
+[data-folio] .fa-menu :focus-visible { outline: 2px solid var(--fa-ink); outline-offset: 3px; }

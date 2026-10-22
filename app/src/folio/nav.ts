@@ -9,6 +9,17 @@ export const DESTINATIONS = [
 export type Destination = (typeof DESTINATIONS)[number]['id']
 export const ACCOUNT_ROUTES = { konto: '/konto', settings: '/mer' } as const
 
+// Shared with the root auth gate. Clerk's verification steps live below the
+// sign-in/up paths; dev-login must also be reachable without a session.
+export const PUBLIC_ROUTES = new Set<string>([
+  '/sign-in',
+  '/sign-up',
+  '/dev-login',
+  '/integritet',
+  '/villkor',
+  '/hjalp',
+])
+
 const FAMILIES: Record<Destination, readonly string[]> = {
   idag: ['/'],
   ova: ['/ova', '/drill', '/repetition', '/diagnostik'],
@@ -28,14 +39,15 @@ export function currentDestination(pathname: string): Destination | null {
 }
 
 export function supportsFolio(pathname: string): boolean {
-  return ![
-    '/welcome',
-    '/hjalp',
-    '/integritet',
-    '/villkor',
-    '/sign-in',
-    '/sign-up',
-    '/dev-login',
-    '/dev',
-  ].some((path) => pathname === path || pathname.startsWith(`${path}/`))
+  const root = pathname.split('/')[1] ?? ''
+  if (
+    /-bake-?off$/.test(root) ||
+    root === 'm-compare' ||
+    root.startsWith('redesign-') ||
+    root.startsWith('drill-style-')
+  )
+    return false
+  return ![...PUBLIC_ROUTES, '/welcome', '/dev'].some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`),
+  )
 }
