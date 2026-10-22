@@ -21,7 +21,7 @@ export function DayPath({
           Dagens steg
         </h2>
         <span className="fa-meta">
-          {done} av {steps.length} klara
+          {done} av {steps.length} {steps.length === 1 ? 'klart' : 'klara'}
         </span>
       </div>
       <ol className="fa-path" aria-labelledby="fa-plan-h">
@@ -47,15 +47,24 @@ export function DayPath({
                 <span className="fa-plan-body">
                   <span className="fa-plan-line">
                     <span className="fa-plan-title">
-                      {step.state === 'done' ? <span className="fa-sr">Klar: </span> : null}
+                      {step.state === 'done' ? (
+                        <>
+                          <span className="fa-sr">Klar:</span>{' '}
+                        </>
+                      ) : null}
                       {step.title}
-                      {step.gloss ? <span>{step.gloss}</span> : null}
-                    </span>
+                      {step.gloss ? (
+                        <>
+                          {' '}
+                          <span>{step.gloss}</span>
+                        </>
+                      ) : null}
+                    </span>{' '}
                     <span className="fa-leader" aria-hidden />
                     <span className="fa-plan-min">
                       {step.page} <span aria-hidden>→</span>
                     </span>
-                  </span>
+                  </span>{' '}
                   {step.why ? <span className="fa-plan-why">{step.why}</span> : null}
                 </span>
               </IdagLink>

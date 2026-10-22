@@ -48,7 +48,13 @@ export function IdagLead({ view, navigateHref }: { view: HomeView; navigateHref:
   if (resume) {
     const when = resume.stale
       ? 'Påbörjad för mer än en vecka sedan'
-      : `Påbörjad ${resume.pausedAt.replace('Idag · ', 'idag ')}`
+      : `Påbörjad ${resume.pausedAt
+          .replace(/^Idag · /, 'idag ')
+          .replace(/^Igår · /, 'igår ')
+          .replace(
+            /^(\d+) dag(?:ar)? sedan$/,
+            (_, days: string) => `för ${days} ${Number(days) === 1 ? 'dag' : 'dagar'} sedan`,
+          )}`
     return (
       <section className="fa-resume" aria-labelledby="fa-resume-title">
         <span className="fa-ribbon" aria-hidden />

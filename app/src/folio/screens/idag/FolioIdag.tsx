@@ -14,6 +14,7 @@ export type FolioIdagProps = Omit<
   navigateHref: NavigateHref
   deferMock?: () => void
   mockPrescription?: MockPrescription | null
+  statsLoading?: boolean
 }
 
 export default function FolioIdag(props: FolioIdagProps) {
@@ -49,7 +50,7 @@ export default function FolioIdag(props: FolioIdagProps) {
           {view.today.firstName ? `, ${view.today.firstName}` : ''}.
         </h1>
         {sentence ? <p className="fa-day">{sentence}</p> : null}
-        <div data-testid="daily-plan-card">
+        <div data-testid={props.plan ? 'daily-plan-card' : undefined}>
           <IdagLead view={view} navigateHref={navigateHref} />
           {view.plan.allComplete && props.plan && !view.resume ? (
             <ReturnLink plan={props.plan} history={props.history ?? []} />
@@ -75,7 +76,7 @@ export default function FolioIdag(props: FolioIdagProps) {
           ) : null}
         </div>
       </div>
-      <IdagMargin view={view} navigateHref={navigateHref} />
+      <IdagMargin view={view} navigateHref={navigateHref} statsLoading={props.statsLoading} />
     </div>
   )
 }

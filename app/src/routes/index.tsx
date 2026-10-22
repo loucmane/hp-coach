@@ -139,6 +139,7 @@ function HomeRoute() {
           mockPrescription={mockPrescription}
           deferMock={deferMock}
           minutesToday={minutesToday}
+          statsLoading={stats.isPending}
           projected={projected}
           projectedDelta={projectedDelta}
           bySection={stats.data?.bySection}

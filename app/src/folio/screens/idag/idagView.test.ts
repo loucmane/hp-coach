@@ -1,7 +1,16 @@
 import { describe, expect, it } from 'vitest'
+import type { SessionHistoryRow } from '@/api/hooks/useSessions'
 import type { FormattedResumption } from '@/components/home/useResumptionCandidate'
 import { PLAN_SCHEMA_VERSION, type PlanItem } from '@/lib/scheduler'
-import { buildIdagView, daySteps, nextUp, shortItem, tomorrowLine } from './idagView'
+import {
+  buildIdagView,
+  daySentence,
+  daySteps,
+  nextUp,
+  shortItem,
+  tomorrowLine,
+  weekLine,
+} from './idagView'
 
 const now = new Date(2026, 9, 22, 9)
 const item: PlanItem = {
@@ -189,8 +198,54 @@ describe('buildIdagView', () => {
     }))
     const view = buildIdagView({ ...base, history: history as never })
     expect(view.recent).toHaveLength(3)
-    expect(view.recent[0]).toMatchObject({ label: 'Rep', href: '/repetition?done=0', when: 'Idag' })
+    expect(view.recent[0]).toMatchObject({
+      label: 'Repetition',
+      href: '/repetition?done=0',
+      when: 'Idag',
+    })
     expect(view.recent[1].href).toBe('/drill?done=1')
+  })
+  it.each([
+    ['mock_diagnostic', 'diagnostic', 'Diagnos'],
+    ['diagnostic', null, 'Diagnos'],
+    ['mock', 'kvant', 'Provpass'],
+    ['adaptive_review', null, 'Repetition'],
+    ['onboarding', 'ORD', 'Första passet'],
+    ['drill', 'ORD', 'ORD'],
+    ['drill', 'NOG', 'NOG'],
+    ['drill', 'ORD · PÅ TID', 'ORD på tid'],
+    ['drill', null, 'Övning'],
+  ])('labels recent %s / %s in Swedish', (kind, sections, label) => {
+    // The accepted display contract also covers legacy kinds outside the hook's union.
+    const history = [
+      {
+        id: 5,
+        kind: kind as SessionHistoryRow['kind'],
+        sections,
+        total: 10,
+        correct: 8,
+        endedAt: now.toISOString(),
+      },
+    ]
+    expect(buildIdagView({ ...base, history }).recent[0].label).toBe(label)
+  })
+  it.each([1, 2, 21])('uses the correct noun for %s misses in a trap rationale', (count) => {
+    const view = buildIdagView({
+      ...base,
+      plan: {
+        ...plan,
+        items: [
+          {
+            ...item,
+            framework: 'XYZ-TRAP-016',
+            rationale: `Algebra — ${count} missar senaste veckan. Fokuserad drill.`,
+          },
+        ],
+      },
+    })
+    expect(view.plan.items[0].rationale).toContain(
+      `${count} ${count === 1 ? 'miss' : 'missar'} senaste veckan`,
+    )
   })
   it('resolves traps from headwords with id fallback and a neutral rising marker', () => {
     const traps = [
@@ -229,6 +284,48 @@ describe('buildIdagView', () => {
 })
 
 describe('day recommendations', () => {
+  it.each([
+    [
+      { ...item, section: 'XYZ', framework: 'XYZ-TRAP-016', headline: 'XYZ-TRAP-016 · 3 frågor' },
+      'en kort övning',
+    ],
+    [{ ...item, section: null, headline: 'Blandad övning · alla sektioner' }, 'en kort övning'],
+    [{ ...item, headline: 'Blandad övning · börja med ORD' }, 'en kort övning'],
+    [{ ...item, headline: 'Ordförrådsövning · 10 frågor' }, 'en ordförrådsövning'],
+    [item, 'en ORD-övning'],
+    [{ ...item, kind: 'lesson', headline: 'Introduktion · ORD' }, 'gör en kort introduktion'],
+    [{ ...item, kind: 'lesson', headline: 'ORD-lektion' }, 'gör en kort ORD-lektion'],
+    [{ ...item, kind: 'mock', headline: 'Provpass · Verbal' }, 'ett provpass'],
+  ] as const)('makes readable day prose for %j', (step, clause) => {
+    const view = buildIdagView({ ...base, plan: { ...plan, items: [step] } })
+    expect(daySentence(view)).toBe(`Idag: ${clause} – ungefär 8 minuter.`)
+  })
+  it.each([0, 1, 2])('inflects a %s-minute day estimate', (minutes) => {
+    const view = buildIdagView({
+      ...base,
+      plan: { ...plan, items: [{ ...item, estimatedMinutes: minutes }] },
+    })
+    expect(daySentence(view)).toBe(
+      `Idag: en ORD-övning${minutes > 0 ? ` – ungefär ${minutes} ${minutes === 1 ? 'minut' : 'minuter'}` : ''}.`,
+    )
+  })
+  it.each([
+    [0, '0 minuter idag · noll dagar den här veckan'],
+    [1, '1 minut idag · en dag den här veckan'],
+    [2, '2 minuter idag · två dagar den här veckan'],
+  ])('inflects elapsed minutes and practice days at %s', (count, expected) => {
+    expect(weekLine({ minutesToday: count, daysPractised: count })).toBe(expected)
+  })
+  it.each([1, 2])('inflects %s ready misses in the plan and continuation', (count) => {
+    const view = buildIdagView({
+      ...base,
+      dueCount: count,
+      plan: { ...plan, items: [{ ...item, kind: 'repetition' }] },
+    })
+    const noun = count === 1 ? 'miss' : 'missar'
+    expect(view.plan.items[0].detail).toBe(`${count} ${noun}`)
+    expect(nextUp(view).label).toContain(`Repetera ${count} ${noun} ·`)
+  })
   it('orders completed steps, resume, then open steps, all with destinations', () => {
     const view = buildIdagView({
       ...base,

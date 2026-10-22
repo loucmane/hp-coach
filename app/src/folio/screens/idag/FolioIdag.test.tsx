@@ -19,6 +19,7 @@ vi.mock('./useIdagExtras', () => ({ useIdagExtras: () => extras, useIdagTelemetr
 const routeState = vi.hoisted(() => ({
   navigate: vi.fn(),
   daily: vi.fn(),
+  statsPending: false,
   userId: null as string | null,
 }))
 vi.mock('@clerk/clerk-react', () => ({
@@ -29,7 +30,9 @@ vi.mock('@tanstack/react-router', () => ({
   createFileRoute: () => (options: unknown) => ({ options }),
   useNavigate: () => routeState.navigate,
 }))
-vi.mock('@/api/hooks/useStats', () => ({ useStats: () => ({ data: undefined }) }))
+vi.mock('@/api/hooks/useStats', () => ({
+  useStats: () => ({ data: undefined, isPending: routeState.statsPending }),
+}))
 vi.mock('@/api/hooks/useMistakes', () => ({
   useDueMistakes: () => ({ data: [] }),
   usePileMistakes: () => ({ data: [] }),
@@ -61,9 +64,11 @@ const navigateHref = vi.fn()
 beforeEach(() => {
   extras.resume = null
   extras.viewport = 'studio'
+  extras.daysLeft = 170
   navigateHref.mockClear()
   localStorage.clear()
   routeState.userId = null
+  routeState.statsPending = false
   routeState.navigate.mockClear()
   routeState.daily.mockReset().mockReturnValue({ plan, allComplete: false })
   vi.mocked(logMockEvent).mockClear()
@@ -82,6 +87,9 @@ describe('FolioIdag', () => {
       const row = screen.getByTestId(`daily-plan-item-${id}`)
       expect(row).toHaveAttribute('data-completed', String(id === 'done'))
       const link = within(row).getByRole('link')
+      expect(link).toHaveAccessibleName(
+        `${id === 'done' ? 'Klar: ' : ''}ORD-övning 10 frågor ${id === 'done' ? 'klar' : 'nu'} Träna orden.`,
+      )
       expect(link).toHaveAttribute('href', item.href)
       fireEvent.click(link)
       expect(navigateHref).toHaveBeenLastCalledWith(item.href)
@@ -148,11 +156,93 @@ describe('FolioIdag', () => {
   it('settles plan errors, then renders a cached plan despite a background error', () => {
     const view = render(<FolioIdag plan={null} navigateHref={navigateHref} />)
     expect(screen.getByTestId('daily-plan-skeleton')).toBeInTheDocument()
+    expect(screen.queryByTestId('daily-plan-card')).not.toBeInTheDocument()
     view.rerender(<FolioIdag plan={null} planError navigateHref={navigateHref} />)
     expect(screen.getByTestId('daily-plan-error')).toHaveTextContent('Gick inte att hämta planen')
     expect(screen.queryByTestId('daily-plan-complete')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('daily-plan-card')).not.toBeInTheDocument()
     view.rerender(<FolioIdag plan={plan} planError navigateHref={navigateHref} />)
     expect(screen.getByTestId('daily-plan-link-ord')).toBeInTheDocument()
+    expect(screen.getByTestId('daily-plan-card')).toBeInTheDocument()
+  })
+  it('separates the title and detail in a day link accessible name', () => {
+    render(
+      <FolioIdag
+        plan={{ ...plan, items: [{ ...item, kind: 'repetition' }] }}
+        dueCount={12}
+        pileCount={30}
+        navigateHref={navigateHref}
+      />,
+    )
+    expect(screen.getByTestId('daily-plan-link-ord')).toHaveAccessibleName(
+      'Repetition 10 av 30 missar nu De äldsta missarna först.',
+    )
+  })
+  it('labels the whole margin as an overview and the prognosis section separately', () => {
+    render(<FolioIdag plan={plan} navigateHref={navigateHref} />)
+    expect(screen.getByRole('complementary', { name: 'Översikt' })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Prognos' })).toBeInTheDocument()
+  })
+  it.each([
+    [0, 'Idag är det högskoleprov'],
+    [1, '1 dag kvar till högskoleprovet'],
+    [2, '2 dagar kvar till högskoleprovet'],
+  ])('inflects the exam countdown at %s days', (days, text) => {
+    extras.daysLeft = days
+    render(<FolioIdag plan={plan} navigateHref={navigateHref} />)
+    expect(screen.getByText((_, element) => element?.className === 'fa-count')).toHaveTextContent(
+      text,
+    )
+  })
+  it.each([
+    1, 2,
+  ])('uses the correct count wording for %s completed steps and trap occurrences', (count) => {
+    render(
+      <FolioIdag
+        plan={{
+          ...plan,
+          items: Array.from({ length: count }, (_, i) => ({
+            ...item,
+            id: String(i),
+            completed: true,
+          })),
+        }}
+        allComplete
+        topTraps={[
+          {
+            framework_id: 'NOG-TRAP-007',
+            section: 'NOG',
+            count,
+            headline: null,
+            trend: { kind: 'unknown' },
+          },
+        ]}
+        navigateHref={navigateHref}
+      />,
+    )
+    expect(
+      screen.getByText(`${count} av ${count} ${count === 1 ? 'klart' : 'klara'}`),
+    ).toBeInTheDocument()
+    expect(screen.getByText(`${count} ${count === 1 ? 'gång' : 'gånger'}`)).toBeInTheDocument()
+  })
+  it.each([
+    ['Idag · 07:52', 'Påbörjad idag 07:52'],
+    ['Igår · 14:02', 'Påbörjad igår 14:02'],
+    ['1 dagar sedan', 'Påbörjad för 1 dag sedan'],
+    ['1 dag sedan', 'Påbörjad för 1 dag sedan'],
+    ['3 dagar sedan', 'Påbörjad för 3 dagar sedan'],
+  ])('formats the resume age %s as natural Swedish', (relativeLabel, expected) => {
+    extras.resume = {
+      subject: 'ORD-övning',
+      progress: 'vid fråga 1 av 1',
+      href: '/drill?section=ORD',
+      relativeLabel,
+      deviceLabel: null,
+      stale: false,
+    }
+    render(<FolioIdag plan={plan} navigateHref={navigateHref} />)
+    expect(screen.getByText(expected)).toBeInTheDocument()
+    expect(screen.getByText('Fråga 1 av 1')).toBeInTheDocument()
   })
   it('opens mock conditions and leaves Inte idag as a quiet button', () => {
     const deferMock = vi.fn()
@@ -250,7 +340,14 @@ describe('FolioIdag', () => {
 
   it('keeps modified clicks native', () => {
     render(<FolioIdag plan={plan} navigateHref={navigateHref} />)
+    // Observe the React handler before suppressing jsdom's unsupported navigation.
+    const preventNavigation = vi.fn((event: MouseEvent) => {
+      expect(event.defaultPrevented).toBe(false)
+      event.preventDefault()
+    })
+    document.addEventListener('click', preventNavigation, { once: true })
     fireEvent.click(screen.getByTestId('daily-plan-link-ord'), { ctrlKey: true })
+    expect(preventNavigation).toHaveBeenCalledOnce()
     expect(navigateHref).not.toHaveBeenCalled()
   })
 
@@ -293,6 +390,27 @@ describe('FolioIdag', () => {
 
 describe('Home route handoff', () => {
   const Home = Route.options.component as ComponentType
+  it('waits for stats before showing the missing-prognosis explanation', async () => {
+    routeState.statsPending = true
+    const view = render(
+      <FolioHostContext.Provider value={true}>
+        <Home />
+      </FolioHostContext.Provider>,
+    )
+    await screen.findByTestId('folio-idag')
+    expect(
+      screen.queryByText('Prognosen visas när du har svarat i båda delarna.'),
+    ).not.toBeInTheDocument()
+    routeState.statsPending = false
+    view.rerender(
+      <FolioHostContext.Provider value={true}>
+        <Home />
+      </FolioHostContext.Provider>,
+    )
+    expect(
+      screen.getByText('Prognosen visas när du har svarat i båda delarna.'),
+    ).toBeInTheDocument()
+  })
   it('keeps classic Home outside the Folio context, and invokes the plan writer once', () => {
     render(<Home />)
     expect(screen.getByTestId('classic-home')).toBeInTheDocument()

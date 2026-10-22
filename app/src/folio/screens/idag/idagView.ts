@@ -113,6 +113,14 @@ export type ShortItem = { what: string; minutes: number; href: string }
 const CAVEAT =
   'Uppskattningen för LÄS och ELF bygger på HP-Coachs övningstexter, vars svårighetsgrad ännu inte är kalibrerad mot riktiga HP-resultat.'
 const missWord = (n: number) => (n === 1 ? 'miss' : 'missar')
+const minuteWord = (n: number) => (n === 1 ? 'minut' : 'minuter')
+const SESSION_LABELS: Partial<Record<string, string>> = {
+  mock_diagnostic: 'Diagnos',
+  diagnostic: 'Diagnos',
+  mock: 'Provpass',
+  adaptive_review: 'Repetition',
+  onboarding: 'Första passet',
+}
 // Use the scheduler's measured round estimate, including the session cap.
 const repMinutes = (n: number) => repetitionCopy(n).estimatedMinutes
 
@@ -143,7 +151,7 @@ function planItem(item: PlanItem, input: IdagInput): PlanItemView {
     framework: live.framework,
     title,
     detail: detail.join(' · ') || undefined,
-    rationale: live.rationale,
+    rationale: live.rationale.replace(/\b1 missar\b/g, '1 miss'),
     minutes: live.estimatedMinutes,
     completed: live.completed,
     href,
@@ -269,7 +277,7 @@ export function buildIdagView(input: IdagInput): HomeView {
     })),
     recent: (input.history ?? []).slice(0, 3).map((row) => ({
       id: row.id,
-      label: passLabel(row, { short: true }),
+      label: SESSION_LABELS[row.kind] ?? passLabel(row),
       correct: row.correct,
       total: row.total,
       when: whenLabel(row.endedAt, now),
@@ -390,15 +398,17 @@ export function daySentence(view: HomeView): string | null {
   if (['cold', 'loading', 'error', 'empty', 'onboarding'].includes(view.state)) return null
   const parts = view.plan.items
     .filter((i) => !i.completed)
-    .map((i) =>
-      i.kind === 'repetition'
-        ? 'repetera dina missar'
-        : i.kind === 'lesson'
-          ? `gör en kort ${i.title}`
-          : i.kind === 'mock'
-            ? 'ett provpass'
-            : `en ${i.title}`,
-    )
+    .map((i) => {
+      // Section abbreviations keep their capitals in the middle of a sentence.
+      const title = SECTION_KEYS.some((section) => i.title.startsWith(section))
+        ? i.title
+        : i.title.charAt(0).toLocaleLowerCase('sv-SE') + i.title.slice(1)
+      if (i.kind === 'repetition') return 'repetera dina missar'
+      if (i.kind === 'lesson') return `gör en kort ${title}`
+      if (i.kind === 'mock') return 'ett provpass'
+      if (i.framework || title === 'blandad övning') return 'en kort övning'
+      return `en ${title}`
+    })
   if (view.resume)
     parts.unshift(
       view.resume.title.includes('lektion')
@@ -411,12 +421,12 @@ export function daySentence(view: HomeView): string | null {
   const last = parts.pop()
   const list = parts.length ? `${parts.join(', ')} och ${last}` : last
   const minutes = view.plan.minutes
-  return `Idag: ${list}${minutes > 0 ? ` – ${view.resume ? 'resten av planen tar ' : ''}ungefär ${minutes} minuter` : ''}.`
+  return `Idag: ${list}${minutes > 0 ? ` – ${view.resume ? 'resten av planen tar ' : ''}ungefär ${minutes} ${minuteWord(minutes)}` : ''}.`
 }
 
 export function weekLine(week: HomeView['week']): string {
   return [
-    week.minutesToday != null ? `${week.minutesToday} minuter idag` : null,
+    week.minutesToday != null ? `${week.minutesToday} ${minuteWord(week.minutesToday)} idag` : null,
     week.daysPractised != null
       ? `${inWords(week.daysPractised)} ${week.daysPractised === 1 ? 'dag' : 'dagar'} den här veckan`
       : null,

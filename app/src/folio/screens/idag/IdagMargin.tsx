@@ -4,18 +4,26 @@ import { type HomeView, scaleLabel } from './idagView'
 
 const score = (n: number | null) => (n == null ? '—' : fmtScore(n))
 
-export function IdagMargin({ view, navigateHref }: { view: HomeView; navigateHref: NavigateHref }) {
+export function IdagMargin({
+  view,
+  navigateHref,
+  statsLoading,
+}: {
+  view: HomeView
+  navigateHref: NavigateHref
+  statsLoading?: boolean
+}) {
   const p = view.prognosis
   const trap = view.traps.find((t) => t.rising) ?? view.traps[0]
   return (
-    <aside className="fa-aside" aria-labelledby="fa-prog-h" data-fa-shade>
+    <aside className="fa-aside" aria-label="Översikt" data-fa-shade>
       <section className="fa-aside-block" aria-labelledby="fa-prog-h">
         <h2 className="fa-h3" id="fa-prog-h">
           <IdagLink className="fa-head-link" href="/progress" navigateHref={navigateHref}>
             Prognos <span aria-hidden>→</span>
           </IdagLink>
         </h2>
-        {p.total == null ? (
+        {statsLoading ? null : p.total == null ? (
           <p className="fa-delta">Prognosen visas när du har svarat i båda delarna.</p>
         ) : (
           <>
@@ -50,7 +58,7 @@ export function IdagMargin({ view, navigateHref }: { view: HomeView; navigateHre
             </div>
           </>
         )}
-        {p.caveat ? (
+        {!statsLoading && p.caveat ? (
           <p className="fa-footnote" id="fa-caveat">
             <b aria-hidden>*</b>
             <span>{p.caveat}</span>
@@ -65,7 +73,8 @@ export function IdagMargin({ view, navigateHref }: { view: HomeView; navigateHre
           <p className="fa-trap-meta">
             <b>{trap.section}</b>
             <span>
-              {trap.count} gånger{trap.rising ? <span> · ökar ↑</span> : null}
+              {trap.count} {trap.count === 1 ? 'gång' : 'gånger'}
+              {trap.rising ? <span> · ökar ↑</span> : null}
             </span>
           </p>
           <IdagLink
