@@ -71,3 +71,28 @@ FOLIO PROVPASS DONE: hpf-qr0p.49.6
 - Per the accepted round 2 contract, the coordinator parks/closes the bead on the DONE note. Status/assignee are untouched; do not drain this unparked implementation bead.
 
 FOLIO PROVPASS R2 DONE: hpf-qr0p.49.6
+
+## Round 3 findings and decisions — 2026-10-22
+- Claimed the same plain bead at clean head `ddab57d33d7f8f6b634cbf5377a240070e8da759`; no molecule. Accepted contract requests the answer snapshot, no background-refetch loading flash, and stronger source/colour guards within the unchanged write set.
+- Capture a qid-to-letter map alongside flags at settlement, keep it with the result id in the route, and prefer matching snapshots in facit. Reloads and other result ids retain the persisted-attempt fallback. Test delayed attempt persistence and background fetching with the real query hook.
+- Strengthen the existing AST guards with negative controls for JSX paint and Tailwind classes, dynamic imports and re-exports. Check the void notice's neutral CSS declaration directly.
+- [S:codex-1|W:hpf-qr0p.49.6|H:R3 inspect|E:source and accepted contract] Red-first regressions precede source fixes; app typecheck, lint, full suite and build follow. No worker sources or dependencies are planned. Coordinator owns status, staging, review and delivery under the accepted bead contract.
+
+## Round 3 implementation and verification — 2026-10-22
+- Red-first behavioral run: `pnpm test src/components/mock/MockRunner.test.tsx src/folio/screens/prov/FolioProvResult.test.tsx src/routes/-prov.folio.test.tsx --maxWorkers=2` failed six tests (45 passed): missing callback answers, delayed final attempt snapshot, missing route forwarding, two stale/empty API response cases, and the refocus loading flash. After implementation all 51 passed.
+- `MockRunner` captures a fresh qid-to-letter map from the settled sheet alongside flags before the end-session PATCH/result POST. The route stores both with the result id. Folio facit and flagged-right use the matching snapshot; other results and reloads use the real attempts hook. A further regression covers initial query loading with and without the snapshot. The persisted-attempt request remains available after reload; the snapshot is ephemeral.
+- Red-first import guards: extracting the original checker and adding dynamic-import/re-export controls produced five failing tests, with the four existing guards passing. The strengthened recursive AST guard checks these forms, rejects uninspectable import paths and namespace access to drill modules, and permits only the four named drill bindings.
+- The TSX guard keeps paint in scoped CSS: inline positioning is limited to the existing score-marker `left`, fill/stroke/color accept only neutral inheritance, and inspectable Folio classes exclude Tailwind colours and arbitrary values. Fifteen negative controls cover styles, spreads, SVG paint and conditional/template class names. The void-notice component test now checks the actual `color: var(--fa-ink-2)` rule.
+- Affected set: six files/115 tests passed while the hub CSS test was being corrected; the corrected hub file then passed all 11 tests (126 affected tests across seven files). Full suite is running without exclusions. Final typecheck PASS; lint PASS with the same four existing prototype informational notices. `git diff --check` PASS. Production build is running. No worker code changed.
+
+## Playbook-proposal — astra-relay (round 3)
+- 2026-10-22: A Vitest CSS-rule assertion failed because Vite rewrote a literal `new URL('./prov.css', import.meta.url)` into an asset URL; `?raw` also yielded no stylesheet under this app's CSS test configuration. Use the existing filesystem reader with the path supplied as a function argument (as in the guard tests), then assert the rule. Proposed here because this managed worker's writable roots exclude `~/scratch/skill-gotchas/`; coordinator should relay this entry to that queue.
+
+## Round 3 final verification and handoff — 2026-10-22
+- [S:codex-1|W:hpf-qr0p.49.6|H:R3 full suite|E:4908/4909] Final `pnpm test --maxWorkers=2`: 164 files passed, one failed; 4,908 tests passed, one failed (4,909 total, 169.57 s). The sole failure is the unchanged trap-index generator check: `spawnSync /usr/bin/node EPERM`. No tests were skipped or excluded. All 126 affected tests pass in this full run.
+- `pnpm typecheck`: PASS. `pnpm lint`: PASS (four pre-existing informational notices in prototype files). `pnpm build`: PASS (3,308 modules transformed; Vite and PWA generation complete; existing route-test discovery/chunk-size warnings). Final `git diff --check`: PASS. No worker source changed, so worker checks do not apply.
+- All three round 3 fixes are complete in 11 admitted source/test files plus this worklog. Changes remain uncommitted and unstaged atop `ddab57d33d7f8f6b634cbf5377a240070e8da759`. The linked Git index is outside this sandbox's writable roots (already refused in round 1); staging is left to the coordinator. No signer, commit, push, PR, merge or cleanup was attempted.
+- Remaining coordinator work: host generator check, staging, independent review of the new exact head, and delivery under the visual approval policy. The accepted round 3 brief records round 2 host checks, independent PASS, live check and owner visual OK; this worker has not repeated live/browser verification for round 3.
+- Re-read the bead before delivery; round 3 instructions and admitted write set are unchanged. Status and assignee remain untouched. The accepted contract requires one DONE note followed by stopping, with coordinator parking/closing; do not drain the unparked implementation bead.
+
+FOLIO PROVPASS R3 DONE: hpf-qr0p.49.6

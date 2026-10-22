@@ -4,7 +4,6 @@ import { GapText } from '@/folio/screens/drill/GapText'
 import { GradedOptions } from '@/folio/screens/drill/Options'
 import { QuantPage } from '@/folio/screens/drill/QuantPage'
 import { toDrillQuestion } from '@/folio/screens/drill/toDrillQuestion'
-import type { MockSheetState } from '@/lib/mockSheet'
 
 function Erratum({
   qid,
@@ -15,7 +14,7 @@ function Erratum({
 }: {
   qid: string
   bank: readonly Question[] | null
-  answers: MockSheetState['answers']
+  answers: ReadonlyMap<string, { letter: string }>
   attemptsLoading: boolean
   attemptsError: boolean
 }) {

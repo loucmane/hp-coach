@@ -80,7 +80,11 @@ import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
 import { ConfirmSheet } from '@/components/mock/ConfirmSheet'
 import { MockResult } from '@/components/mock/MockResult'
-import { MockRunner, type MockRunnerSession } from '@/components/mock/MockRunner'
+import {
+  type MockResultExtras,
+  MockRunner,
+  type MockRunnerSession,
+} from '@/components/mock/MockRunner'
 import { Page } from '@/components/Page'
 import { Btn } from '@/components/primitives'
 import { TermHint } from '@/components/ui/TermHint'
@@ -253,9 +257,9 @@ function ProvRoute() {
   const [passes, setPasses] = useState<PassOption[]>([])
   const [running, setRunning] = useState<RunningState | null>(null)
   const [voidNotice, setVoidNotice] = useState(false)
-  const [resultFlags, setResultFlags] = useState<{ resultId: number; flagged: string[] } | null>(
-    null,
-  )
+  const [resultExtras, setResultExtras] = useState<
+    ({ resultId: number } & MockResultExtras) | null
+  >(null)
   // The authentic pass the picker auto-picked (a sitting tap resolves to
   // its least-seen pass) and stashed for the confirm sheet + start flow.
   // null in synthetic mode (there is no single sitting).
@@ -412,8 +416,8 @@ function ProvRoute() {
     return true
   }
 
-  const handleSettled = (result: { id: number }, extras: { flagged: string[] }) => {
-    setResultFlags({ resultId: result.id, flagged: extras.flagged })
+  const handleSettled = (result: { id: number }, extras: MockResultExtras) => {
+    setResultExtras({ resultId: result.id, ...extras })
     setRunning(null)
     setPhase('picker')
     navigate({ to: '/prov', search: { result: result.id } })
@@ -443,7 +447,8 @@ function ProvRoute() {
           resultId={resultId}
           results={resultsQuery}
           bank={bank}
-          flags={resultFlags?.resultId === resultId ? resultFlags : null}
+          flags={resultExtras?.resultId === resultId ? resultExtras : null}
+          submittedAnswers={resultExtras?.resultId === resultId ? resultExtras : null}
           navigateHref={navigateHref}
         />
       </Suspense>

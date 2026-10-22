@@ -12,7 +12,7 @@ import {
   scoreText,
 } from './provView'
 import { ResultErrata } from './ResultErrata'
-import { useProvResultExtras } from './useProvResultExtras'
+import { type SubmittedAnswers, useProvResultExtras } from './useProvResultExtras'
 import './prov.css'
 
 export type FolioProvResultProps = {
@@ -20,13 +20,14 @@ export type FolioProvResultProps = {
   results: ResultsState
   bank: readonly Question[] | null
   flags: ResultFlags | null
+  submittedAnswers?: SubmittedAnswers | null
   navigateHref: NavigateHref
 }
 export default function FolioProvResult(props: FolioProvResultProps) {
   const row = props.results.data?.find((r) => r.id === props.resultId)
   // The route keys this screen by result id, keeping asynchronous extras and
   // expanded facit local to the result being read.
-  const extras = useProvResultExtras(row)
+  const extras = useProvResultExtras(row, props.submittedAnswers)
   const phone = useViewport() === 'phone'
   const primary = usePrimaryEnter<HTMLAnchorElement>(!!row)
   if (!row)

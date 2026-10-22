@@ -61,11 +61,16 @@ export type MockRunnerSession = {
   provpass?: string | null
 }
 
+export type MockResultExtras = {
+  flagged: string[]
+  answers: ReadonlyMap<string, string>
+}
+
 type Props = {
   plan: Question[]
   session: MockRunnerSession
   seenBefore: number
-  onSettled: (result: MockResultRow, extras: { flagged: string[] }) => void
+  onSettled: (result: MockResultRow, extras: MockResultExtras) => void
   onVoid: () => void
   /** Reload-adopt: a sheet rebuilt from persisted attempts (lib/mockSheet.ts
    *  sheetFromAttempts), so re-mounting an in-flight mock after a refresh
@@ -231,6 +236,9 @@ function MockRunnerPass({
     const summary = computeMockSummary(plan, summarySheet)
 
     const flagged = [...settled.flagged]
+    // Attempt POSTs can still be in flight when the result opens. Capture the
+    // same final picks used for grading before either settlement request runs.
+    const answers = new Map([...settled.answers].map(([qid, answer]) => [qid, answer.letter]))
     clearMockFlags(userId, session.id)
     recordFinalMistakes(settled, true)
     // SEQUENCED, not concurrent: the worker rejects POST /api/mock-results
@@ -256,7 +264,7 @@ function MockRunnerPass({
               durationMs: summaryTimestamp - session.startedAt.getTime(),
               breakdown: summary.breakdown,
             },
-            { onSuccess: (row) => onSettled(row, { flagged }) },
+            { onSuccess: (row) => onSettled(row, { flagged, answers }) },
           )
         },
       },

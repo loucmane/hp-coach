@@ -3,7 +3,6 @@ import { findQuestion, type Question } from '@/data/questions'
 import { sectionOfQid } from '@/lib/dueBySection'
 import { formatPass, formatSitting } from '@/lib/examNames'
 import type { PassOption } from '@/lib/mock'
-import type { MockSheetState } from '@/lib/mockSheet'
 import { type NormeringSitting, normedScore } from '@/lib/normering'
 import { isCalibrated } from '@/lib/provenance'
 import { formatScore } from '@/lib/scoring'
@@ -102,7 +101,7 @@ export function buildResultView({
 }: {
   row: MockResultRow
   bank: readonly Question[]
-  answers: MockSheetState['answers']
+  answers: ReadonlyMap<string, { letter: string }>
   table?: NormeringSitting | null
   flags?: ResultFlags | null
   cluster?: TrapCluster | null

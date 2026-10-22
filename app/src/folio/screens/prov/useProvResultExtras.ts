@@ -7,7 +7,12 @@ import { loadNormeringTable, type NormeringSitting } from '@/lib/normering'
 import { useTrapCluster } from '@/lib/trapCluster'
 
 const NO_MISSES: string[] = []
-export function useProvResultExtras(row: MockResultRow | undefined) {
+export type SubmittedAnswers = { resultId: number; answers: ReadonlyMap<string, string> }
+
+export function useProvResultExtras(
+  row: MockResultRow | undefined,
+  submittedAnswers?: SubmittedAnswers | null,
+) {
   const attempts = useSessionAttempts(row?.sessionId ?? null)
   const { refetch } = attempts
   useEffect(() => {
@@ -15,7 +20,14 @@ export function useProvResultExtras(row: MockResultRow | undefined) {
     // five-minute cache. Completed results need the final persisted picks.
     if (row?.sessionId != null) void refetch()
   }, [row?.sessionId, refetch])
-  const answers = useMemo(() => sheetFromAttempts(attempts.data ?? []).answers, [attempts.data])
+  const snapshot = row && submittedAnswers?.resultId === row.id ? submittedAnswers.answers : null
+  const answers = useMemo(
+    () =>
+      snapshot
+        ? new Map([...snapshot].map(([qid, letter]) => [qid, { letter }]))
+        : sheetFromAttempts(attempts.data ?? []).answers,
+    [snapshot, attempts.data],
+  )
   const examId = row?.mode === 'authentic' ? row.examId : null
   const [loaded, setLoaded] = useState<{ examId: string; table: NormeringSitting | null } | null>(
     null,
@@ -50,8 +62,8 @@ export function useProvResultExtras(row: MockResultRow | undefined) {
   }, [cluster])
   return {
     answers,
-    attemptsLoading: attempts.isLoading || attempts.isFetching,
-    attemptsError: attempts.isError,
+    attemptsLoading: !snapshot && attempts.isLoading,
+    attemptsError: !snapshot && attempts.isError,
     table: loaded?.examId === examId ? loaded?.table : null,
     cluster,
     frameworkName: name?.id === cluster?.framework_id ? name?.value : null,

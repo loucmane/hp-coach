@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import axe from 'axe-core'
@@ -11,6 +13,7 @@ import FolioProvpass, { type FolioProvpassProps } from './FolioProvpass'
 import { ProvMargin } from './ProvMargin'
 
 const viewport = vi.hoisted(() => ({ value: 'studio' }))
+const read = (name: string) => readFileSync(fileURLToPath(new URL(name, import.meta.url)), 'utf8')
 vi.mock('@/hooks/useViewport', () => ({ useViewport: () => viewport.value }))
 vi.mock('@/lib/mockEvents', () => ({ logMockEvent: vi.fn() }))
 const passes: PassOption[] = ['host-2025', 'var-2025', 'host-2024', 'var-2024'].map(
@@ -208,6 +211,9 @@ describe('Folio Provpass hub and slip', () => {
       'Indikativt resultat — inte ett riktigt pass.',
     )
     expect(screen.getByTestId('prov-void-notice')).toHaveClass('fa-status')
+    const rule = read('./prov.css').match(/\[data-folio\] \.fa-prov \.fa-status\s*\{([^}]+)\}/)?.[1]
+    expect(rule).toBeDefined()
+    expect(rule).toMatch(/(?:^|;)\s*color:\s*var\(--fa-ink-2\)\s*;/)
     await user.click(screen.getByTestId('prov-start'))
     expect(screen.getByTestId('mock-confirm-heading')).toHaveTextContent('Genererat pass')
     await user.keyboard('{Enter}')

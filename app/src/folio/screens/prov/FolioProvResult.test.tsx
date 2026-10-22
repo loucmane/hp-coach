@@ -1,9 +1,16 @@
-import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render as renderView, screen, waitFor, within } from '@testing-library/react'
+import { focusManager, QueryClientProvider } from '@tanstack/react-query'
+import {
+  act,
+  fireEvent,
+  render as renderView,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import axe from 'axe-core'
 import type { ReactElement } from 'react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { MockResultRow } from '@/api/hooks/useMockResults'
 import { createQueryClient } from '@/api/queryClient'
 import type { Question } from '@/data/questions'
@@ -106,7 +113,73 @@ beforeEach(() => {
     { questionId: 'q1', selectedAnswer: 'A', timeTakenMs: 1, createdAt: 2 },
   ]
 })
+afterEach(() => {
+  queryClient.clear()
+  focusManager.setFocused(undefined)
+})
 describe('Folio Provpass result', () => {
+  it('uses the snapshot during the first fetch but retains initial loading after reload', () => {
+    state.getAttempts.mockImplementation(() => new Promise(() => {}))
+    const submittedAnswers = { resultId: 5, answers: new Map([['q0', 'B']]) }
+    const { rerender } = render(<FolioProvResult {...props({ submittedAnswers })} />)
+    fireEvent.click(screen.getByRole('button', { name: /Vad betyder ordet/ }))
+    expect(screen.getByText(/Ditt svar: B/)).toBeVisible()
+    expect(screen.queryByText(/Hämtar ditt svar/)).toBeNull()
+    rerender(<FolioProvResult {...props({ submittedAnswers: null })} />)
+    expect(screen.getByText(/Hämtar ditt svar/)).toBeVisible()
+  })
+  it.each([
+    { attempts: [] },
+    { attempts: [{ questionId: 'q0', selectedAnswer: 'A', timeTakenMs: 1, createdAt: 1 }] },
+  ])('prefers submitted answers while a slow final attempt is missing from the API: %j', async ({
+    attempts,
+  }) => {
+    // The attempt POST has not landed: GET returns either no pick or the previous one.
+    state.attempts = attempts
+    const submittedAnswers = {
+      resultId: 5,
+      answers: new Map([
+        ['q0', 'B'],
+        ['q1', 'A'],
+      ]),
+    }
+    queryClient.setQueryData(['sessions', 'attempts', row.sessionId], state.attempts)
+    const { rerender } = render(<FolioProvResult {...props({ submittedAnswers })} />)
+    fireEvent.click(screen.getByRole('button', { name: /Vad betyder ordet/ }))
+    expect(screen.getByText(/Ditt svar: B/)).toBeVisible()
+    await waitFor(() => expect(queryClient.isFetching()).toBe(0))
+    expect(state.getAttempts).toHaveBeenCalled()
+    expect(screen.getByText('Beta').closest('li')).toHaveAttribute('data-grade', 'wrong')
+    expect(screen.getByTestId('prov-res-flagged')).toBeVisible()
+    // A different result or a reload must use persisted attempts, never this snapshot.
+    queryClient.setQueryData(
+      ['sessions', 'attempts', row.sessionId],
+      [{ questionId: 'q0', selectedAnswer: 'A', timeTakenMs: 1, createdAt: 1 }],
+    )
+    rerender(
+      <FolioProvResult {...props({ submittedAnswers: { ...submittedAnswers, resultId: 8 } })} />,
+    )
+    expect(await screen.findByText(/Ditt svar: A/)).toBeVisible()
+    rerender(<FolioProvResult {...props({ submittedAnswers: null })} />)
+    expect(screen.getByText(/Ditt svar: A/)).toBeVisible()
+  })
+  it('keeps the saved answer visible while refocus refreshes attempts in the background', async () => {
+    render(<FolioProvResult {...props()} />)
+    fireEvent.click(screen.getByRole('button', { name: /Vad betyder ordet/ }))
+    expect(await screen.findByText(/Ditt svar: B/)).toBeVisible()
+    state.getAttempts.mockImplementationOnce(() => new Promise(() => {}))
+    await act(async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['sessions', 'attempts', row.sessionId],
+        refetchType: 'none',
+      })
+      focusManager.setFocused(false)
+      focusManager.setFocused(true)
+    })
+    await waitFor(() => expect(queryClient.isFetching()).toBe(1))
+    expect(screen.queryByText(/Hämtar ditt svar/)).toBeNull()
+    expect(screen.getByText(/Ditt svar: B/)).toBeVisible()
+  })
   it('opens the real facit with the saved answer and shows flagged-right only', async () => {
     const user = userEvent.setup()
     const { container, rerender } = render(<FolioProvResult {...props()} />)

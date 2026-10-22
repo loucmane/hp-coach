@@ -6,6 +6,7 @@ import type { ActiveSession } from '@/api/hooks/useSessions'
 import type { MockRunner } from '@/components/mock/MockRunner'
 import type { Question } from '@/data/questions'
 import { FolioHostContext } from '@/folio/host'
+import type { FolioProvResultProps } from '@/folio/screens/prov/FolioProvResult'
 import { Route } from './prov'
 
 const state = vi.hoisted(() => ({
@@ -59,7 +60,12 @@ vi.mock('@/components/mock/MockResult', () => ({
 vi.mock('@/components/mock/MockRunner', () => ({
   MockRunner: (props: ComponentProps<typeof MockRunner>) => (
     <div data-testid="classic-runner">
-      <button type="button" onClick={() => props.onSettled(state.results[0], { flagged: ['q1'] })}>
+      <button
+        type="button"
+        onClick={() =>
+          props.onSettled(state.results[0], { flagged: ['q1'], answers: new Map([['q1', 'B']]) })
+        }
+      >
         Lämna in
       </button>
       <button type="button" onClick={props.onVoid}>
@@ -69,8 +75,13 @@ vi.mock('@/components/mock/MockRunner', () => ({
   ),
 }))
 vi.mock('@/folio/screens/prov/FolioProvResult', () => ({
-  default: ({ flags }: { flags: { flagged: string[] } | null }) => (
-    <div data-testid="folio-result">{flags?.flagged.join(',') ?? 'utan markeringar'}</div>
+  default: ({ flags, submittedAnswers }: FolioProvResultProps) => (
+    <div data-testid="folio-result">
+      {flags?.flagged.join(',') ?? 'utan markeringar'}
+      <span data-testid="submitted-answer">
+        {submittedAnswers?.answers.get('q1') ?? 'utan svar'}
+      </span>
+    </div>
   ),
 }))
 const Component = Route.options.component as ComponentType
@@ -229,6 +240,7 @@ describe('Prov route Folio branch', () => {
       </FolioHostContext.Provider>,
     )
     expect(await screen.findByTestId('folio-result')).toHaveTextContent('q1')
+    expect(screen.getByTestId('submitted-answer')).toHaveTextContent('B')
     state.search = { result: 6 }
     view.rerender(
       <FolioHostContext.Provider value={true}>
@@ -236,10 +248,12 @@ describe('Prov route Folio branch', () => {
       </FolioHostContext.Provider>,
     )
     expect(screen.getByTestId('folio-result')).toHaveTextContent('utan markeringar')
+    expect(screen.getByTestId('submitted-answer')).toHaveTextContent('utan svar')
     view.unmount()
     state.search = { result: 5 }
     renderRoute(true)
     expect(await screen.findByTestId('folio-result')).toHaveTextContent('utan markeringar')
+    expect(screen.getByTestId('submitted-answer')).toHaveTextContent('utan svar')
   })
   it('returns to the Folio hub with the void notice when a run is abandoned', async () => {
     renderRoute(true)
