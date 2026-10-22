@@ -14,7 +14,7 @@
 
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
-import { useEffect, useMemo } from 'react'
+import { lazy, Suspense, useContext, useEffect, useMemo } from 'react'
 
 import { useDueMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
@@ -25,10 +25,13 @@ import { Page } from '@/components/Page'
 import { Mono } from '@/components/primitives'
 import { wiredSections } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
+import { FolioHostContext } from '@/folio/host'
 import { uppslagDoorLayoutId, useArketMotion, useFirstContentSignal } from '@/lib/motion'
 import { computeSectionScore, formatScore, rankWeakness } from '@/lib/scoring'
 
 type Search = { section?: Section; chapter?: 'provteknik' }
+
+const FolioUppslag = lazy(() => import('@/folio/screens/uppslag/FolioUppslag'))
 
 export function validateSearch(input: Record<string, unknown>): Search {
   // A chapter link wins over an old section query; never mount both readers.
@@ -68,6 +71,7 @@ function LektionRoute() {
   useFirstContentSignal()
   const { section, chapter } = Route.useSearch()
   const navigate = useNavigate()
+  const inFolio = useContext(FolioHostContext)
   // Esc-to-parent: reader → picker, picker → home. Status line shows
   // "esc tillbaka" so the gesture is discoverable; this wires it. The
   // CommandPalette also listens for Escape, but only when its overlay
@@ -83,6 +87,25 @@ function LektionRoute() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [section, chapter, navigate])
+
+  if (inFolio && chapter !== 'provteknik') {
+    return (
+      <Suspense fallback={<p role="status">Laddar …</p>}>
+        <FolioUppslag
+          section={section}
+          navigateHref={(href, options) => {
+            const url = new URL(href, window.location.origin)
+            navigate({
+              to: url.pathname as never,
+              search: Object.fromEntries(url.searchParams) as never,
+              hash: url.hash.slice(1),
+              ...options,
+            })
+          }}
+        />
+      </Suspense>
+    )
+  }
 
   if (chapter) return <ProvteknikShell />
   if (section) return <ReaderShell section={section} />
