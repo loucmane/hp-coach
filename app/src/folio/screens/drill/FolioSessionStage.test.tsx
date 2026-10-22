@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import type { ComponentProps, ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { ActiveSession } from '@/api/hooks/useSessions'
@@ -15,6 +16,7 @@ const h = vi.hoisted(() => ({
   load: vi.fn(),
   bank: [] as Question[],
   explanation: null as Explanation | null,
+  loadedExplanations: new Map<string, Explanation | null>(),
   active: null as ActiveSession | null,
   phone: false,
 }))
@@ -40,7 +42,7 @@ vi.mock('@/data/questions', async (original) => ({
 }))
 vi.mock('@/data/explanations', () => ({
   loadExplanation: (qid: string) => h.load(qid),
-  peekExplanation: () => h.explanation,
+  peekExplanation: (qid: string) => h.loadedExplanations.get(qid) ?? null,
 }))
 vi.mock('@/data/frameworks', async (original) => ({
   ...(await original<typeof import('@/data/frameworks')>()),
@@ -61,10 +63,11 @@ vi.mock('@/components/motion/QuestionPan', () => ({
 }))
 
 import { SessionPlayer, type SessionPlayerProps } from '@/components/session/SessionPlayer'
+import { peekExplanation } from '@/data/explanations'
 import { FolioShell } from '@/folio/FolioShell'
 import { endedSessionIdsThisTab } from '@/lib/endedSessions'
 import { useUiStore } from '@/stores/uiStore'
-import { runAxe } from '@/test/a11y'
+import { formatViolations, runAxe } from '@/test/a11y'
 
 function fixture(n = 1, section: Question['section'] = 'ORD'): Question {
   return {
@@ -111,7 +114,11 @@ beforeEach(() => {
     ],
     pregrade_tactic: { handle: 'Pröva en synonym', move: 'Sätt in ordet i en mening.' },
   }
-  h.load.mockImplementation(async () => h.explanation)
+  h.loadedExplanations.clear()
+  h.load.mockImplementation(async (qid: string) => {
+    h.loadedExplanations.set(qid, h.explanation)
+    return h.explanation
+  })
   h.start.mockResolvedValue({ id: 42 })
   useUiStore.setState({ folioPreview: false, mode: 'light' })
 })
@@ -151,6 +158,7 @@ function key(key: string, shiftKey = false) {
 describe('Folio through the real SessionPlayer', () => {
   it('selects without committing; Svara submits once and retains wrong-answer effects', async () => {
     const onWrong = vi.fn()
+    expect(peekExplanation(h.bank[0].qid)).toBeNull()
     mount(true, { onWrong })
     const lock = await questionReady()
     key('b')
@@ -167,8 +175,36 @@ describe('Folio through the real SessionPlayer', () => {
         layer1Ids: ['ORD-ROOT-001'],
       }),
     )
+    expect(h.load).toHaveBeenCalledWith(h.bank[0].qid)
+    expect(peekExplanation(h.bank[0].qid)?.framework_id).toBe('ORD-ROOT-001')
     expect(onWrong).toHaveBeenCalledWith(h.bank[0])
     expect(screen.getByTestId('fa-verdict')).toHaveTextContent('Fel.')
+  })
+  it('submits once with Enter on a clicked option and advances from feedback', async () => {
+    const user = userEvent.setup()
+    mount()
+    await questionReady()
+    const option = screen.getByTestId('option-B')
+    await user.click(option)
+    expect(option).toHaveFocus()
+    expect(option).toHaveAttribute('aria-pressed', 'true')
+    expect(h.submit).not.toHaveBeenCalled()
+    await user.keyboard('{Enter}')
+    expect(h.submit).toHaveBeenCalledTimes(1)
+    expect(h.submit).toHaveBeenCalledWith(expect.objectContaining({ selectedAnswer: 'B' }))
+    expect(screen.getByTestId('fa-verdict')).toHaveFocus()
+    await user.keyboard('{Enter}')
+    expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', h.bank[1].qid)
+    expect(h.submit).toHaveBeenCalledTimes(1)
+  })
+  it('does not commit with Enter on an option before a selection exists', async () => {
+    const user = userEvent.setup()
+    mount()
+    await questionReady()
+    screen.getByTestId('option-B').focus()
+    await user.keyboard('{Enter}')
+    expect(h.submit).not.toHaveBeenCalled()
+    expect(screen.getByTestId('fa-lock')).toBeDisabled()
   })
   it('eliminates with Shift+letter and Enter submits, advances and ends', async () => {
     mount()
@@ -278,15 +314,23 @@ describe('Folio through the real SessionPlayer', () => {
     fireEvent.click(screen.getByRole('button', { name: '(steg 2)' }))
     expect(screen.getByText('Andra steget.')).toBeInTheDocument()
   })
-  it('leaves Enter on the tactic disclosure to the native button', async () => {
+  it('leaves Enter on the tactic disclosure and eliminate control to their native buttons', async () => {
+    const user = userEvent.setup()
     mount()
     await questionReady()
     key('a')
     const tactic = await screen.findByRole('button', { name: 'Visa taktik' })
-    fireEvent.keyDown(tactic, { key: 'Enter' })
+    tactic.focus()
+    await user.keyboard('{Enter}')
     expect(h.submit).not.toHaveBeenCalled()
-    fireEvent.click(tactic)
     expect(screen.getByText('Sätt in ordet i en mening.')).toBeInTheDocument()
+    screen.getByRole('button', { name: 'Stryk B' }).focus()
+    await user.keyboard('{Enter}')
+    expect(screen.getByRole('button', { name: 'Ångra strykningen av B' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    expect(h.submit).not.toHaveBeenCalled()
   })
   it('renders every distractor, steps on request, detail toggles and the framework', async () => {
     mount()
@@ -318,34 +362,65 @@ describe('Folio through the real SessionPlayer', () => {
     expect(screen.getByTestId('fa-step-1')).toHaveTextContent('Del ett.')
     expect(screen.getByTestId('fa-step-2')).toHaveTextContent('Del två.')
   })
-  it.each(['KVA', 'NOG'] as const)('groups %s and renders math', async (section) => {
+  it.each([
+    'XYZ',
+    'KVA',
+    'NOG',
+  ] as const)('renders accessible %s math in both phases', async (section) => {
     h.bank = [
       {
         ...fixture(1, section),
         prompt:
-          section === 'KVA'
-            ? '\uE000x>0\uE001\nKvantitet I: \uE000x^2\uE001\nKvantitet II: \uE000x\uE001'
-            : 'Vad är \uE000x\uE001?\n(1) \uE000x>1\uE001\n(2) \uE000x<3\uE001',
+          section === 'XYZ'
+            ? 'Vilket bråk är lika med \uE000\\frac{3}{8}\uE001?'
+            : section === 'KVA'
+              ? '\uE000x>0\uE001\nKvantitet I: \uE000\\frac{x}{2}\uE001\nKvantitet II: \uE000x\uE001'
+              : 'Vad är \uE000x\uE001?\n(1) \uE000x>1\uE001\n(2) \uE000x<3\uE001',
+        options: fixture().options!.map((option, i) => ({
+          ...option,
+          text: `\uE000\\frac{${i + 3}}{8}\uE001`,
+        })),
       },
     ]
     const { container } = mount()
     await questionReady()
-    expect(
-      screen.getByRole('group', {
-        name: section === 'KVA' ? 'Villkoret och kvantiteterna' : 'Frågan och påståendena',
-      }),
-    ).toBeInTheDocument()
-    expect(container.querySelector('.katex')).not.toBeNull()
-    expect(await runAxe(container)).toEqual([])
+    if (section !== 'XYZ') {
+      expect(
+        screen.getByRole('group', {
+          name: section === 'KVA' ? 'Villkoret och kvantiteterna' : 'Frågan och påståendena',
+        }),
+      ).toBeInTheDocument()
+      const mathSelector = section === 'KVA' ? '.fa-kva td .katex' : '.fa-nog li .katex'
+      expect(container.querySelectorAll(mathSelector)).toHaveLength(2)
+    }
+    expect(screen.getByTestId('drill-prompt').querySelector('.katex')).not.toBeNull()
+    expect(screen.getByTestId('option-A').querySelector('.katex .mfrac')).not.toBeNull()
+    const questionViolations = await runAxe(container)
+    expect(questionViolations, formatViolations(questionViolations)).toEqual([])
+    key('b')
+    key('Enter')
+    expect(screen.getByTestId('fa-verdict')).toBeInTheDocument()
+    expect(container.querySelectorAll('.fa-opt .katex .mfrac')).toHaveLength(4)
+    expect(container.querySelectorAll('.fa-dis-opt .katex .mfrac')).toHaveLength(2)
+    const feedbackViolations = await runAxe(container)
+    expect(feedbackViolations, formatViolations(feedbackViolations)).toEqual([])
   })
   it.each([false, true])('has accessible question and feedback, phone=%s', async (phone) => {
     h.phone = phone
     const { container } = mount()
     await questionReady()
-    expect(await runAxe(container)).toEqual([])
-    key('a')
+    const questionViolations = await runAxe(container)
+    expect(questionViolations, formatViolations(questionViolations)).toEqual([])
+    key('b')
     key('Enter')
-    expect(await runAxe(container)).toEqual([])
+    expect(screen.getByTestId('drill-question')).toHaveAttribute('data-phase', 'feedback')
+    fireEvent.click(screen.getByRole('button', { name: 'Visa steg för steg' }))
+    fireEvent.click(screen.getByTestId('fa-step-toggle-2'))
+    for (const letter of ['C', 'D']) {
+      fireEvent.click(screen.getByRole('button', { name: `Varför inte ${letter}` }))
+    }
+    const feedbackViolations = await runAxe(container)
+    expect(feedbackViolations, formatViolations(feedbackViolations)).toEqual([])
   })
   it('keeps the classic option IDs and direct letter commit with the flag off', async () => {
     h.phone = true
@@ -414,6 +489,22 @@ describe('Folio through the real SessionPlayer', () => {
     ).toBeInTheDocument()
     expect(h.submit).toHaveBeenCalledTimes(1)
   })
+})
+
+it.each([
+  '.fa-opt .katex',
+  '.fa-dis-opt .katex',
+])('keeps fraction glyphs in %s at option text size', (selector) => {
+  const css = readFileSync('src/folio/screens/drill/drill.css', 'utf8').replace(
+    /\/\*[\s\S]*?\*\//g,
+    '',
+  )
+  // KaTeX uses 0.7em for inline fraction digits: the existing 24px token
+  // yields 16.8px digits next to 17px option text, without altering its layout.
+  const rule = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].find((match) =>
+    match[1].split(',').some((part) => part.trim() === `[data-folio] .fa-drill ${selector}`),
+  )
+  expect(rule?.[2] ?? '').toMatch(/font-size:\s*var\(--fa-t24\)/)
 })
 
 it('keeps drill CSS local and uses neutral ink for errors', () => {

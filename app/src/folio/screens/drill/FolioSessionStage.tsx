@@ -94,7 +94,12 @@ function BlockStage({
         if (target.closest('input, textarea, select, [contenteditable], [role="dialog"], [inert]'))
           return
         if (target !== document.body && !root.current?.contains(target)) return
-        if (event.key === 'Enter' && target.closest('button, a, summary, [role="button"]')) return
+        if (
+          event.key === 'Enter' &&
+          target.closest('button, a, summary, [role="button"]') &&
+          !target.closest('button.fa-opt-main')
+        )
+          return
       }
       const letter = event.key.toUpperCase() as AnswerLetter
       if (view.phase === 'question' && view.letters.includes(letter)) {
