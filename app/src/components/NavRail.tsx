@@ -35,7 +35,17 @@
 // Desktop-only — phone keeps its bottom tab bar (Page passthrough).
 
 import { Link, useLocation } from '@tanstack/react-router'
-import { type CSSProperties, type ReactNode, useEffect, useMemo, useState } from 'react'
+import {
+  Children,
+  type CSSProperties,
+  createElement,
+  isValidElement,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 
 import { usePileMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
@@ -43,6 +53,7 @@ import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { useResumptionCandidate } from '@/components/home/useResumptionCandidate'
 import { DueNumeral } from '@/components/motion/DueNumeral'
 import { wiredSections } from '@/data/frameworks'
+import { FolioHostContext } from '@/folio/host'
 import { dueNumeralOwnedByPage } from '@/lib/motion'
 import { DOORS, type Door, type DoorId } from '@/lib/nav'
 import { computeHonestDelta, formatDeltaSv } from '@/lib/scoring'
@@ -71,6 +82,7 @@ export function RailShell({
   children: ReactNode
   defaultCollapsed?: boolean
 }) {
+  const folio = useContext(FolioHostContext)
   const [collapsed, setCollapsed] = useState(() => loadCollapsed(defaultCollapsed))
 
   const toggle = () => {
@@ -90,6 +102,7 @@ export function RailShell({
   }
 
   useEffect(() => {
+    if (folio) return
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'b') {
         e.preventDefault()
@@ -100,28 +113,43 @@ export function RailShell({
     return () => window.removeEventListener('keydown', onKey)
   })
 
+  const Content = folio ? 'div' : 'main'
+  // BoksidanDesk supplies its own direct <main> inside RailShell. Under
+  // Folio both legacy landmarks become ordinary containers, preserving the
+  // same children and depth without editing the shared drill presentation.
+  const content = folio
+    ? Children.map(children, (child) =>
+        isValidElement<{ children?: ReactNode }>(child) && child.type === 'main'
+          ? createElement('div', { ...child.props, key: child.key }, child.props.children)
+          : child,
+      )
+    : children
   return (
     <div
-      style={{
-        flex: 1,
-        display: 'grid',
-        gridTemplateColumns: collapsed ? '44px 1fr' : '224px 1fr',
-        transition: 'grid-template-columns 240ms cubic-bezier(0.22, 1, 0.36, 1)',
-        alignItems: 'stretch',
-        minHeight: '100dvh',
-      }}
+      style={
+        folio
+          ? { minWidth: 0, flex: 1 }
+          : {
+              flex: 1,
+              display: 'grid',
+              gridTemplateColumns: collapsed ? '44px 1fr' : '224px 1fr',
+              transition: 'grid-template-columns 240ms cubic-bezier(0.22, 1, 0.36, 1)',
+              alignItems: 'stretch',
+              minHeight: '100dvh',
+            }
+      }
     >
-      <NavRail collapsed={collapsed} onToggle={toggle} />
+      {!folio && <NavRail collapsed={collapsed} onToggle={toggle} />}
       {/* a11y: <main> landmark — the sibling <NavRail> above is an
        *  <aside>, so this is the one-and-only main-content region at
        *  reader/studio viewport (see MobileFrame.tsx for the phone
        *  equivalent, which is mutually exclusive with this one). */}
-      <main
+      <Content
         data-testid="page-content"
         style={{ minWidth: 0, display: 'flex', flexDirection: 'column' }}
       >
-        {children}
-      </main>
+        {content}
+      </Content>
     </div>
   )
 }

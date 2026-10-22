@@ -22,6 +22,7 @@ import { Frame } from '@/components/Frame'
 import { PublicLanding } from '@/components/landing/PublicLanding'
 import { RouteScene } from '@/components/motion/RouteScene'
 import { Btn, Mono } from '@/components/primitives'
+import { FolioHost } from '@/folio/FolioHost'
 import { hasFirstContentFired } from '@/lib/motion'
 import { isWelcomed } from '@/lib/welcome'
 import { useDesignDirection, useDesignStore } from '@/stores/designStore'
@@ -58,9 +59,7 @@ function RootShell() {
 
   return (
     <>
-      <Frame>
-        <ClerkGate />
-      </Frame>
+      <ClerkGate />
       {/* Both components self-gate via `isDevSurface()` — visible when
        *  `import.meta.env.DEV` OR `?dev=1` is in the URL OR the
        *  sessionStorage flag is set. Hidden in pure production
@@ -146,8 +145,17 @@ function ClerkGate() {
   }, [isLoaded])
 
   if (isLoaded) return <AuthRouter />
-  if (timedOut) return <ClerkLoadFailed />
-  return <SplashLoading />
+  if (timedOut)
+    return (
+      <Frame>
+        <ClerkLoadFailed />
+      </Frame>
+    )
+  return (
+    <Frame>
+      <SplashLoading />
+    </Frame>
+  )
 }
 
 function ClerkLoadFailed() {
@@ -211,14 +219,16 @@ function AuthRouter() {
   return (
     <>
       {isPublic ? (
-        <Outlet />
+        <Frame>
+          <Outlet />
+        </Frame>
       ) : (
         <>
           <SignedIn>
             <SignedInTree />
           </SignedIn>
           <SignedOut>
-            {location.pathname === '/' ? <PublicLanding /> : <RedirectToSignIn />}
+            <Frame>{location.pathname === '/' ? <PublicLanding /> : <RedirectToSignIn />}</Frame>
           </SignedOut>
         </>
       )}
@@ -249,9 +259,13 @@ function SignedInTree() {
   // only, exits lead) instead of sliding. See RouteScene.
   return (
     <DirectionContent pathname={location.pathname}>
-      <RouteScene>
-        <Outlet />
-      </RouteScene>
+      <FolioHost pathname={location.pathname}>
+        <Frame>
+          <RouteScene>
+            <Outlet />
+          </RouteScene>
+        </Frame>
+      </FolioHost>
     </DirectionContent>
   )
 }
@@ -276,7 +290,9 @@ export function DirectionContent({
   return (
     <DirectionBoundary key={`${direction}:${pathname}`} fallback={children}>
       <Suspense fallback={<DirectionLoading />}>
-        <DirectionShell direction={direction} screen={screen} />
+        <Frame>
+          <DirectionShell direction={direction} screen={screen} />
+        </Frame>
       </Suspense>
     </DirectionBoundary>
   )

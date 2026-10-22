@@ -1,0 +1,214 @@
+/* Folio+ · Konto's Färg: the five palettes of the live app (lib/tokens.ts
+ * PALETTES), set in Folio's own terms. Spalt, the default, follows the
+ * app's own Spalt (owner, 2026-10-20), so Folio+ no longer opens on
+ * Folio's warm brown charcoal in dark (folioPlus.css stays the fallback).
+ * The others keep Folio's lightness steps and move only the paper's tone
+ * and the accent's hue. The verdict colours (ok, bad) and the marker
+ * stay: they mean something.
+ *
+ * Light rules exclude dark explicitly: they load after folioPlus.css and
+ * would otherwise beat its dark block. */
+
+/* ── Spalt, the default: the live app's own palette ───────────────────
+ * Cream paper and a strong blue in light; a cool blue-black in dark,
+ * with the app's near-white ink and bright blue buttons (dark text). */
+[data-folio][data-palette='spalt']:not([data-theme='dark']) {
+  --fa-paper: oklch(97.2% 0.016 95);
+  --fa-paper-2: oklch(95.5% 0.018 95);
+  --fa-paper-3: oklch(92.6% 0.02 95);
+  --fa-leaf: oklch(99.2% 0.008 95);
+  --fa-menu: oklch(99.4% 0.006 95);
+  --fa-ink: oklch(18.5% 0.008 80);
+  --fa-ink-2: oklch(30% 0.012 85);
+  --fa-ink-3: oklch(46% 0.018 90);
+  --fa-rule: oklch(86% 0.022 95);
+  --fa-rule-2: oklch(74% 0.02 92);
+  --fa-rule-strong: oklch(18.5% 0.008 80);
+  --fa-accent: oklch(49% 0.21 265);
+  --fa-accent-2: oklch(42% 0.2 265);
+  --fa-accent-ink: oklch(45% 0.2 265);
+  --fa-accent-soft: oklch(94% 0.025 270);
+  --fa-accent-fill: oklch(49% 0.21 265);
+  --fa-accent-fill-2: oklch(42% 0.2 265);
+  --fa-on-accent: oklch(99.2% 0.008 95);
+  --fa-focus: oklch(52% 0.2 265);
+}
+[data-folio][data-theme='dark'][data-palette='spalt'] {
+  --fa-paper: oklch(17% 0.015 270);
+  --fa-paper-2: oklch(15% 0.014 270);
+  --fa-paper-3: oklch(24.5% 0.019 270);
+  --fa-leaf: oklch(21% 0.017 270);
+  --fa-menu: oklch(24.5% 0.019 270);
+  --fa-ink: oklch(96% 0.006 95);
+  --fa-ink-2: oklch(82% 0.01 95);
+  --fa-ink-3: oklch(66% 0.015 270);
+  --fa-rule: oklch(30% 0.02 270);
+  --fa-rule-2: oklch(44% 0.02 270);
+  --fa-rule-strong: oklch(64% 0.015 270);
+  --fa-accent: oklch(66% 0.17 265);
+  --fa-accent-2: oklch(72% 0.15 265);
+  --fa-accent-ink: oklch(75% 0.14 265);
+  --fa-accent-soft: oklch(30% 0.09 265);
+  --fa-accent-fill: oklch(66% 0.17 265);
+  --fa-accent-fill-2: oklch(60% 0.17 265);
+  --fa-on-accent: oklch(17% 0.015 270);
+  --fa-focus: oklch(75% 0.15 265);
+  --fa-fold: oklch(0% 0 0 / 0.1);
+  --fa-scrim: oklch(8% 0.015 270 / 0.55);
+}
+
+/* ── Sand: warm paper, a terracotta accent ─────────────────────────── */
+[data-folio][data-palette='sand']:not([data-theme='dark']) {
+  --fa-paper: oklch(97% 0.014 75);
+  --fa-paper-2: oklch(95.2% 0.016 73);
+  --fa-paper-3: oklch(92.4% 0.018 71);
+  --fa-leaf: oklch(98.8% 0.008 78);
+  --fa-menu: oklch(99.2% 0.006 78);
+  --fa-accent: oklch(47% 0.12 42);
+  --fa-accent-2: oklch(40% 0.11 42);
+  --fa-accent-ink: oklch(45% 0.12 42);
+  --fa-accent-soft: oklch(93.5% 0.03 50);
+  --fa-accent-fill: oklch(47% 0.12 42);
+  --fa-accent-fill-2: oklch(40% 0.11 42);
+  --fa-focus: oklch(53% 0.15 42);
+}
+[data-folio][data-theme='dark'][data-palette='sand'] {
+  --fa-paper: oklch(21.5% 0.011 60);
+  --fa-paper-2: oklch(19% 0.01 60);
+  --fa-paper-3: oklch(26.5% 0.012 62);
+  --fa-leaf: oklch(24.2% 0.012 62);
+  --fa-menu: oklch(28% 0.013 62);
+  --fa-accent: oklch(72% 0.085 45);
+  --fa-accent-2: oklch(76% 0.08 45);
+  --fa-accent-ink: oklch(80% 0.075 45);
+  --fa-accent-soft: oklch(31% 0.035 45);
+  --fa-accent-fill: oklch(50% 0.1 42);
+  --fa-accent-fill-2: oklch(46% 0.1 42);
+  --fa-focus: oklch(78% 0.1 45);
+}
+
+/* ── Sage: cool green-grey paper, a teal accent ────────────────────── */
+[data-folio][data-palette='sage']:not([data-theme='dark']) {
+  --fa-paper: oklch(97% 0.012 165);
+  --fa-paper-2: oklch(95.2% 0.014 165);
+  --fa-paper-3: oklch(92.4% 0.016 165);
+  --fa-leaf: oklch(98.8% 0.007 165);
+  --fa-menu: oklch(99.2% 0.005 165);
+  --fa-ink: oklch(21% 0.015 200);
+  --fa-ink-2: oklch(37% 0.015 200);
+  --fa-ink-3: oklch(47.5% 0.014 200);
+  --fa-rule: oklch(86.5% 0.013 170);
+  --fa-rule-2: oklch(74% 0.014 170);
+  --fa-rule-strong: oklch(21% 0.015 200);
+  --fa-accent: oklch(44% 0.085 195);
+  --fa-accent-2: oklch(37% 0.08 195);
+  --fa-accent-ink: oklch(42% 0.085 195);
+  --fa-accent-soft: oklch(93.5% 0.025 190);
+  --fa-accent-fill: oklch(44% 0.085 195);
+  --fa-accent-fill-2: oklch(37% 0.08 195);
+  --fa-focus: oklch(50% 0.11 195);
+}
+[data-folio][data-theme='dark'][data-palette='sage'] {
+  --fa-paper: oklch(21.5% 0.012 200);
+  --fa-paper-2: oklch(19% 0.011 200);
+  --fa-paper-3: oklch(26.5% 0.013 200);
+  --fa-leaf: oklch(24.2% 0.013 200);
+  --fa-menu: oklch(28% 0.014 200);
+  --fa-ink: oklch(88% 0.012 170);
+  --fa-ink-2: oklch(79% 0.012 170);
+  --fa-ink-3: oklch(68% 0.012 175);
+  --fa-rule: oklch(33.5% 0.013 200);
+  --fa-rule-2: oklch(46% 0.014 200);
+  --fa-rule-strong: oklch(64% 0.014 190);
+  --fa-accent: oklch(72% 0.075 190);
+  --fa-accent-2: oklch(76% 0.07 190);
+  --fa-accent-ink: oklch(80% 0.07 190);
+  --fa-accent-soft: oklch(30% 0.035 195);
+  --fa-accent-fill: oklch(48% 0.08 195);
+  --fa-accent-fill-2: oklch(44% 0.08 195);
+  --fa-focus: oklch(78% 0.09 190);
+}
+
+/* ── Ink: cool blue-white paper, a deep navy accent ────────────────── */
+[data-folio][data-palette='ink']:not([data-theme='dark']) {
+  --fa-paper: oklch(97.5% 0.007 250);
+  --fa-paper-2: oklch(95.5% 0.009 250);
+  --fa-paper-3: oklch(92.8% 0.011 250);
+  --fa-leaf: oklch(99% 0.004 250);
+  --fa-menu: oklch(99.3% 0.003 250);
+  --fa-ink: oklch(20% 0.03 262);
+  --fa-ink-2: oklch(36% 0.026 262);
+  --fa-ink-3: oklch(47% 0.022 262);
+  --fa-rule: oklch(87% 0.011 255);
+  --fa-rule-2: oklch(74% 0.014 255);
+  --fa-rule-strong: oklch(20% 0.03 262);
+  --fa-accent: oklch(38% 0.13 265);
+  --fa-accent-2: oklch(32% 0.12 265);
+  --fa-accent-ink: oklch(37% 0.13 265);
+  --fa-accent-soft: oklch(93% 0.03 265);
+  --fa-accent-fill: oklch(38% 0.13 265);
+  --fa-accent-fill-2: oklch(32% 0.12 265);
+  --fa-focus: oklch(48% 0.16 265);
+}
+[data-folio][data-theme='dark'][data-palette='ink'] {
+  --fa-paper: oklch(20% 0.018 262);
+  --fa-paper-2: oklch(17.5% 0.016 262);
+  --fa-paper-3: oklch(25% 0.02 262);
+  --fa-leaf: oklch(23% 0.02 262);
+  --fa-menu: oklch(27% 0.022 262);
+  --fa-ink: oklch(89% 0.008 250);
+  --fa-ink-2: oklch(80% 0.01 250);
+  --fa-ink-3: oklch(68% 0.012 250);
+  --fa-rule: oklch(32% 0.018 262);
+  --fa-rule-2: oklch(45% 0.02 262);
+  --fa-rule-strong: oklch(64% 0.02 258);
+  --fa-accent: oklch(72% 0.09 262);
+  --fa-accent-2: oklch(76% 0.085 262);
+  --fa-accent-ink: oklch(81% 0.085 262);
+  --fa-accent-soft: oklch(30% 0.045 262);
+  --fa-accent-fill: oklch(50% 0.12 265);
+  --fa-accent-fill-2: oklch(45% 0.12 265);
+  --fa-focus: oklch(78% 0.12 262);
+}
+
+/* ── Rose: blush paper, a rose accent ──────────────────────────────── */
+[data-folio][data-palette='rose']:not([data-theme='dark']) {
+  --fa-paper: oklch(97% 0.011 30);
+  --fa-paper-2: oklch(95.2% 0.013 28);
+  --fa-paper-3: oklch(92.4% 0.015 26);
+  --fa-leaf: oklch(98.8% 0.006 30);
+  --fa-menu: oklch(99.2% 0.005 30);
+  --fa-ink: oklch(21% 0.012 20);
+  --fa-ink-2: oklch(37% 0.013 20);
+  --fa-ink-3: oklch(47.5% 0.013 22);
+  --fa-rule: oklch(86.5% 0.013 25);
+  --fa-rule-2: oklch(74% 0.014 25);
+  --fa-rule-strong: oklch(21% 0.012 20);
+  --fa-accent: oklch(46% 0.13 10);
+  --fa-accent-2: oklch(39% 0.12 10);
+  --fa-accent-ink: oklch(44% 0.13 10);
+  --fa-accent-soft: oklch(93.5% 0.03 10);
+  --fa-accent-fill: oklch(46% 0.13 10);
+  --fa-accent-fill-2: oklch(39% 0.12 10);
+  --fa-focus: oklch(52% 0.15 10);
+}
+[data-folio][data-theme='dark'][data-palette='rose'] {
+  --fa-paper: oklch(21% 0.012 20);
+  --fa-paper-2: oklch(18.5% 0.011 20);
+  --fa-paper-3: oklch(26% 0.013 20);
+  --fa-leaf: oklch(23.8% 0.013 20);
+  --fa-menu: oklch(27.5% 0.014 20);
+  --fa-ink: oklch(88% 0.01 25);
+  --fa-ink-2: oklch(79% 0.011 25);
+  --fa-ink-3: oklch(68% 0.012 25);
+  --fa-rule: oklch(33% 0.013 20);
+  --fa-rule-2: oklch(46% 0.014 20);
+  --fa-rule-strong: oklch(64% 0.014 20);
+  --fa-accent: oklch(73% 0.085 10);
+  --fa-accent-2: oklch(77% 0.08 10);
+  --fa-accent-ink: oklch(81% 0.075 10);
+  --fa-accent-soft: oklch(30.5% 0.04 10);
+  --fa-accent-fill: oklch(50% 0.11 10);
+  --fa-accent-fill-2: oklch(46% 0.11 10);
+  --fa-focus: oklch(79% 0.1 10);
+}

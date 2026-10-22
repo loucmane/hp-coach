@@ -29,8 +29,10 @@ import { DrillQuestion } from '@/components/drill/DrillQuestion'
 import { BoksidanDesk } from '@/components/drill-variants/BoksidanDesk'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Btn } from '@/components/primitives'
+import { LeaveConfirmSheet } from '@/components/session/LeaveConfirmSheet'
 import { dtkBlockPosition } from '@/components/session/SessionPlayer'
 import type { AnswerLetter, Question, Section } from '@/data/questions'
+import { useShellFocus } from '@/folio/useShellFocus'
 import { useCountdown } from '@/hooks/useCountdown'
 import { useViewport } from '@/hooks/useViewport'
 import { computeMockSummary } from '@/lib/mock'
@@ -137,6 +139,7 @@ function MockRunnerPass({
     flagged: loadMockFlags(userId, session.id),
   }))
   const settledRef = useRef(false)
+  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false)
 
   useEffect(() => {
     // A queued render after hand-in must not recreate the cleared storage key.
@@ -331,6 +334,10 @@ function MockRunnerPass({
     if (confirm('Avbryter du blir provet ogiltigt.')) abandon()
   }, [abandon])
 
+  // Folio's exit opens the shared sheet without pushing history. Confirmation
+  // still uses Provpass's existing abandon/void operation, never a pause.
+  useShellFocus({ active: !!q, onExit: () => setLeaveConfirmOpen(true) })
+
   if (!q) return null
 
   const boundaries = sectionBoundaries(plan)
@@ -414,6 +421,15 @@ function MockRunnerPass({
             Avbryt provpass
           </button>
         </div>
+        {leaveConfirmOpen && (
+          <LeaveConfirmSheet
+            onContinue={() => setLeaveConfirmOpen(false)}
+            onLeave={() => {
+              setLeaveConfirmOpen(false)
+              abandon()
+            }}
+          />
+        )}
       </div>
     </MobileFrame>
   )

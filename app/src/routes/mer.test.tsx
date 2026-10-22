@@ -22,6 +22,7 @@ vi.mock('@/lib/devSurface', () => ({ isDevSurface: vi.fn(() => true) }))
 import { isDevSurface } from '@/lib/devSurface'
 import { DESIGN_DIRECTIONS, useDesignStore } from '@/stores/designStore'
 import { useExamStore } from '@/stores/examStore'
+import { useUiStore } from '@/stores/uiStore'
 import { Route } from './mer'
 
 const MerRoute = Route.options.component!
@@ -33,6 +34,7 @@ beforeEach(() => {
   vi.mocked(isDevSurface).mockReturnValue(true)
   useDesignStore.setState({ direction: null })
   useExamStore.setState({ sittingId: null })
+  useUiStore.setState({ folioPreview: false })
   localStorage.clear()
 })
 
@@ -79,6 +81,16 @@ describe('/mer exam sitting', () => {
 })
 
 describe('/mer design direction', () => {
+  it('offers and persists the preview outside dev, with a way back', () => {
+    vi.mocked(isDevSurface).mockReturnValue(false)
+    render(<MerRoute />)
+    expect(screen.getByText('Design', { exact: true })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Ny design (förhandsvisning)' }))
+    expect(useUiStore.getState().folioPreview).toBe(true)
+    expect(JSON.parse(localStorage.getItem('hpc-ui')!).state.folioPreview).toBe(true)
+    fireEvent.click(screen.getByRole('button', { name: 'Klassisk' }))
+    expect(useUiStore.getState().folioPreview).toBe(false)
+  })
   it('offers nine choices, marks the active one and writes only the device preference', () => {
     render(<MerRoute />)
     expect(screen.getByRole('heading', { name: 'Designriktning' })).toBeInTheDocument()

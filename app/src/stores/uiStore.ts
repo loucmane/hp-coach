@@ -37,6 +37,9 @@ type UiState = {
    *  it picks uniformly at random. DEFAULT ON. Synced cross-device via
    *  useSyncedPrefs → the server prefs row. */
   smartDrill: boolean
+  /** Device-local preview; classic stays the default. */
+  folioPreview: boolean
+  setFolioPreview: (enabled: boolean) => void
   setPalette: (palette: PaletteKey) => void
   setMode: (mode: ThemeMode) => void
   applyServerTheme: (palette: PaletteKey | undefined, mode: ThemeMode | undefined) => void
@@ -68,6 +71,8 @@ export const useUiStore = create<UiState>()(
       // Smart drill selection defaults ON — the band targets learning and the
       // picker degrades gracefully to random when a user has no ratings yet.
       smartDrill: true,
+      folioPreview: false,
+      setFolioPreview: (folioPreview) => set({ folioPreview }),
       // Palette + mode changes crossfade the whole page as one image via
       // the View Transitions API (task W3) — see `withViewTransition` for
       // the feature-detect / reduced-motion / Firefox-fallback rules.

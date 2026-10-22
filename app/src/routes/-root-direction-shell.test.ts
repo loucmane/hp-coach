@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+import { readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import ts from 'typescript'
@@ -37,5 +37,50 @@ describe('direction bundle boundary', () => {
   it('loads the shell through import()', () => {
     const source = readFileSync(path.join(SRC, 'routes/__root.tsx'), 'utf8')
     expect(source).toContain("import('@/components/direction-shell/DirectionShell')")
+  })
+})
+
+describe('Folio production boundary', () => {
+  function files(dir: string): string[] {
+    return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+      const file = path.join(dir, entry.name)
+      return entry.isDirectory() ? files(file) : [file]
+    })
+  }
+
+  it('keeps every Folio module independent of the bake-offs', () => {
+    for (const file of files(path.join(SRC, 'folio')).filter((file) => /\.tsx?$/.test(file))) {
+      expect(readFileSync(file, 'utf8'), file).not.toMatch(
+        /(?:from\s*|import\s*\()['"][^'"]*devbake/,
+      )
+    }
+  })
+
+  it('loads FolioShell only through the lazy host, inside DirectionContent', () => {
+    const root = readFileSync(path.join(SRC, 'routes/__root.tsx'), 'utf8')
+    const host = readFileSync(path.join(SRC, 'folio/FolioHost.tsx'), 'utf8')
+    expect(root).not.toMatch(/from ['"][^'"]*FolioShell/)
+    expect(host).toContain("import('./FolioShell')")
+    expect(root).toMatch(/<DirectionContent[^>]*>\s*<FolioHost/)
+    expect(host).toContain('fallback={<FolioLoading />}')
+  })
+
+  it('scopes every style selector and keeps document scrolling', () => {
+    for (const name of ['tokens', 'shell', 'palette']) {
+      const css = readFileSync(path.join(SRC, `folio/styles/${name}.css`), 'utf8').replace(
+        /\/\*[\s\S]*?\*\//g,
+        '',
+      )
+      for (const match of css.matchAll(/([^{}]+)\{/g)) {
+        const selector = match[1].trim()
+        if (selector.startsWith('@media')) continue
+        for (const part of selector.split(','))
+          expect(part.trim(), `${name}: ${selector}`).toMatch(/^\[data-folio\]/)
+      }
+      expect(css).not.toContain('fp-')
+    }
+    const data = readFileSync(path.join(SRC, 'folio/data/useShellData.ts'), 'utf8')
+    expect(data).not.toMatch(/\buseDailyPlan\s*\(/)
+    expect(data).toContain('useDailyPlanQuery(')
   })
 })

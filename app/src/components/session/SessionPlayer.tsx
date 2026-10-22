@@ -59,6 +59,7 @@ import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
 import { peekExplanation } from '@/data/explanations'
 import { type AnswerLetter, loadBank, type Question } from '@/data/questions'
+import { useShellFocus } from '@/folio/useShellFocus'
 import { useViewport } from '@/hooks/useViewport'
 import { currentDevice } from '@/lib/device'
 import { endedSessionIdsThisTab, markSessionEnded } from '@/lib/endedSessions'
@@ -297,6 +298,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // deliberately not covered here.
   const sessionActive = phase === 'answering' || phase === 'graded'
   const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false)
+  useShellFocus({ active: sessionActive, onExit: () => setLeaveConfirmOpen(true) })
   const { leave } = useSessionBackTrap(
     sessionActive,
     useCallback(() => setLeaveConfirmOpen(true), []),

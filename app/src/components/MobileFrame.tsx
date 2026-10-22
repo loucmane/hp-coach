@@ -15,9 +15,10 @@
 // `position: fixed` floating pill centered at the bottom of the
 // viewport. Phase B replaces this with a proper top nav.
 
-import type { CSSProperties, ReactNode } from 'react'
+import { type CSSProperties, type ReactNode, useContext } from 'react'
 
 import { DigitRoll } from '@/components/motion/DigitRoll'
+import { FolioHostContext } from '@/folio/host'
 import { useViewport } from '@/hooks/useViewport'
 import { DOORS, type TabKey } from '@/lib/nav'
 
@@ -155,6 +156,7 @@ export function MobileFrame({
   ovaDueCount,
   style,
 }: MobileFrameProps) {
+  const folio = useContext(FolioHostContext)
   // Phase A.7 — viewport drives nav chrome AND iOS decorations:
   //   phone:           iOS chrome + BottomTabs (anchored in artboard)
   //   reader/studio:   DesktopNav at top, no iOS chrome, no
@@ -163,7 +165,7 @@ export function MobileFrame({
   const detectedViewport = useViewport()
   const viewport = forceLayout ?? detectedViewport
   const isPhone = viewport === 'phone'
-  const showIosChrome = isPhone
+  const showIosChrome = isPhone && !folio
   return (
     <div
       style={{
@@ -172,10 +174,10 @@ export function MobileFrame({
         // Reader/Studio: flex grow as a child of Frame's canvas, so
         // long children (AuthLayout's two-pane row) can vertically
         // fill the available space and center their content inside it.
-        ...(isPhone ? { height: '100%' } : { flex: 1 }),
+        ...(isPhone && !folio ? { height: '100%' } : { flex: 1 }),
         background: 'var(--bg)',
         position: 'relative',
-        overflow: isPhone ? 'hidden' : 'visible',
+        overflow: isPhone && !folio ? 'hidden' : 'visible',
         display: 'flex',
         flexDirection: 'column',
         ...style,
@@ -201,7 +203,7 @@ export function MobileFrame({
        * the same document would themselves be a landmark violation, so
        * this element is one or the other, never both. */}
       {(() => {
-        const Content = isPhone ? 'main' : 'div'
+        const Content = isPhone && !folio ? 'main' : 'div'
         return (
           <Content
             style={{
@@ -213,8 +215,8 @@ export function MobileFrame({
               // instead of clipping under the floating tab bar. The
               // children pad their own bottom by var(--frame-tabbar) so
               // the last row clears the BottomTabs strip.
-              overflowY: isPhone ? 'auto' : 'visible',
-              overflowX: isPhone ? 'hidden' : 'visible',
+              overflowY: isPhone && !folio ? 'auto' : 'visible',
+              overflowX: isPhone && !folio ? 'hidden' : 'visible',
               ...(isPhone ? {} : { display: 'flex', flexDirection: 'column' }),
             }}
           >
@@ -222,7 +224,7 @@ export function MobileFrame({
           </Content>
         )
       })()}
-      {tabs && isPhone && (
+      {tabs && isPhone && !folio && (
         <BottomTabs active={activeTab} onChange={onTabChange} ovaDueCount={ovaDueCount} />
       )}
       {showIosChrome && (
