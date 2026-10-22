@@ -36,6 +36,7 @@ const extras = vi.hoisted(() => ({
 }))
 vi.mock('./useFramstegExtras', () => ({ useFramstegExtras: () => extras }))
 const navigateHref = vi.fn()
+const halvesNote = 'Halvorna räknar bara delprov med minst två svar; totalen räknar alla.'
 const stats = (): Stats => ({
   attempts: { total: 100, today: 5, thisWeek: 20 },
   drills: { total: 10, thisWeek: 2 },
@@ -231,6 +232,7 @@ describe('Folio Framsteg', () => {
     data.bySection[sparse].firstTryCorrect90d = 1
     render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
     expect(screen.getByText(halves)).toBeInTheDocument()
+    expect(screen.getByText(halvesNote)).toBe(screen.getByText(halves).nextElementSibling)
     expect(screen.getByTestId(`progress-section-${sparse}`)).toHaveTextContent('—')
     expect(screen.getByTestId('progress-projected')).toHaveTextContent('1,7')
     expect(screen.getByRole('img', { name: /Prognos 1,7 av 2,0, intervall/ })).toBeInTheDocument()
@@ -257,8 +259,48 @@ describe('Folio Framsteg', () => {
     } as Stats['bySection']
     render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
     expect(screen.getByText(halves)).toBeInTheDocument()
+    expect(screen.getAllByText(halvesNote)).toHaveLength(1)
+    expect(screen.getByText(halvesNote)).toBe(screen.getByText(halves).nextElementSibling)
     expect(screen.getByTestId(`progress-section-${thin}`)).toHaveTextContent('—')
     expect(screen.getByTestId('progress-projected')).toHaveTextContent('1,5')
+  })
+  it.each([
+    'all sections',
+    'only answered sections',
+  ])('omits the halves explanation when both halves use every scored section (%s)', (coverage) => {
+    const data = stats()
+    if (coverage === 'only answered sections') {
+      data.bySection = {
+        ORD: data.bySection.ORD,
+        KVA: data.bySection.KVA,
+        MEK: { ...data.bySection.MEK, firstTry90d: 0, firstTryCorrect90d: 0 },
+      } as Stats['bySection']
+    }
+    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.getByText('Verbal 1,4 · Kvant 1,4')).toBeInTheDocument()
+    expect(screen.queryByText(halvesNote)).not.toBeInTheDocument()
+  })
+  it('removes the halves explanation as soon as the last excluded section qualifies', () => {
+    const data = stats()
+    data.bySection.MEK.firstTry90d = 1
+    data.bySection.MEK.firstTryCorrect90d = 0
+    const { rerender } = render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.getByText(halvesNote)).toBeInTheDocument()
+    data.bySection.MEK.firstTry90d = 2
+    rerender(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.queryByText(halvesNote)).not.toBeInTheDocument()
+    expect(screen.getByTestId('progress-section-MEK')).toHaveTextContent('0,0')
+  })
+  it('explains an absent half even when the available half has enough answers', () => {
+    const data = stats()
+    data.bySection = { ORD: data.bySection.ORD } as Stats['bySection']
+    const { rerender } = render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.getByText('Verbal 1,4 · Kvant —')).toBeInTheDocument()
+    expect(screen.getByText(halvesNote)).toBeInTheDocument()
+    data.bySection = {} as Stats['bySection']
+    rerender(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.getByText('Verbal — · Kvant —')).toBeInTheDocument()
+    expect(screen.getAllByText(halvesNote)).toHaveLength(1)
   })
   it('renders Swedish section lists in the lead and following steps', () => {
     const data = stats()

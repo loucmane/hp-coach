@@ -490,10 +490,15 @@ describe('Framsteg real-data view', () => {
   it.each([
     ['ORD,MEK', 'ORD och MEK'],
     ['LÄS, MEK, XYZ', 'LÄS, MEK och XYZ'],
+    ['ord,mek', 'ORD och MEK'],
+    [' läs, MeK, xyz ', 'LÄS, MEK och XYZ'],
+    ['elf', 'ELF'],
     ['ORD', 'ORD'],
     ['ORD · PÅ TID', 'ORD på tid'],
     ['ORD · ORDBANK', 'Ordbank'],
+    ['ord · ordbank', 'Ordbank'],
     ['ar:LÄS:LÄS-TRAP-001', 'LÄS · repetition'],
+    ['ORD, custom label', 'ORD, custom label'],
     [null, 'Övning'],
   ])('formats history section lists without changing special labels (%s)', (sections, label) => {
     const history: SessionHistoryRow[] = [

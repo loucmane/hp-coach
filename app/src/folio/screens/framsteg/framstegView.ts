@@ -46,7 +46,7 @@ function sectionList(sections: readonly string[]): string {
 
 function historyLabel(row: SessionHistoryRow): string {
   const label = passLabel(row)
-  const sections = label.split(',').map((s) => s.trim())
+  const sections = label.split(',').map((s) => s.trim().toUpperCase())
   return sections.every((s) => SECTION_KEYS.some((key) => key === s))
     ? sectionList(sections)
     : label

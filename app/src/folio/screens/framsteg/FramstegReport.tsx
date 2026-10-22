@@ -77,6 +77,10 @@ export function FramstegReport({
     return () => window.removeEventListener('keydown', onKey)
   }, [])
   const p = view.prognosis
+  const explainHalves =
+    p.verbal == null ||
+    p.quant == null ||
+    view.sections.some((section) => section.attempts > 0 && section.score == null)
   return (
     <>
       <section className="fa-fr-report" aria-labelledby="fa-fr-report-h">
@@ -99,6 +103,11 @@ export function FramstegReport({
         <p className="fa-halves">
           Verbal {scoreLabel(p.verbal)} · Kvant {scoreLabel(p.quant)}
         </p>
+        {explainHalves ? (
+          <p className="fa-halves-note">
+            Halvorna räknar bara delprov med minst två svar; totalen räknar alla.
+          </p>
+        ) : null}
         {p.total != null ? (
           <div
             className="fa-scale"
