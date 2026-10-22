@@ -16,7 +16,7 @@ type Props = Pick<
 }
 
 export default function FolioRepetera(props: Props) {
-  const extras = useRepeteraExtras(props.section)
+  const extras = useRepeteraExtras(props.section, props.dueMistakes)
   const view = buildRepeteraView({ ...props, ...extras })
   const primaryRef = useRef<HTMLAnchorElement>(null)
   useEffect(() => {
@@ -118,7 +118,7 @@ export default function FolioRepetera(props: Props) {
         {!pending ? (
           <>
             <RepeteraQueue queue={view.queue} navigateHref={navigateHref} />
-            {view.items.length ? (
+            {view.items.length || view.preview.length ? (
               <section className="fa-section" aria-labelledby="fa-rep-misses" data-fa-shade>
                 <div className="fa-section-head">
                   <h2 className="fa-h2" id="fa-rep-misses">
@@ -129,11 +129,11 @@ export default function FolioRepetera(props: Props) {
                   ) : null}
                 </div>
                 <MissPart
-                  items={view.due}
+                  items={view.preview}
                   previewSize={REPETITION_SESSION_SIZE}
                   navigateHref={navigateHref}
                   id="fa-rep-now"
-                  title="Redo nu"
+                  title={view.previewTitle}
                 />
                 <MissPart
                   items={view.laterToday}
@@ -218,6 +218,7 @@ function MissPart({
 }) {
   const [open, setOpen] = useState(false)
   const [showAll, setShowAll] = useState(false)
+  if (showAll && items.length <= previewSize) setShowAll(false)
   if (!items.length) return null
   return (
     <div className="fa-part-block">
@@ -238,8 +239,12 @@ function MissPart({
       ) : null}
       <div id={`${id}-content`} hidden={folded && !open}>
         <ol id={`${id}-list`} aria-labelledby={id}>
-          {(showAll ? items : items.slice(0, previewSize)).map((item) => (
-            <MissRow key={item.mistakeId} item={item} navigateHref={navigateHref} />
+          {(showAll ? items : items.slice(0, previewSize)).map((item, index) => (
+            <MissRow
+              key={item.mistakeId ?? `${item.questionId}:${index}`}
+              item={item}
+              navigateHref={navigateHref}
+            />
           ))}
         </ol>
         {items.length > previewSize ? (

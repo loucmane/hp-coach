@@ -119,7 +119,7 @@ function BlockStage({
     previousQuestion.current = q.qid
     if (!q.qid || suspended || viewerOpen) return
     if (!feedback && newQuestion && (firstInBlock || !phone || !reading)) {
-      window.scrollTo({ top: 0 })
+      window.scrollTo({ top: 0, behavior: 'instant' })
     }
     const target = feedback ? verdict.current : problem.current
     // Question focus preserves the intentional page position; feedback still scrolls.
