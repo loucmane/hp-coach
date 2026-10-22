@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import type { ComponentProps, ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { ActiveSession } from '@/api/hooks/useSessions'
@@ -157,10 +157,15 @@ function mount(folio = true, props: Partial<SessionPlayerProps> = {}) {
     </QueryClientProvider>,
   )
 }
-async function questionReady() {
-  const lock = await screen.findByTestId('fa-lock')
-  await act(async () => {})
-  return lock
+async function questionReady(index = 0) {
+  await waitFor(
+    () => {
+      expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', h.bank[index].qid)
+      expect(screen.getByTestId('fa-lock')).toBeInTheDocument()
+    },
+    { timeout: 5000 },
+  )
+  return screen.findByTestId('fa-lock', undefined, { timeout: 5000 })
 }
 function key(key: string, shiftKey = false) {
   fireEvent.keyDown(document.body, { key, shiftKey })
@@ -233,16 +238,18 @@ describe('Reading through SessionPlayer and the Folio host', () => {
     for (const letter of ['a', 'b', 'c', 'd', 'e']) key(letter)
     key('Enter')
     expect(h.submit).not.toHaveBeenCalled()
-    expect(screen.getByTestId('fa-lock')).toBeDisabled()
+    expect(await screen.findByTestId('fa-lock')).toBeDisabled()
     key('Escape')
     key('a')
     key('Enter')
     key('Enter')
+    await questionReady(1)
     expect(screen.getByTestId('rd-plate') === plate).toBe(true)
     expect(image.style.transform).toContain('rotate(90deg)')
     key('a')
     key('Enter')
     key('Enter')
+    await questionReady(2)
     const nextImage = within(screen.getByTestId('rd-plate')).getByRole('img')
     expect(nextImage).toHaveAttribute('src', '/next.jpg')
     expect(nextImage.style.transform).toContain('rotate(0deg)')
@@ -251,7 +258,7 @@ describe('Reading through SessionPlayer and the Folio host', () => {
     expect(within(screen.getByRole('dialog')).getByRole('img').style.transform).toContain(
       'rotate(0deg)',
     )
-  })
+  }, 20_000)
 
   it.each([false, true])('separates the verdict from the question, phone=%s', async (phone) => {
     h.phone = phone
@@ -394,6 +401,7 @@ describe('Reading through SessionPlayer and the Folio host', () => {
     expect(screen.getByText('Choose the verb.').closest('[lang]')).toHaveAttribute('lang', 'en')
     await accessible(container)
     key('Enter')
+    await questionReady(1)
     expect(screen.getByTestId('drill-prompt')).toHaveTextContent('Lucka 32')
     expect(container.querySelector('[data-gap="31"] s')).toHaveTextContent('wrote')
     expect(container.querySelector('[data-gap="32"]')).toHaveAttribute('data-state', 'current')
@@ -419,12 +427,12 @@ describe('Reading through SessionPlayer and the Folio host', () => {
     for (const letter of ['a', 'b', 'c', 'd', 'e']) key(letter)
     key('Enter')
     expect(h.submit).not.toHaveBeenCalled()
-    expect(screen.getByTestId('fa-lock')).toBeDisabled()
+    expect(await screen.findByTestId('fa-lock')).toBeDisabled()
     await accessible(container)
     fireEvent.keyDown(dialog, { key: 'Escape' })
     expect(screen.queryByRole('dialog', { name: 'Förstorad figur' })).toBeNull()
     expect(screen.getByRole('region', { name: 'Uppgift 1' })).toHaveFocus()
-    for (const cue of ['Andra', 'Tredje']) {
+    for (const [index, cue] of ['Andra', 'Tredje'].entries()) {
       key('a')
       key('Enter')
       await accessible(container)
@@ -435,6 +443,7 @@ describe('Reading through SessionPlayer and the Folio host', () => {
       expect(screen.getByTestId('fa-verdict')).toHaveFocus()
       if (phone) expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'full')
       key('Enter')
+      await questionReady(index + 1)
       expect(screen.getByTestId('rd-plate') === plate).toBe(true)
       expect(screen.getByText(`${cue} av tre frågor till figuren`)).toBeInTheDocument()
     }
