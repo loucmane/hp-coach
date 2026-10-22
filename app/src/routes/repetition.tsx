@@ -24,7 +24,7 @@
 // questions, grading none of the questions whose sources are unknown.
 
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useCallback, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useContext, useRef, useState } from 'react'
 
 import { type Mistake, useDueMistakes, useReviewMistake } from '@/api/hooks/useMistakes'
 import { type ExposureMap, useExposure } from '@/api/hooks/useMockResults'
@@ -32,6 +32,7 @@ import { useActiveSessionOfKind } from '@/api/hooks/useSessions'
 import { canAdoptActiveSession } from '@/components/session/canAdoptSession'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { SECTION_KEYS, type Section } from '@/data/questions'
+import { FolioHostContext } from '@/folio/host'
 import { useViewport } from '@/hooks/useViewport'
 import { endedSessionIdsThisTab } from '@/lib/endedSessions'
 import {
@@ -42,6 +43,8 @@ import {
   resolveReplayPlan,
   resumeQid,
 } from '@/lib/replay'
+
+const FolioRepetera = lazy(() => import('@/folio/screens/repetera/FolioRepetera'))
 
 type RepetitionSearch = { qid?: string; done?: number; start?: true; section?: Section }
 
@@ -82,6 +85,11 @@ export const Route = createFileRoute('/repetition')({
 
 function RepetitionScreen() {
   const { qid: urlQid, done: doneSessionId, start, section } = Route.useSearch()
+  const inFolio = useContext(FolioHostContext)
+  const [inSession, setInSession] = useState(() => !!(urlQid || start || doneSessionId))
+  // Replay and stale-resume recovery clear qid inside a live player.
+  // Once entered, that player keeps ownership until the route unmounts.
+  if (!inSession && (urlQid || start || doneSessionId)) setInSession(true)
   const sections = section ?? 'alla'
   const due = useDueMistakes(section)
   const exposure = useExposure()
@@ -216,6 +224,30 @@ function RepetitionScreen() {
   const isEmpty = dueCount === 0
   const startDisabled = noData || isEmpty
   const disabledLabel = noData ? 'Laddar…' : 'Inget att repetera'
+
+  if (inFolio && !inSession) {
+    return (
+      <Suspense fallback={<p role="status">Laddar …</p>}>
+        <FolioRepetera
+          dueMistakes={due.data}
+          dueError={due.isError}
+          section={section}
+          roundSession={roundSession}
+          roundEnded={roundSession ? endedSessionIdsThisTab.has(roundSession.id) : false}
+          navigateHref={(href) => {
+            const url = new URL(href, window.location.origin)
+            navigate({
+              to: url.pathname as never,
+              search: Object.fromEntries(url.searchParams) as never,
+              // The player owns this visit once it starts. Back should
+              // leave the overview entry instead of reopening that latch.
+              replace: url.pathname === '/repetition' && url.searchParams.get('start') === '1',
+            })
+          }}
+        />
+      </Suspense>
+    )
+  }
 
   return (
     <>
