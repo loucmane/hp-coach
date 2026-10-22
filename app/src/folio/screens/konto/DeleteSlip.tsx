@@ -14,9 +14,11 @@ export function DeleteSlip({
 }) {
   const ref = useRef<HTMLDialogElement>(null)
   const field = useRef<HTMLInputElement>(null)
+  const status = useRef<HTMLParagraphElement>(null)
   const [word, setWord] = useState('')
   const id = useId()
   const busy = !['idle', 'failed'].includes(k.deletion)
+  const inFlight = k.deletion === 'pending' || k.deletion === 'signing-out' || k.loggingOut
   useLayoutEffect(() => {
     const dialog = ref.current
     const trigger = opener.current
@@ -28,6 +30,9 @@ export function DeleteSlip({
       if (trigger?.isConnected) trigger.focus({ preventScroll: true })
     }
   }, [opener])
+  useLayoutEffect(() => {
+    if (inFlight || k.deletion === 'signout-failed') status.current?.focus({ preventScroll: true })
+  }, [inFlight, k.deletion])
 
   return (
     // biome-ignore lint/a11y/useKeyWithClickEvents: only a click outside the dialog bounds closes it; native cancel handles Escape
@@ -39,10 +44,10 @@ export function DeleteSlip({
       data-folio-keyscope
       onCancel={(event) => {
         event.preventDefault()
-        onClose()
+        if (!inFlight) onClose()
       }}
       onClick={(event) => {
-        if (event.target !== event.currentTarget) return
+        if (inFlight || event.target !== event.currentTarget) return
         const bounds = event.currentTarget.getBoundingClientRect()
         if (
           event.clientX < bounds.left ||
@@ -65,12 +70,12 @@ export function DeleteSlip({
           type="button"
           className="fa-kt-link"
           data-testid="konto-delete-export"
-          disabled={k.exported === 'pending'}
+          disabled={inFlight || k.exported === 'pending'}
           onClick={() => void k.exportNow()}
         >
           Exportera min data först →
         </button>
-        <ExportStatus state={k.exported} onRetry={() => void k.exportNow()} />
+        {!inFlight ? <ExportStatus state={k.exported} onRetry={() => void k.exportNow()} /> : null}
       </div>
       <div className="fa-kt-word">
         <label className="fa-kt-word-label" htmlFor={`${id}-word`}>
@@ -104,18 +109,25 @@ export function DeleteSlip({
         >
           {k.deletion === 'pending' ? 'Raderar…' : 'Radera kontot permanent'}
         </button>
-        <button type="button" className="fa-kt-quiet" onClick={onClose}>
+        <button type="button" className="fa-kt-quiet" disabled={inFlight} onClick={onClose}>
           Avbryt
         </button>
       </div>
-      <p className="fa-kt-error fa-kt-status" role="status">
-        {k.deletion === 'failed'
-          ? COPY.deleteFailed
-          : k.deletion === 'signout-failed'
-            ? COPY.signoutFailed
-            : k.deletion === 'signing-out'
-              ? 'Kontot är raderat. Loggar ut…'
-              : ''}
+      <p
+        ref={status}
+        className="fa-kt-error fa-kt-status"
+        role="status"
+        tabIndex={inFlight ? 0 : -1}
+      >
+        {k.deletion === 'pending'
+          ? 'Raderar…'
+          : k.deletion === 'failed'
+            ? COPY.deleteFailed
+            : k.deletion === 'signout-failed'
+              ? COPY.signoutFailed
+              : k.deletion === 'signing-out'
+                ? 'Kontot är raderat. Loggar ut…'
+                : ''}
       </p>
       {k.deletion === 'signout-failed' ? (
         <button type="button" className="fa-kt-link" onClick={() => void k.finishSignOut()}>

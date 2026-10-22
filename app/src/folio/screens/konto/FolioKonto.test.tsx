@@ -11,6 +11,8 @@ import { KontoLink } from './KontoSections'
 import { useKontoExtras } from './useKontoExtras'
 
 const state = vi.hoisted(() => ({
+  identityLoaded: true,
+  prefsPending: false,
   user: {
     fullName: 'Test Läsare',
     firstName: null,
@@ -34,11 +36,14 @@ const state = vi.hoisted(() => ({
 }))
 vi.mock('@tanstack/react-router', () => ({ useNavigate: () => state.navigate }))
 vi.mock('@clerk/clerk-react', () => ({
-  useUser: () => ({ user: state.user }),
+  useUser: () => ({ user: state.user, isLoaded: state.identityLoaded }),
   useClerk: () => ({ signOut: state.signOut }),
 }))
 vi.mock('@/hooks/useViewport', () => ({ useViewport: () => state.viewport }))
 vi.mock('@/api/useSyncedPrefs', () => ({ useSyncedPrefs: () => state }))
+vi.mock('@/api/hooks/useUserPrefs', () => ({
+  useUserPrefs: () => ({ isPending: state.prefsPending }),
+}))
 vi.mock('@/api/hooks/useDataExport', () => ({
   useExportData: () => ({ mutateAsync: state.exportData }),
   downloadExport: (data: unknown) => state.download(data),
@@ -80,6 +85,8 @@ beforeEach(() => {
   vi.useFakeTimers({ toFake: ['Date'] })
   vi.setSystemTime(new Date(2026, 9, 23, 12))
   vi.clearAllMocks()
+  state.identityLoaded = true
+  state.prefsPending = false
   state.user = {
     fullName: 'Test Läsare',
     primaryEmailAddress: { emailAddress: 'reader@example.test' },
@@ -272,14 +279,14 @@ describe('Folio Konto', () => {
     expect(useUiStore.getState().folioPreview).toBe(true)
     expect(screen.getByText(/den här enheten/)).toBeInTheDocument()
   })
-  it('opens Mer at Övningen and keeps account exit actions exclusive to Konto', () => {
+  it('opens Mer at Övningen and keeps account exit actions exclusive to Konto', async () => {
     mount('mer')
-    expect(screen.getByRole('heading', { name: 'Övningen' })).toHaveFocus()
+    await waitFor(() => expect(screen.getByRole('heading', { name: 'Övningen' })).toHaveFocus())
     expect(window.scrollTo).toHaveBeenCalled()
     expect(screen.queryByRole('button', { name: 'Logga ut' })).not.toBeInTheDocument()
     expect(screen.queryByTestId('konto-delete')).not.toBeInTheDocument()
   })
-  it('scrolls the document when the real shell main has visible overflow', () => {
+  it('scrolls the document when the real shell main has visible overflow', async () => {
     const { container, rerender } = render(
       <main className="fa-main" style={{ overflowY: 'visible' }}>
         <FolioKonto entry="konto" navigateHref={navigateHref} />
@@ -292,6 +299,7 @@ describe('Folio Konto', () => {
         <FolioKonto entry="mer" navigateHref={navigateHref} />
       </main>,
     )
+    await waitFor(() => expect(screen.getByRole('heading', { name: 'Övningen' })).toHaveFocus())
     expect(main.scrollTo).not.toHaveBeenCalled()
     expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'instant' })
     expect(screen.getByRole('heading', { name: 'Övningen' })).toHaveFocus()
@@ -299,7 +307,7 @@ describe('Folio Konto', () => {
   it.each([
     'studio',
     'phone',
-  ])('places the Mer heading 24px below the document viewport on %s', (viewport) => {
+  ])('places the Mer heading 24px below the document viewport on %s', async (viewport) => {
     state.viewport = viewport
     vi.spyOn(window, 'scrollY', 'get').mockReturnValue(180)
     const measure = HTMLElement.prototype.getBoundingClientRect
@@ -309,6 +317,7 @@ describe('Folio Konto', () => {
       return this.id === 'fa-kt-ovningen' ? new DOMRect(0, 420, 500, 42) : measure.call(this)
     })
     mount('mer')
+    await waitFor(() => expect(screen.getByRole('heading', { name: 'Övningen' })).toHaveFocus())
     // Absolute heading Y is 600; scrolling to 576 leaves its top visible at 24.
     expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 576, behavior: 'instant' })
     expect(scrollIntoView).not.toHaveBeenCalled()
@@ -424,6 +433,126 @@ describe('Folio Konto', () => {
   })
 })
 
+describe('Mer landing after hydration', () => {
+  let headingY: number
+  let scrollY: number
+  const tick = (ms = 32) => act(() => vi.advanceTimersByTime(ms))
+
+  beforeEach(() => {
+    vi.useFakeTimers()
+    headingY = 600
+    scrollY = 0
+    vi.spyOn(window, 'scrollY', 'get').mockImplementation(() => scrollY)
+    vi.spyOn(window, 'scrollTo').mockImplementation((options: ScrollToOptions | number) => {
+      if (typeof options === 'object') scrollY = options.top ?? scrollY
+      // Browser scroll events arrive after scrollTo, even for instant jumps.
+      requestAnimationFrame(() => fireEvent.scroll(window))
+    })
+    const measure = HTMLElement.prototype.getBoundingClientRect
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
+      this: HTMLElement,
+    ) {
+      return this.id === 'fa-kt-ovningen'
+        ? new DOMRect(0, headingY - scrollY, 500, 42)
+        : measure.call(this)
+    })
+  })
+
+  it.each([
+    'identity',
+    'prefs',
+  ])('waits for %s and the hydrated sitting before its first jump', (last) => {
+    state.identityLoaded = false
+    state.prefsPending = true
+    state.user = null
+    const { rerender } = render(<FolioKonto entry="mer" />)
+    tick(1200)
+    expect(window.scrollTo).not.toHaveBeenCalled()
+    if (last === 'identity') state.prefsPending = false
+    else state.identityLoaded = true
+    rerender(<FolioKonto entry="mer" />)
+    tick()
+    expect(window.scrollTo).not.toHaveBeenCalled()
+    state.identityLoaded = true
+    state.prefsPending = false
+    state.user = { fullName: 'Test Läsare' }
+    rerender(<FolioKonto entry="mer" />)
+    // The signed-in root hydrates the sitting store in a passive effect.
+    act(() => useExamStore.getState().setSitting('host-2027'))
+    headingY = 710
+    tick()
+    expect(screen.getByRole('button', { name: 'Prov: Höstprov 27' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    expect(window.scrollTo).toHaveBeenCalledExactlyOnceWith({ top: 686, behavior: 'instant' })
+    expect(screen.getByRole('heading', { name: 'Övningen' }).getBoundingClientRect().top).toBe(24)
+  })
+
+  it('corrects one late height shift over 8px during the first second, without a loop', () => {
+    mount('mer')
+    tick()
+    expect(scrollY).toBe(576)
+    headingY += 8
+    tick(160)
+    expect(window.scrollTo).toHaveBeenCalledTimes(1)
+    headingY -= 77
+    tick(160)
+    expect(screen.getByRole('heading', { name: 'Övningen' }).getBoundingClientRect().top).toBe(24)
+    expect(window.scrollTo).toHaveBeenCalledTimes(2)
+    headingY += 100
+    tick(1200)
+    expect(window.scrollTo).toHaveBeenCalledTimes(2)
+  })
+
+  it('leaves late layout changes alone after the first second', () => {
+    mount('mer')
+    tick(1100)
+    headingY += 100
+    tick(100)
+    expect(window.scrollTo).toHaveBeenCalledTimes(1)
+  })
+
+  it.each([
+    'scroll',
+    'wheel',
+    'touch',
+    'key',
+    'pointer',
+  ])('never realigns after user %s', (input) => {
+    mount('mer')
+    tick()
+    if (input === 'scroll') {
+      scrollY += 100
+      fireEvent.scroll(window)
+    } else if (input === 'wheel') fireEvent.wheel(document.body, { deltaY: 100 })
+    else if (input === 'touch') fireEvent.touchStart(document.body)
+    else if (input === 'key') fireEvent.keyDown(document.body, { key: 'PageDown' })
+    else fireEvent.pointerDown(document.body)
+    headingY += 100
+    tick(1200)
+    expect(window.scrollTo).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not take over after the student scrolls while the data is loading', () => {
+    state.prefsPending = true
+    const { rerender } = render(<FolioKonto entry="mer" />)
+    scrollY = 120
+    fireEvent.scroll(window)
+    state.prefsPending = false
+    rerender(<FolioKonto entry="mer" />)
+    tick(1200)
+    expect(window.scrollTo).not.toHaveBeenCalled()
+  })
+
+  it('cancels a scheduled landing on unmount', () => {
+    const { unmount } = mount('mer')
+    unmount()
+    tick(1200)
+    expect(window.scrollTo).not.toHaveBeenCalled()
+  })
+})
+
 describe('Folio deletion slip', () => {
   it('preserves warning → export → exact-word input → grave act → cancel', () => {
     mount()
@@ -497,29 +626,40 @@ describe('Folio deletion slip', () => {
     expect(state.download).toHaveBeenCalledTimes(1)
     expect(state.deleteAccount).not.toHaveBeenCalled()
   })
-  it('sends once across double clicks and disables reopening until deletion and sign-out settle', async () => {
+  it('sends once across double clicks and holds the slip and status focus through deletion and sign-out', async () => {
     const deletion = deferred<{ ok: true; deleted: true }>()
     const signingOut = deferred<void>()
     state.deleteAccount.mockReturnValueOnce(deletion.promise)
     state.signOut.mockReturnValueOnce(signingOut.promise)
     mount()
-    openSlip()
+    const { dialog, opener } = openSlip()
     const button = arm()
     fireEvent.click(button)
     fireEvent.click(button)
     expect(state.deleteAccount).toHaveBeenCalledTimes(1)
     expect(state.signOut).not.toHaveBeenCalled()
-    fireEvent.click(screen.getByRole('button', { name: 'Avbryt' }))
-    const opener = screen.getByTestId('konto-delete')
-    expect(opener).toBeDisabled()
-    fireEvent.click(opener)
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    const cancel = within(dialog).getByRole('button', { name: 'Avbryt' })
+    const assertHeld = (message: string) => {
+      expect(cancel).toBeDisabled()
+      expect(opener).toBeDisabled()
+      fireEvent.click(cancel)
+      fireEvent(dialog, new Event('cancel', { bubbles: true, cancelable: true }))
+      fireEvent.click(dialog, { clientX: -1, clientY: -1 })
+      expect(dialog).toHaveAttribute('open')
+      const status = within(dialog).getByText(message, { selector: 'p' })
+      expect(status).toHaveFocus()
+      expect(status).toHaveAttribute('tabindex', '0')
+      expect(
+        within(dialog)
+          .getAllByRole('button')
+          .every((button) => button.hasAttribute('disabled')),
+      ).toBe(true)
+    }
+    assertHeld('Raderar…')
     expect(state.deleteAccount).toHaveBeenCalledTimes(1)
     await act(async () => deletion.resolve({ ok: true, deleted: true }))
     expect(state.signOut).toHaveBeenCalledExactlyOnceWith()
-    expect(opener).toBeDisabled()
-    fireEvent.click(opener)
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    assertHeld('Kontot är raderat. Loggar ut…')
     expect(screen.queryByTestId('konto-delete-done')).not.toBeInTheDocument()
     await act(async () => signingOut.resolve())
     expect(screen.getByTestId('konto-delete-done')).toHaveTextContent('Kontot är raderat.')
@@ -527,6 +667,7 @@ describe('Folio deletion slip', () => {
       'Allt är borta. Tack för att du testade HP-Coach.',
     )
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Kontot är raderat.' })).toHaveFocus()
   })
   it('re-arms a refused deletion and keeps the existing failure copy', async () => {
     state.deleteAccount.mockRejectedValueOnce(new Error('offline'))
@@ -552,11 +693,44 @@ describe('Folio deletion slip', () => {
     expect(dialog).toHaveTextContent('Kontot är raderat, men det gick inte att logga ut.')
     expect(dialog).not.toHaveTextContent('Inget raderades')
     expect(screen.getByTestId('konto-delete-submit')).toBeDisabled()
-    expect(screen.getByTestId('konto-delete')).toBeDisabled()
+    expect(screen.getByTestId('konto-delete')).toBeEnabled()
     fireEvent.click(retry)
     await screen.findByTestId('konto-delete-done')
     expect(state.deleteAccount).toHaveBeenCalledTimes(1)
     expect(state.signOut).toHaveBeenCalledTimes(2)
+  })
+  it.each([
+    'delete',
+    'sign-out',
+  ])('restores normal closing and opener focus after %s failure', async (stage) => {
+    if (stage === 'delete') state.deleteAccount.mockRejectedValueOnce(new Error('offline'))
+    else state.signOut.mockRejectedValueOnce(new Error('offline'))
+    mount()
+    const { dialog, opener } = openSlip()
+    fireEvent.click(arm())
+    await within(dialog).findByText(
+      stage === 'delete'
+        ? 'Kunde inte radera kontot. Inget raderades — försök igen.'
+        : 'Kontot är raderat, men det gick inte att logga ut.',
+    )
+    expect(within(dialog).getByRole('button', { name: 'Avbryt' })).toBeEnabled()
+    fireEvent(dialog, new Event('cancel', { bubbles: true, cancelable: true }))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(opener).toHaveFocus()
+    if (stage === 'sign-out') {
+      const signingOut = deferred<void>()
+      state.signOut.mockReturnValueOnce(signingOut.promise)
+      const reopened = openSlip().dialog
+      expect(within(reopened).getByText(/Kontot är raderat, men/)).toHaveFocus()
+      fireEvent.click(within(reopened).getByRole('button', { name: 'Försök logga ut igen' }))
+      expect(within(reopened).getByRole('button', { name: 'Avbryt' })).toBeDisabled()
+      expect(within(reopened).getByText('Kontot är raderat. Loggar ut…')).toHaveFocus()
+      fireEvent(reopened, new Event('cancel', { bubbles: true, cancelable: true }))
+      expect(reopened).toHaveAttribute('open')
+      await act(async () => signingOut.resolve())
+      expect(screen.getByRole('heading', { name: 'Kontot är raderat.' })).toHaveFocus()
+      expect(state.deleteAccount).toHaveBeenCalledTimes(1)
+    }
   })
   it.each(['konto', 'mer', 'slip'] as const)('has no axe violations for %s', async (entry) => {
     const { container } = mount(entry === 'mer' ? 'mer' : 'konto')

@@ -3,6 +3,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { useRef, useState } from 'react'
 import { downloadExport, useExportData } from '@/api/hooks/useDataExport'
 import { useDeleteAccount } from '@/api/hooks/useDeleteAccount'
+import { useUserPrefs } from '@/api/hooks/useUserPrefs'
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { useViewport } from '@/hooks/useViewport'
 import { useCoachStore } from '@/stores/coachStore'
@@ -13,8 +14,9 @@ import { type DeleteState, type ExportState, identityView, type Setting } from '
 /** All Folio data hooks stay behind the lazy screen boundary. */
 export function useKontoExtras() {
   const navigate = useNavigate()
-  const { user } = useUser()
+  const { user, isLoaded } = useUser()
   const { signOut } = useClerk()
+  const prefs = useUserPrefs()
   const synced = useSyncedPrefs()
   const exportData = useExportData()
   const deleteAccount = useDeleteAccount()
@@ -116,6 +118,9 @@ export function useKontoExtras() {
       })
     },
     identity: identityView(user),
+    // The selected sitting is hydrated from this same query by the app root.
+    // A terminal fetch error also settles the layout on its local fallback.
+    landingReady: isLoaded && !prefs.isPending,
     viewport,
     days,
     sitting,
