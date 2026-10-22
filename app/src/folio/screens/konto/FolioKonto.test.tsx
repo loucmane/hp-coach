@@ -7,6 +7,8 @@ import { useCoachStore } from '@/stores/coachStore'
 import { useExamStore } from '@/stores/examStore'
 import { useUiStore } from '@/stores/uiStore'
 import FolioKonto from './FolioKonto'
+import { KontoLink } from './KontoSections'
+import { useKontoExtras } from './useKontoExtras'
 
 const state = vi.hoisted(() => ({
   user: {
@@ -28,7 +30,9 @@ const state = vi.hoisted(() => ({
   setSmartDrill: vi.fn(),
   setMode: vi.fn(),
   setPalette: vi.fn(),
+  navigate: vi.fn(),
 }))
+vi.mock('@tanstack/react-router', () => ({ useNavigate: () => state.navigate }))
 vi.mock('@clerk/clerk-react', () => ({
   useUser: () => ({ user: state.user }),
   useClerk: () => ({ signOut: state.signOut }),
@@ -148,8 +152,19 @@ describe('Folio Konto', () => {
   it('never displays a sample identity while Clerk is loading', () => {
     state.user = null
     mount()
-    expect(screen.getByTestId('konto-identity')).toHaveTextContent('Ditt konto')
+    expect(within(screen.getByTestId('konto-identity')).queryByText('Namn')).not.toBeInTheDocument()
     expect(screen.getByTestId('konto-email')).toBeEmptyDOMElement()
+  })
+  it('shows an email only once when Clerk has no real name', () => {
+    state.user = {
+      fullName: ' ',
+      firstName: ' ',
+      primaryEmailAddress: { emailAddress: 'reader@example.test' },
+    }
+    mount()
+    const identity = within(screen.getByTestId('konto-identity'))
+    expect(identity.queryByText('Namn')).not.toBeInTheDocument()
+    expect(identity.getAllByText('reader@example.test')).toHaveLength(1)
   })
   it.each([
     ['Prov: Höstprov 27', 'setSitting', 'host-2027', 'Prov'],
@@ -176,6 +191,12 @@ describe('Folio Konto', () => {
   })
   it('keeps the coach blurb visible and shows the selected date and selection hint', async () => {
     mount()
+    for (const [coach, blurb] of Object.entries(COACH_BLURBS)) {
+      expect(screen.getByText(blurb)).toBeVisible()
+      expect(
+        screen.getByRole('button', { name: new RegExp(`^${coach}$`, 'i') }),
+      ).toHaveAccessibleDescription(blurb)
+    }
     const user = userEvent.setup()
     await user.click(screen.getByRole('button', { name: 'Professor' }))
     expect(screen.getByText(COACH_BLURBS.professor)).toBeInTheDocument()
@@ -233,6 +254,13 @@ describe('Folio Konto', () => {
     mount()
     expect(screen.queryByRole('button', { name: /^Prov:/ })).not.toBeInTheDocument()
     expect(screen.getByText('Nästa provdatum är inte publicerat här än.')).toBeInTheDocument()
+    expect(screen.queryByText(/dagar ·/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/höstprov 27/i)).not.toBeInTheDocument()
+  })
+  it('keeps the last sitting countdown through the whole exam day', () => {
+    vi.setSystemTime(new Date(2027, 9, 24, 23, 59))
+    mount()
+    expect(screen.getByText('0 dagar · höstprov 27')).toBeInTheDocument()
   })
   it('uses a device-local design choice', async () => {
     mount()
@@ -247,7 +275,7 @@ describe('Folio Konto', () => {
   it('opens Mer at Övningen and keeps account exit actions exclusive to Konto', () => {
     mount('mer')
     expect(screen.getByRole('heading', { name: 'Övningen' })).toHaveFocus()
-    expect(scrollIntoView).toHaveBeenCalled()
+    expect(window.scrollTo).toHaveBeenCalled()
     expect(screen.queryByRole('button', { name: 'Logga ut' })).not.toBeInTheDocument()
     expect(screen.queryByTestId('konto-delete')).not.toBeInTheDocument()
   })
@@ -265,13 +293,32 @@ describe('Folio Konto', () => {
       </main>,
     )
     expect(main.scrollTo).not.toHaveBeenCalled()
-    expect(scrollIntoView).toHaveBeenCalledWith({ block: 'start' })
+    expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'instant' })
+    expect(screen.getByRole('heading', { name: 'Övningen' })).toHaveFocus()
+  })
+  it.each([
+    'studio',
+    'phone',
+  ])('places the Mer heading 24px below the document viewport on %s', (viewport) => {
+    state.viewport = viewport
+    vi.spyOn(window, 'scrollY', 'get').mockReturnValue(180)
+    const measure = HTMLElement.prototype.getBoundingClientRect
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
+      this: HTMLElement,
+    ) {
+      return this.id === 'fa-kt-ovningen' ? new DOMRect(0, 420, 500, 42) : measure.call(this)
+    })
+    mount('mer')
+    // Absolute heading Y is 600; scrolling to 576 leaves its top visible at 24.
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 576, behavior: 'instant' })
+    expect(scrollIntoView).not.toHaveBeenCalled()
     expect(screen.getByRole('heading', { name: 'Övningen' })).toHaveFocus()
   })
   it.each(['studio', 'phone'])('focuses each indexed part on %s', (viewport) => {
     state.viewport = viewport
     mount()
     const index = screen.getByRole('navigation', { name: 'På den här sidan' })
+    expect(index).not.toHaveTextContent('·')
     for (const button of within(index).getAllByRole('button')) {
       fireEvent.click(button)
       expect(screen.getByRole('heading', { name: button.textContent! })).toHaveFocus()
@@ -296,6 +343,28 @@ describe('Folio Konto', () => {
     await userEvent.setup().keyboard('{Enter}')
     expect(navigateHref).toHaveBeenCalledExactlyOnceWith('/hjalp')
   })
+  it('owns Konto navigation behind the lazy screen boundary', () => {
+    render(<FolioKonto entry="konto" />)
+    fireEvent.click(screen.getByTestId('mer-support'))
+    expect(state.navigate).toHaveBeenCalledExactlyOnceWith({ to: '/hjalp', search: {}, hash: '' })
+  })
+  it('preserves search and hash through the lazy navigation helper', () => {
+    function Navigation() {
+      const k = useKontoExtras()
+      return (
+        <KontoLink href="/hjalp?from=konto#kontakt" navigateHref={k.navigateHref}>
+          Hjälp
+        </KontoLink>
+      )
+    }
+    render(<Navigation />)
+    fireEvent.click(screen.getByRole('link', { name: 'Hjälp' }))
+    expect(state.navigate).toHaveBeenCalledExactlyOnceWith({
+      to: '/hjalp',
+      search: { from: 'konto' },
+      hash: 'kontakt',
+    })
+  })
   it('exports, downloads and reports success; a failed export offers retry', async () => {
     state.exportData.mockRejectedValueOnce(new Error('offline'))
     mount()
@@ -312,6 +381,23 @@ describe('Folio Konto', () => {
     mount()
     await userEvent.setup().click(screen.getByRole('button', { name: 'Logga ut' }))
     expect(state.signOut).toHaveBeenCalledExactlyOnceWith({ redirectUrl: '/' })
+  })
+  it.each([
+    'success',
+    'failure',
+  ])('disables deletion during ordinary sign-out until %s settles', async (outcome) => {
+    const signingOut = deferred<void>()
+    state.signOut.mockReturnValueOnce(signingOut.promise)
+    mount()
+    fireEvent.click(screen.getByRole('button', { name: 'Logga ut' }))
+    const opener = screen.getByTestId('konto-delete')
+    expect(opener).toBeDisabled()
+    fireEvent.click(opener)
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    await act(async () =>
+      outcome === 'success' ? signingOut.resolve() : signingOut.reject(new Error('offline')),
+    )
+    expect(opener).toBeEnabled()
   })
   it('reports a download failure and does not claim success', async () => {
     state.download.mockImplementationOnce(() => {
@@ -411,7 +497,7 @@ describe('Folio deletion slip', () => {
     expect(state.download).toHaveBeenCalledTimes(1)
     expect(state.deleteAccount).not.toHaveBeenCalled()
   })
-  it('sends once across double clicks and closing/reopening, then signs out before farewell', async () => {
+  it('sends once across double clicks and disables reopening until deletion and sign-out settle', async () => {
     const deletion = deferred<{ ok: true; deleted: true }>()
     const signingOut = deferred<void>()
     state.deleteAccount.mockReturnValueOnce(deletion.promise)
@@ -424,11 +510,16 @@ describe('Folio deletion slip', () => {
     expect(state.deleteAccount).toHaveBeenCalledTimes(1)
     expect(state.signOut).not.toHaveBeenCalled()
     fireEvent.click(screen.getByRole('button', { name: 'Avbryt' }))
-    openSlip()
-    fireEvent.click(arm())
+    const opener = screen.getByTestId('konto-delete')
+    expect(opener).toBeDisabled()
+    fireEvent.click(opener)
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     expect(state.deleteAccount).toHaveBeenCalledTimes(1)
     await act(async () => deletion.resolve({ ok: true, deleted: true }))
     expect(state.signOut).toHaveBeenCalledExactlyOnceWith()
+    expect(opener).toBeDisabled()
+    fireEvent.click(opener)
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     expect(screen.queryByTestId('konto-delete-done')).not.toBeInTheDocument()
     await act(async () => signingOut.resolve())
     expect(screen.getByTestId('konto-delete-done')).toHaveTextContent('Kontot är raderat.')
@@ -446,6 +537,7 @@ describe('Folio deletion slip', () => {
       await within(dialog).findByText('Kunde inte radera kontot. Inget raderades — försök igen.'),
     ).toBeInTheDocument()
     expect(screen.getByTestId('konto-delete-submit')).toBeEnabled()
+    expect(screen.getByTestId('konto-delete')).toBeEnabled()
     expect(state.signOut).not.toHaveBeenCalled()
     fireEvent.click(screen.getByTestId('konto-delete-submit'))
     await screen.findByTestId('konto-delete-done')
@@ -460,6 +552,7 @@ describe('Folio deletion slip', () => {
     expect(dialog).toHaveTextContent('Kontot är raderat, men det gick inte att logga ut.')
     expect(dialog).not.toHaveTextContent('Inget raderades')
     expect(screen.getByTestId('konto-delete-submit')).toBeDisabled()
+    expect(screen.getByTestId('konto-delete')).toBeDisabled()
     fireEvent.click(retry)
     await screen.findByTestId('konto-delete-done')
     expect(state.deleteAccount).toHaveBeenCalledTimes(1)

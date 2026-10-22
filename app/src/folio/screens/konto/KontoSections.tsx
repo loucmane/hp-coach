@@ -1,7 +1,6 @@
 import { type ReactNode, useId } from 'react'
 import { LEGAL_LINKS } from '@/lib/legal'
 import { SUPPORT_REPLY_LINE } from '@/lib/support'
-import { COACH_BLURBS } from '@/lib/voice'
 import {
   COACH_OPTIONS,
   COPY,
@@ -103,17 +102,26 @@ function Choice<K extends string>({
     <fieldset className="fa-kt-choice" aria-describedby={`${id}-hint ${id}-status`} disabled={busy}>
       <legend className="fa-kt-label">{legend}</legend>
       <div className="fa-kt-value">
-        <div className="fa-kt-seg">
+        <div
+          className={`fa-kt-seg${options.some((option) => option.blurb) ? ' fa-kt-seg--described' : ''}`}
+        >
           {options.map((option) => (
-            <button
-              type="button"
-              key={option.key}
-              aria-pressed={option.key === value}
-              aria-label={ariaPrefix ? `${ariaPrefix}: ${option.label}` : undefined}
-              onClick={() => onPick(option.key)}
-            >
-              {option.label}
-            </button>
+            <div key={option.key}>
+              <button
+                type="button"
+                aria-pressed={option.key === value}
+                aria-label={ariaPrefix ? `${ariaPrefix}: ${option.label}` : undefined}
+                aria-describedby={option.blurb ? `${id}-${option.key}` : undefined}
+                onClick={() => onPick(option.key)}
+              >
+                {option.label}
+              </button>
+              {option.blurb ? (
+                <p className="fa-kt-hint fa-kt-option-hint" id={`${id}-${option.key}`}>
+                  {option.blurb}
+                </p>
+              ) : null}
+            </div>
           ))}
         </div>
         <p className="fa-kt-hint" id={`${id}-hint`}>
@@ -163,7 +171,7 @@ export function KontoSections({
     <>
       <Part id="du" title="Du">
         <dl className="fa-kt-dl" data-testid="konto-identity">
-          <Value label="Namn">{k.identity.name}</Value>
+          {k.identity.name ? <Value label="Namn">{k.identity.name}</Value> : null}
           <Value label="E-post" testId="konto-email">
             {k.identity.email}
           </Value>
@@ -204,7 +212,6 @@ export function KontoSections({
           legend="Coach"
           options={COACH_OPTIONS}
           value={k.coach}
-          hint={COACH_BLURBS[k.coach]}
           error={k.failed.coach}
           busy={k.saving}
           onPick={(coach) => void k.choose('coach', () => k.synced.setCoach(coach))}

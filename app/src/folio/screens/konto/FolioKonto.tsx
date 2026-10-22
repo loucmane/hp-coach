@@ -6,22 +6,26 @@ import { COPY, type KontoEntry, type KontoPlace, type NavigateHref } from './kon
 import { useKontoExtras } from './useKontoExtras'
 import './konto.css'
 
-/** The real shell scrolls the document; native scrolling also handles nested panes. */
+/** Align the heading itself in the real shell's document scroll, with breathing room. */
 function goTo(root: HTMLElement | null, place: KontoPlace) {
   const target = root?.querySelector<HTMLElement>(`#fa-kt-${place}`)
   if (!target) return
-  target.scrollIntoView?.({ block: 'start' })
   target.focus({ preventScroll: true })
+  window.scrollTo({
+    top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - 24),
+    behavior: 'instant',
+  })
 }
 
 export default function FolioKonto({
   entry,
-  navigateHref,
+  navigateHref: navigateOverride,
 }: {
   entry: KontoEntry
-  navigateHref: NavigateHref
+  navigateHref?: NavigateHref
 }) {
   const k = useKontoExtras()
+  const navigateHref = navigateOverride ?? k.navigateHref
   const root = useRef<HTMLDivElement>(null)
   const opener = useRef<HTMLButtonElement>(null)
   const farewell = useRef<HTMLHeadingElement>(null)
@@ -44,9 +48,11 @@ export default function FolioKonto({
     >
       <div className="fa-kt-masthead">
         <span className="fa-kt-label-small">Konto</span>
-        <span className="fa-kt-count">
-          {k.days} dagar · {k.sitting.label.toLowerCase()}
-        </span>
+        {k.days >= 0 ? (
+          <span className="fa-kt-count">
+            {k.days} dagar · {k.sitting.label.toLowerCase()}
+          </span>
+        ) : null}
       </div>
       {k.deletion === 'done' ? (
         <section
@@ -86,6 +92,7 @@ export default function FolioKonto({
                     className="fa-kt-link"
                     data-testid="konto-delete"
                     aria-haspopup="dialog"
+                    disabled={k.loggingOut || !['idle', 'failed'].includes(k.deletion)}
                     onClick={() => setDeleting(true)}
                   >
                     Radera kontot →

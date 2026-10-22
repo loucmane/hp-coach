@@ -25,7 +25,7 @@ describe('Konto view', () => {
     expect(view.hint).toBe('Nästa provdatum är inte publicerat här än.')
   })
   it('uses real identity fallbacks without a sample person', () => {
-    expect(identityView(null)).toEqual({ name: 'Ditt konto', email: '' })
+    expect(identityView(null)).toEqual({ name: '', email: '' })
     expect(
       identityView({
         fullName: ' ',
@@ -35,7 +35,9 @@ describe('Konto view', () => {
     ).toEqual({ name: 'Ada', email: 'ada@example.test' })
     expect(
       identityView({ primaryEmailAddress: { emailAddress: 'reader@example.test' } }).name,
-    ).toBe('reader@example.test')
+    ).toBe('')
+    expect(identityView({ fullName: ' ', firstName: ' ' }).name).toBe('')
+    expect(identityView({ fullName: ' Ada Lovelace ', firstName: 'Ada' }).name).toBe('Ada Lovelace')
   })
   it('uses Swedish colour words and the actual coach options', () => {
     expect(PALETTE_OPTIONS.map((p) => p.label)).toEqual(['Spalt', 'Sand', 'Salvia', 'Bläck', 'Ros'])
@@ -68,6 +70,10 @@ describe('Konto view', () => {
       'J / K',
     ])
     expect(JSON.stringify(SHORTCUTS)).not.toMatch(/styckeljus|stycket/)
+    expect(SHORTCUTS.find((group) => group.where === 'I Förstora')?.keys).toContainEqual([
+      'R',
+      'vrid figuren',
+    ])
   })
   it('reports confirmed downloads and preserves the existing failure copy', () => {
     expect(COPY.exported).toBe('Filen laddas ned.')

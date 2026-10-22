@@ -3,18 +3,15 @@ import { type KontoPlace, SECTIONS, SHORTCUTS } from './kontoView'
 export function KontoIndex({ go }: { go: (place: KontoPlace) => void }) {
   return (
     <nav className="fa-kt-index" aria-label="På den här sidan">
-      {SECTIONS.map((section, index) => (
-        <span key={section.id}>
-          {index > 0 ? (
-            <span className="fa-kt-dot" aria-hidden>
-              {' '}
-              ·{' '}
-            </span>
-          ) : null}
-          <button type="button" className="fa-kt-link" onClick={() => go(section.id)}>
-            {section.title}
-          </button>
-        </span>
+      {SECTIONS.map((section) => (
+        <button
+          key={section.id}
+          type="button"
+          className="fa-kt-link"
+          onClick={() => go(section.id)}
+        >
+          {section.title}
+        </button>
       ))}
     </nav>
   )

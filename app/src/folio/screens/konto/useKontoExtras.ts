@@ -1,4 +1,5 @@
 import { useClerk, useUser } from '@clerk/clerk-react'
+import { useNavigate } from '@tanstack/react-router'
 import { useRef, useState } from 'react'
 import { downloadExport, useExportData } from '@/api/hooks/useDataExport'
 import { useDeleteAccount } from '@/api/hooks/useDeleteAccount'
@@ -11,6 +12,7 @@ import { type DeleteState, type ExportState, identityView, type Setting } from '
 
 /** All Folio data hooks stay behind the lazy screen boundary. */
 export function useKontoExtras() {
+  const navigate = useNavigate()
   const { user } = useUser()
   const { signOut } = useClerk()
   const synced = useSyncedPrefs()
@@ -105,6 +107,14 @@ export function useKontoExtras() {
     }
   }
   return {
+    navigateHref: (href: string) => {
+      const url = new URL(href, window.location.origin)
+      void navigate({
+        to: url.pathname as never,
+        search: Object.fromEntries(url.searchParams) as never,
+        hash: url.hash.slice(1),
+      })
+    },
     identity: identityView(user),
     viewport,
     days,

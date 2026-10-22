@@ -1,7 +1,5 @@
-// /konto — the minimal account page the AccountMenu's "Konto" row routes
-// to. A Boksidan Page (same chassis as /mer): the three-register identity
-// block (answering the menu's single-line-ellipsis email with the full
-// address), then house-voice placeholder sections for what is coming.
+// /konto — identity, data export and account deletion in the classic page;
+// the lazy Folio page also brings preferences, tools and help together.
 //
 // Owner law: account deletion lives deep on /konto, never in a menu. No embedded
 // Clerk <UserProfile />; the app owns its explicit confirmation. Subscription management
@@ -51,22 +49,11 @@ function KontoRoute() {
   const identity = useAccountIdentity()
   const sitting = useSitting()
   const days = useDaysRemaining()
-  const navigate = useNavigate()
 
   if (inFolio) {
     return (
       <Suspense fallback={<p role="status">Laddar …</p>}>
-        <FolioKonto
-          entry="konto"
-          navigateHref={(href) => {
-            const url = new URL(href, window.location.origin)
-            navigate({
-              to: url.pathname as never,
-              search: Object.fromEntries(url.searchParams) as never,
-              hash: url.hash.slice(1),
-            })
-          }}
-        />
+        <FolioKonto entry="konto" />
       </Suspense>
     )
   }

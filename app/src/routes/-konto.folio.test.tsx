@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import type { ComponentType, ReactNode } from 'react'
 import { expect, it, vi } from 'vitest'
 import { FolioHostContext } from '@/folio/host'
@@ -22,18 +22,10 @@ vi.mock('@/lib/motion', () => ({ useFirstContentSignal: () => {} }))
 vi.mock('@/api/hooks/useDataExport', () => ({ useExportData: () => ({}), downloadExport: vi.fn() }))
 vi.mock('@/api/hooks/useDeleteAccount', () => ({ useDeleteAccount: () => ({}) }))
 vi.mock('@/folio/screens/konto/FolioKonto', () => ({
-  default: ({ entry, navigateHref }: { entry: string; navigateHref: (href: string) => void }) => (
-    <button
-      type="button"
-      data-testid="folio-konto"
-      onClick={() => navigateHref('/hjalp?from=konto#kontakt')}
-    >
-      {entry}
-    </button>
-  ),
+  default: ({ entry }: { entry: string }) => <div data-testid="folio-konto">{entry}</div>,
 }))
 
-it('keeps classic Konto with the flag off and lazily passes the konto entry and navigation', async () => {
+it('keeps classic Konto with the flag off and lazily passes the konto entry', async () => {
   const Component = Route.options.component as ComponentType
   const { rerender } = render(
     <FolioHostContext.Provider value={false}>
@@ -49,12 +41,6 @@ it('keeps classic Konto with the flag off and lazily passes the konto entry and 
   )
   expect(await screen.findByTestId('folio-konto')).toHaveTextContent('konto')
   expect(screen.queryByTestId('konto-identity')).not.toBeInTheDocument()
-  fireEvent.click(screen.getByTestId('folio-konto'))
-  expect(navigate).toHaveBeenCalledExactlyOnceWith({
-    to: '/hjalp',
-    search: { from: 'konto' },
-    hash: 'kontakt',
-  })
   rerender(
     <FolioHostContext.Provider value={false}>
       <Component />

@@ -7,7 +7,7 @@ export type NavigateHref = (href: string) => void
 export type Setting = 'sitting' | 'smartDrill' | 'coach' | 'mode' | 'palette'
 export type ExportState = 'idle' | 'pending' | 'done' | 'failed'
 export type DeleteState = 'idle' | 'pending' | 'failed' | 'signing-out' | 'signout-failed' | 'done'
-export type Option<K extends string> = { key: K; label: string }
+export type Option<K extends string> = { key: K; label: string; blurb?: string }
 
 export const COPY = {
   saveFailed: 'Det gick inte att spara – försök igen.',
@@ -90,7 +90,7 @@ export const SHORTCUTS: { where: string; keys: [string, string][] }[] = [
     where: 'I Förstora',
     keys: [
       ['+ / −', 'zooma'],
-      ['R', 'vrid sidan'],
+      ['R', 'vrid figuren'],
     ],
   },
   { where: 'I Uppslag', keys: [['J / K', 'nästa och förra posten']] },
@@ -103,7 +103,7 @@ type Identity = {
 }
 export function identityView(user: Identity | null | undefined) {
   const email = user?.primaryEmailAddress?.emailAddress ?? ''
-  return { name: user?.fullName?.trim() || user?.firstName?.trim() || email || 'Ditt konto', email }
+  return { name: user?.fullName?.trim() || user?.firstName?.trim() || '', email }
 }
 
 export function examChoices(sittingId: string, now = new Date()) {
