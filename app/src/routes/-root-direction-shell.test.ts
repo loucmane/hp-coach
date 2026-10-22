@@ -65,7 +65,7 @@ describe('Folio production boundary', () => {
         if (statement.isTypeOnly || !statement.moduleSpecifier) return []
       } else return []
       const specifier = statement.moduleSpecifier!.getText(source)
-      return /FolioShell/.test(specifier) ? [specifier] : []
+      return /FolioShell|FolioSessionStage/.test(specifier) ? [specifier] : []
     })
   }
 
@@ -110,6 +110,8 @@ describe('Folio production boundary', () => {
     "export { FolioShell as Shell } from './FolioShell'",
     "export * from './FolioShell'",
     "export * as shell from './FolioShell'",
+    "import Stage from './FolioSessionStage'",
+    "export { default } from './FolioSessionStage'",
   ])('recognizes static shell loading: %s', (source) => {
     expect(staticFolioImports(source)).toHaveLength(1)
   })
@@ -175,7 +177,9 @@ describe('Folio production boundary', () => {
     'components/Frame.tsx',
     'folio/useShellFocus.ts',
     'folio/host.ts',
-  ])('%s never statically loads FolioShell', (file) => {
+    'components/session/SessionPlayer.tsx',
+    'folio/screens/drill/seam.ts',
+  ])('%s never statically loads FolioShell or the drill stage', (file) => {
     expect(staticFolioImports(readFileSync(path.join(SRC, file), 'utf8')), file).toEqual([])
   })
 

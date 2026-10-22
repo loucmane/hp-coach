@@ -1,0 +1,431 @@
+import { readFileSync } from 'node:fs'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import type { ComponentProps, ReactNode } from 'react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { ActiveSession } from '@/api/hooks/useSessions'
+import type { Explanation } from '@/data/explanations'
+import type { Question } from '@/data/questions'
+
+const h = vi.hoisted(() => ({
+  start: vi.fn(),
+  update: vi.fn(),
+  submit: vi.fn(),
+  navigate: vi.fn(),
+  load: vi.fn(),
+  bank: [] as Question[],
+  explanation: null as Explanation | null,
+  active: null as ActiveSession | null,
+  phone: false,
+}))
+vi.mock('@tanstack/react-router', () => ({
+  useNavigate: () => h.navigate,
+  useLocation: () => ({ pathname: '/drill' }),
+  Link: ({ to, children, ...props }: ComponentProps<'a'> & { to: string }) => (
+    <a href={to} {...props}>
+      {children}
+    </a>
+  ),
+}))
+vi.mock('@/api/hooks/useSessions', () => ({
+  useActiveSessionOfKind: () => ({ data: h.active, isPending: false }),
+  useStartSession: () => ({ mutateAsync: h.start, isPending: false }),
+  useUpdateSession: () => ({ mutate: h.update }),
+  useSessionAttempts: () => ({ data: [] }),
+}))
+vi.mock('@/api/hooks/useAttempts', () => ({ useSubmitAttempt: () => ({ mutate: h.submit }) }))
+vi.mock('@/data/questions', async (original) => ({
+  ...(await original<typeof import('@/data/questions')>()),
+  loadBank: async () => h.bank,
+}))
+vi.mock('@/data/explanations', () => ({
+  loadExplanation: (qid: string) => h.load(qid),
+  peekExplanation: () => h.explanation,
+}))
+vi.mock('@/data/frameworks', async (original) => ({
+  ...(await original<typeof import('@/data/frameworks')>()),
+  loadFramework: async () => ({
+    family: 'ord_roots',
+    entries: [{ id: 'ORD-ROOT-001', root: 'Ordets rot' }],
+  }),
+}))
+vi.mock('@/hooks/useViewport', () => ({ useViewport: () => (h.phone ? 'phone' : 'studio') }))
+vi.mock('@/folio/data/useShellData', () => ({
+  useFolioShellData: () => ({ subtitles: {}, dueCount: 0, identity: { name: 'Ada' } }),
+}))
+vi.mock('@/folio/shell/AccountMenu', () => ({ AccountMenu: () => null }))
+vi.mock('@/components/motion/DueNumeral', () => ({ DueHeaderStation: () => null }))
+vi.mock('@/components/drill/DrillResult', () => ({ DrillResult: () => <h1>Klart.</h1> }))
+vi.mock('@/components/motion/QuestionPan', () => ({
+  QuestionPan: ({ children }: { children: ReactNode }) => children,
+}))
+
+import { SessionPlayer, type SessionPlayerProps } from '@/components/session/SessionPlayer'
+import { FolioShell } from '@/folio/FolioShell'
+import { endedSessionIdsThisTab } from '@/lib/endedSessions'
+import { useUiStore } from '@/stores/uiStore'
+import { runAxe } from '@/test/a11y'
+
+function fixture(n = 1, section: Question['section'] = 'ORD'): Question {
+  return {
+    qid: `host-2025-verb1-${section}-${n}`,
+    exam_id: 'host-2025',
+    provpass: 'verb1',
+    section,
+    number: n,
+    prompt: 'begrunda',
+    context: null,
+    answer: 'A',
+    parsing_status: 'complete',
+    options: [
+      { letter: 'A', text: 'fundera' },
+      { letter: 'B', text: 'skynda' },
+      { letter: 'C', text: 'tvivla' },
+      { letter: 'D', text: 'ropa' },
+    ],
+  }
+}
+beforeEach(() => {
+  vi.clearAllMocks()
+  // History traversals are asynchronous in jsdom. Keep one completed test's
+  // marker consumption from opening the next mounted session's leave sheet.
+  vi.spyOn(window.history, 'back').mockImplementation(() => {})
+  window.history.replaceState(null, '')
+  endedSessionIdsThisTab.clear()
+  h.active = null
+  h.phone = false
+  h.bank = [fixture(), fixture(2)]
+  h.explanation = {
+    solution_path: 'Så finner du svaret.',
+    distractors: ['B', 'C', 'D'].map((letter) => ({
+      letter,
+      why_tempting: `Lockar ${letter}`,
+      why_wrong: `Orsak ${letter}`,
+    })),
+    technique: 'Läs noga.',
+    pitfall: 'Blanda inte ihop orden.',
+    framework_id: 'ORD-ROOT-001',
+    steps: [
+      { n: 1, title: 'Läs ordet', text: 'Första steget.' },
+      { n: 2, title: 'Kontrollera', text: 'Andra steget.', tier: 'detail' },
+    ],
+    pregrade_tactic: { handle: 'Pröva en synonym', move: 'Sätt in ordet i en mening.' },
+  }
+  h.load.mockImplementation(async () => h.explanation)
+  h.start.mockResolvedValue({ id: 42 })
+  useUiStore.setState({ folioPreview: false, mode: 'light' })
+})
+function mount(folio = true, props: Partial<SessionPlayerProps> = {}) {
+  const client = new QueryClient({
+    defaultOptions: { queries: { retry: false, gcTime: Infinity } },
+  })
+  client.setQueryData(['question-bank'], h.bank)
+  const player = (
+    <SessionPlayer
+      sessionKind="drill"
+      sections="ORD"
+      pickQuestions={() => h.bank}
+      idleEyebrow="Öva"
+      idleHeadline="Övning"
+      idleSubcopy="Ord"
+      activeTab="ova"
+      autoStart
+      {...props}
+    />
+  )
+  return render(
+    <QueryClientProvider client={client}>
+      {folio ? <FolioShell>{player}</FolioShell> : player}
+    </QueryClientProvider>,
+  )
+}
+async function questionReady() {
+  const lock = await screen.findByTestId('fa-lock')
+  await act(async () => {})
+  return lock
+}
+function key(key: string, shiftKey = false) {
+  fireEvent.keyDown(document.body, { key, shiftKey })
+}
+
+describe('Folio through the real SessionPlayer', () => {
+  it('selects without committing; Svara submits once and retains wrong-answer effects', async () => {
+    const onWrong = vi.fn()
+    mount(true, { onWrong })
+    const lock = await questionReady()
+    key('b')
+    expect(h.submit).not.toHaveBeenCalled()
+    expect(screen.getByTestId('option-B')).toHaveAttribute('aria-pressed', 'true')
+    fireEvent.click(lock)
+    fireEvent.click(lock)
+    expect(h.submit).toHaveBeenCalledTimes(1)
+    expect(h.submit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        sessionId: 42,
+        selectedAnswer: 'B',
+        correct: false,
+        layer1Ids: ['ORD-ROOT-001'],
+      }),
+    )
+    expect(onWrong).toHaveBeenCalledWith(h.bank[0])
+    expect(screen.getByTestId('fa-verdict')).toHaveTextContent('Fel.')
+  })
+  it('eliminates with Shift+letter and Enter submits, advances and ends', async () => {
+    mount()
+    await questionReady()
+    key('b', true)
+    expect(screen.getByRole('button', { name: 'Ångra strykningen av B' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    key('a')
+    key('Enter')
+    expect(h.submit).toHaveBeenCalledTimes(1)
+    key('Enter')
+    expect(h.update).toHaveBeenCalledWith({
+      id: 42,
+      patch: { position: 1, currentQuestionId: h.bank[1].qid },
+    })
+    expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', h.bank[1].qid)
+    key('a')
+    key('Enter')
+    key('Enter')
+    expect(h.submit).toHaveBeenCalledTimes(2)
+    expect(h.update).toHaveBeenCalledWith({ id: 42, patch: { end: true } })
+    expect(screen.getByText('Klart.')).toBeInTheDocument()
+  })
+  it('keeps one block across advances and starts a resumed block at its saved index', async () => {
+    h.bank = [fixture(), fixture(2), fixture(3)].map((q) => ({ ...q, context: 'Gemensam text.' }))
+    mount(true, { urlSyncedQid: { qid: h.bank[1].qid, setQid: vi.fn() } })
+    await questionReady()
+    expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', h.bank[1].qid)
+    await waitFor(() => expect(h.load).toHaveBeenCalledWith(h.bank[0].qid))
+    expect(h.load).toHaveBeenCalledWith(h.bank[2].qid)
+    key('a')
+    key('Enter')
+    key('Enter')
+    expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', h.bank[2].qid)
+    expect(screen.getByTestId('fa-lock')).toBeDisabled()
+  })
+  it('uses the shell exit and suppresses drill shortcuts while the leave sheet is open', async () => {
+    mount()
+    await questionReady()
+    await waitFor(() => expect(screen.queryByRole('navigation')).toBeNull())
+    fireEvent.click(screen.getByRole('button', { name: 'Avsluta' }))
+    expect(screen.getByTestId('session-leave-sheet')).toBeInTheDocument()
+    key('a')
+    key('Enter')
+    expect(h.submit).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByTestId('session-leave-continue'))
+    key('a')
+    key('Enter')
+    expect(h.submit).toHaveBeenCalledTimes(1)
+  })
+  it('adopts the stored session at its cursor without creating another session', async () => {
+    h.bank = [fixture(), fixture(2), fixture(3)].map((q) => ({ ...q, context: 'Samma stycke.' }))
+    h.active = {
+      id: 73,
+      userId: 1,
+      kind: 'drill',
+      sections: 'ORD',
+      position: 1,
+      currentQuestionId: h.bank[1].qid,
+      plan: h.bank.map((q) => q.qid),
+      device: 'desktop',
+      startedAt: null,
+      endedAt: null,
+    }
+    const resolvePlan = vi.fn(async () => h.bank)
+    const pickQuestions = vi.fn(() => h.bank)
+    mount(true, { resolvePlan, pickQuestions })
+    await questionReady()
+    expect(resolvePlan).toHaveBeenCalledWith(h.active.plan, 1)
+    expect(pickQuestions).not.toHaveBeenCalled()
+    expect(h.start).not.toHaveBeenCalled()
+    expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', h.bank[1].qid)
+    key('a')
+    key('Enter')
+    key('Enter')
+    expect(h.submit).toHaveBeenCalledWith(
+      expect.objectContaining({ sessionId: 73, questionId: h.bank[1].qid }),
+    )
+    expect(h.update).toHaveBeenCalledWith({
+      id: 73,
+      patch: { position: 2, currentQuestionId: h.bank[2].qid },
+    })
+  })
+  it('keeps adaptive review labels and caller grading hooks', async () => {
+    h.bank = [fixture()]
+    const onCorrect = vi.fn()
+    const onComplete = vi.fn()
+    mount(true, { sessionKind: 'adaptive_review', onCorrect, onComplete })
+    await questionReady()
+    expect(screen.getByRole('heading', { name: 'Repetition · ORD' })).toBeInTheDocument()
+    key('a')
+    key('Enter')
+    expect(onCorrect).toHaveBeenCalledWith(h.bank[0])
+    fireEvent.click(screen.getByRole('button', { name: /Slutför genomgången/ }))
+    expect(onComplete).toHaveBeenCalledWith(42)
+  })
+  it('renders MEK gaps and follows step references into collapsed detail', async () => {
+    h.bank = [{ ...fixture(1, 'MEK'), prompt: 'Han _____ hem.' }]
+    h.explanation!.distractors[0].why_wrong = 'Se (steg 2).'
+    mount()
+    await questionReady()
+    expect(screen.getByText('lucka 1')).toBeInTheDocument()
+    key('b')
+    key('Enter')
+    fireEvent.click(screen.getByRole('button', { name: '(steg 2)' }))
+    expect(screen.getByText('Andra steget.')).toBeInTheDocument()
+  })
+  it('leaves Enter on the tactic disclosure to the native button', async () => {
+    mount()
+    await questionReady()
+    key('a')
+    const tactic = await screen.findByRole('button', { name: 'Visa taktik' })
+    fireEvent.keyDown(tactic, { key: 'Enter' })
+    expect(h.submit).not.toHaveBeenCalled()
+    fireEvent.click(tactic)
+    expect(screen.getByText('Sätt in ordet i en mening.')).toBeInTheDocument()
+  })
+  it('renders every distractor, steps on request, detail toggles and the framework', async () => {
+    mount()
+    await questionReady()
+    key('b')
+    key('Enter')
+    expect(await screen.findByText('Ordets rot')).toBeInTheDocument()
+    expect(screen.getByText('Lockar B')).toBeInTheDocument()
+    expect(screen.getByText('Blanda inte ihop orden.')).toBeInTheDocument()
+    for (const letter of ['C', 'D']) {
+      fireEvent.click(screen.getByRole('button', { name: `Varför inte ${letter}` }))
+      expect(screen.getByText(`Orsak ${letter}`)).toBeInTheDocument()
+    }
+    expect(screen.queryByText('Första steget.')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Visa steg för steg' }))
+    expect(screen.getByText('Första steget.')).toBeInTheDocument()
+    expect(screen.queryByText('Andra steget.')).toBeNull()
+    fireEvent.click(screen.getByTestId('fa-step-toggle-2'))
+    expect(screen.getByText('Andra steget.')).toBeInTheDocument()
+    expect(screen.queryByText('Slå upp')).toBeNull()
+  })
+  it('uses resolveSteps for prose-only explanations', async () => {
+    h.explanation = { ...h.explanation!, steps: undefined, solution_path: 'Del ett.\n\nDel två.' }
+    mount()
+    await questionReady()
+    key('a')
+    key('Enter')
+    fireEvent.click(screen.getByRole('button', { name: 'Visa steg för steg' }))
+    expect(screen.getByTestId('fa-step-1')).toHaveTextContent('Del ett.')
+    expect(screen.getByTestId('fa-step-2')).toHaveTextContent('Del två.')
+  })
+  it.each(['KVA', 'NOG'] as const)('groups %s and renders math', async (section) => {
+    h.bank = [
+      {
+        ...fixture(1, section),
+        prompt:
+          section === 'KVA'
+            ? '\uE000x>0\uE001\nKvantitet I: \uE000x^2\uE001\nKvantitet II: \uE000x\uE001'
+            : 'Vad är \uE000x\uE001?\n(1) \uE000x>1\uE001\n(2) \uE000x<3\uE001',
+      },
+    ]
+    const { container } = mount()
+    await questionReady()
+    expect(
+      screen.getByRole('group', {
+        name: section === 'KVA' ? 'Villkoret och kvantiteterna' : 'Frågan och påståendena',
+      }),
+    ).toBeInTheDocument()
+    expect(container.querySelector('.katex')).not.toBeNull()
+    expect(await runAxe(container)).toEqual([])
+  })
+  it.each([false, true])('has accessible question and feedback, phone=%s', async (phone) => {
+    h.phone = phone
+    const { container } = mount()
+    await questionReady()
+    expect(await runAxe(container)).toEqual([])
+    key('a')
+    key('Enter')
+    expect(await runAxe(container)).toEqual([])
+  })
+  it('keeps the classic option IDs and direct letter commit with the flag off', async () => {
+    h.phone = true
+    mount(false)
+    await screen.findByTestId('option-A')
+    await act(async () => {})
+    expect(screen.queryByTestId('fa-lock')).toBeNull()
+    key('a')
+    expect(h.submit).toHaveBeenCalledTimes(1)
+  })
+  it.each([
+    'LÄS',
+    'ELF',
+    'DTK',
+  ] as const)('uses classic controls for %s even under Folio', async (section) => {
+    h.phone = true
+    h.bank = [fixture(1, section)]
+    mount()
+    await screen.findByTestId('option-A')
+    await act(async () => {})
+    expect(screen.queryByTestId('fa-lock')).toBeNull()
+    key('a')
+    expect(h.submit).toHaveBeenCalledTimes(1)
+  })
+  it('switches between Folio and classic questions in one plan', async () => {
+    h.phone = true
+    h.bank = [fixture(), fixture(2, 'DTK'), fixture(3)]
+    mount()
+    await questionReady()
+    key('a')
+    key('Enter')
+    key('Enter')
+    expect(screen.queryByTestId('fa-lock')).toBeNull()
+    key('a')
+    key('Enter')
+    await questionReady()
+    expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', h.bank[2].qid)
+    expect(h.start).toHaveBeenCalledTimes(1)
+    expect(h.submit).toHaveBeenCalledTimes(2)
+  })
+  it('renders question and option figures', async () => {
+    h.bank = [
+      {
+        ...fixture(),
+        figure: { src: 'figure.svg', aspect_ratio: 1.5 },
+        options: [{ letter: 'A', text: 'Bild A', figure: { src: 'option.svg', aspect_ratio: 2 } }],
+      },
+    ]
+    mount()
+    await questionReady()
+    expect(screen.getByAltText('Figur till uppgift 1')).toHaveAttribute('src', '/figure.svg')
+    expect(within(screen.getByTestId('option-A')).getByRole('img')).toHaveAttribute(
+      'src',
+      '/option.svg',
+    )
+  })
+  it('handles absent explanations without blocking a grade', async () => {
+    h.load.mockRejectedValue(new Error('offline'))
+    h.explanation = null
+    mount()
+    await questionReady()
+    key('a')
+    key('Enter')
+    expect(
+      await screen.findByText('Förklaring saknas ännu för den här frågan.'),
+    ).toBeInTheDocument()
+    expect(h.submit).toHaveBeenCalledTimes(1)
+  })
+})
+
+it('keeps drill CSS local and uses neutral ink for errors', () => {
+  const css = readFileSync('src/folio/screens/drill/drill.css', 'utf8').replace(
+    /\/\*[\s\S]*?\*\//g,
+    '',
+  )
+  expect(css).not.toMatch(/--fa-bad|\bred\b|#[\da-f]{3,8}\b|\b(?:rgb|hsl|oklch)\(/i)
+  for (const match of css.matchAll(/([^{}]+)\{/g)) {
+    const selector = match[1].trim()
+    if (selector.startsWith('@media')) continue
+    for (const part of selector.split(/,(?![^()]*\))/))
+      expect(part.trim()).toMatch(/^\[data-folio\] \.fa-drill/)
+  }
+})

@@ -37,7 +37,16 @@
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
-import { type CSSProperties, type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import {
+  type CSSProperties,
+  type ReactNode,
+  Suspense,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 
 import { useSubmitAttempt } from '@/api/hooks/useAttempts'
 import {
@@ -59,6 +68,8 @@ import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
 import { peekExplanation } from '@/data/explanations'
 import { type AnswerLetter, loadBank, type Question } from '@/data/questions'
+import { FolioHostContext } from '@/folio/host'
+import { LazyFolioSessionStage, supportsFolioDrill } from '@/folio/screens/drill/seam'
 import { useShellFocus } from '@/folio/useShellFocus'
 import { useViewport } from '@/hooks/useViewport'
 import { currentDevice } from '@/lib/device'
@@ -288,6 +299,8 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // which can include the very first dataset fetch (~6 MB) on a cold
   // load — that's long enough for a double-click to fire begin() twice.
   const [starting, setStarting] = useState(false)
+  const folioHost = useContext(FolioHostContext)
+  const folioQuestion = folioHost && supportsFolioDrill(plan[index])
 
   // Back-trap (P2 dogfood finding 3): while a pass is LIVE (answering/
   // graded), a browser back gesture must not silently discard it. The
@@ -592,6 +605,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // modal or the figure zoom overlay. Leaving the session is what the
   // home button (or the bottom-nav Hem tab) is for.
   useEffect(() => {
+    if (folioQuestion) return
     if (phase !== 'answering' && phase !== 'graded') return
     const onKey = (e: globalThis.KeyboardEvent) => {
       const target = e.target as HTMLElement | null
@@ -616,7 +630,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [phase, onPick, onNext])
+  }, [phase, onPick, onNext, folioQuestion])
 
   // Auto-resume. When the route mounts already carrying a `?qid=` —
   // the user tapped "Fortsätt här" on Home, or refreshed mid-session —
@@ -859,6 +873,26 @@ export function SessionPlayer(props: SessionPlayerProps) {
 
   const q = plan[index]
   const picked = picks[index]
+  if (folioQuestion) {
+    return (
+      <>
+        <Suspense fallback={<p role="status">Laddar frågan…</p>}>
+          <LazyFolioSessionStage
+            plan={plan}
+            index={index}
+            picked={picked}
+            graded={phase === 'graded'}
+            onPick={onPick}
+            onNext={onNext}
+            sessionKind={props.sessionKind}
+            sections={props.sections}
+            suspended={leaveConfirmOpen}
+          />
+        </Suspense>
+        {leaveSheet}
+      </>
+    )
+  }
   // DTK block position — the picker keeps a figure page's questions
   // consecutive, so the block is the run of neighbours sharing figure.src.
   const blockPosition = dtkBlockPosition(plan, index)
