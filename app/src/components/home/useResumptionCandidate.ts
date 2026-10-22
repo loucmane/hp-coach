@@ -6,8 +6,12 @@
 // `pickCandidate` is unit-tested; `useResumptionCandidate` layers the
 // time/device/stale formatting on top.
 
+import { useQuery } from '@tanstack/react-query'
+
 import { useLessonProgress } from '@/api/hooks/useLessonProgress'
 import { useActiveSessions } from '@/api/hooks/useSessions'
+import { entryHeadword, type Framework, loadFramework } from '@/data/frameworks'
+import { SECTION_KEYS, type Section } from '@/data/questions'
 import { decodeTreatedMarker } from '@/lib/adaptiveReview'
 import { type DeviceKind, deviceLabel } from '@/lib/device'
 import { ORD_WORDS_SECTIONS } from '@/lib/ordWords'
@@ -25,7 +29,7 @@ export type ResumptionRaw = {
    *  "Repetition", "XYZ-lektion". Phone composes "subject · progress";
    *  desktop composes "subject · pausad". */
   subject: string
-  /** "vid fråga 3 av 10" | "vid XYZ-TRAP-016" | "pågående lektion". */
+  /** "vid fråga 3 av 10" | "vid Två påståenden" | "pågående lektion". */
   progress: string
   href: string
   device: DeviceKind | null
@@ -54,6 +58,7 @@ type LessonRow = ReturnType<typeof useLessonProgress>['data']
 export function pickCandidate(
   sessions: NonNullable<SessionRow>,
   lesson: LessonRow,
+  framework?: Framework | null,
 ): ResumptionRaw | null {
   const out: ResumptionRaw[] = []
 
@@ -98,9 +103,14 @@ export function pickCandidate(
   if (lesson) {
     const section = lesson.section.toUpperCase()
     const anchor = lesson.frameworkId ? `#${lesson.frameworkId}` : ''
+    const entry =
+      framework?.section === section
+        ? framework.entries.find((item) => item.id === lesson.frameworkId)
+        : null
+    const title = entry && framework ? entryHeadword(entry, framework) : null
     out.push({
       subject: `${section}-lektion`,
-      progress: lesson.frameworkId ? `vid ${lesson.frameworkId}` : 'pågående lektion',
+      progress: title ? `vid ${title}` : 'pågående lektion',
       href: `/lektion?section=${section}${anchor}`,
       device: lesson.device,
       freshAt: toMs(lesson.updatedAt),
@@ -116,7 +126,14 @@ export function pickCandidate(
 export function useResumptionCandidate(now: Date): FormattedResumption | null {
   const sessions = useActiveSessions()
   const lesson = useLessonProgress()
-  const raw = pickCandidate(sessions.data ?? [], lesson.data ?? null)
+  const section = lesson.data?.section.toUpperCase()
+  const framework = useQuery({
+    queryKey: ['folio-lesson', section],
+    enabled: !!section && SECTION_KEYS.includes(section as Section),
+    queryFn: () => loadFramework(section as Section),
+    staleTime: Infinity,
+  })
+  const raw = pickCandidate(sessions.data ?? [], lesson.data ?? null, framework.data)
   if (!raw) return null
   const ageDays = (now.getTime() - raw.freshAt) / (1000 * 60 * 60 * 24)
   return {

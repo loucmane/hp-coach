@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import type { LessonProgress } from '@/api/hooks/useLessonProgress'
 import type { Stats } from '@/api/hooks/useStats'
 import type { Framework } from '@/data/frameworks'
 import type { DailyPlan } from '@/lib/scheduler'
@@ -11,6 +12,7 @@ const live = vi.hoisted(() => ({
   due: [] as { id: number }[],
   pile: [] as { id: number }[],
   framework: null as Framework | null,
+  lesson: null as LessonProgress | null,
   put: vi.fn(),
   get: vi.fn(),
 }))
@@ -33,10 +35,10 @@ vi.mock('@/api/hooks/useMistakes', () => ({
 }))
 vi.mock('@/api/hooks/useMockResults', () => ({ useMockResults: () => ({ data: [] }) }))
 vi.mock('@/api/hooks/useLessonProgress', () => ({
-  useLessonProgress: () => ({ data: { section: 'NOG', frameworkId: 'NOG-1' } }),
+  useLessonProgress: () => ({ data: live.lesson }),
 }))
 vi.mock('@/api/hooks/useLessonReadsApi', () => ({ useLessonReadsQuery: () => ({ data: [] }) }))
-vi.mock('@/components/home/useResumptionCandidate', () => ({ useResumptionCandidate: () => null }))
+vi.mock('@/api/hooks/useSessions', () => ({ useActiveSessions: () => ({ data: [] }) }))
 
 import { SECTION_KEYS } from '@/data/questions'
 import { localDateString, PLAN_SCHEMA_VERSION } from '@/lib/scheduler'
@@ -68,6 +70,14 @@ describe('shellSubtitles', () => {
     expect(
       shellSubtitles({ ...empty, resume: { subject: 'LÄS', progress: 'fråga 3 av 10' } }).idag,
     ).toBe('Fortsätt LÄS, fråga 3 av 10')
+  })
+  it.each([
+    ['pågående lektion', 'Fortsätt NOG-lektion'],
+    ['Två påståenden', 'Fortsätt NOG-lektion, Två påståenden'],
+  ])('only includes specific lesson progress in the subtitle: %s', (progress, expected) => {
+    expect(shellSubtitles({ ...empty, resume: { subject: 'NOG-lektion', progress } }).idag).toBe(
+      expected,
+    )
   })
   it('names the first item and counts completed steps', () => {
     const plan = [
@@ -127,6 +137,7 @@ describe('read-only shell adapters', () => {
     live.due = []
     live.pile = []
     live.framework = null
+    live.lesson = null
   })
 
   function stats(): Stats {
@@ -162,6 +173,14 @@ describe('read-only shell adapters', () => {
     live.stats = stats()
     live.due = Array.from({ length: 8 }, (_, id) => ({ id }))
     live.pile = Array.from({ length: 12 }, (_, id) => ({ id }))
+    live.lesson = {
+      id: 1,
+      userId: 1,
+      section: 'NOG',
+      frameworkId: 'NOG-TRAP-001',
+      updatedAt: new Date().toISOString(),
+      device: null,
+    }
     live.framework = {
       section: 'NOG',
       family: 'nog_traps',
@@ -169,7 +188,7 @@ describe('read-only shell adapters', () => {
       authored_at: '',
       entries: [
         {
-          id: 'NOG-1',
+          id: 'NOG-TRAP-001',
           pattern_description: 'Två påståenden',
           why_it_occurs: '',
           common_distractor_signature: '',
@@ -182,10 +201,38 @@ describe('read-only shell adapters', () => {
     expect(result.current.dueCount).toBe(8)
     expect(result.current.subtitles.ova).toBe('8 redo · 8 min')
     expect(result.current.subtitles.uppslag).toBe('NOG · Två påståenden')
+    expect(result.current.subtitles.idag).toBe('Fortsätt NOG-lektion, Två påståenden')
+    expect(result.current.subtitles.idag).not.toMatch(/NOG-TRAP-\d+/)
     expect(result.current.subtitles.framsteg).toBe('Prognos 1,4 av 2,0')
     expect(result.current.identity.name).toBe('Ada')
     expect(live.get).toHaveBeenCalledWith(localDateString(new Date()))
     expect(live.put).not.toHaveBeenCalled()
+  })
+
+  it.each([
+    'loading',
+    'unknown',
+  ] as const)('keeps the Idag lesson subtitle neutral when the entry is %s', (state) => {
+    live.lesson = {
+      id: 1,
+      userId: 1,
+      section: 'NOG',
+      frameworkId: 'NOG-TRAP-999',
+      updatedAt: new Date().toISOString(),
+      device: null,
+    }
+    if (state === 'unknown') {
+      live.framework = {
+        section: 'NOG',
+        family: 'nog_traps',
+        version: 1,
+        authored_at: '',
+        entries: [],
+      }
+    }
+    const { result } = renderHook(() => useFolioShellData())
+    expect(result.current.subtitles.idag).toBe('Fortsätt NOG-lektion')
+    expect(result.current.subtitles.idag).not.toMatch(/NOG-TRAP-\d+/)
   })
 
   it('derives current completion without modifying or regenerating the server plan', () => {
