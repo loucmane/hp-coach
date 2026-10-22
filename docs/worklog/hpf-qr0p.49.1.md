@@ -69,3 +69,31 @@
 - Bead status and assignee remain unchanged. The accepted round-2 contract directs the worker to stop after its DONE note and leaves parking/closure to the coordinator.
 
 FOLIO FOUNDATION R2 DONE: hpf-qr0p.49.1
+
+## Round 3 inspection and decisions — 2026-10-22
+
+- Accepted round-3 contract at clean head 66c0841eabddbc58d454d96f9c5111d30df151f1; no molecule. Work remains in the same admitted files. Round 2 has coordinator host verification and independent Claude PASS; this round requires fresh delivery checks.
+- Frame currently removes the inner desktop canvas as well as its outer chrome under Folio. Restore the existing reader/studio width caps and auto margins, which provide the classic desktop horizontal gutters, while omitting duplicate backgrounds. Keep phone layout and the stable child tree intact.
+- Add failing tests before fixes: desktop Frame and running Provpass canvas, verification-route exclusions, CSS URL/template-literal bake-off imports, static shell re-exports, and grouped root typography rules across all three Folio stylesheets.
+- Leave changes uncommitted. Coordinator owns staging/signing, host-only checks, independent review, real-stack visual verification and owner visual OK. Preserve bead status and assignee and stop after the DONE note, per the accepted delivery contract.
+
+## Round 3 implementation and focused verification — 2026-10-22
+
+- Red first: the three changed test files produced 25 expected failures and 94 passes before fixes. Failures covered missing reader/studio content caps, the running desktop Provpass canvas, eight verification routes, five CSS URL/template-literal imports, four static re-export forms, and five grouped/conditional root-typography cases.
+- Frame now retains its desktop canvas class, width cap, auto margins and flex composition under Folio while leaving duplicate backgrounds off. The original studio token supplies horizontal gutters through the viewport-minus-96px cap; reader retains its 960px cap. Phone rendering is unchanged. The Provpass integration test now includes the real Frame, and the reader/studio test compares its dimensions against the classic Frame.
+- Root typography checks cover tokens.css, shell.css and palette.css, including grouped selectors, theme-qualified roots and media rules. Import checks recognize CSS url() and template-literal dynamic imports; static FolioShell checks inspect both import and export declarations, retaining type-only/lazy exceptions.
+- Navigation excludes all top-level -verify route families and /dtk-browser, including descendants. Production destination coverage retains Idag, Öva, Provpass/results, Uppslag, Framsteg and drills.
+- Focused command: pnpm test src/folio/FolioShell.test.tsx src/folio/nav.test.ts src/routes/-root-direction-shell.test.ts src/components/Frame.test.tsx src/components/mock/MockRunner.test.tsx --maxWorkers=2. Result: five files, 150 tests passed. Includes phone/desktop confirmation, stable children across widths, classic-off behavior and accessibility checks.
+- App typecheck passed. Final lint passed with the same four informational diagnostics in unchanged devbake files. Diff whitespace check passed. Full app suite and production build follow.
+- Source inspection confirms Idag, Öva and Framsteg still own their hpc-m3-frame content wrapper, Uppslag its content cap, and drills their existing padding. Actual desktop/phone light/dark visual comparison remains a coordinator host check; unit tests do not establish rendered pixel layout.
+- Git metadata resolves outside writable roots to /home/loucmane/dev/hpfetcher/.git/worktrees/hpf-qr0p.49.1. Staging/signing remains with the coordinator; no git mutation attempted.
+
+## Round 3 delivery handoff — 2026-10-22
+
+- Full app pnpm test --maxWorkers=2: 140 files passed, one failed; 4,502 tests passed, one failed (4,503 total). The sole failure is the existing trapIndex.test.ts generator subprocess check, blocked by spawnSync /usr/bin/node EPERM. Leave the host rerun to the coordinator; no bypass attempted.
+- Production pnpm build passed: TypeScript, Vite, separate FolioShell JS/CSS chunks and PWA generation. Existing route-test-file and large-chunk warnings remain. Typecheck, lint and whitespace checks passed. No worker code changed, so worker checks are not required.
+- All five fixes are complete within the admitted write set. Final implementation is an uncommitted diff on 66c0841eabddbc58d454d96f9c5111d30df151f1; six repository files changed, including this worklog. No dependency or bake-off edits. No new playbook gotcha: generator EPERM and external git-metadata limits are already documented.
+- Coordinator next: stage/sign, rerun the generator on the host, obtain independent review at the resulting exact head, compare Idag/Öva/Uppslag/Framsteg/drills and a running Provpass on the real stack at desktop/phone in light/dark, then obtain owner visual OK. The desktop Provpass header, question grid and submit/uncertainty controls should now sit inside the classic centered canvas. Round 3 has not had independent review or a rendered visual check.
+- Bead status and assignee remain unchanged. Per the accepted contract, stop after the DONE note; coordinator owns parking/closure and lifecycle completion. No commit, merge or publication performed.
+
+FOLIO FOUNDATION R3 DONE: hpf-qr0p.49.1

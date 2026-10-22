@@ -87,23 +87,26 @@ export function Frame({ children }: FrameProps) {
               }
       }
     >
+      {/* Folio owns the outer chrome, but unported screens still depend on
+          this centered desktop canvas for their width cap and gutters. */}
       <div
-        className={isPhone || folio ? undefined : 'hpc-frame-canvas'}
+        className={isPhone ? undefined : 'hpc-frame-canvas'}
         style={
-          folio
-            ? { width: '100%', minWidth: 0 }
-            : isPhone
-              ? { display: 'contents' }
-              : {
-                  width: '100%',
-                  maxWidth: isStudio ? 'var(--canvas-max-w)' : 'var(--canvas-max-w-reader)',
-                  margin: '0 auto',
-                  background: 'var(--bg)',
-                  position: 'relative',
-                  flex: 1,
-                  display: 'flex',
-                  flexDirection: 'column',
-                }
+          isPhone
+            ? folio
+              ? { width: '100%', minWidth: 0 }
+              : { display: 'contents' }
+            : {
+                width: '100%',
+                minWidth: folio ? 0 : undefined,
+                maxWidth: isStudio ? 'var(--canvas-max-w)' : 'var(--canvas-max-w-reader)',
+                margin: '0 auto',
+                background: folio ? undefined : 'var(--bg)',
+                position: 'relative',
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+              }
         }
       >
         {children}

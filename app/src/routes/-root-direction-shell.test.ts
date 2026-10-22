@@ -53,15 +53,91 @@ describe('Folio production boundary', () => {
     })
   }
 
-  const bakeoffImport = /(?:from\s*|import\s*\(?\s*)['"][^'"]*devbake/
+  const bakeoffImport =
+    /(?:from\s*|import\s*\(?\s*)['"`][^'"`]*devbake|@import\s+url\(\s*['"]?[^'"\s)]*devbake/
+
+  function staticFolioImports(text: string): string[] {
+    const source = ts.createSourceFile('entry.tsx', text, ts.ScriptTarget.Latest, true)
+    return source.statements.flatMap((statement) => {
+      if (ts.isImportDeclaration(statement)) {
+        if (statement.importClause?.isTypeOnly) return []
+      } else if (ts.isExportDeclaration(statement)) {
+        if (statement.isTypeOnly || !statement.moduleSpecifier) return []
+      } else return []
+      const specifier = statement.moduleSpecifier!.getText(source)
+      return /FolioShell/.test(specifier) ? [specifier] : []
+    })
+  }
+
+  function inheritedRootRules(css: string): string[] {
+    const uncommented = css.replace(/\/\*[\s\S]*?\*\//g, '')
+    // Inspect each selector in each leaf rule, including rules nested in media
+    // queries and root selectors qualified by theme/palette attributes.
+    return [...uncommented.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+      .filter((rule) =>
+        rule[1]
+          .split(',')
+          .some((selector) => /^\[data-folio\](?:\[[^\]]*\]|[.:#][\w-]+)*$/.test(selector.trim())),
+      )
+      .filter((rule) =>
+        /(?:^|;)\s*(?:font[\w-]*|line-height|color|text-rendering|-webkit-font-smoothing|interpolate-size)\s*:/.test(
+          rule[2],
+        ),
+      )
+      .map((rule) => rule[0])
+  }
 
   it.each([
     "import '@/components/devbake/styles.css'",
     "@import '../../components/devbake/styles.css';",
     "import ( '@/components/devbake/Shell')",
     "import { Shell } from '@/components/devbake/Shell'",
+    "@import url('../../components/devbake/styles.css');",
+    '@import url("../../components/devbake/styles.css");',
+    '@import url(../../components/devbake/styles.css);',
+    'import(`@/components/devbake/Shell`)',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: source fixture, not evaluated here.
+    'import(`@/components/devbake/${name}`)',
   ])('recognizes the forbidden import: %s', (source) => {
     expect(source).toMatch(bakeoffImport)
+  })
+
+  it.each([
+    "import { FolioShell } from './FolioShell'",
+    "export { FolioShell } from './FolioShell'",
+    "export { FolioShell as Shell } from './FolioShell'",
+    "export * from './FolioShell'",
+    "export * as shell from './FolioShell'",
+  ])('recognizes static shell loading: %s', (source) => {
+    expect(staticFolioImports(source)).toHaveLength(1)
+  })
+
+  it.each([
+    "import type { Props } from './FolioShell'",
+    "export type { Props } from './FolioShell'",
+    "export { FolioHost } from './FolioHost'",
+    "const Shell = lazy(() => import('./FolioShell'))",
+  ])('permits type-only and lazy shell references: %s', (source) => {
+    expect(staticFolioImports(source)).toEqual([])
+  })
+
+  it.each([
+    '[data-folio] { font-family: serif; }',
+    '[data-folio], .x { font-family: serif; }',
+    '.x, [data-folio] { color: red; }',
+    '[data-folio][data-theme="dark"] { color: red; }',
+    '@media (min-width: 768px) { [data-folio], .x { line-height: 1.5; } }',
+    '[data-folio] { --fa-ink: red; } [data-folio], .x { font: 16px serif; }',
+  ])('recognizes typography inherited by unported routes: %s', (css) => {
+    expect(inheritedRootRules(css)).toHaveLength(1)
+  })
+
+  it.each([
+    '[data-folio] { --fa-serif: serif; --fa-ink: red; color-scheme: light; }',
+    '[data-folio] .fa-side, [data-folio] .fa-menu { color: red; font-family: serif; }',
+    '/* [data-folio] { color: red; } */',
+  ])('permits scoped shell typography and custom properties: %s', (css) => {
+    expect(inheritedRootRules(css)).toEqual([])
   })
 
   it('keeps every Folio module and stylesheet independent of the bake-offs', () => {
@@ -81,16 +157,7 @@ describe('Folio production boundary', () => {
     'folio/useShellFocus.ts',
     'folio/host.ts',
   ])('%s never statically loads FolioShell', (file) => {
-    const source = ts.createSourceFile(
-      file,
-      readFileSync(path.join(SRC, file), 'utf8'),
-      ts.ScriptTarget.Latest,
-      true,
-    )
-    for (const statement of source.statements.filter(ts.isImportDeclaration)) {
-      if (statement.importClause?.isTypeOnly) continue
-      expect(statement.moduleSpecifier.getText(source)).not.toMatch(/FolioShell/)
-    }
+    expect(staticFolioImports(readFileSync(path.join(SRC, file), 'utf8')), file).toEqual([])
   })
 
   it('shares the public-route registry with the root auth gate', () => {
@@ -99,15 +166,19 @@ describe('Folio production boundary', () => {
     expect(root).not.toMatch(/const PUBLIC_ROUTES/)
   })
 
-  it('keeps inherited type and focus rules off unported content', () => {
+  it.each([
+    'tokens',
+    'shell',
+    'palette',
+  ])('keeps inherited type off unported content in %s.css', (name) => {
+    const css = readFileSync(path.join(SRC, `folio/styles/${name}.css`), 'utf8')
+    expect(inheritedRootRules(css)).toEqual([])
+  })
+
+  it('keeps focus rules off unported content', () => {
     const css = readFileSync(path.join(SRC, 'folio/styles/tokens.css'), 'utf8').replace(
       /\/\*[\s\S]*?\*\//g,
       '',
-    )
-    const rootRules = [...css.matchAll(/(?:^|\})\s*\[data-folio\]\s*\{([^}]+)\}/g)]
-    expect(rootRules).toHaveLength(1)
-    expect(rootRules[0][1]).not.toMatch(
-      /(?:^|;)\s*(?:font[\w-]*|line-height|color|text-rendering|-webkit-font-smoothing|interpolate-size)\s*:/,
     )
     const focusRules = [...css.matchAll(/([^{}]+:focus-visible[^{}]*)\{/g)]
     expect(focusRules.length).toBeGreaterThan(0)

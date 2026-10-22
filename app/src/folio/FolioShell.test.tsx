@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 const mocks = vi.hoisted(() => ({
   pathname: '/',
   phone: false,
+  reader: false,
   navigate: vi.fn(),
   setMode: vi.fn(),
   setPalette: vi.fn(),
@@ -45,7 +46,9 @@ vi.mock('@clerk/clerk-react', () => ({
   SignedIn: ({ children }: { children: ReactNode }) => (mocks.signedIn ? children : null),
   SignedOut: ({ children }: { children: ReactNode }) => (mocks.signedIn ? null : children),
 }))
-vi.mock('@/hooks/useViewport', () => ({ useViewport: () => (mocks.phone ? 'phone' : 'studio') }))
+vi.mock('@/hooks/useViewport', () => ({
+  useViewport: () => (mocks.phone ? 'phone' : mocks.reader ? 'reader' : 'studio'),
+}))
 vi.mock('@/api/useSyncedPrefs', () => ({
   useHydratePrefs: () => {},
   useSyncedPrefs: () => ({ setMode: mocks.setMode, setPalette: mocks.setPalette }),
@@ -113,6 +116,7 @@ beforeEach(() => {
   vi.clearAllMocks()
   mocks.pathname = '/'
   mocks.phone = false
+  mocks.reader = false
   mocks.signedIn = true
   mocks.setMode.mockResolvedValue(undefined)
   mocks.setPalette.mockResolvedValue(undefined)
@@ -134,6 +138,41 @@ function RouteContent({ children }: { children?: ReactNode }) {
 }
 
 describe('Folio shell', () => {
+  it.each([false, true])('retains the classic content cap and gutters, reader=%s', (reader) => {
+    mocks.reader = reader
+    const classic = render(
+      <Frame>
+        <p>Innehåll</p>
+      </Frame>,
+    )
+    const classicCanvas = classic.container.querySelector<HTMLElement>('.hpc-frame-canvas')!
+    const dimensions = {
+      width: classicCanvas.style.width,
+      maxWidth: classicCanvas.style.maxWidth,
+      margin: classicCanvas.style.margin,
+    }
+    classic.unmount()
+    const { container } = render(
+      <FolioShell>
+        <Frame>
+          <p>Innehåll</p>
+        </Frame>
+      </FolioShell>,
+    )
+    const canvas = screen.getByText('Innehåll').parentElement!
+    expect(canvas.style.maxWidth).toBe(
+      reader ? 'var(--canvas-max-w-reader)' : 'var(--canvas-max-w)',
+    )
+    expect({
+      width: canvas.style.width,
+      maxWidth: canvas.style.maxWidth,
+      margin: canvas.style.margin,
+    }).toEqual(dimensions)
+    expect(canvas.style.background).toBe('')
+    expect(canvas.parentElement?.style.background).toBe('')
+    expect(container.querySelector('.hpc-frame')).toBeNull()
+  })
+
   it('has the five destinations and account; Repetera belongs to Öva', () => {
     mocks.pathname = '/repetition'
     render(
@@ -358,29 +397,39 @@ describe('Folio shell', () => {
     const onVoid = vi.fn()
     const { container } = render(
       <FolioShell>
-        <MockRunner
-          plan={[1, 2, 3].map((number) => ({
-            qid: `q${number}`,
-            section: 'ORD',
-            number,
-            exam_id: 'var-2024',
-            provpass: 'verb1',
-            prompt: 'Ord',
-            options: [{ letter: 'A', text: 'Svar' }],
-            answer: 'A',
-            context: null,
-            figure: null,
-            parsing_status: 'complete',
-          }))}
-          session={{ id: 42, startedAt: new Date(), mode: 'synthetic', half: 'verbal' }}
-          seenBefore={0}
-          onSettled={vi.fn()}
-          onVoid={onVoid}
-        />
+        <Frame>
+          <MockRunner
+            plan={[1, 2, 3].map((number) => ({
+              qid: `q${number}`,
+              section: 'ORD',
+              number,
+              exam_id: 'var-2024',
+              provpass: 'verb1',
+              prompt: 'Ord',
+              options: [{ letter: 'A', text: 'Svar' }],
+              answer: 'A',
+              context: null,
+              figure: null,
+              parsing_status: 'complete',
+            }))}
+            session={{ id: 42, startedAt: new Date(), mode: 'synthetic', half: 'verbal' }}
+            seenBefore={0}
+            onSettled={vi.fn()}
+            onVoid={onVoid}
+          />
+        </Frame>
       </FolioShell>,
     )
     expect(screen.queryByRole('navigation')).toBeNull()
     expect(screen.getAllByRole('main')).toHaveLength(1)
+    const canvas = container.querySelector<HTMLElement>('.hpc-frame-canvas')
+    if (phone) {
+      expect(canvas).toBeNull()
+    } else {
+      expect(canvas).toContainElement(screen.getByTestId('mock-runner'))
+      expect(canvas?.style.maxWidth).toBe('var(--canvas-max-w)')
+      expect(canvas?.style.margin).toBe('0px auto')
+    }
     fireEvent.keyDown(document.body, { key: 'ArrowRight' })
     expect(screen.getByTestId('mock-cell-2')).toHaveAttribute('data-current', 'true')
     mocks.updateSession.mockClear()

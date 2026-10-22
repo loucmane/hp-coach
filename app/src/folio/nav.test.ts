@@ -56,7 +56,22 @@ describe('Folio navigation', () => {
     expect(supportsFolio(path)).toBe(false)
   })
   it.each([
+    '/adaptive-verify',
+    '/home-verify',
+    '/prov-verify',
+    '/prov-verify/details',
+    '/future-verify',
+    '/future-verify/details',
+    '/dtk-browser',
+    '/dtk-browser/details',
+  ])('does not wrap the verification route %s', (path) => {
+    expect(supportsFolio(path)).toBe(false)
+  })
+  it.each([
+    '/',
+    '/ova',
     '/prov',
+    '/prov/resultat',
     '/drill',
     '/lektion',
     '/progress',

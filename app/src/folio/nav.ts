@@ -42,6 +42,8 @@ export function supportsFolio(pathname: string): boolean {
   const root = pathname.split('/')[1] ?? ''
   if (
     /-bake-?off$/.test(root) ||
+    root.endsWith('-verify') ||
+    root === 'dtk-browser' ||
     root === 'm-compare' ||
     root.startsWith('redesign-') ||
     root.startsWith('drill-style-')
