@@ -20,6 +20,8 @@ export type FolioSessionStageProps = {
   plan: readonly Question[]
   index: number
   picked: AnswerLetter | null
+  /** Plan-aligned answers, including attempts restored after a resume. */
+  picks?: readonly (AnswerLetter | null)[]
   graded: boolean
   onPick: (letter: AnswerLetter) => void
   onNext: () => void
@@ -45,6 +47,7 @@ function BlockStage({
   plan,
   index,
   picked,
+  picks,
   graded,
   onPick,
   onNext,
@@ -59,11 +62,23 @@ function BlockStage({
     [plan, start, end],
   )
   const { explanations, frameworks } = useDrillContent(questions)
-  const { view, act, refs } = useDrillCore({
+  const priorResults = plan.slice(start, index).flatMap((q, offset) => {
+    const pick = picks?.[start + offset]
+    return pick ? [{ qid: q.qid, pick, correct: pick === q.answer }] : []
+  })
+  const {
+    view: coreView,
+    act,
+    refs,
+  } = useDrillCore({
     questions,
     explanations,
     live: false,
-    start: { index: index - start, graded: graded && picked ? picked : undefined },
+    start: {
+      index: index - start,
+      graded: graded && picked ? picked : undefined,
+      results: priorResults,
+    },
     controller: {
       lock: (q, letter) => {
         onPick(letter)
@@ -72,6 +87,15 @@ function BlockStage({
       next: () => onNext(),
     },
   })
+  // Attempts may hydrate after the core mounts. Merge display history without
+  // remounting the core or replacing the reader's current selection/feedback.
+  const view = {
+    ...coreView,
+    results: [
+      ...priorResults.filter((prior) => !coreView.results.some((r) => r.qid === prior.qid)),
+      ...coreView.results,
+    ],
+  }
   const root = useRef<HTMLDivElement>(null)
   const problem = useRef<HTMLElement>(null)
   const verdict = useRef<HTMLHeadingElement>(null)

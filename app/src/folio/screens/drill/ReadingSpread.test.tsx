@@ -220,8 +220,15 @@ describe('Reading through SessionPlayer and the Folio host', () => {
     }
     fireEvent.click(screen.getByRole('button', { name: 'Visa steg för steg' }))
     await accessible(container)
+    const citedBefore = [1, 2].map((n) =>
+      screen.getByTestId(`rd-para-${n}`).getAttribute('data-cited'),
+    )
+    expect(citedBefore).toEqual(['false', 'true'])
+    expect(screen.getByTestId('rd-para-2')).toHaveAttribute('data-flash', 'false')
     fireEvent.click(screen.getByTestId('rd-cite-2'))
-    expect(screen.getByTestId('rd-para-2')).toHaveAttribute('data-cited', 'true')
+    expect(
+      [1, 2].map((n) => screen.getByTestId(`rd-para-${n}`).getAttribute('data-cited')),
+    ).toEqual(citedBefore)
     expect(screen.getByTestId('rd-para-2')).toHaveAttribute('data-flash', 'true')
     if (phone) {
       expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'peek')
@@ -231,6 +238,24 @@ describe('Reading through SessionPlayer and the Folio host', () => {
       expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'full')
       expect(screen.getByTestId('fa-verdict')).toHaveFocus()
     }
+  })
+  it('keeps focus on the grab handle when toggling full and open feedback', async () => {
+    h.phone = true
+    mount()
+    await questionReady()
+    key('a')
+    key('Enter')
+    const handle = screen.getByRole('button', { name: 'Visa mindre facit' })
+    handle.focus()
+    fireEvent.click(handle)
+    expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'open')
+    expect(handle).toHaveFocus()
+    fireEvent.click(handle)
+    expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'full')
+    expect(handle).toHaveFocus()
+    fireEvent.click(screen.getByRole('button', { name: 'Visa texten' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Tillbaka till facit' }))
+    expect(screen.getByTestId('fa-verdict')).toHaveFocus()
   })
   it('shows only synthetic disclosure and toggles its verbatim note', async () => {
     h.bank = [{ ...reading(), qid: 'p5-las-b19-002-r1-LÄS-001' }]

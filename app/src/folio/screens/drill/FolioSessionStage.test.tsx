@@ -68,6 +68,7 @@ import { FolioShell } from '@/folio/FolioShell'
 import { endedSessionIdsThisTab } from '@/lib/endedSessions'
 import { useUiStore } from '@/stores/uiStore'
 import { formatViolations, runAxe } from '@/test/a11y'
+import FolioSessionStage from './FolioSessionStage'
 
 function fixture(n = 1, section: Question['section'] = 'ORD'): Question {
   return {
@@ -514,6 +515,46 @@ describe('Folio through the real SessionPlayer', () => {
     ).toBeInTheDocument()
     expect(h.submit).toHaveBeenCalledTimes(1)
   })
+})
+
+it.each([
+  false,
+  true,
+])('restores earlier ELF gaps without resetting the current choice, late=%s', async (late) => {
+  const context = 'A title\n\nWe 31_____ it, then 32_____ it and 33_____ it.'
+  const plan = [
+    fixture(),
+    ...[31, 32, 33].map((n) => ({
+      ...fixture(n, 'ELF'),
+      prompt: '',
+      context,
+    })),
+  ]
+  const props = {
+    plan,
+    index: 3,
+    picked: null,
+    graded: false,
+    onPick: h.submit,
+    onNext: vi.fn(),
+    sessionKind: 'drill' as const,
+  }
+  const picks = ['A', 'B', 'A', null] as const
+  const { container, rerender } = render(<FolioSessionStage {...props} picks={late ? [] : picks} />)
+  await questionReady()
+  key('b')
+  if (late) rerender(<FolioSessionStage {...props} picks={picks} />)
+  expect(screen.getByTestId('drill-prompt')).toHaveTextContent('Lucka 33')
+  expect(container.querySelector('[data-gap="31"]')).toHaveAttribute('data-state', 'wrong')
+  expect(container.querySelector('[data-gap="31"] s')).toHaveTextContent('skynda')
+  expect(container.querySelector('[data-gap="32"]')).toHaveAttribute('data-state', 'right')
+  expect(container.querySelector('[data-gap="32"] .rd-gapword')).toHaveTextContent('fundera')
+  expect(screen.getByTestId('option-B')).toHaveAttribute('aria-pressed', 'true')
+  expect(h.submit).not.toHaveBeenCalled()
+  key('Enter')
+  expect(container.querySelector('[data-gap="33"]')).toHaveAttribute('data-state', 'wrong')
+  expect(container.querySelector('[data-gap="31"] s')).toHaveTextContent('skynda')
+  expect(h.submit).toHaveBeenCalledTimes(1)
 })
 
 it.each([

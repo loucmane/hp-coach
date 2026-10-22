@@ -40,15 +40,20 @@ export function gapTokens(q: DrillQuestion): GapToken[][] {
 
 export function gapNumbers(questions: readonly DrillQuestion[]): Record<string, number> {
   const out: Record<string, number> = {}
+  const orders = new Map<string, number>()
   for (const q of questions) {
-    if (q.section === 'ELF' && !q.prompt?.trim()) {
+    if (q.section === 'ELF' && !q.passage?.synthetic && !q.prompt?.trim()) {
       out[q.qid] = q.number
       continue
     }
     const tokens = gapTokens(q).flat()
     if (!tokens.length) continue
+    const unit = q.passage!.unitId ?? q.passage!.paragraphs.join('\n\n')
+    const order = (orders.get(unit) ?? 0) + 1
+    orders.set(unit, order)
     const named = /^\s*(?:gap|lucka)\s*\(?(\d+)\)?\s*$/i.exec(q.prompt ?? '')
     if (named) out[q.qid] = Number(named[1])
+    else if (!q.prompt?.trim()) out[q.qid] = order
   }
   return out
 }

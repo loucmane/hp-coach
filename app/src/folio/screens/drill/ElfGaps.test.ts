@@ -57,6 +57,21 @@ describe('ELF gap formats', () => {
     ).toEqual([1, 2])
     expect(gapNumbers([q])[q.qid]).toBe(2)
   })
+  it('numbers empty P5 prompts in passage order, independent of question numbers', () => {
+    const first = question('They ___ it.\n\nWe ___ it.', true)
+    const second = { ...first, qid: 'p5-elf-test-r1-ELF-009', number: 9 }
+    const other = { ...question('Another ___ here.', true), qid: 'p5-elf-other-r1-ELF-007' }
+    expect(gapNumbers([first, second, other])).toEqual({
+      [first.qid]: 1,
+      [second.qid]: 2,
+      [other.qid]: 1,
+    })
+    expect(gapNumbers([{ ...first, prompt: 'Gap (1)' }, second])[second.qid]).toBe(2)
+  })
+  it('does not turn an empty synthetic reading prompt without blanks into a gap', () => {
+    const q = question('A complete sentence.', true)
+    expect(gapNumbers([q])).toEqual({})
+  })
 })
 
 import { readFileSync } from 'node:fs'

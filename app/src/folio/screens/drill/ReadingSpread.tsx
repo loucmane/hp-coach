@@ -55,8 +55,11 @@ export function ReadingSpread({
         : 'peek'
   const setSheet = (state: SheetState) => setSheetChoice({ qid: q.qid, feedback, state })
   const documentRef = useRef<HTMLDivElement>(null)
+  const previousSheet = useRef(sheet)
   useLayoutEffect(() => {
-    if (phone && feedback && sheet !== 'peek' && !suspended) verdict.current?.focus()
+    if (phone && feedback && previousSheet.current === 'peek' && sheet === 'full' && !suspended)
+      verdict.current?.focus()
+    previousSheet.current = sheet
   }, [phone, feedback, sheet, suspended, verdict])
   const gaps = gapModel(view, questions)
   const cite = (n: number, source?: string) => {

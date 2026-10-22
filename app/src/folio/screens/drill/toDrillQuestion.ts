@@ -22,7 +22,7 @@ function readingPassage(q: Question, authentic: boolean): DrillPassage | null {
     passage.instruction = paragraphs.shift()
   }
   const first = paragraphs[0]
-  if (first?.trim() && first.length <= 90 && !/[.!?]$/.test(first.trim())) {
+  if (first?.trim() && first.length <= 90 && !/[.!]$/.test(first.trim())) {
     passage.title = paragraphs.shift()
   }
   return { ...passage, paragraphs }
