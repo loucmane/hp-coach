@@ -197,14 +197,39 @@ describe('Folio through the real SessionPlayer', () => {
     expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', h.bank[1].qid)
     expect(h.submit).toHaveBeenCalledTimes(1)
   })
-  it('does not commit with Enter on an option before a selection exists', async () => {
+  it('selects a tabbed-to option with Enter before committing on a second Enter', async () => {
     const user = userEvent.setup()
     mount()
     await questionReady()
-    screen.getByTestId('option-B').focus()
+    await user.tab()
+    const option = screen.getByTestId('option-A')
+    expect(option).toHaveFocus()
     await user.keyboard('{Enter}')
     expect(h.submit).not.toHaveBeenCalled()
-    expect(screen.getByTestId('fa-lock')).toBeDisabled()
+    expect(option).toHaveAttribute('aria-pressed', 'true')
+    expect(option).toHaveFocus()
+    expect(screen.getByTestId('fa-lock')).toBeEnabled()
+    await user.keyboard('{Enter}')
+    expect(h.submit).toHaveBeenCalledTimes(1)
+    expect(h.submit).toHaveBeenCalledWith(expect.objectContaining({ selectedAnswer: 'A' }))
+  })
+  it('selects focused B with Enter when A was selected, then commits B exactly once', async () => {
+    const user = userEvent.setup()
+    mount()
+    await questionReady()
+    await user.click(screen.getByTestId('option-A'))
+    await user.tab()
+    await user.tab()
+    const option = screen.getByTestId('option-B')
+    expect(option).toHaveFocus()
+    await user.keyboard('{Enter}')
+    expect(h.submit).not.toHaveBeenCalled()
+    expect(screen.getByTestId('option-A')).toHaveAttribute('aria-pressed', 'false')
+    expect(option).toHaveAttribute('aria-pressed', 'true')
+    expect(option).toHaveFocus()
+    await user.keyboard('{Enter}')
+    expect(h.submit).toHaveBeenCalledTimes(1)
+    expect(h.submit).toHaveBeenCalledWith(expect.objectContaining({ selectedAnswer: 'B' }))
   })
   it('eliminates with Shift+letter and Enter submits, advances and ends', async () => {
     mount()
@@ -492,19 +517,41 @@ describe('Folio through the real SessionPlayer', () => {
 })
 
 it.each([
-  '.fa-opt .katex',
-  '.fa-dis-opt .katex',
-])('keeps fraction glyphs in %s at option text size', (selector) => {
+  '.fa-opt .katex .mfrac',
+  '.fa-dis-opt .katex .mfrac',
+])('enlarges only stacked fractions in %s', (selector) => {
   const css = readFileSync('src/folio/screens/drill/drill.css', 'utf8').replace(
     /\/\*[\s\S]*?\*\//g,
     '',
   )
-  // KaTeX uses 0.7em for inline fraction digits: the existing 24px token
-  // yields 16.8px digits next to 17px option text, without altering its layout.
+  // 17px text * 1.14 math scale * 0.7 fraction digits * 1.25 = about 17px.
   const rule = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].find((match) =>
     match[1].split(',').some((part) => part.trim() === `[data-folio] .fa-drill ${selector}`),
   )
-  expect(rule?.[2] ?? '').toMatch(/font-size:\s*var\(--fa-t24\)/)
+  expect(rule?.[2] ?? '').toMatch(/font-size:\s*1\.25em/)
+})
+
+it.each([
+  '.fa-opt',
+  '.fa-dis-opt',
+])('keeps non-fraction math in %s at the relative scale', (option) => {
+  const css = readFileSync('src/folio/screens/drill/drill.css', 'utf8').replace(
+    /\/\*[\s\S]*?\*\//g,
+    '',
+  )
+  const rules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].filter((match) =>
+    match[1]
+      .split(',')
+      .some((part) =>
+        [`[data-folio] .fa-drill .katex`, `[data-folio] .fa-drill ${option} .katex`].includes(
+          part.trim(),
+        ),
+      ),
+  )
+  expect(rules.length).toBeGreaterThan(0)
+  for (const rule of rules) {
+    expect(rule[2]).toMatch(/font-size:\s*var\(--fa-math-scale\)/)
+  }
 })
 
 it('keeps drill CSS local and uses neutral ink for errors', () => {

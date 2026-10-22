@@ -654,11 +654,11 @@
   font-size: var(--fa-math-scale);
 }
 
-/* Inline fraction digits are 0.7em in KaTeX. The 24px token keeps them
-   near the surrounding 17px option text, before and after grading. */
-[data-folio] .fa-drill .fa-opt .katex,
-[data-folio] .fa-drill .fa-dis-opt .katex {
-  font-size: var(--fa-t24);
+/* Enlarge only stacked fractions: 1.14 × 0.7 × 1.25 keeps their digits
+   near the surrounding text size without enlarging ordinary option math. */
+[data-folio] .fa-drill .fa-opt .katex .mfrac,
+[data-folio] .fa-drill .fa-dis-opt .katex .mfrac {
+  font-size: 1.25em;
 }
 
 [data-folio] .fa-drill .katex-error {

@@ -94,10 +94,12 @@ function BlockStage({
         if (target.closest('input, textarea, select, [contenteditable], [role="dialog"], [inert]'))
           return
         if (target !== document.body && !root.current?.contains(target)) return
+        // Native Enter selects an unselected option; only the already-selected
+        // option turns Enter into a commit. Other controls keep native behavior.
         if (
           event.key === 'Enter' &&
           target.closest('button, a, summary, [role="button"]') &&
-          !target.closest('button.fa-opt-main')
+          !target.closest('button.fa-opt-main[aria-pressed="true"]')
         )
           return
       }
