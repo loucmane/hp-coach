@@ -6,6 +6,7 @@
 import { useAuth } from '@clerk/clerk-react'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { lazy, Suspense, useContext } from 'react'
 
 import { useFrameworkProgress } from '@/api/hooks/useFrameworkProgress'
 import { useStats } from '@/api/hooks/useStats'
@@ -13,16 +14,20 @@ import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { loadFramework } from '@/data/frameworks'
 import { SECTION_KEYS } from '@/data/questions'
+import { FolioHostContext } from '@/folio/host'
 import { summarizeFrameworkProgress } from '@/lib/frameworkProgress'
 import { useFirstContentSignal } from '@/lib/motion'
 import { TAB_ROUTE } from '@/lib/nav'
 import { ProgressMobile } from '@/screens/ProgressMobile'
+
+const FolioFramsteg = lazy(() => import('@/folio/screens/framsteg/FolioFramsteg'))
 
 export const Route = createFileRoute('/progress')({
   component: ProgressRoute,
 })
 
 function ProgressRoute() {
+  const inFolio = useContext(FolioHostContext)
   // Boot-veil content signal (#305 owner verdict) — /progress has no
   // Skrift block; its placeholder-while-loading UI is the route's own
   // primary content, present at mount.
@@ -49,6 +54,25 @@ function ProgressRoute() {
     progress.data && catalogs.data
       ? summarizeFrameworkProgress(progress.data, catalogs.data).overall
       : undefined
+  if (inFolio) {
+    return (
+      <Suspense fallback={<p role="status">Laddar …</p>}>
+        <FolioFramsteg
+          userId={userId}
+          stats={stats}
+          patternsHeld={summary && { mastered: summary.counts.mastered, total: summary.total }}
+          navigateHref={(href) => {
+            const url = new URL(href, window.location.origin)
+            navigate({
+              to: url.pathname as never,
+              search: Object.fromEntries(url.searchParams) as never,
+              hash: url.hash.slice(1),
+            })
+          }}
+        />
+      </Suspense>
+    )
+  }
   return (
     <MobileFrame tabs activeTab="framsteg" onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}>
       <Page
