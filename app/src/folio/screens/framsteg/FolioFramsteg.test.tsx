@@ -162,17 +162,23 @@ describe('Folio Framsteg', () => {
     fireEvent.keyDown(document.body, { key: 'Enter' })
     expect(navigateHref).not.toHaveBeenCalled()
   })
-  it('expands the 84-day strip and the chart table with accessible controls', () => {
+  it('expands the 84-day strip and the chart table with accessible controls', async () => {
+    const user = userEvent.setup()
     render(<FolioFramsteg stats={{ data: stats() }} navigateHref={navigateHref} />)
     const heat = screen.getByTestId('folio-framsteg-week')
     expect(heat.querySelectorAll('[data-heat]')).toHaveLength(84)
     const toggle = within(heat).getByRole('button', { name: 'Visa alla veckor' })
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
-    fireEvent.click(toggle)
+    await user.click(toggle)
     expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    expect(within(heat).getByRole('button', { name: 'Visa färre veckor' })).toBe(toggle)
+    expect(toggle).toHaveFocus()
     expect(within(heat).getByRole('table')).toBeInTheDocument()
     expect(within(heat).getByText(/En dag utan övning tar inte bort/)).toBeInTheDocument()
-    fireEvent.click(toggle)
+    await user.keyboard('{Enter}')
+    expect(within(heat).getByRole('button', { name: 'Visa alla veckor' })).toBe(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(toggle).toHaveFocus()
     expect(within(heat).queryByRole('table')).not.toBeInTheDocument()
     const chartToggle = screen.getByRole('button', { name: 'Visa som tabell' })
     fireEvent.click(chartToggle)
@@ -199,7 +205,51 @@ describe('Folio Framsteg', () => {
     rerender(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
     expect(screen.getByTestId('progress-empty-cta')).toHaveAttribute('href', '/diagnostik?start=1')
     expect(container.textContent).not.toMatch(/lägst/i)
+    expect(container.textContent).not.toMatch(/sedan förra veckan|inom felmarginalen/i)
     expect(container.querySelectorAll('.fa-btn')).toHaveLength(1)
+  })
+  it('keeps a single first try neutral in the ledger and up-step', () => {
+    const data = stats()
+    data.bySection.MEK.firstTry90d = 1
+    data.bySection.MEK.firstTryCorrect90d = 1
+    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    const row = screen.getByTestId('progress-section-MEK')
+    expect(row).toHaveTextContent('—')
+    expect(row).toHaveTextContent('underlag: 1 svar')
+    expect(row).not.toHaveTextContent('2,0')
+    const up = screen.getByTestId('framsteg-up-MEK')
+    expect(up).toHaveTextContent('Fler MEK-frågor ger ett tydligare underlag.')
+    expect(up).not.toHaveTextContent(/Håll|2,0/)
+  })
+  it('describes marked section rows only when the caveat is rendered', () => {
+    const data = stats()
+    data.bySection.LÄS.attempts90d = 0
+    data.bySection.LÄS.estimateBasis = { authentic: 0, synthetic: 0, calibrated: false }
+    const { container, rerender } = render(
+      <FolioFramsteg stats={{ data }} navigateHref={navigateHref} />,
+    )
+    expect(container.querySelector('#fa-fr-caveat')).not.toBeInTheDocument()
+    expect(screen.getByTestId('progress-section-LÄS')).not.toHaveAttribute('aria-describedby')
+    data.bySection.LÄS.attempts90d = 100
+    data.bySection.LÄS.estimateBasis = { authentic: 0, synthetic: 100, calibrated: false }
+    rerender(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(container.querySelector('#fa-fr-caveat')).toBeInTheDocument()
+    expect(screen.getByTestId('progress-section-LÄS')).toHaveAttribute(
+      'aria-describedby',
+      'fa-fr-caveat',
+    )
+  })
+  it('renders a noncollapsed range in both visible and accessible prognosis text', () => {
+    const data = stats()
+    for (const s of SECTION_KEYS) {
+      data.bySection[s].firstTry90d = 10000
+      data.bySection[s].firstTryCorrect90d = 9500
+    }
+    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.getByText('Intervall 1,8–2,0')).toBeInTheDocument()
+    expect(
+      screen.getByRole('img', { name: 'Prognos 1,9 av 2,0, intervall 1,8–2,0' }),
+    ).toBeInTheDocument()
   })
   it('retains mastery peaks per account across decay, remounts and account switches', () => {
     const props = { stats: { data: stats() }, navigateHref }

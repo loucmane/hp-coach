@@ -3,7 +3,7 @@ import type { SessionHistoryRow } from '@/api/hooks/useSessions'
 import type { Stats } from '@/api/hooks/useStats'
 import { SECTION_KEYS } from '@/data/questions'
 import type { SectionStats } from '@/lib/scoring'
-import { buildFramstegView, buildTrend, focusRankLine } from './framstegView'
+import { buildFramstegView, buildTrend, focusRankLine, scoreLabel } from './framstegView'
 
 const now = new Date('2026-10-22T12:00:00Z')
 const section = (patch: Partial<SectionStats> = {}): SectionStats => ({
@@ -103,13 +103,112 @@ describe('Framsteg real-data view', () => {
   })
   it('uses comparison language only with more than one scored section', () => {
     expect(focusRankLine(0, 0)).not.toMatch(/lägst/i)
-    expect(focusRankLine(0, 1)).toBe('Enda sektionen med försök hittills')
+    expect(focusRankLine(0, 1)).toBe('Enda sektionen med en skattning')
     expect(focusRankLine(0, 2)).toBe('Lägsta sektionen just nu')
     expect(focusRankLine(1, 3)).toBe('Näst lägst just nu')
     const data = stats({ bySection: { ORD: section() } as Stats['bySection'] })
     const view = buildFramstegView({ stats: { data } }, now)
     expect(view.focus[0].reason).not.toMatch(/lägst/i)
     expect(view.sections.filter((s) => s.score != null)).toHaveLength(1)
+  })
+  it.each([30, 50])('hides a verbal-only delta with %s recent correct answers', (correct) => {
+    const data = stats({
+      bySection: { ORD: section({ firstTryCorrect7d: correct }) } as Stats['bySection'],
+    })
+    const view = buildFramstegView({ stats: { data } }, now)
+    expect(view.dayZero).toBe(true)
+    expect(view.prognosis.total).toBeNull()
+    expect(view.prognosis.deltaLabel).toBeNull()
+  })
+  it.each([
+    { patch: { lastAttemptedAt: now.getTime() - 42 * 86400000 }, reason: /inte övad på 42 dagar/i },
+    { patch: { firstTryCorrect7d: 10, firstTryCorrect7to14d: 40 }, reason: /på väg ner/i },
+  ])('explains urgency instead of mislabelling a higher score as lowest: $reason', ({
+    patch,
+    reason,
+  }) => {
+    const data = stats({
+      bySection: {
+        ORD: section({ firstTryCorrect90d: 90, ...patch }),
+        XYZ: section({ firstTryCorrect90d: 75 }),
+      } as Stats['bySection'],
+    })
+    const view = buildFramstegView({ stats: { data } }, now)
+    expect(view.sections.find((s) => s.section === 'ORD')?.scoreLabel).toBe('1,8')
+    expect(view.sections.find((s) => s.section === 'XYZ')?.scoreLabel).toBe('1,5')
+    expect(view.focus[0].section).toBe('ORD')
+    expect(view.focus[0].reason).toMatch(reason)
+    expect(view.primary?.reason).toMatch(reason)
+    expect(view.focus[1].reason).not.toMatch(/näst lägst/i)
+  })
+  it('uses lowest and next-lowest only when recommendation order matches displayed scores', () => {
+    const data = stats({
+      bySection: {
+        ORD: section({ firstTryCorrect90d: 90 }),
+        XYZ: section({ firstTryCorrect90d: 75 }),
+      } as Stats['bySection'],
+    })
+    const view = buildFramstegView({ stats: { data } }, now)
+    expect(view.focus.map((s) => [s.section, s.reason])).toEqual([
+      ['XYZ', 'Lägsta sektionen just nu'],
+      ['ORD', 'Näst lägst just nu'],
+    ])
+    data.bySection.MEK = section({ firstTry90d: 2, firstTryCorrect90d: 0 })
+    const withSparseLowerScore = buildFramstegView({ stats: { data } }, now)
+    expect(withSparseLowerScore.focus[0].section).toBe('XYZ')
+    expect(withSparseLowerScore.focus[0].reason).not.toMatch(/lägst/i)
+  })
+  it.each([
+    0, 1,
+  ])('does not present %s first tries as a scored section or ranked practice step', (n) => {
+    const data = stats({
+      bySection: {
+        MEK: section({ firstTry90d: n, firstTryCorrect90d: n }),
+        XYZ: section(),
+      } as Stats['bySection'],
+    })
+    const view = buildFramstegView({ stats: { data } }, now)
+    expect(view.sections.find((s) => s.section === 'MEK')).toMatchObject({
+      score: null,
+      scoreLabel: '—',
+      bandLabel: null,
+      attempts: n,
+      up: { level: null, text: 'Fler MEK-frågor ger ett tydligare underlag.' },
+    })
+    expect(view.focus.map((s) => s.section)).toEqual(['XYZ'])
+    expect(view.focus[0].reason).toBe('Enda sektionen med en skattning')
+    if (!view.dayZero) expect(view.primary?.label).toBe('Öva XYZ')
+  })
+  it('does not make a lead or following step out of single-answer sections', () => {
+    const data = stats({
+      bySection: {
+        MEK: section({ firstTry90d: 1, firstTryCorrect90d: 0 }),
+        XYZ: section({ firstTry90d: 1, firstTryCorrect90d: 1 }),
+      } as Stats['bySection'],
+    })
+    const view = buildFramstegView({ stats: { data } }, now)
+    expect(view.focus).toEqual([])
+    expect(view.primary?.href).toBe('/drill?mixed=1&start=1')
+  })
+  it.each([0, 1, 2])('keeps a low-confidence score of %s out of the level promise', (score) => {
+    const data = stats()
+    data.bySection.ORD = section({ firstTry90d: 8, firstTryCorrect90d: score * 4 })
+    const row = buildFramstegView({ stats: { data } }, now).sections[0]
+    expect(row.score).toBe(score)
+    expect(row.bandLabel).toMatch(/^±/)
+    expect(row.up.level).toBeNull()
+    expect(row.up.text).toBe('Fler ORD-frågor ger ett tydligare underlag.')
+  })
+  it.each([0, 0.95, 1])('keeps tiny displayed uncertainty nonzero at fraction %s', (fraction) => {
+    const data = stats()
+    for (const s of SECTION_KEYS)
+      data.bySection[s] = section({ firstTry90d: 10000, firstTryCorrect90d: fraction * 10000 })
+    const view = buildFramstegView({ stats: { data } }, now)
+    for (const row of view.sections) expect(row.bandLabel).toBe('±0,1')
+    expect(view.prognosis.band).toBeLessThan(0.05)
+    expect(scoreLabel(view.prognosis.low)).not.toBe(scoreLabel(view.prognosis.high))
+    expect(view.prognosis.low).toBeGreaterThanOrEqual(0)
+    expect(view.prognosis.high).toBeLessThanOrEqual(2)
   })
   it('routes up-steps by first-round, stale, trap, due and practice priority', () => {
     const data = stats()

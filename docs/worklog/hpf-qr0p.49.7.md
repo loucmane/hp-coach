@@ -44,3 +44,41 @@
 - The astra-relay rounding gotcha proposal is preserved above for coordinator pickup because the permanent scratch proposal location is not writable by this worker.
 
 FOLIO FRAMSTEG DONE: hpf-qr0p.49.7
+
+## Round 2 — 2026-10-22
+
+- [S:hpfetcher/codex-1|W:hpf-qr0p.49.7|H:R2 inspect|E:clean accepted head] Resumed the accepted round 2 contract at `7485f6090688f36b47af39d25cec4915c8f31c30` in the correct writable worktree. No molecule; dependencies are installed. The earlier sandbox/worktree mismatch is resolved for this session.
+- Decisions before implementation: keep shared prognosis mathematics unchanged; suppress missing-total deltas, require a defined section band for section score/ranking eligibility, label recommendation reasons independently of score order, and floor displayed uncertainty to one decimal's resolution. Retain the existing heat button and prove its identity/focus through both toggle directions. Extend the existing colour guard to TSX attributes, with planted cases.
+- Delivery remains uncommitted within the unchanged admitted write set. The coordinator owns staging/signing, independent review, host checks and the real-stack visual/owner approval gate.
+
+## Round 2 progress
+
+- [S:hpfetcher/codex-1|W:hpf-qr0p.49.7|H:R2 red|E:27 expected failures, 26 passed] Ran the three Framsteg test files before the production fix. Failures covered verbal-only stable/significant deltas, stale/declining priorities, a confidence-filtered lower score, null-band and low-confidence section steps, rounded-zero uncertainty, missing caveat references, and nine planted inline colours. The enhanced heat toggle test already passed: the existing button retains identity, updates its label/expanded state and keeps focus on click and keyboard collapse.
+- [S:hpfetcher/codex-1|W:hpf-qr0p.49.7|H:R2 focused|E:55 passed in 4 files] After the fixes, the same regressions plus the lazy route tests passed. Section eligibility now uses the existing band rule; score-order claims compare against all displayed scores, including low-confidence sections omitted from recommendations. Decline wording uses the same threshold as the visible trend. Raw shared projection/band mathematics remains unchanged; displayed bands/ranges have a 0.1 floor.
+- App typecheck PASS. App lint PASS after formatting only admitted files; four existing informational findings remain in untouched bake-off files. Full app suite and production build pending.
+
+### Playbook-proposal — astra-relay (round 2)
+
+- 2026-10-22: A recommendation labelled “lowest” can still contradict its table after stale/trend overrides. Cause: the shared urgency ranker excludes low-confidence sections whenever confident ones exist, while those excluded scores remain visible. Rule: derive comparative copy from all displayed eligible scores, not the recommendation list, and include a regression where the lowest visible score is excluded by confidence. Preserve this proposal here for coordinator relay because `~/scratch/skill-gotchas/` is outside this managed session's writable roots; no outside-root write was attempted.
+
+## Round 2 self-review
+
+- First full app run: **4894 passed, 1 failed**, 164 files, 159.66 seconds. The sole failure is the known unchanged trap-index generator subprocess check (`spawnSync /usr/bin/node EPERM`). Host rerun is required.
+- [S:hpfetcher/codex-1|W:hpf-qr0p.49.7|H:R2 singular-copy red|E:3 expected failures, 24 passed] The section eligibility change means another section can have one answer without a displayed estimate. The existing “Enda sektionen med försök hittills” would then be false. Updated the singular label to “Enda sektionen med en skattning”, after proving the regression in the view tests. Final suite/build verification follows.
+
+## Round 2 final verification — 2026-10-22
+
+- [S:hpfetcher/codex-1|W:hpf-qr0p.49.7|H:R2 verify|E:4894 passed; one known sandbox refusal] Final `app/` `pnpm test --maxWorkers=2`: **4894 passed, 1 failed**, 164 files, 157.27 seconds. The only failure remains `src/lib/trapIndex.test.ts`'s generator subprocess check, refused with `spawnSync /usr/bin/node EPERM`. All **55** Framsteg adapter/screen/guard/route tests pass in this final run. No sandbox workaround was attempted; coordinator must rerun the generator on the host.
+- `pnpm typecheck` PASS; final `pnpm lint` PASS (four pre-existing informational bake-off findings); final `pnpm build` PASS, including TypeScript and PWA generation. Vite emits the separate lazy `FolioFramsteg` chunk. Existing route-file and large-bundle warnings remain informational.
+- All seven accepted items are covered: no delta without a total; stale/declining urgency and truthful score comparisons; null-band sections stay unscored and unranked, low-confidence steps promise no level; uncertainty displays at least 0.1; caveat references exist only with the footnote; the heat toggle preserves button identity/focus in both directions; TSX inline style/fill/color bans have planted positive and allowed negative cases. The existing heat implementation required no source change.
+- Only two product files, three tests and this repository worklog changed. `git --no-optional-locks diff --check` PASS. Build generated no tracked changes outside the admitted write set. No worker or dependency changes, so worker verification is not required.
+- HEAD remains **7485f6090688f36b47af39d25cec4915c8f31c30**, branch `codex/hpf-qr0p.49.7-framsteg-in-folio`. Changes remain **uncommitted and unstaged**: Git metadata resolves to `/home/loucmane/dev/hpfetcher/.git/worktrees/hpf-qr0p.49.7`, outside writable roots. No staging, signing, remote mutation or independent review is claimed.
+- Final SHA-256: `framstegView.ts` = `bd7ffeb1a42b32db9e1bf7d396f0815c1ff737699c46bf6e7ac88c980cf25874`; `FramstegSections.tsx` = `59157307f12a3313bf182df73577c16776d972a1844565bf3a3a2a8359d7334f`; `framsteg.guard.test.ts` = `cd0615c8cd6c088fdd1f01839f37cc835f2988badf0af736aa666c9618e1f21c`.
+
+## Round 2 handoff — implementation complete
+
+- Supersedes round 2's pending verification entries. Coordinator: park on the DONE note, rerun the trap-index generator outside the sandbox, stage/sign, and obtain independent exact-head Claude review.
+- The real local-stack desktop/phone light/dark check and owner's visual OK are still required before merge, including a verbal-only account, one-answer sections, a stale high score beside a lower fresh score, tiny uncertainty, and heat-toggle focus. Existing flag-off browser gates remain host work. No browser or owner visual approval is claimed.
+- Bead status and assignee are unchanged under the accepted handoff contract; this worker does not close or drain the in-progress bead. The round 2 astra-relay playbook proposal above is ready for coordinator relay to the permanent watcher path.
+
+FOLIO FRAMSTEG R2 DONE: hpf-qr0p.49.7

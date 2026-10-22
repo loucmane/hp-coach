@@ -14,6 +14,7 @@ import {
   isoWeek,
   projectionBasis,
   rankWeakness,
+  type SectionScore,
   scoreBand,
   sectionBasis,
   weeklyScore,
@@ -46,13 +47,24 @@ function queryState<T>(query?: QueryState<T>): 'ready' | 'loading' | 'error' {
   return query?.isError ? 'error' : 'loading'
 }
 
-/** Same comparison semantics as classic Framsteg, without importing that screen. */
+/** Comparison wording for sections with enough first tries for a band. */
 export function focusRankLine(index: number, scoredCount: number): string {
   if (scoredCount === 0) return 'Ett första underlag'
-  if (scoredCount === 1) return 'Enda sektionen med försök hittills'
+  if (scoredCount === 1) return 'Enda sektionen med en skattning'
   return ['Lägsta sektionen just nu', 'Näst lägst just nu', 'Tredje lägst just nu'][
     Math.min(index, 2)
   ]
+}
+
+function focusReason(s: SectionScore, index: number, displayedOrder: number[]): string {
+  if (s.trend != null && s.trend < -0.05) return 'På väg ner'
+  if (Number.isFinite(s.daysSinceLastAttempt) && s.daysSinceLastAttempt >= 14)
+    return `Inte övad på ${s.daysSinceLastAttempt} dagar`
+  // Urgency also weights confidence and improving trends. Compare against
+  // every displayed score before describing its position as lowest/next.
+  if (s.score != null && displayedTenths(s.score) === displayedOrder[index])
+    return focusRankLine(index, displayedOrder.length)
+  return 'Ett delprov att öva vidare på'
 }
 
 function whenLabel(iso: string | null, now: Date): string {
@@ -137,9 +149,14 @@ export function buildFramstegView(input: FramstegInput, now = new Date()) {
   const data = input.stats.data
   const state = queryState(input.stats)
   const bySection: Partial<Stats['bySection']> = data?.bySection ?? {}
-  const scores = honestSectionScores(bySection, now)
+  const scores = honestSectionScores(bySection, now).map((s) =>
+    scoreBand(s.score, s.attempts90d) == null ? { ...s, score: null } : s,
+  )
   const projected = computeHonestProjected(bySection)
-  const delta = computeHonestDelta(bySection)
+  const delta = projected.total == null ? null : computeHonestDelta(bySection)
+  // The display has one decimal: never turn nonzero uncertainty into ±0,0
+  // or a collapsed interval. Keep the shared estimate and raw band intact.
+  const displayedBand = projected.band == null ? null : Math.max(0.1, projected.band)
   const dayZero = state === 'ready' && projected.total == null
   const due = countsBySection(input.due?.data)
   const drillHref = (section: Section) => `/drill?section=${encodeURIComponent(section)}&start=1`
@@ -163,12 +180,18 @@ export function buildFramstegView(input: FramstegInput, now = new Date()) {
       Number.isFinite(s?.daysSinceLastAttempt) &&
       (s?.daysSinceLastAttempt ?? 0) >= 14
     const trend =
-      s?.trend == null ? '—' : s.trend > 0.05 ? 'upp' : s.trend < -0.05 ? 'ner' : 'stabil'
+      score == null || s?.trend == null
+        ? '—'
+        : s.trend > 0.05
+          ? 'upp'
+          : s.trend < -0.05
+            ? 'ner'
+            : 'stabil'
     const trap = traps
       .filter((t) => t.section === section)
       .sort((a, b) => Number(b.rising) - Number(a.rising) || b.count - a.count)[0]
     const level =
-      score == null
+      score == null || s?.confidence === 'low'
         ? null
         : displayedTenths(score) >= 20
           ? 'Håll 2,0'
@@ -179,8 +202,7 @@ export function buildFramstegView(input: FramstegInput, now = new Date()) {
       href: drillHref(section),
       text: `Ett ${section}-pass med fokus på missarna.`,
     }
-    if (score == null)
-      up = { ...up, text: `Gör en första ${section}-runda, så finns en nivå att bygga på.` }
+    if (score == null) up = { ...up, text: `Fler ${section}-frågor ger ett tydligare underlag.` }
     else if (stale)
       up = {
         ...up,
@@ -204,10 +226,10 @@ export function buildFramstegView(input: FramstegInput, now = new Date()) {
       up = {
         ...up,
         text:
-          score >= 2
-            ? `Ett ${section}-pass för att hålla nivån.`
-            : s?.confidence === 'low'
-              ? `Fler ${section}-frågor ger ett tydligare underlag.`
+          s?.confidence === 'low'
+            ? `Fler ${section}-frågor ger ett tydligare underlag.`
+            : score >= 2
+              ? `Ett ${section}-pass för att hålla nivån.`
               : `Ett ${section}-pass med fokus på missarna${trend === 'upp' || trend === 'ner' ? ` – trenden pekar ${trend}` : ''}.`,
       }
     return {
@@ -215,7 +237,7 @@ export function buildFramstegView(input: FramstegInput, now = new Date()) {
       name: sectionLongLabel(section),
       score,
       scoreLabel: scoreLabel(score),
-      bandLabel: band == null ? null : `±${scoreLabel(band)}`,
+      bandLabel: band == null ? null : `±${scoreLabel(Math.max(0.1, band))}`,
       attempts,
       trend,
       marked: !!bySection[section] && !sectionBasis(bySection[section]).calibrated,
@@ -224,13 +246,15 @@ export function buildFramstegView(input: FramstegInput, now = new Date()) {
       up,
     }
   })
-  const scoredCount = scores.filter((s) => s.score != null).length
+  const displayedOrder = scores
+    .flatMap((s) => (s.score == null ? [] : [displayedTenths(s.score)]))
+    .sort((a, b) => a - b)
   const focus = rankWeakness(scores)
     .slice(0, 3)
     .map((s, i) => ({
       section: s.section,
       name: sectionLongLabel(s.section),
-      reason: focusRankLine(i, scoredCount),
+      reason: focusReason(s, i, displayedOrder),
       href: drillHref(s.section),
     }))
   const first = focus[0]
@@ -272,12 +296,12 @@ export function buildFramstegView(input: FramstegInput, now = new Date()) {
       ...projected,
       scoreLabel: scoreLabel(projected.total),
       low:
-        projected.total != null && projected.band != null
-          ? Math.max(0, projected.total - projected.band)
+        projected.total != null && displayedBand != null
+          ? Math.max(0, projected.total - displayedBand)
           : null,
       high:
-        projected.total != null && projected.band != null
-          ? Math.min(2, projected.total + projected.band)
+        projected.total != null && displayedBand != null
+          ? Math.min(2, projected.total + displayedBand)
           : null,
       caveat: projectionBasis(bySection).total.calibrated ? null : CAVEAT,
       deltaLabel:

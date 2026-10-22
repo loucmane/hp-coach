@@ -77,7 +77,7 @@ export function FramstegSections({
                   href={s.href}
                   navigateHref={navigateHref}
                   data-testid={`progress-section-${s.section}`}
-                  aria-describedby={s.marked ? 'fa-fr-caveat' : undefined}
+                  aria-describedby={s.marked && view.prognosis.caveat ? 'fa-fr-caveat' : undefined}
                 >
                   <span className="fa-section-code">
                     <i className="fa-sec-mark" aria-hidden />
