@@ -1,0 +1,132 @@
+/* Konto follows the imprint page: serif headings, rules and word choices. */
+[data-folio] .fa-konto {
+  min-width: 0;
+  color: var(--fa-ink);
+  font-family: var(--fa-sans);
+  font-size: var(--fa-t15);
+  line-height: 1.5;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+}
+[data-folio] .fa-konto :where(h1, h2, h3, p, ul, dl) { margin: 0; }
+[data-folio] .fa-konto ul { padding: 0; list-style: none; }
+[data-folio] .fa-konto button { font: inherit; cursor: pointer; }
+[data-folio] .fa-konto :focus-visible { outline: 2px solid var(--fa-ink); outline-offset: 4px; }
+[data-folio] .fa-konto h2[tabindex='-1']:focus { outline: none; }
+[data-folio] .fa-konto :disabled { cursor: default; }
+[data-folio] .fa-konto.fa-home {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.44fr);
+  gap: 0 var(--fa-s8);
+  max-width: min(100%, 1100px);
+  margin: 0 auto;
+  padding: var(--fa-s8) var(--fa-s8) var(--fa-s16);
+}
+[data-folio] .fa-konto .fa-kt-main { min-width: 0; }
+[data-folio] .fa-konto .fa-kt-masthead {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--fa-s2) var(--fa-s4);
+  padding-bottom: var(--fa-s3);
+  margin-bottom: var(--fa-s8);
+  border-bottom: 1px solid var(--fa-rule);
+}
+[data-folio] .fa-konto .fa-kt-label-small {
+  color: var(--fa-ink-3);
+  font-size: var(--fa-t12);
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+[data-folio] .fa-konto .fa-kt-count { color: var(--fa-ink-3); font-size: var(--fa-t13); }
+[data-folio] .fa-konto .fa-kt-greet {
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t32);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.016em;
+}
+[data-folio] .fa-konto .fa-kt-day { margin-top: var(--fa-s2); color: var(--fa-ink-2); font-size: var(--fa-t17); }
+[data-folio] .fa-konto .fa-kt-back { margin-bottom: var(--fa-s3); }
+[data-folio] .fa-konto .fa-kt-part { margin-top: var(--fa-s12); }
+[data-folio] .fa-konto .fa-kt-h {
+  padding-bottom: var(--fa-s3);
+  border-bottom: 1px solid var(--fa-rule);
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t24);
+  line-height: 1.2;
+  font-weight: 400;
+  scroll-margin-top: var(--fa-s6);
+}
+[data-folio] .fa-konto .fa-kt-row { display: flex; align-items: baseline; gap: var(--fa-s3); padding: var(--fa-s3) 0; border-bottom: 1px solid var(--fa-rule); }
+[data-folio] .fa-konto .fa-kt-row dt { display: flex; align-items: baseline; flex: 1; gap: var(--fa-s3); font-family: var(--fa-serif); font-size: var(--fa-t17); }
+[data-folio] .fa-konto .fa-kt-row dt::after { content: ''; flex: 1; border-bottom: 1px dotted var(--fa-rule-2); }
+[data-folio] .fa-konto .fa-kt-row dd { margin: 0; min-width: 0; max-width: 75%; color: var(--fa-ink-2); text-align: right; overflow-wrap: anywhere; }
+[data-folio] .fa-konto .fa-kt-choice { min-width: 0; margin: 0; padding: var(--fa-s3) 0; border: 0; border-bottom: 1px solid var(--fa-rule); }
+[data-folio] .fa-konto .fa-kt-label { float: left; width: 160px; padding: 10px 0 0; color: var(--fa-ink); font-family: var(--fa-serif); font-size: var(--fa-t17); }
+[data-folio] .fa-konto .fa-kt-value { margin-left: 184px; }
+[data-folio] .fa-konto .fa-kt-seg { display: flex; flex-wrap: wrap; gap: 0 var(--fa-s1); margin-left: calc(-1 * var(--fa-s2)); }
+[data-folio] .fa-konto .fa-kt-seg--described { flex-direction: column; gap: var(--fa-s2); }
+[data-folio] .fa-konto .fa-kt-option-hint { padding-left: var(--fa-s2); }
+[data-folio] .fa-konto .fa-kt-seg button { position: relative; min-height: 44px; padding: var(--fa-s2); border: 0; background: transparent; color: var(--fa-ink-3); font-family: var(--fa-serif); font-size: var(--fa-t17); text-align: left; }
+[data-folio] .fa-konto .fa-kt-seg button:hover { color: var(--fa-ink); }
+[data-folio] .fa-konto .fa-kt-seg button[aria-pressed='true'] { color: var(--fa-ink); }
+[data-folio] .fa-konto .fa-kt-seg button[aria-pressed='true']::after { content: ''; position: absolute; left: var(--fa-s2); right: var(--fa-s2); bottom: 4px; height: 2px; background: var(--fa-ink); }
+[data-folio] .fa-konto .fa-kt-choice:disabled .fa-kt-seg button { cursor: wait; }
+[data-folio] .fa-konto .fa-kt-hint { margin-top: var(--fa-s1); color: var(--fa-ink-3); font-size: var(--fa-t13); line-height: 1.45; text-wrap: pretty; }
+[data-folio] .fa-konto .fa-kt-status { margin-top: var(--fa-s2); font-size: var(--fa-t13); }
+[data-folio] .fa-konto .fa-kt-status:empty,
+[data-folio] .fa-konto .fa-kt-hint:empty { margin-top: 0; }
+[data-folio] .fa-konto .fa-kt-error { color: var(--fa-ink-2); }
+[data-folio] .fa-konto .fa-kt-link { display: inline-flex; align-items: center; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--fa-ink-2); font-size: var(--fa-t15); text-decoration: underline; text-underline-offset: 4px; text-align: left; }
+[data-folio] .fa-konto .fa-kt-link:hover { color: var(--fa-ink); }
+[data-folio] .fa-konto .fa-kt-link:disabled { color: var(--fa-ink-3); }
+[data-folio] .fa-konto .fa-kt-links { display: flex; flex-wrap: wrap; gap: 0 var(--fa-s6); margin-top: var(--fa-s2); }
+[data-folio] .fa-konto .fa-kt-tool { display: block; min-height: 44px; padding: var(--fa-s3) 0; color: var(--fa-ink); border-bottom: 1px solid var(--fa-rule); text-decoration: none; }
+[data-folio] .fa-konto .fa-kt-tool-title { display: flex; justify-content: space-between; gap: var(--fa-s2); font-family: var(--fa-serif); font-size: var(--fa-t17); }
+[data-folio] .fa-konto .fa-kt-tool .fa-kt-hint { display: block; }
+[data-folio] .fa-konto .fa-kt-tool:hover .fa-kt-tool-title { text-decoration: underline; text-underline-offset: 4px; }
+[data-folio] .fa-konto .fa-kt-out { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--fa-s4); margin-top: var(--fa-s12); padding-top: var(--fa-s6); border-top: 1px solid var(--fa-rule); }
+[data-folio] .fa-konto .fa-kt-out::before { content: ''; position: absolute; left: 0; right: 0; top: -5px; border-top: 1px solid var(--fa-rule); }
+[data-folio] .fa-konto .fa-kt-quiet { min-height: 44px; padding: var(--fa-s2) var(--fa-s4); border: 1px solid var(--fa-rule-2); border-radius: var(--fa-r1); background: transparent; color: var(--fa-ink); }
+[data-folio] .fa-konto .fa-kt-quiet:hover { background: var(--fa-paper-2); }
+[data-folio] .fa-konto .fa-kt-quiet:disabled { color: var(--fa-ink-3); }
+[data-folio] .fa-konto .fa-kt-aside { display: flex; flex-direction: column; gap: var(--fa-s8); min-width: 0; padding: var(--fa-s1) 0 0 var(--fa-s8); border-left: 1px solid var(--fa-rule); }
+[data-folio] .fa-konto .fa-kt-margin-h { margin-bottom: var(--fa-s3); font-family: var(--fa-serif); font-size: var(--fa-t19); font-weight: 500; font-style: italic; line-height: 1.3; }
+[data-folio] .fa-konto .fa-kt-index { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--fa-s4); line-height: 1.9; }
+[data-folio] .fa-konto .fa-kt-keys + .fa-kt-keys { margin-top: var(--fa-s4); }
+[data-folio] .fa-konto .fa-kt-where { margin-bottom: var(--fa-s1); color: var(--fa-ink-2); font-size: var(--fa-t13); font-weight: 600; }
+[data-folio] .fa-konto .fa-kt-key { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--fa-s2); align-items: baseline; padding: 2px 0; color: var(--fa-ink-2); font-size: var(--fa-t13); line-height: 1.5; }
+[data-folio] .fa-konto .fa-kt-key dd { margin: 0; }
+[data-folio] .fa-konto .fa-kt-key kbd { display: inline-block; padding: 0 6px; border: 1px solid var(--fa-rule-2); border-radius: 4px; background: var(--fa-paper-2); color: var(--fa-ink); font-family: var(--fa-sans); font-size: var(--fa-t12); font-weight: 600; line-height: 18px; white-space: nowrap; }
+[data-folio] .fa-konto .fa-kt-slip { position: fixed; inset: 12dvh auto auto 50%; translate: -50% 0; width: min(520px, calc(100vw - 48px)); max-width: none; max-height: 82dvh; overflow-y: auto; margin: 0; padding: var(--fa-s6); border: 0; border-top: 3px solid var(--fa-rule-strong); border-radius: var(--fa-r1); background: var(--fa-paper); color: var(--fa-ink); box-shadow: 0 18px 40px -16px var(--fa-scrim), 0 0 0 1px var(--fa-rule-2); font-family: var(--fa-sans); font-size: var(--fa-t15); line-height: 1.5; }
+[data-folio] .fa-konto .fa-kt-slip::backdrop { background: var(--fa-scrim); }
+[data-folio] .fa-konto .fa-kt-slip-h { padding-bottom: var(--fa-s3); border-bottom: 1px solid var(--fa-rule); font-family: var(--fa-serif); font-size: var(--fa-t24); font-weight: 400; }
+[data-folio] .fa-konto .fa-kt-slip-lede { margin-top: var(--fa-s4); color: var(--fa-ink-2); }
+[data-folio] .fa-konto .fa-kt-slip-export { margin-top: var(--fa-s3); }
+[data-folio] .fa-konto .fa-kt-word { margin-top: var(--fa-s4); padding-top: var(--fa-s4); border-top: 1px solid var(--fa-rule); }
+[data-folio] .fa-konto .fa-kt-word-label { display: block; margin-bottom: var(--fa-s2); font-family: var(--fa-serif); font-size: var(--fa-t17); }
+[data-folio] .fa-konto .fa-kt-field { width: 100%; min-height: 44px; padding: 0 var(--fa-s3); border: 1px solid var(--fa-rule-2); border-radius: var(--fa-r1); background: var(--fa-paper); color: var(--fa-ink); font: inherit; font-size: var(--fa-t17); }
+[data-folio] .fa-konto .fa-kt-slip-actions { display: flex; flex-wrap: wrap; gap: var(--fa-s3); margin-top: var(--fa-s6); }
+[data-folio] .fa-konto .fa-kt-grave { min-height: 44px; padding: var(--fa-s2) var(--fa-s4); border: 1px solid transparent; border-radius: var(--fa-r1); background: var(--fa-ink); color: var(--fa-paper); }
+[data-folio] .fa-konto .fa-kt-grave:hover { background: var(--fa-ink-2); }
+[data-folio] .fa-konto .fa-kt-grave:disabled { background: var(--fa-paper-3); color: var(--fa-ink-3); cursor: default; }
+[data-folio] .fa-konto.fa-phome { padding: var(--fa-s2) 20px var(--fa-s12); }
+[data-folio] .fa-konto.fa-phome .fa-kt-masthead { margin-bottom: var(--fa-s4); }
+[data-folio] .fa-konto.fa-phome .fa-kt-greet { font-size: var(--fa-t24); }
+[data-folio] .fa-konto.fa-phome .fa-kt-day { font-size: var(--fa-t15); }
+[data-folio] .fa-konto.fa-phome .fa-kt-index { margin-top: var(--fa-s4); }
+[data-folio] .fa-konto.fa-phome .fa-kt-part { margin-top: var(--fa-s8); }
+[data-folio] .fa-konto.fa-phome .fa-kt-row { flex-direction: column; align-items: flex-start; gap: 2px; }
+[data-folio] .fa-konto.fa-phome .fa-kt-row dt::after { display: none; }
+[data-folio] .fa-konto.fa-phome .fa-kt-row dd { max-width: 100%; text-align: left; }
+[data-folio] .fa-konto.fa-phome .fa-kt-label { float: none; width: auto; padding: 0 0 var(--fa-s1); }
+[data-folio] .fa-konto.fa-phome .fa-kt-value { margin-left: 0; }
+[data-folio] .fa-konto.fa-phome .fa-kt-out { flex-direction: column; align-items: stretch; }
+[data-folio] .fa-konto.fa-phome .fa-kt-out .fa-kt-link { align-self: flex-start; }
+[data-folio] .fa-konto.fa-phome .fa-kt-aside { margin-top: var(--fa-s8); padding: var(--fa-s6) 0 0; border-left: 0; border-top: 1px solid var(--fa-rule); }
+[data-folio] .fa-konto.fa-phome .fa-kt-slip { inset: auto 0 0; translate: none; width: 100%; max-height: 88dvh; border-radius: var(--fa-r2) var(--fa-r2) 0 0; padding-bottom: max(var(--fa-s6), env(safe-area-inset-bottom)); }
+[data-folio] .fa-konto.fa-phome .fa-kt-slip-actions { flex-direction: column; }
