@@ -94,6 +94,7 @@ export function FolioShell({ children }: { children: ReactNode }) {
             ) : null}
             {focus ? (
               <FocusBar
+                exitLabel={focus.exitLabel}
                 onExit={
                   focus.onExit ??
                   (() => {

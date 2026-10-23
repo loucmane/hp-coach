@@ -28,13 +28,8 @@ describe('Folio navigation', () => {
   ])('maps %s to %s', (path, expected) => {
     expect(currentDestination(path)).toBe(expected)
   })
-  it('excludes welcome, public auth steps, and bake-offs', () => {
-    for (const path of [
-      '/welcome',
-      '/hjalp',
-      '/sign-up/verify-email-address',
-      '/dev/redesign-2026',
-    ])
+  it('excludes public auth steps and bake-offs', () => {
+    for (const path of ['/hjalp', '/sign-up/verify-email-address', '/dev/redesign-2026'])
       expect(supportsFolio(path)).toBe(false)
     expect(supportsFolio('/mer')).toBe(true)
   })
@@ -77,5 +72,6 @@ describe('Folio navigation', () => {
     '/progress',
     '/konto',
     '/mer',
+    '/welcome',
   ])('still wraps the production route %s', (path) => expect(supportsFolio(path)).toBe(true))
 })

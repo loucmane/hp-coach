@@ -1,0 +1,49 @@
+/* Fokus frame, Brev body: existing Folio paper and ink, with no decorative colour. */
+[data-folio] .fa-welcome { width: 100%; min-width: 0; color: var(--fa-ink); font: 400 var(--fa-t15)/1.6 var(--fa-sans); }
+[data-folio] .fa-welcome h1,
+[data-folio] .fa-welcome h2,
+[data-folio] .fa-welcome h3,
+[data-folio] .fa-welcome p { margin: 0; }
+[data-folio] .fa-welcome button,
+[data-folio] .fa-welcome input { font: inherit; }
+[data-folio] .fa-welcome :focus-visible { outline: 2px solid var(--fa-ink); outline-offset: 4px; }
+[data-folio] .fa-welcome .fa-welcome-steps { display: flex; flex-wrap: wrap; gap: 4px 24px; padding: 12px clamp(16px, 4vw, 40px); border-bottom: 1px solid var(--fa-rule); }
+[data-folio] .fa-welcome .fa-welcome-steps button { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; max-width: 100%; overflow-wrap: anywhere; padding: 8px 0; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--fa-ink-2); cursor: pointer; font-size: max(15px, 0.9375rem); }
+[data-folio] .fa-welcome .fa-welcome-steps button[aria-current='step'] { color: var(--fa-ink); border-bottom-color: var(--fa-ink); font-weight: 600; }
+[data-folio] .fa-welcome .fa-welcome-steps button[data-complete='true']::after { content: '✓'; }
+[data-folio] .fa-welcome .fa-welcome-body { display: grid; gap: 28px; width: 100%; max-width: 680px; margin-inline: auto; padding: 48px clamp(16px, 4vw, 40px) 64px; }
+[data-folio] .fa-welcome header { display: grid; gap: 20px; }
+[data-folio] .fa-welcome .fa-welcome-eyebrow { color: var(--fa-ink-2); font-size: var(--fa-t13); }
+[data-folio] .fa-welcome h1 { font: 400 clamp(1.75rem, 4vw, 2.75rem)/1.18 var(--fa-serif); letter-spacing: -0.035em; text-wrap: balance; overflow-wrap: anywhere; }
+[data-folio] .fa-welcome h1:focus { outline: none; }
+[data-folio] .fa-welcome .fa-welcome-intro { max-width: 50ch; color: var(--fa-ink-2); font: 400 var(--fa-t17)/1.7 var(--fa-serif); }
+[data-folio] .fa-welcome .fa-welcome-choice { min-width: 0; padding: 0; margin: 0; border: 0; }
+[data-folio] .fa-welcome .fa-welcome-choice legend { padding: 0; margin-bottom: 12px; color: var(--fa-ink-2); }
+[data-folio] .fa-welcome .fa-welcome-options { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+[data-folio] .fa-welcome .fa-welcome-options[data-stacked='true'] { display: grid; gap: 0; border-top: 1px solid var(--fa-rule); }
+[data-folio] .fa-welcome .fa-welcome-option { display: flex; align-items: baseline; gap: 12px; min-height: 44px; max-width: 100%; padding: 8px 0; border-bottom: 2px solid transparent; cursor: pointer; }
+[data-folio] .fa-welcome .fa-welcome-option[data-selected='true'] { border-bottom-color: var(--fa-ink); }
+[data-folio] .fa-welcome .fa-welcome-option input { appearance: none; flex: 0 0 16px; width: 16px; height: 16px; margin: 0; border: 1px solid var(--fa-ink-2); border-radius: 50%; background: var(--fa-paper); }
+[data-folio] .fa-welcome .fa-welcome-option input:checked { border: 5px solid var(--fa-ink); }
+[data-folio] .fa-welcome .fa-welcome-option-name { overflow-wrap: anywhere; }
+[data-folio] .fa-welcome .fa-welcome-option-detail { display: block; color: var(--fa-ink-2); font-size: var(--fa-t15); }
+[data-folio] .fa-welcome .fa-welcome-options[data-stacked='true'] .fa-welcome-option { padding: 16px 12px; border-bottom: 1px solid var(--fa-rule); border-left: 3px solid transparent; }
+[data-folio] .fa-welcome .fa-welcome-options[data-stacked='true'] .fa-welcome-option[data-selected='true'] { border-left-color: var(--fa-ink); background: var(--fa-paper-2); }
+[data-folio] .fa-welcome .fa-welcome-options[data-stacked='true'] .fa-welcome-option-name { font: 400 var(--fa-t19)/1.5 var(--fa-serif); }
+[data-folio] .fa-welcome .fa-welcome-root { display: grid; gap: 20px; padding-top: 24px; border-top: 2px solid var(--fa-rule-strong); }
+[data-folio] .fa-welcome .fa-welcome-root h2 { font: 400 var(--fa-t56)/1.1 var(--fa-serif); }
+[data-folio] .fa-welcome .fa-welcome-meaning { font: italic 400 var(--fa-t19)/1.65 var(--fa-serif); }
+[data-folio] .fa-welcome .fa-welcome-root h3 { font: 500 var(--fa-t15)/1.5 var(--fa-sans); }
+[data-folio] .fa-welcome .fa-welcome-root ul { margin: 0; padding-left: 24px; font: 400 var(--fa-t17)/1.6 var(--fa-serif); }
+[data-folio] .fa-welcome .fa-welcome-note,
+[data-folio] .fa-welcome [role='alert'] { color: var(--fa-ink-2); }
+[data-folio] .fa-welcome .fa-welcome-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 12px; }
+[data-folio] .fa-welcome .fa-welcome-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; max-width: 100%; padding: 12px 24px; border: 1px solid var(--fa-ink); border-radius: var(--fa-r1); background: var(--fa-ink); color: var(--fa-paper); text-decoration: none; text-align: center; font-weight: 500; cursor: pointer; }
+[data-folio] .fa-welcome .fa-welcome-primary:hover { background: var(--fa-ink-2); }
+[data-folio] .fa-welcome .fa-welcome-link { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 0; border: 0; background: transparent; color: var(--fa-ink-2); text-align: left; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+[data-folio] .fa-welcome button:disabled { cursor: default; color: var(--fa-ink-2); }
+[data-folio] .fa-welcome .fa-welcome-primary:disabled { border-color: var(--fa-rule); background: var(--fa-paper-3); }
+@media (max-width: 600px) {
+  [data-folio] .fa-welcome .fa-welcome-body { padding-top: 32px; padding-bottom: 48px; }
+  [data-folio] .fa-welcome .fa-welcome-steps { gap: 4px 16px; }
+}

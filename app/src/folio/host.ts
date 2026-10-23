@@ -1,9 +1,10 @@
-import { createContext } from 'react'
+import { createContext, type Dispatch, type SetStateAction } from 'react'
 
 // Lightweight: legacy layout components can consume this without loading the shell.
 export const FolioHostContext = createContext(false)
 
-export type FocusRequest = { onExit?: () => void }
-export const ShellFocusContext = createContext<((request: FocusRequest | null) => void) | null>(
-  null,
-)
+// null hides the exit action on terminal views while retaining focus chrome.
+export type FocusRequest = { onExit?: () => void; exitLabel?: string | null }
+export const ShellFocusContext = createContext<Dispatch<
+  SetStateAction<FocusRequest | null>
+> | null>(null)

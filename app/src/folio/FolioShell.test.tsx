@@ -514,12 +514,7 @@ describe('Folio shell', () => {
     expect(await runAxe(container)).toEqual([])
   })
 
-  it.each([
-    '/welcome',
-    '/hjalp',
-    '/integritet',
-    '/dev/redesign-2026',
-  ])('leaves %s untouched', (pathname) => {
+  it.each(['/hjalp', '/integritet', '/dev/redesign-2026'])('leaves %s untouched', (pathname) => {
     useUiStore.setState({ folioPreview: true })
     render(
       <FolioHost pathname={pathname}>
@@ -544,11 +539,11 @@ describe('authenticated root composition', () => {
     expect(screen.queryByTestId('bottom-tabs')).toBeNull()
     expect(view.container.querySelector('.hpc-frame')).toBeNull()
   })
-  it('keeps welcome and public routes classic and honours the dev direction', async () => {
+  it('wraps welcome, keeps public routes classic and honours the dev direction', async () => {
     useUiStore.setState({ folioPreview: true })
     mocks.pathname = '/welcome'
     const view = render(<Root />)
-    expect(screen.queryByTestId('folio-shell')).toBeNull()
+    await screen.findByTestId('folio-shell')
     mocks.pathname = '/hjalp'
     view.rerender(<Root />)
     expect(screen.queryByTestId('folio-shell')).toBeNull()
