@@ -8,7 +8,7 @@ import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { type LexiconEntry, loadFramework } from '@/data/frameworks'
 import { loadBank, type Question } from '@/data/questions'
 import { useShellFocus } from '@/folio/useShellFocus'
-import { resolveSitting } from '@/lib/dates'
+import { nextSitting, resolveSitting } from '@/lib/dates'
 import {
   DAILY_MINUTES,
   FIRST_SESSION_ROOT,
@@ -56,8 +56,10 @@ export default function FolioWelcome() {
   const [completed, setCompleted] = useState<WelcomeSetupStep[]>([])
   const [chosenSitting, chooseSitting] = useState<string | null | undefined>(undefined)
   const [chosenMinutes, chooseMinutes] = useState<number | null>(null)
-  const target = chosenSitting === undefined ? (prefs.data?.targetSittingId ?? null) : chosenSitting
-  const sitting = target ? (resolveSitting(target)?.id ?? null) : null
+  const sitting =
+    chosenSitting === undefined
+      ? (resolveSitting(prefs.data?.targetSittingId)?.id ?? null)
+      : chosenSitting
   const minutes = chosenMinutes ?? DAILY_MINUTES.find((n) => n === prefs.data?.dailyMinutes) ?? 20
   const [saving, setSaving] = useState(false)
   const busy = useRef(false)
@@ -73,8 +75,8 @@ export default function FolioWelcome() {
     markWelcomed()
     void navigate({ to: '/' })
   }
-  // The setup component releases its registration before the player mounts.
-  // The separately mounted done view owns terminal focus chrome.
+  // Release setup's skip action for the player. The shell's welcome default
+  // covers idle and lazy-result gaps without replacing the player's request.
   useShellFocus({
     active: step !== 'session' && step !== 'done',
     onExit: home,
@@ -160,9 +162,26 @@ export default function FolioWelcome() {
   }
   const forward = () => {
     if (busy.current || !steps || step === 'session' || step === 'done') return
-    setCompleted((items) => (items.includes(step) ? items : [...items, step]))
-    if (step === 'pattern') setStep('session')
-    else goStep(steps[steps.indexOf(step) + 1])
+    const advance = () => {
+      setSaveError(false)
+      retrySave.current = null
+      setCompleted((items) => (items.includes(step) ? items : [...items, step]))
+      setStep(step === 'pattern' ? 'session' : steps[steps.indexOf(step) + 1])
+    }
+    // Selections save immediately; an untouched default needs the same write
+    // on continue. Remember it locally so revisiting Prov cannot save twice.
+    if (
+      step === 'sitting' &&
+      chosenSitting === undefined &&
+      sitting &&
+      sitting !== prefs.data?.targetSittingId
+    ) {
+      void save(async () => {
+        await synced.setSitting(sitting)
+        chooseSitting(sitting)
+        advance()
+      })
+    } else advance()
   }
 
   if (step === 'session')
@@ -188,9 +207,14 @@ export default function FolioWelcome() {
         idleHeadline="Tre ord från riktiga prov"
         idleSubcopy="Ta ett ord i taget. Du får läsa förklaringen efter varje fråga."
         emptyCopy="Frågorna kunde inte laddas. Du kan hoppa över och komma tillbaka senare."
+        idleSecondaryCta={
+          <button type="button" className="fa-exit" onClick={home}>
+            Hoppa över välkomsten
+          </button>
+        }
         renderDone={({ summary }) => (
           <Suspense fallback={null}>
-            <LazyDone questions={summary.questions} picks={summary.picks} onHome={home} />
+            <LazyDone questions={summary.questions} picks={summary.picks} />
           </Suspense>
         )}
       />
@@ -198,7 +222,7 @@ export default function FolioWelcome() {
   if (step === 'done')
     return (
       <Suspense fallback={null}>
-        <LazyDone onHome={home} />
+        <LazyDone />
       </Suspense>
     )
   if (!steps)
@@ -251,14 +275,21 @@ export default function FolioWelcome() {
           <p className="fa-welcome-intro">{copy.intro}</p>
         </header>
         {step === 'sitting' && (
-          <WelcomeChoice
-            label="Prov"
-            options={welcomeSittings(sitting)}
-            value={sitting ?? ''}
-            onChange={selectSitting}
-            disabled={saving}
-            stacked
-          />
+          <>
+            {!nextSitting() && (
+              <p className="fa-welcome-note">
+                Nästa provdatum är inte publicerat här än. Du kan välja det senare.
+              </p>
+            )}
+            <WelcomeChoice
+              label="Prov"
+              options={welcomeSittings(sitting)}
+              value={sitting ?? ''}
+              onChange={selectSitting}
+              disabled={saving}
+              stacked
+            />
+          </>
         )}
         {step === 'minutes' && (
           <>

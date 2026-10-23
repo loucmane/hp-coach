@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router'
 import { useEffect, useRef } from 'react'
 import type { AnswerLetter, Question } from '@/data/questions'
 import { useShellFocus } from '@/folio/useShellFocus'
@@ -9,11 +10,9 @@ import './welcome.css'
 export default function FolioWelcomeDone({
   questions = [],
   picks = [],
-  onHome,
 }: {
   questions?: readonly Question[]
   picks?: readonly (AnswerLetter | null)[]
-  onHome: () => void
 }) {
   useShellFocus({ exitLabel: null })
   const heading = useRef<HTMLHeadingElement>(null)
@@ -50,12 +49,12 @@ export default function FolioWelcomeDone({
         )}
         <p className="fa-welcome-note">Dina val går att ändra under Konto.</p>
         <div className="fa-welcome-actions">
-          <a className="fa-welcome-primary" href="/drill?section=ORD&start=1">
+          <Link className="fa-welcome-primary" to="/drill" search={{ section: 'ORD', start: true }}>
             Fortsätt öva
-          </a>
-          <button type="button" className="fa-welcome-link" onClick={onHome}>
+          </Link>
+          <Link className="fa-welcome-link" to="/">
             Till Idag
-          </button>
+          </Link>
         </div>
       </div>
     </section>

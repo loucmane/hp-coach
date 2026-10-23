@@ -138,6 +138,26 @@ function RouteContent({ children }: { children?: ReactNode }) {
 }
 
 describe('Folio shell', () => {
+  it.each([false, true])('restores navigation after leaving welcome, phone=%s', (phone) => {
+    mocks.phone = phone
+    mocks.pathname = '/welcome'
+    const view = render(
+      <FolioShell>
+        <h1>Välkommen</h1>
+      </FolioShell>,
+    )
+    expect(screen.getByTestId('folio-app')).toHaveAttribute('data-focus', 'true')
+    expect(screen.queryByRole('navigation')).toBeNull()
+    expect(screen.queryByTestId('fa-exit')).toBeNull()
+    mocks.pathname = '/'
+    view.rerender(
+      <FolioShell>
+        <h1>Idag</h1>
+      </FolioShell>,
+    )
+    expect(screen.getByTestId('folio-app')).toHaveAttribute('data-focus', 'false')
+    expect(screen.getByRole('link', { name: 'Idag' })).toBeInTheDocument()
+  })
   it.each([false, true])('retains the classic content cap and gutters, reader=%s', (reader) => {
     mocks.reader = reader
     const classic = render(

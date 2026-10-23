@@ -11,6 +11,7 @@ import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { type LexiconEntry, loadFramework } from '@/data/frameworks'
 import { loadBank, type Question } from '@/data/questions'
 import { FolioHostContext } from '@/folio/host'
+import { useShellFocus } from '@/folio/useShellFocus'
 import { daysUntil, EXAM_SITTINGS, nextSitting, resolveSitting } from '@/lib/dates'
 import {
   DAILY_MINUTES,
@@ -32,11 +33,23 @@ function WelcomeRoute() {
   const inFolio = useContext(FolioHostContext)
   if (inFolio)
     return (
-      <Suspense fallback={null}>
+      <Suspense fallback={<FolioWelcomeLoading />}>
         <LazyFolioWelcome />
       </Suspense>
     )
   return <ClassicWelcomeRoute />
+}
+
+function FolioWelcomeLoading() {
+  const navigate = useNavigate()
+  useShellFocus({
+    exitLabel: 'Hoppa över välkomsten',
+    onExit: () => {
+      markWelcomed()
+      void navigate({ to: '/' })
+    },
+  })
+  return null
 }
 
 type Step = 'theme' | 'sitting' | 'minutes' | 'pattern' | 'session' | 'done'
