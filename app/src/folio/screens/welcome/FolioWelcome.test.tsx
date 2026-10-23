@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import {
   createMemoryHistory,
   createRootRoute,
@@ -14,6 +15,7 @@ import { FolioHostContext } from '@/folio/host'
 import { Rail } from '@/folio/shell/Rail'
 import { TabBar } from '@/folio/shell/TabBar'
 import { useShellFocus } from '@/folio/useShellFocus'
+import { endedSessionIdsThisTab } from '@/lib/endedSessions'
 import { FIRST_SESSION_QIDS } from '@/lib/firstSession'
 import { Route as DrillRoute } from '@/routes/drill'
 import { Route } from '@/routes/welcome'
@@ -39,6 +41,10 @@ const h = vi.hoisted(() => ({
   load: vi.fn(),
   phone: false,
   playerIdle: false,
+  realPlayer: false,
+  startSession: vi.fn(),
+  updateSession: vi.fn(),
+  submitAttempt: vi.fn(),
   welcomeLoad: null as Promise<void> | null,
   doneLoad: null as Promise<void> | null,
 }))
@@ -90,12 +96,22 @@ vi.mock('@/api/hooks/useStats', () => ({
   }),
 }))
 vi.mock('@/api/hooks/useSessions', () => ({
+  useStartSession: () => ({ mutateAsync: h.startSession, isPending: false }),
+  useUpdateSession: () => ({ mutate: h.updateSession }),
+  useSessionAttempts: () => ({ data: [] }),
   useActiveSessionOfKind: () => ({
     data: h.active,
     isPending: h.pending,
     isError: h.failed,
     refetch: h.refetch,
   }),
+}))
+vi.mock('@/api/hooks/useAttempts', () => ({
+  useSubmitAttempt: () => ({ mutate: h.submitAttempt }),
+}))
+vi.mock('@/data/explanations', () => ({
+  loadExplanation: async () => null,
+  peekExplanation: () => null,
 }))
 vi.mock('@/lib/motion', async (original) => ({
   ...(await original<typeof import('@/lib/motion')>()),
@@ -106,8 +122,9 @@ vi.mock('@/data/questions', async (original) => ({
   ...(await original<typeof import('@/data/questions')>()),
   loadBank: async () => h.bank,
 }))
-vi.mock('@/components/session/SessionPlayer', () => ({
-  SessionPlayer: (props: SessionPlayerProps) => {
+vi.mock('@/components/session/SessionPlayer', async (original) => {
+  const { SessionPlayer } = await original<typeof import('@/components/session/SessionPlayer')>()
+  function MockPlayer(props: SessionPlayerProps) {
     h.player = props
     const folio = useContext(FolioHostContext)
     const [done, setDone] = useState(false)
@@ -135,8 +152,12 @@ vi.mock('@/components/session/SessionPlayer', () => ({
         </button>
       </div>
     )
-  },
-}))
+  }
+  return {
+    SessionPlayer: (props: SessionPlayerProps) =>
+      h.realPlayer ? <SessionPlayer {...props} /> : <MockPlayer {...props} />,
+  }
+})
 
 function Harness({ children, folio = true }: { children: ReactNode; folio?: boolean }) {
   if (folio) return <FolioShell>{children}</FolioShell>
@@ -148,11 +169,17 @@ function Harness({ children, folio = true }: { children: ReactNode; folio?: bool
 }
 function mount(child: ReactNode = <FolioWelcome />, folio = true) {
   const router = createRouter({ routeTree: createRootRoute(), history: createMemoryHistory() })
+  const client = new QueryClient({
+    defaultOptions: { queries: { retry: false, gcTime: Infinity } },
+  })
+  client.setQueryData(['question-bank'], h.bank)
   const view = render(
     <StrictMode>
-      <RouterContextProvider router={router}>
-        <Harness folio={folio}>{child}</Harness>
-      </RouterContextProvider>
+      <QueryClientProvider client={client}>
+        <RouterContextProvider router={router}>
+          <Harness folio={folio}>{child}</Harness>
+        </RouterContextProvider>
+      </QueryClientProvider>
     </StrictMode>,
   )
   return { ...view, router }
@@ -171,6 +198,12 @@ beforeEach(() => {
   h.active = null
   h.phone = false
   h.playerIdle = false
+  h.realPlayer = false
+  h.startSession.mockReset().mockResolvedValue({ id: 42 })
+  // Avoid an asynchronous history traversal leaking into the next test.
+  vi.spyOn(window.history, 'back').mockImplementation(() => {})
+  window.history.replaceState(null, '')
+  endedSessionIdsThisTab.clear()
   h.welcomeLoad = null
   h.doneLoad = null
   h.prefs = { targetSittingId: null, dailyMinutes: 20 }
@@ -179,6 +212,7 @@ beforeEach(() => {
       ({
         qid,
         section: 'ORD',
+        prompt: 'obetydlig',
         parsing_status: 'complete',
         answer: 'B',
         options: [
@@ -209,6 +243,68 @@ beforeEach(() => {
 afterEach(() => vi.useRealTimers())
 
 describe('Folio first run', () => {
+  it.each([
+    { phone: false, mode: 'light', picks: ['A', 'B', 'A'], correct: 1 },
+    { phone: false, mode: 'dark', picks: ['B', 'A', 'B'], correct: 2 },
+    { phone: true, mode: 'light', picks: ['B', 'B', 'B'], correct: 3 },
+    { phone: true, mode: 'dark', picks: ['A', 'B', 'B'], correct: 2 },
+  ] as const)('renders real onboarding results outside the player frame, phone=$phone mode=$mode', async ({
+    phone,
+    mode,
+    picks,
+    correct,
+  }) => {
+    h.realPlayer = true
+    h.phone = phone
+    useUiStore.setState({ mode })
+    let release!: () => void
+    h.doneLoad = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    const { container } = mount()
+    await go('Ordmönster')
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: 'Prova tre frågor' })).toBeEnabled(),
+    )
+    await go('Prova tre frågor')
+    for (const [index, pick] of picks.entries()) {
+      await waitFor(() =>
+        expect(screen.getByTestId('drill-question')).toHaveAttribute(
+          'data-qid',
+          FIRST_SESSION_QIDS[index],
+        ),
+      )
+      fireEvent.click(screen.getByTestId(`option-${pick}`))
+      await go('Svara')
+      await act(async () => fireEvent.click(screen.getByTestId('drill-next')))
+    }
+    expect(h.startSession).toHaveBeenCalledTimes(1)
+    expect(h.submitAttempt.mock.calls.map(([attempt]) => attempt.selectedAnswer)).toEqual(picks)
+    expect(h.updateSession).toHaveBeenCalledWith({ id: 42, patch: { end: true } })
+    // onComplete must mark welcome even before the lazy result mounts.
+    expect(localStorage.getItem('hpc-welcomed')).toBe('1')
+    expect(screen.queryByRole('heading', { name: /Du klarade/ })).toBeNull()
+    expect(screen.queryByTestId('fa-exit')).toBeNull()
+    expect(Rail).not.toHaveBeenCalled()
+    expect(TabBar).not.toHaveBeenCalled()
+    await act(async () => {
+      h.doneLoad = null
+      release()
+    })
+    const heading = await screen.findByRole('heading', {
+      level: 1,
+      name: `Du klarade ${correct} av 3 frågor från riktiga högskoleprov`,
+    })
+    expect(heading).toHaveFocus()
+    expect(screen.queryByTestId('page-shell')).toBeNull()
+    expect(container.querySelector('[data-stage="session"]')).toBeNull()
+    // Directly on the Folio page: no MobileFrame or other player wrapper.
+    expect(heading.closest('.fa-welcome')?.parentElement).toBe(screen.getByRole('main'))
+    expect(screen.queryByTestId('fa-exit')).toBeNull()
+    expect(screen.getByTestId('folio-app')).toHaveAttribute('data-focus', 'true')
+    expect(Rail).not.toHaveBeenCalled()
+    expect(TabBar).not.toHaveBeenCalled()
+  })
   it('preselects the next sitting and saves the untouched default exactly once on continue', async () => {
     mount()
     expect(await screen.findByRole('radio', { name: /Vårprov 27/ })).toBeChecked()

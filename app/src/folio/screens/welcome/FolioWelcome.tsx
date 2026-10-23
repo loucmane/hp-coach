@@ -1,10 +1,10 @@
 import { useNavigate } from '@tanstack/react-router'
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { useActiveSessionOfKind } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
 import { useUpdateUserPrefs, useUserPrefs } from '@/api/hooks/useUserPrefs'
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
-import { SessionPlayer } from '@/components/session/SessionPlayer'
+import { SessionPlayer, type SessionPlayerProps } from '@/components/session/SessionPlayer'
 import { type LexiconEntry, loadFramework } from '@/data/frameworks'
 import { loadBank, type Question } from '@/data/questions'
 import { useShellFocus } from '@/folio/useShellFocus'
@@ -33,6 +33,23 @@ import {
 import './welcome.css'
 
 const LazyDone = lazy(() => import('./FolioWelcomeDone'))
+type DoneSummary = Parameters<NonNullable<SessionPlayerProps['renderDone']>>[0]['summary']
+
+// Hand the result back after commit: renderDone runs inside the player's
+// classic frame, while welcome's completed view belongs on the plain page.
+function CompleteWelcomeSession({
+  summary,
+  onDone,
+}: {
+  summary: DoneSummary
+  onDone: (summary: DoneSummary) => void
+}) {
+  useEffect(() => {
+    onDone(summary)
+  }, [summary, onDone])
+  return null
+}
+
 function markWelcomed() {
   try {
     localStorage.setItem(WELCOMED_KEY, '1')
@@ -53,6 +70,11 @@ export default function FolioWelcome() {
   const palette = useUiStore((s) => s.palette)
   const [steps, setSteps] = useState<WelcomeSetupStep[] | null>(null)
   const [step, setStep] = useState<WelcomeSetupStep | 'session' | 'done'>('sitting')
+  const [doneSummary, setDoneSummary] = useState<DoneSummary | null>(null)
+  const finishSession = useCallback((summary: DoneSummary) => {
+    setDoneSummary(summary)
+    setStep('done')
+  }, [])
   const [completed, setCompleted] = useState<WelcomeSetupStep[]>([])
   const [chosenSitting, chooseSitting] = useState<string | null | undefined>(undefined)
   const [chosenMinutes, chooseMinutes] = useState<number | null>(null)
@@ -213,16 +235,14 @@ export default function FolioWelcome() {
           </button>
         }
         renderDone={({ summary }) => (
-          <Suspense fallback={null}>
-            <LazyDone questions={summary.questions} picks={summary.picks} />
-          </Suspense>
+          <CompleteWelcomeSession summary={summary} onDone={finishSession} />
         )}
       />
     )
   if (step === 'done')
     return (
       <Suspense fallback={null}>
-        <LazyDone />
+        <LazyDone questions={doneSummary?.questions} picks={doneSummary?.picks} />
       </Suspense>
     )
   if (!steps)
