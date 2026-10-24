@@ -49,7 +49,7 @@ export function supportsFolio(pathname: string): boolean {
     root.startsWith('drill-style-')
   )
     return false
-  return ![...PUBLIC_ROUTES, '/welcome', '/dev'].some(
+  return ![...PUBLIC_ROUTES, '/dev'].some(
     (path) => pathname === path || pathname.startsWith(`${path}/`),
   )
 }

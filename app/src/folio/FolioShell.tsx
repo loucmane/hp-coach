@@ -16,6 +16,10 @@ import './styles/tokens.css'
 import './styles/shell.css'
 import './styles/palette.css'
 
+// Welcome owns focus chrome even before its lazy children register effects.
+// A live player request still supplies its own exit/confirmation action.
+const WELCOME_FOCUS: FocusRequest = { exitLabel: null }
+
 export function FolioShell({ children }: { children: ReactNode }) {
   useFolioFonts()
   const data = useFolioShellData()
@@ -26,7 +30,8 @@ export function FolioShell({ children }: { children: ReactNode }) {
   const mode = useUiStore((s) => s.mode)
   const [collapsed, setCollapsed] = useState(false)
   const [menu, setMenu] = useState(false)
-  const [focus, setFocus] = useState<FocusRequest | null>(null)
+  const [requestedFocus, setFocus] = useState<FocusRequest | null>(null)
+  const focus = requestedFocus ?? (pathname === '/welcome' ? WELCOME_FOCUS : null)
   const origin = useRef<(typeof DESTINATIONS)[number]['to']>('/')
   const closeMenu = useCallback(() => setMenu(false), [])
   const toggle = useCallback(() => setCollapsed((value) => !value), [])
@@ -94,6 +99,7 @@ export function FolioShell({ children }: { children: ReactNode }) {
             ) : null}
             {focus ? (
               <FocusBar
+                exitLabel={focus.exitLabel}
                 onExit={
                   focus.onExit ??
                   (() => {

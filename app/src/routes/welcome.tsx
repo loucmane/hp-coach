@@ -1,7 +1,7 @@
 // Day zero: personal preferences, a small ORD pattern, three real questions.
 import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useContext, useEffect, useRef, useState } from 'react'
 import { useActiveSessionOfKind } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
 import { useUpdateUserPrefs, useUserPrefs } from '@/api/hooks/useUserPrefs'
@@ -10,6 +10,8 @@ import { Btn, Eyebrow } from '@/components/primitives'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { type LexiconEntry, loadFramework } from '@/data/frameworks'
 import { loadBank, type Question } from '@/data/questions'
+import { FolioHostContext } from '@/folio/host'
+import { useShellFocus } from '@/folio/useShellFocus'
 import { daysUntil, EXAM_SITTINGS, nextSitting, resolveSitting } from '@/lib/dates'
 import {
   DAILY_MINUTES,
@@ -25,6 +27,31 @@ import { useUiStore } from '@/stores/uiStore'
 
 export const Route = createFileRoute('/welcome')({ component: WelcomeRoute })
 
+const LazyFolioWelcome = lazy(() => import('@/folio/screens/welcome/FolioWelcome'))
+
+function WelcomeRoute() {
+  const inFolio = useContext(FolioHostContext)
+  if (inFolio)
+    return (
+      <Suspense fallback={<FolioWelcomeLoading />}>
+        <LazyFolioWelcome />
+      </Suspense>
+    )
+  return <ClassicWelcomeRoute />
+}
+
+function FolioWelcomeLoading() {
+  const navigate = useNavigate()
+  useShellFocus({
+    exitLabel: 'Hoppa över välkomsten',
+    onExit: () => {
+      markWelcomed()
+      void navigate({ to: '/' })
+    },
+  })
+  return null
+}
+
 type Step = 'theme' | 'sitting' | 'minutes' | 'pattern' | 'session' | 'done'
 
 function markWelcomed() {
@@ -35,7 +62,7 @@ function markWelcomed() {
   }
 }
 
-function WelcomeRoute() {
+function ClassicWelcomeRoute() {
   useFirstContentSignal()
   const navigate = useNavigate()
   const mode = useUiStore((s) => s.mode)

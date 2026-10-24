@@ -138,6 +138,26 @@ function RouteContent({ children }: { children?: ReactNode }) {
 }
 
 describe('Folio shell', () => {
+  it.each([false, true])('restores navigation after leaving welcome, phone=%s', (phone) => {
+    mocks.phone = phone
+    mocks.pathname = '/welcome'
+    const view = render(
+      <FolioShell>
+        <h1>Välkommen</h1>
+      </FolioShell>,
+    )
+    expect(screen.getByTestId('folio-app')).toHaveAttribute('data-focus', 'true')
+    expect(screen.queryByRole('navigation')).toBeNull()
+    expect(screen.queryByTestId('fa-exit')).toBeNull()
+    mocks.pathname = '/'
+    view.rerender(
+      <FolioShell>
+        <h1>Idag</h1>
+      </FolioShell>,
+    )
+    expect(screen.getByTestId('folio-app')).toHaveAttribute('data-focus', 'false')
+    expect(screen.getByRole('link', { name: 'Idag' })).toBeInTheDocument()
+  })
   it.each([false, true])('retains the classic content cap and gutters, reader=%s', (reader) => {
     mocks.reader = reader
     const classic = render(
@@ -514,12 +534,7 @@ describe('Folio shell', () => {
     expect(await runAxe(container)).toEqual([])
   })
 
-  it.each([
-    '/welcome',
-    '/hjalp',
-    '/integritet',
-    '/dev/redesign-2026',
-  ])('leaves %s untouched', (pathname) => {
+  it.each(['/hjalp', '/integritet', '/dev/redesign-2026'])('leaves %s untouched', (pathname) => {
     useUiStore.setState({ folioPreview: true })
     render(
       <FolioHost pathname={pathname}>
@@ -544,11 +559,11 @@ describe('authenticated root composition', () => {
     expect(screen.queryByTestId('bottom-tabs')).toBeNull()
     expect(view.container.querySelector('.hpc-frame')).toBeNull()
   })
-  it('keeps welcome and public routes classic and honours the dev direction', async () => {
+  it('wraps welcome, keeps public routes classic and honours the dev direction', async () => {
     useUiStore.setState({ folioPreview: true })
     mocks.pathname = '/welcome'
     const view = render(<Root />)
-    expect(screen.queryByTestId('folio-shell')).toBeNull()
+    await screen.findByTestId('folio-shell')
     mocks.pathname = '/hjalp'
     view.rerender(<Root />)
     expect(screen.queryByTestId('folio-shell')).toBeNull()
