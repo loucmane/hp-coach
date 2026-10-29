@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { MockPassProps } from '@/components/mock/useMockPass'
 import type { AnswerLetter, Question, Section } from '@/data/questions'
 import { type FocusRequest, ShellFocusContext } from '@/folio/host'
-import { loadMockFlags, saveMockFlags } from '@/lib/mockSheet'
+import { loadMockFlags, saveMockFlags, sheetFromAttempts } from '@/lib/mockSheet'
 import { formatViolations, runAxe } from '@/test/a11y'
 import FolioPassRun from './FolioPassRun'
 
@@ -193,11 +193,11 @@ describe('Folio ungraded pass', () => {
     act(() => vi.advanceTimersByTime(1000))
     expect(screen.getByTestId('mock-countdown')).toHaveTextContent('05:00')
     const warning = screen.getByTestId('prov-pace-warn')
-    expect(warning).toHaveTextContent('Fem minuter kvar. 2 frågor är obesvarade: 2, 3.')
+    expect(warning).toHaveTextContent('Fem minuter kvar. 2 frågor är obesvarade: 2–3.')
     fireEvent.keyDown(document.body, { key: 'j' })
     fireEvent.keyDown(document.body, { key: 'a' })
     act(() => vi.advanceTimersByTime(1000))
-    expect(warning).toHaveTextContent('2 frågor är obesvarade: 2, 3.')
+    expect(warning).toHaveTextContent('2 frågor är obesvarade: 2–3.')
     fireEvent.click(screen.getByRole('button', { name: 'Stäng tidsnotisen' }))
     act(() => vi.advanceTimersByTime(20_000))
     fireEvent(document, new Event('visibilitychange'))
@@ -210,7 +210,7 @@ describe('Folio ungraded pass', () => {
     await user.click(screen.getByRole('button', { name: 'Markera' }))
     await user.click(screen.getByTestId('mock-submit'))
     let dialog = screen.getByRole('dialog')
-    expect(dialog).toHaveTextContent('2 frågor är obesvarade: 2, 3.')
+    expect(dialog).toHaveTextContent('2 frågor är obesvarade: 2–3.')
     expect(within(dialog).getByRole('button', { name: 'Fortsätt provpasset' })).toHaveFocus()
     await user.tab({ shift: true })
     expect(within(dialog).getByRole('button', { name: 'Lämna in' })).toHaveFocus()
@@ -248,6 +248,54 @@ describe('Folio ungraded pass', () => {
     expect(p.onVoid).toHaveBeenCalledTimes(1)
     expect(h.submit).not.toHaveBeenCalled()
     expect(h.mistake).toHaveBeenCalledWith({ questionId: 'ORD-1' })
+  })
+  describe.each([
+    {
+      blanks: Array.from({ length: 38 }, (_, i) => i + 3),
+      sentence: '38 frågor är obesvarade: 3–40.',
+    },
+    { blanks: [4, 9, 10, 11, 17], sentence: '5 frågor är obesvarade: 4, 9–11, 17.' },
+  ])('compact blank summary: $sentence', ({ blanks, sentence }) => {
+    it.each(['warning', 'overview', 'submit'])('uses one accessible sentence in %s', (surface) => {
+      vi.useFakeTimers()
+      const now = new Date('2026-10-29T10:00:00Z')
+      vi.setSystemTime(now)
+      const plan = Array.from({ length: 40 }, (_, i) => question('ORD', i + 1))
+      const initialSheet = sheetFromAttempts(
+        plan
+          .filter((_, i) => !blanks.includes(i + 1))
+          .map((q) => ({
+            questionId: q.qid,
+            selectedAnswer: 'A',
+            timeTakenMs: 1,
+            createdAt: now.getTime(),
+          })),
+      )
+      mount({
+        plan,
+        initialSheet,
+        session: {
+          id: 42,
+          startedAt: new Date(now.getTime() - (surface === 'warning' ? 50 * 60_000 : 0)),
+          half: 'verbal',
+          mode: 'authentic',
+        },
+      })
+      if (surface === 'warning') {
+        const status = within(screen.getByTestId('prov-pace-warn')).getByRole('status')
+        expect(status.textContent).toBe(`Fem minuter kvar. ${sentence}`)
+        expect(status).toBeVisible()
+        expect(status).not.toHaveAttribute('aria-hidden', 'true')
+      } else {
+        fireEvent.click(
+          screen.getByRole('button', { name: surface === 'overview' ? 'Översikt' : 'Lämna in' }),
+        )
+        const dialog = screen.getByRole('dialog')
+        expect(dialog).toHaveAccessibleDescription(sentence)
+        expect(within(dialog).getAllByText(sentence)).toHaveLength(1)
+        expect(within(dialog).getByText(sentence)).toBeVisible()
+      }
+    })
   })
   it('times out exactly once even while a slip is open', () => {
     vi.useFakeTimers()

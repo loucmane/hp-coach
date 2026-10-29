@@ -39,5 +39,12 @@ export function blanksSentence(
 ): string {
   const blanks = plan.flatMap((q, i) => (answers.get(q.qid)?.letter == null ? [i + 1] : []))
   if (!blanks.length) return 'Alla frågor är besvarade.'
-  return `${blanks.length} ${blanks.length === 1 ? 'fråga är obesvarad' : 'frågor är obesvarade'}: ${blanks.join(', ')}.`
+  const ranges: string[] = []
+  for (let i = 0; i < blanks.length; i++) {
+    const start = blanks[i]
+    let end = start
+    while (blanks[i + 1] === end + 1) end = blanks[++i]
+    ranges.push(start === end ? String(start) : `${start}–${end}`)
+  }
+  return `${blanks.length} ${blanks.length === 1 ? 'fråga är obesvarad' : 'frågor är obesvarade'}: ${ranges.join(', ')}.`
 }

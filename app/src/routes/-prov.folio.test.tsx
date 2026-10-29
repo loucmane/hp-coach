@@ -1,12 +1,21 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRouter,
+  RouterContextProvider,
+} from '@tanstack/react-router'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import type { ComponentProps, ComponentType, ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { MockResultRow } from '@/api/hooks/useMockResults'
 import type { ActiveSession } from '@/api/hooks/useSessions'
 import type { MockRunner } from '@/components/mock/MockRunner'
 import type { Question } from '@/data/questions'
+import { FolioShell } from '@/folio/FolioShell'
 import { FolioHostContext } from '@/folio/host'
 import type { FolioProvResultProps } from '@/folio/screens/prov/FolioProvResult'
+import { Rail } from '@/folio/shell/Rail'
+import { TabBar } from '@/folio/shell/TabBar'
 import { Route } from './prov'
 
 const state = vi.hoisted(() => ({
@@ -21,17 +30,34 @@ const state = vi.hoisted(() => ({
   attempts: vi.fn(),
   startError: false,
   resetStart: vi.fn(),
+  phone: false,
+  realRun: false,
+  runLoad: null as Promise<void> | null,
 }))
-vi.mock('@tanstack/react-router', () => ({
+vi.mock('@tanstack/react-router', async (original) => ({
+  ...(await original<typeof import('@tanstack/react-router')>()),
   createFileRoute: () => (options: unknown) => ({ options, useSearch: () => state.search }),
   useNavigate: () => state.navigate,
+  useLocation: () => ({ pathname: '/prov' }),
 }))
-vi.mock('@clerk/clerk-react', () => ({ useUser: () => ({ user: null }) }))
+vi.mock('@clerk/clerk-react', () => ({
+  useUser: () => ({ user: null }),
+  useAuth: () => ({ userId: 'student-a' }),
+  useClerk: () => ({ signOut: vi.fn() }),
+}))
 vi.mock('@/lib/motion', () => ({ useFirstContentSignal: vi.fn() }))
-vi.mock('@/hooks/useViewport', () => ({ useViewport: () => 'studio' }))
+vi.mock('@/hooks/useViewport', () => ({ useViewport: () => (state.phone ? 'phone' : 'studio') }))
+vi.mock('@/folio/data/useShellData', () => ({
+  useFolioShellData: () => ({ subtitles: {}, dueCount: 0 }),
+}))
+vi.mock('@/folio/shell/Rail', { spy: true })
+vi.mock('@/folio/shell/TabBar', { spy: true })
+vi.mock('@/api/hooks/useAttempts', () => ({ useSubmitAttempt: () => ({ mutate: vi.fn() }) }))
+vi.mock('@/api/hooks/useMistakes', () => ({ useRecordMistake: () => ({ mutate: vi.fn() }) }))
 vi.mock('@/api/hooks/useMockResults', () => ({
   useMockResults: () => ({ data: state.results, isLoading: false, isError: false }),
   useExposure: () => ({ data: state.exposure }),
+  useSubmitMockResult: () => ({ mutate: vi.fn() }),
 }))
 vi.mock('@/api/hooks/useSessions', () => ({
   useActiveSessionOfKind: () => ({ data: state.active, isLoading: false }),
@@ -74,23 +100,33 @@ vi.mock('@/components/mock/MockRunner', () => ({
     </div>
   ),
 }))
-vi.mock('@/folio/screens/prov/FolioPassRun', () => ({
-  default: (props: ComponentProps<typeof MockRunner>) => (
-    <div data-testid="folio-runner">
-      <button
-        type="button"
-        onClick={() =>
-          props.onSettled(state.results[0], { flagged: ['q1'], answers: new Map([['q1', 'B']]) })
-        }
-      >
-        Lämna in
-      </button>
-      <button type="button" onClick={props.onVoid}>
-        Avbryt
-      </button>
-    </div>
-  ),
-}))
+vi.mock('@/folio/screens/prov/FolioPassRun', async (original) => {
+  const { default: Run } = await original<typeof import('@/folio/screens/prov/FolioPassRun')>()
+  return {
+    default: (props: ComponentProps<typeof MockRunner>) => {
+      if (state.runLoad) throw state.runLoad
+      if (state.realRun) return <Run {...props} />
+      return (
+        <div data-testid="folio-runner">
+          <button
+            type="button"
+            onClick={() =>
+              props.onSettled(state.results[0], {
+                flagged: ['q1'],
+                answers: new Map([['q1', 'B']]),
+              })
+            }
+          >
+            Lämna in
+          </button>
+          <button type="button" onClick={props.onVoid}>
+            Avbryt
+          </button>
+        </div>
+      )
+    },
+  }
+})
 vi.mock('@/folio/screens/prov/FolioProvResult', () => ({
   default: ({ flags, submittedAnswers }: FolioProvResultProps) => (
     <div data-testid="folio-result">
@@ -110,6 +146,11 @@ function renderRoute(folio: boolean) {
   )
 }
 beforeEach(() => {
+  state.phone = false
+  state.realRun = false
+  state.runLoad = null
+  vi.mocked(Rail).mockClear()
+  vi.mocked(TabBar).mockClear()
   state.search = {}
   state.navigate.mockClear()
   state.start.mockReset()
@@ -161,6 +202,56 @@ beforeEach(() => {
   )
 })
 describe('Prov route Folio branch', () => {
+  it.each([
+    false,
+    true,
+  ])('keeps shell navigation out of the suspended run, phone=%s', async (phone) => {
+    state.phone = phone
+    state.realRun = true
+    let release!: () => void
+    state.runLoad = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    const router = createRouter({ routeTree: createRootRoute(), history: createMemoryHistory() })
+    render(
+      <RouterContextProvider router={router}>
+        <FolioShell>
+          <Component />
+        </FolioShell>
+      </RouterContextProvider>,
+    )
+    fireEvent.click(await screen.findByTestId('prov-start'))
+    expect(screen.getByTestId(phone ? 'folio-tabs' : 'folio-rail')).toBeVisible()
+    expect(phone ? TabBar : Rail).toHaveBeenCalled()
+    vi.mocked(Rail).mockClear()
+    vi.mocked(TabBar).mockClear()
+    fireEvent.click(screen.getByTestId('mock-confirm-start'))
+    expect(await screen.findByRole('status')).toHaveTextContent('Laddar provpasset …')
+    expect(screen.queryByTestId('mock-runner')).toBeNull()
+    expect(screen.getByTestId('folio-app')).toHaveAttribute('data-focus', 'true')
+    expect(screen.queryByTestId('folio-rail')).toBeNull()
+    expect(screen.queryByTestId('folio-tabs')).toBeNull()
+    expect(screen.queryByTestId('fa-exit')).toBeNull()
+    expect(Rail).not.toHaveBeenCalled()
+    expect(TabBar).not.toHaveBeenCalled()
+
+    await act(async () => {
+      state.runLoad = null
+      release()
+    })
+    expect(await screen.findByTestId('mock-runner', {}, { timeout: 5000 })).toBeVisible()
+    const exit = await screen.findByTestId('fa-exit')
+    expect(screen.getByTestId('folio-app')).toHaveAttribute('data-focus', 'true')
+    expect(Rail).not.toHaveBeenCalled()
+    expect(TabBar).not.toHaveBeenCalled()
+    fireEvent.click(exit)
+    const dialog = screen.getByRole('dialog')
+    expect(dialog).toHaveTextContent('Avbryter du nu blir provpasset ogiltigt.')
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Avbryt provpasset' }))
+    expect(await screen.findByTestId('prov-void-notice')).toBeVisible()
+    expect(screen.getByTestId('folio-app')).toHaveAttribute('data-focus', 'false')
+    expect(screen.getByTestId(phone ? 'folio-tabs' : 'folio-rail')).toBeVisible()
+  })
   it('retains the classic runner when the Folio host is off', async () => {
     const view = renderRoute(true)
     fireEvent.click(await screen.findByTestId('prov-start'))

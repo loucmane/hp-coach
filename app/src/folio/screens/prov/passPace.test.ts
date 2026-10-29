@@ -38,4 +38,30 @@ describe('pass pacing', () => {
     answers.set('q2', { letter: 'A' })
     expect(blanksSentence(questions, answers)).toBe('Alla frågor är besvarade.')
   })
+  it.each([
+    { blanks: [], sentence: 'Alla frågor är besvarade.' },
+    { blanks: [7], sentence: '1 fråga är obesvarad: 7.' },
+    { blanks: [3, 4, 5, 6], sentence: '4 frågor är obesvarade: 3–6.' },
+    { blanks: [4, 9, 10, 11, 17], sentence: '5 frågor är obesvarade: 4, 9–11, 17.' },
+    { blanks: [1, 2, 4, 5, 40], sentence: '5 frågor är obesvarade: 1–2, 4–5, 40.' },
+    {
+      blanks: Array.from({ length: 38 }, (_, i) => i + 3),
+      sentence: '38 frågor är obesvarade: 3–40.',
+    },
+    {
+      blanks: Array.from({ length: 40 }, (_, i) => i + 1),
+      sentence: '40 frågor är obesvarade: 1–40.',
+    },
+  ])('compacts blank positions: $sentence', ({ blanks, sentence }) => {
+    const questions = plan(...Array<Section>(40).fill('ORD'))
+    const answers = new Map(
+      questions.flatMap((q, i) =>
+        blanks.includes(i + 1) ? [] : [[q.qid, { letter: 'A' }] as const],
+      ),
+    )
+    expect(blanksSentence(questions, answers)).toBe(sentence)
+  })
+  it('has no blanks for an empty pass', () => {
+    expect(blanksSentence([], new Map())).toBe('Alla frågor är besvarade.')
+  })
 })

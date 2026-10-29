@@ -90,6 +90,7 @@ import { Btn } from '@/components/primitives'
 import { TermHint } from '@/components/ui/TermHint'
 import { findQuestion, loadBank, type Question } from '@/data/questions'
 import { FolioHostContext } from '@/folio/host'
+import { useShellFocus } from '@/folio/useShellFocus'
 import { useViewport, type Viewport } from '@/hooks/useViewport'
 import { isDevSurface } from '@/lib/devSurface'
 import { seededRng } from '@/lib/drill'
@@ -102,6 +103,12 @@ import { useFirstContentSignal } from '@/lib/motion'
 const FolioProvpass = lazy(() => import('@/folio/screens/prov/FolioProvpass'))
 const FolioPassRun = lazy(() => import('@/folio/screens/prov/FolioPassRun'))
 const FolioProvResult = lazy(() => import('@/folio/screens/prov/FolioProvResult'))
+
+function FolioPassLoading() {
+  // The loaded run owns the exit action and its abort confirmation slip.
+  useShellFocus({ exitLabel: null })
+  return <p role="status">Laddar provpasset …</p>
+}
 
 export type ProvSearch = {
   result?: number
@@ -475,7 +482,7 @@ function ProvRoute() {
 
   if (inFolio && phase === 'running' && running) {
     return (
-      <Suspense fallback={<p role="status">Laddar provpasset …</p>}>
+      <Suspense fallback={<FolioPassLoading />}>
         <FolioPassRun
           plan={running.plan}
           session={running.session}
