@@ -74,6 +74,23 @@ vi.mock('@/components/mock/MockRunner', () => ({
     </div>
   ),
 }))
+vi.mock('@/folio/screens/prov/FolioPassRun', () => ({
+  default: (props: ComponentProps<typeof MockRunner>) => (
+    <div data-testid="folio-runner">
+      <button
+        type="button"
+        onClick={() =>
+          props.onSettled(state.results[0], { flagged: ['q1'], answers: new Map([['q1', 'B']]) })
+        }
+      >
+        Lämna in
+      </button>
+      <button type="button" onClick={props.onVoid}>
+        Avbryt
+      </button>
+    </div>
+  ),
+}))
 vi.mock('@/folio/screens/prov/FolioProvResult', () => ({
   default: ({ flags, submittedAnswers }: FolioProvResultProps) => (
     <div data-testid="folio-result">
@@ -144,6 +161,20 @@ beforeEach(() => {
   )
 })
 describe('Prov route Folio branch', () => {
+  it('retains the classic runner when the Folio host is off', async () => {
+    const view = renderRoute(true)
+    fireEvent.click(await screen.findByTestId('prov-start'))
+    fireEvent.click(screen.getByTestId('mock-confirm-start'))
+    expect(await screen.findByTestId('folio-runner')).toBeVisible()
+    expect(screen.queryByTestId('classic-runner')).toBeNull()
+    view.rerender(
+      <FolioHostContext.Provider value={false}>
+        <Component />
+      </FolioHostContext.Provider>,
+    )
+    expect(screen.getByTestId('classic-runner')).toBeVisible()
+    expect(screen.queryByTestId('folio-runner')).toBeNull()
+  })
   it('does not fetch resume attempts for the session it just started', async () => {
     state.start.mockImplementation((input, options) => {
       state.active = {
@@ -163,7 +194,7 @@ describe('Prov route Folio branch', () => {
     renderRoute(true)
     fireEvent.click(await screen.findByTestId('prov-start'))
     fireEvent.click(screen.getByTestId('mock-confirm-start'))
-    expect(await screen.findByTestId('classic-runner')).toBeVisible()
+    expect(await screen.findByTestId('folio-runner')).toBeVisible()
     expect(state.attempts.mock.calls.some(([id]) => id === 3)).toBe(false)
   })
   it('clears a previous start error when reopening the conditions', async () => {
@@ -220,11 +251,11 @@ describe('Prov route Folio branch', () => {
     expect(screen.getByTestId('classic-prov')).toBeVisible()
     expect(screen.getByTestId('prov-picker')).toBeVisible()
   })
-  it('starts through the conditions into MockRunner and keeps flags only for its result', async () => {
+  it('starts through the conditions into the Folio runner and keeps flags only for its result', async () => {
     const view = renderRoute(true)
     fireEvent.click(await screen.findByTestId('prov-start'))
     fireEvent.click(screen.getByTestId('mock-confirm-start'))
-    expect(await screen.findByTestId('classic-runner')).toBeVisible()
+    expect(await screen.findByTestId('folio-runner')).toBeVisible()
     expect(state.start).toHaveBeenCalledTimes(1)
     expect(state.start.mock.calls[0][0]).toEqual({
       kind: 'mock',
@@ -259,7 +290,7 @@ describe('Prov route Folio branch', () => {
     renderRoute(true)
     fireEvent.click(await screen.findByTestId('prov-start'))
     fireEvent.click(screen.getByTestId('mock-confirm-start'))
-    await waitFor(() => expect(screen.getByTestId('classic-runner')).toBeVisible())
+    await waitFor(() => expect(screen.getByTestId('folio-runner')).toBeVisible())
     fireEvent.click(screen.getByRole('button', { name: 'Avbryt' }))
     expect(await screen.findByTestId('prov-void-notice')).toHaveTextContent(
       'Provet avbröts — ogiltigt.',

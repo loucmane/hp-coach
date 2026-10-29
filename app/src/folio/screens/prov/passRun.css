@@ -1,0 +1,248 @@
+/* Pass chrome stays in ink; question content uses the existing Folio typography. */
+[data-folio] .fa-pass {
+  background: var(--fa-paper);
+  color: var(--fa-ink);
+  min-width: 0;
+}
+[data-folio] .fa-pass .fa-pass-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--fa-s4) var(--fa-s8);
+  padding: var(--fa-s6);
+  border-bottom: 1px solid var(--fa-rule);
+}
+[data-folio] .fa-pass .fa-pass-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--fa-s3) var(--fa-s6);
+  color: var(--fa-ink-2);
+}
+[data-folio] .fa-pass .fa-pass-title {
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t24);
+  font-weight: 450;
+  color: var(--fa-ink);
+}
+[data-folio] .fa-pass .fa-pass-tools,
+[data-folio] .fa-pass .fa-pass-clock-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--fa-s3);
+}
+[data-folio] .fa-pass .fa-pass-clock-row {
+  grid-column: 1 / -1;
+}
+[data-folio] .fa-pass .fa-pass-clock {
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fa-t17);
+  min-width: 5ch;
+}
+[data-folio] .fa-pass .fa-pass-pace {
+  position: relative;
+  flex: 1;
+  min-width: 60px;
+  max-width: 280px;
+  margin: 0 var(--fa-s3);
+  height: 1px;
+  background: var(--fa-rule);
+}
+[data-folio] .fa-pass .fa-pass-tick {
+  position: absolute;
+  width: 1px;
+  height: 10px;
+  top: -5px;
+  background: var(--fa-ink-3);
+}
+[data-folio] .fa-pass .fa-pass-button,
+[data-folio] .fa-pass .fa-pass-quiet {
+  position: relative;
+  min-height: 44px;
+  padding: var(--fa-s2) var(--fa-s4);
+  border: 1px solid var(--fa-rule-2);
+  border-radius: var(--fa-r1);
+  background: var(--fa-paper);
+  color: var(--fa-ink);
+  font: inherit;
+  cursor: pointer;
+}
+[data-folio] .fa-pass .fa-pass-quiet {
+  border-color: transparent;
+  color: var(--fa-ink-2);
+}
+[data-folio] .fa-pass .fa-pass-button:hover,
+[data-folio] .fa-pass .fa-pass-quiet:hover {
+  background: var(--fa-paper-2);
+}
+[data-folio] .fa-pass .fa-pass-button[aria-pressed='true'] {
+  border-color: var(--fa-ink);
+  border-style: double;
+}
+[data-folio] .fa-pass button:disabled {
+  cursor: default;
+  color: var(--fa-ink-3);
+}
+[data-folio] .fa-pass :focus-visible {
+  outline: 2px solid var(--fa-ink);
+  outline-offset: 3px;
+}
+[data-folio] .fa-pass .fa-pass-warning {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--fa-s4);
+  padding: var(--fa-s3) var(--fa-s6);
+  border-bottom: 1px solid var(--fa-rule);
+  color: var(--fa-ink-2);
+}
+[data-folio] .fa-pass .fa-pass-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fa-s2);
+  margin-top: var(--fa-s6);
+  padding-top: var(--fa-s4);
+  border-top: 1px solid var(--fa-rule);
+}
+[data-folio] .fa-pass .fa-pass-dog-ear {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid var(--fa-ink-2);
+  border-left: 8px solid transparent;
+}
+[data-folio] .fa-pass .fa-pass-note,
+[data-folio] .fa-pass .fa-pass-keys {
+  color: var(--fa-ink-2);
+  font-size: var(--fa-t15);
+  line-height: 1.6;
+}
+[data-folio] .fa-pass .fa-pass-keys {
+  text-align: center;
+  padding: var(--fa-s4) var(--fa-s6);
+  font-size: var(--fa-t13);
+}
+/* ReadingSpread's drill-specific Enter-to-grade hint is replaced by pass shortcuts. */
+[data-folio] .fa-pass .fa-keys {
+  display: none;
+}
+[data-folio] .fa-pass .fa-pass-footer {
+  text-align: center;
+  padding: var(--fa-s4) var(--fa-s6) var(--fa-s8);
+}
+[data-folio] .fa-pass .fa-pass-slip-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+[data-folio] .fa-pass .fa-pass-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border: 0;
+  background: var(--fa-paper-3);
+  cursor: pointer;
+}
+[data-folio] .fa-pass .fa-pass-slip {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 680px);
+  max-height: 85dvh;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: var(--fa-s8);
+  padding-bottom: max(var(--fa-s8), env(safe-area-inset-bottom));
+  border: 1px solid var(--fa-rule-2);
+  border-bottom: 0;
+  background: var(--fa-paper);
+}
+[data-folio] .fa-pass .fa-pass-slip-title {
+  font-family: var(--fa-serif);
+  font-size: var(--fa-t24);
+  font-weight: 450;
+  margin-bottom: var(--fa-s4);
+}
+[data-folio] .fa-pass .fa-pass-slip > .fa-pass-note {
+  margin-bottom: var(--fa-s6);
+}
+[data-folio] .fa-pass .fa-pass-slip-action {
+  border-top: 3px double var(--fa-rule-2);
+  margin-top: var(--fa-s6);
+  padding-top: var(--fa-s6);
+}
+[data-folio] .fa-pass .fa-pass-run {
+  margin: var(--fa-s6) 0;
+}
+[data-folio] .fa-pass .fa-pass-run-label {
+  font-size: var(--fa-t15);
+  font-weight: 600;
+  margin-bottom: var(--fa-s3);
+}
+[data-folio] .fa-pass .fa-pass-cells {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+  gap: var(--fa-s2);
+}
+[data-folio] .fa-pass .fa-pass-cell {
+  position: relative;
+  min-height: 44px;
+  padding: var(--fa-s2);
+  background: var(--fa-paper);
+  border: 1px dashed var(--fa-rule-2);
+  border-radius: var(--fa-r1);
+  color: var(--fa-ink-3);
+  font: inherit;
+  cursor: pointer;
+}
+[data-folio] .fa-pass .fa-pass-cell[data-answered='true'] {
+  border-style: solid;
+  color: var(--fa-ink);
+  font-weight: 650;
+}
+[data-folio] .fa-pass .fa-pass-cell[data-current='true'] {
+  outline: 2px solid var(--fa-ink);
+  outline-offset: 1px;
+}
+/* Keep the shared question controls neutral in an ungraded pass. */
+[data-folio] .fa-pass .fa-opt[data-state='selected']::before {
+  background: var(--fa-ink);
+}
+[data-folio] .fa-pass .fa-opt[data-state='selected'] .fa-letter,
+[data-folio] .fa-pass .fa-opt[data-state='selected']:hover .fa-letter {
+  background: var(--fa-ink);
+  border-color: var(--fa-ink);
+  color: var(--fa-paper);
+}
+[data-folio] .fa-pass .fa-more {
+  color: var(--fa-ink-2);
+}
+[data-folio] .fa-pass .rd-gapmark[data-state='current'] {
+  border-color: var(--fa-ink-2);
+  color: var(--fa-ink);
+}
+@media (max-width: 760px) {
+  [data-folio] .fa-pass .fa-pass-head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--fa-s3);
+  }
+  [data-folio] .fa-pass .fa-pass-tools {
+    justify-content: space-between;
+  }
+  [data-folio] .fa-pass .fa-pass-slip {
+    padding: var(--fa-s6);
+    padding-bottom: max(var(--fa-s6), env(safe-area-inset-bottom));
+  }
+  [data-folio] .fa-pass .fa-pass-keys {
+    display: none;
+  }
+  [data-folio] .fa-pass .rd-sheet .fa-pass-navigation {
+    margin-top: 0;
+  }
+}
