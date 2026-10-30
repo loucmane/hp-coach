@@ -468,9 +468,12 @@ describe('Folio Uppslag', () => {
     expect(screen.getByTestId('fa-lesson')).toBeInTheDocument()
     expect(screen.queryByRole('status')).toBeNull()
     expect(screen.getByTestId('fa-uppslag-entry-NOG-A')).toHaveAttribute('aria-current', 'page')
+    await act(() => vi.advanceTimersByTimeAsync(450))
+    expect(state.put).not.toHaveBeenCalled()
     await act(() => vi.advanceTimersByTimeAsync(3000))
     expect(state.getBookmark).toHaveBeenCalledTimes(4)
     expect(screen.getByTestId('fa-uppslag-entry-NOG-A')).toHaveAttribute('aria-current', 'page')
+    expect(state.put).not.toHaveBeenCalled()
   })
 
   it.each([
@@ -490,17 +493,23 @@ describe('Folio Uppslag', () => {
       const bookmark = useLessonProgress()
       return <p data-testid="shared-bookmark">{bookmark.data?.frameworkId}</p>
     }
-    render(
+    const ui = () => (
       <QueryClientProvider client={client}>
         {order === 'classic-first' && <SharedReader />}
         <FolioUppslag section="NOG" navigateHref={navigateHref} />
         {order === 'folio-first' && <SharedReader />}
-      </QueryClientProvider>,
+      </QueryClientProvider>
     )
+    const result = render(ui())
     await act(() => vi.advanceTimersByTimeAsync(20))
     expect(state.getBookmark).toHaveBeenCalledTimes(1)
     expect(screen.getByTestId('fa-uppslag-entry-NOG-B')).toHaveAttribute('aria-current', 'page')
     expect(navigateHref).toHaveBeenCalledWith('/lektion?section=NOG#NOG-B', { replace: true })
+    // A router acknowledgement of the canonical hash must not lose fallback provenance.
+    state.hash = 'NOG-B'
+    result.rerender(ui())
+    await act(() => vi.advanceTimersByTimeAsync(450))
+    expect(state.put).not.toHaveBeenCalled()
     await act(() => vi.advanceTimersByTimeAsync(1000))
     expect(screen.getByTestId('shared-bookmark')).toHaveTextContent('NOG-C')
     // A recovered shared bookmark must not turn the page under the Folio reader.

@@ -1,3 +1,6 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { act, renderHook, waitFor } from '@testing-library/react'
+import { createElement, type ReactNode } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import type { Mistake } from '@/api/hooks/useMistakes'
 import type { ActiveSession } from '@/api/hooks/useSessions'
@@ -5,8 +8,12 @@ import type { Stats } from '@/api/hooks/useStats'
 import type { Question } from '@/data/questions'
 import { buildTrapIndex } from '@/lib/trapIndex'
 import { buildRepeteraView, dueLabel, loadRepeteraPreview, questionStem } from './repeteraView'
+import { useRepeteraExtras } from './useRepeteraExtras'
 
 const h = vi.hoisted(() => ({ bank: vi.fn(), traps: vi.fn() }))
+vi.mock('@/api/hooks/useMistakes', () => ({ usePileMistakes: () => ({}) }))
+vi.mock('@/api/hooks/useStats', () => ({ useStats: () => ({}) }))
+vi.mock('@/lib/motion', () => ({ useFirstContentSignal: vi.fn() }))
 vi.mock('@/data/questions', async (original) => ({
   ...(await original<typeof import('@/data/questions')>()),
   loadBank: () => h.bank(),
@@ -88,7 +95,7 @@ describe('Repetera view', () => {
     ])
   })
 
-  it('keeps complete originals when the optional trap index fails', async () => {
+  it('rejects an unavailable trap index so an incomplete preview is not cached forever', async () => {
     const due = [miss(1)]
     h.bank.mockResolvedValue([
       {
@@ -99,21 +106,76 @@ describe('Repetera view', () => {
       },
     ])
     h.traps.mockRejectedValue(new Error('offline'))
-    expect((await loadRepeteraPreview(due)).playableMistakeIds).toEqual([1])
+    await expect(loadRepeteraPreview(due)).rejects.toThrow('offline')
   })
 
-  it('previews a stored round even when its remaining questions are outside the current pile', () => {
+  it('previews only entries that survive the same pruning as the resumed round', () => {
     const roundSession = {
       ...session,
       plan: ['answered-ORD-1', 'saved-ELF-3~source-ELF-8', 'saved-ORD-2'],
     }
-    const view = buildRepeteraView({ now, dueMistakes: [], pileMistakes: [], roundSession })
-    expect(view.preview.map((row) => row.questionId)).toEqual(['saved-ELF-3', 'saved-ORD-2'])
-    expect(view.preview.map((row) => row.stem)).toEqual(['Fråga 3', 'Fråga 2'])
+    const bank = [
+      { qid: 'answered-ORD-1', section: 'ORD', number: 1 },
+      { qid: 'saved-ELF-3', section: 'ELF', number: 3 },
+      { qid: 'saved-ORD-2', section: 'ORD', number: 2 },
+    ] as Question[]
+    const due = [{ ...miss(8, 'ELF'), questionId: 'source-ELF-8' }]
+    const view = buildRepeteraView({ now, dueMistakes: due, bank, roundSession })
+    expect(view.preview.map((row) => row.questionId)).toEqual(['saved-ELF-3'])
+    expect(view.preview.map((row) => row.stem)).toEqual(['Lucka 3'])
     expect(view.previewTitle).toBe('Kvar i din påbörjade omgång')
-    expect(view.ready).toBe(0)
+    expect(view.ready).toBe(1)
     expect(view.state).toBe('ready')
-    expect(view.resume).toEqual({ position: 2, total: 3 })
+    expect(view.resume).toEqual({ position: 2, total: 2 })
+    const empty = buildRepeteraView({ now, dueMistakes: [], bank, roundSession })
+    expect(empty.resume).toBeNull()
+    expect(empty.preview).toEqual([])
+    expect(empty.primary.fallback).toBe(true)
+  })
+
+  it('retries a failed preview and keeps stems while a changed due query resolves', async () => {
+    const source = { qid: miss(1, 'MEK').questionId, section: 'MEK', options: null } as Question
+    const sibling = {
+      qid: miss(2, 'MEK').questionId,
+      section: 'MEK',
+      prompt: 'En ny fråga',
+      parsing_status: 'complete',
+      options: [{ letter: 'A', text: 'svar' }],
+    } as Question
+    const bank = [source, sibling]
+    const traps = buildTrapIndex({ [source.qid]: 'trap', [sibling.qid]: 'trap' })
+    h.bank.mockResolvedValue(bank)
+    h.traps.mockRejectedValueOnce(new Error('temporary failure')).mockResolvedValue(traps)
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: 1, retryDelay: 1 } },
+    })
+    const { result, rerender, unmount } = renderHook(
+      ({ due }) => useRepeteraExtras(undefined, due),
+      {
+        initialProps: { due: [miss(1, 'MEK')] },
+        wrapper: ({ children }: { children: ReactNode }) =>
+          createElement(QueryClientProvider, { client }, children),
+      },
+    )
+    await waitFor(() => expect(result.current.playableMistakeIds).toEqual([1]))
+    let finish!: (value: typeof traps) => void
+    h.traps.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finish = resolve
+        }),
+    )
+    rerender({ due: [miss(1, 'MEK'), miss(3)] })
+    expect(result.current.previewPending).toBe(true)
+    expect(result.current.bank).toBeDefined()
+    expect(result.current.bank?.find((q) => q.qid === sibling.qid)?.prompt).toBe('En ny fråga')
+    expect(
+      buildRepeteraView({ ...result.current, dueMistakes: [miss(1, 'MEK'), miss(3)] }).primary.href,
+    ).toBeNull()
+    await act(async () => finish(traps))
+    await waitFor(() => expect(result.current.playableMistakeIds).toEqual([1]))
+    unmount()
+    client.clear()
   })
 
   it.each([

@@ -129,6 +129,7 @@ export default function FolioRepetera(props: Props) {
                   ) : null}
                 </div>
                 <MissPart
+                  key={view.resume ? `round:${props.roundSession?.id}` : 'due'}
                   items={view.preview}
                   previewSize={REPETITION_SESSION_SIZE}
                   navigateHref={navigateHref}
