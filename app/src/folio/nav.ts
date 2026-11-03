@@ -25,7 +25,7 @@ const FAMILIES: Record<Destination, readonly string[]> = {
   ova: ['/ova', '/drill', '/repetition', '/diagnostik'],
   provpass: ['/prov'],
   uppslag: ['/lektion'],
-  framsteg: ['/progress'],
+  framsteg: ['/progress', '/historik'],
 }
 
 export function currentDestination(pathname: string): Destination | null {
