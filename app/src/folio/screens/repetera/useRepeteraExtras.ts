@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { type Mistake, usePileMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
@@ -25,6 +25,8 @@ export function useRepeteraExtras(section?: Section, dueMistakes?: readonly Mist
     queryKey: ['folio-repetera-bank', dueMistakes],
     queryFn: () => loadRepeteraPreview(dueMistakes ?? []),
     staleTime: Infinity,
+    enabled: dueMistakes !== undefined,
+    placeholderData: keepPreviousData,
   })
   const sitting = useSitting(now)
   useFirstContentSignal()
@@ -35,6 +37,11 @@ export function useRepeteraExtras(section?: Section, dueMistakes?: readonly Mist
     pileError: pile.isError,
     stats: stats.data,
     bank: bank.data?.bank,
-    playableMistakeIds: dueMistakes === undefined ? undefined : bank.data?.playableMistakeIds,
+    previewPending: bank.isPending || bank.isPlaceholderData,
+    previewError: bank.isError,
+    playableMistakeIds:
+      dueMistakes === undefined || bank.isPlaceholderData
+        ? undefined
+        : bank.data?.playableMistakeIds,
   }
 }

@@ -24,9 +24,12 @@ export default function FolioUppslag({
   const extras = useUppslagExtras()
   // Freeze the resolved entry for this location. Read changes and bookmark
   // responses must never turn the page under the reader.
-  const [selection, setSelection] = useState<{ section: Section; hash: string; id: string } | null>(
-    null,
-  )
+  const [selection, setSelection] = useState<{
+    section: Section
+    hash: string
+    id: string
+    failedBookmark: boolean
+  } | null>(null)
   const hash =
     selection?.section === section && selection?.hash === extras.hash ? selection.id : extras.hash
   const view = buildUppslagView({ ...extras, section, hash, bookmark: extras.bookmark.data })
@@ -37,6 +40,13 @@ export default function FolioUppslag({
   const waitingBookmark = extras.bookmark.isPending && extras.bookmark.failureCount === 0
   const waitingEntry = !!open && (!extras.readsReady || (!hasRequestedEntry && waitingBookmark))
   const id = waitingEntry ? undefined : open?.id
+  // Keep the fallback's provenance through the router's canonical hash update.
+  // A failed read must not replace a bookmark we have not recovered yet.
+  const failedBookmark =
+    selection && selection.section === section && selection.id === id
+      ? selection.failedBookmark
+      : !hasRequestedEntry && extras.bookmark.failureCount > 0
+  const holdBookmark = failedBookmark && !extras.bookmark.isSuccess
   const [endFor, setEndFor] = useState<string | null>(null)
   const ending = !!chapter?.allRead && endFor === `${section}:${id}`
   const phone = extras.viewport === 'phone'
@@ -56,7 +66,7 @@ export default function FolioUppslag({
       arrivalRef.current = null
       return
     }
-    setSelection({ section, hash: extras.hash, id })
+    setSelection({ section, hash: extras.hash, id, failedBookmark })
     // Canonicalize a hashless arrival once, through the router. Direct browser
     // writes here can overwrite the previous entry before a queued push lands.
     if (extras.hash) arrivalRef.current = null
@@ -69,12 +79,13 @@ export default function FolioUppslag({
         },
       )
     }
+    if (holdBookmark) return
     const timer = setTimeout(
       () => putRef.current({ section, frameworkId: id, device: currentDevice() }),
       400,
     )
     return () => clearTimeout(timer)
-  }, [section, id, extras.hash])
+  }, [section, id, extras.hash, failedBookmark, holdBookmark])
 
   useEffect(() => {
     if (!focusNext.current || !id) return
@@ -92,7 +103,7 @@ export default function FolioUppslag({
       url.searchParams.get('section') === section &&
       chapter?.entries.some((e) => e.id === to)
     ) {
-      setSelection({ section, hash: extras.hash, id: to })
+      setSelection({ section, hash: extras.hash, id: to, failedBookmark: false })
       setEndFor(null)
       focusNext.current = true
     }

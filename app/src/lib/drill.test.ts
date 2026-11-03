@@ -9,6 +9,7 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 
 import { loadBank, type Question, questionsInSection } from '@/data/questions'
+import { pickFirstSessionQuestions } from '@/lib/firstSession'
 
 import {
   bandDistance,
@@ -28,6 +29,21 @@ beforeAll(async () => {
 })
 
 describe('pickDrillQuestions', () => {
+  it('excludes the answered onboarding questions only when requested', async () => {
+    const answered = pickFirstSessionQuestions(bank).map((q) => q.qid)
+    expect(answered).toHaveLength(3)
+    const original = await pickDrillQuestions('ORD', Infinity, seededRng(3))
+    expect(original.filter((q) => answered.includes(q.qid))).toHaveLength(3)
+    const filtered = await pickDrillQuestions('ORD', Infinity, seededRng(3), undefined, {
+      excludeQids: answered,
+    })
+    expect(filtered).toHaveLength(original.length - 3)
+    expect(filtered.some((q) => answered.includes(q.qid))).toBe(false)
+    expect(
+      await pickDrillQuestions('ORD', 10, seededRng(3), undefined, { excludeQids: [] }),
+    ).toEqual(original.slice(0, 10))
+  })
+
   it('returns the requested count for a section with enough questions', async () => {
     const picked = await pickDrillQuestions('ORD', 10, seededRng(1))
     expect(picked).toHaveLength(10)
