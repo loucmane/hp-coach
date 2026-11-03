@@ -18,6 +18,10 @@ export default function FolioWelcomeDone({
   const heading = useRef<HTMLHeadingElement>(null)
   const line = welcomeDoneLine(questions, picks)
   const completed = line !== 'Du är igång.'
+  const answered = questions
+    .filter((_, i) => picks[i] != null)
+    .map((q) => q.qid)
+    .join(',')
   const origins = questions.map((q) => firstSessionOrigin(q.qid)?.replace('Högskoleprovet ', ''))
   useEffect(() => {
     try {
@@ -43,13 +47,16 @@ export default function FolioWelcomeDone({
         )}
         {completed && (
           <p className="fa-welcome-intro">
-            Imorgon får du en kort nivåkoll, tio frågor, om du inte övar vidare innan dess. Övar du
-            vidare anpassas planen efter det.
+            Imorgon väntar en kort nivåkoll, tio frågor, om du inte redan har övat vidare.
           </p>
         )}
         <p className="fa-welcome-note">Dina val går att ändra under Konto.</p>
         <div className="fa-welcome-actions">
-          <Link className="fa-welcome-primary" to="/drill" search={{ section: 'ORD', start: true }}>
+          <Link
+            className="fa-welcome-primary"
+            to="/drill"
+            search={{ section: 'ORD', start: true, afterWelcome: answered || undefined }}
+          >
             Fortsätt öva
           </Link>
           <Link className="fa-welcome-link" to="/">

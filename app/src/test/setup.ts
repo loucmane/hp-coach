@@ -8,8 +8,13 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import '@testing-library/jest-dom/vitest'
-import { cleanup } from '@testing-library/react'
+import { cleanup, configure } from '@testing-library/react'
 import { afterEach, vi } from 'vitest'
+
+// Lazy-loaded Folio screens can take over the 1 s default to appear when
+// the host runs several suites at once (findBy*/waitFor timed out at
+// ~1.1 s). 4 s stays inside Vitest's 5 s per-test limit.
+configure({ asyncUtilTimeout: 4000 })
 
 afterEach(() => {
   cleanup()
