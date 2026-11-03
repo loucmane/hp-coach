@@ -1,44 +1,89 @@
+/* Ljusbord: the approved 10/10 design (r6/A/system.css) on Folio's root.
+ * Chrome is light and elevation; colour is data, the eight section colours.
+ * Spalt is this base exactly. palette.css re-tints only the ground, the
+ * sheets and the go accent for Sand, Salvia, Bläck and Ros. Colours are the
+ * OKLCH of system.css's hex and round back to it; tokens.guard.test.ts pins
+ * every value. */
 [data-folio] {
-  --fa-paper: oklch(97% 0.012 85);
-  --fa-paper-2: oklch(95.2% 0.014 83);
-  --fa-paper-3: oklch(92.4% 0.016 81);
-  --fa-leaf: oklch(98.8% 0.007 88);
-  --fa-menu: oklch(99.2% 0.005 88);
-  --fa-ink: oklch(21% 0.01 60);
-  --fa-ink-2: oklch(37% 0.012 62);
-  --fa-ink-3: oklch(47.5% 0.012 65);
-  --fa-rule: oklch(86.5% 0.013 78);
-  --fa-rule-2: oklch(74% 0.014 72);
-  --fa-accent: oklch(43% 0.12 258);
-  --fa-accent-2: oklch(36% 0.115 258);
-  --fa-accent-ink: oklch(41% 0.12 258);
-  --fa-accent-soft: oklch(93.6% 0.024 255);
-  /* Filled controls: the same ink-blue in light; a deeper, quieter blue
-   * in dark, so a button never turns pastel. */
-  --fa-accent-fill: oklch(43% 0.12 258);
-  --fa-accent-fill-2: oklch(36% 0.115 258);
-  --fa-on-accent: oklch(98.6% 0.006 85);
-  /* The heavy rule (the lead, the account slip's head). */
-  --fa-rule-strong: oklch(21% 0.01 60);
-  --fa-ok: oklch(44% 0.095 152);
-  --fa-ok-soft: oklch(94% 0.03 150);
-  --fa-mark: oklch(91.5% 0.075 92);
-  --fa-focus: oklch(50% 0.16 258);
-  /* The spread's fold: a soft shade either side of the spine. */
-  --fa-fold: oklch(40% 0.02 70 / 0.05);
-  --fa-fold-2: oklch(40% 0.02 70 / 0.12);
-  --fa-scrim: oklch(21% 0.01 60 / 0.32);
-  --fa-pop:
-    0 1px 0 oklch(30% 0.02 60 / 0.04), 0 18px 40px -16px oklch(28% 0.03 60 / 0.3),
-    0 0 0 1px oklch(30% 0.02 60 / 0.07);
+  /* A cool table in daylight, white sheets, graphite ink. */
+  --fa-table: oklch(94.65% 0.0057 128.53);
+  --fa-table-2: oklch(92.12% 0.0074 132.42);
+  --fa-table-3: oklch(88.66% 0.0092 134.88);
+  --fa-sheet: oklch(100% 0 0);
+  --fa-sheet-2: oklch(97.16% 0.0041 121.56);
+  --fa-ink: oklch(20.71% 0.0076 248.19);
+  --fa-ink-2: oklch(38.34% 0.013 248.17);
+  --fa-ink-3: oklch(51.37% 0.014 248.1);
+  /* Decoration only, never text that matters. */
+  --fa-ink-4: oklch(66.35% 0.0113 248);
+  --fa-line: oklch(89.05% 0.0087 128.57);
+  --fa-line-2: oklch(81.44% 0.0111 136.57);
+  --fa-on-ink: oklch(100% 0 0);
+  /* What a section colour mixes toward for AA text, and text on its fill. */
+  --fa-mixk: oklch(0% 0 0);
+  --fa-on-c: oklch(100% 0 0);
 
-  --fa-serif:
-    'Literata', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Liberation Serif',
-    serif;
+  /* The light: a warm white for the one lit thing, never a hue. */
+  --fa-lit-bg: oklch(99.37% 0.0095 93.57);
+  --fa-lit-edge: oklch(90.95% 0.0343 92.28);
+  --fa-halo: 0 0 0 5px rgba(255, 255, 255, 0.7), 0 0 26px 8px rgba(255, 253, 245, 0.95);
+  /* Elevation is the only chrome. lift-1 marks a selected state, lift-2
+   * carries the one lit sheet. */
+  --fa-lift-1: 0 1px 0 rgba(16, 20, 24, 0.04), 0 2px 6px -2px rgba(16, 20, 24, 0.09);
+  --fa-lift-2:
+    0 1px 0 rgba(16, 20, 24, 0.05), 0 12px 30px -12px rgba(16, 20, 24, 0.18),
+    0 34px 80px -34px rgba(16, 20, 24, 0.18);
+  --fa-scrim: rgba(16, 20, 24, 0.32);
+
+  /* The one primary action is ink-filled, and a palette may tint it. The
+   * focus ring stays ink, 2.5 px wide and 3 px out (map §1.6). */
+  --fa-go: var(--fa-ink);
+  --fa-on-go: var(--fa-on-ink);
+  --fa-ring: var(--fa-ink);
+  --fa-ring-w: 2.5px;
+  --fa-ring-offset: 3px;
+
+  /* Section identity, for data only, and no red. Text takes -ink (76 %
+   * toward mixk) and fills take -soft (11 %): system.css's color-mix, worked
+   * out here so that screen CSS needs neither color-mix nor a literal. */
+  --fa-sec-ord: oklch(51.96% 0.1828 263.81);
+  --fa-sec-ord-ink: oklch(39.49% 0.1389 263.81);
+  --fa-sec-ord-soft: oklch(51.96% 0.1828 263.81 / 0.11);
+  --fa-sec-las: oklch(54.22% 0.0902 197.8);
+  --fa-sec-las-ink: oklch(41.21% 0.0685 197.8);
+  --fa-sec-las-soft: oklch(54.22% 0.0902 197.8 / 0.11);
+  --fa-sec-mek: oklch(53.21% 0.1806 288.94);
+  --fa-sec-mek-ink: oklch(40.44% 0.1373 288.94);
+  --fa-sec-mek-soft: oklch(53.21% 0.1806 288.94 / 0.11);
+  --fa-sec-elf: oklch(54.75% 0.1148 154.81);
+  --fa-sec-elf-ink: oklch(41.61% 0.0873 154.81);
+  --fa-sec-elf-soft: oklch(54.75% 0.1148 154.81 / 0.11);
+  --fa-sec-xyz: oklch(52.85% 0.1248 122.41);
+  --fa-sec-xyz-ink: oklch(40.17% 0.0949 122.41);
+  --fa-sec-xyz-soft: oklch(52.85% 0.1248 122.41 / 0.11);
+  --fa-sec-kva: oklch(54.63% 0.1172 71.68);
+  --fa-sec-kva-ink: oklch(41.52% 0.0891 71.68);
+  --fa-sec-kva-soft: oklch(54.63% 0.1172 71.68 / 0.11);
+  --fa-sec-nog: oklch(51.5% 0.0548 64.09);
+  --fa-sec-nog-ink: oklch(39.14% 0.0416 64.09);
+  --fa-sec-nog-soft: oklch(51.5% 0.0548 64.09 / 0.11);
+  --fa-sec-dtk: oklch(51.31% 0.1433 324.48);
+  --fa-sec-dtk-ink: oklch(39% 0.1089 324.48);
+  --fa-sec-dtk-soft: oklch(51.31% 0.1433 324.48 / 0.11);
+
+  /* Atkinson Hyperlegible Next for text, Schibsted Grotesk for display and
+   * for every digit, Atkinson Hyperlegible Mono for key caps (fonts.css). */
   --fa-sans:
-    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Ubuntu Sans', sans-serif;
+    'Ljus Siffror', 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui,
+    -apple-system, 'Segoe UI', sans-serif;
+  --fa-display: 'Schibsted Grotesk', 'Ljus Siffror', system-ui, sans-serif;
+  --fa-mono: 'Atkinson Hyperlegible Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  /* Body text at Normal; Konto's other Textstorlek steps are 15, 19 and
+   * 21 px (map §1.3). */
+  --fa-fs-base: 17px;
 
-  /* Type scale — eight sizes, nothing in between. */
+  /* Type scale. Ljusbord's eyebrow, body, lede and headings sit on these
+   * steps (12, 17, 19, 32, 44). */
   --fa-t12: 12px;
   --fa-t13: 13px;
   --fa-t15: 15px;
@@ -48,8 +93,12 @@
   --fa-t32: 32px;
   --fa-t44: 44px;
   --fa-t56: 56px;
+  /* KaTeX beside the text face: Computer Modern's x-height (0.431 em) scaled
+   * so math sits in the line. Set for Literata; retune it for Atkinson on
+   * fråga and facit (map §1.3). */
+  --fa-math-scale: 1.14em;
 
-  /* Space — a 4 px scale. */
+  /* Space, a 4 px scale. */
   --fa-s1: 4px;
   --fa-s2: 8px;
   --fa-s3: 12px;
@@ -59,25 +108,110 @@
   --fa-s12: 48px;
   --fa-s16: 64px;
 
-  --fa-r1: 6px;
-  --fa-r2: 12px;
-  --fa-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --fa-d1: 120ms;
-  --fa-d2: 180ms;
-  --fa-d-out: 100ms;
-  /* A followed ¶ link: hold the mark, then let it go. */
-  --fa-flash: 700ms;
-  /* KaTeX beside Literata: Computer Modern's x-height (0.431 em) scaled to
-   * Literata's, so math sits in the line rather than shrinking out of it.
-   * The only token batch 1 adds (spec §4); see the worklog for how it was
-   * set. */
-  --fa-math-scale: 1.14em;
+  --fa-r1: 10px;
+  --fa-r2: 14px;
+  --fa-r3: 22px;
+
+  /* Motion that explains: the lit sheet rises, a range grows. */
+  --fa-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --fa-d1: 140ms;
+  --fa-d2: 260ms;
+  --fa-d3: 600ms;
+
+  /* Folio+ names, each on its Ljusbord token, so an unported screen reads
+   * Ljusbord-ish and migrates on its own (map §1.9); LJ-40 deletes them.
+   * paper and leaf are literal copies of the table and the sheet, as the
+   * rule after the dark block explains. */
+  --fa-paper: oklch(94.65% 0.0057 128.53);
+  --fa-paper-2: var(--fa-table-2);
+  --fa-paper-3: var(--fa-table-3);
+  --fa-leaf: oklch(100% 0 0);
+  --fa-menu: var(--fa-sheet);
+  --fa-rule: var(--fa-line);
+  --fa-rule-2: var(--fa-line-2);
+  --fa-rule-strong: var(--fa-ink);
+  --fa-accent: var(--fa-go);
+  --fa-accent-2: var(--fa-go);
+  --fa-accent-ink: var(--fa-go);
+  --fa-accent-soft: var(--fa-table-3);
+  --fa-accent-fill: var(--fa-go);
+  --fa-accent-fill-2: var(--fa-go);
+  --fa-on-accent: var(--fa-on-go);
+  /* A verdict is words and shape, never a colour alarm (facit.html). */
+  --fa-ok: var(--fa-ink);
+  --fa-ok-soft: var(--fa-table-2);
+  --fa-mark: var(--fa-lit-edge);
+  --fa-focus: var(--fa-ring);
+  --fa-fold: var(--fa-table-2);
+  --fa-fold-2: var(--fa-table-3);
+  --fa-pop: var(--fa-lift-2);
+  --fa-serif: var(--fa-sans);
+  --fa-d-out: var(--fa-d1);
+  --fa-flash: var(--fa-d3);
 
   position: relative;
   width: 100%;
   min-height: 100dvh;
-  background: var(--fa-paper);
+  background: var(--fa-table);
   color-scheme: light;
+}
+
+[data-folio][data-theme='dark'] {
+  --fa-table: oklch(18.09% 0.0052 248.12);
+  --fa-table-2: oklch(21.59% 0.0075 248.17);
+  --fa-table-3: oklch(25.79% 0.0095 248.2);
+  --fa-sheet: oklch(24.11% 0.0097 248.23);
+  --fa-sheet-2: oklch(27.35% 0.0103 242.07);
+  --fa-ink: oklch(94.95% 0.0057 128.53);
+  --fa-ink-2: oklch(83.65% 0.0099 140.51);
+  --fa-ink-3: oklch(71.2% 0.013 248.01);
+  --fa-ink-4: oklch(55.54% 0.0138 248.08);
+  --fa-line: oklch(31.73% 0.0122 243.22);
+  --fa-line-2: oklch(38.25% 0.0138 243.97);
+  --fa-on-ink: oklch(18.09% 0.0052 248.12);
+  --fa-mixk: oklch(100% 0 0);
+  --fa-on-c: oklch(18.09% 0.0052 248.12);
+  --fa-lit-bg: oklch(27.17% 0.0163 117.67);
+  --fa-lit-edge: oklch(39.22% 0.0322 98.14);
+  --fa-halo: 0 0 0 5px rgba(255, 255, 255, 0.05), 0 0 26px 8px rgba(255, 248, 220, 0.07);
+  --fa-lift-2: 0 0 0 1px var(--fa-line), 0 20px 50px -20px rgba(0, 0, 0, 0.6);
+  --fa-scrim: rgba(0, 0, 0, 0.55);
+  --fa-sec-ord: oklch(73.83% 0.1342 268.03);
+  --fa-sec-ord-ink: oklch(80.11% 0.102 268.03);
+  --fa-sec-ord-soft: oklch(73.83% 0.1342 268.03 / 0.11);
+  --fa-sec-las: oklch(75.05% 0.1133 196.46);
+  --fa-sec-las-ink: oklch(81.04% 0.0861 196.46);
+  --fa-sec-las-soft: oklch(75.05% 0.1133 196.46 / 0.11);
+  --fa-sec-mek: oklch(74.42% 0.1437 291.61);
+  --fa-sec-mek-ink: oklch(80.56% 0.1092 291.61);
+  --fa-sec-mek-soft: oklch(74.42% 0.1437 291.61 / 0.11);
+  --fa-sec-elf: oklch(75.31% 0.1342 156.28);
+  --fa-sec-elf-ink: oklch(81.24% 0.102 156.28);
+  --fa-sec-elf-soft: oklch(75.31% 0.1342 156.28 / 0.11);
+  --fa-sec-xyz: oklch(77.55% 0.1556 120.32);
+  --fa-sec-xyz-ink: oklch(82.94% 0.1183 120.32);
+  --fa-sec-xyz-soft: oklch(77.55% 0.1556 120.32 / 0.11);
+  --fa-sec-kva: oklch(77.59% 0.1421 77.4);
+  --fa-sec-kva-ink: oklch(82.97% 0.108 77.4);
+  --fa-sec-kva-soft: oklch(77.59% 0.1421 77.4 / 0.11);
+  --fa-sec-nog: oklch(74.71% 0.0613 66.66);
+  --fa-sec-nog-ink: oklch(80.78% 0.0466 66.66);
+  --fa-sec-nog-soft: oklch(74.71% 0.0613 66.66 / 0.11);
+  --fa-sec-dtk: oklch(75.31% 0.1353 324.15);
+  --fa-sec-dtk-ink: oklch(81.24% 0.1028 324.15);
+  --fa-sec-dtk-soft: oklch(75.31% 0.1353 324.15 / 0.11);
+  --fa-paper: oklch(18.09% 0.0052 248.12);
+  --fa-leaf: oklch(24.11% 0.0097 248.23);
+  color-scheme: dark;
+}
+
+/* Spalt keeps paper and leaf as literal copies of the table and the sheet,
+ * because the Uppslag worked-example guard resolves one var() step. Every
+ * other palette points them at the live tokens; the token guard checks that
+ * both always equal their target. */
+[data-folio]:not([data-palette='spalt']) {
+  --fa-paper: var(--fa-table);
+  --fa-leaf: var(--fa-sheet);
 }
 
 /* Unported route content retains the app's own typography and focus rings. */
@@ -97,39 +231,6 @@
   interpolate-size: allow-keywords;
 }
 
-[data-folio][data-theme='dark'] {
-  --fa-paper: oklch(21.5% 0.009 62);
-  --fa-paper-2: oklch(19% 0.008 62);
-  --fa-paper-3: oklch(26.5% 0.01 64);
-  --fa-leaf: oklch(24.2% 0.01 64);
-  --fa-menu: oklch(28% 0.011 64);
-  /* Ink a step under white, so the page does not glow. */
-  --fa-ink: oklch(88% 0.012 85);
-  --fa-ink-2: oklch(79% 0.012 82);
-  --fa-ink-3: oklch(68% 0.012 78);
-  --fa-rule: oklch(33.5% 0.01 66);
-  --fa-rule-2: oklch(46% 0.012 68);
-  --fa-rule-strong: oklch(64% 0.012 70);
-  /* A quiet accent on warm charcoal: low chroma, never a glow. Marks and
-   * links keep the light accent; filled controls take the deep one. */
-  --fa-accent: oklch(69% 0.07 255);
-  --fa-accent-2: oklch(74% 0.065 255);
-  --fa-accent-ink: oklch(79% 0.07 255);
-  --fa-accent-soft: oklch(30% 0.03 255);
-  --fa-accent-fill: oklch(50% 0.09 256);
-  --fa-accent-fill-2: oklch(46% 0.09 256);
-  --fa-on-accent: oklch(97% 0.008 85);
-  --fa-ok: oklch(79% 0.09 152);
-  --fa-ok-soft: oklch(29% 0.035 152);
-  --fa-mark: oklch(37% 0.06 92);
-  --fa-focus: oklch(77% 0.11 255);
-  --fa-fold: oklch(0% 0 0 / 0.08);
-  --fa-fold-2: oklch(0% 0 0 / 0.2);
-  --fa-scrim: oklch(8% 0.01 60 / 0.55);
-  --fa-pop: 0 18px 44px -14px oklch(5% 0.01 60 / 0.7), 0 0 0 1px var(--fa-rule-2);
-  color-scheme: dark;
-}
-
 [data-folio] *,
 [data-folio] *::before,
 [data-folio] *::after { box-sizing: border-box; }
@@ -137,4 +238,7 @@
 [data-folio] .fa-tabs :focus-visible,
 [data-folio] .fa-ptop :focus-visible,
 [data-folio] .fa-focus-bar :focus-visible,
-[data-folio] .fa-menu :focus-visible { outline: 2px solid var(--fa-ink); outline-offset: 3px; }
+[data-folio] .fa-menu :focus-visible {
+  outline: var(--fa-ring-w) solid var(--fa-ring);
+  outline-offset: var(--fa-ring-offset);
+}
