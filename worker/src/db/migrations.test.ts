@@ -26,6 +26,10 @@
 //     lands. Authentic-only state is left exactly as it was. Re-running 0015
 //     changes nothing the current fit wrote, whoever has deleted the account
 //     and whatever retention has pruned since (review finding R3-B1).
+//   · drizzle/0016_ljusbord_expand.sql (LJ-10, the Ljusbord rebuild map §2)
+//     only adds: nullable or defaulted columns and one new table. Nothing is
+//     dropped, renamed or rebuilt, and a database at 0015 keeps every row
+//     byte for byte.
 //
 // Everything here runs against the in-memory node:sqlite shim; no real
 // database is touched, and no migration is applied anywhere else.
@@ -54,9 +58,16 @@ const COLUMN_MIGRATION = '0012_attempt_provenance.sql'
 const BACKFILL_MIGRATION = '0013_attempt_provenance_backfill.sql'
 const TRACK_MIGRATION = '0014_user_ability_authentic_track.sql'
 const TRACK_RESET_MIGRATION = '0015_pre_r2b1_fit_reset.sql'
+const EXPAND_MIGRATION = '0016_ljusbord_expand.sql'
 
 type Journal = { entries: Array<{ idx: number; tag: string }> }
-type ColumnInfo = { name: string; type: string; notnull: number; dflt_value: string | null }
+type ColumnInfo = {
+  name: string
+  type: string
+  notnull: number
+  dflt_value: string | null
+  pk: number
+}
 
 function readJson<T>(path: string): T {
   return JSON.parse(readFileSync(path, 'utf8')) as T
@@ -191,14 +202,15 @@ describe('provenance migrations — generated and matching the schema', () => {
     expect(await generateSQLiteMigration(snapshot as never, current)).toEqual([])
   })
 
-  it('journals every SQL file: the columns, their backfill, then the authentic rating and its reset', () => {
+  it('journals every SQL file: the columns, their backfill, the authentic rating and its reset, then the Ljusbord expand', () => {
     const journal = readJson<Journal>(join(DRIZZLE, 'meta/_journal.json'))
     expect(journal.entries.map((e) => `${e.tag}.sql`)).toEqual(migrationFiles())
-    expect(migrationFiles().slice(-4)).toEqual([
+    expect(migrationFiles().slice(-5)).toEqual([
       COLUMN_MIGRATION,
       BACKFILL_MIGRATION,
       TRACK_MIGRATION,
       TRACK_RESET_MIGRATION,
+      EXPAND_MIGRATION,
     ])
   })
 
@@ -227,6 +239,12 @@ describe('provenance migrations — generated and matching the schema', () => {
     ['item_stats', schema.itemStats],
     ['user_ability', schema.userAbility],
     ['mock_results', schema.mockResults],
+    // The tables 0016 adds columns to, and the one it creates.
+    ['users', schema.users],
+    ['sessions', schema.sessions],
+    ['mistakes', schema.mistakes],
+    ['lesson_progress', schema.lessonProgress],
+    ['explanation_feedback', schema.explanationFeedback],
   ] as Array<
     [string, SQLiteTable]
   >)('the migrated %s table has exactly the schema’s columns', async (name, table) => {
@@ -1138,4 +1156,404 @@ describe('0015 changes nothing the current fit wrote, whoever left and whatever 
       expect(await helperTables(d1)).toEqual([])
     })
   }
+})
+
+// ── LJ-10: the Ljusbord expand, 0016 ──────────────────────────────────────
+//
+// 0016 is the one expand step of the Ljusbord rebuild (bead hpf-qr0p.51.2,
+// rebuild map §2). It adds nullable or defaulted columns and one table, and
+// nothing else, so the worker from before it runs unchanged against the
+// migrated database. The behaviour on top of the columns comes with later
+// beads: 0016 adds storage only.
+
+/** Every column 0016 adds to a table that exists at 0015, as PRAGMA
+ *  table_info reports it: [table, column, type, default]. None is NOT NULL. */
+const ADDED_COLUMNS: Array<[string, string, string, string | null]> = [
+  ['attempts', 'confidence', 'text', null],
+  ['lesson_progress', 'step', 'integer', null],
+  ['lesson_progress', 'guess', 'text', null],
+  ['mistakes', 'reason', 'text', "'wrong'"],
+  ['mistakes', 'last_confidence', 'text', null],
+  ['mock_results', 'half_run_id', 'text', null],
+  ['sessions', 'marks', 'text', null],
+  // The 11 Konto prefs.
+  ['users', 'answer_confidence', 'integer', 'true'],
+  ['users', 'facit_timing', 'text', "'each'"],
+  ['users', 'show_my_time', 'integer', 'false'],
+  ['users', 'mock_clock_visible', 'integer', 'true'],
+  ['users', 'mock_reminder', 'integer', 'true'],
+  ['users', 'text_size', 'text', "'normal'"],
+  ['users', 'motion', 'text', "'system'"],
+  ['users', 'shortcuts', 'integer', 'true'],
+  ['users', 'mode_follow_system', 'integer', 'false'],
+  ['users', 'target_score', 'integer', null],
+  ['users', 'quant_repeat', 'text', "'new'"],
+]
+
+/** The Konto prefs of a user who never set them, as the schema reads them. */
+const DEFAULT_PREFS = {
+  answerConfidence: true,
+  facitTiming: 'each',
+  showMyTime: false,
+  mockClockVisible: true,
+  mockReminder: true,
+  textSize: 'normal',
+  motion: 'system',
+  shortcuts: true,
+  modeFollowSystem: false,
+  targetScore: null,
+  quantRepeat: 'new',
+}
+
+/** A database at 0015 with rows in every table, in plain SQL the worker
+ *  before 0016 could have written: NULLs and defaults, Swedish letters, an
+ *  apostrophe, JSON, and reals that need every bit. */
+const SEED_0015 = `
+INSERT INTO users (id, clerk_user_id, days_to_exam, daily_minutes, target_sitting_id, coach,
+  palette, mode, font, density, show_streak, smart_drill, mock_deferred_date, attempts_total,
+  drills_total, created_at)
+VALUES (1, 'user_ljus_1', 120, 45, 'host-2026', 'kompis', 'spalt', 'dark', 'hyperlegible',
+  'comfy', 1, 0, '2026-11-03', 4, 2, 1793700000);
+INSERT INTO users (id, clerk_user_id) VALUES (2, 'user_ljus_2');
+INSERT INTO sessions (id, user_id, started_at, ended_at, kind, sections, position,
+  current_question_id, plan, device)
+VALUES
+  (1, 1, 1793700000, NULL, 'drill', 'ORD · PÅ TID', 3, 'var-2024-verb1-ORD-004',
+    '["var-2024-verb1-ORD-001","var-2024-verb1-ORD-004"]', 'phone'),
+  (2, 1, 1793600000, 1793603300, 'mock', 'LÄS,ELF', 40, NULL, '["var-2026-verb1-LÄS-011"]',
+    'desktop'),
+  (3, 2, 1793500000, NULL, 'lesson', NULL, 0, NULL, NULL, NULL);
+INSERT INTO lesson_progress (id, user_id, section, framework_id, device, updated_at)
+VALUES (1, 1, 'XYZ', 'XYZ-TRAP-016', 'tablet', 1793700001);
+INSERT INTO lesson_reads (id, user_id, entry_id, read_at)
+VALUES (1, 1, 'KVA-TRAP-001', 1793700002);
+INSERT INTO daily_plans (id, user_id, date, plan, updated_at)
+VALUES (1, 1, '2026-11-03',
+  '{"items":[{"kind":"drill","label":"Dagens spår: kvantens ''fälla''"}],"version":3}',
+  1793700003);
+INSERT INTO attempts (id, user_id, session_id, question_id, selected_answer, correct,
+  time_taken_ms, created_at, source, item_revision)
+VALUES
+  (1, 1, 1, 'var-2024-verb1-ORD-001', 'B', 1, 17250, 1793700010, 'authentic', NULL),
+  (2, 1, 2, 'p5-las-b19-002-r1-LÄS-001', 'D', 0, 61000, 1793600100, 'synthetic', 1),
+  (3, 2, 3, 'q1', NULL, NULL, NULL, NULL, 'unknown', NULL);
+INSERT INTO mistakes (id, user_id, question_id, layer1_ids, status, error_count_7d,
+  last_error_at, next_review_at, interval_minutes, lapse_interval_minutes)
+VALUES
+  (1, 1, 'var-2024-verb1-ORD-001', '["ORD-ROOT-012"]', 'active', 2, 1793700010, 1793786410,
+    1440, 2880),
+  (2, 1, 'p5-las-b19-002-r1-LÄS-001', NULL, 'mock-pending-review', 1, 1793600100, NULL, 0,
+    NULL);
+INSERT INTO srs_state (id, user_id, item_id, item_kind, direction, interval_days, ease, due_at,
+  last_reviewed_at)
+VALUES (1, 1, 'ord-root-012', 'ord_root', 'primary', 6, 1.3000000000000003, 1793786410,
+  1793700010);
+INSERT INTO mastery (id, user_id, section, layer1_id, score, last_updated_at)
+VALUES (1, 1, 'ORD', 'ORD-ROOT-012', 0.30000000000000004, 1793700010);
+INSERT INTO framework_progress (id, user_id, layer1_id, status, last_transition_at)
+VALUES (1, 1, 'KVA-TRAP-001', 'practicing', 1793700010);
+INSERT INTO mock_results (id, user_id, session_id, mode, half, exam_id, provpass, presented,
+  answered, correct, seen_before, duration_ms, breakdown, created_at, estimate_basis)
+VALUES (1, 1, 2, 'authentic', 'verbal', 'var-2026', 'verbal-1', 40, 38, 29, 3, 3300000,
+  '{"perSection":{"LÄS":{"presented":10,"correct":7,"timeMs":1320000}},"version":1}',
+  1793603300, '{"authentic":40,"synthetic":0,"unknown":0}');
+INSERT INTO item_stats (question_id, difficulty, attempts, updated_at, source)
+VALUES
+  ('var-2024-verb1-ORD-001', -12.8, 31, 1793700020, 'authentic'),
+  ('p5-las-b19-002-r1-LÄS-001', 3.0e-7, 1, 1793700020, 'synthetic');
+INSERT INTO user_ability (user_id, section, ability, attempts, updated_at, synthetic_attempts,
+  authentic_ability)
+VALUES
+  (1, 'LÄS', 12.328643808700775, 2, 1793700020, 1, -4.5),
+  (1, 'ORD', -7.25, 1, 1793700020, 0, NULL);
+INSERT INTO fit_state (id, last_attempt_id, updated_at) VALUES (1, 3, 1793700020);
+`
+
+/** The tables and indexes, each with the page its b-tree starts on. ADD
+ *  COLUMN rewrites only a table's CREATE statement, which is why a table's
+ *  SQL is left out; a rebuild copies the rows into a new b-tree, so its root
+ *  page would move. */
+async function schemaObjects(d1: ShimD1) {
+  const { results } = await d1
+    .prepare(
+      `SELECT type, name, tbl_name, rootpage, CASE type WHEN 'index' THEN sql END AS sql
+       FROM sqlite_master WHERE type IN ('table', 'index') ORDER BY name`,
+    )
+    .all<{ type: string; name: string; tbl_name: string; rootpage: number; sql: string | null }>()
+  return results
+}
+
+/** Every row of `table` by rowid, each of `cols` as SQLite stores it: its
+ *  storage class, its exact literal (quote() writes a real so that it reads
+ *  back to the same bits) and its bytes. */
+async function storedRows(d1: ShimD1, table: string, cols: readonly string[]) {
+  const cells = cols.map(
+    (c) => `typeof(\`${c}\`) || ' ' || quote(\`${c}\`) || ' ' || hex(\`${c}\`) AS \`${c}\``,
+  )
+  const { results } = await d1
+    .prepare(`SELECT rowid AS _rowid, ${cells.join(', ')} FROM \`${table}\` ORDER BY rowid`)
+    .all()
+  return results
+}
+
+describe('Ljusbord expand — 0016 adds storage only (LJ-10)', () => {
+  it('is exactly the generated DDL: one new table, then added columns; nothing dropped, renamed or rebuilt', () => {
+    const statements = readFileSync(join(DRIZZLE, EXPAND_MIGRATION), 'utf8')
+      .split('--> statement-breakpoint')
+      .map((s) => s.trim())
+    expect(statements).toEqual([
+      [
+        'CREATE TABLE `explanation_feedback` (',
+        '\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,',
+        '\t`user_id` integer NOT NULL,',
+        '\t`qid` text NOT NULL,',
+        '\t`verdict` text NOT NULL,',
+        '\t`note` text,',
+        '\t`model` text,',
+        '\t`created_at` integer,',
+        '\tFOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE cascade',
+        ');',
+      ].join('\n'),
+      'CREATE UNIQUE INDEX `idx_explanation_feedback_user_qid` ON `explanation_feedback` (`user_id`,`qid`);',
+      'ALTER TABLE `attempts` ADD `confidence` text;',
+      'ALTER TABLE `lesson_progress` ADD `step` integer;',
+      'ALTER TABLE `lesson_progress` ADD `guess` text;',
+      "ALTER TABLE `mistakes` ADD `reason` text DEFAULT 'wrong';",
+      'ALTER TABLE `mistakes` ADD `last_confidence` text;',
+      'ALTER TABLE `mock_results` ADD `half_run_id` text;',
+      'ALTER TABLE `sessions` ADD `marks` text;',
+      'ALTER TABLE `users` ADD `answer_confidence` integer DEFAULT true;',
+      "ALTER TABLE `users` ADD `facit_timing` text DEFAULT 'each';",
+      'ALTER TABLE `users` ADD `show_my_time` integer DEFAULT false;',
+      'ALTER TABLE `users` ADD `mock_clock_visible` integer DEFAULT true;',
+      'ALTER TABLE `users` ADD `mock_reminder` integer DEFAULT true;',
+      "ALTER TABLE `users` ADD `text_size` text DEFAULT 'normal';",
+      "ALTER TABLE `users` ADD `motion` text DEFAULT 'system';",
+      'ALTER TABLE `users` ADD `shortcuts` integer DEFAULT true;',
+      'ALTER TABLE `users` ADD `mode_follow_system` integer DEFAULT false;',
+      'ALTER TABLE `users` ADD `target_score` integer;',
+      "ALTER TABLE `users` ADD `quant_repeat` text DEFAULT 'new';",
+    ])
+    // The hand check, spelled out: no DROP or RENAME, no `__new_` copy (how
+    // drizzle-kit rebuilds a table SQLite cannot ALTER), and every ALTER a
+    // plain, nullable ADD.
+    expect(statements.join('\n')).not.toMatch(/\b(DROP|RENAME)\b|__new_|PRAGMA/i)
+    for (const statement of statements.filter((s) => s.startsWith('ALTER'))) {
+      expect(statement).toMatch(/^ALTER TABLE `\w+` ADD `\w+` (text|integer|real)( DEFAULT \S+)?;$/)
+    }
+  })
+
+  it('adds exactly the §2 columns, each nullable with its default, and keeps every column in place', async () => {
+    const d1 = makeTestD1({ before: EXPAND_MIGRATION })
+    const tables = (await schemaObjects(d1)).filter((o) => o.type === 'table').map((o) => o.name)
+    const before = new Map<string, ColumnInfo[]>()
+    for (const table of tables) before.set(table, await columns(d1, table))
+
+    d1.applyMigration(EXPAND_MIGRATION)
+    const added: Array<[string, string, string, string | null]> = []
+    for (const table of tables) {
+      const had = before.get(table) ?? []
+      const now = await columns(d1, table)
+      // ADD COLUMN appends: every column the table had is still there, as it was.
+      expect(now.slice(0, had.length), table).toEqual(had)
+      for (const c of now.slice(had.length)) {
+        expect(c.notnull, `${table}.${c.name}`).toBe(0)
+        added.push([table, c.name, c.type.toLowerCase(), c.dflt_value])
+      }
+    }
+    expect(added).toEqual(ADDED_COLUMNS)
+    expect(added.filter(([table]) => table === 'users')).toHaveLength(11)
+  })
+
+  it('creates explanation_feedback: one row per (user, question), owned by the user', async () => {
+    const d1 = makeTestD1()
+    const cols = (await columns(d1, 'explanation_feedback')).map((c) => [
+      c.name,
+      c.type.toLowerCase(),
+      c.notnull,
+      c.dflt_value,
+      c.pk,
+    ])
+    expect(cols).toEqual([
+      ['id', 'integer', 1, null, 1],
+      ['user_id', 'integer', 1, null, 0],
+      ['qid', 'text', 1, null, 0],
+      ['verdict', 'text', 1, null, 0],
+      ['note', 'text', 0, null, 0],
+      ['model', 'text', 0, null, 0],
+      ['created_at', 'integer', 0, null, 0],
+    ])
+    const { results: indexes } = await d1
+      .prepare('PRAGMA index_list(explanation_feedback)')
+      .all<{ name: string; unique: number }>()
+    expect(indexes.map((i) => [i.name, i.unique])).toEqual([
+      ['idx_explanation_feedback_user_qid', 1],
+    ])
+    const { results: keyed } = await d1
+      .prepare('PRAGMA index_info(idx_explanation_feedback_user_qid)')
+      .all<{ name: string }>()
+    expect(keyed.map((k) => k.name)).toEqual(['user_id', 'qid'])
+    const { results: keys } = await d1
+      .prepare('PRAGMA foreign_key_list(explanation_feedback)')
+      .all<{ table: string; from: string; to: string; on_delete: string }>()
+    expect(keys.map((k) => [k.table, k.from, k.to, k.on_delete])).toEqual([
+      ['users', 'user_id', 'id', 'CASCADE'],
+    ])
+  })
+
+  it('explanation_feedback keeps one answer per (user, question), and goes with the account', async () => {
+    const d1 = makeTestD1()
+    const db = getDb(d1 as unknown as D1Database)
+    await d1.exec("INSERT INTO users (id, clerk_user_id) VALUES (1, 'u1'), (2, 'u2')")
+    const qid = 'var-2024-verb1-ORD-001'
+    // The upsert a PUT makes: the unique (user_id, qid) index is its target.
+    const answer = (userId: number, verdict: string) =>
+      db
+        .insert(schema.explanationFeedback)
+        .values({ userId, qid, verdict })
+        .onConflictDoUpdate({
+          target: [schema.explanationFeedback.userId, schema.explanationFeedback.qid],
+          set: { verdict },
+        })
+    await answer(1, 'nej')
+    await answer(1, 'delvis')
+    await answer(2, 'ja')
+    const stored = async () =>
+      (
+        await d1
+          .prepare('SELECT user_id, qid, verdict FROM explanation_feedback ORDER BY user_id')
+          .all()
+      ).results
+    expect(await stored()).toEqual([
+      { user_id: 1, qid, verdict: 'delvis' },
+      { user_id: 2, qid, verdict: 'ja' },
+    ])
+    // A second row for the same pair is refused.
+    await expect(
+      d1.exec(
+        `INSERT INTO explanation_feedback (user_id, qid, verdict) VALUES (2, '${qid}', 'nej')`,
+      ),
+    ).rejects.toThrow(/UNIQUE/)
+    // cascadeDeleteUser names no explanation_feedback: the user_id foreign key
+    // removes the rows with the users row, as it does user_ability's.
+    expect(await cascadeDeleteUser(db, 'u1')).toEqual({ deleted: true })
+    expect(await stored()).toEqual([{ user_id: 2, qid, verdict: 'ja' }])
+  })
+
+  it('a database at 0015 keeps every row byte for byte, and every table and index where it was', async () => {
+    const d1 = makeTestD1({ before: EXPAND_MIGRATION })
+    await d1.exec(SEED_0015)
+    const objectsBefore = await schemaObjects(d1)
+    const tables = objectsBefore.filter((o) => o.type === 'table').map((o) => o.name)
+    const had = new Map<string, string[]>()
+    for (const table of tables) {
+      const names = (await columns(d1, table)).map((c) => c.name)
+      had.set(table, names)
+    }
+    const dump = async () => {
+      const out: Record<string, unknown[]> = {}
+      for (const table of tables) out[table] = await storedRows(d1, table, had.get(table) ?? [])
+      return out
+    }
+    const rowsBefore = await dump()
+    // Every table holds rows, so none is compared empty.
+    expect(tables.filter((table) => rowsBefore[table].length === 0)).toEqual([])
+
+    d1.applyMigration(EXPAND_MIGRATION)
+    expect(await dump()).toEqual(rowsBefore)
+    const objectsAfter = await schemaObjects(d1)
+    const existed = (o: { name: string }) => objectsBefore.some((b) => b.name === o.name)
+    expect(objectsAfter.filter(existed)).toEqual(objectsBefore)
+    expect(objectsAfter.filter((o) => !existed(o)).map((o) => [o.type, o.name])).toEqual([
+      ['table', 'explanation_feedback'],
+      ['index', 'idx_explanation_feedback_user_qid'],
+    ])
+    expect(await d1.prepare('PRAGMA integrity_check').first('integrity_check')).toBe('ok')
+    expect((await d1.prepare('PRAGMA foreign_key_check').all()).results).toEqual([])
+  })
+
+  it('rows from before it, and rows the worker before it still writes, read the defaults', async () => {
+    const d1 = makeTestD1({ before: EXPAND_MIGRATION })
+    await d1.exec(SEED_0015)
+    d1.applyMigration(EXPAND_MIGRATION)
+    // Between `migrations apply` and the deploy, the old worker's inserts name
+    // only the columns it knows.
+    await d1.exec(`
+      INSERT INTO users (id, clerk_user_id) VALUES (3, 'user_ljus_3');
+      INSERT INTO sessions (id, user_id, kind) VALUES (4, 3, 'drill'), (5, 3, 'mock');
+      INSERT INTO attempts (user_id, session_id, question_id, correct, source)
+        VALUES (3, 4, 'var-2024-verb1-ORD-002', 0, 'authentic');
+      INSERT INTO mistakes (user_id, question_id) VALUES (3, 'var-2024-verb1-ORD-002');
+      INSERT INTO lesson_progress (user_id, section) VALUES (3, 'KVA');
+      INSERT INTO mock_results (user_id, session_id, mode, half, presented, answered, correct,
+        seen_before, duration_ms, breakdown)
+        VALUES (3, 5, 'synthetic', 'kvant', 0, 0, 0, 0, 0, '{}');
+    `)
+    // A pref flag's default is stored as SQLite's integer 1 or 0.
+    const { results: flags } = await d1
+      .prepare(
+        `SELECT typeof(answer_confidence) AS stored, answer_confidence, show_my_time,
+           mock_clock_visible, mock_reminder, shortcuts, mode_follow_system
+         FROM users ORDER BY id`,
+      )
+      .all()
+    const flagDefaults = {
+      stored: 'integer',
+      answer_confidence: 1,
+      show_my_time: 0,
+      mock_clock_visible: 1,
+      mock_reminder: 1,
+      shortcuts: 1,
+      mode_follow_system: 0,
+    }
+    expect(flags).toEqual([flagDefaults, flagDefaults, flagDefaults])
+
+    // Read through the schema, as the worker reads them.
+    const db = getDb(d1 as unknown as D1Database)
+    expect(await db.select().from(schema.users).orderBy(schema.users.id)).toMatchObject([
+      DEFAULT_PREFS,
+      DEFAULT_PREFS,
+      DEFAULT_PREFS,
+    ])
+    expect((await db.select().from(schema.attempts)).map((a) => a.confidence)).toEqual([
+      null,
+      null,
+      null,
+      null,
+    ])
+    expect(
+      (await db.select().from(schema.mistakes)).map((m) => [m.reason, m.lastConfidence]),
+    ).toEqual([
+      ['wrong', null],
+      ['wrong', null],
+      ['wrong', null],
+    ])
+    expect((await db.select().from(schema.sessions)).map((s) => s.marks)).toEqual([
+      null,
+      null,
+      null,
+      null,
+      null,
+    ])
+    expect((await db.select().from(schema.lessonProgress)).map((l) => [l.step, l.guess])).toEqual([
+      [null, null],
+      [null, null],
+    ])
+    expect((await db.select().from(schema.mockResults)).map((m) => m.halfRunId)).toEqual([
+      null,
+      null,
+    ])
+  })
+
+  it('types confidence as gissar, tror or saker (owner decision) and a reason as one of four', () => {
+    // The database keeps plain text: drizzle-kit writes no CHECK for an enum,
+    // so the routes that write these columns validate them.
+    expect(schema.CONFIDENCE_LEVELS).toEqual(['gissar', 'tror', 'saker'])
+    expect(schema.MISTAKE_REASONS).toEqual(['wrong', 'lucky', 'flagged', 'manual'])
+    const enumOf = (table: SQLiteTable, column: string) =>
+      getTableConfig(table).columns.find((c) => c.name === column)?.enumValues
+    expect(enumOf(schema.attempts, 'confidence')).toEqual(schema.CONFIDENCE_LEVELS)
+    expect(enumOf(schema.mistakes, 'last_confidence')).toEqual(schema.CONFIDENCE_LEVELS)
+    expect(enumOf(schema.mistakes, 'reason')).toEqual(schema.MISTAKE_REASONS)
+  })
 })

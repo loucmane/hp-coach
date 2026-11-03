@@ -56,6 +56,34 @@ export const users = sqliteTable('users', {
   // instead. Day-scoped: stale values are inert, so no cleanup job is
   // needed. Synced so a defer on the phone holds on the laptop.
   mockDeferredDate: text('mock_deferred_date'),
+  // Ljusbord Konto prefs (LJ-10, rebuild map §2), synced like the ones above.
+  // Each default is what a user who never opens Konto gets:
+  //   answerConfidence — answer with Gissar / Tror det / Säker; off gives a
+  //     plain "Svara" button;
+  //   facitTiming — when facit comes: 'each', after every question;
+  //   showMyTime — the student's own time, in facit and Historik only, never
+  //     while answering. Opt-in;
+  //   mockClockVisible, mockReminder — the Provpass clock, and its 5-minute
+  //     notice;
+  //   textSize, motion — reading size and animation ('system' follows
+  //     prefers-reduced-motion, 'less' keeps fades only, 'none' stops it);
+  //   shortcuts — single-key shortcuts and their hints (⌘K is unaffected);
+  //   modeFollowSystem — the theme follows the OS, over `mode`, while on;
+  //   targetScore — the target score in tenths (2.0 is 20); null until set;
+  //   quantRepeat — a missed quant question comes back as a new question with
+  //     the same trap ('new') or as itself ('same').
+  // facitTiming and textSize are plain text: §2 fixes only their defaults.
+  answerConfidence: integer('answer_confidence', { mode: 'boolean' }).default(true),
+  facitTiming: text('facit_timing').default('each'),
+  showMyTime: integer('show_my_time', { mode: 'boolean' }).default(false),
+  mockClockVisible: integer('mock_clock_visible', { mode: 'boolean' }).default(true),
+  mockReminder: integer('mock_reminder', { mode: 'boolean' }).default(true),
+  textSize: text('text_size').default('normal'),
+  motion: text('motion', { enum: ['system', 'less', 'none'] }).default('system'),
+  shortcuts: integer('shortcuts', { mode: 'boolean' }).default(true),
+  modeFollowSystem: integer('mode_follow_system', { mode: 'boolean' }).default(false),
+  targetScore: integer('target_score'),
+  quantRepeat: text('quant_repeat', { enum: ['new', 'same'] }).default('new'),
   // Lifetime activity counters, incremented on each write. They let the
   // all-time stats ("X frågor totalt", "Y pass") be O(1) reads instead of
   // count(*) scans, AND — crucially — they decouple the lifetime totals
@@ -101,6 +129,11 @@ export const sessions = sqliteTable(
     plan: text('plan', { mode: 'json' }).$type<string[]>(),
     // Which device this session was last touched on (resumption provenance).
     device: text('device', { enum: DEVICE_KINDS }),
+    // Questions marked with Markera in a Provpass (LJ-10, rebuild map §2), so
+    // the marks survive a device swap and reach Historik. JSON-encoded
+    // string[] of qids. Null when none are stored, as on every session from
+    // before the column.
+    marks: text('marks', { mode: 'json' }).$type<string[]>(),
   },
   (t) => ({
     // ≤1 active session per (user, kind). Partial index — only rows with
@@ -134,6 +167,11 @@ export const lessonProgress = sqliteTable(
     frameworkId: text('framework_id'),
     device: text('device', { enum: DEVICE_KINDS }),
     updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+    // Lesson-step resume (LJ-10, rebuild map §2): the step of the 5-step
+    // lesson the reader was on ("steg 2 av 5", 1–5), and the option they chose
+    // in "Gissa först" (a–e). Null on every bookmark from before the columns.
+    step: integer('step'),
+    guess: text('guess'),
   },
   (t) => ({
     userSection: uniqueIndex('idx_lesson_progress_user_section').on(t.userId, t.section),
@@ -225,6 +263,18 @@ export const dailyPlans = sqliteTable(
 export const ATTEMPT_SOURCES = ['authentic', 'synthetic', 'unknown'] as const
 export type AttemptSource = (typeof ATTEMPT_SOURCES)[number]
 
+// ── answer confidence and Repetera reasons (Ljusbord, LJ-10) ───────────
+//
+// The student commits an answer with how sure they are: Gissar, Tror det or
+// Säker, stored as ASCII words (owner decision). A mistakes row records why
+// it is in Repetera (rebuild map §2). SQLite keeps both as plain text, since
+// drizzle-kit writes no CHECK for an enum, so the routes that write them
+// validate them.
+export const CONFIDENCE_LEVELS = ['gissar', 'tror', 'saker'] as const
+export type Confidence = (typeof CONFIDENCE_LEVELS)[number]
+export const MISTAKE_REASONS = ['wrong', 'lucky', 'flagged', 'manual'] as const
+export type MistakeReason = (typeof MISTAKE_REASONS)[number]
+
 // ── attempts — one row per question answered ──────────────────────────
 //
 // `source` is the provenance above; `itemRevision` is the P5 unit revision a
@@ -247,6 +297,11 @@ export const attempts = sqliteTable(
     createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
     source: text('source', { enum: ATTEMPT_SOURCES }).notNull().default('unknown'),
     itemRevision: integer('item_revision'),
+    // How sure the student said they were (LJ-10, rebuild map §2): one of
+    // CONFIDENCE_LEVELS. Null when none was given, as on every row from
+    // before the column. §2 keeps it off Provpass answers: Markera is a
+    // pass's only uncertainty signal.
+    confidence: text('confidence', { enum: CONFIDENCE_LEVELS }),
   },
   (t) => ({
     // Every stats read filters by user and (usually) a created_at window
@@ -288,6 +343,15 @@ export const mistakes = sqliteTable(
     // at day 1. NULL means "no banked height" (fresh mistake, or already
     // consumed by a correct answer). See lib/srs.ts.
     lapseIntervalMinutes: integer('lapse_interval_minutes'),
+    // Why the question is in Repetera (LJ-10, rebuild map §2): 'wrong' (a
+    // miss), 'lucky' (right, but answered Gissar), 'flagged' (marked with
+    // Markera in a Provpass) or 'manual' ("Lägg i Repetera ändå"). The
+    // default, 'wrong', is what every row from before the column reads.
+    reason: text('reason', { enum: MISTAKE_REASONS }).default('wrong'),
+    // The confidence of the answer that last wrote the row, so Repetera can
+    // show "förra gången: Säker" without a join to attempts. Null when none
+    // was given.
+    lastConfidence: text('last_confidence', { enum: CONFIDENCE_LEVELS }),
   },
   (t) => ({
     // The due-queue read filters by user + status and orders by review
@@ -399,10 +463,43 @@ export const mockResults = sqliteTable(
     breakdown: text('breakdown', { mode: 'json' }).$type<unknown>().notNull(),
     createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
     estimateBasis: text('estimate_basis', { mode: 'json' }).$type<unknown>(),
+    // A Hel halva run (LJ-10, rebuild map §2): two passes with a 15-minute
+    // pause between them, whose two results carry the same id. Null for a
+    // single pass, as on every result from before the column.
+    halfRunId: text('half_run_id'),
   },
   (t) => ({
     // Newest-first per-user history read.
     byUserCreated: index('idx_mock_results_user_created').on(t.userId, t.createdAt),
+  }),
+)
+
+// ── explanation_feedback — "Hjälpte förklaringen?" per (user, question) ─
+//
+// The server side of the app/src/api/feedback.ts seam (LJ-10, rebuild map
+// §2; its endpoint is optional for v1, and no route reads or writes the table
+// yet). One row per (user, qid), so a later answer replaces the earlier one:
+// `verdict` is the student's Ja / Delvis / Nej, `note` an optional comment
+// and `model` the model that wrote the explanation, so the feedback can be
+// traced to the text it is about. cascadeDeleteUser does not name the table:
+// the user_id foreign key deletes its rows with the users row, as it does
+// user_ability's.
+export const explanationFeedback = sqliteTable(
+  'explanation_feedback',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    qid: text('qid').notNull(),
+    verdict: text('verdict').notNull(),
+    note: text('note'),
+    model: text('model'),
+    createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+  },
+  (t) => ({
+    // One row per (user, question): the upsert target of a PUT.
+    userQid: uniqueIndex('idx_explanation_feedback_user_qid').on(t.userId, t.qid),
   }),
 )
 
@@ -511,6 +608,8 @@ export type DailyPlanRow = typeof dailyPlans.$inferSelect
 export type NewDailyPlanRow = typeof dailyPlans.$inferInsert
 export type MockResultRow = typeof mockResults.$inferSelect
 export type NewMockResultRow = typeof mockResults.$inferInsert
+export type ExplanationFeedbackRow = typeof explanationFeedback.$inferSelect
+export type NewExplanationFeedbackRow = typeof explanationFeedback.$inferInsert
 export type ItemStat = typeof itemStats.$inferSelect
 export type NewItemStat = typeof itemStats.$inferInsert
 export type UserAbility = typeof userAbility.$inferSelect
