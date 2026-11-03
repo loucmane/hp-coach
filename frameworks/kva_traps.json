@@ -4,9 +4,37 @@
   "version": 1,
   "authored_at": "2026-05-11",
   "notes": "v0 — synthesized from 8 extracted candidates + corpus pass over 328 KVA explanations. KVA option taxonomy (A=I>II, B=II>I, C=I=II, D=otillräcklig info) is the foundational meta-rule and is NOT cataloged as a trap; it is assumed. Entries are organized roughly: 001–012 = D-svaret / free-parameter traps (highest leverage — students consistently pick A/B/C when D is correct), 013–022 = sign / parity / direction traps, 023–038 = computation-shortcut and domain-formula traps.",
+  "families": [
+    {
+      "name": "Fri parameter",
+      "description": "när något fortfarande kan vandra"
+    },
+    {
+      "name": "Tecken och riktning",
+      "description": "när ett minustecken eller en omvänd ordning avgör"
+    },
+    {
+      "name": "Förväxlade formler",
+      "description": "när två närliggande samband blandas ihop"
+    },
+    {
+      "name": "Lånade regler",
+      "description": "när en regel används där den inte gäller"
+    },
+    {
+      "name": "Räknevägar",
+      "description": "när ett överslag eller en lång uträkning lockar"
+    },
+    {
+      "name": "Olika måttstockar",
+      "description": "när talen mäts mot olika helheter eller enheter"
+    }
+  ],
   "entries": [
     {
       "id": "KVA-TRAP-001",
+      "question_title": "Låser x² = y² tecknet?",
+      "family": "Fri parameter",
       "pattern_description": "Student ser x² = y² (eller kvadratlikhet) och drar slutsatsen x = y — missar att x = -y är lika giltigt.",
       "why_it_occurs": "Den naturliga läsningen av 'kvadraterna är lika' är 'talen är lika'. Studenten glömmer att kvadrering raderar tecknet, så villkoret splittras i två fall: x = y OCH x = -y, båda förenliga med given info.",
       "common_distractor_signature": "Väljer C (I = II) när D är rätt — ser den algebraiska matchningen och stannar innan den negativa grenen är kontrollerad.",
@@ -29,6 +57,8 @@
     },
     {
       "id": "KVA-TRAP-002",
+      "question_title": "Vad låser en summa som y + z = 0?",
+      "family": "Fri parameter",
       "pattern_description": "Student behandlar en summalikhet (t.ex. y + z = 0, eller x + y = k) som om den låste varje enskild term.",
       "why_it_occurs": "Ekvationer 'känns' som om de borde bestämma variablerna. Men en ekvation i två obekanta låser bara en linjär kombination — varje enskild term är fortfarande fri längs villkorslinjen.",
       "common_distractor_signature": "Väljer A eller B baserat på en specifik vald lösning (t.ex. sätter y = -z och antar z > 0), missar att tecknet på den fria variabeln kan flippa svaret.",
@@ -52,6 +82,8 @@
     },
     {
       "id": "KVA-TRAP-003",
+      "question_title": "Hur jämför du två tal när det ena har en gräns?",
+      "family": "Fri parameter",
       "pattern_description": "En olikhet binder BARA en av de två jämförda variablerna (t.ex. 'Clara > 22'), och lämnar den andra i ett öppet intervall som korsar jämförelsemålet.",
       "why_it_occurs": "Olikheter ser ut som 'tillräcklig info' — de begränsar något. Studenten glömmer att en undre gräns på A inte säger något om B, och att A:s intervall kan överlappa båda sidor av B.",
       "common_distractor_signature": "Väljer A eller B genom att förankra sig vid gränsen (t.ex. antar att Clara är exakt 22 eller precis över), missar att den obegränsade variabeln kan ligga var som helst i sitt intervall — D.",
@@ -74,6 +106,8 @@
     },
     {
       "id": "KVA-TRAP-004",
+      "question_title": "Hur lång är rektangelns längsta sida när omkretsen är känd?",
+      "family": "Fri parameter",
       "pattern_description": "Geometrisk figur med fixerad area ELLER fixerad omkrets, men fri form — studenten antar att sidlängderna är låsta.",
       "why_it_occurs": "'En rektangel med area 24' låter konkret. Men area = bas·höjd har oändligt många (bas, höjd)-par som uppfyller villkoret; den längsta sidan kan variera från ett minimum (mest kompakt) upp till godtyckligt stort.",
       "common_distractor_signature": "Väljer A eller B genom att föreställa sig en 'typisk' rektangel (ofta nästan kvadratisk), missar att samma villkor också tillåter en nålsmal rektangel med helt andra sidlängder.",
@@ -97,6 +131,8 @@
     },
     {
       "id": "KVA-TRAP-005",
+      "question_title": "Vad tillåter villkoret k ≠ 0?",
+      "family": "Fri parameter",
       "pattern_description": "En fri parameter k (ofta beskriven som 'k ≠ 0' eller 'b är ett tal') multipliceras med en variabel; tecknet och magnituden på k öppnar var för sig olika fall.",
       "why_it_occurs": "'k ≠ 0' låter restriktivt men är i själva verket mycket tillåtande: k kan vara stort, litet (0 < k < 1) eller negativt — och varje val ger en annan relation mellan x och kx.",
       "common_distractor_signature": "Väljer A eller B genom att tyst anta k > 1 ('det normala fallet'), missar att 0 < k < 1 vänder storleksordningen och k < 0 vänder tecknet.",
@@ -121,6 +157,8 @@
     },
     {
       "id": "KVA-TRAP-006",
+      "question_title": "Vad säger rad- och kolumnsummor om en enskild cell?",
+      "family": "Fri parameter",
       "pattern_description": "En tvåvägstabell ger rad- och kolumnsummor men ingen samverkansfördelning — studenten behandlar den som fullständigt specificerad.",
       "why_it_occurs": "Marginalsummor ser ut som fullständig information. Men utan minst ett inre cellvärde (eller oberoendeantagande) är cellfördelningen fri inom marginalerna.",
       "common_distractor_signature": "Väljer A/B/C genom att anta proportionell/uniform fördelning över cellerna, missar att de inre cellerna kan ligga var som helst inom villkoret.",
@@ -143,6 +181,8 @@
     },
     {
       "id": "KVA-TRAP-007",
+      "question_title": "Hur många villkor ger två ekvationer?",
+      "family": "Fri parameter",
       "pattern_description": "Två givna ekvationer ser olika ut men den ena är en multipel/proportionell omskrivning av den andra — bara EN oberoende villkor återstår.",
       "why_it_occurs": "Två ekvationer 'borde' bestämma två obekanta. Studenten räknar rader på pappret istället för att kontrollera linjärt oberoende; om ekvation två är en multipel av ettan har du i själva verket ett ett-ekvation-två-obekanta-system.",
       "common_distractor_signature": "Väljer A/B/C genom att lösa systemet som om det hade unik lösning, missar beroendet. Rätt svar är oftast D.",
@@ -165,6 +205,8 @@
     },
     {
       "id": "KVA-TRAP-008",
+      "question_title": "Var sitter den räta vinkeln?",
+      "family": "Fri parameter",
       "pattern_description": "Geometrisk uppgift med en 'utmärkande' egenskap (t.ex. 'rätvinklig triangel', 'likbent') har flera giltiga konfigurationer — studenten låser sig vid en.",
       "why_it_occurs": "'En rätvinklig triangel' låter som EN triangel. Men rätvinkeln kan sitta i vilken som helst av tre hörn, och 'likbent' har tre val för vilken sida som är bas — varje konfiguration ger olika vinklar/sidor.",
       "common_distractor_signature": "Väljer A/B/C genom att rita den mest symmetriska eller 'självklara' konfigurationen, missar att andra konfigurationer uppfyller samma beskrivning men ger ett annat svar.",
@@ -187,6 +229,8 @@
     },
     {
       "id": "KVA-TRAP-009",
+      "question_title": "Vad följer av x − y = y − x?",
+      "family": "Fri parameter",
       "pattern_description": "Ekvationen tvingar fram x = y (eller x = -y) men fixerar inte själva värdet — studenten jämför I mot ett konkret tal utan att kolla den okändas intervall.",
       "why_it_occurs": "När du väl härlett 'x = y' känns algebran klar. Men om kvantiteten som jämförs beror på magnituden (t.ex. 'x' vs '0') och x är fortfarande fri, är jämförelsen inte bestämd.",
       "common_distractor_signature": "Väljer C eftersom den algebraiska relationen ser ut som en match, missar att jämförelsemålet (en konstant) inte låses av 'x = y' ensamt.",
@@ -209,6 +253,8 @@
     },
     {
       "id": "KVA-TRAP-010",
+      "question_title": "Hur hänger ett medelvärde ihop med de enskilda talen?",
+      "family": "Fri parameter",
       "pattern_description": "Medelvärde ges — studenten antar att de enskilda värdena är bestämda.",
       "why_it_occurs": "Medel = summa / antal, så medelvärdet låser SUMMAN men inte de enskilda termerna. Studenten behandlar 'medel = 5' som om varje värde vore 5 (eller nära).",
       "common_distractor_signature": "Väljer A/B/C genom att anta att medelvärdet är lika med jämförelsevärdet, missar att enskilda termer kan vara godtyckligt större/mindre så länge summan balanseras.",
@@ -232,6 +278,8 @@
     },
     {
       "id": "KVA-TRAP-011",
+      "question_title": "Vad säger ”40 % är blå” om antalet?",
+      "family": "Fri parameter",
       "pattern_description": "Procentvillkor (t.ex. '40 % är blå') låser FÖRHÅLLANDET men inte det absoluta antalet — studenten behandlar det som konkreta tal.",
       "why_it_occurs": "Procent känns som ett antal. Men '40 % blå' är förenligt med 4 av 10, 40 av 100, 400 av 1000 — det absoluta antalet är fritt om inte totalen ges.",
       "common_distractor_signature": "Väljer A/B/C genom att låtsas att totalen är 100, missar att jämförelsen kan bero på absoluta antal som procenten inte låser.",
@@ -254,6 +302,8 @@
     },
     {
       "id": "KVA-TRAP-012",
+      "question_title": "Vad ger ett hastighetsintervall för restiden?",
+      "family": "Fri parameter",
       "pattern_description": "Hastighets-/sträcka-/tidsuppgift där en storhet ligger i ett intervall — studenten plockar en ändpunkt istället för att testa hela intervallet.",
       "why_it_occurs": "Textuppgifter med hastighetsintervall känns lösbara: 'mellan 50 och 60 km/h' låter som ett konkret intervall. Studenten räknar med en ändpunkt och jämför; om målvärdet ligger INUTI det resulterande tid-/sträcka-intervallet är svaret D.",
       "common_distractor_signature": "Väljer A eller B genom att räkna med mittpunkten eller en ändpunkt, missar att den andra ändpunkten flippar jämförelsen.",
@@ -276,6 +326,8 @@
     },
     {
       "id": "KVA-TRAP-013",
+      "question_title": "Negativ bas med exponent — vad avgör tecknet?",
+      "family": "Tecken och riktning",
       "pattern_description": "Negativ bas upphöjd till en potens — studenten ignorerar exponentens paritet.",
       "why_it_occurs": "Magnituden är det iögonenfallande; teckenflippen från udda mot jämn exponent är lätt att glömma. Studenten räknar |(-a)^n| och väljer A/B utan att flippa tecknet för udda n.",
       "common_distractor_signature": "Väljer alternativet som om resultatet vore positivt, missar att udda n bevarar det negativa tecknet — vilket flippar storleksjämförelsen.",
@@ -299,6 +351,8 @@
     },
     {
       "id": "KVA-TRAP-014",
+      "question_title": "Vad händer med olikheten om du multiplicerar med y?",
+      "family": "Tecken och riktning",
       "pattern_description": "Multiplicera eller dela en olikhet med ett variabeluttryck vars tecken är okänt — studenten behåller riktningen.",
       "why_it_occurs": "Olikheter känns som ekvationer under algebraisk manipulation. Studenten multiplicerar båda sidor med y (eller 1/y) utan att först kolla sign(y); om y kan vara negativ vänds olikheten.",
       "common_distractor_signature": "Väljer A eller B genom att behandla olikheten som bevarad genom operationen, missar att svaret beror på sign(y) — det faktiska svaret är ofta D.",
@@ -322,6 +376,8 @@
     },
     {
       "id": "KVA-TRAP-015",
+      "question_title": "Vad betyder ”störst” när negativa tal är med?",
+      "family": "Tecken och riktning",
       "pattern_description": "Jämför två negativa tal — studenten väljer det med större absolutvärde, glömmer att 'större' betyder närmare noll.",
       "why_it_occurs": "På tallinjen sammanfaller 'större' och 'längre från noll' oftast. För negativa tal gör de det inte: -3 < -2 även om |-3| > |-2|.",
       "common_distractor_signature": "Väljer A eller B genom att läsa absolutvärde som magnitud, missar teckenflippen — svaret hamnar exakt omvänt.",
@@ -344,6 +400,8 @@
     },
     {
       "id": "KVA-TRAP-016",
+      "question_title": "Hur jämför du två linjers m när deras k skiljer sig åt?",
+      "family": "Fri parameter",
       "pattern_description": "Lutning k och y-skärning m är oberoende — studenten härleder den ena från den andra.",
       "why_it_occurs": "Både k och m beskriver 'var linjen ligger'. Studenten blandar ihop 'brant linje' med 'hög y-skärning' eller tvärtom, och behandlar den ena som proxy för den andra.",
       "common_distractor_signature": "Väljer A/B genom att överföra info om k till m (eller tvärtom), t.ex. 'positiv lutning' tas som tecken på 'positiv m'.",
@@ -366,6 +424,8 @@
     },
     {
       "id": "KVA-TRAP-017",
+      "question_title": "Hur hänger lutningarna ihop för vinkelräta linjer?",
+      "family": "Förväxlade formler",
       "pattern_description": "Vinkelräta linjer — studenten använder k₂ = -k₁ istället för k₂ = -1/k₁.",
       "why_it_occurs": "'Vinkelrät' antyder 'motsatt riktning', och minustecknet är rätt — men relationen är den NEGATIVA INVERSEN, inte negativen. Studenten tappar inverteringen.",
       "common_distractor_signature": "Väljer alternativet som bygger på k₂ = -k₁ — fel magnitud men rätt tecken på relationen, ser ytligt rätt ut.",
@@ -388,6 +448,8 @@
     },
     {
       "id": "KVA-TRAP-018",
+      "question_title": "Vad gör en större exponent när basen är 0,99?",
+      "family": "Tecken och riktning",
       "pattern_description": "Basen i ett exponentuttryck — studenten glömmer att bas i (0,1) vänder storleksmonotonicitet i exponenten.",
       "why_it_occurs": "'Större exponent = större värde' är regeln för bas > 1, och studenten tillämpar den universellt. För 0 < bas < 1 vänds relationen.",
       "common_distractor_signature": "Väljer A/B genom att lita på att större exponent ger större värde, missar att för bas < 1 ger det ett mindre värde.",
@@ -411,6 +473,8 @@
     },
     {
       "id": "KVA-TRAP-019",
+      "question_title": "Hur förhåller sig a − b till b − a?",
+      "family": "Tecken och riktning",
       "pattern_description": "Differens mellan två ordnade storheter (a − b vs b − a) — studenten läser fel tecken.",
       "why_it_occurs": "De två differenserna är varandras motsatser; vilken som är positiv beror på vilken av a, b som är störst. Studenten behandlar dem som lika i magnitud och ignorerar tecknet.",
       "common_distractor_signature": "Väljer C (lika) när svaret är D, genom att läsa 'samma skillnad' som om ordningen inte spelade roll.",
@@ -433,6 +497,8 @@
     },
     {
       "id": "KVA-TRAP-020",
+      "question_title": "Vad väger tyngst i cylinderns volym, r eller h?",
+      "family": "Lånade regler",
       "pattern_description": "Cylindervolym πr²h — studenten behandlar r och h som lika viktade.",
       "why_it_occurs": "Både r och h ser linjära ut i formeln. Men r är KVADRERAT, så en liten förändring i radien dominerar över en proportionell höjdförändring.",
       "common_distractor_signature": "Väljer A/B genom att jämföra r + h eller r × h, missar att radien dominerar pga r²-faktorn.",
@@ -457,6 +523,8 @@
     },
     {
       "id": "KVA-TRAP-021",
+      "question_title": "Hur jämför du medianerna i två serier med olika medelvärden?",
+      "family": "Fri parameter",
       "pattern_description": "Median vs medelvärde — studenten behandlar dem som utbytbara eller antar att den ena binder den andra.",
       "why_it_occurs": "För symmetriska små serier sammanfaller de ofta. Studenten generaliserar och antar att en förändring i den ena förskjuter den andra.",
       "common_distractor_signature": "Väljer A/B/C genom att använda median när medel efterfrågas (eller tvärtom), missar att de två är oberoende statistikor som kan röra sig åt motsatta håll.",
@@ -480,6 +548,8 @@
     },
     {
       "id": "KVA-TRAP-022",
+      "question_title": "Hur ligger x-värdena kring parabelns symmetrilinje?",
+      "family": "Räknevägar",
       "pattern_description": "Parabeln f(x) = x² + bx + c är symmetrisk kring x = -b/2 — studenten jämför f(a), f(b) i icke-symmetriska punkter utan att utnyttja axeln.",
       "why_it_occurs": "Studenten räknar ut f(a) och f(b) direkt, vilket fungerar men är långsamt och felbenäget. De missar att punkter på samma avstånd från -b/2 ger identiska f-värden.",
       "common_distractor_signature": "Väljer A eller B genom att räkna fel på ett av värdena, när symmetrin kring x = -b/2 hade gett C direkt.",
@@ -502,6 +572,8 @@
     },
     {
       "id": "KVA-TRAP-023",
+      "question_title": "Hur jämför du bråk med olika nämnare?",
+      "family": "Lånade regler",
       "pattern_description": "Bråk med olika nämnare — studenten jämför täljare eller nämnare direkt utan att likställa.",
       "why_it_occurs": "När studenten ser '5/7 vs 4/9' väljer hen den större täljaren eller mindre nämnaren utan att konvertera till gemensam bas.",
       "common_distractor_signature": "Väljer A eller B baserat på en-komponents-heuristik ('större täljare = större bråk' eller 'mindre nämnare = större bråk'), missar att båda komponenterna spelar roll.",
@@ -527,6 +599,8 @@
     },
     {
       "id": "KVA-TRAP-024",
+      "question_title": "Hur jämför du två produkter med nästan samma tal?",
+      "family": "Räknevägar",
       "pattern_description": "Algebraiska uttryck med gemensam struktur — studenten räknar båda sidor numeriskt istället för att distribuera/faktorisera bort variablerna.",
       "why_it_occurs": "Direkt utvärdering känns säkert. Men många KVA-uttryck är designade så att distribution eller faktorisering kancellerar variablerna och bara konstanterna återstår att jämföra — sparar tid och undviker räknefel.",
       "common_distractor_signature": "Den långa vägen ger räknefel som hamnar i A/B när uttrycken faktiskt är lika (C) eller skiljer sig med en pytteliten konstant.",
@@ -552,6 +626,8 @@
     },
     {
       "id": "KVA-TRAP-025",
+      "question_title": "Spelar ordningen roll när kronor och procent blandas?",
+      "family": "Olika måttstockar",
       "pattern_description": "Sammansatta rabatter som blandar procent och absolutbelopp (kr) — studenten antar att ordningen inte spelar roll.",
       "why_it_occurs": "Procentoperationer ensamma är kommutativa (10 % sedan 20 % = 20 % sedan 10 %). Att blanda kr-rabatt med %-rabatt bryter kommutativiteten — kr först sedan % skiljer sig från % först sedan kr.",
       "common_distractor_signature": "Väljer C (lika) när de två ordningarna faktiskt ger olika slutpris — svaret är A eller B beroende på riktning.",
@@ -574,6 +650,8 @@
     },
     {
       "id": "KVA-TRAP-026",
+      "question_title": "Hur jämför du längder i km och mm?",
+      "family": "Olika måttstockar",
       "pattern_description": "Storheter angivna i olika enheter — studenten jämför råa tal utan att konvertera.",
       "why_it_occurs": "Tal ser större eller mindre ut beroende på enhet (1000 m vs 1 km vs 100 cm). Studenten missar att '50 m/s vs 100 km/h' kräver konvertering före jämförelse.",
       "common_distractor_signature": "Väljer A eller B baserat på det råa talet, missar att enheten ändrar magnituden — det faktiska svaret är ofta det motsatta.",
@@ -599,6 +677,8 @@
     },
     {
       "id": "KVA-TRAP-027",
+      "question_title": "Vad säger två sidor om den tredje i en triangel?",
+      "family": "Fri parameter",
       "pattern_description": "Triangelolikheten — studenten glömmer att tredje sidan måste ligga i (|a − b|, a + b).",
       "why_it_occurs": "Att känna till två sidor känns som 'nästan hela triangeln'. Studenten jämför intervall för tredje sidan fel, ofta genom att plocka ett enskilt 'rimligt' värde istället för det öppna intervallet.",
       "common_distractor_signature": "Väljer A eller B genom att anta att tredje sidan är något 'naturligt' värde (som medelvärdet), missar att det faktiska intervallet kan korsa jämförelsemålet → D.",
@@ -624,6 +704,8 @@
     },
     {
       "id": "KVA-TRAP-028",
+      "question_title": "Hur jämför du en sannolikhet med 1/4?",
+      "family": "Räknevägar",
       "pattern_description": "Sannolikhet — studenten jämför utan att explicit räkna både gynnsamma och totala utfall.",
       "why_it_occurs": "Sannolikheter känns intuitiva. Studenten ögonmäter 'mest sannolikt' istället för att räkna gynnsamma/totala för båda alternativen, och missar ofta komplementär eller kombinatorisk struktur.",
       "common_distractor_signature": "Väljer A/B på intuition, missar att den explicita räkningen ger motsatt svar — eller väljer C utan att kolla de exakta talen.",
@@ -649,6 +731,8 @@
     },
     {
       "id": "KVA-TRAP-029",
+      "question_title": "Hur jämför du en bråksumma med ett enda bråk?",
+      "family": "Räknevägar",
       "pattern_description": "Identisk täljare, olika nämnare — studenten misslyckas tillämpa 'mindre nämnare = större bråk'.",
       "why_it_occurs": "När täljarna ser oskyldigt lika ut (t.ex. 93/70 vs 93/71) försöker studenten ändå konvertera mentalt till decimaler eller uppskatta, och drar in räknefel.",
       "common_distractor_signature": "Väljer C (lika) genom att titta på samma täljare, eller väljer fel riktning genom att blanda ihop nämnar-storlek med bråk-storlek.",
@@ -671,6 +755,8 @@
     },
     {
       "id": "KVA-TRAP-030",
+      "question_title": "Hur jämför du två hastigheter med olika sträcka och tid?",
+      "family": "Olika måttstockar",
       "pattern_description": "Hastighet = sträcka / tid — studenten jämför hastigheter utan att normalisera tidsbaserna.",
       "why_it_occurs": "När 'Pia cyklade dubbelt så långt på dubbelt så lång tid', drar studenten slutsatsen att hon är dubbelt så snabb (eller långsam). Det är kvoten som spelar roll, inte absolutvärdena.",
       "common_distractor_signature": "Väljer A eller B genom att läsa sträcka ELLER tid ensamt, missar att proportionell skalning av båda lämnar hastigheten oförändrad (C).",
@@ -695,6 +781,8 @@
     },
     {
       "id": "KVA-TRAP-031",
+      "question_title": "Hur ställer du upp en åldersgåta med ”för tre år sedan”?",
+      "family": "Räknevägar",
       "pattern_description": "Åldersuppgift med flera personer — studenten tappar bort sig i 'tidigare/senare'-tidsförskjutningar.",
       "why_it_occurs": "Åldersuppgifter komprimerar flera tidpunkter och relationer. Studenten blandar ihop 'ålder då' med 'ålder nu' och förlorar koll på vilken Δ som gäller för vem.",
       "common_distractor_signature": "Väljer A/B genom att förankra sig vid fel tidpunkt eller tillämpa Δ på bara en person — svaret är ofta omvänt.",
@@ -719,6 +807,8 @@
     },
     {
       "id": "KVA-TRAP-032",
+      "question_title": "Vilka x löser en andragradsekvation?",
+      "family": "Fri parameter",
       "pattern_description": "Andragradsekvation med två rötter — studenten plockar en rot och fortsätter, missar att den andra kan ge ett annat svar.",
       "why_it_occurs": "När en rot är funnen slutar studenten lösa. Men x² = a (eller x² − 2x − 3 = 0) har TVÅ rötter; om jämförelsen beror på vilken rot x är, kan svaret vara D.",
       "common_distractor_signature": "Väljer A/B baserat på en rot (ofta den positiva), missar den negativa grenen som flippar svaret → D.",
@@ -742,6 +832,8 @@
     },
     {
       "id": "KVA-TRAP-033",
+      "question_title": "Samma omkrets — samma area?",
+      "family": "Fri parameter",
       "pattern_description": "Samma area men olika form — studenten antar samma omkrets (eller tvärtom).",
       "why_it_occurs": "Area och omkrets känns kopplade ('större area = större omkrets'). De är det inte: för fixerad area har den mest effektiva formen (cirkel/kvadrat) minst omkrets; långsmala former har större omkrets.",
       "common_distractor_signature": "Väljer C (lika) vid jämförelse av en kvadrats omkrets med en triangels vid samma area, missar att kvadraten har den mindre omkretsen.",
@@ -764,6 +856,8 @@
     },
     {
       "id": "KVA-TRAP-034",
+      "question_title": "Hur jämför du inverser som 1/x och 1/4?",
+      "family": "Tecken och riktning",
       "pattern_description": "Jämförelse av invers — studenten glömmer att för positiva tal ger ett större värde en mindre invers.",
       "why_it_occurs": "Reciprokens monotonicitet vänds (för positiva tal). Studenten blandar ihop 'större a' med 'större 1/a'.",
       "common_distractor_signature": "Väljer A när B är rätt (eller tvärtom), genom att överföra ordningen från a till 1/a direkt.",
@@ -786,6 +880,8 @@
     },
     {
       "id": "KVA-TRAP-035",
+      "question_title": "Hur jämför du två f-värden när f(x) = ax² + bx?",
+      "family": "Räknevägar",
       "pattern_description": "Kvadratisk f(x) är identisk vid två icke-triviala nollställen av f — studenten räknar båda värden numeriskt utan att se att f(a) = f(b) = 0.",
       "why_it_occurs": "Numerisk utvärdering känns säkert men missar den strukturella genvägen: om a, b båda är nollställen till f, så är f(a) = f(b) (ofta 0). Studenten bränner tid och riskerar räknefel.",
       "common_distractor_signature": "Väljer A eller B pga en räkneslarv, när faktorisering hade visat att båda kvantiteterna är lika (C) direkt.",
@@ -808,6 +904,8 @@
     },
     {
       "id": "KVA-TRAP-036",
+      "question_title": "Vad tillför ordet ”heltal” i villkoret?",
+      "family": "Räknevägar",
       "pattern_description": "Heltalsvillkor ('positiva heltal') — studenten behandlar det som 'positiva tal' och missar delbarhetsfilter.",
       "why_it_occurs": "'Positiv' är det iögonenfallande ordet; 'heltal' tappas. Men heltalsvillkoret tvingar fram delbarhet — t.ex. x + 2y = 54 med x, y positiva heltal begränsar y till heltalsvärden, inte 0,5 eller 1,7.",
       "common_distractor_signature": "Väljer A/B genom att plocka det algebraiskt minsta x, missar delbarhetsgolvet som tvingar fram ett större minimum.",
@@ -832,6 +930,8 @@
     },
     {
       "id": "KVA-TRAP-037",
+      "question_title": "Vilket tecken har x när |x| = 3?",
+      "family": "Fri parameter",
       "pattern_description": "Substitution med |x| eller ospecificerat tecken på x — studenten plockar ett tecken utan att testa det andra.",
       "why_it_occurs": "När uppgiften ger |x| = 3 eller x² = 9 kan x vara +3 ELLER -3. Studenten tar den positiva grenen tyst och missar det negativa fallet.",
       "common_distractor_signature": "Väljer A/B/C genom att räkna med x = +3, missar att x = -3 kan flippa jämförelsen → D.",
@@ -855,6 +955,8 @@
     },
     {
       "id": "KVA-TRAP-038",
+      "question_title": "Hur förhåller sig a % av b till b % av a?",
+      "family": "Olika måttstockar",
       "pattern_description": "Procentmultiplikation är kommutativ (a % av b = b % av a) — studenten behandlar den som ordningsberoende.",
       "why_it_occurs": "Procent känns som en enkelriktad operation ('30 % av 80' ser inte visuellt symmetriskt ut med '80 % av 30'). Algebraiskt: a % · b = (a/100) · b = (b/100) · a = b % · a.",
       "common_distractor_signature": "Väljer A eller B genom att försöka räkna båda sidor, missar att värdena är identiska per konstruktion (C).",
@@ -877,6 +979,8 @@
     },
     {
       "id": "KVA-TRAP-039",
+      "question_title": "Hur löser du upp en parentes med en faktor framför?",
+      "family": "Tecken och riktning",
       "pattern_description": "Distribuera ett minustecken över en parentes i en av kvantiteterna — studenten byter tecken på första termen men inte resten, och jämför sedan fel förenkling mot den andra sidan.",
       "why_it_occurs": "I en jämförelse förenklas I och II var för sig först. −(a + b) läses som −a + b när bara minustecknet framför a syns; multiplikationen mot de senare termerna tappas, särskilt vid tre eller fler termer. Ett tappat tecken flyttar kvantiteten och kastar om verdikten.",
       "common_distractor_signature": "Väljer A eller B efter att ena kvantiteten fått rätt storlek men fel tecken på en inre term (t.ex. förenklar II: 8 − (2 − 9x) till 6 − 9x istället för 6 + 9x), vilket ser ut att peka åt fel håll.",
@@ -899,6 +1003,8 @@
     },
     {
       "id": "KVA-TRAP-040",
+      "question_title": "I vilken ordning räknas ett blandat uttryck?",
+      "family": "Lånade regler",
       "pattern_description": "Räkneordning (PEMDAS) i ett blandat uttryck i en av kvantiteterna — studenten räknar vänster till höger och jämför fel värde mot den andra sidan.",
       "why_it_occurs": "När I eller II är ett blandat uttryck (t.ex. 5 − 3·2) räknar studenten naivt vänster→höger istället för att låta multiplikation och division gå före addition och subtraktion. Fel värde i den ena kvantiteten kastar om verdikten, och felet är alltid \"rimligt\" på ytan.",
       "common_distractor_signature": "Väljer A eller B efter att ha räknat en kvantitet vänster→höger utan prioritet — värdet ligger nära det rätta men på fel sida om jämförelsemålet.",
@@ -921,6 +1027,8 @@
     },
     {
       "id": "KVA-TRAP-041",
+      "question_title": "Hur räknar du med √a − √b?",
+      "family": "Lånade regler",
       "pattern_description": "Rot över en summa eller differens i en kvantitet — studenten räknar √a + √b som √(a + b) (eller √a − √b som √(a − b)) och jämför fel värde.",
       "why_it_occurs": "Mönstret från multiplikationsregeln √a · √b = √(ab) överförs felaktigt till addition och subtraktion. I en jämförelse låter det studenten kollapsa en kvantitet till en enda rot som ser ren ut, men värdet blir fel och verdikten kastas om.",
       "common_distractor_signature": "Väljer A eller B efter att ha förenklat en kvantitet med √a ± √b = √(a ± b) — den kollapsade roten hamnar på fel sida om jämförelsemålet.",
@@ -943,6 +1051,8 @@
     },
     {
       "id": "KVA-TRAP-042",
+      "question_title": "Hur jämför du √72 med ett närliggande tal?",
+      "family": "Räknevägar",
       "pattern_description": "En kvantitet innehåller √n där n döljer en perfekt kvadrat — studenten lämnar roten oförenklad och jämför ett grovt närmevärde mot den andra sidan.",
       "why_it_occurs": "√72 ser inte färdigförenklad ut, men √72 = √(36·2) = 6√2. I en jämförelse hoppar studenten till ett grovt decimalvärde och tappar precisionen som avgör en tät jämförelse — eller missar att kvantiteterna är exakt lika efter förenkling.",
       "common_distractor_signature": "Väljer A eller B baserat på ett avrundat decimalvärde av den oförenklade roten, missar att den utbrutna kvadratfaktorn hade gett ett exakt värde som ligger på andra sidan jämförelsemålet.",
@@ -965,6 +1075,8 @@
     },
     {
       "id": "KVA-TRAP-043",
+      "question_title": "Vad blir C · aˣ när x = 0?",
+      "family": "Lånade regler",
       "pattern_description": "En kvantitet innehåller a⁰ (ofta en exponentialfunktion utvärderad i x = 0) — studenten räknar a⁰ som 0 eller a och jämför fel värde.",
       "why_it_occurs": "Exponent 0 strider mot vanan \"aⁿ är produkten av n stycken a\". I en jämförelse där ena kvantiteten är C·aˣ vid x = 0 tolkar studenten a⁰ som 0 (eller basen själv) och får fel storlek på hela kvantiteten.",
       "common_distractor_signature": "Väljer A eller B efter att ha satt a⁰ = 0 (kvantiteten blir för liten) eller a⁰ = a (kvantiteten blir för stor) — jämförelsen mot den andra sidan kastas om.",
@@ -987,6 +1099,8 @@
     },
     {
       "id": "KVA-TRAP-044",
+      "question_title": "Vad gör du med exponenterna i (xᵃ)ᵇ?",
+      "family": "Förväxlade formler",
       "pattern_description": "En kvantitet är en potens av en potens (xᵃ)ᵇ — studenten adderar exponenterna istället för att multiplicera och jämför fel uttryck.",
       "why_it_occurs": "Exponentlagarna blandas ihop: xᵃ · xᵇ = xᵃ⁺ᵇ förväxlas med (xᵃ)ᵇ = xᵃ·ᵇ. I en jämförelse ger fel regel en kvantitet med fel exponent, vilket kan kasta om verdikten helt.",
       "common_distractor_signature": "Väljer A eller B efter att ha förenklat (xᵃ)ᵇ till xᵃ⁺ᵇ (eller tvärtom), så att kvantiteten hamnar på fel sida om jämförelsemålet.",
@@ -1009,6 +1123,8 @@
     },
     {
       "id": "KVA-TRAP-045",
+      "question_title": "Vad händer med tecknen när du sätter in ett värde?",
+      "family": "Tecken och riktning",
       "pattern_description": "En negativ värde substitueras i en kvantitet med potens eller yttre tecken — studenten tappar parenteserna, så (−a)² läses som −a², och jämför fel tecken.",
       "why_it_occurs": "Vid f(−2) ska −2 ersätta variabeln överallt, inklusive inuti potenser: (−2)² = +4 men −2² = −4. I en jämförelse skriver studenten mekaniskt −2² och tappar tecknet, vilket flippar kvantitetens tecken och verdikten.",
       "common_distractor_signature": "Väljer A eller B efter att ha låtit (−värde)² tolkas som −värde² — magnituden blir rätt men tecknet fel, så jämförelsen kastas om.",
@@ -1031,6 +1147,8 @@
     },
     {
       "id": "KVA-TRAP-046",
+      "question_title": "Hur noga behöver du räkna med π?",
+      "family": "Räknevägar",
       "pattern_description": "En jämförelse hänger på om π ligger över eller under 3 — studenten approximerar π ≈ 3 och drar slutsatsen att kvantiteterna är lika.",
       "why_it_occurs": "π ≈ 3 är en bekväm överslagsräkning, men π ≈ 3,14 ligger strax ÖVER 3. KVA bygger avsiktligt jämförelser där skillnaden mellan π och 3 (eller mellan π och 4) är exakt det som avgör verdikten, så en avrundning till 3 dödar informationen och pekar mot ett felaktigt C.",
       "common_distractor_signature": "Väljer C (lika) efter att ha satt π = 3, missar att den lilla överskjutningen 0,14 tippar jämförelsen åt ena hållet.",
@@ -1053,6 +1171,8 @@
     },
     {
       "id": "KVA-TRAP-047",
+      "question_title": "Hur jämför du 13 % av ett tal med 14 % av ett annat?",
+      "family": "Olika måttstockar",
       "pattern_description": "\"Högre procent vinner\" — studenten jämför två procenttal direkt och ignorerar att de tas av olika stora baser.",
       "why_it_occurs": "Procent känns som ett direkt mått på storlek, så 14 % ser större ut än 13 %. Men 14 % av en liten bas kan vara mindre än 13 % av en stor bas — det är produkten procent × bas som avgör, inte procenten ensam.",
       "common_distractor_signature": "Väljer den kvantitet med högre procenttal (eller högre bas) utan att räkna produkten, missar att den andra komponenten vänder verdikten.",
@@ -1075,6 +1195,8 @@
     },
     {
       "id": "KVA-TRAP-048",
+      "question_title": "Hur stora är hoppen i en exponentialfunktion?",
+      "family": "Lånade regler",
       "pattern_description": "Exponentiell förändring jämförs som om den vore linjär — studenten antar att lika steg i x ger lika stora steg i funktionsvärdet.",
       "why_it_occurs": "För en rät linje är differensen f(b) − f(a) densamma för alla punktpar med samma avstånd. Studenten generaliserar detta till exponentialfunktioner, men där multipliceras värdet med en faktor per steg, så samma x-avstånd ger olika stora hopp beroende på var man står.",
       "common_distractor_signature": "Väljer C (lika) genom att anta att två differenser med samma x-avstånd är lika, missar att exponentiell tillväxt gör det senare hoppet mycket större.",
@@ -1097,6 +1219,8 @@
     },
     {
       "id": "KVA-TRAP-049",
+      "question_title": "Hur jämför du m/s med km/h?",
+      "family": "Olika måttstockar",
       "pattern_description": "Hastigheter i m/s och km/h jämförs utan omvandling — studenten jämför siffrorna direkt eller använder fel omvandlingsfaktor.",
       "why_it_occurs": "m/s och km/h ser ut som samma sorts tal, men 1 m/s = 3,6 km/h. Att jämföra 40 m/s med 100 km/h utan att räkna om, eller att gissa faktorn (3,0 eller 3,5 istället för 3,6), ger fel storleksordning på den ena kvantiteten.",
       "common_distractor_signature": "Väljer A eller B efter att ha jämfört råa tal i olika enheter, eller efter att ha multiplicerat/dividerat med en felaktig faktor — verdikten hamnar fel.",
@@ -1119,6 +1243,8 @@
     },
     {
       "id": "KVA-TRAP-050",
+      "question_title": "Hur löser du ut x ur aˣ = N utan räknare?",
+      "family": "Räknevägar",
       "pattern_description": "En ekvation aˣ = N (eller en produkt av rötter satt lika med en potens) ska lösas för exponenten — studenten når efter logaritmer eller räknar ut decimaler istället för att känna igen samma bas.",
       "why_it_occurs": "Utan miniräknare känns aˣ = N olösligt, så studenten fastnar eller gissar. Men HP-varianterna är byggda så att N är en perfekt potens av basen (23³ = 12167), eller så kan båda leden skrivas med SAMMA bas (√5·√9 = √45 = 45^{1/2}). Då är exponenten trivial att avläsa och jämförelsen avgörs exakt.",
       "common_distractor_signature": "Väljer fel alternativ efter att ha tappat rottecken (läser √5·√9 = 45^x som 5·9 = 45^x → x = 1 i stället för 1/2), eller efter en decimalgissning som hamnar på fel sida.",
@@ -1141,6 +1267,8 @@
     },
     {
       "id": "KVA-TRAP-051",
+      "question_title": "Hur hänger två vinklar vid parallella linjer ihop?",
+      "family": "Förväxlade formler",
       "pattern_description": "Vinklar mellan parallella linjer — student läser av två markerade vinklar visuellt och gissar om de är lika eller summerar till 180°, istället för att avgöra relationen från vinkelparets läge.",
       "why_it_occurs": "När L₁ ∥ L₂ skärs av en transversal bestämmer POSITIONEN relationen: alternat- och likbelägna vinklar (Z- och F-läge) är lika, konsekutiva vinklar (samma sida, U-läge) summerar till 180°. I en jämförelse antar studenten fel relation och får I mot II att kantra.",
       "common_distractor_signature": "Väljer A eller B när svaret är C (alternatvinklar är lika men figuren fått dem att se olika ut) — eller C när relationen är supplementär (U-läge) och kvantiteterna skiljer sig.",
@@ -1163,6 +1291,8 @@
     },
     {
       "id": "KVA-TRAP-052",
+      "question_title": "Hur stor är den skuggade ytan?",
+      "family": "Räknevägar",
       "pattern_description": "Sammansatt/skuggad area — student försöker läsa av eller gissa den skuggade ytan i ett svep istället för att dekomponera figuren i grundformer och räkna del för del.",
       "why_it_occurs": "En skuggad yta är nästan alltid en grundform plus/minus en annan (rektangel minus halvcirklar, kvadrat minus triangel). I en jämförelse hoppar studenten över dekomponeringen, missar en delarea eller dubbelräknar, och den felaktiga totalen kastar om I mot II.",
       "common_distractor_signature": "Väljer A eller B efter att ha glömt en delarea eller subtraherat en bortklippt del som skulle adderats (eller tvärtom) — totalen hamnar precis på fel sida om jämförelsevärdet.",
@@ -1185,6 +1315,8 @@
     },
     {
       "id": "KVA-TRAP-053",
+      "question_title": "Vilket mått hör hemma i cirkelns formler?",
+      "family": "Förväxlade formler",
       "pattern_description": "Cirkelmått — student stoppar in diametern där radien krävs (eller hoppar över steget r = d/2), så att en kvantitet blir dubbelt eller fyra gånger för stor.",
       "why_it_occurs": "A = πr² och O = 2πr använder radien. När problemet ger diametern (eller omkretsen, eller en rullad sträcka) måste man halvera eller dela med π först. I en jämförelse tappar studenten det steget och kvantiteten hamnar på fel sida om jämförelsevärdet.",
       "common_distractor_signature": "Väljer A eller B med en kvantitet som är 2× för stor (radie tagen lika med diametern) eller där omkrets/sträcka inte delats med π innan diametern lästes av.",
@@ -1207,6 +1339,8 @@
     },
     {
       "id": "KVA-TRAP-054",
+      "question_title": "Vad blir f(a) − f(a + 1) för f(x) = kx + m?",
+      "family": "Räknevägar",
       "pattern_description": "Differens av en linjär funktion — student räknar f-värdena var för sig istället för att se att f(b) − f(a) = k(b − a) och att konstanten m faller bort.",
       "why_it_occurs": "För f(x) = kx + m kancellerar m i varje differens: f(b) − f(a) = k(b − a). Studenten räknar ut varje f-värde separat, drar med m i onödan och gör teckenfel — och den felaktiga differensen kastar om I mot II.",
       "common_distractor_signature": "Väljer fel alternativ efter ett teckenfel i f(a) − f(b) (räknat som f(b) − f(a)) eller efter att m dragits med felaktigt, så att differensen hamnar på fel sida om jämförelsevärdet.",
