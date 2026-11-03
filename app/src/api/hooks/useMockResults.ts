@@ -48,6 +48,9 @@ export type MockResultRow = {
    *  stored result. Null only on rows from before P5 provenance; absent from
    *  an older worker. Never sent by the client. */
   estimateBasis?: MockEstimateBasis | null
+  /** Groups the two passes of one "Hel halva" run (migration 0016). Null for
+   *  single passes; absent from an older worker. */
+  halfRunId?: string | null
 }
 
 export type ExposureMap = Record<string, { n: number; last: number }>
