@@ -37,6 +37,7 @@ import {
   pickDrillQuestions,
   pickMixedDrillQuestions,
 } from '@/lib/drill'
+import { firstSessionOrigin } from '@/lib/firstSession'
 import { sectionDoorLayoutId, useFirstContentSignal } from '@/lib/motion'
 import { readOrdDeck, recordOrdAnswer } from '@/lib/ordDeck'
 import { loadOrdWords, ORD_WORDS_SECTIONS, pickOrdWords } from '@/lib/ordWords'
@@ -82,6 +83,8 @@ type DrillSearch = {
   timed?: true
   /** Per-user spaced ORD word rounds. */
   words?: true
+  /** Answered welcome qids, consumed when the first ordinary ORD round opens. */
+  afterWelcome?: string
 }
 
 function validateSearch(input: Record<string, unknown>): DrillSearch {
@@ -162,6 +165,23 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
     out.section = 'ORD'
     out.words = true
   }
+  const afterWelcome = input.afterWelcome
+  if (
+    typeof afterWelcome === 'string' &&
+    afterWelcome.length < 240 &&
+    out.section === 'ORD' &&
+    out.start &&
+    !out.timed &&
+    !out.words &&
+    !out.framework &&
+    !out.mixed &&
+    !out.weak &&
+    !out.ar &&
+    afterWelcome.split(',').length <= 3 &&
+    afterWelcome.split(',').every((id) => firstSessionOrigin(id) !== null)
+  ) {
+    out.afterWelcome = afterWelcome
+  }
   return out
 }
 
@@ -238,6 +258,7 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
     start,
     timed,
     words,
+    afterWelcome,
   } = Route.useSearch()
   const section: DrillSection = sectionFromUrl ?? 'ORD'
   const timing = timed ? timedDrill(section) : null
@@ -286,6 +307,7 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
         search: (prev: DrillSearch) => ({
           ...prev,
           qid: next ?? undefined,
+          afterWelcome: next === null ? prev.afterWelcome : undefined,
           // Any qid change means a live drill — a stale `?done` from a
           // prior pass must not linger (or re-trigger reconstruction).
           done: undefined,
@@ -500,6 +522,7 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
                 DEFAULT_DRILL_LENGTH,
                 undefined,
                 drillRatings,
+                { excludeQids: afterWelcome?.split(',') },
               )
             }
 
