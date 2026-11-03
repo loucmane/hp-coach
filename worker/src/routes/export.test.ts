@@ -8,7 +8,7 @@ import { Hono } from 'hono'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { getDb } from '../db/client'
-import { attempts, mistakes, mockResults, sessions, users } from '../db/schema'
+import { attempts, lessonProgress, mistakes, mockResults, sessions, users } from '../db/schema'
 import { makeTestD1, type ShimD1 } from '../lib/testD1'
 import type { Env, Vars } from '../types'
 import { exportRoute, importRoute, SCHEMA_VERSION, TABLE_ROW_CAPS } from './export'
@@ -544,5 +544,412 @@ describe('import — provenance is re-derived on the server', () => {
       breakdown: result.breakdown,
       estimateBasis: { authentic: 2, synthetic: 0, unknown: 0, unclassified: 0, calibrated: true },
     })
+  })
+})
+
+// LJ-11 (rebuild map §2): the export carries every field 0016 added for
+// Ljusbord, import restores each of them, and a backup written before 0016
+// still imports.
+describe('the Ljusbord fields (LJ-11)', () => {
+  /** Every Konto pref away from its 0016 default, so a restore that drops one shows. */
+  const KONTO = {
+    answerConfidence: false,
+    facitTiming: 'end',
+    showMyTime: true,
+    mockClockVisible: false,
+    mockReminder: false,
+    textSize: 'xlarge',
+    motion: 'none',
+    shortcuts: false,
+    modeFollowSystem: true,
+    targetScore: 18,
+    quantRepeat: 'same',
+  } as const
+  /** The same prefs for a user who never opened Konto. */
+  const DEFAULTS = {
+    answerConfidence: true,
+    facitTiming: 'each',
+    showMyTime: false,
+    mockClockVisible: true,
+    mockReminder: true,
+    textSize: 'normal',
+    motion: 'system',
+    shortcuts: true,
+    modeFollowSystem: false,
+    targetScore: null,
+    quantRepeat: 'new',
+  }
+  const PLAN = ['var-2024-verb1-ORD-001', 'var-2024-verb1-ORD-002', 'var-2024-verb1-ORD-003']
+  const KVA = 'var-2024-kvant1-KVA-004'
+
+  type Row = Record<string, unknown>
+  type Envelope = { user: Row; tables: Record<string, Row[]> }
+
+  /** An account with every Ljusbord field set: drill answers given with and
+   *  without confidence, mistakes with their reasons, a lesson paused at a
+   *  step, and a Hel halva, two marked passes whose results share a run id. */
+  async function seedLjusbord(clerkUserId: string) {
+    const db = getDb(d1 as unknown as D1Database)
+    const [user] = await db
+      .insert(users)
+      .values({ clerkUserId, ...KONTO })
+      .returning()
+    const [drill] = await db
+      .insert(sessions)
+      .values({ userId: user.id, kind: 'drill', endedAt: new Date() })
+      .returning()
+    await db.insert(attempts).values([
+      {
+        userId: user.id,
+        sessionId: drill.id,
+        questionId: PLAN[0],
+        correct: true,
+        confidence: 'saker',
+      },
+      {
+        userId: user.id,
+        sessionId: drill.id,
+        questionId: PLAN[1],
+        correct: true,
+        confidence: 'gissar',
+      },
+      { userId: user.id, sessionId: drill.id, questionId: PLAN[2], correct: false },
+    ])
+    await db.insert(mistakes).values([
+      { userId: user.id, questionId: PLAN[1], reason: 'lucky', lastConfidence: 'gissar' },
+      { userId: user.id, questionId: PLAN[2], lastConfidence: 'tror' },
+      { userId: user.id, questionId: KVA, reason: 'manual' },
+    ])
+    await db.insert(lessonProgress).values({
+      userId: user.id,
+      section: 'KVA',
+      frameworkId: 'KVA-TRAP-001',
+      step: 2,
+      guess: 'c',
+    })
+    for (const [i, marks] of [[PLAN[0]], [PLAN[1], PLAN[2]]].entries()) {
+      const [pass] = await db
+        .insert(sessions)
+        .values({ userId: user.id, kind: 'mock', endedAt: new Date(), plan: PLAN, marks })
+        .returning()
+      await db.insert(mockResults).values({
+        userId: user.id,
+        sessionId: pass.id,
+        mode: 'authentic',
+        half: 'verbal',
+        examId: 'var-2024',
+        provpass: `verb${i + 1}`,
+        presented: 3,
+        answered: 0,
+        correct: 0,
+        seenBefore: 0,
+        durationMs: 3_300_000,
+        breakdown: { perSection: {}, missedQids: [], version: 1 },
+        halfRunId: 'hel-halva-1',
+      })
+    }
+    return { userId: user.id }
+  }
+
+  /** The Ljusbord fields of an export, each row with what tells it apart, in a
+   *  stable order. Ids are left out: import gives every row a new one. */
+  function ljusbordFields(envelope: unknown) {
+    const { user, tables } = envelope as Envelope
+    const pick = (row: Row, keys: readonly string[]) =>
+      Object.fromEntries(keys.map((key) => [key, row[key]]))
+    const rows = (table: string, keys: readonly string[]) =>
+      tables[table]
+        .map((row) => pick(row, keys))
+        .sort((a, b) => (JSON.stringify(a) < JSON.stringify(b) ? -1 : 1))
+    return {
+      user: pick(user, Object.keys(KONTO)),
+      sessions: rows('sessions', ['kind', 'marks']),
+      attempts: rows('attempts', ['questionId', 'confidence']),
+      mistakes: rows('mistakes', ['questionId', 'reason', 'lastConfidence']),
+      lessonProgress: rows('lessonProgress', ['section', 'step', 'guess']),
+      mockResults: rows('mockResults', ['provpass', 'halfRunId']),
+    }
+  }
+
+  /** A backup written before 0016, as the export wrote it then: every column
+   *  of that time, and none of the Ljusbord fields. */
+  const OLD_EXPORT = {
+    schemaVersion: 1,
+    exportedAt: '2026-10-20T08:00:00.000Z',
+    user: {
+      id: 41,
+      clerkUserId: 'user_old',
+      daysToExam: 170,
+      dailyMinutes: 30,
+      targetSittingId: 'var-2027',
+      coach: 'kompis',
+      palette: 'spalt',
+      mode: 'dark',
+      font: 'hyperlegible',
+      density: 'regular',
+      showStreak: false,
+      smartDrill: true,
+      mockDeferredDate: null,
+      attemptsTotal: 2,
+      drillsTotal: 1,
+      createdAt: '2026-09-01T10:00:00.000Z',
+    },
+    tables: {
+      sessions: [
+        {
+          id: 501,
+          userId: 41,
+          startedAt: '2026-10-19T18:00:00.000Z',
+          endedAt: '2026-10-19T18:06:00.000Z',
+          kind: 'drill',
+          sections: 'ORD',
+          position: 2,
+          currentQuestionId: null,
+          plan: [PLAN[0], PLAN[1]],
+          device: 'phone',
+        },
+        {
+          id: 502,
+          userId: 41,
+          startedAt: '2026-10-18T09:00:00.000Z',
+          endedAt: '2026-10-18T09:55:00.000Z',
+          kind: 'mock',
+          sections: 'ORD',
+          position: 3,
+          currentQuestionId: null,
+          plan: PLAN,
+          device: 'desktop',
+        },
+      ],
+      attempts: [
+        {
+          id: 9001,
+          userId: 41,
+          sessionId: 501,
+          questionId: PLAN[0],
+          selectedAnswer: 'B',
+          correct: true,
+          timeTakenMs: 14_000,
+          createdAt: '2026-10-19T18:01:00.000Z',
+          source: 'authentic',
+          itemRevision: null,
+        },
+        {
+          id: 9002,
+          userId: 41,
+          sessionId: 501,
+          questionId: PLAN[1],
+          selectedAnswer: 'D',
+          correct: false,
+          timeTakenMs: 21_000,
+          createdAt: '2026-10-19T18:02:00.000Z',
+          source: 'authentic',
+          itemRevision: null,
+        },
+      ],
+      mistakes: [
+        {
+          id: 77,
+          userId: 41,
+          questionId: PLAN[1],
+          layer1Ids: ['ORD-ROOT-012'],
+          status: 'active',
+          errorCount7d: 1,
+          lastErrorAt: '2026-10-19T18:02:00.000Z',
+          nextReviewAt: '2026-10-20T18:02:00.000Z',
+          intervalMinutes: 1440,
+          lapseIntervalMinutes: null,
+        },
+      ],
+      lessonProgress: [
+        {
+          id: 3,
+          userId: 41,
+          section: 'KVA',
+          frameworkId: 'KVA-TRAP-001',
+          device: 'desktop',
+          updatedAt: '2026-10-17T20:00:00.000Z',
+        },
+      ],
+      lessonReads: [
+        { id: 5, userId: 41, entryId: 'KVA-TRAP-001', readAt: '2026-10-17T20:05:00.000Z' },
+      ],
+      dailyPlans: [
+        {
+          id: 8,
+          userId: 41,
+          date: '2026-10-19',
+          plan: { version: 11, items: [] },
+          updatedAt: '2026-10-19T07:00:00.000Z',
+        },
+      ],
+      mockResults: [
+        {
+          id: 12,
+          userId: 41,
+          sessionId: 502,
+          mode: 'authentic',
+          half: 'verbal',
+          examId: 'var-2024',
+          provpass: 'verb1',
+          presented: 3,
+          answered: 0,
+          correct: 0,
+          seenBefore: 0,
+          durationMs: 3_300_000,
+          breakdown: { perSection: {}, missedQids: [], version: 1 },
+          createdAt: '2026-10-18T09:55:00.000Z',
+          estimateBasis: {
+            authentic: 3,
+            synthetic: 0,
+            unknown: 0,
+            unclassified: 0,
+            calibrated: true,
+            perSection: {},
+          },
+        },
+      ],
+    },
+  }
+
+  it('the export carries every field 0016 added', async () => {
+    await seedLjusbord('user_a')
+    const { body } = await getExport('user_a')
+    expect(ljusbordFields(body)).toEqual({
+      user: KONTO,
+      sessions: [
+        { kind: 'drill', marks: null },
+        { kind: 'mock', marks: [PLAN[0]] },
+        { kind: 'mock', marks: [PLAN[1], PLAN[2]] },
+      ],
+      attempts: [
+        { questionId: PLAN[0], confidence: 'saker' },
+        { questionId: PLAN[1], confidence: 'gissar' },
+        { questionId: PLAN[2], confidence: null },
+      ],
+      mistakes: [
+        { questionId: KVA, reason: 'manual', lastConfidence: null },
+        { questionId: PLAN[1], reason: 'lucky', lastConfidence: 'gissar' },
+        { questionId: PLAN[2], reason: 'wrong', lastConfidence: 'tror' },
+      ],
+      lessonProgress: [{ section: 'KVA', step: 2, guess: 'c' }],
+      mockResults: [
+        { provpass: 'verb1', halfRunId: 'hel-halva-1' },
+        { provpass: 'verb2', halfRunId: 'hel-halva-1' },
+      ],
+    })
+  })
+
+  it('import restores every one of them on the importing account, and again on a second round trip', async () => {
+    await seedLjusbord('user_a')
+    const { body: exported } = await getExport('user_a')
+    // user_b starts at the defaults, so every value it ends with was imported.
+    const { res } = await postImport('user_b', exported)
+    expect(res.status).toBe(200)
+    const { body: restored } = await getExport('user_b')
+    expect(ljusbordFields(restored)).toEqual(ljusbordFields(exported))
+
+    expect((await postImport('user_b', restored)).res.status).toBe(200)
+    const { body: again } = await getExport('user_b')
+    expect(ljusbordFields(again)).toEqual(ljusbordFields(exported))
+  })
+
+  it("a backup's null target clears the account's; a null or missing Konto pref keeps the account's own", async () => {
+    await seedLjusbord('user_a')
+    const { body: exported } = await getExport('user_a')
+    const envelope = exported as Envelope
+    const { motion: _dropped, ...user } = envelope.user
+    const payload = { ...envelope, user: { ...user, targetScore: null, textSize: null } }
+    expect((await postImport('user_a', payload)).res.status).toBe(200)
+    const { body } = await getExport('user_a')
+    expect(ljusbordFields(body).user).toEqual({ ...KONTO, targetScore: null })
+  })
+
+  it('a backup from before 0016 still imports, with every Ljusbord field at its default', async () => {
+    const { res, body } = await postImport('user_c', OLD_EXPORT)
+    expect(res.status).toBe(200)
+    expect((body as { restored: Record<string, number> }).restored).toEqual({
+      sessions: 2,
+      attempts: 2,
+      mistakes: 1,
+      lessonProgress: 1,
+      lessonReads: 1,
+      dailyPlans: 1,
+      mockResults: 1,
+    })
+    const { body: now } = await getExport('user_c')
+    expect(ljusbordFields(now)).toEqual({
+      user: DEFAULTS,
+      sessions: [
+        { kind: 'drill', marks: null },
+        { kind: 'mock', marks: null },
+      ],
+      attempts: [
+        { questionId: PLAN[0], confidence: null },
+        { questionId: PLAN[1], confidence: null },
+      ],
+      mistakes: [{ questionId: PLAN[1], reason: 'wrong', lastConfidence: null }],
+      lessonProgress: [{ section: 'KVA', step: null, guess: null }],
+      mockResults: [{ provpass: 'verb1', halfRunId: null }],
+    })
+    // What the backup did hold came through as before.
+    expect((now as Envelope).user).toMatchObject({
+      daysToExam: 170,
+      dailyMinutes: 30,
+      targetSittingId: 'var-2027',
+      coach: 'kompis',
+      mode: 'dark',
+    })
+  })
+
+  it("a backup from before 0016 leaves the account's Konto prefs as they are", async () => {
+    await seedLjusbord('user_a')
+    expect((await postImport('user_a', OLD_EXPORT)).res.status).toBe(200)
+    const { body } = await getExport('user_a')
+    expect(ljusbordFields(body).user).toEqual(KONTO)
+  })
+
+  // A value no write path stores fails the whole import, before the wipe. The
+  // prefs follow PATCH /api/me/prefs; the other fields, their schema.ts type.
+  it.each([
+    ['user', 'answerConfidence', 'yes'],
+    ['user', 'facitTiming', 'later'],
+    ['user', 'textSize', 'huge'],
+    ['user', 'motion', 'reduce'],
+    ['user', 'targetScore', 21],
+    ['user', 'targetScore', 1.5],
+    ['user', 'quantRepeat', 'samma'],
+    // The stored levels are the Swedish words, not the map's English ones.
+    ['attempts', 'confidence', 'sure'],
+    ['mistakes', 'reason', 'missed'],
+    ['mistakes', 'lastConfidence', 'Säker'],
+    ['sessions', 'marks', PLAN[0]],
+    ['lessonProgress', 'step', '2'],
+    ['lessonProgress', 'step', 2.5],
+    ['lessonProgress', 'guess', 3],
+    ['mockResults', 'halfRunId', 7],
+  ])('refuses %s.%s = %j before touching the account', async (table, key, value) => {
+    const { userId } = await seedLjusbord('user_a')
+    const before = await countAllRowsForUser(userId)
+    const { body: exported } = await getExport('user_a')
+    const envelope = exported as Envelope
+    const payload =
+      table === 'user'
+        ? { ...envelope, user: { ...envelope.user, [key]: value } }
+        : {
+            ...envelope,
+            tables: {
+              ...envelope.tables,
+              [table]: envelope.tables[table].map((row, i) =>
+                i === 0 ? { ...row, [key]: value } : row,
+              ),
+            },
+          }
+    const { res, body } = await postImport('user_a', payload)
+    expect(res.status).toBe(400)
+    expect((body as { error: { code: string } }).error.code).toBe('invalid_payload')
+    expect(await countAllRowsForUser(userId)).toEqual(before)
+    const { body: after } = await getExport('user_a')
+    expect(ljusbordFields(after)).toEqual(ljusbordFields(exported))
   })
 })
