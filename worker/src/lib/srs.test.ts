@@ -4,11 +4,13 @@
 import { describe, expect, it } from 'vitest'
 
 import {
+  applyConfidence,
   FIRST_INTERVAL_MINUTES,
   MAX_INTERVAL_MINUTES,
   nextOnCorrect,
   nextOnWrong,
   RELEARN_MINUTES,
+  SURE_RELEARN_MINUTES,
 } from './srs'
 
 const NOW = new Date('2026-05-08T10:00:00Z')
@@ -293,6 +295,180 @@ describe('exam-aware spacing', () => {
       expect(nextOnCorrect(rung, NOW, null, exam)).toEqual(nextOnCorrect(rung, NOW))
       expect(nextOnCorrect(rung, NOW, MAX_INTERVAL_MINUTES, exam)).toEqual(
         nextOnCorrect(rung, NOW, MAX_INTERVAL_MINUTES),
+      )
+    }
+  })
+})
+
+// ── Confidence policy (LJ-13) ────────────────────────────────────────
+describe('applyConfidence — confidence-aware scheduling (LJ-13)', () => {
+  const DAY_MIN = 24 * 60
+  const at = (minutes: number) => new Date(NOW.getTime() + minutes * 60_000)
+  const EXAM_SOON = at(20 * DAY_MIN)
+  // Every rung a row can be on, as the routes read it. 'wrong' is the
+  // column default, so every row from before LJ-13 reads it.
+  const ROWS = [
+    { status: 'active', intervalMinutes: 0, lapseIntervalMinutes: null, reason: 'wrong' },
+    {
+      status: 'active',
+      intervalMinutes: RELEARN_MINUTES,
+      lapseIntervalMinutes: null,
+      reason: 'wrong',
+    },
+    {
+      status: 'active',
+      intervalMinutes: RELEARN_MINUTES,
+      lapseIntervalMinutes: 8 * DAY_MIN,
+      reason: 'wrong',
+    },
+    { status: 'active', intervalMinutes: 8 * DAY_MIN, lapseIntervalMinutes: null, reason: 'wrong' },
+    {
+      status: 'active',
+      intervalMinutes: MAX_INTERVAL_MINUTES,
+      lapseIntervalMinutes: null,
+      reason: 'wrong',
+    },
+    {
+      status: 'resolved',
+      intervalMinutes: MAX_INTERVAL_MINUTES,
+      lapseIntervalMinutes: null,
+      reason: 'wrong',
+    },
+  ] as const
+  const LUCKY = {
+    status: 'active',
+    intervalMinutes: FIRST_INTERVAL_MINUTES,
+    lapseIntervalMinutes: null,
+    reason: 'lucky',
+  } as const
+
+  describe('Säker + wrong comes back sooner than a plain miss', () => {
+    it('relearns in half the 10-minute rung', () => {
+      expect(SURE_RELEARN_MINUTES).toBe(RELEARN_MINUTES / 2)
+      expect(applyConfidence({ correct: false, confidence: 'saker' }, null, NOW)).toEqual({
+        intervalMinutes: SURE_RELEARN_MINUTES,
+        nextReviewAt: at(SURE_RELEARN_MINUTES),
+        lapseIntervalMinutes: 0,
+      })
+    })
+
+    it('is sooner from every rung, banks the same height and stays on the relearn rung', () => {
+      for (const row of [...ROWS, LUCKY]) {
+        const plain = nextOnWrong(NOW, row)
+        const sure = applyConfidence({ correct: false, confidence: 'saker' }, row, NOW)
+        expect(sure.nextReviewAt.getTime()).toBeLessThan(plain.nextReviewAt.getTime())
+        expect(sure.lapseIntervalMinutes).toBe(plain.lapseIntervalMinutes)
+        // At or under the relearn rung, so today's pile counts it like any miss.
+        expect(sure.intervalMinutes).toBeLessThanOrEqual(RELEARN_MINUTES)
+      }
+    })
+
+    it('climbs back on the real ladder: day 1, or half the banked height', () => {
+      const fresh = applyConfidence({ correct: false, confidence: 'saker' }, null, NOW)
+      expect(
+        applyConfidence(
+          { correct: true, confidence: 'saker' },
+          { intervalMinutes: fresh.intervalMinutes },
+          NOW,
+        ),
+      ).toMatchObject({ graduated: false, intervalMinutes: FIRST_INTERVAL_MINUTES })
+      const lapse = applyConfidence(
+        { correct: false, confidence: 'saker' },
+        { intervalMinutes: 8 * DAY_MIN },
+        NOW,
+      )
+      expect(nextOnCorrect(lapse.intervalMinutes, NOW, lapse.lapseIntervalMinutes)).toMatchObject({
+        graduated: false,
+        intervalMinutes: 4 * DAY_MIN,
+      })
+    })
+  })
+
+  describe('Gissar + right is not counted as known', () => {
+    it('a question with no row comes back once, a day later', () => {
+      expect(applyConfidence({ correct: true, confidence: 'gissar' }, null, NOW)).toEqual({
+        kind: 'lucky',
+        intervalMinutes: FIRST_INTERVAL_MINUTES,
+        nextReviewAt: at(FIRST_INTERVAL_MINUTES),
+      })
+    })
+
+    it('so does a graduated row, which re-enters at the 1-day rung', () => {
+      expect(applyConfidence({ correct: true, confidence: 'gissar' }, ROWS[5], NOW)).toEqual({
+        kind: 'lucky',
+        intervalMinutes: FIRST_INTERVAL_MINUTES,
+        nextReviewAt: at(FIRST_INTERVAL_MINUTES),
+      })
+    })
+
+    it('a row already in Repetera is kept: the guess neither advances nor graduates it', () => {
+      const inRepetera = [
+        ...ROWS.filter((row) => row.status !== 'resolved'),
+        LUCKY,
+        { status: 'diagnostic-pending-review', intervalMinutes: 0 },
+      ]
+      for (const row of inRepetera) {
+        expect(applyConfidence({ correct: true, confidence: 'gissar' }, row, NOW)).toEqual({
+          kind: 'keep',
+        })
+      }
+    })
+
+    it("a lucky row's next counted right answer graduates it, whatever the exam", () => {
+      for (const confidence of ['tror', 'saker', undefined, null] as const) {
+        for (const exam of [undefined, null, EXAM_SOON]) {
+          expect(applyConfidence({ correct: true, confidence }, LUCKY, NOW, exam)).toEqual({
+            graduated: true,
+          })
+        }
+      }
+    })
+
+    it('a lucky row that is missed lapses like any other row', () => {
+      expect(applyConfidence({ correct: false }, LUCKY, NOW)).toEqual(nextOnWrong(NOW, LUCKY))
+      expect(applyConfidence({ correct: false, confidence: 'saker' }, LUCKY, NOW)).toMatchObject({
+        intervalMinutes: SURE_RELEARN_MINUTES,
+      })
+    })
+  })
+
+  it('Tror det follows today’s rules on every rung, with or without an exam', () => {
+    for (const row of ROWS) {
+      expect(applyConfidence({ correct: false, confidence: 'tror' }, row, NOW)).toEqual(
+        nextOnWrong(NOW, row),
+      )
+      for (const exam of [undefined, null, EXAM_SOON]) {
+        expect(applyConfidence({ correct: true, confidence: 'tror' }, row, NOW, exam)).toEqual(
+          nextOnCorrect(row.intervalMinutes, NOW, row.lapseIntervalMinutes, exam),
+        )
+      }
+    }
+  })
+
+  it('no confidence is exactly today’s nextOnWrong and nextOnCorrect', () => {
+    // Regression pin: a client that sends no confidence gets today's schedule.
+    expect(applyConfidence({ correct: false }, null, NOW)).toEqual(nextOnWrong(NOW))
+    for (const row of ROWS) {
+      for (const confidence of [undefined, null] as const) {
+        expect(applyConfidence({ correct: false, confidence }, row, NOW)).toEqual(
+          nextOnWrong(NOW, row),
+        )
+        for (const exam of [undefined, null, EXAM_SOON]) {
+          expect(applyConfidence({ correct: true, confidence }, row, NOW, exam)).toEqual(
+            nextOnCorrect(row.intervalMinutes, NOW, row.lapseIntervalMinutes, exam),
+          )
+        }
+      }
+    }
+  })
+
+  it('Gissar + wrong and Säker + right follow today’s rules too', () => {
+    for (const row of ROWS) {
+      expect(applyConfidence({ correct: false, confidence: 'gissar' }, row, NOW)).toEqual(
+        nextOnWrong(NOW, row),
+      )
+      expect(applyConfidence({ correct: true, confidence: 'saker' }, row, NOW, EXAM_SOON)).toEqual(
+        nextOnCorrect(row.intervalMinutes, NOW, row.lapseIntervalMinutes, EXAM_SOON),
       )
     }
   })
