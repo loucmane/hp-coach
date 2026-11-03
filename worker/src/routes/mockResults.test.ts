@@ -121,14 +121,15 @@ async function get(asUser: string) {
   return { res, body: (await res.json()) as { results: unknown[] } }
 }
 
-/** Answer each question through POST /api/attempts, as MockRunner's pick does. */
+/** Answer each question through POST /api/attempts, as MockRunner's pick does,
+ *  with the question's dwell so far (30 s unless given). */
 async function answer(
   asUser: string,
   sessionId: number,
-  answers: ReadonlyArray<readonly [string, boolean]>,
+  answers: ReadonlyArray<readonly [string, boolean, number?]>,
 ) {
   const { app, env } = appFor(asUser)
-  for (const [questionId, correct] of answers) {
+  for (const [questionId, correct, timeTakenMs = 30_000] of answers) {
     const res = await app.request(
       '/attempts',
       {
@@ -139,7 +140,7 @@ async function answer(
           questionId,
           selectedAnswer: correct ? 'A' : 'B',
           correct,
-          timeTakenMs: 30_000,
+          timeTakenMs,
         }),
       },
       env,
@@ -594,5 +595,226 @@ describe('POST /api/mock-results — review fix hpf-0jyp', () => {
       unclassified: 1,
       calibrated: false,
     })
+  })
+})
+
+// LJ-15 (rebuild map §2): breakdown version 2, a row per question with its
+// outcome and time plus the questions marked with Markera, and the id that
+// ties the two passes of a Hel halva run together. Version 1 bodies are
+// stored exactly as before.
+describe('POST /api/mock-results — breakdown v2 and half runs (LJ-15)', () => {
+  const ORD_1 = 'var-2024-verb1-ORD-001'
+  const ORD_2 = 'var-2024-verb1-ORD-002'
+  const MEK_21 = 'var-2024-verb1-MEK-021'
+  const MEK_22 = 'var-2024-verb1-MEK-022'
+  const REVOKED = 'p5-las-b7-002-r1-LÄS-001' // las-b7-002 is at revision 2
+  const PLAN = [ORD_1, ORD_2, MEK_21]
+
+  type Row = readonly [qid: string, section: string, correct: boolean | null, timeMs: number]
+
+  // The client's rows for PLAN: ORD_1 right, ORD_2 wrong, MEK_21 left blank.
+  const ROWS: Row[] = [
+    [ORD_1, 'ORD', true, 14_000],
+    [ORD_2, 'ORD', false, 52_000],
+    [MEK_21, 'MEK', null, 9_000],
+  ]
+
+  /** The version 2 body a client posts for these rows, in the pass's order
+   *  (a blank's outcome is null), and the questions it marked. */
+  function v2Body(
+    sessionId: number,
+    rows: readonly Row[],
+    flaggedQids: string[] = [],
+    overrides: Record<string, unknown> = {},
+  ) {
+    const perSection: Record<string, { presented: number; correct: number; timeMs: number }> = {}
+    const missedQids: string[] = []
+    let answered = 0
+    let correct = 0
+    for (const [qid, section, ok, timeMs] of rows) {
+      perSection[section] ??= { presented: 0, correct: 0, timeMs: 0 }
+      perSection[section].presented += 1
+      perSection[section].timeMs += timeMs
+      if (ok === null) continue
+      answered += 1
+      if (ok) {
+        correct += 1
+        perSection[section].correct += 1
+      } else missedQids.push(qid)
+    }
+    const perQuestion = rows.map((row) => ({ qid: row[0], correct: row[2], timeMs: row[3] }))
+    return {
+      ...postBody(sessionId),
+      mode: 'synthetic',
+      half: 'verbal',
+      examId: null,
+      provpass: null,
+      presented: rows.length,
+      answered,
+      correct,
+      seenBefore: 0,
+      breakdown: { perSection, missedQids, perQuestion, flaggedQids, version: 2 },
+      ...overrides,
+    }
+  }
+
+  /** POST a body that must land, and read back the stored row. */
+  async function postResult(asUser: string, body: unknown) {
+    const res = await post(asUser, body)
+    expect(res.status).toBe(200)
+    return ((await res.json()) as { result: Record<string, unknown> }).result
+  }
+
+  it('still takes a version 1 body and stores it as it came, in no half run', async () => {
+    const { sessionId } = await seedSession(d1, 'user_a')
+    const result = await postResult('user_a', postBody(sessionId))
+    expect(result.breakdown).toEqual(BREAKDOWN)
+    expect(result.halfRunId).toBeNull()
+    const { body } = await get('user_a')
+    const [row] = body.results as Array<{ breakdown: unknown; halfRunId: unknown }>
+    expect(row.breakdown).toEqual(BREAKDOWN)
+    expect(row.halfRunId).toBeNull()
+  })
+
+  it('stores a version 2 body that fits its plan as it came, and returns its rows and marks', async () => {
+    const { sessionId } = await seedSession(d1, 'user_a', { plan: PLAN })
+    await answer('user_a', sessionId, [
+      [ORD_1, true, 13_000],
+      [ORD_2, false, 50_000],
+    ])
+    const body = v2Body(sessionId, ROWS, [MEK_21])
+    const result = await postResult('user_a', body)
+    expect(result).toMatchObject({ presented: 3, answered: 2, correct: 1, halfRunId: null })
+    // The client's own rows and times, as with its per-section dwell.
+    expect(result.breakdown).toEqual(body.breakdown)
+    const { body: listed } = await get('user_a')
+    expect((listed.results[0] as { breakdown: unknown }).breakdown).toEqual(body.breakdown)
+  })
+
+  it.each([
+    ['a negative time', { timeMs: -1 }],
+    ['a time that is not whole ms', { timeMs: 0.5 }],
+    ['an outcome that is not true, false or null', { correct: 'A' }],
+    ['a field a row does not have', { flagged: true }],
+  ])('400s on a version 2 row with %s', async (_label, patch) => {
+    const { sessionId } = await seedSession(d1, 'user_a', { plan: PLAN })
+    const body = v2Body(sessionId, ROWS)
+    const [first, ...rest] = body.breakdown.perQuestion
+    const res = await post('user_a', {
+      ...body,
+      breakdown: { ...body.breakdown, perQuestion: [{ ...first, ...patch }, ...rest] },
+    })
+    expect(res.status).toBe(400)
+  })
+
+  it('400s on a breakdown version it does not know', async () => {
+    const { sessionId } = await seedSession(d1, 'user_a', { plan: PLAN })
+    const body = v2Body(sessionId, ROWS)
+    const res = await post('user_a', { ...body, breakdown: { ...body.breakdown, version: 3 } })
+    expect(res.status).toBe(400)
+  })
+
+  it.each<[string, Row[]]>([
+    ['a row for a question outside the plan', [ROWS[0], ROWS[1], [MEK_22, 'MEK', null, 9_000]]],
+    ['a planned question without a row', [ROWS[0], ROWS[1]]],
+  ])('rescores a version 2 body with %s, its rows rebuilt from the attempts', async (_label, rows) => {
+    const { sessionId } = await seedSession(d1, 'user_a', { plan: PLAN })
+    await answer('user_a', sessionId, [
+      [ORD_1, true, 13_000],
+      [ORD_2, false, 50_000],
+    ])
+    const result = await postResult('user_a', v2Body(sessionId, rows, [MEK_21]))
+    expect(result).toMatchObject({ presented: 3, answered: 2, correct: 1 })
+    expect(result.breakdown).toMatchObject({
+      missedQids: [ORD_2],
+      perQuestion: [
+        { qid: ORD_1, correct: true, timeMs: 13_000 },
+        { qid: ORD_2, correct: false, timeMs: 50_000 },
+        { qid: MEK_21, correct: null, timeMs: 0 },
+      ],
+      flaggedQids: [MEK_21],
+      version: 2,
+    })
+  })
+
+  it('rebuilds the rows from the attempts when it scores the pass itself', async () => {
+    // REVOKED is unknown, so the server scores this pass from its own records.
+    const { sessionId } = await seedSession(d1, 'user_a', { plan: [...PLAN, REVOKED] })
+    await answer('user_a', sessionId, [
+      [ORD_1, false, 8_000],
+      [ORD_2, false, 30_000],
+      // Changed at 19 s: each answer carries its question's dwell so far.
+      [ORD_1, true, 19_000],
+      [REVOKED, true, 5_000],
+    ])
+    const body = v2Body(
+      sessionId,
+      [
+        [ORD_1, 'ORD', true, 25_000],
+        [ORD_2, 'ORD', false, 31_000],
+        [MEK_21, 'MEK', null, 12_000],
+        [REVOKED, 'LÄS', true, 6_000],
+      ],
+      [REVOKED, MEK_21],
+    )
+    const result = await postResult('user_a', body)
+    expect(result).toMatchObject({ presented: 3, answered: 2, correct: 1, seenBefore: 0 })
+    expect(result.breakdown).toEqual({
+      perSection: {
+        ORD: { presented: 2, correct: 1, timeMs: 56_000 },
+        MEK: { presented: 1, correct: 0, timeMs: 12_000 },
+      },
+      missedQids: [ORD_2],
+      perQuestion: [
+        { qid: ORD_1, correct: true, timeMs: 19_000 },
+        { qid: ORD_2, correct: false, timeMs: 30_000 },
+        { qid: MEK_21, correct: null, timeMs: 0 },
+      ],
+      flaggedQids: [MEK_21],
+      version: 2,
+    })
+    expect(result.estimateBasis).toMatchObject({ authentic: 3, unknown: 1, calibrated: true })
+  })
+
+  it('takes an optional halfRunId: both passes of a run carry it, a single pass none', async () => {
+    const { userId, sessionId: first } = await seedSession(d1, 'user_a')
+    const db = getDb(d1 as unknown as D1Database)
+    const more: number[] = []
+    for (let i = 0; i < 3; i++) {
+      const [s] = await db
+        .insert(sessions)
+        .values({ userId, kind: 'mock', endedAt: new Date(), plan: KVANT_PLAN })
+        .returning()
+      more.push(s.id)
+    }
+    const [second, single, cleared] = more
+    const run = '7c1e4b2a-9d3f-4e6a-8b5c-0f1a2b3c4d5e'
+    expect(await postResult('user_a', postBody(first, { halfRunId: run }))).toMatchObject({
+      halfRunId: run,
+    })
+    expect(await postResult('user_a', postBody(second, { halfRunId: run }))).toMatchObject({
+      halfRunId: run,
+    })
+    expect(await postResult('user_a', postBody(single))).toMatchObject({ halfRunId: null })
+    expect(await postResult('user_a', postBody(cleared, { halfRunId: null }))).toMatchObject({
+      halfRunId: null,
+    })
+    const { body } = await get('user_a')
+    const rows = body.results as Array<{ sessionId: number; halfRunId: string | null }>
+    expect(Object.fromEntries(rows.map((r) => [r.sessionId, r.halfRunId]))).toEqual({
+      [first]: run,
+      [second]: run,
+      [single]: null,
+      [cleared]: null,
+    })
+  })
+
+  it.each([
+    ['empty', ''],
+    ['longer than 64 characters', 'x'.repeat(65)],
+    ['not a string', 42],
+  ])('400s on a halfRunId that is %s', async (_label, halfRunId) => {
+    const { sessionId } = await seedSession(d1, 'user_a')
+    expect((await post('user_a', postBody(sessionId, { halfRunId }))).status).toBe(400)
   })
 })

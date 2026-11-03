@@ -19,6 +19,14 @@
 // kept as it came only when it can rest on nothing but authentic and synthetic
 // questions of the session; otherwise the server scores the pass from its own
 // records. A basis in the body is accepted and ignored.
+//
+// LJ-15 (rebuild map §2): `breakdown` is version 1, stored as before, or
+// version 2, which adds a row per question (its outcome and time) and the
+// questions marked with Markera. A version 2 breakdown is kept as it came only
+// when its rows and marks fit the plan; when the server scores the pass
+// itself, it rebuilds the rows from the session's attempts and their
+// timeTakenMs. An optional `halfRunId` ties the two passes of a Hel halva run
+// together. Rows come back with both, as stored.
 
 import { zValidator } from '@hono/zod-validator'
 import { and, asc, desc, eq } from 'drizzle-orm'
@@ -28,7 +36,7 @@ import { z } from 'zod'
 import { getDb } from '../db/client'
 import { attempts, mockResults, sessions } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
-import { MockBreakdownSchema, scoreMockResult } from '../lib/mockScore'
+import { AnyMockBreakdownSchema, scoreMockResult } from '../lib/mockScore'
 import type { Env, Vars } from '../types'
 
 const PostBody = z
@@ -43,7 +51,10 @@ const PostBody = z
     correct: z.number().int().min(0),
     seenBefore: z.number().int().min(0),
     durationMs: z.number().int().min(0),
-    breakdown: MockBreakdownSchema,
+    breakdown: AnyMockBreakdownSchema,
+    // The two passes of one Hel halva run carry the same id. Absent or null
+    // for a single pass.
+    halfRunId: z.string().min(1).max(64).nullable().optional(),
     // A client echoing a stored row may send the server's own basis back.
     // Accepted so the result still lands, and never read.
     estimateBasis: z.unknown().optional(),
@@ -102,6 +113,7 @@ export const mockResultsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         selectedAnswer: attempts.selectedAnswer,
         correct: attempts.correct,
         source: attempts.source,
+        timeTakenMs: attempts.timeTakenMs,
       })
       .from(attempts)
       .where(and(eq(attempts.sessionId, session.id), eq(attempts.userId, userId)))
@@ -125,6 +137,7 @@ export const mockResultsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       durationMs: body.durationMs,
       breakdown: scored.breakdown,
       estimateBasis: scored.estimateBasis,
+      halfRunId: body.halfRunId ?? null,
     }
 
     const [row] = await db
