@@ -218,8 +218,11 @@ describe('Konto isolation', () => {
     const rules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
     const suppressed = rules
       .filter(([, , body]) => /outline:\s*none\s*;/.test(body))
-      .map(([, selector]) => selector.trim())
-    expect(suppressed).toEqual(["[data-folio] .fa-konto h2[tabindex='-1']:focus"])
+      .flatMap(([, selector]) => selector.split(',').map((s) => s.trim()))
+    expect(suppressed).toEqual([
+      "[data-folio] .fa-konto h2[tabindex='-1']:focus",
+      "[data-folio] .fa-konto h1[tabindex='-1']:focus",
+    ])
     expect(css).toMatch(
       /\[data-folio\] \.fa-konto :focus-visible\s*\{\s*outline: 2px solid var\(--fa-ink\);/,
     )
