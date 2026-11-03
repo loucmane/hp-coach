@@ -11,7 +11,8 @@
 //                              `plan` so another device replays the exact
 //                              sequence
 //   - PATCH /:id              → update position / currentQuestionId / device
-//                              / endedAt
+//                              / endedAt, and a Provpass's Markera `marks`
+//                              (the owner's open mock session only)
 //
 // Authorization is implicit: every query is scoped by user_id (the row
 // returned by ensureUserRow), so a forged session id from another user
@@ -39,12 +40,21 @@ const StartBody = z
   })
   .strict()
 
+// A question id: the sitting or P5 unit as lower-case tokens, then the
+// section and a three-digit number (host-2014-kvant1-NOG-026,
+// p5-las-b19-002-r1-LÄS-001). The sections are lib/section.ts's, including
+// its legacy LAS spelling of LÄS.
+const QID = /^[a-z0-9]+(?:-[a-z0-9]+)*-(?:ORD|L[ÄA]S|MEK|ELF|XYZ|KVA|NOG|DTK)-[0-9]{3}$/
+
 const UpdateBody = z
   .object({
     position: z.number().int().min(0).max(10_000).optional(),
     currentQuestionId: z.string().min(1).max(80).nullable().optional(),
     device: z.enum(DEVICE_KINDS).optional(),
     end: z.literal(true).optional(), // shorthand for endedAt = now
+    // A Provpass's Markera marks (LJ-12): the whole set of marked qids, which
+    // replaces the stored one. Only an open mock session takes them.
+    marks: z.array(z.string().max(80).regex(QID)).max(80).optional(),
   })
   .strict()
 
@@ -135,7 +145,9 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // reload-adopted Provpass mock can rebuild its answer-sheet dwell times
   // (lib/mockSheet.ts sheetFromAttempts) rather than losing pacing data on
   // every resume — additive columns, existing (non-mock) consumers ignore
-  // the extra fields.
+  // the extra fields. `confidence` (LJ-12) is additive the same way: how
+  // sure the student said they were, null when none was given (and always
+  // on a Provpass).
   .get('/:id/attempts', zValidator('param', IdParam), async (c) => {
     const { id } = c.req.valid('param')
     const db = getDb(c.env.DB)
@@ -148,6 +160,7 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         correct: attempts.correct,
         timeTakenMs: attempts.timeTakenMs,
         createdAt: attempts.createdAt,
+        confidence: attempts.confidence,
       })
       .from(attempts)
       .where(and(eq(attempts.sessionId, id), eq(attempts.userId, userId)))
@@ -213,6 +226,14 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // PATCH /api/sessions/:id — partial update. `end: true` is sugar for
   // setting endedAt to now; otherwise position / currentQuestionId /
   // device update (device so a resume re-stamps where work continued).
+  //
+  // `marks` (LJ-12) stores a Provpass's Markera set, so the marks survive a
+  // device swap and reach Historik. Only the owner's open mock session takes
+  // them, and both conditions are part of the write itself: a pass that ended
+  // meanwhile on another device keeps the marks it ended with. A PATCH that
+  // carries marks is refused whole, so none of its other fields apply either.
+  // Another user's id is a 404, as everywhere; a session of another kind, or
+  // one that has ended, is a 409. Without marks the PATCH is unchanged.
   .patch('/:id', zValidator('param', IdParam), zValidator('json', UpdateBody), async (c) => {
     const { id } = c.req.valid('param')
     const body = c.req.valid('json')
@@ -223,15 +244,35 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     if (typeof body.position === 'number') patch.position = body.position
     if (body.currentQuestionId !== undefined) patch.currentQuestionId = body.currentQuestionId
     if (body.device !== undefined) patch.device = body.device
+    // A set: a repeated qid is one mark, first occurrence first.
+    if (body.marks !== undefined) patch.marks = [...new Set(body.marks)]
     if (body.end) patch.endedAt = new Date()
 
-    const [row] = await db
-      .update(sessions)
-      .set(patch)
-      .where(and(eq(sessions.id, id), eq(sessions.userId, userId)))
-      .returning()
-    if (!row) {
-      return c.json({ error: { code: 'not_found', message: 'Session not found' } }, 404)
+    const owned = and(eq(sessions.id, id), eq(sessions.userId, userId))
+    const writable =
+      body.marks === undefined
+        ? owned
+        : and(owned, eq(sessions.kind, 'mock'), isNull(sessions.endedAt))
+    const [row] = await db.update(sessions).set(patch).where(writable).returning()
+    if (row) return c.json({ session: row })
+
+    if (body.marks !== undefined) {
+      // The guarded write missed: say why. A session never changes kind or
+      // reopens, so an owned mock found here is one that has ended.
+      const [session] = await db
+        .select({ kind: sessions.kind })
+        .from(sessions)
+        .where(owned)
+        .limit(1)
+      if (session && session.kind !== 'mock') {
+        return c.json(
+          { error: { code: 'invalid_kind', message: 'Session is not a mock session' } },
+          409,
+        )
+      }
+      if (session) {
+        return c.json({ error: { code: 'ended', message: 'The pass has ended' } }, 409)
+      }
     }
-    return c.json({ session: row })
+    return c.json({ error: { code: 'not_found', message: 'Session not found' } }, 404)
   })
