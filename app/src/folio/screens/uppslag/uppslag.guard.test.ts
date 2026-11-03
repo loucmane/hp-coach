@@ -30,6 +30,13 @@ function luminance(value: string): number {
 }
 
 describe('Uppslag isolation', () => {
+  it('maps the embedded worked-example focus ring to the Folio focus token', () => {
+    const css = read('./uppslag.css')
+    expect(css).toMatch(
+      /\[data-folio\] \.fa-uppslag \.fa-up-worked \.hpc-btn:focus-visible\s*\{[^}]*outline:\s*2px solid var\(--fa-focus\)/,
+    )
+  })
+
   it('lazily branches after the last route hook, without new router hooks', () => {
     const source = read('../../../routes/lektion.tsx')
     const ast = ts.createSourceFile(

@@ -110,9 +110,11 @@ export async function pickDrillQuestions(
   count: number = DEFAULT_DRILL_LENGTH,
   rng: () => number = Math.random,
   ratings?: DrillRatings,
+  { excludeQids = [] }: { excludeQids?: readonly string[] } = {},
 ): Promise<Question[]> {
   const bank = await loadBank()
-  const pool = questionsInSection(bank, section)
+  const excluded = new Set(excludeQids)
+  const pool = questionsInSection(bank, section).filter((q) => !excluded.has(q.qid))
   if (pool.length === 0) return []
   // DTK is drilled as BLOCKS: a figure page + its ~3-4 questions form one
   // unit (block = shared figure.src). Keep block-mates whole + consecutive

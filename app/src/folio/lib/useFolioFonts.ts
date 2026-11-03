@@ -1,16 +1,19 @@
 import { useEffect } from 'react'
+import '../styles/fonts.css'
 
-const FONTS =
-  'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap'
+// Ljusbord's faces are self-hosted: fonts.css ships with this module, so Folio
+// asks Google for nothing. A face loads on first use; warming every file up
+// front keeps a later screen (a key cap, an italic) from swapping mid-read.
+const FACES = [
+  '1em "Atkinson Hyperlegible Next"',
+  'italic 1em "Atkinson Hyperlegible Next"',
+  '1em "Atkinson Hyperlegible Mono"',
+  '1em "Schibsted Grotesk"',
+]
 
 export function useFolioFonts() {
   useEffect(() => {
-    if (document.querySelector('link[data-folio-fonts]')) return
-    const link = document.createElement('link')
-    link.rel = 'stylesheet'
-    link.href = FONTS
-    link.dataset.folioFonts = ''
-    document.head.appendChild(link)
-    // Keep the sheet cached across preview toggles; it has no global selectors.
+    if (!('fonts' in document)) return
+    for (const face of FACES) void document.fonts.load(face).catch(() => {})
   }, [])
 }
