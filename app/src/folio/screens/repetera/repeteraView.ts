@@ -6,9 +6,15 @@ import { canAdoptActiveSession } from '@/components/session/canAdoptSession'
 import { findQuestion, loadBank, type Question, SECTION_KEYS, type Section } from '@/data/questions'
 import { sectionOfQid } from '@/lib/dueBySection'
 import { parseNogPrompt } from '@/lib/nogPrompt'
-import { parsePlanEntry, pickReplayQuestions, REPETITION_SESSION_SIZE } from '@/lib/replay'
+import {
+  parsePlanEntry,
+  pickReplayQuestions,
+  prunePlan,
+  REPETITION_SESSION_SIZE,
+} from '@/lib/replay'
 import { repetitionCopy } from '@/lib/scheduler'
 import { honestSectionScores, rankWeakness } from '@/lib/scoring'
+import { loadTrapIndex } from '@/lib/trapIndex'
 
 export type RepeteraInput = {
   now: Date
@@ -19,6 +25,8 @@ export type RepeteraInput = {
   pileError?: boolean
   bank?: readonly Question[]
   playableMistakeIds?: readonly number[]
+  previewPending?: boolean
+  previewError?: boolean
   stats?: Pick<Stats, 'attempts' | 'mistakes' | 'bySection'>
   roundSession?: ActiveSession | null
   roundEnded?: boolean
@@ -117,7 +125,10 @@ function repetitionHref(section?: Section | null, start = false): string {
 /** Share the session's full eligibility rule, including replacement siblings.
  * loadBank is memoized, so the picker and stems use the same bank read. */
 export async function loadRepeteraPreview(due: readonly Mistake[]) {
-  const [bank, playable] = await Promise.all([loadBank(), pickReplayQuestions(due, due.length)])
+  // Unlike a live round's best-effort fallback, a cached eligibility preview
+  // must retry a failed index instead of permanently hiding rescued sources.
+  const [bank, traps] = await Promise.all([loadBank(), loadTrapIndex()])
+  const playable = await pickReplayQuestions(due, due.length, { traps })
   return { bank, playableMistakeIds: playable.map((item) => item.mistakeId) }
 }
 
@@ -177,16 +188,29 @@ export function buildRepeteraView(input: RepeteraInput): RepeteraView {
       href: repetitionHref(section, count > 0),
     }
   }).filter((s) => s.ready + s.laterToday + s.laterDays > 0)
-  const resume =
+  let resume =
     canAdoptActiveSession(roundSession, input.section ?? 'alla', false, input.roundEnded) &&
     Number.isInteger(roundSession.position) &&
     roundSession.position >= 0 &&
     roundSession.position < roundSession.plan.length
       ? { position: roundSession.position + 1, total: roundSession.plan.length }
       : null
-  const remaining = resume ? roundSession?.plan?.slice(resume.position - 1) : undefined
+  let remaining = resume ? (roundSession?.plan?.slice(resume.position - 1) ?? []) : []
+  if (resume && roundSession?.plan && input.bank && input.dueMistakes) {
+    const bank = input.bank
+    const exists = (entry: string) => findQuestion(bank, parsePlanEntry(entry).qid) !== undefined
+    const answered = roundSession.plan.slice(0, roundSession.position).filter(exists).length
+    const plan = prunePlan(
+      roundSession.plan,
+      input.dueMistakes,
+      roundSession.position,
+      (qid) => findQuestion(bank, qid)?.section !== 'ORD',
+    ).filter((link) => findQuestion(bank, link.qid) !== undefined)
+    remaining = plan.slice(answered).map((link) => link.qid)
+    resume = remaining.length ? { position: answered + 1, total: plan.length } : null
+  }
   const previewRound =
-    remaining?.length &&
+    remaining.length > 0 &&
     remaining.every((entry) => typeof entry === 'string' && parsePlanEntry(entry).qid.trim())
   const preview = previewRound
     ? remaining.map(
@@ -201,8 +225,8 @@ export function buildRepeteraView(input: RepeteraInput): RepeteraView {
       )
     : due
   const state =
-    input.dueMistakes === undefined
-      ? input.dueError
+    input.dueMistakes === undefined || (!input.bank && (input.previewPending || input.previewError))
+      ? input.dueError || input.previewError
         ? 'error'
         : 'loading'
       : ready || resume
@@ -213,7 +237,7 @@ export function buildRepeteraView(input: RepeteraInput): RepeteraView {
   const fallback = state === 'empty'
   const primary = {
     href:
-      state === 'loading' || state === 'error'
+      state === 'loading' || state === 'error' || input.previewPending || input.previewError
         ? null
         : fallback
           ? `/drill?${drillSection ? `section=${encodeURIComponent(drillSection)}&` : ''}start=1`

@@ -14,6 +14,7 @@ const h = vi.hoisted(() => ({
   stats: undefined as Stats | undefined,
   pileError: false,
   playableMistakeIds: undefined as number[] | undefined,
+  previewPending: false,
 }))
 vi.mock('./useRepeteraExtras', () => ({
   useRepeteraExtras: () => ({
@@ -24,6 +25,7 @@ vi.mock('./useRepeteraExtras', () => ({
     stats: h.stats,
     pileError: h.pileError,
     playableMistakeIds: h.playableMistakeIds,
+    previewPending: h.previewPending,
   }),
 }))
 
@@ -57,9 +59,49 @@ beforeEach(() => {
   h.stats = undefined
   h.pileError = false
   h.playableMistakeIds = undefined
+  h.previewPending = false
 })
 
 describe('Folio Repetera overview', () => {
+  it('holds the primary until eligibility settles when every due row is unplayable', () => {
+    h.previewPending = true
+    h.bank = undefined
+    const result = render(<FolioRepetera {...props()} />)
+    expect(screen.getByTestId('repetera-start')).toBeDisabled()
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    expect(navigate).not.toHaveBeenCalled()
+    h.bank = []
+    h.playableMistakeIds = []
+    h.previewPending = false
+    result.rerender(<FolioRepetera {...props()} />)
+    expect(screen.getByTestId('repetition-fallback-link')).toHaveTextContent('Börja en övning')
+  })
+
+  it('resets Visa alla when switching between due rows and a saved round', () => {
+    const ready = Array.from({ length: 12 }, (_, i) => miss(i + 1))
+    h.pile = ready
+    h.bank = ready.map((row) => ({ qid: row.questionId, section: 'ORD' })) as Question[]
+    const result = render(<FolioRepetera {...props()} dueMistakes={ready} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Visa alla 12' }))
+    const roundSession = {
+      id: 42,
+      sections: 'alla',
+      plan: ready.map((row) => row.questionId).reverse(),
+      position: 0,
+      endedAt: null,
+    } as ActiveSession
+    result.rerender(<FolioRepetera {...props()} dueMistakes={ready} roundSession={roundSession} />)
+    expect(screen.getByRole('button', { name: 'Visa alla 12' })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Visa alla 12' }))
+    result.rerender(<FolioRepetera {...props()} dueMistakes={ready} />)
+    expect(screen.getByRole('button', { name: 'Visa alla 12' })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    )
+  })
   it('resets Visa alla after a refetch shrinks the list to the preview size', () => {
     const ready = Array.from({ length: 11 }, (_, i) => miss(i + 1))
     h.pile = ready
@@ -112,7 +154,11 @@ describe('Folio Repetera overview', () => {
       } as Question,
       { qid: 'stored-ORD-2', section: 'ORD', number: 2, prompt: 'lagrad' } as Question,
     )
-    render(<FolioRepetera {...props()} roundSession={roundSession} />)
+    const roundDue = [
+      { ...miss(8, 'ELF'), questionId: 'source-ELF-8' },
+      { ...miss(2), questionId: 'stored-ORD-2' },
+    ]
+    render(<FolioRepetera {...props()} dueMistakes={roundDue} roundSession={roundSession} />)
     const list = screen.getByRole('list', { name: 'Kvar i din påbörjade omgång' })
     const links = within(list).getAllByRole('link')
     expect(links.map((link) => link.textContent)).toEqual([
@@ -403,10 +449,12 @@ describe('Folio Repetera overview', () => {
   })
 
   it('labels an adoptable round and navigates through the existing start path', () => {
+    const answered = { qid: 'answered-ORD-3', section: 'ORD', prompt: 'redan svarad' } as Question
+    h.bank?.push(answered)
     const roundSession = {
       id: 42,
       sections: 'alla',
-      plan: ['q1', 'q2', 'q3'],
+      plan: [answered.qid, ...due.map((row) => row.questionId)],
       position: 1,
       endedAt: null,
     } as ActiveSession

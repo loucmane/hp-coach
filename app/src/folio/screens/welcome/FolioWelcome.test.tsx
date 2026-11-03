@@ -47,6 +47,7 @@ const h = vi.hoisted(() => ({
   submitAttempt: vi.fn(),
   welcomeLoad: null as Promise<void> | null,
   doneLoad: null as Promise<void> | null,
+  drillSearch: {} as Record<string, unknown>,
 }))
 vi.mock('@clerk/clerk-react', () => ({
   useUser: () => ({ user: { firstName: 'Kim' } }),
@@ -54,7 +55,7 @@ vi.mock('@clerk/clerk-react', () => ({
 }))
 vi.mock('@tanstack/react-router', async (original) => ({
   ...(await original<typeof import('@tanstack/react-router')>()),
-  createFileRoute: () => (options: unknown) => ({ options }),
+  createFileRoute: () => (options: unknown) => ({ options, useSearch: () => h.drillSearch }),
   useNavigate: () => h.navigate,
   useLocation: () => ({ pathname: '/welcome' }),
 }))
@@ -96,6 +97,7 @@ vi.mock('@/api/hooks/useStats', () => ({
   }),
 }))
 vi.mock('@/api/hooks/useSessions', () => ({
+  useActiveSession: () => ({ data: null }),
   useStartSession: () => ({ mutateAsync: h.startSession, isPending: false }),
   useUpdateSession: () => ({ mutate: h.updateSession }),
   useSessionAttempts: () => ({ data: [] }),
@@ -106,6 +108,16 @@ vi.mock('@/api/hooks/useSessions', () => ({
     refetch: h.refetch,
   }),
 }))
+vi.mock('@/api/hooks/useMistakes', () => ({
+  useDueMistakes: () => ({ data: [] }),
+  useRecordMistake: () => ({ mutate: vi.fn() }),
+}))
+vi.mock('@/api/hooks/useAdaptiveReview', () => ({ useAdaptiveReview: () => ({ hotTrap: null }) }))
+vi.mock('@/api/hooks/useItemStats', () => ({
+  useItemStats: () => ({ data: {} }),
+  useAbility: () => ({ data: {} }),
+}))
+vi.mock('@/api/hooks/useTopTraps', () => ({ useTopTraps: () => [] }))
 vi.mock('@/api/hooks/useAttempts', () => ({
   useSubmitAttempt: () => ({ mutate: h.submitAttempt }),
 }))
@@ -206,6 +218,7 @@ beforeEach(() => {
   endedSessionIdsThisTab.clear()
   h.welcomeLoad = null
   h.doneLoad = null
+  h.drillSearch = {}
   h.prefs = { targetSittingId: null, dailyMinutes: 20 }
   h.bank = FIRST_SESSION_QIDS.map(
     (qid) =>
@@ -243,6 +256,45 @@ beforeEach(() => {
 afterEach(() => vi.useRealTimers())
 
 describe('Folio first run', () => {
+  it('excludes welcome answers in the first drill and consumes that instruction on entry', async () => {
+    const answered = FIRST_SESSION_QIDS.join(',')
+    const validate = DrillRoute.options.validateSearch as (
+      input: Record<string, unknown>,
+    ) => Record<string, unknown>
+    h.drillSearch = validate({ section: 'ORD', start: true, afterWelcome: answered })
+    expect(h.drillSearch.afterWelcome).toBe(answered)
+    const fresh = { ...h.bank[0], qid: 'fresh-ORD-4' }
+    h.bank.push(fresh)
+    const Drill = DrillRoute.options.component as ComponentType
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+    const ui = (
+      <QueryClientProvider client={client}>
+        <Drill />
+      </QueryClientProvider>
+    )
+    const result = render(ui)
+    h.player?.urlSyncedQid?.setQid(null)
+    const reset = h.navigate.mock.lastCall?.[0] as {
+      search: (prev: Record<string, unknown>) => Record<string, unknown>
+    }
+    expect(reset.search(h.drillSearch).afterWelcome).toBe(answered)
+    expect(await h.player?.pickQuestions()).toEqual([fresh])
+    h.player?.urlSyncedQid?.setQid(fresh.qid)
+    const navigation = h.navigate.mock.lastCall?.[0] as {
+      search: (prev: Record<string, unknown>) => Record<string, unknown>
+    }
+    h.drillSearch = navigation.search(h.drillSearch)
+    expect(h.drillSearch.afterWelcome).toBeUndefined()
+    h.drillSearch = { section: 'ORD', start: true }
+    result.rerender(
+      <QueryClientProvider client={client}>
+        <Drill />
+      </QueryClientProvider>,
+    )
+    expect(await h.player?.pickQuestions()).toHaveLength(4)
+    client.clear()
+  })
+
   it.each([
     { phone: false, mode: 'light', picks: ['A', 'B', 'A'], correct: 1 },
     { phone: false, mode: 'dark', picks: ['B', 'A', 'B'], correct: 2 },
@@ -577,6 +629,9 @@ describe('Folio first run', () => {
     ).toEqual([])
     await go('Slutför testpass')
     expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent('Du klarade 2 av 3')
+    expect(screen.getByText(/Imorgon/)).toHaveTextContent(
+      'Imorgon väntar en kort nivåkoll, tio frågor, om du inte redan har övat vidare.',
+    )
     expect(screen.getByRole('heading', { level: 1 })).toHaveFocus()
     expect(screen.queryByTestId('fa-exit')).toBeNull()
     await waitFor(() =>
@@ -584,7 +639,7 @@ describe('Folio first run', () => {
     )
     expect(screen.getByRole('link', { name: 'Fortsätt öva' })).toHaveAttribute(
       'href',
-      '/drill?section=ORD&start=true',
+      `/drill?section=ORD&start=true&afterWelcome=${encodeURIComponent(FIRST_SESSION_QIDS.join(','))}`,
     )
     expect(screen.getByRole('link', { name: 'Till Idag' })).toHaveAttribute('href', '/')
     expect(localStorage.getItem('hpc-welcomed')).toBe('1')

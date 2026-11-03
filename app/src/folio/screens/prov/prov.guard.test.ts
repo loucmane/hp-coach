@@ -14,13 +14,25 @@ const files = [
   'ResultErrata.tsx',
   'provView.ts',
   'useProvResultExtras.ts',
+  'FolioPassRun.tsx',
+  'PassHead.tsx',
+  'PassIndex.tsx',
+  'PassSlips.tsx',
+  'passPace.ts',
 ]
-const allowed: Record<string, string> = {
-  '@/folio/screens/drill/QuantPage': 'QuantPage',
-  '@/folio/screens/drill/Options': 'GradedOptions',
-  '@/folio/screens/drill/GapText': 'GapText',
-  '@/folio/screens/drill/toDrillQuestion': 'toDrillQuestion',
+const allowed: Record<string, string[]> = {
+  '@/folio/screens/drill/QuantPage': ['QuantPage'],
+  '@/folio/screens/drill/Options': ['GradedOptions', 'Options'],
+  '@/folio/screens/drill/GapText': ['GapText'],
+  '@/folio/screens/drill/toDrillQuestion': ['toDrillQuestion'],
 }
+Object.assign(allowed, {
+  '@/folio/screens/drill/ReadingSpread': ['ReadingSpread'],
+  '@/folio/screens/drill/FigureViewer': ['FigureViewer'],
+  '@/folio/screens/drill/seam': ['folioBlock'],
+  '@/folio/screens/drill/types': ['DrillFigure', 'DrillQuestion'],
+  '@/folio/screens/drill/drillCore': ['DrillCoreActions', 'DrillCoreRefs', 'DrillCoreView'],
+})
 const parse = (source: string) =>
   ts.createSourceFile('guard.tsx', source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
 
@@ -38,6 +50,8 @@ function checkImports(source: string) {
       if (!ts.isStringLiteralLike(specifier)) throw new Error('Non-literal import path')
       const path = specifier.text
       expect(path).not.toMatch(/devbake|(?:screens\/|\.\.\/)(?:idag|ova|repetera)/)
+      if (path === '../drill/drill.css' && ts.isImportDeclaration(node) && !node.importClause)
+        return
       if (path.includes('/drill/')) {
         expect(allowed[path]).toBeDefined()
         // Namespace access through import() or re-exports bypasses the four
@@ -45,11 +59,10 @@ function checkImports(source: string) {
         if (!ts.isImportDeclaration(node)) throw new Error('Drill requires named imports')
         expect(node.importClause?.name).toBeUndefined()
         const bindings = node.importClause?.namedBindings
-        expect(
-          bindings && ts.isNamedImports(bindings)
-            ? bindings.elements.map((e) => (e.propertyName ?? e.name).text)
-            : [],
-        ).toEqual([allowed[path]])
+        if (!bindings || !ts.isNamedImports(bindings) || bindings.elements.length === 0)
+          throw new Error('Named bindings required')
+        for (const binding of bindings.elements)
+          expect(allowed[path]).toContain((binding.propertyName ?? binding.name).text)
       }
     }
     ts.forEachChild(node, visit)
@@ -148,8 +161,9 @@ describe('Provpass isolation', () => {
   })
   it('keeps TSX paint in scoped CSS and accepts only the agreed named drill bindings', () => {
     for (const file of files) checkJsxColours(read(`./${file}`))
-    for (const [path, name] of Object.entries(allowed))
-      expect(() => checkImports(`import { ${name} as Local } from '${path}'`)).not.toThrow()
+    for (const [path, names] of Object.entries(allowed))
+      for (const name of names)
+        expect(() => checkImports(`import { ${name} as Local } from '${path}'`)).not.toThrow()
     expect(() => checkJsxColours('<path fill="none" stroke="currentColor" />')).not.toThrow()
   })
   it('stacks the slip controls above the shell scrim while leaving the outside scrim clickable', () => {
@@ -182,7 +196,9 @@ describe('Provpass isolation', () => {
     expect(source.indexOf("if (phase === 'running' && running)")).toBeLessThan(
       source.indexOf('if (inFolio)'),
     )
-    expect(source.match(/<Suspense/g)).toHaveLength(2)
+    expect(source).toContain("lazy(() => import('@/folio/screens/prov/FolioPassRun'))")
+    expect(source).toContain("if (inFolio && phase === 'running' && running)")
+    expect(source.match(/<Suspense/g)).toHaveLength(3)
   })
   it('scopes selectors and limits colour to the score mark and facit letter', () => {
     const css = read('./prov.css').replace(/\/\*[\s\S]*?\*\//g, '')
@@ -200,7 +216,25 @@ describe('Provpass isolation', () => {
         expect(m[1].trim()).toBe('[data-folio] .fa-prov .fa-right-letter')
     }
   })
-  it('allows only the four agreed drill imports and no prototype or sibling screens', () => {
+  it('scopes pass chrome, keeps it neutral, and replaces the drill keyboard hint', () => {
+    const css = read('./passRun.css').replace(/\/\*[\s\S]*?\*\//g, '')
+    for (const match of css.matchAll(/([^{}]+)\{/g)) {
+      if (match[1].trim().startsWith('@')) continue
+      for (const selector of match[1].replace(/\([^)]*\)/g, '(args)').split(','))
+        expect(selector.trim()).toMatch(/^\[data-folio\] \.fa-pass(?:[\s.[:]|$)/)
+    }
+    expect(css).not.toMatch(
+      /--fa-bad|\bred\b|#[\da-f]{3,8}\b|\b(?:rgb|hsl|oklch)\(|opacity\s*:|var\(--fa-accent/i,
+    )
+    expect(css).toMatch(/\.fa-pass \.fa-keys\s*\{\s*display: none/)
+    expect(read('./FolioPassRun.tsx')).not.toMatch(
+      /BoksidanDesk|components\/drill\/|loadExplanation|useDrillContent/,
+    )
+    expect(read('../../../components/mock/useMockPass.ts')).not.toMatch(
+      /SessionPlayer|BoksidanDesk|components\/drill\//,
+    )
+  })
+  it('allows only the agreed drill imports and no prototype or sibling screens', () => {
     for (const file of files) {
       checkImports(read(`./${file}`))
     }

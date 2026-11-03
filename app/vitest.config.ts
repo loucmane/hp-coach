@@ -29,5 +29,8 @@ export default defineConfig({
     // Keep e2e Playwright specs out of Vitest's collector.
     exclude: ['node_modules', 'dist', 'tests-e2e/**'],
     css: false,
+    // The pre-push hook runs the full suite on a shared host; under heavy
+    // load (load average 40+) lazy-screen tests exceeded the 5 s default.
+    testTimeout: 15_000,
   },
 })

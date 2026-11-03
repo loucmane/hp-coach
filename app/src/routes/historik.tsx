@@ -7,18 +7,21 @@
 // KVA pass on Tuesday, 7/10" and expand its facit to see exactly which
 // questions you blew and why.
 //
-// Only drill + repetition passes are listed — the two kinds whose routes
-// reconstruct `?done`. Diagnostic/mock passes have their own report and
-// aren't wired here yet.
+// Practice history lists drill + repetition, whose routes reconstruct
+// `?done`. The Folio screen also links mock passes to their own reports.
 
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { lazy, Suspense, useContext } from 'react'
 
 import { type SessionHistoryRow, useSessionHistory } from '@/api/hooks/useSessions'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
+import { FolioHostContext } from '@/folio/host'
 import { passLabel } from '@/lib/sessionLabel'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
+
+const FolioHistorik = lazy(() => import('@/folio/screens/framsteg/FolioHistorik'))
 
 export const Route = createFileRoute('/historik')({
   component: HistorikRoute,
@@ -50,10 +53,35 @@ function formatDate(iso: string | null): string {
 const LISTABLE = new Set(['drill', 'adaptive_review'])
 
 function HistorikRoute() {
+  const inFolio = useContext(FolioHostContext)
   const navigate = useNavigate()
   const sitting = useSitting()
   const days = useDaysRemaining()
   const history = useSessionHistory()
+
+  if (inFolio) {
+    return (
+      <Suspense
+        fallback={
+          <p role="status" style={{ color: 'var(--fa-ink-2)' }}>
+            Laddar …
+          </p>
+        }
+      >
+        <FolioHistorik
+          history={history}
+          navigateHref={(href) => {
+            const url = new URL(href, window.location.origin)
+            navigate({
+              to: url.pathname as never,
+              search: Object.fromEntries(url.searchParams) as never,
+              hash: url.hash.slice(1),
+            })
+          }}
+        />
+      </Suspense>
+    )
+  }
 
   const rows = (history.data ?? []).filter((r) => LISTABLE.has(r.kind))
 
