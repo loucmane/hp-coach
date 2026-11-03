@@ -881,6 +881,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
             plan={plan}
             index={index}
             picked={picked}
+            picks={picks}
             graded={phase === 'graded'}
             onPick={onPick}
             onNext={onNext}
