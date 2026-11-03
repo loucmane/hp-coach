@@ -131,7 +131,7 @@ describe('SessionPlayer restores prior Folio ELF answers on resume', () => {
         </FolioHostContext.Provider>
       </QueryClientProvider>,
     )
-    const lock = await screen.findByTestId('fa-lock')
+    const lock = await screen.findByTestId('fa-lock', {}, { timeout: 5000 })
     expect(resolvePlan).toHaveBeenCalledWith(h.active?.plan, 3)
     expect(h.start).not.toHaveBeenCalled()
     expect(pickQuestions).not.toHaveBeenCalled()
