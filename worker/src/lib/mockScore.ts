@@ -40,6 +40,25 @@
 // A result is calibrated only when nothing in it is synthetic or unclassified
 // (fail closed). Unknown questions do not count against calibration because
 // they are not in the result.
+//
+// Breakdown version 2 (LJ-15, rebuild map §2) adds what the Provresultat
+// screen draws per question, a row with its outcome and time, and the
+// questions marked with Markera, a pass's only uncertainty signal. Both are
+// snapshotted like seenBefore, because attempts are pruned after 120 days. A
+// version 1 summary is stored and scored exactly as before, and a version 2
+// summary gets the same numbers as its version 1 counterpart:
+//   · it is stored as it came only when its rows and marks fit the plan as
+//     well: one row per planned question, in the pass's order, each with a
+//     time of whole ms ≥ 0; the rows count the outcomes as the summary does,
+//     overall, per section and in missedQids (in the pass's order too); and
+//     every mark is on a planned question, once;
+//   · when the server scores the pass itself, it rebuilds the rows from the
+//     attempts, one per scored question: the outcome of its last stored
+//     answer (null when it was left blank) and the time that answer was
+//     stored with, since a Provpass answer carries its question's dwell so
+//     far (0 when none was stored). The reported marks are kept where they
+//     name a question in the result. Each per-section timeMs stays the
+//     reported dwell, as in version 1, so it can exceed the sum of its rows.
 
 import { z } from 'zod'
 
@@ -47,7 +66,8 @@ import { type AttemptSource, classifyAttempt, isAssessedSource } from './provena
 import { extractSection } from './section'
 
 /** The per-pass breakdown blob, version 1 — the shape the client posts and
- *  mock_results.breakdown stores. */
+ *  mock_results.breakdown stores. This schema takes version 1 only;
+ *  routes/export.ts reads imported rows with it. */
 export const MockBreakdownSchema = z
   .object({
     perSection: z.record(
@@ -65,6 +85,33 @@ export const MockBreakdownSchema = z
 
 export type MockBreakdown = z.infer<typeof MockBreakdownSchema>
 
+/** Version 2 (LJ-15): version 1 plus a row per question, in the pass's order,
+ *  with its outcome (null for a blank) and the time spent on it, and the
+ *  questions marked with Markera. */
+export const MockBreakdownV2Schema = MockBreakdownSchema.extend({
+  perQuestion: z.array(
+    z
+      .object({
+        qid: z.string(),
+        correct: z.boolean().nullable(),
+        timeMs: z.number().int().min(0),
+      })
+      .strict(),
+  ),
+  flaggedQids: z.array(z.string()),
+  version: z.literal(2),
+})
+
+export type MockBreakdownV2 = z.infer<typeof MockBreakdownV2Schema>
+
+/** A breakdown of either version, as POST /api/mock-results takes it. */
+export const AnyMockBreakdownSchema = z.discriminatedUnion('version', [
+  MockBreakdownSchema,
+  MockBreakdownV2Schema,
+])
+
+export type AnyMockBreakdown = z.infer<typeof AnyMockBreakdownSchema>
+
 /** A pass summary as the client (or an imported row) reports it. A breakdown
  *  that could not be read is null: the summary is then never stored as it
  *  came. */
@@ -73,7 +120,7 @@ export type ReportedMockSummary = {
   answered: number
   correct: number
   seenBefore: number
-  breakdown: MockBreakdown | null
+  breakdown: AnyMockBreakdown | null
 }
 
 /** One stored attempt of the session, oldest first. */
@@ -82,6 +129,9 @@ export type SessionAttempt = {
   selectedAnswer: string | null
   correct: boolean | null
   source: AttemptSource
+  /** The time it was stored with. A Provpass answer carries its question's
+   *  dwell so far (app useMockPass). Null or absent when none was stored. */
+  timeTakenMs?: number | null
 }
 
 /** One count of a result's questions by provenance. `calibrated` is false
@@ -105,7 +155,7 @@ export type ScoredMockResult = {
   answered: number
   correct: number
   seenBefore: number
-  breakdown: MockBreakdown
+  breakdown: AnyMockBreakdown
   estimateBasis: MockEstimateBasis
 }
 
@@ -176,11 +226,54 @@ function fitsPlan(reported: ReportedMockSummary, planned: readonly string[]): bo
   }
   if (sectionPresented !== presented || sectionCorrect !== correct) return false
   const inPlan = new Set(planned)
-  return breakdown.missedQids.every((qid) => inPlan.has(qid))
+  if (!breakdown.missedQids.every((qid) => inPlan.has(qid))) return false
+  return breakdown.version === 1 || rowsFitPlan(reported, breakdown, planned)
+}
+
+/** Whether a version 2 summary's rows and marks fit the plan and the rest of
+ *  the summary: a row per planned question, in the pass's order, each with a
+ *  time of whole ms ≥ 0; the outcomes counted as the summary counts them,
+ *  overall, per section and in missedQids; and each mark on a planned
+ *  question, once. */
+function rowsFitPlan(
+  reported: ReportedMockSummary,
+  breakdown: MockBreakdownV2,
+  planned: readonly string[],
+): boolean {
+  const { perQuestion, missedQids, flaggedQids } = breakdown
+  if (reported.presented !== planned.length || perQuestion.length !== planned.length) return false
+  const rightBySection = new Map<string, number>()
+  const wrong: string[] = []
+  let answered = 0
+  let correct = 0
+  for (const [i, row] of perQuestion.entries()) {
+    if (row.qid !== planned[i] || !Number.isInteger(row.timeMs) || row.timeMs < 0) return false
+    if (row.correct === null) continue
+    answered += 1
+    if (row.correct === false) {
+      wrong.push(row.qid)
+      continue
+    }
+    correct += 1
+    const section = extractSection(row.qid)
+    if (section !== null) rightBySection.set(section, (rightBySection.get(section) ?? 0) + 1)
+  }
+  if (answered !== reported.answered || correct !== reported.correct) return false
+  for (const [section, row] of Object.entries(breakdown.perSection)) {
+    if (row.correct !== (rightBySection.get(section) ?? 0)) return false
+  }
+  if (wrong.length !== missedQids.length || wrong.some((qid, i) => qid !== missedQids[i])) {
+    return false
+  }
+  const inPlan = new Set(planned)
+  return (
+    new Set(flaggedQids).size === flaggedQids.length && flaggedQids.every((qid) => inPlan.has(qid))
+  )
 }
 
 /** The server's own score of the pass, over its authentic and synthetic
- *  questions, from the last stored answer to each. */
+ *  questions, from the last stored answer to each. A version 2 report gets
+ *  version 2 back, its rows rebuilt from those answers. */
 function serverScore(
   questions: readonly string[],
   sourceOf: (qid: string) => AttemptSource,
@@ -189,6 +282,7 @@ function serverScore(
 ): Omit<ScoredMockResult, 'estimateBasis'> {
   const perSection: MockBreakdown['perSection'] = {}
   const missedQids: string[] = []
+  const perQuestion: MockBreakdownV2['perQuestion'] = []
   let presented = 0
   let answered = 0
   let correct = 0
@@ -206,6 +300,11 @@ function serverScore(
     const row = perSection[section]
     row.presented += 1
     const answer = last.get(qid)
+    perQuestion.push({
+      qid,
+      correct: answer?.selectedAnswer == null ? null : answer.correct,
+      timeMs: Math.max(answer?.timeTakenMs ?? 0, 0),
+    })
     if (answer?.selectedAnswer == null) continue
     answered += 1
     if (answer.correct === true) {
@@ -215,13 +314,19 @@ function serverScore(
       missedQids.push(qid)
     }
   }
-  return {
+  const scored = {
     presented,
     answered,
     correct,
     seenBefore: Math.min(Math.max(reported.seenBefore, 0), presented),
-    breakdown: { perSection, missedQids, version: 1 },
   }
+  const { breakdown } = reported
+  if (breakdown?.version !== 2) {
+    return { ...scored, breakdown: { perSection, missedQids, version: 1 } }
+  }
+  const flagged = new Set(breakdown.flaggedQids)
+  const flaggedQids = perQuestion.filter((row) => flagged.has(row.qid)).map((row) => row.qid)
+  return { ...scored, breakdown: { perSection, missedQids, perQuestion, flaggedQids, version: 2 } }
 }
 
 /** The session's questions counted by source, overall and per section

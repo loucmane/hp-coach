@@ -4,12 +4,19 @@
 //   B2 — calibrated / estimateBasis come from the server's classification of
 //        the session's actual questions and attempts, never from the plan
 //        alone; anything synthetic or unclassifiable makes it uncalibrated.
+// LJ-15 — breakdown version 2 (a row per question, and the marks) changes no
+// number, fits its plan to be stored as it came, and is rebuilt from the
+// attempts when the server scores the pass itself.
 
 import { describe, expect, it } from 'vitest'
 
 import {
+  AnyMockBreakdownSchema,
   type MockBreakdown,
+  MockBreakdownSchema,
+  type MockBreakdownV2,
   type ReportedMockSummary,
+  type ScoredMockResult,
   type SessionAttempt,
   scoreMockResult,
 } from './mockScore'
@@ -17,6 +24,8 @@ import { classifyAttemptSource } from './provenance'
 
 const ORD_1 = 'var-2024-verb1-ORD-001'
 const ORD_2 = 'var-2024-verb1-ORD-002'
+const ORD_3 = 'var-2024-verb1-ORD-003'
+const ORD_4 = 'var-2024-verb1-ORD-004'
 const MEK_21 = 'var-2024-verb1-MEK-021'
 const LAS_P5 = 'p5-las-b19-002-r1-LÄS-001'
 const LAS_P5_2 = 'p5-las-b19-002-r1-LÄS-002'
@@ -28,13 +37,20 @@ const RETIRED = 'p5-elf-b14-002-r1-ELF-001'
 const FABRICATED = 'var-2024-verb1-ORD-015'
 const SEED = 'q1'
 
-/** One stored attempt, its source classified as POST /api/attempts stores it. */
-function answer(questionId: string, correct: boolean): SessionAttempt {
+/** One stored attempt, its source classified as POST /api/attempts stores it,
+ *  and the dwell it was stored with (a Provpass answer carries its question's
+ *  dwell so far). */
+function answer(
+  questionId: string,
+  correct: boolean,
+  timeTakenMs: number | null = null,
+): SessionAttempt {
   return {
     questionId,
     selectedAnswer: correct ? 'A' : 'B',
     correct,
     source: classifyAttemptSource(questionId),
+    timeTakenMs,
   }
 }
 
@@ -45,7 +61,7 @@ function clientSummary(
   picks: Record<string, boolean>,
   seenBefore = 0,
   dwellMs = 1000,
-): ReportedMockSummary {
+): ReportedMockSummary & { breakdown: MockBreakdown } {
   const perSection: MockBreakdown['perSection'] = {}
   const missedQids: string[] = []
   let answered = 0
@@ -385,5 +401,345 @@ describe('B2 — calibrated only when nothing synthetic or unclassifiable is in 
     expect(scored).toMatchObject({ presented: 1, answered: 1, correct: 0 })
     expect(scored.breakdown.missedQids).toEqual([ORD_1])
     expect(scored.estimateBasis).toMatchObject({ authentic: 1, unclassified: 0, calibrated: true })
+  })
+})
+
+// LJ-15 (rebuild map §2): breakdown version 2 adds what the Provresultat
+// screen draws per question, a row with its outcome and time, and the
+// questions marked with Markera, a pass's only uncertainty signal. Version 1
+// is stored and scored exactly as before, and version 2 changes no number.
+describe('LJ-15 — breakdown version 2', () => {
+  /** The version 2 summary a client posts for the same pass: version 1 plus a
+   *  row per planned question, in the pass's order (a blank's outcome is
+   *  null), and the questions it marked. A question's time is 1000 ms unless
+   *  `times` names it, and each section's time sums its questions'. */
+  function clientSummaryV2(
+    plan: readonly { qid: string; section: string }[],
+    picks: Record<string, boolean>,
+    { flagged = [], times = {} }: { flagged?: string[]; times?: Record<string, number> } = {},
+  ): ReportedMockSummary & { breakdown: MockBreakdownV2 } {
+    const { breakdown, ...totals } = clientSummary(plan, picks, 0, 0)
+    const perQuestion = plan.map(({ qid, section }) => {
+      const timeMs = times[qid] ?? 1000
+      breakdown.perSection[section].timeMs += timeMs
+      return { qid, correct: qid in picks ? picks[qid] : null, timeMs }
+    })
+    return {
+      ...totals,
+      breakdown: { ...breakdown, perQuestion, flaggedQids: flagged, version: 2 },
+    }
+  }
+
+  /** A result's version 2 breakdown; throws on version 1. */
+  function v2Of(scored: ScoredMockResult): MockBreakdownV2 {
+    if (scored.breakdown.version !== 2) throw new Error('not a version 2 breakdown')
+    return scored.breakdown
+  }
+
+  /** What a result counts, without the rows and marks version 2 adds. */
+  function numbersOf({ breakdown, ...totals }: ScoredMockResult) {
+    return { ...totals, perSection: breakdown.perSection, missedQids: breakdown.missedQids }
+  }
+
+  // Each pass as the server holds it (its stored plan and the attempts it
+  // stored) and as the client reports it (its plan and final picks).
+  const PASSES: {
+    label: string
+    plan: string[] | null
+    attempts: SessionAttempt[]
+    clientPlan: { qid: string; section: string }[]
+    picks: Record<string, boolean>
+  }[] = [
+    {
+      label: 'an authentic pass, stored as it came',
+      plan: [ORD_1, ORD_2, MEK_21],
+      attempts: [answer(ORD_1, true, 4000), answer(ORD_2, false, 6000)],
+      clientPlan: [q(ORD_1, 'ORD'), q(ORD_2, 'ORD'), q(MEK_21, 'MEK')],
+      picks: { [ORD_1]: true, [ORD_2]: false },
+    },
+    {
+      label: 'a pass with P5 questions, stored as it came',
+      plan: [ORD_1, LAS_P5, LAS_P5_2, ELF_P5],
+      attempts: [answer(ORD_1, true, 4000), answer(LAS_P5, true, 9000), answer(LAS_P5_2, false)],
+      clientPlan: [q(ORD_1, 'ORD'), q(LAS_P5, 'LÄS'), q(LAS_P5_2, 'LÄS'), q(ELF_P5, 'ELF')],
+      picks: { [ORD_1]: true, [LAS_P5]: true, [LAS_P5_2]: false },
+    },
+    {
+      label: 'a pass with an answer that never reached the server, stored as it came',
+      plan: [ORD_1, ORD_2],
+      attempts: [answer(ORD_1, true, 4000)],
+      clientPlan: [q(ORD_1, 'ORD'), q(ORD_2, 'ORD')],
+      picks: { [ORD_1]: true, [ORD_2]: true },
+    },
+    {
+      label: 'a pass with an unknown question, rescored',
+      plan: [ORD_1, ORD_2, REVOKED],
+      attempts: [answer(ORD_1, true, 4000), answer(ORD_2, false, 6000), answer(REVOKED, true)],
+      clientPlan: [q(ORD_1, 'ORD'), q(ORD_2, 'ORD'), q(REVOKED, 'LÄS')],
+      picks: { [ORD_1]: true, [ORD_2]: false, [REVOKED]: true },
+    },
+    {
+      label: 'a pass without a stored plan, rescored',
+      plan: null,
+      attempts: [answer(ORD_1, true, 4000), answer(LAS_P5, false, 9000)],
+      clientPlan: [q(ORD_1, 'ORD'), q(LAS_P5, 'LÄS'), q(MEK_21, 'MEK')],
+      picks: { [ORD_1]: true, [LAS_P5]: false },
+    },
+    {
+      label: 'a summary larger than its plan, rescored',
+      plan: [ORD_1, ORD_2],
+      attempts: [answer(ORD_1, true, 4000), answer(ORD_2, true, 5000)],
+      clientPlan: [q(ORD_1, 'ORD'), q(ORD_2, 'ORD'), q(LAS_P5, 'LÄS')],
+      picks: { [ORD_1]: true, [ORD_2]: true, [LAS_P5]: true },
+    },
+  ]
+
+  it.each(PASSES)('changes no number: $label', ({ plan, attempts, clientPlan, picks }) => {
+    const v1 = scoreMockResult(plan, attempts, clientSummary(clientPlan, picks))
+    const v2 = scoreMockResult(plan, attempts, clientSummaryV2(clientPlan, picks))
+    expect(numbersOf(v2)).toEqual(numbersOf(v1))
+    // Version 1 stays version 1, as it came or rescored.
+    expect(v1.breakdown).toEqual({
+      perSection: v1.breakdown.perSection,
+      missedQids: v1.breakdown.missedQids,
+      version: 1,
+    })
+    expect(v2Of(v2).version).toBe(2)
+  })
+
+  it.each(PASSES)('its rows count what the result counts: $label', (pass) => {
+    const { plan, attempts, clientPlan, picks } = pass
+    const scored = scoreMockResult(plan, attempts, clientSummaryV2(clientPlan, picks))
+    const rows = v2Of(scored).perQuestion
+    expect(rows).toHaveLength(scored.presented)
+    expect(rows.filter((row) => row.correct !== null)).toHaveLength(scored.answered)
+    expect(rows.filter((row) => row.correct === true)).toHaveLength(scored.correct)
+    expect(rows.filter((row) => row.correct === false).map((row) => row.qid)).toEqual(
+      scored.breakdown.missedQids,
+    )
+  })
+
+  it('a version 2 summary that fits its plan is stored as it came, rows and marks too', () => {
+    const plan = [q(ORD_1, 'ORD'), q(ORD_2, 'ORD'), q(MEK_21, 'MEK')]
+    const reported = clientSummaryV2(
+      plan,
+      { [ORD_1]: true, [ORD_2]: false },
+      {
+        flagged: [MEK_21, ORD_1],
+        times: { [ORD_1]: 12_000, [ORD_2]: 48_000, [MEK_21]: 30_000 },
+      },
+    )
+    const scored = scoreMockResult(
+      plan.map((p) => p.qid),
+      [answer(ORD_1, true, 9000), answer(ORD_2, false, 40_000)],
+      reported,
+    )
+    expect(scored.breakdown).toBe(reported.breakdown)
+    expect(scored.breakdown).toEqual({
+      perSection: {
+        ORD: { presented: 2, correct: 1, timeMs: 60_000 },
+        MEK: { presented: 1, correct: 0, timeMs: 30_000 },
+      },
+      missedQids: [ORD_2],
+      perQuestion: [
+        { qid: ORD_1, correct: true, timeMs: 12_000 },
+        { qid: ORD_2, correct: false, timeMs: 48_000 },
+        { qid: MEK_21, correct: null, timeMs: 30_000 },
+      ],
+      flaggedQids: [MEK_21, ORD_1],
+      version: 2,
+    })
+  })
+
+  // A version 2 summary is stored as it came only when its rows and marks fit
+  // its plan. Each change below breaks one rule, so the server scores the pass
+  // itself: the rows are rebuilt from the attempts, and the marks are kept
+  // where they name a question in the result.
+  describe('rows or marks that do not fit the plan: the server rescores', () => {
+    const PLAN = [q(ORD_1, 'ORD'), q(ORD_2, 'ORD'), q(ORD_3, 'ORD'), q(MEK_21, 'MEK')]
+    const PICKS = { [ORD_1]: true, [ORD_2]: false, [ORD_3]: false }
+    const ATTEMPTS = [
+      answer(ORD_1, true, 11_000),
+      answer(ORD_2, false, 22_000),
+      answer(ORD_3, false, 33_000),
+    ]
+    const fitting = () => clientSummaryV2(PLAN, PICKS, { flagged: [MEK_21] })
+    const row = (qid: string, correct: boolean | null, timeMs = 1000) => ({ qid, correct, timeMs })
+    const [r0, r1, r2, r3] = fitting().breakdown.perQuestion
+
+    function expectRescored(reported: ReportedMockSummary) {
+      const scored = scoreMockResult(
+        PLAN.map((p) => p.qid),
+        ATTEMPTS,
+        reported,
+      )
+      expect(scored.breakdown).not.toBe(reported.breakdown)
+      expect(scored).toMatchObject({ presented: 4, answered: 3, correct: 1 })
+      expect(v2Of(scored)).toMatchObject({
+        missedQids: [ORD_2, ORD_3],
+        perQuestion: [
+          row(ORD_1, true, 11_000),
+          row(ORD_2, false, 22_000),
+          row(ORD_3, false, 33_000),
+          row(MEK_21, null, 0),
+        ],
+        flaggedQids: [MEK_21],
+      })
+    }
+
+    it('as posted, it fits: stored as it came', () => {
+      const reported = fitting()
+      expect(
+        scoreMockResult(
+          PLAN.map((p) => p.qid),
+          ATTEMPTS,
+          reported,
+        ).breakdown,
+      ).toBe(reported.breakdown)
+    })
+
+    it.each<[string, Partial<MockBreakdownV2>]>([
+      ['a row for a question outside the plan', { perQuestion: [row(ORD_4, true), r1, r2, r3] }],
+      ['an extra row', { perQuestion: [r0, r1, r2, r3, row(ORD_4, null)] }],
+      ['a planned question without a row', { perQuestion: [r0, r1, r2] }],
+      ['a planned question twice', { perQuestion: [r0, r1, r1, r3] }],
+      ['rows out of the pass’s order', { perQuestion: [r3, r1, r2, r0] }],
+      ['a negative time', { perQuestion: [{ ...r0, timeMs: -1 }, r1, r2, r3] }],
+      ['a time that is not whole ms', { perQuestion: [{ ...r0, timeMs: 1.5 }, r1, r2, r3] }],
+      [
+        'a right answer in another section than the summary has it',
+        { perQuestion: [{ ...r0, correct: null }, r1, r2, { ...r3, correct: true }] },
+      ],
+      ['missedQids that are not the wrong rows', { missedQids: [ORD_2] }],
+      ['missedQids out of the pass’s order', { missedQids: [ORD_3, ORD_2] }],
+      ['a mark on a question outside the plan', { flaggedQids: [MEK_21, ORD_4] }],
+      ['a question marked twice', { flaggedQids: [MEK_21, MEK_21] }],
+    ])('%s', (_label, change) => {
+      const { breakdown, ...totals } = fitting()
+      expectRescored({ ...totals, breakdown: { ...breakdown, ...change } })
+    })
+
+    it('totals that count an answer its rows leave blank', () => {
+      expectRescored({ ...fitting(), answered: 4 })
+    })
+
+    it('rows for a question its totals leave out', () => {
+      // It presents the three ORD questions, yet sends a row for MEK too.
+      const { breakdown, ...totals } = clientSummaryV2(PLAN.slice(0, 3), PICKS, {
+        flagged: [MEK_21],
+      })
+      expectRescored({
+        ...totals,
+        breakdown: { ...breakdown, perQuestion: [...breakdown.perQuestion, row(MEK_21, null)] },
+      })
+    })
+  })
+
+  it('rescoring rebuilds the rows from the attempts: each last answer and its time', () => {
+    // REVOKED is unknown, so the server scores this pass itself.
+    const plan = [q(ORD_1, 'ORD'), q(ORD_2, 'ORD'), q(MEK_21, 'MEK'), q(REVOKED, 'LÄS')]
+    const reported = clientSummaryV2(
+      plan,
+      { [ORD_1]: true, [ORD_2]: false, [REVOKED]: true },
+      {
+        flagged: [REVOKED, MEK_21],
+        times: { [ORD_1]: 25_000, [ORD_2]: 31_000, [MEK_21]: 12_000, [REVOKED]: 6000 },
+      },
+    )
+    const scored = scoreMockResult(
+      plan.map((p) => p.qid),
+      [
+        // ORD_1 was answered at 8 s and changed at 19 s. Each answer carries
+        // its question's dwell so far, so the last one holds the time.
+        answer(ORD_1, false, 8000),
+        answer(ORD_2, false, 30_000),
+        answer(ORD_1, true, 19_000),
+        answer(REVOKED, true, 5000),
+      ],
+      reported,
+    )
+    expect(scored).toMatchObject({ presented: 3, answered: 2, correct: 1 })
+    expect(scored.breakdown).toEqual({
+      // Each section's time stays the reported dwell, as in version 1.
+      perSection: {
+        ORD: { presented: 2, correct: 1, timeMs: 56_000 },
+        MEK: { presented: 1, correct: 0, timeMs: 12_000 },
+      },
+      missedQids: [ORD_2],
+      // Not the client's rows: the blank has no answer and no time, and the
+      // unknown question has no row.
+      perQuestion: [
+        { qid: ORD_1, correct: true, timeMs: 19_000 },
+        { qid: ORD_2, correct: false, timeMs: 30_000 },
+        { qid: MEK_21, correct: null, timeMs: 0 },
+      ],
+      // Only the marks on a question in the result.
+      flaggedQids: [MEK_21],
+      version: 2,
+    })
+  })
+
+  it('rescoring counts no time for an answer stored without one', () => {
+    const plan = [q(ORD_1, 'ORD'), q(ORD_2, 'ORD'), q(REVOKED, 'LÄS')]
+    const reported = clientSummaryV2(plan, { [ORD_1]: true, [ORD_2]: true, [REVOKED]: true })
+    // ORD_2's attempt as routes/export.ts builds one, with no time at all.
+    const untimed: SessionAttempt = {
+      questionId: ORD_2,
+      selectedAnswer: 'A',
+      correct: true,
+      source: classifyAttemptSource(ORD_2),
+    }
+    const scored = scoreMockResult(
+      plan.map((p) => p.qid),
+      [answer(ORD_1, true), untimed, answer(REVOKED, true, 4000)],
+      reported,
+    )
+    expect(v2Of(scored).perQuestion).toEqual([
+      { qid: ORD_1, correct: true, timeMs: 0 },
+      { qid: ORD_2, correct: true, timeMs: 0 },
+    ])
+  })
+
+  describe('the breakdown schemas', () => {
+    const plan = [q(ORD_1, 'ORD'), q(ORD_2, 'ORD')]
+    const v1 = clientSummary(plan, { [ORD_1]: true }).breakdown
+    const v2 = clientSummaryV2(plan, { [ORD_1]: true }, { flagged: [ORD_2] }).breakdown
+    const [first, second] = v2.perQuestion
+
+    it('POST /api/mock-results takes either version', () => {
+      expect(AnyMockBreakdownSchema.parse(v1)).toEqual(v1)
+      expect(AnyMockBreakdownSchema.parse(v2)).toEqual(v2)
+    })
+
+    it.each([
+      ['a negative time', { ...v2, perQuestion: [{ ...first, timeMs: -1 }, second] }],
+      ['a time that is not whole ms', { ...v2, perQuestion: [{ ...first, timeMs: 0.5 }, second] }],
+      [
+        'an outcome that is not true, false or null',
+        { ...v2, perQuestion: [{ ...first, correct: 'A' }, second] },
+      ],
+      [
+        'a row field it does not know',
+        { ...v2, perQuestion: [{ ...first, flagged: true }, second] },
+      ],
+      [
+        'no marks',
+        {
+          perSection: v2.perSection,
+          missedQids: v2.missedQids,
+          perQuestion: v2.perQuestion,
+          version: 2,
+        },
+      ],
+      ['rows on a version 1 breakdown', { ...v2, version: 1 }],
+      ['a version it does not know', { ...v2, version: 3 }],
+    ])('rejects %s', (_label, breakdown) => {
+      expect(AnyMockBreakdownSchema.safeParse(breakdown).success).toBe(false)
+    })
+
+    it('version 1 alone, which routes/export.ts reads imported rows with, never reads version 2', () => {
+      expect(MockBreakdownSchema.safeParse(v1).success).toBe(true)
+      expect(MockBreakdownSchema.safeParse(v2).success).toBe(false)
+    })
   })
 })

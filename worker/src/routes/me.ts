@@ -2,8 +2,9 @@
 //
 // First real cross-device data: HomeMobile (and Onboarding) read/write
 // prefs via the typed API client. Coach voice, palette/font/density,
-// target sitting, and daily minutes all live here. The /stats sub-
-// route powers /progress and the home-screen streak badge.
+// target sitting, daily minutes and the Ljusbord Konto prefs (KontoPrefs)
+// all live here. The /stats sub-route powers /progress and the
+// home-screen streak badge.
 //
 // Chained route registration is required for Hono RPC types to flow
 // through to the SPA's typed client.
@@ -26,6 +27,33 @@ import { extractSection, SECTIONS, type Section } from '../lib/section'
 import { currentStreak, formatDayUTC, startOfUtcDay } from '../lib/stats'
 import type { Env, Vars } from '../types'
 
+// The Ljusbord Konto prefs (LJ-11, rebuild map §2): the users columns of
+// 0016, under the names GET /prefs returns. Each enum holds the choices the
+// Konto screen offers, and the column default is one of them:
+//   facitTiming — 'each' (Direkt efter varje fråga) or 'end' (Efter passet);
+//   textSize — Mindre, Normal, Större and Störst, named as the app's
+//     folioPrefs names them;
+//   motion — Som systemet, Mindre and Ingen;
+//   quantRepeat — a missed quant question comes back as a new question with
+//     the same trap, or as itself.
+// targetScore is any target on the 0,0–2,0 scale in tenths (2,0 is 20; the
+// screen offers 1,5, 1,8 and 2,0), or null when none is set. The rest are
+// switches. Import (routes/export.ts) holds a backup's values to these same
+// rules.
+export const KontoPrefs = z.object({
+  answerConfidence: z.boolean(),
+  facitTiming: z.enum(['each', 'end']),
+  showMyTime: z.boolean(),
+  mockClockVisible: z.boolean(),
+  mockReminder: z.boolean(),
+  textSize: z.enum(['small', 'normal', 'large', 'xlarge']),
+  motion: z.enum(['system', 'less', 'none']),
+  shortcuts: z.boolean(),
+  modeFollowSystem: z.boolean(),
+  targetScore: z.number().int().min(0).max(20).nullable(),
+  quantRepeat: z.enum(['new', 'same']),
+})
+
 const PrefsPatch = z
   .object({
     daysToExam: z.number().int().min(0).max(2000).nullable().optional(),
@@ -47,6 +75,8 @@ const PrefsPatch = z
       .regex(/^\d{4}-\d{2}-\d{2}$/)
       .nullable()
       .optional(),
+    // The Ljusbord Konto prefs, any of them on their own.
+    ...KontoPrefs.partial().shape,
   })
   .strict()
 
