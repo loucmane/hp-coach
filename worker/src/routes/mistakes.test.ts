@@ -9,7 +9,8 @@
 // for tomorrow; `due` does not until it ripens. Also the PATCH
 // /:id/review path Repetera uses when a miss is repeated through a new
 // question with the same trap, and the PUT /round/:sessionId path that
-// stores which mistake each of a round's new questions repeats.
+// stores which mistake each of a round's new questions repeats. Last, the
+// LJ-13 confidence and reason fields (policy: lib/srs.ts applyConfidence).
 
 import { eq } from 'drizzle-orm'
 import { Hono } from 'hono'
@@ -971,5 +972,371 @@ describe('scope=pile — same-day miss leaves the pile once correctly repeated',
     // wrong repetition on q-today-2 (re-record) → stays, no duplicate
     await record('q-today-2')
     expect((await pile()).length).toBe(1)
+  })
+})
+
+describe('LJ-13 — confidence and reason on POST / and PATCH /:id/review', () => {
+  // The policy lives in lib/srs.ts (applyConfidence); these drive it through
+  // the real routes and read the rows back. NOW is 90 days before var-2027,
+  // so no exam rule touches these schedules.
+  const MIN_MS = 60_000
+  const DAY_MS = 86_400_000
+  const DAY_MIN = 24 * 60
+  const NOW = new Date(2027, 0, 10, 12, 0, 0)
+  const later = (ms: number) => new Date(NOW.getTime() + ms)
+
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(NOW)
+  })
+
+  async function send(asUser: string, method: string, path: string, body: unknown) {
+    const { app, env } = appFor(asUser)
+    return app.request(
+      path,
+      { method, headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) },
+      env,
+    )
+  }
+  const post = (asUser: string, body: unknown) => send(asUser, 'POST', '/', body)
+  const review = (asUser: string, id: number, body: unknown) =>
+    send(asUser, 'PATCH', `/${id}/review`, body)
+
+  async function rowOf(id: number) {
+    const db = getDb(d1 as unknown as D1Database)
+    const [row] = await db.select().from(mistakes).where(eq(mistakes.id, id))
+    return row
+  }
+
+  async function posted(asUser: string, body: Record<string, unknown>) {
+    const res = await post(asUser, body)
+    const { mistake } = (await res.json()) as { mistake: { id: number } }
+    return { status: res.status, row: await rowOf(mistake.id) }
+  }
+
+  async function listed(asUser: string, scope: 'due' | 'pile' | 'all') {
+    const dayStart = String(new Date().setHours(0, 0, 0, 0))
+    const { body } = await getDue(asUser, { scope, dayStart, limit: '500' })
+    return body.mistakes.map((m) => m.questionId)
+  }
+
+  it('POST: a Säker miss is due again sooner than a plain miss, and is on today’s pile at once', async () => {
+    const sure = await posted('lj1', { questionId: 'var-2026-verb1-ORD-201', confidence: 'saker' })
+    const plain = await posted('lj1', { questionId: 'var-2026-verb1-ORD-202' })
+    expect(sure.status).toBe(201)
+    expect(sure.row).toMatchObject({
+      status: 'active',
+      reason: 'wrong',
+      lastConfidence: 'saker',
+      intervalMinutes: 5,
+      errorCount7d: 1,
+    })
+    expect(sure.row.nextReviewAt).toEqual(later(5 * MIN_MS))
+    expect(plain.row).toMatchObject({ reason: 'wrong', lastConfidence: null, intervalMinutes: 10 })
+    expect(plain.row.nextReviewAt).toEqual(later(10 * MIN_MS))
+    expect((await listed('lj1', 'pile')).sort()).toEqual([
+      'var-2026-verb1-ORD-201',
+      'var-2026-verb1-ORD-202',
+    ])
+    vi.setSystemTime(later(6 * MIN_MS))
+    expect(await listed('lj1', 'due')).toEqual(['var-2026-verb1-ORD-201'])
+  })
+
+  it('POST: a Säker lapse banks the same height, so the climb back is the real ladder', async () => {
+    const q = 'var-2026-verb1-ORD-203'
+    const { id } = await seedMistake(d1, 'lj2', {
+      questionId: q,
+      intervalMinutes: 8 * DAY_MIN,
+      nextReviewAt: later(-MIN_MS),
+      lastErrorAt: later(-9 * DAY_MS),
+    })
+    expect((await post('lj2', { questionId: q, confidence: 'saker' })).status).toBe(200)
+    expect(await rowOf(id)).toMatchObject({
+      intervalMinutes: 5,
+      lapseIntervalMinutes: 8 * DAY_MIN,
+      errorCount7d: 2,
+      lastConfidence: 'saker',
+    })
+    vi.setSystemTime(later(5 * MIN_MS))
+    await review('lj2', id, { correct: true, confidence: 'tror' })
+    expect(await rowOf(id)).toMatchObject({
+      status: 'active',
+      intervalMinutes: 4 * DAY_MIN,
+      lapseIntervalMinutes: null,
+      lastConfidence: 'tror',
+    })
+  })
+
+  it('POST: a right Gissar answer makes a lucky item that comes back once, tomorrow, off today’s pile', async () => {
+    const q = 'var-2026-kvant1-KVA-204'
+    const { status, row } = await posted('lj3', {
+      questionId: q,
+      confidence: 'gissar',
+      reason: 'lucky',
+    })
+    expect(status).toBe(201)
+    expect(row).toMatchObject({
+      status: 'active',
+      reason: 'lucky',
+      lastConfidence: 'gissar',
+      intervalMinutes: DAY_MIN,
+      lapseIntervalMinutes: null,
+      errorCount7d: 0,
+      lastErrorAt: null,
+    })
+    expect(row.nextReviewAt).toEqual(later(DAY_MS))
+    // Not a miss: nothing to do today, but it is in the queue.
+    expect(await listed('lj3', 'pile')).toEqual([])
+    expect(await listed('lj3', 'due')).toEqual([])
+    expect(await listed('lj3', 'all')).toEqual([q])
+    vi.setSystemTime(later(DAY_MS))
+    expect(await listed('lj3', 'due')).toEqual([q])
+    expect(await listed('lj3', 'pile')).toEqual([q])
+  })
+
+  it.each([
+    'review',
+    'by-question',
+    'id',
+  ])('a lucky item leaves for good on its next counted right answer (%s)', async (path) => {
+    const q = `var-2026-kvant1-KVA-205-${path}`
+    const { row } = await posted('lj4', { questionId: q, confidence: 'gissar', reason: 'lucky' })
+    vi.setSystemTime(later(DAY_MS))
+    const res =
+      path === 'review'
+        ? await review('lj4', row.id, { correct: true, confidence: 'tror' })
+        : path === 'by-question'
+          ? await send('lj4', 'PATCH', '/by-question', { questionId: q, resolve: true })
+          : await send('lj4', 'PATCH', `/${row.id}`, { resolve: true })
+    expect(res.status).toBe(200)
+    expect((await rowOf(row.id)).status).toBe('resolved')
+    for (const scope of ['due', 'pile', 'all'] as const) {
+      expect(await listed('lj4', scope)).toEqual([])
+    }
+  })
+
+  it('a lucky item guessed right again stays as it is; a miss makes it a plain one', async () => {
+    const q = 'var-2026-kvant1-KVA-206'
+    const { row } = await posted('lj5', { questionId: q, confidence: 'gissar', reason: 'lucky' })
+    vi.setSystemTime(later(DAY_MS))
+    expect((await review('lj5', row.id, { correct: true, confidence: 'gissar' })).status).toBe(200)
+    expect(await rowOf(row.id)).toEqual(row)
+    expect(await listed('lj5', 'due')).toEqual([q])
+
+    await review('lj5', row.id, { correct: false })
+    const missed = await rowOf(row.id)
+    expect(missed).toMatchObject({
+      status: 'active',
+      reason: 'wrong',
+      lastConfidence: null,
+      intervalMinutes: 10,
+      errorCount7d: 1,
+    })
+    expect(missed.lastErrorAt).toEqual(later(DAY_MS))
+    expect(await listed('lj5', 'pile')).toEqual([q])
+    // A real miss now: the next right answer climbs the ladder, no shortcut.
+    await review('lj5', row.id, { correct: true })
+    expect(await rowOf(row.id)).toMatchObject({ status: 'active', intervalMinutes: DAY_MIN })
+  })
+
+  it('a right Gissar answer keeps a row already in Repetera exactly as it was (POST and review)', async () => {
+    const q = 'var-2026-verb1-LÄS-207'
+    const { id } = await seedMistake(d1, 'lj6', {
+      questionId: q,
+      intervalMinutes: 10,
+      lapseIntervalMinutes: 8 * DAY_MIN,
+      errorCount7d: 2,
+      nextReviewAt: later(-MIN_MS),
+      lastErrorAt: later(-30 * MIN_MS),
+    })
+    const before = await rowOf(id)
+    expect(
+      (await post('lj6', { questionId: q, confidence: 'gissar', reason: 'lucky' })).status,
+    ).toBe(200)
+    expect(await rowOf(id)).toEqual({ ...before, lastConfidence: 'gissar' })
+    const reviewed = await review('lj6', id, {
+      correct: true,
+      confidence: 'gissar',
+      reason: 'lucky',
+    })
+    expect(reviewed.status).toBe(200)
+    expect(await rowOf(id)).toEqual({ ...before, lastConfidence: 'gissar' })
+    // The guess did not count: still due and on today's pile.
+    expect(await listed('lj6', 'due')).toEqual([q])
+    expect(await listed('lj6', 'pile')).toEqual([q])
+    // The next counted right answer moves it as normal: half the banked height.
+    await review('lj6', id, { correct: true, confidence: 'saker' })
+    expect(await rowOf(id)).toMatchObject({
+      status: 'active',
+      reason: 'wrong',
+      intervalMinutes: 4 * DAY_MIN,
+      lapseIntervalMinutes: null,
+      lastConfidence: 'saker',
+    })
+    expect(await listed('lj6', 'pile')).toEqual([])
+  })
+
+  it.each([
+    'POST',
+    'review',
+  ])('a right Gissar answer brings a graduated question back once (%s)', async (via) => {
+    const q = `var-2026-kvant2-NOG-208-${via}`
+    const { id } = await seedMistake(d1, 'lj7', {
+      questionId: q,
+      status: 'resolved',
+      intervalMinutes: 30 * DAY_MIN,
+      nextReviewAt: null,
+      errorCount7d: 3,
+      lastErrorAt: later(-90 * DAY_MS),
+    })
+    const res =
+      via === 'POST'
+        ? await post('lj7', { questionId: q, confidence: 'gissar', reason: 'lucky' })
+        : await review('lj7', id, { correct: true, confidence: 'gissar' })
+    expect(res.status).toBe(200)
+    const back = await rowOf(id)
+    expect(back).toMatchObject({
+      status: 'active',
+      reason: 'lucky',
+      lastConfidence: 'gissar',
+      intervalMinutes: DAY_MIN,
+      errorCount7d: 3,
+    })
+    expect(back.nextReviewAt).toEqual(later(DAY_MS))
+    expect(back.lastErrorAt).toEqual(later(-90 * DAY_MS))
+    vi.setSystemTime(later(DAY_MS))
+    await review('lj7', id, { correct: true, confidence: 'saker' })
+    expect((await rowOf(id)).status).toBe('resolved')
+  })
+
+  it.each([
+    ['saker', 5],
+    ['tror', 10],
+    ['gissar', 10],
+    [undefined, 10],
+  ] as const)('PATCH /:id/review: a %s miss relearns in %s min and keeps the banked height', async (confidence, minutes) => {
+    const { id } = await seedMistake(d1, 'lj8', {
+      questionId: `var-2026-verb2-MEK-209-${confidence}`,
+      intervalMinutes: 8 * DAY_MIN,
+      nextReviewAt: later(-MIN_MS),
+      lastErrorAt: later(-9 * DAY_MS),
+    })
+    expect((await review('lj8', id, { correct: false, confidence })).status).toBe(200)
+    const row = await rowOf(id)
+    expect(row).toMatchObject({
+      status: 'active',
+      reason: 'wrong',
+      intervalMinutes: minutes,
+      lapseIntervalMinutes: 8 * DAY_MIN,
+      errorCount7d: 2,
+      lastConfidence: confidence ?? null,
+    })
+    expect(row.nextReviewAt).toEqual(later(minutes * MIN_MS))
+    expect(row.lastErrorAt).toEqual(NOW)
+  })
+
+  it.each([
+    'saker',
+    'tror',
+    undefined,
+  ] as const)('PATCH /:id/review: a right %s answer climbs the ladder as today', async (confidence) => {
+    const { id } = await seedMistake(d1, 'lj9', {
+      questionId: `var-2026-verb1-ELF-210-${confidence}`,
+      intervalMinutes: DAY_MIN,
+      nextReviewAt: later(-MIN_MS),
+    })
+    expect((await review('lj9', id, { correct: true, confidence })).status).toBe(200)
+    const row = await rowOf(id)
+    expect(row).toMatchObject({
+      status: 'active',
+      reason: 'wrong',
+      intervalMinutes: 2 * DAY_MIN,
+      lastConfidence: confidence ?? null,
+    })
+    expect(row.nextReviewAt).toEqual(later(2 * DAY_MS))
+  })
+
+  it('POST: flagged and manual keep today’s miss schedule; their confidence is stored, unrated', async () => {
+    const flagged = await posted('lj10', {
+      questionId: 'var-2026-verb1-ORD-211',
+      reason: 'flagged',
+    })
+    const manual = await posted('lj10', {
+      questionId: 'var-2026-verb1-ORD-212',
+      reason: 'manual',
+      confidence: 'saker',
+    })
+    expect(flagged).toMatchObject({
+      status: 201,
+      row: { reason: 'flagged', lastConfidence: null, intervalMinutes: 10 },
+    })
+    expect(manual).toMatchObject({
+      status: 201,
+      row: { reason: 'manual', lastConfidence: 'saker', intervalMinutes: 10 },
+    })
+    // A later plain miss on the same question is a 'wrong' again.
+    const again = await posted('lj10', { questionId: 'var-2026-verb1-ORD-212' })
+    expect(again).toMatchObject({
+      status: 200,
+      row: { id: manual.row.id, reason: 'wrong', lastConfidence: null, errorCount7d: 2 },
+    })
+  })
+
+  it('rejects unknown values and a reason its answer contradicts, writing nothing', async () => {
+    const q = 'var-2026-verb1-ORD-213'
+    for (const body of [
+      { questionId: q, confidence: 'sure' },
+      { questionId: q, confidence: 'Säker' },
+      { questionId: q, reason: 'guess' },
+      { questionId: q, reason: 'lucky' },
+      { questionId: q, reason: 'lucky', confidence: 'tror' },
+    ]) {
+      expect((await post('lj11', body)).status).toBe(400)
+    }
+    const db = getDb(d1 as unknown as D1Database)
+    expect(await db.select().from(mistakes).where(eq(mistakes.questionId, q))).toEqual([])
+
+    const { id } = await seedMistake(d1, 'lj11', { questionId: 'var-2026-verb1-ORD-214' })
+    const before = await rowOf(id)
+    for (const body of [
+      { correct: true, confidence: 'sure' },
+      { correct: true, reason: 'everything' },
+      { correct: false, confidence: 'gissar', reason: 'lucky' },
+      { correct: true, reason: 'wrong' },
+      { correct: true, confidence: 'tror', reason: 'lucky' },
+      { correct: true, reason: 'manual' },
+      { correct: false, reason: 'flagged' },
+    ]) {
+      expect((await review('lj11', id, body)).status).toBe(400)
+    }
+    expect(await rowOf(id)).toEqual(before)
+  })
+
+  it('a client that sends no confidence gets today’s rows: the same as Tror det, with none stored', async () => {
+    // The same answers, sent with no confidence and as Tror det: a miss, a
+    // right review, a wrong review, then a right answer through /by-question.
+    const rows = []
+    for (const [user, extra] of [
+      ['legacy', {}],
+      ['tror', { confidence: 'tror' }],
+    ] as const) {
+      const q = 'var-2026-verb1-ORD-215'
+      const { row } = await posted(user, { questionId: q, ...extra })
+      await review(user, row.id, { correct: true, ...extra })
+      await review(user, row.id, { correct: false, ...extra })
+      await send(user, 'PATCH', '/by-question', { questionId: q, resolve: true })
+      rows.push(await rowOf(row.id))
+    }
+    const [legacy, tror] = rows
+    expect(legacy).toMatchObject({
+      status: 'active',
+      reason: 'wrong',
+      lastConfidence: null,
+      intervalMinutes: DAY_MIN,
+      lapseIntervalMinutes: null,
+      errorCount7d: 2,
+    })
+    expect(tror.lastConfidence).toBe('tror')
+    expect({ ...tror, id: legacy.id, userId: legacy.userId, lastConfidence: null }).toEqual(legacy)
   })
 })

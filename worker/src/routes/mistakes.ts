@@ -14,6 +14,13 @@
 //                        The /due endpoint filters by `≤ now`, so a
 //                        mistake stays "out of view" until its rung
 //                        elapses.
+//   - reason           → why the question is in Repetera (LJ-13): 'wrong'
+//                        (a miss, the default), 'lucky' (a right Gissar
+//                        answer), 'flagged' or 'manual'.
+//   - lastConfidence   → how sure the student said they were on the answer
+//                        that last wrote the row; null when it said none.
+//                        Confidence changes the schedule only as
+//                        lib/srs.ts applyConfidence says.
 //
 // Why upsert vs separate rows per attempt:
 //   The mistakes table is a *replay queue*, not an audit log. The audit
@@ -31,10 +38,10 @@ import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { type Db, getDb } from '../db/client'
-import { mistakes, sessions, users } from '../db/schema'
+import { CONFIDENCE_LEVELS, MISTAKE_REASONS, mistakes, sessions, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
 import { examFor } from '../lib/sittings'
-import { nextOnCorrect, nextOnWrong, RELEARN_MINUTES } from '../lib/srs'
+import { applyConfidence, RELEARN_MINUTES } from '../lib/srs'
 import type { Env, Vars } from '../types'
 
 /** One preference read, scoped to the authenticated user's provisioned id. */
@@ -52,8 +59,17 @@ const RecordBody = z
     questionId: z.string().min(1).max(60),
     // Optional Layer 1 tags. Empty array is fine; null means "untagged".
     layer1Ids: z.array(z.string().min(1).max(40)).max(8).optional(),
+    // LJ-13: how sure the student was, and why the question goes to
+    // Repetera. No reason means 'wrong', a miss, as before.
+    confidence: z.enum(CONFIDENCE_LEVELS).optional(),
+    reason: z.enum(MISTAKE_REASONS).optional(),
   })
   .strict()
+  // 'lucky' records a right Gissar answer, so it has to say Gissar.
+  .refine((b) => b.reason !== 'lucky' || b.confidence === 'gissar', {
+    message: "reason 'lucky' needs confidence 'gissar'",
+    path: ['confidence'],
+  })
 
 const PatchBody = z
   .object({
@@ -64,8 +80,18 @@ const PatchBody = z
 const ReviewBody = z
   .object({
     correct: z.boolean(),
+    confidence: z.enum(CONFIDENCE_LEVELS).optional(),
+    // Optional, and only the reason the answer already implies: 'wrong' for
+    // a miss, 'lucky' for a right Gissar answer.
+    reason: z.enum(MISTAKE_REASONS).optional(),
   })
   .strict()
+  .refine(
+    (b) =>
+      b.reason === undefined ||
+      (b.correct ? b.reason === 'lucky' && b.confidence === 'gissar' : b.reason === 'wrong'),
+    { message: 'reason does not match the answer', path: ['reason'] },
+  )
 
 const IdParam = z.object({ id: z.coerce.number().int().positive() })
 
@@ -145,8 +171,17 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // how high the item had climbed. The previous height is stashed in
   // `lapseIntervalMinutes` (FSRS-lite, PL-L.2) so the next correct answer
   // resumes at half of it instead of restarting at day 1. See lib/srs.ts.
+  //
+  // LJ-13: the optional `confidence` and `reason` are stored on the row and
+  // go through applyConfidence (lib/srs.ts). A Säker miss relearns sooner.
+  // `reason: 'lucky'` records a RIGHT Gissar answer instead of a miss: the
+  // question comes back once, or nothing moves if it is already in
+  // Repetera. 'flagged' and 'manual' keep the miss schedule; only a miss is
+  // rated, so their confidence is stored but changes nothing.
   .post('/', zValidator('json', RecordBody), async (c) => {
     const body = c.req.valid('json')
+    const reason = body.reason ?? 'wrong'
+    const lastConfidence = body.confidence ?? null
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
 
@@ -160,15 +195,56 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       .where(and(eq(mistakes.userId, userId), eq(mistakes.questionId, body.questionId)))
       .limit(1)
 
+    if (reason === 'lucky') {
+      const now = new Date()
+      if (existing) {
+        const guess = applyConfidence({ correct: true, confidence: 'gissar' }, existing, now)
+        const [row] = await db
+          .update(mistakes)
+          .set(
+            guess.kind === 'keep'
+              ? { lastConfidence }
+              : {
+                  status: 'active',
+                  reason,
+                  intervalMinutes: guess.intervalMinutes,
+                  nextReviewAt: guess.nextReviewAt,
+                  lastConfidence,
+                  layer1Ids: body.layer1Ids ?? existing.layer1Ids ?? null,
+                },
+          )
+          .where(eq(mistakes.id, existing.id))
+          .returning()
+        return c.json({ mistake: row })
+      }
+      // A right answer is no error, so none is counted or dated.
+      const lucky = applyConfidence({ correct: true, confidence: 'gissar' }, null, now)
+      const [row] = await db
+        .insert(mistakes)
+        .values({
+          userId,
+          questionId: body.questionId,
+          layer1Ids: body.layer1Ids ?? null,
+          status: 'active',
+          reason,
+          lastConfidence,
+          errorCount7d: 0,
+          lastErrorAt: null,
+          intervalMinutes: lucky.intervalMinutes,
+          nextReviewAt: lucky.nextReviewAt,
+        })
+        .returning()
+      return c.json({ mistake: row }, 201)
+    }
+
+    const rated = reason === 'wrong' ? body.confidence : undefined
+
     if (existing) {
       // Lapse memory: stash the height this row had climbed to (or keep
       // the height already banked from an earlier lapse) before the
       // relearn rung overwrites the interval. See lib/srs.ts. Store 0 as
       // NULL so "no banked height" stays a clean NULL in the column.
-      const wrong = nextOnWrong(new Date(), {
-        intervalMinutes: existing.intervalMinutes ?? 0,
-        lapseIntervalMinutes: existing.lapseIntervalMinutes ?? null,
-      })
+      const wrong = applyConfidence({ correct: false, confidence: rated }, existing, new Date())
       const [row] = await db
         .update(mistakes)
         .set({
@@ -181,6 +257,8 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
           // Layer 1 tags: keep whichever set is non-empty. Server is the
           // source of truth once tagging starts (task 38).
           layer1Ids: body.layer1Ids ?? existing.layer1Ids ?? null,
+          reason,
+          lastConfidence,
         })
         .where(eq(mistakes.id, existing.id))
         .returning()
@@ -189,7 +267,7 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
 
     // Brand-new mistake — no prior height to stash, so lapse memory stays
     // NULL (the column default). Behaviour identical to the old reset.
-    const wrong = nextOnWrong()
+    const wrong = applyConfidence({ correct: false, confidence: rated })
     const [row] = await db
       .insert(mistakes)
       .values({
@@ -200,6 +278,8 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         errorCount7d: 1,
         intervalMinutes: wrong.intervalMinutes,
         nextReviewAt: wrong.nextReviewAt,
+        reason,
+        lastConfidence,
       })
       .returning()
     return c.json({ mistake: row }, 201)
@@ -292,7 +372,9 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // correctly-answered question with an active row advances/graduates,
   // regardless of how the session plan drifted. No active row → 200
   // { mistake: null } (nothing to resolve is a fine outcome, not an
-  // error — e.g. replaying an already-graduated question).
+  // error — e.g. replaying an already-graduated question). This path
+  // carries no confidence, so its answer always counts: a 'lucky' row
+  // graduates, since it was only to come back once (LJ-13, lib/srs.ts).
   .patch(
     '/by-question',
     zValidator('json', z.object({ questionId: z.string().min(1), resolve: z.literal(true) })),
@@ -316,12 +398,7 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       }
       const now = new Date()
       const examAt = await userExam(db, userId, now)
-      const outcome = nextOnCorrect(
-        existing.intervalMinutes ?? 0,
-        now,
-        existing.lapseIntervalMinutes ?? null,
-        examAt,
-      )
+      const outcome = applyConfidence({ correct: true }, existing, now, examAt)
       if (outcome.graduated) {
         const [row] = await db
           .update(mistakes)
@@ -359,10 +436,17 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   //     rung + banked height, errorCount7d + 1, lastErrorAt = now, status
   //     back to 'active' — the item stays on today's pile. Never an
   //     insert: a miss on the new question lapses the ORIGINAL mistake.
+  // LJ-13: an optional `confidence` is stored as lastConfidence on every
+  // write, and an optional `reason` may only repeat what the answer
+  // implies. The schedule follows applyConfidence (lib/srs.ts): a Säker
+  // miss relearns sooner; a right Gissar answer leaves a row in Repetera
+  // as it is and brings a resolved one back once ('lucky'); a lucky row's
+  // next counted right answer graduates it.
   // Same ownership rule as /:id: another user's row is a 404.
   .patch('/:id/review', zValidator('param', IdParam), zValidator('json', ReviewBody), async (c) => {
     const { id } = c.req.valid('param')
-    const { correct } = c.req.valid('json')
+    const { correct, confidence } = c.req.valid('json')
+    const lastConfidence = confidence ?? null
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
 
@@ -377,10 +461,7 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
 
     if (!correct) {
       const now = new Date()
-      const wrong = nextOnWrong(now, {
-        intervalMinutes: existing.intervalMinutes ?? 0,
-        lapseIntervalMinutes: existing.lapseIntervalMinutes ?? null,
-      })
+      const wrong = applyConfidence({ correct: false, confidence }, existing, now)
       const [row] = await db
         .update(mistakes)
         .set({
@@ -390,7 +471,29 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
           intervalMinutes: wrong.intervalMinutes,
           nextReviewAt: wrong.nextReviewAt,
           lapseIntervalMinutes: wrong.lapseIntervalMinutes > 0 ? wrong.lapseIntervalMinutes : null,
+          reason: 'wrong',
+          lastConfidence,
         })
+        .where(eq(mistakes.id, existing.id))
+        .returning()
+      return c.json({ mistake: row })
+    }
+
+    if (confidence === 'gissar') {
+      const guess = applyConfidence({ correct: true, confidence }, existing, new Date())
+      const [row] = await db
+        .update(mistakes)
+        .set(
+          guess.kind === 'keep'
+            ? { lastConfidence }
+            : {
+                status: 'active',
+                reason: 'lucky',
+                intervalMinutes: guess.intervalMinutes,
+                nextReviewAt: guess.nextReviewAt,
+                lastConfidence,
+              },
+        )
         .where(eq(mistakes.id, existing.id))
         .returning()
       return c.json({ mistake: row })
@@ -401,16 +504,11 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     }
     const now = new Date()
     const examAt = await userExam(db, userId, now)
-    const outcome = nextOnCorrect(
-      existing.intervalMinutes ?? 0,
-      now,
-      existing.lapseIntervalMinutes ?? null,
-      examAt,
-    )
+    const outcome = applyConfidence({ correct: true, confidence }, existing, now, examAt)
     if (outcome.graduated) {
       const [row] = await db
         .update(mistakes)
-        .set({ status: 'resolved' })
+        .set({ status: 'resolved', lastConfidence })
         .where(eq(mistakes.id, existing.id))
         .returning()
       return c.json({ mistake: row })
@@ -422,6 +520,7 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         nextReviewAt: outcome.nextReviewAt,
         // Consume/clear any stashed lapse height (null on every correct).
         lapseIntervalMinutes: outcome.lapseIntervalMinutes,
+        lastConfidence,
       })
       .where(eq(mistakes.id, existing.id))
       .returning()
@@ -490,8 +589,9 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
 
   // PATCH /api/mistakes/:id — { resolve: true } reports a correct
   // answer in /repetition. The server advances the row up the ladder
-  // (or graduates it to status='resolved' if it was at the cap). The
-  // client doesn't need to know the doubling schedule; we own that.
+  // (or graduates it to status='resolved' if it was at the cap, or if it
+  // is a 'lucky' row, which comes back only once; LJ-13). The client
+  // doesn't need to know the doubling schedule; we own that.
   .patch('/:id', zValidator('param', IdParam), zValidator('json', PatchBody), async (c) => {
     const { id } = c.req.valid('param')
     const body = c.req.valid('json')
@@ -516,12 +616,7 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
 
     const now = new Date()
     const examAt = await userExam(db, userId, now)
-    const outcome = nextOnCorrect(
-      existing.intervalMinutes ?? 0,
-      now,
-      existing.lapseIntervalMinutes ?? null,
-      examAt,
-    )
+    const outcome = applyConfidence({ correct: true }, existing, now, examAt)
 
     if (outcome.graduated) {
       const [row] = await db
