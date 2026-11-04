@@ -41,6 +41,8 @@ type AttemptPayload = {
   correct: boolean
   timeTakenMs?: number
   layer1Ids?: string[]
+  // Typed loosely so the validation tests can send bad values.
+  confidence?: unknown
   // Provenance-looking fields a client might send; the route ignores them.
   source?: unknown
   provenance?: unknown
@@ -61,11 +63,12 @@ async function post(payload: AttemptPayload, asUser = 'user_a') {
   )
 }
 
-/** Seed a user + one open drill session and hand back the session id. */
-async function seedSession(clerkUserId: string) {
+/** Seed a user + one open session (a drill unless told otherwise) and hand
+ *  back the session id. */
+async function seedSession(clerkUserId: string, kind = 'drill') {
   const db = getDb(d1 as unknown as D1Database)
   const [user] = await db.insert(users).values({ clerkUserId }).returning()
-  const [session] = await db.insert(sessions).values({ userId: user.id, kind: 'drill' }).returning()
+  const [session] = await db.insert(sessions).values({ userId: user.id, kind }).returning()
   return { userId: user.id, sessionId: session.id }
 }
 
@@ -522,5 +525,105 @@ describe('POST /api/attempts — provenance', () => {
       { questionId: 'var-2099-kvant1-KVA-002', source: 'unknown', rev: null },
       { questionId: FABRICATED_KVA_QID, source: 'unknown', rev: null },
     ])
+  })
+})
+
+// LJ-12 (rebuild map §2): an answer can say how sure the student was, as
+// Gissar, Tror det or Säker, stored as the ASCII words of CONFIDENCE_LEVELS.
+// The field is optional, so a client that never sends it keeps working. A
+// Provpass answer never keeps one: Markera is a pass's only uncertainty signal.
+describe('POST /api/attempts — answer confidence', () => {
+  async function storedConfidence(userId: number) {
+    const rows = await db().select().from(attempts).where(eq(attempts.userId, userId))
+    return rows.map((r) => r.confidence)
+  }
+
+  it('stores each confidence level on a practice answer and returns it', async () => {
+    const { userId, sessionId } = await seedSession('user_a')
+    for (const confidence of ['gissar', 'tror', 'saker']) {
+      const res = await post({
+        sessionId,
+        questionId: KVA_QID,
+        selectedAnswer: 'B',
+        correct: true,
+        confidence,
+      })
+      expect(res.status).toBe(201)
+      const body = (await res.json()) as { attempt: { confidence: string | null } }
+      expect(body.attempt.confidence).toBe(confidence)
+    }
+    expect(await storedConfidence(userId)).toEqual(['gissar', 'tror', 'saker'])
+  })
+
+  it('refuses any other confidence value and writes nothing', async () => {
+    const { userId, sessionId } = await seedSession('user_a')
+    // The map's draft English words, the Swedish labels, other spellings and
+    // non-strings. Absent means "none given", as for timeTakenMs, so null is
+    // refused too.
+    const bad = ['guess', 'think', 'sure', 'Säker', 'säker', 'SAKER', 'Tror det', '', 2, true, null]
+    for (const confidence of [...bad, ['saker']]) {
+      const res = await post({
+        sessionId,
+        questionId: KVA_QID,
+        selectedAnswer: 'B',
+        correct: true,
+        confidence,
+      })
+      expect(res.status).toBe(400)
+    }
+    expect(await storedConfidence(userId)).toEqual([])
+    const [user] = await db().select().from(users).where(eq(users.id, userId))
+    expect(user.attemptsTotal).toBe(0)
+  })
+
+  it('ignores confidence on a Provpass answer, which lands with null', async () => {
+    const { userId, sessionId } = await seedSession('user_a', 'mock')
+    const res = await post({
+      sessionId,
+      questionId: KVA_QID,
+      selectedAnswer: 'C',
+      correct: false,
+      timeTakenMs: 41_000,
+      confidence: 'saker',
+    })
+    expect(res.status).toBe(201)
+    const body = (await res.json()) as { attempt: { confidence: string | null } }
+    expect(body.attempt.confidence).toBeNull()
+    const [row] = await db().select().from(attempts).where(eq(attempts.userId, userId))
+    expect(row).toMatchObject({
+      questionId: KVA_QID,
+      selectedAnswer: 'C',
+      correct: false,
+      timeTakenMs: 41_000,
+      confidence: null,
+    })
+
+    // The value is still validated there, as on any session.
+    const bad = await post({
+      sessionId,
+      questionId: KVA_QID,
+      selectedAnswer: 'C',
+      correct: false,
+      confidence: 'sure',
+    })
+    expect(bad.status).toBe(400)
+    expect(await storedConfidence(userId)).toEqual([null])
+  })
+
+  it('lands an answer without confidence exactly as before, with null stored', async () => {
+    const { userId, sessionId } = await seedSession('user_a')
+    const res = await post({
+      sessionId,
+      questionId: KVA_QID,
+      selectedAnswer: 'B',
+      correct: true,
+      timeTakenMs: 9_000,
+      layer1Ids: ['KVA-NEG-001'],
+    })
+    expect(res.status).toBe(201)
+    const body = (await res.json()) as { attempt: { confidence: string | null } }
+    expect(body.attempt.confidence).toBeNull()
+    expect(await storedConfidence(userId)).toEqual([null])
+    expect(await masteryRows(userId)).toHaveLength(1)
   })
 })
