@@ -4093,6 +4093,7 @@ export const FRAMEWORK_INDEX: FrameworkIndexSection[] = [
 /** The lesson open in Uppslag, verbatim. */
 export const OPEN_LESSON: ProtocolEntry = {
   id: 'LAS-TYPE-003',
+  question_title: 'Vilken hållning har författaren eller en person i texten?',
   question_type: 'Författarens hållning',
   attack_protocol: [
     'Identifiera vems hållning frågan gäller: textförfattaren, recensenten, eller en namngiven tredje part som introduceras i texten (Spivak, Berglund, Posner, Heller Sahlgren …).',
