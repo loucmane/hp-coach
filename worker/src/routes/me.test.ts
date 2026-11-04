@@ -334,6 +334,183 @@ describe('PATCH /api/me/prefs — mockDeferredDate ("Inte idag" defer)', () => {
   })
 })
 
+// LJ-11 (rebuild map §2): the 11 Konto prefs that 0016 added to `users`. PATCH
+// takes them under the names GET returns, each held to the values the Konto
+// screen offers.
+describe('PATCH /api/me/prefs — the Ljusbord Konto prefs (LJ-11)', () => {
+  /** What GET returns for a user who never opened Konto: the 0016 defaults. */
+  const DEFAULTS = {
+    answerConfidence: true,
+    facitTiming: 'each',
+    showMyTime: false,
+    mockClockVisible: true,
+    mockReminder: true,
+    textSize: 'normal',
+    motion: 'system',
+    shortcuts: true,
+    modeFollowSystem: false,
+    targetScore: null,
+    quantRepeat: 'new',
+  }
+  /** Every pref away from its default. */
+  const KONTO = {
+    answerConfidence: false,
+    facitTiming: 'end',
+    showMyTime: true,
+    mockClockVisible: false,
+    mockReminder: false,
+    textSize: 'xlarge',
+    motion: 'none',
+    shortcuts: false,
+    modeFollowSystem: true,
+    targetScore: 18,
+    quantRepeat: 'same',
+  }
+
+  // Per pref: every value Konto can set, the default last so that each case
+  // ends where it began; values of the wrong type, or null where the pref has
+  // no "not set"; and values of the right kind outside its set or range. A
+  // switch's 0 and 1 are how SQLite stores it, not values the API takes.
+  const CASES: Array<{ key: string; valid: unknown[]; invalid: unknown[]; outOfRange: unknown[] }> =
+    [
+      {
+        key: 'answerConfidence',
+        valid: [false, true],
+        invalid: ['true', null],
+        outOfRange: [0, 1],
+      },
+      {
+        key: 'facitTiming',
+        valid: ['end', 'each'],
+        invalid: [1, null],
+        outOfRange: ['after', 'Each', ''],
+      },
+      { key: 'showMyTime', valid: [true, false], invalid: ['false', null], outOfRange: [0, 1] },
+      { key: 'mockClockVisible', valid: [false, true], invalid: ['on', null], outOfRange: [0, 1] },
+      { key: 'mockReminder', valid: [false, true], invalid: ['off', null], outOfRange: [0, 1] },
+      {
+        key: 'textSize',
+        valid: ['small', 'large', 'xlarge', 'normal'],
+        invalid: [17, null],
+        outOfRange: ['huge', 'Normal', 'medium'],
+      },
+      {
+        key: 'motion',
+        valid: ['less', 'none', 'system'],
+        invalid: [false, null],
+        outOfRange: ['reduce', 'off'],
+      },
+      { key: 'shortcuts', valid: [false, true], invalid: ['no', null], outOfRange: [0, 1] },
+      {
+        key: 'modeFollowSystem',
+        valid: [true, false],
+        invalid: ['system', null],
+        outOfRange: [0, 1],
+      },
+      // Tenths of the 0,0–2,0 scale; 1.5 is the score itself, not its tenths.
+      {
+        key: 'targetScore',
+        valid: [15, 18, 0, 20, null],
+        invalid: ['20', true, 1.5],
+        outOfRange: [21, -1, 200],
+      },
+      {
+        key: 'quantRepeat',
+        valid: ['same', 'new'],
+        invalid: [0, null],
+        outOfRange: ['samma', 'ny', 'repeat'],
+      },
+    ]
+
+  type App = ReturnType<typeof appFor>
+
+  function patchPrefs({ app, env }: App, body: unknown) {
+    return app.request(
+      '/prefs',
+      {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(body),
+      },
+      env,
+    )
+  }
+
+  async function readPrefs({ app, env }: App): Promise<Record<string, unknown>> {
+    const res = await app.request('/prefs', {}, env)
+    expect(res.status).toBe(200)
+    return ((await res.json()) as { prefs: Record<string, unknown> }).prefs
+  }
+
+  it('a fresh account reads all 11 at their 0016 defaults, under the names PATCH takes', async () => {
+    const user = appFor('user_fresh')
+    const prefs = await readPrefs(user)
+    expect(prefs).toMatchObject(DEFAULTS)
+    // The column names are not API names: nothing is renamed or aliased.
+    const columns = {
+      answer_confidence: false,
+      text_size: 'large',
+      target_score: 18,
+      mode_follow_system: true,
+    }
+    for (const [column, value] of Object.entries(columns)) {
+      expect(prefs).not.toHaveProperty(column)
+      expect((await patchPrefs(user, { [column]: value })).status, column).toBe(400)
+    }
+    expect(await readPrefs(user)).toMatchObject(DEFAULTS)
+  })
+
+  it.each(CASES)('$key takes every Konto value and refuses the rest', async (c) => {
+    const user = appFor('user_konto')
+    for (const value of c.valid) {
+      const res = await patchPrefs(user, { [c.key]: value })
+      expect(res.status, `${c.key} = ${JSON.stringify(value)}`).toBe(200)
+      const body = (await res.json()) as { prefs: Record<string, unknown> }
+      expect(body.prefs[c.key]).toEqual(value)
+      expect((await readPrefs(user))[c.key]).toEqual(value)
+    }
+    for (const value of [...c.invalid, ...c.outOfRange]) {
+      const res = await patchPrefs(user, { [c.key]: value })
+      expect(res.status, `${c.key} = ${JSON.stringify(value)}`).toBe(400)
+    }
+    // Nothing refused was written: every pref still reads its default.
+    expect(await readPrefs(user)).toMatchObject(DEFAULTS)
+  })
+
+  it('one PATCH sets all 11, a later one changes only what it names, and a refusal writes nothing', async () => {
+    const user = appFor('user_all')
+    expect((await patchPrefs(user, KONTO)).status).toBe(200)
+    expect(await readPrefs(user)).toMatchObject(KONTO)
+    // The older prefs are untouched.
+    expect(await readPrefs(user)).toMatchObject({
+      dailyMinutes: 20,
+      mode: 'light',
+      smartDrill: true,
+    })
+
+    expect((await patchPrefs(user, { textSize: 'small', targetScore: null })).status).toBe(200)
+    expect(await readPrefs(user)).toMatchObject({ ...KONTO, textSize: 'small', targetScore: null })
+
+    expect((await patchPrefs(user, { motion: 'system', textSize: 'huge' })).status).toBe(400)
+    expect(await readPrefs(user)).toMatchObject({ motion: 'none', textSize: 'small' })
+  })
+
+  it('never reaches GET /stats: its default body is the same with every pref set', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date('2026-11-03T12:00:00Z'))
+    try {
+      await seedAttempt('user_stats', 'var-2024-XYZ-001', new Date('2026-11-03T11:00:00Z'), 40_000)
+      const user = appFor('user_stats')
+      const stats = async () => (await user.app.request('/stats', {}, user.env)).json()
+      const before = await stats()
+      expect((await patchPrefs(user, KONTO)).status).toBe(200)
+      expect(await stats()).toEqual(before)
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+})
+
 // P5 infold PR 3 (docs/p5-infold-design.md Amendment 1 E): synthetic (P5)
 // answers count toward the section scores, the weekly trend and accuracy7d,
 // and every estimate they feed says so in estimateBasis. Unknown answers are

@@ -32,5 +32,8 @@ export default defineConfig({
     // The pre-push hook runs the full suite on a shared host; under heavy
     // load (load average 40+) lazy-screen tests exceeded the 5 s default.
     testTimeout: 15_000,
+    // Host rule (2026-11-04): the 32 cores are shared by up to three
+    // workers per project, so no test runner uses more than 8 workers.
+    maxWorkers: 8,
   },
 })
