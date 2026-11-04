@@ -61,6 +61,7 @@ describe('ReturnLink', () => {
     const view = render(<ReturnLink {...props} />)
     expect(screen.getByRole('button', { name: invitation })).toBeInTheDocument()
     expect(screen.getAllByRole('button')).toHaveLength(1)
+    expect(view.container.querySelector('[data-lit="true"], .fa-ui-go')).toBeNull()
     expect(screen.queryByRole('button', { name: /I morgon/ })).not.toBeInTheDocument()
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
     expect(URL.createObjectURL).not.toHaveBeenCalled()

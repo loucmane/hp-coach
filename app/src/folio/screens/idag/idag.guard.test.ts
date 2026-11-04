@@ -45,11 +45,23 @@ describe('Idag isolation', () => {
     expect(css).not.toMatch(
       /\[data-folio\]\s*\{|--fa-bad|\bred\b|#[\da-f]{3,8}\b|\b(?:rgb|hsl|oklch)\(/i,
     )
-    expect(css).toMatch(/\.fa-idag\.fa-home\s*\{[^}]*max-width:\s*min\(100%, 960px\)/)
+    expect(css).toMatch(/max-width:\s*1100px/)
     expect(css).not.toMatch(/opacity\s*:/)
+    const tokens = read('../../styles/tokens.css')
+    const defined = new Set(
+      [...`${tokens}\n${css}`.matchAll(/(--fa-[\w-]+)\s*:/g)].map((m) => m[1]),
+    )
+    for (const match of css.matchAll(/var\((--fa-[\w-]+)/g))
+      expect(defined.has(match[1]), match[1]).toBe(true)
     for (const match of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
       if (/var\(--fa-accent/.test(match[2])) expect(match[1]).toMatch(/\.fa-scale-(?:range|mark)/)
     }
+  })
+  it('uses the shared Ljusbord primitives and does not read answer-bearing headwords', () => {
+    expect(read('./IdagLead.tsx')).toContain("from '@/folio/ui/Lit'")
+    expect(read('./IdagLead.tsx')).toContain("from '@/folio/ui/Go'")
+    expect(read('./IdagMargin.tsx')).toContain("from '@/folio/ui/RangeBand'")
+    expect(read('./useIdagExtras.ts')).not.toContain('entryHeadword')
   })
   it('does not import prototype, classic page, or a second plan writer in screen files', () => {
     for (const file of [
