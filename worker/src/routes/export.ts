@@ -13,6 +13,15 @@
 // `srsState` still has no producer and is intentionally excluded —
 // nothing writes it.
 //
+// The Ljusbord fields that 0016 added (LJ-11, rebuild map §2) travel in the
+// same rows: the 11 Konto prefs on `user`, attempts.confidence,
+// mistakes.reason and lastConfidence, sessions.marks, lessonProgress.step
+// and guess, and mockResults.halfRunId. The export selects whole rows, so it
+// carries them as stored, and import restores them. They are additive and
+// optional, so the envelope stays schemaVersion 1: a backup from before 0016
+// still imports, with each new column at its default. `explanation_feedback`
+// has no route yet and is not exported.
+//
 // `mastery` and `frameworkProgress` DO have live producers as of the
 // progress-writers change (POST /api/attempts and PUT/DELETE
 // /api/lesson-reads respectively; see lib/progress.ts) but are NOT yet in
@@ -42,11 +51,11 @@
 //      write, and makes re-importing your own export idempotent.
 //
 // The `users` row itself is handled specially: only the prefs-shaped
-// columns are restored (coach/palette/mode/font/density/etc + onboarding
-// answers) — clerkUserId and the lifetime counters (attemptsTotal,
-// drillsTotal) stay derived from the live account, not the snapshot, so
-// import can't be used to forge activity counters or hijack another
-// Clerk identity.
+// columns are restored (coach/palette/mode/font/density/etc, the Konto
+// prefs + onboarding answers) — clerkUserId and the lifetime counters
+// (attemptsTotal, drillsTotal) stay derived from the live account, not
+// the snapshot, so import can't be used to forge activity counters or
+// hijack another Clerk identity.
 
 import { eq } from 'drizzle-orm'
 import type { BatchItem } from 'drizzle-orm/batch'
@@ -56,9 +65,11 @@ import { z } from 'zod'
 import { getDb } from '../db/client'
 import {
   attempts,
+  CONFIDENCE_LEVELS,
   dailyPlans,
   lessonProgress,
   lessonReads,
+  MISTAKE_REASONS,
   mistakes,
   mockResults,
   sessions,
@@ -68,6 +79,7 @@ import { ensureUserRow } from '../lib/ensureUser'
 import { MockBreakdownSchema, type SessionAttempt, scoreMockResult } from '../lib/mockScore'
 import { classifyAttempt } from '../lib/provenance'
 import type { Env, Vars } from '../types'
+import { KontoPrefs } from './me'
 
 export const SCHEMA_VERSION = 1 as const
 
@@ -129,6 +141,11 @@ const INSERT_CHUNK_SIZE = 100
 // column nullability in schema.ts) but strict on unknown keys — an
 // export from a newer schema with extra fields should fail loudly
 // (schemaVersion mismatch), not silently truncate.
+//
+// The Ljusbord fields (0016, LJ-11) are optional throughout, because a backup
+// from before 0016 has none of them. The Konto prefs are held to the rules of
+// PATCH /api/me/prefs (KontoPrefs), and every other field to its schema.ts
+// type, as the older fields are.
 
 const SessionShape = z
   .object({
@@ -141,6 +158,7 @@ const SessionShape = z
     currentQuestionId: z.string().nullable().optional(),
     plan: z.array(z.string()).nullable().optional(),
     device: z.enum(['phone', 'tablet', 'desktop']).nullable().optional(),
+    marks: z.array(z.string()).nullable().optional(),
   })
   .passthrough()
 
@@ -153,6 +171,7 @@ const AttemptShape = z
     correct: z.boolean().nullable().optional(),
     timeTakenMs: z.number().int().nullable().optional(),
     createdAt: z.union([z.number(), z.string(), z.null()]).optional(),
+    confidence: z.enum(CONFIDENCE_LEVELS).nullable().optional(),
   })
   .passthrough()
 
@@ -166,6 +185,8 @@ const MistakeShape = z
     lastErrorAt: z.union([z.number(), z.string(), z.null()]).optional(),
     nextReviewAt: z.union([z.number(), z.string(), z.null()]).optional(),
     intervalMinutes: z.number().int().optional(),
+    reason: z.enum(MISTAKE_REASONS).nullable().optional(),
+    lastConfidence: z.enum(CONFIDENCE_LEVELS).nullable().optional(),
   })
   .passthrough()
 
@@ -176,6 +197,8 @@ const LessonProgressShape = z
     frameworkId: z.string().nullable().optional(),
     device: z.enum(['phone', 'tablet', 'desktop']).nullable().optional(),
     updatedAt: z.union([z.number(), z.string(), z.null()]).optional(),
+    step: z.number().int().nullable().optional(),
+    guess: z.string().nullable().optional(),
   })
   .passthrough()
 
@@ -211,6 +234,7 @@ const MockResultShape = z
     durationMs: z.number().int(),
     breakdown: z.unknown(),
     createdAt: z.union([z.number(), z.string(), z.null()]).optional(),
+    halfRunId: z.string().nullable().optional(),
   })
   .passthrough()
 
@@ -225,6 +249,17 @@ const UserPrefsShape = z
     font: z.enum(['literary', 'geometric', 'editorial', 'hyperlegible']).nullable().optional(),
     density: z.enum(['compact', 'regular', 'comfy']).nullable().optional(),
     showStreak: z.boolean().nullable().optional(),
+    answerConfidence: KontoPrefs.shape.answerConfidence.nullable().optional(),
+    facitTiming: KontoPrefs.shape.facitTiming.nullable().optional(),
+    showMyTime: KontoPrefs.shape.showMyTime.nullable().optional(),
+    mockClockVisible: KontoPrefs.shape.mockClockVisible.nullable().optional(),
+    mockReminder: KontoPrefs.shape.mockReminder.nullable().optional(),
+    textSize: KontoPrefs.shape.textSize.nullable().optional(),
+    motion: KontoPrefs.shape.motion.nullable().optional(),
+    shortcuts: KontoPrefs.shape.shortcuts.nullable().optional(),
+    modeFollowSystem: KontoPrefs.shape.modeFollowSystem.nullable().optional(),
+    targetScore: KontoPrefs.shape.targetScore.optional(),
+    quantRepeat: KontoPrefs.shape.quantRepeat.nullable().optional(),
   })
   .passthrough()
 
@@ -451,6 +486,7 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
           currentQuestionId: s.currentQuestionId ?? null,
           plan: s.plan ?? null,
           device: s.device ?? null,
+          marks: s.marks ?? null,
         })
         .returning({ id: sessions.id }),
     )
@@ -491,6 +527,7 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
       correct: a.correct ?? null,
       timeTakenMs: a.timeTakenMs ?? null,
       createdAt: toDateOrUndefined(a.createdAt),
+      confidence: a.confidence ?? null,
       ...classifyAttempt(a.questionId),
     }),
   )
@@ -504,6 +541,8 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
       lastErrorAt: toDateOrUndefined(m.lastErrorAt),
       nextReviewAt: toDateOrNull(m.nextReviewAt),
       intervalMinutes: m.intervalMinutes ?? 0,
+      reason: m.reason ?? 'wrong',
+      lastConfidence: m.lastConfidence ?? null,
     }),
   )
   await insertChunked(db, body.tables.lessonProgress, (lp) =>
@@ -513,6 +552,8 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
       frameworkId: lp.frameworkId ?? null,
       device: lp.device ?? null,
       updatedAt: toDateOrUndefined(lp.updatedAt),
+      step: lp.step ?? null,
+      guess: lp.guess ?? null,
     }),
   )
   await insertChunked(db, body.tables.lessonReads, (lr) =>
@@ -558,12 +599,17 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
       breakdown: scored.breakdown,
       createdAt: toDateOrUndefined(mr.createdAt),
       estimateBasis: scored.estimateBasis,
+      halfRunId: mr.halfRunId ?? null,
     })
   })
 
   // Restore prefs onto the (already-provisioned) user row. clerkUserId
   // and the lifetime counters are NEVER taken from the payload — they
   // stay derived from the live account, not the snapshot.
+  //
+  // A Konto pref the backup lacks (one from before 0016) or holds as null
+  // keeps the account's own value: undefined is left out of the update. Only
+  // targetScore takes a null, which means "no target set".
   await db
     .update(users)
     .set({
@@ -576,6 +622,17 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
       font: body.user.font ?? undefined,
       density: body.user.density ?? undefined,
       showStreak: body.user.showStreak ?? undefined,
+      answerConfidence: body.user.answerConfidence ?? undefined,
+      facitTiming: body.user.facitTiming ?? undefined,
+      showMyTime: body.user.showMyTime ?? undefined,
+      mockClockVisible: body.user.mockClockVisible ?? undefined,
+      mockReminder: body.user.mockReminder ?? undefined,
+      textSize: body.user.textSize ?? undefined,
+      motion: body.user.motion ?? undefined,
+      shortcuts: body.user.shortcuts ?? undefined,
+      modeFollowSystem: body.user.modeFollowSystem ?? undefined,
+      targetScore: body.user.targetScore,
+      quantRepeat: body.user.quantRepeat ?? undefined,
     })
     .where(eq(users.id, userId))
 

@@ -1,0 +1,553 @@
+/* Ljusbord UI primitives (LJ-04): the pieces every screen is built from,
+ * read from r6/A/system.css and the screens that use them. Scoped
+ * [data-folio] .fa-ui-…, tokens only. Chrome is light and elevation; colour
+ * is data (the section chip, a section's band). Motion follows the
+ * component's data-motion (useFolioMotion), so Rörelse Ingen and an OS that
+ * asks for reduced motion animate nothing. The phone rules switch at
+ * useViewport's reader width (768 px), where the phone shell does.
+ * ui.guard.test.ts checks all of this. */
+
+[data-folio] .fa-ui-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ── Section chip: the section's -ink on its -soft tint, a dot of the hue ── */
+[data-folio] .fa-ui-sec {
+  --fa-ui-c: var(--fa-ink-3);
+  --fa-ui-c-ink: var(--fa-ink-3);
+  --fa-ui-c-soft: var(--fa-table-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px 4px;
+  border-radius: 999px;
+  background: var(--fa-ui-c-soft);
+  color: var(--fa-ui-c-ink);
+  font: 700 11.5px/1 var(--fa-sans);
+  letter-spacing: 0.07em;
+  white-space: nowrap;
+  vertical-align: 2px;
+}
+
+[data-folio] .fa-ui-sec::before {
+  content: '';
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--fa-ui-c);
+}
+
+/* The chapter heading's chip (kapitel). */
+[data-folio] .fa-ui-sec[data-size='l'] {
+  padding: 7px 11px 6px;
+  font-size: var(--fa-t13);
+}
+
+/* Each section's hue, for the chip and for a section's own band. */
+[data-folio] .fa-ui-sec[data-sec='ord'],
+[data-folio] .fa-ui-band[data-sec='ord'] {
+  --fa-ui-c: var(--fa-sec-ord);
+  --fa-ui-c-ink: var(--fa-sec-ord-ink);
+  --fa-ui-c-soft: var(--fa-sec-ord-soft);
+}
+
+[data-folio] .fa-ui-sec[data-sec='las'],
+[data-folio] .fa-ui-band[data-sec='las'] {
+  --fa-ui-c: var(--fa-sec-las);
+  --fa-ui-c-ink: var(--fa-sec-las-ink);
+  --fa-ui-c-soft: var(--fa-sec-las-soft);
+}
+
+[data-folio] .fa-ui-sec[data-sec='mek'],
+[data-folio] .fa-ui-band[data-sec='mek'] {
+  --fa-ui-c: var(--fa-sec-mek);
+  --fa-ui-c-ink: var(--fa-sec-mek-ink);
+  --fa-ui-c-soft: var(--fa-sec-mek-soft);
+}
+
+[data-folio] .fa-ui-sec[data-sec='elf'],
+[data-folio] .fa-ui-band[data-sec='elf'] {
+  --fa-ui-c: var(--fa-sec-elf);
+  --fa-ui-c-ink: var(--fa-sec-elf-ink);
+  --fa-ui-c-soft: var(--fa-sec-elf-soft);
+}
+
+[data-folio] .fa-ui-sec[data-sec='xyz'],
+[data-folio] .fa-ui-band[data-sec='xyz'] {
+  --fa-ui-c: var(--fa-sec-xyz);
+  --fa-ui-c-ink: var(--fa-sec-xyz-ink);
+  --fa-ui-c-soft: var(--fa-sec-xyz-soft);
+}
+
+[data-folio] .fa-ui-sec[data-sec='kva'],
+[data-folio] .fa-ui-band[data-sec='kva'] {
+  --fa-ui-c: var(--fa-sec-kva);
+  --fa-ui-c-ink: var(--fa-sec-kva-ink);
+  --fa-ui-c-soft: var(--fa-sec-kva-soft);
+}
+
+[data-folio] .fa-ui-sec[data-sec='nog'],
+[data-folio] .fa-ui-band[data-sec='nog'] {
+  --fa-ui-c: var(--fa-sec-nog);
+  --fa-ui-c-ink: var(--fa-sec-nog-ink);
+  --fa-ui-c-soft: var(--fa-sec-nog-soft);
+}
+
+[data-folio] .fa-ui-sec[data-sec='dtk'],
+[data-folio] .fa-ui-band[data-sec='dtk'] {
+  --fa-ui-c: var(--fa-sec-dtk);
+  --fa-ui-c-ink: var(--fa-sec-dtk-ink);
+  --fa-ui-c-soft: var(--fa-sec-dtk-soft);
+}
+
+/* ── Key cap ── */
+[data-folio] .fa-ui-kbd {
+  display: inline-block;
+  padding: 4px 6px;
+  border: 1px solid var(--fa-line-2);
+  border-radius: 6px;
+  color: var(--fa-ink-3);
+  font: 500 var(--fa-t12)/1 var(--fa-mono);
+  white-space: nowrap;
+}
+
+/* ── Go: the one ink-filled action; a palette may tint it ── */
+[data-folio] .fa-ui-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 54px;
+  padding: 0 18px 0 24px;
+  border: 0;
+  border-radius: var(--fa-r2);
+  background: var(--fa-go);
+  color: var(--fa-on-go);
+  box-shadow: 0 6px 18px -8px var(--fa-scrim);
+  font: inherit;
+  font-family: var(--fa-sans);
+  font-size: var(--fa-t17);
+  font-weight: 700;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+[data-folio] .fa-ui-go[data-motion='full'] {
+  transition:
+    transform var(--fa-d1) var(--fa-ease),
+    box-shadow var(--fa-d1) var(--fa-ease);
+}
+
+[data-folio] .fa-ui-go[data-motion='full']:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+[data-folio] .fa-ui-go[data-motion='full']:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+[data-folio] .fa-ui-go[data-wide] {
+  width: 100%;
+  justify-content: space-between;
+}
+
+[data-folio] .fa-ui-go:disabled {
+  background: var(--fa-table-3);
+  color: var(--fa-ink-2);
+  box-shadow: none;
+  cursor: default;
+}
+
+/* The hint takes the action's ink, its rim the quiet grey of ink-3. */
+[data-folio] .fa-ui-go .fa-ui-kbd {
+  border-color: var(--fa-ink-3);
+  color: inherit;
+}
+
+/* ── Focus: a 2.5 px ink ring, 3 px out (map §1.6) ── */
+[data-folio] .fa-ui-go:focus-visible,
+[data-folio] .fa-ui-seg-option:focus-visible,
+[data-folio] .fa-ui-step:focus-visible,
+[data-folio] .fa-ui-chip:focus-visible {
+  outline: var(--fa-ring-w) solid var(--fa-ring);
+  outline-offset: var(--fa-ring-offset);
+}
+
+/* ── Seg: a choice, never a cap. A fieldset, so its own frame and its
+ * min-content width are reset: it wraps instead of widening the page. ── */
+[data-folio] .fa-ui-seg {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  min-width: 0;
+  margin: 0;
+  padding: 4px;
+  border: 0;
+  border-radius: var(--fa-r2);
+  background: var(--fa-table-2);
+}
+
+[data-folio] .fa-ui-seg[data-stretch] {
+  display: flex;
+}
+
+[data-folio] .fa-ui-seg-option {
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: var(--fa-r1);
+  background: transparent;
+  color: var(--fa-ink-2);
+  font: inherit;
+  font-family: var(--fa-sans);
+  font-size: var(--fa-t15);
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-folio] .fa-ui-seg[data-stretch] .fa-ui-seg-option {
+  flex: 1;
+  padding: 8px 6px;
+  text-align: center;
+}
+
+/* The second line keeps its option's ink: ink-3 on the table-2 track would
+ * read below 4.5:1. */
+[data-folio] .fa-ui-seg-option small {
+  display: block;
+  font-size: var(--fa-t13);
+  font-weight: 400;
+}
+
+[data-folio] .fa-ui-seg-option[aria-pressed='true'] {
+  background: var(--fa-sheet);
+  color: var(--fa-ink);
+  box-shadow: var(--fa-lift-1);
+}
+
+[data-folio] .fa-ui-seg-option:disabled {
+  color: var(--fa-ink-3);
+  cursor: default;
+}
+
+/* ── Stepper: numbered steps, done ones ticked, the current one in the halo ── */
+[data-folio] .fa-ui-stepper {
+  min-width: 0;
+}
+
+[data-folio] .fa-ui-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 7px 12px 7px 8px;
+  border: 1px solid var(--fa-line-2);
+  border-radius: 999px;
+  background: var(--fa-sheet);
+  color: var(--fa-ink-2);
+  font: inherit;
+  font-family: var(--fa-sans);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+[data-folio] .fa-ui-step-n {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--fa-table-2);
+  color: var(--fa-ink-2);
+  font: 700 var(--fa-t12)/1 var(--fa-display);
+}
+
+[data-folio] .fa-ui-step[data-done] .fa-ui-step-n {
+  background: var(--fa-ink-2);
+  color: var(--fa-on-ink);
+}
+
+[data-folio] .fa-ui-step[aria-current='step'] {
+  border-color: var(--fa-ink);
+  box-shadow:
+    0 0 0 1px var(--fa-ink),
+    var(--fa-halo);
+  color: var(--fa-ink);
+}
+
+[data-folio] .fa-ui-step[aria-current='step'] .fa-ui-step-n {
+  background: var(--fa-ink);
+  color: var(--fa-on-ink);
+}
+
+/* ── Chip row: one scrolling line; an edge fades only where chips hide ── */
+[data-folio] .fa-ui-chiprow {
+  display: flex;
+  gap: 6px;
+  /* Room for a focus ring inside the scroller, without moving the chips. */
+  margin: -6px;
+  padding: 6px;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+[data-folio] .fa-ui-chiprow::-webkit-scrollbar {
+  display: none;
+}
+
+[data-folio] .fa-ui-chiprow > * {
+  flex: none;
+}
+
+/* Only the mask's alpha counts, so the gradient runs from the row's own ink. */
+[data-folio] .fa-ui-chiprow[data-overflow='end'] {
+  -webkit-mask-image: linear-gradient(90deg, currentColor 82%, transparent);
+  mask-image: linear-gradient(90deg, currentColor 82%, transparent);
+}
+
+[data-folio] .fa-ui-chiprow[data-overflow='start'] {
+  -webkit-mask-image: linear-gradient(90deg, transparent, currentColor 18%);
+  mask-image: linear-gradient(90deg, transparent, currentColor 18%);
+}
+
+[data-folio] .fa-ui-chiprow[data-overflow='both'] {
+  -webkit-mask-image: linear-gradient(90deg, transparent, currentColor 18%, currentColor 82%, transparent);
+  mask-image: linear-gradient(90deg, transparent, currentColor 18%, currentColor 82%, transparent);
+}
+
+[data-folio] .fa-ui-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--fa-line);
+  border-radius: 999px;
+  background: var(--fa-sheet);
+  color: var(--fa-ink-2);
+  font: inherit;
+  font-family: var(--fa-sans);
+  font-size: 13.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* The chip you are on takes the lamp's warmth (facit). */
+[data-folio] .fa-ui-chip[aria-current]:not([aria-current='false']) {
+  border-color: var(--fa-lit-edge);
+  background: var(--fa-lit-bg);
+  color: var(--fa-ink);
+}
+
+/* ── Lit: the one lit sheet of a screen state ── */
+[data-folio] .fa-ui-lit {
+  position: relative;
+  padding: 30px 32px;
+  border-radius: var(--fa-r3);
+  background: var(--fa-sheet);
+  color: var(--fa-ink);
+  box-shadow: var(--fa-lift-2);
+}
+
+[data-folio] .fa-ui-lit[data-motion='full'] {
+  animation: fa-ui-rise var(--fa-d3) var(--fa-ease) both;
+}
+
+[data-folio] .fa-ui-lit[data-motion='less'] {
+  animation: fa-ui-fade var(--fa-d3) var(--fa-ease) both;
+}
+
+/* ── Range band: a solid core that is the stated range, edges that fade ── */
+[data-folio] .fa-ui-band {
+  --fa-ui-c: var(--fa-ink-2);
+  position: relative;
+  min-width: 0;
+}
+
+[data-folio] .fa-ui-band-plot {
+  position: relative;
+  height: 34px;
+}
+
+[data-folio] .fa-ui-band[data-goal] .fa-ui-band-plot {
+  margin-top: 22px;
+}
+
+/* Clips the faded edges at the axis ends; the goal's words stay outside. */
+[data-folio] .fa-ui-band-track {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+[data-folio] .fa-ui-band-track::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  right: 0;
+  left: 0;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--fa-table-2);
+}
+
+/* The core runs from 20 % to 80 % of the box (BAND_CORE), and it grows out
+ * of the lower bound. */
+[data-folio] .fa-ui-band-range {
+  position: absolute;
+  top: 10px;
+  height: 14px;
+  border-radius: 7px;
+  background: linear-gradient(90deg, transparent, var(--fa-ui-c) 20%, var(--fa-ui-c) 80%, transparent);
+  transform-origin: 20% 50%;
+}
+
+[data-folio] .fa-ui-band[data-motion='full'] .fa-ui-band-range {
+  animation: fa-ui-grow var(--fa-d3) var(--fa-ease) both;
+}
+
+[data-folio] .fa-ui-band[data-motion='less'] .fa-ui-band-range {
+  animation: fa-ui-fade var(--fa-d3) var(--fa-ease) both;
+}
+
+/* The observed value, a ring on the band (provresultat). */
+[data-folio] .fa-ui-band-point {
+  position: absolute;
+  top: 9px;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  border-radius: 50%;
+  background: var(--fa-sheet);
+  box-shadow: inset 0 0 0 3px var(--fa-ink);
+}
+
+[data-folio] .fa-ui-band-goal {
+  position: absolute;
+  top: 4px;
+  width: 2px;
+  height: 26px;
+  border-radius: 2px;
+  background: var(--fa-ink);
+}
+
+[data-folio] .fa-ui-band-goal-label {
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 0;
+  color: var(--fa-ink-3);
+  font-size: var(--fa-t12);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+[data-folio] .fa-ui-band-ticks {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 2px;
+  color: var(--fa-ink-3);
+  font-size: var(--fa-t12);
+}
+
+/* Öva's thin level band: the track is the axis, the range fills it. */
+[data-folio] .fa-ui-band[data-size='mini'] .fa-ui-band-plot {
+  height: 8px;
+  margin-top: 6px;
+}
+
+[data-folio] .fa-ui-band[data-size='mini'] .fa-ui-band-track {
+  border-radius: 4px;
+  background: var(--fa-table-2);
+}
+
+[data-folio] .fa-ui-band[data-size='mini'] .fa-ui-band-track::before {
+  content: none;
+}
+
+[data-folio] .fa-ui-band[data-size='mini'] .fa-ui-band-range {
+  top: 0;
+  height: 100%;
+  border-radius: 4px;
+}
+
+@keyframes fa-ui-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fa-ui-grow {
+  from {
+    opacity: 0;
+    transform: scaleX(0.15);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fa-ui-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Phone: the lit sheet tightens; a docked action spans the dock without its hint ── */
+@media (max-width: 767px) {
+  [data-folio] .fa-ui-lit {
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+
+  [data-folio] .fa-ui-go[data-dock] {
+    flex: 1 1 0%;
+    width: 100%;
+    justify-content: space-between;
+    box-shadow: 0 10px 30px -8px var(--fa-scrim);
+  }
+
+  [data-folio] .fa-ui-go[data-dock] .fa-ui-kbd {
+    display: none !important;
+  }
+}
+
+/* ── Wide screens: a wrapping row (the kapitel stepper) lays out on lines ── */
+@media (min-width: 768px) {
+  [data-folio] .fa-ui-chiprow[data-wrap] {
+    flex-wrap: wrap;
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* ── Enbokstavs-kortkommandon off: no key hint anywhere ── */
+[data-folio][data-kbd='off'] .fa-ui-kbd,
+[data-folio][data-kbd='off'] .fa-ui-keys {
+  display: none !important;
+}
