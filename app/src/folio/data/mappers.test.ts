@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { LessonProgress } from '@/api/hooks/useLessonProgress'
+import type { ActiveSession } from '@/api/hooks/useSessions'
 import type { Stats } from '@/api/hooks/useStats'
 import type { Framework } from '@/data/frameworks'
 import type { DailyPlan } from '@/lib/scheduler'
@@ -13,6 +14,7 @@ const live = vi.hoisted(() => ({
   pile: [] as { id: number }[],
   framework: null as Framework | null,
   lesson: null as LessonProgress | null,
+  sessions: [] as ActiveSession[],
   put: vi.fn(),
   get: vi.fn(),
 }))
@@ -38,7 +40,7 @@ vi.mock('@/api/hooks/useLessonProgress', () => ({
   useLessonProgress: () => ({ data: live.lesson }),
 }))
 vi.mock('@/api/hooks/useLessonReadsApi', () => ({ useLessonReadsQuery: () => ({ data: [] }) }))
-vi.mock('@/api/hooks/useSessions', () => ({ useActiveSessions: () => ({ data: [] }) }))
+vi.mock('@/api/hooks/useSessions', () => ({ useActiveSessions: () => ({ data: live.sessions }) }))
 
 import { SECTION_KEYS } from '@/data/questions'
 import { localDateString, PLAN_SCHEMA_VERSION } from '@/lib/scheduler'
@@ -60,10 +62,12 @@ describe('shellSubtitles', () => {
   it('uses neutral fallbacks for missing data', () => {
     expect(shellSubtitles(empty)).toEqual({
       idag: 'Dagens plan',
-      ova: 'Alla delprov och Repetera',
+      ova: 'Alla delprov',
+      repetera: 'Frågor som kommer tillbaka',
       provpass: 'Ett helt pass, 55 minuter',
       uppslag: 'Lektioner och ramverk',
       framsteg: 'Prognos och historik',
+      historik: 'Dina pass och svar',
     })
   })
   it('prioritises a resumable session over the plan', () => {
@@ -94,12 +98,26 @@ describe('shellSubtitles', () => {
     expect(shellSubtitles({ ...empty, plan: [] }).idag).toBe('Dagens plan')
   })
   it('distinguishes ready questions from the later pile and scales the estimate', () => {
-    expect(shellSubtitles({ ...empty, dueToday: 8 }).ova).toBe('Missar blir redo senare idag')
+    expect(shellSubtitles({ ...empty, dueToday: 8 }).repetera).toBe('Kommer tillbaka senare')
     expect(
       shellSubtitles({ ...empty, dueNow: 8, dueToday: 10, repetition: { count: 10, minutes: 11 } })
-        .ova,
-    ).toBe('8 redo · 9 min')
-    expect(shellSubtitles({ ...empty, dueNow: 3 }).ova).toBe('3 redo · 3 min')
+        .repetera,
+    ).toBe('8 redo · ca 9 min')
+    expect(shellSubtitles({ ...empty, dueNow: 3 }).repetera).toBe('3 redo')
+    expect(
+      shellSubtitles({ ...empty, dueNow: 3, repetition: { count: 0, minutes: 9 } }).repetera,
+    ).toBe('3 redo')
+  })
+  it('uses session progress for practice and history without presenting a lesson as practice', () => {
+    const resume = { subject: 'KVA', progress: 'fråga 1 av 10', href: '/drill?section=KVA' }
+    const lines = shellSubtitles({ ...empty, resume, practicePasses: 12 })
+    expect(lines.ova).toBe('Fortsätt KVA, fråga 1 av 10')
+    expect(lines.historik).toBe('Pågår: KVA · fråga 1 av 10')
+    expect(shellSubtitles({ ...empty, resume: { ...resume, href: '/lektion' } }).ova).toBe(
+      'Alla delprov',
+    )
+    expect(shellSubtitles({ ...empty, practicePasses: 12 }).historik).toBe('12 övningspass')
+    expect(shellSubtitles({ ...empty, practicePasses: 0 }).historik).toBe('0 övningspass')
   })
   it('reports due and upcoming mock halves', () => {
     expect(
@@ -138,6 +156,7 @@ describe('read-only shell adapters', () => {
     live.pile = []
     live.framework = null
     live.lesson = null
+    live.sessions = []
   })
 
   function stats(): Stats {
@@ -199,7 +218,9 @@ describe('read-only shell adapters', () => {
     }
     const { result } = renderHook(() => useFolioShellData())
     expect(result.current.dueCount).toBe(8)
-    expect(result.current.subtitles.ova).toBe('8 redo · 8 min')
+    expect(result.current.subtitles.ova).toBe('Alla delprov')
+    expect(result.current.subtitles.repetera).toBe('8 redo')
+    expect(result.current.subtitles.historik).toBe('Pågår: NOG-lektion · Två påståenden')
     expect(result.current.subtitles.uppslag).toBe('NOG · Två påståenden')
     expect(result.current.subtitles.idag).toBe('Fortsätt NOG-lektion, Två påståenden')
     expect(result.current.subtitles.idag).not.toMatch(/NOG-TRAP-\d+/)
@@ -207,6 +228,32 @@ describe('read-only shell adapters', () => {
     expect(result.current.identity.name).toBe('Ada')
     expect(live.get).toHaveBeenCalledWith(localDateString(new Date()))
     expect(live.put).not.toHaveBeenCalled()
+  })
+
+  it('maps real session position into Idag, Öva and Historik, and drops stale resumptions', () => {
+    live.sessions = [
+      {
+        id: 42,
+        userId: 1,
+        kind: 'drill',
+        sections: 'KVA',
+        position: 2,
+        currentQuestionId: 'q3',
+        plan: ['q1', 'q2', 'q3', 'q4'],
+        device: 'phone',
+        startedAt: new Date().toISOString(),
+        endedAt: null,
+      },
+    ]
+    const { result, rerender } = renderHook(() => useFolioShellData())
+    expect(result.current.subtitles.idag).toBe('Fortsätt KVA, fråga 3 av 4')
+    expect(result.current.subtitles.ova).toBe('Fortsätt KVA, fråga 3 av 4')
+    expect(result.current.subtitles.historik).toBe('Pågår: KVA · fråga 3 av 4')
+    live.sessions[0].startedAt = '2000-01-01T00:00:00Z'
+    rerender()
+    expect(result.current.subtitles.idag).toBe('Dagens plan')
+    expect(result.current.subtitles.ova).toBe('Alla delprov')
+    expect(result.current.subtitles.historik).toBe('Dina pass och svar')
   })
 
   it.each([
@@ -269,10 +316,12 @@ describe('read-only shell adapters', () => {
     expect(result.current.subtitles.framsteg).toBe('Prognos och historik')
     expect(result.current.subtitles.idag).toBe('Dagens plan')
     expect(result.current.subtitles.provpass).toBe('Ett helt pass, 55 minuter')
+    expect(result.current.subtitles.historik).toBe('Dina pass och svar')
     live.stats = stats()
     for (const section of SECTION_KEYS) live.stats.bySection[section].firstTry90d = 0
     rerender()
     expect(result.current.subtitles.framsteg).toBe('Prognos och historik')
+    expect(result.current.subtitles.historik).toBe('8 övningspass')
     expect(live.put).not.toHaveBeenCalled()
   })
 })

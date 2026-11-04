@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import type { ComponentProps, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mocks = vi.hoisted(() => ({
   pathname: '/',
@@ -53,7 +53,6 @@ vi.mock('@/api/useSyncedPrefs', () => ({
   useHydratePrefs: () => {},
   useSyncedPrefs: () => ({ setMode: mocks.setMode, setPalette: mocks.setPalette }),
 }))
-vi.mock('@/components/CommandPalette', () => ({ CommandPalette: () => null }))
 vi.mock('@/components/landing/PublicLanding', () => ({ PublicLanding: () => <h1>Välkommen</h1> }))
 vi.mock('@/components/motion/RouteScene', () => ({
   RouteScene: ({ children }: { children: ReactNode }) => children,
@@ -68,9 +67,11 @@ vi.mock('./data/useShellData', () => ({
     subtitles: {
       idag: 'Dagens plan',
       ova: '8 redo · 9 min',
+      repetera: '8 redo · ca 9 min',
       provpass: 'Ett helt pass',
       uppslag: 'Lektioner',
       framsteg: 'Prognos',
+      historik: '12 pass',
     },
     dueCount: 8,
     identity: { name: 'Ada' },
@@ -100,6 +101,7 @@ vi.mock('@/components/motion/QuestionPan', () => ({
 vi.mock('@/api/hooks/useStats', () => ({ useStats: () => ({ data: undefined }) }))
 vi.mock('@/components/home/useResumptionCandidate', () => ({ useResumptionCandidate: () => null }))
 
+import { CommandPalette } from '@/components/CommandPalette'
 import { Frame } from '@/components/Frame'
 import { MobileFrame } from '@/components/MobileFrame'
 import { MockRunner } from '@/components/mock/MockRunner'
@@ -110,6 +112,7 @@ import { useUiStore } from '@/stores/uiStore'
 import { runAxe } from '@/test/a11y'
 import { FolioHost } from './FolioHost'
 import { FolioShell } from './FolioShell'
+import { useFolioPrefs } from './lib/folioPrefs'
 import { useShellFocus } from './useShellFocus'
 
 beforeEach(() => {
@@ -127,7 +130,10 @@ beforeEach(() => {
   }
   useDesignStore.setState({ direction: null })
   useUiStore.setState({ folioPreview: false, palette: 'spalt', mode: 'light' })
+  useFolioPrefs.getState().resetPrefs()
 })
+
+afterEach(() => vi.restoreAllMocks())
 
 function RouteContent({ children }: { children?: ReactNode }) {
   return (
@@ -193,20 +199,154 @@ describe('Folio shell', () => {
     expect(container.querySelector('.hpc-frame')).toBeNull()
   })
 
-  it('has the five destinations and account; Repetera belongs to Öva', () => {
+  it('has seven rail entries and account; Repetera has its own current state', () => {
     mocks.pathname = '/repetition'
     render(
       <FolioShell>
         <h1>Repetera</h1>
       </FolioShell>,
     )
-    expect(screen.getAllByRole('link')).toHaveLength(5)
-    expect(screen.getByRole('link', { name: 'Öva' })).toHaveAttribute('aria-current', 'page')
+    expect(within(screen.getByRole('navigation')).getAllByRole('link')).toHaveLength(7)
+    expect(screen.getByRole('link', { name: 'Repetera' })).toHaveAttribute('aria-current', 'page')
+    expect(screen.getByRole('link', { name: 'Öva' })).not.toHaveAttribute('aria-current')
     expect(screen.getByRole('link', { name: 'Idag' })).not.toHaveAttribute('aria-current')
     expect(screen.getByRole('button', { name: 'Konto och inställningar' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Fäll ihop menyn' }))
     expect(screen.getByTestId('folio-app')).toHaveAttribute('data-collapsed', 'true')
     fireEvent.keyDown(document.body, { key: 'b', metaKey: true })
+    expect(screen.getByTestId('folio-app')).toHaveAttribute('data-collapsed', 'false')
+  })
+
+  it.each([false, true])('puts the working skip link first, phone=%s', (phone) => {
+    mocks.phone = phone
+    const { container } = render(
+      <FolioShell>
+        <h1>Idag</h1>
+      </FolioShell>,
+    )
+    const skip = screen.getByRole('link', { name: 'Hoppa till innehållet' })
+    expect(container.querySelector('a, button, input, [tabindex="0"]')).toBe(skip)
+    expect(skip).toHaveAttribute('href', '#innehall')
+    expect(screen.getByRole('main')).toHaveAttribute('id', 'innehall')
+    expect(screen.getByRole('main')).toHaveAttribute('tabindex', '-1')
+    fireEvent.click(skip)
+    expect(screen.getByRole('main')).toHaveFocus()
+  })
+
+  it('keeps skip navigation in focus mode', () => {
+    mocks.pathname = '/drill'
+    function Session() {
+      useShellFocus({ active: true })
+      return <h1>Fråga</h1>
+    }
+    const { container } = render(
+      <FolioShell>
+        <Session />
+      </FolioShell>,
+    )
+    expect(container.querySelector('a, button')).toBe(
+      screen.getByRole('link', { name: 'Till frågan' }),
+    )
+  })
+
+  it.each([
+    '/repetition',
+    '/historik',
+    '/prov',
+  ])('keeps five phone tabs with the current family at %s', (pathname) => {
+    mocks.phone = true
+    mocks.pathname = pathname
+    render(
+      <FolioShell>
+        <h1>Sida</h1>
+      </FolioShell>,
+    )
+    const tabs = within(screen.getByTestId('folio-tabs'))
+    expect(tabs.getAllByRole('link').map((link) => link.getAttribute('aria-label'))).toEqual([
+      'Idag',
+      'Öva',
+      'Prov',
+      'Uppslag',
+      'Framsteg',
+    ])
+    const label =
+      pathname === '/repetition' ? 'Öva' : pathname === '/historik' ? 'Framsteg' : 'Prov'
+    expect(tabs.getByRole('link', { name: label })).toHaveAttribute('aria-current', 'page')
+  })
+
+  it.each([
+    false,
+    true,
+  ])('opens the actual command palette from visible search, phone=%s', async (phone) => {
+    mocks.phone = phone
+    render(
+      <>
+        <CommandPalette />
+        <FolioShell>
+          <h1>Idag</h1>
+        </FolioShell>
+      </>,
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Sök' }))
+    expect(screen.getByRole('textbox', { name: 'Sök kommandon' })).toBeInTheDocument()
+    expect(await runAxe()).toEqual([])
+    fireEvent.keyDown(window, { key: 'Escape' })
+    expect(screen.queryByRole('dialog')).toBeNull()
+    fireEvent.keyDown(window, { key: 'k', metaKey: true })
+    expect(screen.getByRole('textbox', { name: 'Sök kommandon' })).toBeInTheDocument()
+  })
+
+  it('uses live Folio root preferences, including system theme and motion', () => {
+    let dark = true
+    const listeners = new Set<() => void>()
+    vi.spyOn(window, 'matchMedia').mockImplementation((query) => ({
+      matches: query.includes('color-scheme') ? dark : true,
+      media: query,
+      onchange: null,
+      addEventListener: (_type: string, listener: EventListenerOrEventListenerObject) =>
+        listeners.add(listener as () => void),
+      removeEventListener: (_type: string, listener: EventListenerOrEventListenerObject) =>
+        listeners.delete(listener as () => void),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: () => false,
+    }))
+    useFolioPrefs.getState().setPrefs({ palette: 'ink', textSize: 'xlarge', kbd: false })
+    render(
+      <FolioShell>
+        <h1>Idag</h1>
+      </FolioShell>,
+    )
+    const root = screen.getByTestId('folio-shell')
+    expect(root).toHaveAttribute('data-theme', 'dark')
+    expect(root).toHaveAttribute('data-palette', 'ink')
+    expect(root).toHaveAttribute('data-motion', 'none')
+    expect(root).toHaveAttribute('data-kbd', 'off')
+    expect(root).toHaveAttribute('data-text', 'xlarge')
+    act(() => {
+      dark = false
+      for (const listener of listeners) listener()
+    })
+    expect(root).toHaveAttribute('data-theme', 'light')
+    act(() => useFolioPrefs.getState().setPrefs({ theme: 'dark', motion: 'less' }))
+    expect(root).toHaveAttribute('data-theme', 'dark')
+    expect(root).toHaveAttribute('data-motion', 'less')
+    fireEvent.keyDown(document.body, { key: 'b', ctrlKey: true })
+    expect(screen.getByTestId('folio-app')).toHaveAttribute('data-collapsed', 'true')
+  })
+
+  it('ignores collapse shortcuts while editing text', () => {
+    render(
+      <FolioShell>
+        <label>
+          Svar
+          <input />
+        </label>
+        <div contentEditable data-testid="editable-note" />
+      </FolioShell>,
+    )
+    fireEvent.keyDown(screen.getByRole('textbox', { name: 'Svar' }), { key: 'b', metaKey: true })
+    fireEvent.keyDown(screen.getByTestId('editable-note'), { key: 'b', ctrlKey: true })
     expect(screen.getByTestId('folio-app')).toHaveAttribute('data-collapsed', 'false')
   })
 
@@ -296,7 +436,7 @@ describe('Folio shell', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Salvia' }))
     expect(mocks.setMode).toHaveBeenCalledWith('dark')
     expect(mocks.setPalette).toHaveBeenCalledWith('sage')
-    act(() => useUiStore.setState({ palette: 'sage', mode: 'dark' }))
+    // The root follows the Folio prefs the picker writes, at once.
     expect(screen.getByTestId('folio-shell')).toHaveAttribute('data-theme', 'dark')
     expect(screen.getByTestId('folio-shell')).toHaveAttribute('data-palette', 'sage')
     expect(await runAxe(container)).toEqual([])
@@ -314,6 +454,8 @@ describe('Folio shell', () => {
     )
     const trigger = screen.getByRole('button', { name: 'Konto och inställningar' })
     fireEvent.click(trigger)
+    expect(screen.getByRole('main')).toHaveAttribute('inert')
+    expect(screen.getByTestId('folio-tabs')).toHaveAttribute('inert')
     expect(screen.getByRole('dialog')).toHaveAttribute('aria-modal', 'true')
     expect(screen.getByRole('dialog').querySelector('a')?.getAttribute('href')).toBe('/konto')
     expect(document.activeElement?.textContent).toContain('Konto')
@@ -324,6 +466,7 @@ describe('Folio shell', () => {
     expect(await runAxe(container)).toEqual([])
     fireEvent.keyDown(document.activeElement!, { key: 'Escape' })
     expect(screen.queryByRole('dialog')).toBeNull()
+    expect(screen.getByRole('main')).not.toHaveAttribute('inert')
     expect(document.activeElement === trigger).toBe(true)
   })
 

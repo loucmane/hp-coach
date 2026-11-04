@@ -2,16 +2,17 @@ import { useLocation, useNavigate } from '@tanstack/react-router'
 import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 
 import { useViewport } from '@/hooks/useViewport'
-import { useUiStore } from '@/stores/uiStore'
 import { useFolioShellData } from './data/useShellData'
 import { type FocusRequest, FolioHostContext, ShellFocusContext } from './host'
 import { useFolioFonts } from './lib/useFolioFonts'
-import { currentDestination, DESTINATIONS } from './nav'
+import { useFolioRootAttrs } from './lib/useFolioRootAttrs'
+import { currentDestination, currentRailDestination, DESTINATIONS } from './nav'
 import { AccountMenu } from './shell/AccountMenu'
 import { FocusBar } from './shell/FocusBar'
+import { PhoneBar } from './shell/PhoneBar'
 import { Rail } from './shell/Rail'
+import { SkipLink } from './shell/SkipLink'
 import { TabBar } from './shell/TabBar'
-import { Wordmark } from './shell/Wordmark'
 import './styles/tokens.css'
 import './styles/shell.css'
 import './styles/palette.css'
@@ -26,8 +27,7 @@ export function FolioShell({ children }: { children: ReactNode }) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const phone = useViewport() === 'phone'
-  const palette = useUiStore((s) => s.palette)
-  const mode = useUiStore((s) => s.mode)
+  const rootAttrs = useFolioRootAttrs()
   const [collapsed, setCollapsed] = useState(false)
   const [menu, setMenu] = useState(false)
   const [requestedFocus, setFocus] = useState<FocusRequest | null>(null)
@@ -36,6 +36,11 @@ export function FolioShell({ children }: { children: ReactNode }) {
   const closeMenu = useCallback(() => setMenu(false), [])
   const toggle = useCallback(() => setCollapsed((value) => !value), [])
   const current = currentDestination(pathname)
+  const openSearch = () => {
+    // CommandPalette is already mounted by the root. Its existing public
+    // listener also serves pointer/touch users; do not mount a second palette.
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true }))
+  }
 
   useEffect(() => {
     setMenu(false)
@@ -72,7 +77,8 @@ export function FolioShell({ children }: { children: ReactNode }) {
     />
   )
   return (
-    <div data-folio="" data-theme={mode} data-palette={palette} data-testid="folio-shell" lang="sv">
+    <div data-folio="" {...rootAttrs} data-testid="folio-shell" lang="sv">
+      <SkipLink question={!!focus && pathname !== '/welcome'} />
       <FolioHostContext.Provider value={true}>
         <ShellFocusContext.Provider value={setFocus}>
           <div
@@ -86,17 +92,13 @@ export function FolioShell({ children }: { children: ReactNode }) {
               <Rail
                 collapsed={collapsed}
                 onToggle={toggle}
-                current={current}
+                current={currentRailDestination(pathname)}
                 data={data}
                 account={account}
+                onSearch={openSearch}
               />
             ) : null}
-            {phone && !focus ? (
-              <header className="fa-ptop">
-                <Wordmark />
-                {account}
-              </header>
-            ) : null}
+            {phone && !focus ? <PhoneBar account={account} onSearch={openSearch} /> : null}
             {focus ? (
               <FocusBar
                 exitLabel={focus.exitLabel}
@@ -108,7 +110,12 @@ export function FolioShell({ children }: { children: ReactNode }) {
                 }
               />
             ) : null}
-            <main className="fa-main" inert={phone && menu && !focus ? true : undefined}>
+            <main
+              id="innehall"
+              tabIndex={-1}
+              className="fa-main"
+              inert={phone && menu && !focus ? true : undefined}
+            >
               {children}
             </main>
             {phone && !focus ? (

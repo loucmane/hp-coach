@@ -19,14 +19,14 @@ export function TabBar({
           className="fa-tab"
           to={d.to}
           data-testid={`fa-nav-${d.id}`}
-          aria-label={d.label}
+          aria-label={d.tabLabel}
           aria-current={current === d.id ? 'page' : undefined}
         >
           <span className="fa-tab-icon">
             <NavIcon id={d.id} />
           </span>
           <span className="fa-tab-word">
-            {d.label}
+            {d.tabLabel}
             {d.id === 'ova' && dueCount > 0 && (
               <>
                 <span className="fa-tab-dot" aria-hidden />
