@@ -7,6 +7,7 @@
   "entries": [
     {
       "id": "DTK-TACTIC-001",
+      "question_title": "Hur läser du en fråga som börjar med ”Identifiera”?",
       "tactic": "Identifiera först, läs av sedan: behandla 'Identifiera ... . Hur/Vilk ...' som två steg — pinna identifieraren (år/län/sjukhus) FÖRST, läs sedan av det andra värdet på den platsen. Räkna aldrig innan identifieraren är låst.",
       "when_to_apply": "Prompten börjar med 'Identifiera' eller kedjar 'Identifiera ... . Hur ...' / 'Identifiera ... . Vilk ...'.",
       "example_questions": [
@@ -23,6 +24,7 @@
     },
     {
       "id": "DTK-TACTIC-002",
+      "question_title": "Hur hittar du det största eller minsta värdet?",
       "tactic": "Skanna visuellt vid extremvärden (störst, minst, lägst, högst, flest) — läs INTE av varje värde. Visuell uppskattning hittar toppen/dalen snabbt; precisa avläsningar görs först när en kandidat är pinnad.",
       "when_to_apply": "Prompten innehåller 'störst', 'minst', 'lägst', 'högst', 'flest', 'som mest' eller 'som minst'.",
       "example_questions": [
@@ -38,6 +40,7 @@
     },
     {
       "id": "DTK-TACTIC-003",
+      "question_title": "Vad räknar du andelen av?",
       "tactic": "Verifiera nämnaren FÖRST vid 'andel av X' — läs om vilken total som åsyftas ('av nettoomsättningen 2016', 'av totala antalet ...'). Fel nämnare är det dominerande felet.",
       "when_to_apply": "Prompten innehåller 'Hur stor andel av ...' eller 'Hur stor del av ...' (andel av en total).",
       "example_questions": [
@@ -55,6 +58,7 @@
     },
     {
       "id": "DTK-TACTIC-004",
+      "question_title": "Procent eller procentenheter — vad skiljer dem åt?",
       "tactic": "Procent vs procentenheter — stanna och skilj dem åt. Procent = relativ förändring (nytt/gammalt − 1). Procentenheter = absolut skillnad i andel. Att blanda ihop dem ger fel av storleksordning.",
       "when_to_apply": "Prompten innehåller 'procentenhet' ELLER ställer 'med X procent' mot 'X procentenheter'.",
       "example_questions": [
@@ -70,6 +74,7 @@
     },
     {
       "id": "DTK-TACTIC-005",
+      "question_title": "Hur noga behöver du räkna ett förhållande?",
       "tactic": "Uppskatta till en värdesiffra FÖRST vid förhållande-prompter ('förhållande', 'kvot', 'X : Y', 'jämfört med'). Förhållande-alternativen ligger glest (1:2 vs 1:3 vs 2:5); grov uppskattning eliminerar 3–4 alternativ direkt.",
       "when_to_apply": "Prompten innehåller 'förhållande', 'kvot', 'X : Y', 'storleksförhållande' eller kvantitativt 'jämfört med'.",
       "example_questions": [
@@ -85,6 +90,7 @@
     },
     {
       "id": "DTK-TACTIC-006",
+      "question_title": "Vilken rad och kolumn pekar frågan ut?",
       "tactic": "Lokalisera den exakta cellen FÖRST när prompten nämner ett specifikt år/län/sjukhus/namngivet objekt. Fingeravtrycka entiteten, räkna sedan — räkna inte på fel rad.",
       "when_to_apply": "Prompten innehåller ett egennamn (årtal som '2010', plats som 'Kiruna sjukhus', namngiven kategori) som förankrar svaret till en rad/cell.",
       "example_questions": [
@@ -100,6 +106,7 @@
     },
     {
       "id": "DTK-TACTIC-007",
+      "question_title": "Hur räknar du poster som ska uppfylla två villkor?",
       "tactic": "Filtrera, räkna sedan — räkna ALDRIG först och filtrera sedan. Vid 'räkna poster som uppfyller båda villkoren': iterera raderna och pricka av endast dem som passerar BÅDA filtren.",
       "when_to_apply": "Prompten kopplar två villkor med 'både ... och', 'samtidigt som' eller 'Hur många av [N rader] hade ...' med ett sammansatt kriterium.",
       "example_questions": [
@@ -114,6 +121,7 @@
     },
     {
       "id": "DTK-TACTIC-008",
+      "question_title": "Vad gör du med ”Anta att …” i frågan?",
       "tactic": "Behandla 'Anta att ...' som ett NYTT datum att skala med. Separera faktiska diagram-data från det hypotetiska, applicera sedan den antagna proportionen på en verklig total.",
       "when_to_apply": "Prompten börjar med 'Anta att ...' eller innehåller 'i så fall', 'skulle ... ha', 'om man antar' (en kontrafaktisk uppställning).",
       "example_questions": [
@@ -128,6 +136,7 @@
     },
     {
       "id": "DTK-TACTIC-009",
+      "question_title": "Hur mäter du avstånd och riktning på en karta?",
       "tactic": "Riktnings-, avstånds- och area-prompter är KART-frågor — använd skalstreck och väderstrecksros FÖRST. Mät med pennspetsen eller räkna rutor; räkna inte geometri innan punkterna är lokaliserade på kartan.",
       "when_to_apply": "Prompten innehåller 'väderstreck', 'riktning', 'km'/'meter' som avstånd, 'radie', 'triangelformat område', 'avstånd', 'nordväst'/'sydväst' eller 'Utgå från'.",
       "example_questions": [
@@ -145,6 +154,7 @@
     },
     {
       "id": "DTK-TACTIC-010",
+      "question_title": "Hur hittar du året som uppfyller villkoret?",
       "tactic": "Skanna årtals-axeln med villkoret i bakhuvudet vid 'Vilket år / Vilka två år ...' — läs INTE av varje års värde. Pröva visuellt rimliga år mot villkoret; avfärda resten snabbt.",
       "when_to_apply": "Prompten börjar med 'Vilket år', 'Vilka år', 'Vilka två år' eller 'Mellan vilka år' (hitta-året-frågor).",
       "example_questions": [
