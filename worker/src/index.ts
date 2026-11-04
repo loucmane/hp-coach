@@ -36,6 +36,7 @@ import { exportRoute, importRoute } from './routes/export'
 import { fitRoute, itemStatsRoute } from './routes/fit'
 import { frameworkProgressRoute } from './routes/frameworkProgress'
 import { healthRoute } from './routes/health'
+import { insightsRoute } from './routes/insights'
 import { lessonProgressRoute } from './routes/lessonProgress'
 import { lessonReadsRoute } from './routes/lessonReads'
 import { meRoute } from './routes/me'
@@ -99,6 +100,7 @@ const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .use('*', requireAuth)
   .use('*', rateLimit)
   .route('/me', meRoute)
+  .route('/me/insights', insightsRoute)
   .route('/sessions', sessionsRoute)
   .route('/lesson-progress', lessonProgressRoute)
   .route('/lesson-reads', lessonReadsRoute)
