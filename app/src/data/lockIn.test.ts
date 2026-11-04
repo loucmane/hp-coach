@@ -96,3 +96,11 @@ describe('Lås in det catalog', () => {
     expect(Object.isFrozen(items[0].options)).toBe(true)
   })
 })
+
+describe('lock-in copies', () => {
+  it('keeps the served copy byte-identical to the canonical file', () => {
+    const canonical = readFileSync(path.join(REPO, 'frameworks/lock-in/lock_in.json'))
+    const served = readFileSync(path.join(REPO, 'app/public/frameworks/lock-in/lock_in.json'))
+    expect(served.equals(canonical)).toBe(true)
+  })
+})

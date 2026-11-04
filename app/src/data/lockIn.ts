@@ -1,7 +1,9 @@
 // Original retrieval practice, independent of the exam bank. Importing this
 // module in a lazy Folio screen keeps the catalog out of the classic route.
-// The served twin is also available at /frameworks/lock_in.json.
-import catalog from '../../../frameworks/lock_in.json'
+// The served twin is also available at /frameworks/lock-in/lock_in.json. It
+// lives in a subfolder because frameworks/*.json are the Layer-1 catalogs the
+// export pipeline reads; this file is not one of them.
+import catalog from '../../../frameworks/lock-in/lock_in.json'
 
 export type LockInItem = Readonly<{
   id: string
