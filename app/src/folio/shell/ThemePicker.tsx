@@ -1,6 +1,6 @@
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
+import { useFolioPrefs } from '@/folio/lib/folioPrefs'
 import type { PaletteKey } from '@/lib/tokens'
-import { useUiStore } from '@/stores/uiStore'
 
 const PALETTES: { key: PaletteKey; label: string }[] = [
   { key: 'spalt', label: 'Spalt' },
@@ -10,10 +10,23 @@ const PALETTES: { key: PaletteKey; label: string }[] = [
   { key: 'rose', label: 'Ros' },
 ]
 
+// The Ljusbord root reads the Folio prefs (theme incl. system, palette), so
+// the picker writes there first; it still calls the synced setters so the
+// server-side theme and the classic app stay in step until LJ-17 syncs the
+// Folio prefs themselves.
 export function ThemePicker() {
-  const palette = useUiStore((s) => s.palette)
-  const mode = useUiStore((s) => s.mode)
+  const palette = useFolioPrefs((s) => s.palette)
+  const theme = useFolioPrefs((s) => s.theme)
+  const setPrefs = useFolioPrefs((s) => s.setPrefs)
   const synced = useSyncedPrefs()
+  const chooseTheme = (next: 'light' | 'dark' | 'system') => {
+    setPrefs({ theme: next })
+    if (next !== 'system') void synced.setMode(next).catch(() => {})
+  }
+  const choosePalette = (key: PaletteKey) => {
+    setPrefs({ palette: key })
+    void synced.setPalette(key).catch(() => {})
+  }
   return (
     <>
       <fieldset className="fa-theme">
@@ -21,18 +34,25 @@ export function ThemePicker() {
         <div className="fa-seg">
           <button
             type="button"
-            aria-pressed={mode === 'light'}
-            onClick={() => void synced.setMode('light').catch(() => {})}
+            aria-pressed={theme === 'light'}
+            onClick={() => chooseTheme('light')}
           >
             Ljust
           </button>
           <button
             type="button"
             data-testid="fa-theme-toggle"
-            aria-pressed={mode === 'dark'}
-            onClick={() => void synced.setMode('dark').catch(() => {})}
+            aria-pressed={theme === 'dark'}
+            onClick={() => chooseTheme('dark')}
           >
             Mörkt
+          </button>
+          <button
+            type="button"
+            aria-pressed={theme === 'system'}
+            onClick={() => chooseTheme('system')}
+          >
+            Som systemet
           </button>
         </div>
       </fieldset>
@@ -44,7 +64,7 @@ export function ThemePicker() {
               type="button"
               key={key}
               aria-pressed={palette === key}
-              onClick={() => void synced.setPalette(key).catch(() => {})}
+              onClick={() => choosePalette(key)}
             >
               {label}
             </button>
