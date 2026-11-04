@@ -1,9 +1,9 @@
 import { Link } from '@tanstack/react-router'
-import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react'
 import type { ReactNode } from 'react'
 
 import type { ShellData } from '../contract/viewModel'
-import { DESTINATIONS, type Destination } from '../nav'
+import { RAIL_DESTINATIONS, type RailDestination } from '../nav'
 import { NavIcon } from './NavIcon'
 import { Wordmark } from './Wordmark'
 
@@ -13,23 +13,27 @@ export function Rail({
   current,
   data,
   account,
+  onSearch,
 }: {
   collapsed: boolean
   onToggle: () => void
-  current: Destination | null
+  current: RailDestination | null
   data: ShellData
   account: ReactNode
+  onSearch: () => void
 }) {
   return (
     <aside className="fa-side" data-testid="folio-rail">
       <div className="fa-side-head">
-        {collapsed ? (
-          <span className="fa-monogram" role="img" aria-label="HP-Coach">
-            HP
-          </span>
-        ) : (
-          <Wordmark />
-        )}
+        <Link className="fa-brand-link" to="/" aria-label="HP-Coach, Idag">
+          {collapsed ? (
+            <span className="fa-monogram" role="img" aria-label="HP-Coach">
+              HP
+            </span>
+          ) : (
+            <Wordmark />
+          )}
+        </Link>
         <button
           type="button"
           className="fa-icon-btn"
@@ -47,10 +51,10 @@ export function Rail({
         </button>
       </div>
       <nav className="fa-nav" aria-label="Huvudmeny">
-        {DESTINATIONS.map((d) => (
+        {RAIL_DESTINATIONS.map((d) => (
           <Link
             key={d.id}
-            className="fa-nav-item"
+            className={`fa-nav-item${d.sub ? ' fa-nav-item--sub' : ''}`}
             data-testid={`fa-nav-${d.id}`}
             to={d.to}
             aria-current={current === d.id ? 'page' : undefined}
@@ -69,11 +73,27 @@ export function Rail({
                 {data.subtitles[d.id]}
               </span>
             </span>
-            {d.id === 'ova' && data.dueCount > 0 && <span className="fa-nav-dot" aria-hidden />}
           </Link>
         ))}
       </nav>
-      <div className="fa-side-foot">{account}</div>
+      <div className="fa-side-foot">
+        {account}
+        <button
+          type="button"
+          className="fa-search"
+          aria-label="Sök"
+          onClick={onSearch}
+          title={collapsed ? 'Sök och hoppa · ⌘K / Ctrl+K' : undefined}
+        >
+          {collapsed ? (
+            <Search size={20} aria-hidden />
+          ) : (
+            <>
+              <kbd>⌘K</kbd> sök och hoppa
+            </>
+          )}
+        </button>
+      </div>
     </aside>
   )
 }

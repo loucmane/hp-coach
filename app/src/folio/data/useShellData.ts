@@ -88,6 +88,7 @@ export function useFolioShellData(): ShellData {
           ? {
               subject: candidate.subject.replace(/-övning$/, ''),
               progress: candidate.progress.replace(/^vid /, ''),
+              href: candidate.href,
             }
           : null,
       dueNow: ready,
@@ -112,6 +113,7 @@ export function useFolioShellData(): ShellData {
       prognosis: stats.data
         ? computeProjected(honestSectionScores(stats.data.bySection, now)).total
         : null,
+      practicePasses: stats.data?.drills.total ?? null,
     }),
     dueCount: ready,
     identity: { name: user?.fullName || user?.firstName || 'Ditt konto' },

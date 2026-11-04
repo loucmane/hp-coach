@@ -238,10 +238,16 @@ export function redText(colors) {
 }
 
 /** The argument `seedStorage` gets for one mode. */
+export const FOLIO_PREFS_KEY = 'hpc-folio-prefs'
+
 export function storageSeed({ scheme, palette = null }) {
   const ui = { folioPreview: true, mode: scheme }
   if (palette) ui.palette = palette
-  return { welcomedKey: WELCOMED_KEY, uiKey: UI_KEY, ui }
+  // The Ljusbord root reads the Folio prefs (LJ-05): theme 'system' follows
+  // the context's colorScheme, and the palette must be seeded there too.
+  const folio = { theme: 'system' }
+  if (palette) folio.palette = palette
+  return { welcomedKey: WELCOMED_KEY, uiKey: UI_KEY, ui, folioKey: FOLIO_PREFS_KEY, folio }
 }
 
 /**
@@ -250,18 +256,22 @@ export function storageSeed({ scheme, palette = null }) {
  * the persisted `hpc-ui` store (zustand's { state, version } shape), keeping
  * everything else already saved there.
  */
-export function seedStorage({ welcomedKey, uiKey, ui }) {
+export function seedStorage({ welcomedKey, uiKey, ui, folioKey, folio }) {
   try {
     localStorage.setItem(welcomedKey, '1')
-    let saved = null
-    try {
-      saved = JSON.parse(localStorage.getItem(uiKey) || 'null')
-    } catch {
-      saved = null
+    const merge = (key, patch, fallbackVersion) => {
+      let saved = null
+      try {
+        saved = JSON.parse(localStorage.getItem(key) || 'null')
+      } catch {
+        saved = null
+      }
+      const state = saved && typeof saved.state === 'object' && saved.state ? saved.state : {}
+      const version = saved && typeof saved.version === 'number' ? saved.version : fallbackVersion
+      localStorage.setItem(key, JSON.stringify({ state: { ...state, ...patch }, version }))
     }
-    const state = saved && typeof saved.state === 'object' && saved.state ? saved.state : {}
-    const version = saved && typeof saved.version === 'number' ? saved.version : 0
-    localStorage.setItem(uiKey, JSON.stringify({ state: { ...state, ...ui }, version }))
+    merge(uiKey, ui, 0)
+    if (folioKey && folio) merge(folioKey, folio, 1)
   } catch {
     // No storage on this page (an error page, say); the report shows the result.
   }

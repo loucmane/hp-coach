@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { ACCOUNT_ROUTES, currentDestination, DESTINATIONS, supportsFolio } from './nav'
+import {
+  ACCOUNT_ROUTES,
+  currentDestination,
+  currentRailDestination,
+  DESTINATIONS,
+  RAIL_DESTINATIONS,
+  supportsFolio,
+} from './nav'
 
 describe('Folio navigation', () => {
   it('uses real routes in the prototype order', () => {
@@ -11,6 +18,39 @@ describe('Folio navigation', () => {
       ['Framsteg', '/progress'],
     ])
     expect(ACCOUNT_ROUTES).toEqual({ konto: '/konto', settings: '/mer' })
+  })
+  it('has seven rail entries, with Repetera and Historik as subentries', () => {
+    expect(RAIL_DESTINATIONS.map((d) => [d.label, d.to, d.sub])).toEqual([
+      ['Idag', '/', false],
+      ['Öva', '/ova', false],
+      ['Repetera', '/repetition', true],
+      ['Provpass', '/prov', false],
+      ['Uppslag', '/lektion', false],
+      ['Framsteg', '/progress', false],
+      ['Historik', '/historik', true],
+    ])
+    expect(DESTINATIONS.map((d) => d.tabLabel)).toEqual([
+      'Idag',
+      'Öva',
+      'Prov',
+      'Uppslag',
+      'Framsteg',
+    ])
+  })
+  it.each([
+    ['/repetition', 'repetera'],
+    ['/repetition/runda', 'repetera'],
+    ['/historik', 'historik'],
+    ['/historik/pass', 'historik'],
+    ['/repetitions', null],
+    ['/historiker', null],
+    ['/drill', 'ova'],
+    ['/diagnostik', 'ova'],
+    ['/prov/resultat', 'provpass'],
+    ['/lektion/KVA', 'uppslag'],
+    ['/konto', null],
+  ])('selects the precise rail entry for %s', (path, expected) => {
+    expect(currentRailDestination(path)).toBe(expected)
   })
   it.each([
     ['/', 'idag'],

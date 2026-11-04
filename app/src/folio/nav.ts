@@ -1,12 +1,22 @@
 export const DESTINATIONS = [
-  { id: 'idag', label: 'Idag', to: '/' },
-  { id: 'ova', label: 'Öva', to: '/ova' },
-  { id: 'provpass', label: 'Provpass', to: '/prov' },
-  { id: 'uppslag', label: 'Uppslag', to: '/lektion' },
-  { id: 'framsteg', label: 'Framsteg', to: '/progress' },
+  { id: 'idag', label: 'Idag', tabLabel: 'Idag', to: '/' },
+  { id: 'ova', label: 'Öva', tabLabel: 'Öva', to: '/ova' },
+  { id: 'provpass', label: 'Provpass', tabLabel: 'Prov', to: '/prov' },
+  { id: 'uppslag', label: 'Uppslag', tabLabel: 'Uppslag', to: '/lektion' },
+  { id: 'framsteg', label: 'Framsteg', tabLabel: 'Framsteg', to: '/progress' },
 ] as const
 
 export type Destination = (typeof DESTINATIONS)[number]['id']
+export const RAIL_DESTINATIONS = [
+  { ...DESTINATIONS[0], sub: false },
+  { ...DESTINATIONS[1], sub: false },
+  { id: 'repetera', label: 'Repetera', to: '/repetition', sub: true },
+  { ...DESTINATIONS[2], sub: false },
+  { ...DESTINATIONS[3], sub: false },
+  { ...DESTINATIONS[4], sub: false },
+  { id: 'historik', label: 'Historik', to: '/historik', sub: true },
+] as const
+export type RailDestination = (typeof RAIL_DESTINATIONS)[number]['id']
 export const ACCOUNT_ROUTES = { konto: '/konto', settings: '/mer' } as const
 
 // Shared with the root auth gate. Clerk's verification steps live below the
@@ -35,6 +45,14 @@ export function currentDestination(pathname: string): Destination | null {
         (path) => pathname === path || (path !== '/' && pathname.startsWith(`${path}/`)),
       ),
     )?.id ?? null
+  )
+}
+
+/** Subentries own their desktop selection; phone tabs keep the parent family. */
+export function currentRailDestination(pathname: string): RailDestination | null {
+  return (
+    RAIL_DESTINATIONS.find((d) => d.sub && (pathname === d.to || pathname.startsWith(`${d.to}/`)))
+      ?.id ?? currentDestination(pathname)
   )
 }
 
