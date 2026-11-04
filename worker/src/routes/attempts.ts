@@ -29,6 +29,13 @@
 // synthetic (P5) answer folds only the framework_id of its reviewed
 // explanation, which the bundled registry carries; an unknown one is recorded
 // in full and moves nothing.
+//
+// CONFIDENCE (LJ-12, rebuild map §2) is how sure the student said they were:
+// Gissar, Tror det or Säker, one of CONFIDENCE_LEVELS. It is optional, so a
+// client that never sends it keeps working, and it is always validated. A
+// Provpass answer (kind='mock') stores null whatever was sent, because Markera
+// is a pass's only uncertainty signal. How confidence moves the Repetera
+// schedule is the mistakes route's business (LJ-13), not this one's.
 
 import { zValidator } from '@hono/zod-validator'
 import { and, eq, sql } from 'drizzle-orm'
@@ -36,7 +43,7 @@ import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { getDb } from '../db/client'
-import { attempts, sessions, users } from '../db/schema'
+import { attempts, CONFIDENCE_LEVELS, sessions, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
 import { applyMasteryOutcome } from '../lib/progress'
 import { classifyAttempt, masteryLayer1Ids } from '../lib/provenance'
@@ -59,6 +66,9 @@ const AttemptBody = z
     // field /api/mistakes takes. Absent/empty means "untagged": the
     // attempt lands, the mastery aggregate simply isn't moved.
     layer1Ids: z.array(z.string().min(1).max(40)).max(8).optional(),
+    // How sure the student was (see CONFIDENCE above). Absent means none was
+    // given; a Provpass answer stores null even when one is sent.
+    confidence: z.enum(CONFIDENCE_LEVELS).optional(),
     // Provenance-looking fields a client may send (e.g. a P5 question row's
     // `source: "synthetic"` spread into the body). Accepted so the answer
     // still lands, and never read: the stored source comes from the qid.
@@ -91,6 +101,9 @@ export const attemptsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     // calibrated are deliberately ignored.
     const { source, itemRevision } = classifyAttempt(body.questionId)
 
+    // A Provpass collects Markera, not confidence: a value sent there is dropped.
+    const confidence = session.kind === 'mock' ? null : (body.confidence ?? null)
+
     // Insert the attempt AND bump the user's lifetime counter atomically
     // (one D1 transaction), so the all-time total stays correct even after
     // the retention cron prunes old attempts rows. The counter is practice
@@ -107,6 +120,7 @@ export const attemptsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
           timeTakenMs: body.timeTakenMs ?? null,
           source,
           itemRevision,
+          confidence,
         })
         .returning(),
       db

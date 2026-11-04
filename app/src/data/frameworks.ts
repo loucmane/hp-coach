@@ -27,6 +27,13 @@ import type { Section } from './questions'
 /** Trap catalog entry (NOG, KVA, XYZ). */
 export type TrapEntry = {
   id: string
+  /** Question-form title, safe to show before the student guesses: it
+   *  names the situation without stating the answer, which `tldr` does.
+   *  Every catalog entry carries one (LJ-C1b); optional for older readers. */
+  question_title?: string
+  /** `name` of this trap's group in the catalog's `families` (grouped by
+   *  the underlying reasoning error). Not the catalog-level `family`. */
+  family?: string
   pattern_description: string
   why_it_occurs: string
   common_distractor_signature: string
@@ -56,18 +63,30 @@ export type TrapEntry = {
   counter_example?: string
 }
 
+/** A named group of traps that share one reasoning error. */
+export type TrapFamily = {
+  /** Short Swedish name, e.g. "Fri parameter". */
+  name: string
+  /** One line that completes the name, e.g. "när något fortfarande kan vandra". */
+  description?: string
+}
+
 export type TrapCatalog = {
   section: Section
   family: 'nog_traps' | 'kva_traps' | 'xyz_traps'
   version: number
   authored_at: string
   notes?: string
+  /** The trap groups `TrapEntry.family` names, in order of their first trap. */
+  families?: TrapFamily[]
   entries: TrapEntry[]
 }
 
 /** Tactic catalog entry (DTK). */
 export type TacticEntry = {
   id: string
+  /** As `TrapEntry.question_title`. */
+  question_title?: string
   tactic: string
   when_to_apply: string
   example_questions: string[]
@@ -86,6 +105,8 @@ export type TacticCatalog = {
 /** Constraint protocol entry (MEK). */
 export type ConstraintEntry = {
   id: string
+  /** As `TrapEntry.question_title`. */
+  question_title?: string
   constraint_type: string
   rule: string
   example_questions: string[]
@@ -104,6 +125,8 @@ export type ConstraintCatalog = {
 /** Question-type protocol entry (LÄS, ELF). */
 export type ProtocolEntry = {
   id: string
+  /** As `TrapEntry.question_title`. */
+  question_title?: string
   question_type: string
   attack_protocol: string[]
   common_distractors: Array<{ pattern: string; why_it_traps: string }>

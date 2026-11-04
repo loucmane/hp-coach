@@ -32,6 +32,12 @@
 // This replaces the old "single wrong resets the whole ladder"
 // behaviour — the best-documented failure mode of naive SRS.
 //
+// CONFIDENCE (LJ-13, owner decision 2026-11-04). An answer may say how
+// sure the student was: Gissar, Tror det or Säker. applyConfidence()
+// below holds the whole policy. The ladder above is the real schedule and
+// does not change; confidence only moves a Säker miss sooner and keeps a
+// right Gissar answer from counting as known.
+//
 // All math is in minutes so we can express the relearn step (10 min)
 // in the same currency as the day-scale steps. `nextReviewAt` is the
 // only timestamp the rest of the system reads — interval lives on the
@@ -40,12 +46,16 @@
 // ladder rungs. Within sixty days, keep capped items active until their
 // final-week review. Once the last anchor passes, use the normal due time.
 
+import type { Confidence, MistakeReason } from '../db/schema'
+
 const MIN = 1
 const HOUR = 60 * MIN
 const DAY = 24 * HOUR
 
 /** First step after a fresh wrong answer — see again in 10 min. */
 export const RELEARN_MINUTES = 10
+/** A Säker miss relearns in half the time: see again in 5 min, not 10. */
+export const SURE_RELEARN_MINUTES = RELEARN_MINUTES / 2
 /** Step the user enters after their first correct in /repetition. */
 export const FIRST_INTERVAL_MINUTES = 1 * DAY
 /** Ceiling after which one more correct graduates the mistake out. */
@@ -153,6 +163,86 @@ export function nextOnCorrect(
     nextReviewAt: beforeExam(addMinutes(now, next), now, examAt),
     lapseIntervalMinutes: null,
   }
+}
+
+/** What applyConfidence reads from a mistake row (null when there is none). */
+export type MistakeState = {
+  status?: string | null
+  intervalMinutes?: number | null
+  lapseIntervalMinutes?: number | null
+  reason?: MistakeReason | null
+}
+
+/** A right Gissar answer on a question outside Repetera: it comes back once. */
+export type LuckyOutcome = { kind: 'lucky'; intervalMinutes: number; nextReviewAt: Date }
+/** A right Gissar answer on a row already in Repetera: nothing moves. */
+export type KeepOutcome = { kind: 'keep' }
+
+type Miss = { correct: false; confidence?: Confidence | null }
+type Guess = { correct: true; confidence: 'gissar' }
+type Counted = { correct: true; confidence?: Exclude<Confidence, 'gissar'> | null }
+
+/**
+ * The confidence policy (LJ-13, owner decision 2026-11-04). It adjusts
+ * today's outcome in two cases and leaves the ladder itself alone:
+ *
+ *   - Säker + wrong: relearn in SURE_RELEARN_MINUTES (5 min), half the
+ *     10-min rung. A confident error is where hypercorrection helps most,
+ *     so it comes back while the correction is fresh, ready before a
+ *     ten-question pass ends. It banks the same height and climbs back on
+ *     the same rungs as a plain miss.
+ *   - Gissar + right: not counted as known. A question with no row, or a
+ *     graduated one, comes back once, a day later (reason 'lucky'). A row
+ *     already in Repetera is kept exactly as it is: the guess neither
+ *     advances nor graduates it, and its reason stays, so a guess can never
+ *     cut a real miss's ladder short. A lucky row graduates on its next
+ *     counted right answer, so it leaves the pile as normal and does not
+ *     come back again; a miss makes it a plain one.
+ *
+ * Tror det, Gissar + wrong, Säker + right and no confidence return today's
+ * nextOnWrong / nextOnCorrect unchanged.
+ */
+export function applyConfidence(answer: Miss, row?: MistakeState | null, now?: Date): WrongOutcome
+export function applyConfidence(answer: Guess, row: null, now?: Date): LuckyOutcome
+export function applyConfidence(
+  answer: Guess,
+  row?: MistakeState | null,
+  now?: Date,
+): LuckyOutcome | KeepOutcome
+export function applyConfidence(
+  answer: Counted,
+  row?: MistakeState | null,
+  now?: Date,
+  examAt?: Date | null,
+): CorrectOutcome
+export function applyConfidence(
+  answer: Miss | Guess | Counted,
+  row: MistakeState | null = null,
+  now: Date = new Date(),
+  examAt?: Date | null,
+): WrongOutcome | CorrectOutcome | LuckyOutcome | KeepOutcome {
+  if (!answer.correct) {
+    const wrong = nextOnWrong(now, {
+      intervalMinutes: row?.intervalMinutes ?? 0,
+      lapseIntervalMinutes: row?.lapseIntervalMinutes ?? null,
+    })
+    if (answer.confidence !== 'saker') return wrong
+    return {
+      ...wrong,
+      intervalMinutes: SURE_RELEARN_MINUTES,
+      nextReviewAt: addMinutes(now, SURE_RELEARN_MINUTES),
+    }
+  }
+  if (answer.confidence === 'gissar') {
+    if (row && row.status !== 'resolved') return { kind: 'keep' }
+    return {
+      kind: 'lucky',
+      intervalMinutes: FIRST_INTERVAL_MINUTES,
+      nextReviewAt: addMinutes(now, FIRST_INTERVAL_MINUTES),
+    }
+  }
+  if (row?.reason === 'lucky') return { graduated: true }
+  return nextOnCorrect(row?.intervalMinutes ?? 0, now, row?.lapseIntervalMinutes ?? null, examAt)
 }
 
 /** Only shorten a timestamp that would miss the exam. Already-pre-exam
