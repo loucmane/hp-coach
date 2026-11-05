@@ -14,7 +14,7 @@ import { and, asc, count, eq, gte, inArray, isNotNull, isNull, lte, or, sql } fr
 import { Hono } from 'hono'
 import { z } from 'zod'
 
-import { getDb } from '../db/client'
+import { type Db, getDb } from '../db/client'
 import { attempts, mistakes, sessions, userAbility, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
 import {
@@ -89,7 +89,7 @@ const StatsQuery = z.object({ firstTry: z.literal('1').optional() })
 
 /** A section's first-try aggregates: the score windows of /stats, over each
  *  question's first try only. */
-type FirstTryAgg = {
+export type FirstTryAgg = {
   firstTry7d: number
   firstTryCorrect7d: number
   firstTry7to14d: number
@@ -100,7 +100,7 @@ type FirstTryAgg = {
 
 /** One stored answer with the kind of the session it was given in — null when
  *  the session row is gone (LEFT JOIN), which counts as an ordinary answer. */
-type KindedAnswer = {
+export type KindedAnswer = {
   sessionId: number
   questionId: string
   correct: boolean | null
@@ -143,6 +143,82 @@ function firstTries(answers: readonly KindedAnswer[]): KindedAnswer[] {
     if (first.kind !== 'adaptive_review' && first.kind !== 'onboarding') out.push(answer)
   }
   return out
+}
+
+/** When an answer was given, in ms. An undated one sorts first and is in no
+ *  window. */
+export function answeredAt(a: KindedAnswer): number {
+  return a.createdAt instanceof Date ? a.createdAt.getTime() : 0
+}
+
+/** What firstTries reads: every answer the user still holds, with its
+ *  session's kind, oldest first. The whole retained history, so a question
+ *  first answered before a window is not mistaken for new inside it. */
+export function firstTryHistory(db: Db, userId: number) {
+  return db
+    .select({
+      sessionId: attempts.sessionId,
+      questionId: attempts.questionId,
+      correct: attempts.correct,
+      createdAt: attempts.createdAt,
+      source: attempts.source,
+      kind: sessions.kind,
+    })
+    .from(attempts)
+    .leftJoin(sessions, eq(attempts.sessionId, sessions.id))
+    .where(eq(attempts.userId, userId))
+    .orderBy(asc(attempts.createdAt), asc(attempts.id))
+}
+
+/**
+ * Each section's first-try aggregates as of `asOf`: the /stats score windows
+ * (the 7 days before it, the 7 before those, and 90 days) over firstTries.
+ * Assessment numbers: authentic and synthetic answers, never unknown.
+ *
+ * `history` holds only what was answered by `asOf`. /stats passes all it
+ * holds, as of now; GET /me/insights/prognosis-weekly passes a past week the
+ * answers given before its end, so a later answer can neither be a first try
+ * then nor change a mock's pick.
+ */
+export function firstTryAggregates(
+  history: readonly KindedAnswer[],
+  asOf: Date,
+): Record<Section, FirstTryAgg> {
+  const ninetyDayStart = new Date(asOf.getTime() - 90 * 24 * 60 * 60_000)
+  const weekStart = new Date(asOf.getTime() - 7 * 24 * 60 * 60_000)
+  const prevWeekStart = new Date(asOf.getTime() - 14 * 24 * 60 * 60_000)
+  const bySectionFirst = Object.fromEntries(
+    SECTIONS.map((s) => [
+      s,
+      {
+        firstTry7d: 0,
+        firstTryCorrect7d: 0,
+        firstTry7to14d: 0,
+        firstTryCorrect7to14d: 0,
+        firstTry90d: 0,
+        firstTryCorrect90d: 0,
+      },
+    ]),
+  ) as Record<Section, FirstTryAgg>
+  for (const a of firstTries(history)) {
+    if (a.source === 'unknown') continue
+    const section = extractSection(a.questionId)
+    if (!section) continue
+    const ts = answeredAt(a)
+    if (ts < ninetyDayStart.getTime()) continue
+    const agg = bySectionFirst[section]
+    const correct = a.correct ? 1 : 0
+    agg.firstTry90d += 1
+    agg.firstTryCorrect90d += correct
+    if (ts >= weekStart.getTime()) {
+      agg.firstTry7d += 1
+      agg.firstTryCorrect7d += correct
+    } else if (ts >= prevWeekStart.getTime()) {
+      agg.firstTry7to14d += 1
+      agg.firstTryCorrect7to14d += correct
+    }
+  }
+  return bySectionFirst
 }
 
 export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
@@ -457,59 +533,14 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     }
 
     // First tries (hpf-bz6f.4), only on ?firstTry=1: the same windows over
-    // each question's first try (see firstTries), read from the whole retained
-    // history so a question first answered before the 90-day window is not
-    // mistaken for new inside it. Assessment numbers: authentic and synthetic
-    // answers, never unknown. They are a subset of the 90d window, so when the
-    // section's estimateBasis is calibrated, so are its first tries.
+    // each question's first try, as of now (see firstTryAggregates). They are
+    // a subset of the 90d window, so when the section's estimateBasis is
+    // calibrated, so are its first tries.
     let firstTryBySection: Record<Section, FirstTryAgg> | null = null
     let onboardingCompletedAt: string | null = null
     if (firstTry) {
-      const history = await db
-        .select({
-          sessionId: attempts.sessionId,
-          questionId: attempts.questionId,
-          correct: attempts.correct,
-          createdAt: attempts.createdAt,
-          source: attempts.source,
-          kind: sessions.kind,
-        })
-        .from(attempts)
-        .leftJoin(sessions, eq(attempts.sessionId, sessions.id))
-        .where(eq(attempts.userId, userId))
-        .orderBy(asc(attempts.createdAt), asc(attempts.id))
-      const bySectionFirst = Object.fromEntries(
-        SECTIONS.map((s) => [
-          s,
-          {
-            firstTry7d: 0,
-            firstTryCorrect7d: 0,
-            firstTry7to14d: 0,
-            firstTryCorrect7to14d: 0,
-            firstTry90d: 0,
-            firstTryCorrect90d: 0,
-          },
-        ]),
-      ) as Record<Section, FirstTryAgg>
-      for (const a of firstTries(history)) {
-        if (a.source === 'unknown') continue
-        const section = extractSection(a.questionId)
-        if (!section) continue
-        const ts = a.createdAt instanceof Date ? a.createdAt.getTime() : 0
-        if (ts < ninetyDayStart.getTime()) continue
-        const agg = bySectionFirst[section]
-        const correct = a.correct ? 1 : 0
-        agg.firstTry90d += 1
-        agg.firstTryCorrect90d += correct
-        if (ts >= weekStart.getTime()) {
-          agg.firstTry7d += 1
-          agg.firstTryCorrect7d += correct
-        } else if (ts >= prevWeekStart.getTime()) {
-          agg.firstTry7to14d += 1
-          agg.firstTryCorrect7to14d += correct
-        }
-      }
-      firstTryBySection = bySectionFirst
+      const history = await firstTryHistory(db, userId)
+      firstTryBySection = firstTryAggregates(history, now)
       // Completion, not merely retirement: all three planned questions
       // must be answered. This opt-in scheduling signal keeps the default
       // assessment response (and its golden fixture) unchanged.

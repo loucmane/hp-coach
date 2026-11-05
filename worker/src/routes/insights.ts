@@ -11,6 +11,7 @@ import { retentionCutoff } from '../lib/retention'
 import { extractSection, type Section } from '../lib/section'
 import { formatDayUTC, startOfUtcDay } from '../lib/stats'
 import type { Env, Vars } from '../types'
+import { answeredAt, firstTryAggregates, firstTryHistory, type KindedAnswer } from './me'
 
 const DAY_MS = 86_400_000
 const WEEK_MS = 7 * DAY_MS
@@ -18,6 +19,9 @@ const WEEK_MS = 7 * DAY_MS
 // window, even on Sunday. Do not expose a misleading partial eighteenth week.
 const TempoQuery = z.object({ weeks: z.coerce.number().int().min(1).max(17).default(9) })
 const OutcomesQuery = z.object({ sessionId: z.coerce.number().int().positive().safe().optional() })
+const PrognosisWeeklyQuery = z.object({
+  weeks: z.coerce.number().int().min(1).max(26).default(12),
+})
 
 async function userIdFor(db: Db, clerkUserId: string): Promise<number | undefined> {
   const [user] = await db
@@ -243,4 +247,33 @@ export const insightsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         [...outcomes].map(([qid, { n, right, days }]) => [qid, { n, right, rightDays: days.size }]),
       ),
     )
+  })
+  // {weeks:[{iso, end, bySection:{ORD:{firstTry7d,…,firstTryCorrect90d}}}]},
+  // oldest first: the honest prognosis's inputs, every section's
+  // /me/stats?firstTry=1 aggregates as they stood at `end`. A past week ends
+  // at the next Monday 00:00 UTC and counts only the answers given before
+  // then. The current week has not ended, so it is /me/stats?firstTry=1 now:
+  // the same history, the same call. A week before the first answer is all
+  // zero; a quiet week keeps the prognosis it ended on. Like /me/stats, it
+  // reads what retention still holds (120 days): a week that ended more than
+  // 30 days ago rests only on the held part of its 90-day window.
+  .get('/prognosis-weekly', zValidator('query', PrognosisWeeklyQuery), async (c) => {
+    const { weeks: count } = c.req.valid('query')
+    const now = new Date()
+    const firstMonday = +mondayUTC(now) - (count - 1) * WEEK_MS
+    const db = getDb(c.env.DB)
+    const userId = await userIdFor(db, c.var.userId)
+    const history: KindedAnswer[] = userId === undefined ? [] : await firstTryHistory(db, userId)
+    const weeks = Array.from({ length: count }, (_, i) => {
+      const monday = firstMonday + i * WEEK_MS
+      const current = i === count - 1
+      const end = current ? now : new Date(monday + WEEK_MS)
+      const held = current ? history : history.filter((a) => answeredAt(a) < +end)
+      return {
+        iso: isoWeek(new Date(monday)),
+        end: end.toISOString(),
+        bySection: firstTryAggregates(held, end),
+      }
+    })
+    return c.json({ weeks })
   })
