@@ -59,4 +59,17 @@ describe('Öva isolation', () => {
       )
     }
   })
+  it('uses shared scoped keys, lit sheet, Go, segments and honest range primitives', () => {
+    const lead = read('./OvaLead.tsx')
+    expect(lead).toMatch(/useScopedKeys\(\s*region,/)
+    expect(lead).not.toMatch(/addEventListener|window\.onkeydown/)
+    for (const primitive of ['Lit', 'Go', 'Seg', 'SecChip']) expect(lead).toContain(`<${primitive}`)
+    expect(lead).toContain('dock={phone}')
+    expect(read('./OvaContents.tsx')).toContain('<RangeBand')
+    expect(read('./ovaView.ts')).toContain('scoreBand(value, attempts)')
+    expect(read('./ovaView.ts')).not.toMatch(
+      /entryHeadword|\.headline|\.rationale|\.tldr|\.pattern_description/,
+    )
+    expect(read('./ova.css')).not.toMatch(/--fa-(?:paper|leaf|rule|accent|serif)\b/)
+  })
 })

@@ -1,131 +1,146 @@
-import { type ComponentProps, useEffect, useRef } from 'react'
+import { type ComponentProps, type MouseEvent, useRef } from 'react'
+import { useScopedKeys } from '@/folio/lib/useScopedKeys'
+import { Go } from '@/folio/ui/Go'
+import { Lit } from '@/folio/ui/Lit'
+import { SecChip } from '@/folio/ui/SecChip'
+import { Seg } from '@/folio/ui/Seg'
+import type { DrillCount } from '@/lib/drill'
 import type { OvaView } from './ovaView'
 
 export type NavigateHref = (href: string) => void
 
-/** Preserve native keyboard activation, modified clicks, and open-in-new-tab. */
+/** Retain native navigation for modified clicks, downloads and new tabs. */
+function follow(event: MouseEvent<HTMLAnchorElement>, navigateHref: NavigateHref) {
+  const a = event.currentTarget
+  if (
+    event.defaultPrevented ||
+    event.button !== 0 ||
+    event.metaKey ||
+    event.ctrlKey ||
+    event.shiftKey ||
+    event.altKey ||
+    (a.target && a.target !== '_self') ||
+    a.hasAttribute('download')
+  )
+    return
+  event.preventDefault()
+  navigateHref(a.getAttribute('href')!)
+}
 export function OvaLink({
   navigateHref,
   href,
   onClick,
-  target,
   ...props
 }: ComponentProps<'a'> & { href: string; navigateHref: NavigateHref }) {
   return (
     <a
       {...props}
       href={href}
-      target={target}
       onClick={(event) => {
         onClick?.(event)
-        if (
-          event.defaultPrevented ||
-          event.button !== 0 ||
-          event.metaKey ||
-          event.ctrlKey ||
-          event.shiftKey ||
-          event.altKey ||
-          (target && target !== '_self') ||
-          props.download != null
-        )
-          return
-        event.preventDefault()
-        navigateHref(href)
+        follow(event, navigateHref)
       }}
     />
   )
 }
 
-export function OvaLead({ view, navigateHref }: { view: OvaView; navigateHref: NavigateHref }) {
-  const primary = useRef<HTMLAnchorElement>(null)
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (
-        event.key !== 'Enter' ||
-        event.defaultPrevented ||
-        event.repeat ||
-        event.isComposing ||
-        event.metaKey ||
-        event.ctrlKey ||
-        event.altKey ||
-        event.shiftKey
-      )
-        return
-      const target = event.target
-      if (
-        target instanceof Element &&
-        target.closest(
-          'a, button, input, textarea, select, summary, [contenteditable]:not([contenteditable="false"]), [role="button"], [role="link"], [role="textbox"], [inert]',
+export function OvaLead({
+  view,
+  navigateHref,
+  phone,
+  onCount,
+}: {
+  view: OvaView
+  navigateHref: NavigateHref
+  phone: boolean
+  onCount: (count: DrillCount) => void
+}) {
+  const region = useRef<HTMLElement>(null)
+  const { lead } = view
+  useScopedKeys(
+    region,
+    {
+      Enter: () => {
+        if (
+          !lead.href ||
+          region.current?.closest('[inert]') ||
+          document.querySelector(
+            '[role="dialog"], [role="alertdialog"], [role="menu"], dialog[open]',
+          )
         )
-      )
-        return
-      if (
-        !primary.current ||
-        primary.current.closest('[inert]') ||
-        document.querySelector('[role="dialog"], [role="alertdialog"], [role="menu"], dialog[open]')
-      )
-        return
-      event.preventDefault()
-      primary.current.click()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [])
-  const { lead, repetition } = view
-  const readySections = view.sections.filter((s) => (s.dueNow ?? 0) > 0)
+          return false
+        navigateHref(lead.href)
+      },
+    },
+    { enabled: !!lead.href },
+  )
+  const size = lead.family ? (
+    <Seg
+      label="Antal frågor"
+      options={[5, 10, 20].map((value) => ({ value: value as DrillCount, label: String(value) }))}
+      value={lead.family.count}
+      onChange={onCount}
+    />
+  ) : null
+  const action = lead.href ? (
+    <Go
+      href={lead.href}
+      dock={phone}
+      kbd="↵"
+      keyshortcuts="Enter"
+      onClick={(event) => follow(event, navigateHref)}
+    >
+      {lead.label}
+    </Go>
+  ) : (
+    <Go dock={phone} disabled>
+      {lead.label}
+    </Go>
+  )
   return (
-    <section className="fa-resume" aria-labelledby="fa-ova-lead">
-      <div className="fa-resume-top">
-        <span className="fa-label">{lead.eyebrow}</span>
-      </div>
-      <h2 className="fa-lead-title" id="fa-ova-lead">
-        {lead.title}
-      </h2>
-      {lead.detail ? <p className="fa-lead-sub">{lead.detail}</p> : null}
-      <div className="fa-resume-foot">
-        {lead.kind !== 'loading' ? (
-          <OvaLink
-            ref={primary}
-            className="fa-btn fa-btn--big"
-            href={lead.href}
-            navigateHref={navigateHref}
-            data-testid={lead.kind === 'repetera' ? 'ova-repetition' : undefined}
-          >
-            {lead.label}
-            <kbd className="fa-kbd" aria-hidden>
-              ↵
-            </kbd>
-          </OvaLink>
+    <section
+      ref={region}
+      // biome-ignore lint/a11y/noNoninteractiveTabindex: focus scopes the optional Enter shortcut to this labelled region.
+      tabIndex={0}
+      className="fa-ova-suggestion"
+      aria-labelledby="fa-ova-lead"
+      data-testid="ova-suggestion"
+    >
+      <Lit className="fa-ova-now">
+        <div className="fa-ova-eyebrow">
+          <span>Föreslaget</span>
+          {lead.section ? <SecChip section={lead.section} /> : null}
+        </div>
+        <h2 id="fa-ova-lead">{lead.title}</h2>
+        {lead.detail ? <p className="fa-ova-why">{lead.detail}</p> : null}
+        {lead.steps.length ? (
+          <ol className="fa-ova-chain" aria-label="Lektion och övning">
+            {lead.steps.map((step, i) => (
+              <li key={step.href}>
+                <span className="fa-ova-number" data-current={i === 0 ? '' : undefined} aria-hidden>
+                  {i + 1}
+                </span>
+                <div className="fa-ova-step-body">
+                  <OvaLink href={step.href} navigateHref={navigateHref}>
+                    {step.title}
+                  </OvaLink>
+                  {i === 1 ? size : null}
+                  {step.minutes != null ? (
+                    <span className="fa-ova-time">ca {step.minutes} min</span>
+                  ) : null}
+                </div>
+              </li>
+            ))}
+          </ol>
+        ) : lead.family ? (
+          <div className="fa-ova-size">
+            <span>Antal frågor</span>
+            {size}
+          </div>
         ) : null}
-        <OvaLink
-          className="fa-link"
-          href="/repetition"
-          navigateHref={navigateHref}
-          data-testid={lead.kind !== 'repetera' ? 'ova-repetition' : undefined}
-        >
-          {lead.kind === 'repetera'
-            ? `Välj delprov · ${repetition.dueNow} redo nu`
-            : 'Öppna Repetera'}{' '}
-          <span aria-hidden>→</span>
-        </OvaLink>
-      </div>
-      {view.queueLine ? <p className="fa-empty">{view.queueLine}</p> : null}
-      {readySections.length > 0 ? (
-        <ul className="fa-ready" aria-label="Repetera ett delprov">
-          {readySections.map((s) => (
-            <li key={s.section}>
-              <OvaLink
-                className="fa-link"
-                href={s.repetitionHref}
-                navigateHref={navigateHref}
-                data-testid={`ova-rep-${s.section}`}
-              >
-                {s.section} · {s.dueNow} redo nu <span aria-hidden>→</span>
-              </OvaLink>
-            </li>
-          ))}
-        </ul>
-      ) : null}
+        <div className="fa-ova-action">{!phone ? action : null}</div>
+      </Lit>
+      {phone ? <div className="fa-ova-dock">{action}</div> : null}
     </section>
   )
 }

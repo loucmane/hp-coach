@@ -1,32 +1,72 @@
 import { useQueries } from '@tanstack/react-query'
-import { useTopTraps } from '@/api/hooks/useTopTraps'
-import { entryHeadword, loadFramework } from '@/data/frameworks'
+import { useRef, useState } from 'react'
+import { useLessonProgress } from '@/api/hooks/useLessonProgress'
+import { useLessonReadsQuery } from '@/api/hooks/useLessonReadsApi'
+import { useSyncedPrefs } from '@/api/useSyncedPrefs'
+import { type Framework, loadFramework } from '@/data/frameworks'
+import { SECTION_KEYS, type Section } from '@/data/questions'
+import { useDailyPlan } from '@/hooks/useDailyPlan'
+import { useLessonReads } from '@/hooks/useLessonReads'
 import { useViewport } from '@/hooks/useViewport'
 import { useFirstContentSignal } from '@/lib/motion'
 import { useUiStore } from '@/stores/uiStore'
 
-/** Mounted only inside the lazy Folio screen; framework data shares Idag's cache. */
+/** All new data stays behind the existing lazy Folio boundary. */
 export function useOvaExtras() {
-  const topTraps = useTopTraps()
+  const daily = useDailyPlan()
+  const lesson = useLessonProgress()
+  const serverReads = useLessonReadsQuery()
+  const { reads } = useLessonReads()
   const viewport = useViewport()
   const smartDrill = useUiStore((s) => s.smartDrill)
+  const synced = useSyncedPrefs()
+  const [saving, setSaving] = useState(false)
+  const [preferenceError, setPreferenceError] = useState(false)
+  const saveLock = useRef(false)
   useFirstContentSignal()
-  const sections = [...new Set(topTraps.map((t) => t.section))]
-  const frameworks = useQueries({
+  const sections = [
+    ...new Set([lesson.data?.section, ...(daily.plan?.items.map((i) => i.section) ?? [])]),
+  ].filter((section): section is Section => SECTION_KEYS.includes(section as Section))
+  const queries = useQueries({
     queries: sections.map((section) => ({
       queryKey: ['folio-lesson', section],
       queryFn: () => loadFramework(section),
       staleTime: Infinity,
     })),
   })
-  const trapNames: Record<string, string> = {}
-  for (const result of frameworks) {
-    const framework = result.data
-    if (framework)
-      for (const entry of framework.entries) {
-        const name = entryHeadword(entry, framework)
-        if (name) trapNames[entry.id] = name
-      }
+  const catalogs: Partial<Record<Section, Framework>> = {}
+  for (const [i, result] of queries.entries()) if (result.data) catalogs[sections[i]] = result.data
+  async function setSmartDrill(value: boolean) {
+    if (saveLock.current) return
+    saveLock.current = true
+    setSaving(true)
+    setPreferenceError(false)
+    try {
+      await synced.setSmartDrill(value)
+    } catch {
+      setPreferenceError(true)
+    } finally {
+      saveLock.current = false
+      setSaving(false)
+    }
   }
-  return { topTraps, trapNames, viewport, smartDrill }
+  return {
+    viewport,
+    smartDrill,
+    setSmartDrill,
+    saving,
+    preferenceError,
+    catalogs,
+    lesson,
+    plan: {
+      data: (daily.isLoading || daily.isError) && !daily.plan ? undefined : daily.plan,
+      isPending: daily.isLoading,
+      isError: daily.isError,
+    },
+    reads: {
+      data: serverReads.data === undefined && reads.size === 0 ? undefined : reads,
+      isPending: serverReads.isPending && reads.size === 0,
+      isError: serverReads.isError,
+    },
+  }
 }
