@@ -10,8 +10,9 @@ import { useQuery } from '@tanstack/react-query'
 
 import { useLessonProgress } from '@/api/hooks/useLessonProgress'
 import { useActiveSessions } from '@/api/hooks/useSessions'
-import { entryHeadword, type Framework, loadFramework } from '@/data/frameworks'
+import { type Framework, loadFramework } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
+import { keepMathTogether } from '@/folio/lib/keepMathTogether'
 import { decodeTreatedMarker } from '@/lib/adaptiveReview'
 import { type DeviceKind, deviceLabel } from '@/lib/device'
 import { ORD_WORDS_SECTIONS } from '@/lib/ordWords'
@@ -29,7 +30,8 @@ export type ResumptionRaw = {
    *  "Repetition", "XYZ-lektion". Phone composes "subject · progress";
    *  desktop composes "subject · pausad". */
   subject: string
-  /** "vid fråga 3 av 10" | "vid Två påståenden" | "pågående lektion". */
+  /** "vid fråga 3 av 10" | "vid Låser x² = y² tecknet?" | "vid fälla 16" |
+   *  "pågående lektion". */
   progress: string
   href: string
   device: DeviceKind | null
@@ -107,10 +109,10 @@ export function pickCandidate(
       framework?.section === section
         ? framework.entries.find((item) => item.id === lesson.frameworkId)
         : null
-    const title = entry && framework ? entryHeadword(entry, framework) : null
+    const place = entry && framework ? lessonPlace(entry, framework) : null
     out.push({
       subject: `${section}-lektion`,
-      progress: title ? `vid ${title}` : 'pågående lektion',
+      progress: place ? `vid ${place}` : 'pågående lektion',
       href: `/lektion?section=${section}${anchor}`,
       device: lesson.device,
       freshAt: toMs(lesson.updatedAt),
@@ -146,6 +148,21 @@ export function useResumptionCandidate(now: Date): FormattedResumption | null {
 }
 
 // ── helpers ─────────────────────────────────────────────────────────
+
+const TRAP_CATALOGS: ReadonlyArray<Framework['family']> = ['nog_traps', 'kva_traps', 'xyz_traps']
+
+/** Where a lesson stands, safe to show before its "Gissa först" step: the
+ *  question-form title, else "fälla N" for a trap, else null (neutral).
+ *  Never the headword, tldr or recognition cue: they state the answer. */
+export function lessonPlace(
+  entry: Framework['entries'][number],
+  framework: Framework,
+): string | null {
+  const title = 'question_title' in entry ? entry.question_title?.trim() : undefined
+  if (title) return keepMathTogether(title)
+  const number = TRAP_CATALOGS.includes(framework.family) ? /\d+$/.exec(entry.id) : null
+  return number ? `fälla ${Number(number[0])}` : null
+}
 
 function toMs(ts: string | number | null | undefined): number {
   if (ts == null) return 0
