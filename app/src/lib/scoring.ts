@@ -348,6 +348,11 @@ export type HonestProjection = ProjectedTotal & {
   /** Half-width of a 95% band on `total`, in score units — "± this much".
    *  Null when there is no total. */
   band: number | null
+  /** Half-widths of the 95% bands on `verbal` and `quant`, from the same
+   *  pooled per-section variances as `band` (1.96 · √Var(half)). Null when
+   *  that half has no scored section. */
+  verbalBand?: number | null
+  quantBand?: number | null
 }
 
 /** The honest prognosis: computeProjected over first tries, with a band on
@@ -381,7 +386,14 @@ export function computeHonestProjected(
     projected.total != null && verbal != null && quant != null
       ? Z95 * Math.sqrt((verbal + quant) / 4)
       : null
-  return { ...projected, band }
+  const halfBand = (variance: number | null, score: number | null) =>
+    variance != null && score != null ? Z95 * Math.sqrt(variance) : null
+  return {
+    ...projected,
+    band,
+    verbalBand: halfBand(verbal, projected.verbal),
+    quantBand: halfBand(quant, projected.quant),
+  }
 }
 
 /** A week-over-week change in the honest prognosis, or `stable`: inside the

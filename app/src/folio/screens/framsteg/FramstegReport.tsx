@@ -1,36 +1,68 @@
-import { type ComponentProps, useEffect, useRef } from 'react'
-import { type FramstegView, scoreLabel } from './framstegView'
+import type { ComponentProps, CSSProperties, MouseEvent } from 'react'
+import { Go } from '@/folio/ui/Go'
+import { Lit } from '@/folio/ui/Lit'
+import { bandGeometry, RangeBand, type RangeBandProps } from '@/folio/ui/RangeBand'
+import { SEC_KEY } from '@/folio/ui/SecChip'
+import type { FramstegView } from './framstegView'
 
 export type NavigateHref = (href: string) => void
+
+/** Clip the mini-band's box as well as its paint, retaining the shared core.
+ * A hidden overflowing box still contributes to the track's scrollWidth. */
+export function FramstegBand({
+  low,
+  high,
+  section,
+}: Pick<RangeBandProps, 'low' | 'high' | 'section'>) {
+  const raw = bandGeometry(low, high, 0, 2)
+  const left = Math.max(0, raw.left)
+  const width = Math.min(100, raw.left + raw.width) - left
+  const stop = (axisPercent: number) => `${((axisPercent - left) / width) * 100}%`
+  const style = {
+    '--fa-fr-band-width': `${width}%`,
+    '--fa-fr-band-shift': `${left - raw.left}%`,
+    '--fa-fr-band-start': stop(raw.left),
+    '--fa-fr-band-core-start': stop(low * 50),
+    '--fa-fr-band-core-end': stop(high * 50),
+    '--fa-fr-band-end': stop(raw.left + raw.width),
+  } as CSSProperties
+  return (
+    <div className="fa-fr-band" style={style}>
+      <RangeBand low={low} high={high} max={2} section={section} size="mini" decorative />
+    </div>
+  )
+}
+
+function follow(event: MouseEvent<HTMLAnchorElement>, href: string, navigateHref: NavigateHref) {
+  if (
+    event.defaultPrevented ||
+    event.button !== 0 ||
+    event.metaKey ||
+    event.ctrlKey ||
+    event.shiftKey ||
+    event.altKey ||
+    event.currentTarget.hasAttribute('download') ||
+    (event.currentTarget.target && event.currentTarget.target !== '_self')
+  )
+    return
+  event.preventDefault()
+  navigateHref(href)
+}
 
 /** Real anchors retain native modified clicks, focus and open-in-new-tab. */
 export function FramstegLink({
   navigateHref,
   href,
   onClick,
-  target,
   ...props
 }: ComponentProps<'a'> & { href: string; navigateHref: NavigateHref }) {
   return (
     <a
       {...props}
       href={href}
-      target={target}
       onClick={(event) => {
         onClick?.(event)
-        if (
-          event.defaultPrevented ||
-          event.button !== 0 ||
-          event.metaKey ||
-          event.ctrlKey ||
-          event.shiftKey ||
-          event.altKey ||
-          (target && target !== '_self') ||
-          props.download != null
-        )
-          return
-        event.preventDefault()
-        navigateHref(href)
+        follow(event, href, navigateHref)
       }}
     />
   )
@@ -39,125 +71,110 @@ export function FramstegLink({
 export function FramstegReport({
   view,
   navigateHref,
+  phone,
 }: {
   view: FramstegView
   navigateHref: NavigateHref
+  phone: boolean
 }) {
-  const primary = useRef<HTMLAnchorElement>(null)
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (
-        event.key !== 'Enter' ||
-        event.defaultPrevented ||
-        event.repeat ||
-        event.isComposing ||
-        event.metaKey ||
-        event.ctrlKey ||
-        event.altKey ||
-        event.shiftKey
-      )
-        return
-      if (
-        event.target instanceof Element &&
-        event.target.closest(
-          'a, button, input, textarea, select, summary, [contenteditable]:not([contenteditable="false"]), [role="button"], [role="link"], [role="textbox"], [inert]',
-        )
-      )
-        return
-      if (
-        !primary.current ||
-        primary.current.closest('[inert]') ||
-        document.querySelector('[role="dialog"], [role="alertdialog"], [role="menu"], dialog[open]')
-      )
-        return
-      event.preventDefault()
-      primary.current.click()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [])
   const p = view.prognosis
-  const explainHalves =
-    p.verbal == null ||
-    p.quant == null ||
-    view.sections.some((section) => section.attempts > 0 && section.score == null)
+  const action = view.primary ? (
+    <Go
+      href={view.primary.href}
+      dock={phone}
+      kbd="↵"
+      keyshortcuts="Enter"
+      data-testid={view.dayZero ? 'progress-empty-cta' : 'framsteg-primary'}
+      onClick={(event) => follow(event, view.primary!.href, navigateHref)}
+    >
+      {view.primary.label}
+    </Go>
+  ) : null
   return (
     <>
-      <section className="fa-fr-report" aria-labelledby="fa-fr-report-h">
-        <h2 className="fa-label" id="fa-fr-report-h">
-          Prognos
-        </h2>
-        <div className="fa-result" aria-describedby={p.caveat ? 'fa-fr-caveat' : undefined}>
-          <span className="fa-result-n" data-testid="progress-projected">
-            {p.scoreLabel}
-            {p.caveat && p.total != null ? <sup aria-hidden>*</sup> : null}
-          </span>
-          <span className="fa-result-of">av 2,0</span>
-        </div>
-        {view.dayZero ? (
-          <p className="fa-empty">
-            Ingen prognos än. Totalen visas när du har svarat på frågor i båda delarna.
-          </p>
-        ) : null}
-        {p.deltaLabel ? <p className="fa-delta">{p.deltaLabel}</p> : null}
-        <p className="fa-halves">
-          Verbal {scoreLabel(p.verbal)} · Kvant {scoreLabel(p.quant)}
-        </p>
-        {explainHalves ? (
+      <Lit className="fa-fr-report" aria-label="Prognos">
+        <div>
+          <h2 className="fa-label">Prognos just nu</h2>
+          <div className="fa-result" aria-describedby={p.caveat ? 'fa-fr-caveat' : undefined}>
+            <span className="fa-result-n" data-testid="progress-projected">
+              {p.rangeLabel ?? '—'}
+            </span>
+            <span className="fa-result-of">av 2,0</span>
+          </div>
+          {p.low != null && p.high != null ? (
+            <RangeBand
+              low={p.low}
+              high={p.high}
+              max={2}
+              ticks={['0', '0,5', '1,0', '1,5', '2,0']}
+              label={`Prognos ${p.scoreLabel} av 2,0, intervall ${p.rangeLabel}`}
+            />
+          ) : (
+            <p className="fa-empty">
+              Ingen prognos än. Totalen visas när du har svarat på frågor i båda delarna.
+            </p>
+          )}
+          <div className="fa-halves">
+            {(
+              [
+                ['verbal', 'Verbal'],
+                ['quant', 'Kvant'],
+              ] as const
+            ).map(([half, label]) => {
+              const halfRange = p.halfRanges[half]
+              return (
+                <div className="fa-half" key={half} data-testid={`framsteg-half-${half}`}>
+                  <span>
+                    {label}{' '}
+                    {halfRange.rangeLabel ? <b>{halfRange.rangeLabel}</b> : 'inget underlag än'}
+                  </span>
+                  {halfRange.low != null && halfRange.high != null ? (
+                    <FramstegBand low={halfRange.low} high={halfRange.high} />
+                  ) : (
+                    <span className="fa-half-track" aria-hidden="true" />
+                  )}
+                </div>
+              )
+            })}
+          </div>
           <p className="fa-halves-note">
-            Halvorna räknar bara delprov med minst två svar; totalen räknar alla.
+            Totalen är medelvärdet av halvorna, som på provet. {view.evidence.attempts} förstaförsök
+            i underlaget.
           </p>
-        ) : null}
-        {p.total != null ? (
+        </div>
+        <div className="fa-evidence" data-testid="folio-framsteg-next">
+          <h2 className="fa-label">Hur säker är den?</h2>
           <div
-            className="fa-scale"
+            className="fa-meter"
             role="img"
-            aria-label={`Prognos ${p.scoreLabel} av 2,0${p.low != null && p.high != null ? `, intervall ${scoreLabel(p.low)}–${scoreLabel(p.high)}` : ''}`}
+            aria-label={`Underlag per delprov: ${view.sections
+              .map(
+                (s) =>
+                  `${s.section}: ${s.tier === 'full' ? 'underlag' : s.tier === 'glimpse' ? 'första glimt' : 'inget än'} (${s.attempts} svar)`,
+              )
+              .join(', ')}`}
           >
-            <span className="fa-scale-axis" />
-            {p.low != null && p.high != null ? (
-              <span
-                className="fa-scale-range"
-                style={{ left: `${p.low * 50}%`, width: `${(p.high - p.low) * 50}%` }}
-              />
-            ) : null}
-            <span className="fa-scale-mark" style={{ left: `${p.total * 50}%` }} />
-            {[0, 0.5, 1, 1.5, 2].map((value) => (
-              <span key={value} className="fa-scale-tick" style={{ left: `${value * 50}%` }}>
-                {scoreLabel(value)}
+            {view.sections.map((s) => (
+              <span key={s.section} aria-hidden="true">
+                <i data-sec={SEC_KEY[s.section]} data-tier={s.tier} />
+                {s.section}
               </span>
             ))}
           </div>
-        ) : null}
-        {p.low != null && p.high != null ? (
-          <p className="fa-range-label">
-            Intervall {scoreLabel(p.low)}–{scoreLabel(p.high)}
+          <div className="fa-meter-key">
+            <span>fylld = underlag</span>
+            <span>låg = första glimt</span>
+            <span>streckad = inget än</span>
+          </div>
+          <p>
+            {view.evidence.full} delprov har underlag, {view.evidence.glimpse} en första glimt,{' '}
+            {view.evidence.empty} inget än.
           </p>
-        ) : null}
-      </section>
-      {view.primary ? (
-        <section
-          className="fa-resume"
-          aria-labelledby="fa-fr-lead"
-          data-testid="folio-framsteg-next"
-        >
-          <span className="fa-label">Nästa steg</span>
-          <h2 className="fa-lead-title" id="fa-fr-lead">
-            {view.primary.title}
-          </h2>
-          <p className="fa-lead-why">{view.primary.reason}</p>
-          <FramstegLink
-            ref={primary}
-            className="fa-btn"
-            href={view.primary.href}
-            navigateHref={navigateHref}
-            data-testid={view.dayZero ? 'progress-empty-cta' : 'framsteg-primary'}
-          >
-            {view.primary.label}
-            <kbd aria-hidden>↵</kbd>
-          </FramstegLink>
-        </section>
-      ) : null}
+          {!phone ? action : null}
+          {view.primary ? <p className="fa-why">{view.primary.reason}</p> : null}
+        </div>
+      </Lit>
+      {phone && action ? <div className="fa-fr-dock">{action}</div> : null}
     </>
   )
 }
