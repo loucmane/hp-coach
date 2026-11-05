@@ -1,49 +1,47 @@
-import { ACCOUNT_ROUTES } from '@/folio/nav'
-import { type NavigateHref, OvaLink } from './OvaLead'
-import type { OvaView } from './ovaView'
+import { Seg } from '@/folio/ui/Seg'
 
-export function OvaMargin({ view, navigateHref }: { view: OvaView; navigateHref: NavigateHref }) {
-  const { trap } = view
+export function OvaMargin({
+  smartDrill,
+  setSmartDrill,
+  saving,
+  preferenceError,
+}: {
+  smartDrill: boolean
+  setSmartDrill: (value: boolean) => void
+  saving: boolean
+  preferenceError: boolean
+}) {
   return (
-    <aside className="fa-aside" aria-label="Om övningarna och dina fällor" data-fa-shade>
-      {trap ? (
-        <section className="fa-aside-block" aria-labelledby="fa-ova-trap-h">
-          <h2 className="fa-h3" id="fa-ova-trap-h">
-            Fällan just nu
-          </h2>
-          <p className="fa-trap-meta">
-            <b>{trap.section}</b>
-            <span>
-              {trap.count} {trap.count === 1 ? 'gång' : 'gånger'}
-              {trap.rising ? ' · ↑ ökar' : ''}
-            </span>
-          </p>
-          <OvaLink className="fa-trap-name" href={trap.href} navigateHref={navigateHref}>
-            {trap.name}
-          </OvaLink>
-          {trap.pattern ? <p className="fa-trap-pattern">{trap.pattern}</p> : null}
-          <OvaLink className="fa-link" href={trap.href} navigateHref={navigateHref}>
-            Öva detta mönster <span aria-hidden>→</span>
-          </OvaLink>
-        </section>
-      ) : null}
-      <section className="fa-aside-block" aria-labelledby="fa-ova-about-h">
-        <h2 className="fa-h3" id="fa-ova-about-h">
-          Om övningarna
-        </h2>
-        <p className="fa-margin-note">
-          ”Väntar” är missar i dagens hög. ”Redo nu” är de som går att repetera just nu.
+    <aside className="fa-ova-side" aria-label="Om övningarna">
+      <section className="fa-ova-card" aria-labelledby="fa-ova-selection">
+        <h2 id="fa-ova-selection">Frågeurval</h2>
+        <Seg
+          label="Frågeurval"
+          stretch
+          value={smartDrill ? 'smart' : 'random'}
+          onChange={(v) => setSmartDrill(v === 'smart')}
+          options={[
+            { value: 'smart', label: 'Nära min nivå', disabled: saving },
+            { value: 'random', label: 'Slumpat', disabled: saving },
+          ]}
+        />
+        <p>
+          Nära din nivå betyder frågor där du klarar de flesta, inte alla: ungefär tre av fyra. Där
+          lär man sig mest utan att tappa modet.
         </p>
-        <p className="fa-margin-note">
-          {view.mixed.questions} frågor åt gången — DTK några fler, eftersom en figursida aldrig
-          delas. Vanliga övningar har ingen klocka. Svaren sparas.
+        {preferenceError ? <p role="status">Kunde inte spara valet. Försök igen.</p> : null}
+      </section>
+      <section className="fa-ova-card" aria-labelledby="fa-ova-how">
+        <h2 id="fa-ova-how">Så funkar ett pass</h2>
+        <p>
+          Du svarar med hur säker du är. Efter varje fråga kommer hela facit, med alla steg och
+          varför de andra alternativen lockar.
         </p>
-        <p className="fa-margin-note">
-          Frågeurval: <b>{view.smartDrill ? 'smart' : 'slumpat'}</b>
-        </p>
-        <OvaLink className="fa-link" href={ACCOUNT_ROUTES.settings} navigateHref={navigateHref}>
-          Ändra i inställningarna <span aria-hidden>→</span>
-        </OvaLink>
+        <p>Det du missar kommer tillbaka i Repetera, som en ny fråga med samma fälla.</p>
+      </section>
+      <section className="fa-ova-card" aria-labelledby="fa-ova-guess">
+        <h2 id="fa-ova-guess">Gissa hellre</h2>
+        <p>Provet drar inga poäng för fel svar. Ett svar är alltid bättre än inget, även här.</p>
       </section>
     </aside>
   )

@@ -33,9 +33,11 @@ import { logAdaptiveEvent } from '@/lib/adaptiveEvents'
 import { encodeTreatedMarker } from '@/lib/adaptiveReview'
 import {
   DEFAULT_DRILL_LENGTH,
+  type DrillCount,
   type DrillRatings,
   pickDrillQuestions,
   pickMixedDrillQuestions,
+  pickTrapDrillQuestions,
 } from '@/lib/drill'
 import { firstSessionOrigin } from '@/lib/firstSession'
 import { sectionDoorLayoutId, useFirstContentSignal } from '@/lib/motion'
@@ -60,6 +62,9 @@ type DrillSection = (typeof DRILL_SECTIONS)[number]
 
 type DrillSearch = {
   section?: DrillSection
+  /** Comma-separated trap ids for a family drill (Ljusbord Öva). */
+  traps?: string
+  count?: DrillCount
   qid?: string
   framework?: string
   mixed?: true
@@ -182,6 +187,28 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
   ) {
     out.afterWelcome = afterWelcome
   }
+  if (typeof input.count === 'number' || typeof input.count === 'string') {
+    const count = Number(input.count)
+    if (count === 5 || count === 10 || count === 20) out.count = count
+  }
+  // Legacy modes retain precedence, including timed and word-deck markers.
+  // qid is deliberately retained: the player syncs its position into the URL.
+  if (
+    typeof input.traps === 'string' &&
+    input.traps.length <= 2048 &&
+    !out.framework &&
+    !out.weak &&
+    !out.mixed &&
+    !out.timed &&
+    !out.words &&
+    !out.ar
+  ) {
+    const ids = input.traps.split(',')
+    if (ids.length <= 64 && ids.every((id) => /^(?:KVA|NOG|XYZ)-TRAP-\d{3}$/.test(id))) {
+      out.traps = [...new Set(ids)].join(',')
+      out.afterWelcome = undefined
+    }
+  }
   return out
 }
 
@@ -248,6 +275,8 @@ function WordDrillSession() {
 function DrillSession({ wordUserId }: { wordUserId?: string }) {
   const {
     section: sectionFromUrl,
+    traps,
+    count,
     qid,
     framework,
     mixed,
@@ -273,7 +302,8 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
   // detour: plain section drills, not the detour itself (`framework`/`ar`),
   // a direct-link (`qid`), a weak-traps or mixed pass, or a reconstructed
   // `done` view.
-  const isNormalDrill = !words && !timed && !framework && !qid && !weak && !mixed && !ar && !done
+  const isNormalDrill =
+    !words && !timed && !traps && !framework && !qid && !weak && !mixed && !ar && !done
   const adaptive = useAdaptiveReview()
 
   // `?weak=1` — the user's weakest traps in this section, off the live
@@ -347,6 +377,8 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
           back: prev.back,
           timed: prev.timed,
           words: prev.words,
+          ...(prev.traps ? { traps: prev.traps } : {}),
+          ...(prev.count ? { count: prev.count } : {}),
         }),
         replace: true,
       })
@@ -507,24 +539,33 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
       : weak
         ? () => pickWeakTrapsQuestions(section as Section, weakFrameworkIds)
         : mixed
-          ? () => pickMixedDrillQuestions(DEFAULT_DRILL_LENGTH)
-          : () => {
-              // Log which mode picked this session for the owner's A/B read
-              // (localStorage ledger). Fires once, at fresh-start pick time —
-              // SessionPlayer only calls pickQuestions on a new session, not
-              // when adopting an active one.
-              logAdaptiveEvent('drill-pick', {
-                mode: drillRatings ? 'smart' : 'random',
-                section,
-              })
-              return pickDrillQuestions(
-                section as Section,
-                DEFAULT_DRILL_LENGTH,
-                undefined,
-                drillRatings,
-                { excludeQids: afterWelcome?.split(',') },
-              )
-            }
+          ? () => pickMixedDrillQuestions(count ?? DEFAULT_DRILL_LENGTH)
+          : traps
+            ? () =>
+                pickTrapDrillQuestions(
+                  section as Section,
+                  traps.split(','),
+                  count ?? DEFAULT_DRILL_LENGTH,
+                  undefined,
+                  drillRatings,
+                )
+            : () => {
+                // Log which mode picked this session for the owner's A/B read
+                // (localStorage ledger). Fires once, at fresh-start pick time —
+                // SessionPlayer only calls pickQuestions on a new session, not
+                // when adopting an active one.
+                logAdaptiveEvent('drill-pick', {
+                  mode: drillRatings ? 'smart' : 'random',
+                  section,
+                })
+                return pickDrillQuestions(
+                  section as Section,
+                  count ?? DEFAULT_DRILL_LENGTH,
+                  undefined,
+                  drillRatings,
+                  { excludeQids: afterWelcome?.split(',') },
+                )
+              }
 
   // Turn a stored plan (server session qids) back into Questions so
   // SessionPlayer can replay the exact paused session on any device.
@@ -595,14 +636,18 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
       ? `Exempelfrågor från uppslaget som illustrerar detta mönster.`
       : weak
         ? `Frågor från de mönster du oftast faller för i ${section}.`
-        : copy.subcopy
+        : traps
+          ? `Upp till ${count ?? DEFAULT_DRILL_LENGTH} frågor i samma fällfamilj.`
+          : count
+            ? `${count} frågor${mixed ? ' blandat från alla åtta delprov' : ` i ${section}`}.`
+            : copy.subcopy
   const idleMeta = directLinkQid
     ? '1 fråga · ingen sessionsgrad'
     : framework
       ? 'Exempelfrågor · 1 poäng per rätt'
       : weak
         ? `${weakFrameworkIds.length} mönster · 1 poäng per rätt`
-        : `~ ${SECTION_DURATIONS[section]} minuter · 1 poäng per rätt`
+        : `~ ${Math.ceil((SECTION_DURATIONS[section] * (count ?? DEFAULT_DRILL_LENGTH)) / DEFAULT_DRILL_LENGTH)} minuter · 1 poäng per rätt`
   const emptyCopy = directLinkQid
     ? `Hittade inte frågan ${directLinkQid}.`
     : framework
@@ -698,7 +743,7 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
       // framework/qid/weak/mixed surfaces headline something other than
       // the section code, so there is no honest door there.
       door={
-        !words && !directLinkQid && !framework && !weak && !mixed
+        !words && !directLinkQid && !framework && !weak && !mixed && !traps
           ? { layoutId: sectionDoorLayoutId(section), code: section }
           : undefined
       }
