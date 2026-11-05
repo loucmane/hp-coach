@@ -1,101 +1,155 @@
-import { useState } from 'react'
-import { formatPass, formatSitting } from '@/lib/examNames'
+import type { MockHalf, MockMode } from '@/api/hooks/useMockResults'
 import type { PassOption } from '@/lib/mock'
-import { type HubView, passKey, passName } from './provView'
+import { HALF_LABEL, type HubView, type MatrixTerm, passKey, passName } from './provView'
 
 export function ProvRegister({
   view,
-  phone,
+  half,
+  mode,
+  ready,
+  onHalfChange,
   onPick,
+  onAuthentic,
 }: {
   view: HubView
-  phone: boolean
+  half: MockHalf
+  mode: MockMode
+  ready: boolean
+  onHalfChange: (half: MockHalf) => void
   onPick: (key: string) => void
+  onAuthentic: () => void
 }) {
-  const [all, setAll] = useState(false)
-  const cell = (p: PassOption | undefined) =>
-    p ? (
+  const cell = (pass: PassOption | undefined, number: number) =>
+    pass ? (
       <button
         type="button"
-        className="fa-cell"
-        data-testid={`prov-pass-${p.examId}-${p.provpass}`}
-        aria-pressed={view.chosen === p}
-        aria-label={`${passName(p)}, sett ${p.seenBefore} av ${p.presented}${view.suggested === p ? ', minst sett' : ''}`}
-        onClick={() => onPick(passKey(p))}
+        className="fa-prov-cell"
+        data-testid={`prov-pass-${pass.examId}-${pass.provpass}`}
+        aria-pressed={mode === 'authentic' && view.chosen === pass}
+        aria-label={`${passName(pass)}, sett ${pass.seenBefore} av ${pass.presented}${view.suggested === pass ? ', föreslaget' : ''}`}
+        disabled={!ready}
+        onClick={() => onPick(passKey(pass))}
       >
-        {phone ? <span>{formatPass(p.provpass)}</span> : null}
-        <span>
-          sett {p.seenBefore} av {p.presented}
-        </span>
-        {p.presented < 40 ? <span className="fa-meta">{p.presented}/40 frågor</span> : null}
+        <span>P{number}</span>
+        {pass.seenBefore > 0 ? (
+          <span className="fa-prov-seen">
+            <meter min={0} max={pass.presented} value={pass.seenBefore} aria-hidden="true" />
+            {pass.seenBefore}/{pass.presented}
+          </span>
+        ) : view.suggested === pass && mode === 'authentic' ? (
+          <span className="fa-prov-seen">förslag</span>
+        ) : null}
+        {pass.presented < 40 ? <small>{pass.presented} frågor</small> : null}
       </button>
     ) : (
-      <span className="fa-meta">
-        —<span className="fa-sr"> inget pass</span>
+      <span className="fa-prov-none">
+        saknas<span className="fa-sr"> · P{number}</span>
       </span>
     )
+  const term = (value: MatrixTerm) =>
+    value.status === 'available' ? (
+      <>
+        <td>{cell(value.passes[0], 1)}</td>
+        <td>{cell(value.passes[1], 2)}</td>
+      </>
+    ) : (
+      <td colSpan={2}>
+        <span className="fa-prov-none">
+          {value.status === 'cancelled'
+            ? 'inget vårprov · inställt'
+            : value.status === 'counterpart'
+              ? '—'
+              : 'inte i frågebanken'}
+        </span>
+      </td>
+    )
   return (
-    <section className="fa-section" aria-labelledby="fa-register-heading">
-      <div className="fa-section-head">
-        <h2 className="fa-h2" id="fa-register-heading">
-          Alla pass
+    <section className="fa-prov-register" aria-labelledby="fa-register-heading">
+      <div className="fa-prov-register-head">
+        <h2 id="fa-register-heading" tabIndex={-1}>
+          Alla provtillfällen
         </h2>
-        <span className="fa-meta">{view.sittings.length} provtillfällen</span>
-      </div>
-      {phone ? (
-        <div className="fa-register-phone">
-          {view.sittings
-            .filter((s, i) => all || i < 3 || s.examId === view.chosen?.examId)
-            .map((s) => (
-              <section key={s.examId} aria-labelledby={`fa-register-${s.examId}`}>
-                <h3 className="fa-part" id={`fa-register-${s.examId}`}>
-                  {formatSitting(s.examId)}
-                </h3>
-                <ul>
-                  {s.passes.map((p, i) => (
-                    <li key={i === 0 ? 'first' : 'second'}>{cell(p)}</li>
-                  ))}
-                </ul>
-              </section>
-            ))}
-          {view.sittings.length > 3 ? (
+        <fieldset className="fa-choices">
+          <legend className="fa-sr">Halva</legend>
+          {(['verbal', 'kvant'] as const).map((h) => (
             <button
+              key={h}
               type="button"
-              className="fa-link"
-              aria-expanded={all}
-              onClick={() => setAll(!all)}
+              data-testid={`prov-half-${h}`}
+              aria-pressed={half === h}
+              onClick={() => onHalfChange(h)}
             >
-              {all
-                ? 'Visa bara de senaste provtillfällena'
-                : `Visa alla ${view.sittings.length} provtillfällen`}
+              {HALF_LABEL[h]}
             </button>
-          ) : null}
-        </div>
-      ) : (
-        <table className="fa-table fa-register">
-          <caption className="fa-sr">Alla provtillfällen och pass, med tidigare exponering</caption>
-          <thead>
-            <tr>
-              <th scope="col">Provtillfälle</th>
-              <th scope="col">Provpass 1</th>
-              <th scope="col">Provpass 2</th>
-            </tr>
-          </thead>
-          <tbody>
-            {view.sittings.map((s) => (
-              <tr key={s.examId}>
-                <th scope="row">
-                  <span className="fa-th-line">
-                    <span>{formatSitting(s.examId)}</span>
-                    <span className="fa-leader" aria-hidden />
-                  </span>
+          ))}
+        </fieldset>
+      </div>
+      {mode === 'synthetic' ? (
+        <button
+          className="fa-link"
+          type="button"
+          data-testid="prov-mode-authentic"
+          onClick={onAuthentic}
+        >
+          Visa föreslaget riktigt pass
+        </button>
+      ) : null}
+      {!ready ? (
+        <p className="fa-status" role="status">
+          Laddar provpassen …
+        </p>
+      ) : view.matrix.length ? (
+        <>
+          <table className="fa-prov-matrix">
+            <caption className="fa-sr">
+              Alla provtillfällen · {HALF_LABEL[half]} halva · tidigare exponering
+            </caption>
+            <colgroup>
+              <col className="fa-prov-year-col" />
+              <col />
+              <col />
+              <col className="fa-prov-gap-col" />
+              <col />
+              <col />
+            </colgroup>
+            <thead>
+              <tr>
+                <th scope="col">
+                  <span className="fa-sr">År</span>
                 </th>
-                <td>{cell(s.passes[0])}</td>
-                <td>{cell(s.passes[1])}</td>
+                <th scope="colgroup" colSpan={2}>
+                  Våren
+                </th>
+                <td />
+                <th scope="colgroup" colSpan={2}>
+                  Hösten
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {view.matrix.map((row) => (
+                <tr key={row.key}>
+                  <th scope="row">
+                    {row.year}
+                    {row.detail ? <small>{row.detail}</small> : null}
+                  </th>
+                  {term(row.spring)}
+                  <td className="fa-prov-gap" />
+                  {term(row.autumn)}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="fa-prov-legend">
+            {view.sittings.length} provtillfällen. En siffra visas bara där du sett frågor; en ruta
+            utan siffra är ett pass du inte öppnat.
+            {view.matrix.some((r) => r.spring.status === 'cancelled')
+              ? ' Inställda prov är märkta i tabellen.'
+              : ''}
+          </p>
+        </>
+      ) : (
+        <p className="fa-status">Inga riktiga pass tillgängliga just nu.</p>
       )}
     </section>
   )

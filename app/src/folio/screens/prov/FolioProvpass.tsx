@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { MockHalf, MockMode } from '@/api/hooks/useMockResults'
+import { loadBank, type Question } from '@/data/questions'
+import { useScopedKeys } from '@/folio/lib/useScopedKeys'
 import { useViewport } from '@/hooks/useViewport'
 import type { PassOption } from '@/lib/mock'
 import { ConditionsSlip } from './ConditionsSlip'
-import { ProvLead } from './ProvLead'
+import { ProvLead, ProvLink } from './ProvLead'
 import { ProvMargin } from './ProvMargin'
 import { ProvRegister } from './ProvRegister'
-import { buildHubView, HALF_LABEL, type NavigateHref, type ResultsState } from './provView'
+import { buildHubView, type NavigateHref, type ResultsState } from './provView'
 import './prov.css'
 
 export type FolioProvpassProps = {
@@ -33,49 +35,53 @@ export default function FolioProvpass(props: FolioProvpassProps) {
   const { half, mode, slipOpen } = props
   const phone = useViewport() === 'phone'
   const [picked, setPicked] = useState<string | null>(null)
-  const view = buildHubView({ half, mode, passes: props.passes, picked })
+  const [bank, setBank] = useState<readonly Question[] | null>(null)
+  const picker = useRef<HTMLDivElement>(null)
+  const wasOpen = useRef(slipOpen)
+  useEffect(() => {
+    if (wasOpen.current && !slipOpen)
+      picker.current?.querySelector<HTMLButtonElement>('[data-testid="prov-start"]')?.focus()
+    wasOpen.current = slipOpen
+  }, [slipOpen])
+  useEffect(() => {
+    let live = true
+    loadBank()
+      .then((rows) => {
+        if (live) setBank(rows)
+      })
+      .catch(() => {
+        /* The route owns bank readiness. */
+      })
+    return () => {
+      live = false
+    }
+  }, [])
+  const view = buildHubView({ half, mode, passes: props.passes, picked, bank })
+  const start = () => {
+    if (mode === 'synthetic') props.startSynthetic()
+    else if (view.chosen) props.startAuthentic(view.chosen)
+  }
+  useScopedKeys(picker, { Enter: start }, { enabled: props.ready && !slipOpen })
   return (
-    <div className={`fa-prov ${phone ? 'fa-phome' : 'fa-home'}`} data-testid="folio-prov">
-      <div className="fa-masthead" inert={slipOpen}>
+    <div
+      className={`fa-prov fa-prov-hub ${phone ? 'fa-prov-phone' : 'fa-prov-desktop'}`}
+      data-testid="folio-prov"
+    >
+      <div className="fa-prov-topline" inert={slipOpen}>
         <span className="fa-label">Provpass</span>
       </div>
-      <div className="fa-page-main" data-testid="prov-picker" inert={slipOpen}>
+      <div
+        className="fa-page-main"
+        data-testid="prov-picker"
+        inert={slipOpen}
+        ref={picker}
+        tabIndex={-1}
+      >
         <h1 className="fa-greet">Öva på tid.</h1>
         <p className="fa-day">
-          Ett övningspass under riktiga provvillkor: 40 frågor på {props.durationMs / 60_000}{' '}
-          minuter — ingen feedback förrän du lämnar in.
+          Ett provpass under riktiga villkor: 40 frågor på {props.durationMs / 60_000} minuter.
+          Facit kommer när du lämnat in, inte före.
         </p>
-        <fieldset className="fa-choices">
-          <legend>Halva</legend>
-          {(['verbal', 'kvant'] as const).map((h) => (
-            <button
-              key={h}
-              type="button"
-              data-testid={`prov-half-${h}`}
-              aria-pressed={half === h}
-              onClick={() => {
-                setPicked(null)
-                props.onHalfChange(h)
-              }}
-            >
-              {HALF_LABEL[h]}
-            </button>
-          ))}
-        </fieldset>
-        <fieldset className="fa-choices">
-          <legend>Läge</legend>
-          {(['authentic', 'synthetic'] as const).map((m) => (
-            <button
-              key={m}
-              type="button"
-              data-testid={`prov-mode-${m}`}
-              aria-pressed={mode === m}
-              onClick={() => props.onModeChange(m)}
-            >
-              {m === 'authentic' ? 'Riktigt pass' : 'Genererat pass'}
-            </button>
-          ))}
-        </fieldset>
         {props.voidNotice ? (
           <p className="fa-status" role="status" data-testid="prov-void-notice">
             Provet avbröts — ogiltigt.
@@ -87,14 +93,48 @@ export default function FolioProvpass(props: FolioProvpassProps) {
           mode={mode}
           ready={props.ready}
           slipOpen={slipOpen}
-          onStart={() => {
-            if (mode === 'synthetic') props.startSynthetic()
-            else if (view.chosen) props.startAuthentic(view.chosen)
-          }}
+          phone={phone}
+          minutes={props.durationMs / 60_000}
+          onStart={start}
         />
-        {mode === 'authentic' && view.sittings.length ? (
-          <ProvRegister view={view} phone={phone} onPick={setPicked} />
-        ) : null}
+        <div className="fa-prov-alternatives">
+          <button type="button" className="fa-prov-card" disabled aria-describedby="fa-half-coming">
+            <b>Hel halva · 2 pass</b>
+            <small id="fa-half-coming">
+              Kommer · 80 frågor, två pass med paus som på provdagen.
+            </small>
+          </button>
+          <button
+            type="button"
+            className="fa-prov-card"
+            data-testid="prov-mode-synthetic"
+            aria-pressed={mode === 'synthetic'}
+            onClick={() => props.onModeChange('synthetic')}
+          >
+            <b>Genererat pass</b>
+            <small>Blandade frågor. Ingen poäng: det är inte normerat.</small>
+          </button>
+        </div>
+        <p className="fa-prov-short">
+          <ProvLink className="fa-link" href={view.short.href} navigateHref={props.navigateHref}>
+            Kort på tid · ORD · {view.short.count} frågor · {view.short.minutes} min
+          </ProvLink>
+        </p>
+        <ProvRegister
+          view={view}
+          half={half}
+          mode={mode}
+          ready={props.ready}
+          onHalfChange={(h) => {
+            setPicked(null)
+            props.onHalfChange(h)
+          }}
+          onPick={(key) => {
+            setPicked(key)
+            props.onModeChange('authentic')
+          }}
+          onAuthentic={() => props.onModeChange('authentic')}
+        />
       </div>
       <div className="fa-margin-wrap" inert={slipOpen}>
         <ProvMargin results={props.results} navigateHref={props.navigateHref} />
