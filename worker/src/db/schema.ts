@@ -314,6 +314,39 @@ export const attempts = sqliteTable(
   }),
 )
 
+/** Last pick of a first mock in one UTC week. Seconds match SQLite's
+ * timestamp storage; id breaks ties. At most 40 per ledger row. */
+export type FirstMockPick = {
+  id: number
+  createdAt: number | null
+  correct: boolean | null
+  source: AttemptSource
+}
+
+// Retention-proof first-seen anchors, including unassessed observations so
+// their retries never become first tries. Only the user FK cascades: a
+// pruned session or attempt must not erase this evidence. LAS is stored as LÄS.
+export const firstTries = sqliteTable(
+  'first_tries',
+  {
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    questionId: text('question_id').notNull(),
+    sessionId: integer('session_id').notNull(),
+    attemptId: integer('attempt_id').notNull(),
+    createdAt: integer('created_at', { mode: 'timestamp' }),
+    correct: integer('correct', { mode: 'boolean' }),
+    source: text('source', { enum: ATTEMPT_SOURCES }).notNull(),
+    kind: text('kind'),
+    mockAnswers: text('mock_answers', { mode: 'json' })
+      .$type<FirstMockPick[]>()
+      .notNull()
+      .default([]),
+  },
+  (t) => ({ pk: primaryKey({ columns: [t.userId, t.questionId] }) }),
+)
+
 // ── mistakes — keyed by question_id, tagged with Layer 1 IDs ──────────
 export const mistakes = sqliteTable(
   'mistakes',
