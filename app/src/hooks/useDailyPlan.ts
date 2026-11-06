@@ -59,6 +59,7 @@ import { loadExplanation } from '@/data/explanations'
 import { entryHeadword, loadFramework, loadPrereqGraph } from '@/data/frameworks'
 import { loadFrameworkLeverage } from '@/data/leverage'
 import { SECTION_KEYS, type Section } from '@/data/questions'
+import { keepMathTogether } from '@/folio/lib/keepMathTogether'
 import type { FrameworkProgressRow } from '@/lib/frameworkProgress'
 import { orderLessonEntries } from '@/lib/lessonOrder'
 import { pickLessonEntry, prereqGraphOrNull, taughtEntryIds } from '@/lib/prereqs'
@@ -81,6 +82,7 @@ import {
 } from '@/lib/scheduler'
 import { computeSectionScore, type SectionScore, type SectionStats } from '@/lib/scoring'
 import { useDaysRemaining } from '@/stores/examStore'
+import { useUiStore } from '@/stores/uiStore'
 
 type FrameworkHints = Partial<Record<Section, FrameworkHint>>
 type BySection = Record<Section, SectionStats>
@@ -118,6 +120,7 @@ export type UseDailyPlan = {
 }
 
 export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
+  const folioPreview = useUiStore((s) => s.folioPreview)
   const stats = useStats()
   const due = useDueMistakes()
   // Top recurring traps drive the trap-aware drill rule. We don't
@@ -196,6 +199,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
 
   const [plan, setPlan] = useState<DailyPlan | null>(null)
   const [hints, setHints] = useState<FrameworkHints | null>(null)
+  const [lessonTitles, setLessonTitles] = useState<ReadonlyMap<string, string>>(new Map())
   // Provpass (mock exam) prescription — computed from the SAME
   // SchedulerSignals object buildPlan builds for generateDailyPlan (see
   // buildPlan below). Only updated by the build/regenerate effects, not
@@ -231,9 +235,14 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   useEffect(() => {
     if (!progressSettled || due.isLoading) return
     let alive = true
-    resolveFrameworkHints(mergedReads, frameworkProgress.data, due.data).then((h) => {
-      if (alive) setHints(h)
-    })
+    resolveFrameworkData(mergedReads, frameworkProgress.data, due.data).then(
+      ({ hints, titles }) => {
+        if (alive) {
+          setHints(hints)
+          setLessonTitles(titles)
+        }
+      },
+    )
     return () => {
       alive = false
     }
@@ -489,9 +498,15 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   }, [updatePrefs, today, buildAndCommit, stats.data, due.data, hints])
 
   const allComplete = !!plan && plan.items.length > 0 && plan.items.every((i) => i.completed)
+  // Persist the same baseline for classic/cross-device consumers. Folio
+  // presents safe labels even when an adopted plan contains old answer text.
+  const presentedPlan = useMemo(
+    () => (folioPreview && plan ? preAnswerPlan(plan, lessonTitles) : plan),
+    [folioPreview, plan, lessonTitles],
+  )
 
   return {
-    plan,
+    plan: presentedPlan,
     isLoading: stats.isLoading || due.isLoading || hints === null,
     isError: stats.isError || due.isError,
     regenerate,
@@ -504,6 +519,27 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
 // ---------------------------------------------------------------------------
 // Helpers — exported (or testable in isolation) where useful.
 // ---------------------------------------------------------------------------
+
+function neutralLessonTitle(id: string): string {
+  const number = id.match(/\d+$/)?.[0]
+  const kind = /^(XYZ|KVA|NOG)-/.test(id) ? 'Fälla' : 'Lektion'
+  return number ? `${kind} ${Number(number)}` : kind
+}
+
+function preAnswerPlan(plan: DailyPlan, titles: ReadonlyMap<string, string>): DailyPlan {
+  return {
+    ...plan,
+    items: plan.items.map((item) => {
+      if (!item.framework) return item
+      const title = titles.get(item.framework) ?? neutralLessonTitle(item.framework)
+      return {
+        ...item,
+        headline: `${item.section ? `${item.section}-` : ''}${item.kind === 'lesson' ? 'lektion' : 'drill'} · ${title}`,
+        rationale: title,
+      }
+    }),
+  }
+}
 
 /** Build the ONE `SchedulerSignals` object both `generateDailyPlan` and
  *  `prescribeMock` consume. Single construction site — see `buildPlan`
@@ -624,6 +660,14 @@ export async function resolveFrameworkHints(
   progress?: readonly FrameworkProgressRow[],
   dueMistakes: readonly { questionId: string }[] = [],
 ): Promise<FrameworkHints> {
+  return (await resolveFrameworkData(reads, progress, dueMistakes)).hints
+}
+
+async function resolveFrameworkData(
+  reads: Set<string>,
+  progress: readonly FrameworkProgressRow[] | undefined,
+  dueMistakes: readonly { questionId: string }[] = [],
+): Promise<{ hints: FrameworkHints; titles: ReadonlyMap<string, string> }> {
   const qids = [...new Set(dueMistakes.map(({ questionId }) => questionId))]
   const [loaded, rawGraph, loadedLeverage, explanations] = await Promise.all([
     Promise.all(
@@ -637,13 +681,21 @@ export async function resolveFrameworkHints(
     Promise.all(qids.map((qid) => loadExplanation(qid).catch(() => null))),
   ])
 
-  // Every loaded entry, so a prerequisite from another section resolves to
-  // its own section and headword.
+  // Keep legacy headwords inside the shared scheduler baseline; Folio uses
+  // a separate safe title index, including cached or cross-section entries.
   const index = new Map<string, { section: Section; headword: string | null }>()
+  const titles = new Map<string, string>()
   for (const { section, fw } of loaded) {
     if (!fw) continue
     for (const entry of fw.entries) {
       index.set(entry.id, { section, headword: entryHeadword(entry, fw) })
+      titles.set(
+        entry.id,
+        keepMathTogether(
+          ('question_title' in entry && entry.question_title?.trim()) ||
+            neutralLessonTitle(entry.id),
+        ),
+      )
     }
   }
   // Unknown ids can only be judged against the full catalog set; while one is
@@ -690,7 +742,7 @@ export async function resolveFrameworkHints(
         }
       : { id: pick.id, headword: target.headword }
   }
-  return out
+  return { hints: out, titles }
 }
 
 /** Derive completion for every plan item from current signals.
