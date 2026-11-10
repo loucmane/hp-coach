@@ -1,4 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
+import { useFolioRootAttrs } from '@/folio/lib/useFolioRootAttrs'
 import type { DrillFigure } from './types'
 
 /** Kept inside .fa-drill so the Folio tokens and scoped rules apply. */
@@ -12,6 +13,7 @@ export function FigureViewer({
   onClose: () => void
 }) {
   const id = useId()
+  const { 'data-theme': theme } = useFolioRootAttrs()
   const dialog = useRef<HTMLDivElement>(null)
   const close = useRef<HTMLButtonElement>(null)
   const area = useRef<HTMLElement>(null)
@@ -83,6 +85,8 @@ export function FigureViewer({
   return (
     <div
       className="rd-viewer"
+      data-kind={figure.kind}
+      data-theme={theme}
       role="dialog"
       aria-modal="true"
       aria-labelledby={`${id}-title`}

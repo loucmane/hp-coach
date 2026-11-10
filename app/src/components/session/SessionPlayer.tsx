@@ -44,6 +44,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -68,7 +69,7 @@ import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
 import { peekExplanation } from '@/data/explanations'
 import { type AnswerLetter, loadBank, type Question } from '@/data/questions'
-import { FolioHostContext } from '@/folio/host'
+import { type FocusStrip, FolioHostContext } from '@/folio/host'
 import { LazyFolioSessionStage, supportsFolioDrill } from '@/folio/screens/drill/seam'
 import { useShellFocus } from '@/folio/useShellFocus'
 import { useViewport } from '@/hooks/useViewport'
@@ -311,7 +312,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // deliberately not covered here.
   const sessionActive = phase === 'answering' || phase === 'graded'
   const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false)
-  useShellFocus({ active: sessionActive, onExit: () => setLeaveConfirmOpen(true) })
+  const folioAdvance = useRef<(() => void) | null>(null)
   const { leave } = useSessionBackTrap(
     sessionActive,
     useCallback(() => setLeaveConfirmOpen(true), []),
@@ -520,6 +521,52 @@ export function SessionPlayer(props: SessionPlayerProps) {
       })
     }
   }, [index, plan, sessionId, updateSession, props.urlSyncedQid, props.onComplete])
+
+  // Focus registration must not depend on mutation-result object identities.
+  // Keep the latest navigation action behind one stable callback.
+  const focusNavigation = useRef({ index, phase, leaveConfirmOpen, onNext, folioQuestion })
+  useEffect(() => {
+    focusNavigation.current = { index, phase, leaveConfirmOpen, onNext, folioQuestion }
+  }, [index, phase, leaveConfirmOpen, onNext, folioQuestion])
+  const selectFocusCell = useCallback((target: number) => {
+    const current = focusNavigation.current
+    if (current.phase !== 'graded' || current.leaveConfirmOpen || target !== current.index + 1)
+      return
+    if (current.folioQuestion) folioAdvance.current?.()
+    else current.onNext()
+  }, [])
+  const focusStrip = useMemo<FocusStrip | undefined>(() => {
+    if (!folioHost || !sessionActive || !plan[index]) return undefined
+    return {
+      section: plan[index].section,
+      cells: plan.map((question, position) => ({
+        id: question.qid,
+        state: picks[position]
+          ? picks[position] === question.answer
+            ? 'ok'
+            : 'back'
+          : position === index
+            ? 'cur'
+            : undefined,
+        current: position === index,
+        onSelect: () => selectFocusCell(position),
+        disabled: leaveConfirmOpen || phase !== 'graded' || position !== index + 1,
+      })),
+    }
+  }, [folioHost, sessionActive, plan, picks, index, phase, leaveConfirmOpen, selectFocusCell])
+  const focusWhere = useMemo(
+    () =>
+      folioHost && sessionActive && plan[index]
+        ? `${plan[index].section} · ${index + 1} av ${plan.length}`
+        : undefined,
+    [folioHost, sessionActive, plan, index],
+  )
+  useShellFocus({
+    active: sessionActive,
+    onExit: () => setLeaveConfirmOpen(true),
+    strip: focusStrip,
+    where: focusWhere,
+  })
 
   const onReplay = useCallback(() => {
     setPhase('idle')
@@ -878,6 +925,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
       <>
         <Suspense fallback={<p role="status">Laddar frågan…</p>}>
           <LazyFolioSessionStage
+            advanceRef={folioAdvance}
             plan={plan}
             index={index}
             picked={picked}

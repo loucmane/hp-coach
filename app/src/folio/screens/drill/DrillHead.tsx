@@ -2,6 +2,8 @@ import { ChevronRight } from 'lucide-react'
 import { type RefCallback, useState } from 'react'
 import { MathText } from '@/components/MathText'
 import type { Explanation } from '@/data/explanations'
+import type { Section } from '@/data/questions'
+import { sectionLongLabel } from '@/lib/sectionRailLabel'
 import type { DrillCoreView } from './drillCore'
 import type { drillSeam } from './drillSeam'
 
@@ -9,14 +11,20 @@ export function DrillHead({
   seam,
   index,
   total,
+  questionSection,
 }: {
   seam: ReturnType<typeof drillSeam>
   index: number
   total: number
+  questionSection?: Section
 }) {
   return (
     <header className="fa-runhead fa-runhead--solo">
-      <h1 className="fa-label fa-runhead-title">{seam.label}</h1>
+      <h1 className="fa-label fa-runhead-title">
+        {questionSection && !seam.label.startsWith('Repetition')
+          ? sectionLongLabel(questionSection)
+          : seam.label}
+      </h1>
       <span className="fa-runhead-pos">
         {seam.unit} {index + 1} av {total}
       </span>

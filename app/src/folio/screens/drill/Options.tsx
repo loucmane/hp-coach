@@ -1,6 +1,9 @@
-import { Check, ChevronRight, CircleSlash, Undo2 } from 'lucide-react'
-import { type ReactNode, useState } from 'react'
+import { Check, ChevronRight } from 'lucide-react'
+import { type ReactNode, useRef, useState } from 'react'
 import { MathText } from '@/components/MathText'
+import type { AnswerLetter } from '@/data/questions'
+import { useScopedKeys } from '@/folio/lib/useScopedKeys'
+import { useViewport } from '@/hooks/useViewport'
 import type { DrillCoreActions, DrillCoreView } from './drillCore'
 import type { DrillOption } from './types'
 
@@ -33,59 +36,129 @@ export function Options({
 }) {
   const en = view.question.section === 'ELF' ? 'en' : undefined
   const sv = en ? 'sv' : undefined
-  return (
-    <ol className="fa-opts" aria-label="Svarsalternativ">
-      {(view.question.options ?? []).map((o) => {
-        const selected = view.selected === o.letter
-        const out = view.eliminated.has(o.letter)
-        return (
-          <li
-            key={o.letter}
-            className="fa-opt"
-            data-state={selected ? 'selected' : out ? 'eliminated' : undefined}
-            data-image={o.figure ? 'true' : undefined}
-          >
-            <button
-              type="button"
-              className="fa-opt-main"
-              data-testid={`${testId}-${o.letter}`}
-              aria-pressed={selected}
-              onClick={() => act.select(o.letter)}
-            >
-              <span className="fa-letter" aria-hidden>
-                {o.letter}
-              </span>
-              <span className="fa-opt-text">
-                <span className="fa-sr" lang={sv}>
-                  Alternativ {o.letter}
-                  {out ? ', struket' : ''}:{' '}
-                </span>
-                <InLang lang={en}>
-                  <OptionContent o={o} />
-                </InLang>
-              </span>
-            </button>
-            <button
-              type="button"
-              className="fa-opt-x"
-              data-testid={`fa-eliminate-${o.letter}`}
-              lang={sv}
-              aria-pressed={out}
-              aria-label={out ? `Ångra strykningen av ${o.letter}` : `Stryk ${o.letter}`}
-              title={out ? 'Ångra' : 'Stryk alternativet (⇧ + bokstav)'}
-              onClick={() => act.toggleEliminate(o.letter)}
-            >
-              {out ? (
-                <Undo2 size={16} strokeWidth={1.5} aria-hidden />
-              ) : (
-                <CircleSlash size={16} strokeWidth={1.5} aria-hidden />
-              )}
-            </button>
-          </li>
-        )
-      })}
-    </ol>
+  const root = useRef<HTMLDivElement>(null)
+  const buttons = useRef(new Map<AnswerLetter, HTMLButtonElement>())
+  const phone = useViewport() === 'phone'
+  const [striking, setStriking] = useState(false)
+  const options = view.question.options ?? []
+  const choose = (letter: AnswerLetter) => {
+    act.select(letter)
+    buttons.current.get(letter)?.focus()
+  }
+  useScopedKeys(
+    root,
+    Object.fromEntries(
+      options.flatMap(({ letter }) => [
+        [letter, () => choose(letter)],
+        [`Shift+${letter}`, () => act.toggleEliminate(letter)],
+      ]),
+    ),
   )
+  return (
+    <>
+      <div
+        className="fa-opts"
+        role="radiogroup"
+        aria-label="Svarsalternativ"
+        ref={root}
+        data-striking={phone && striking ? 'true' : undefined}
+      >
+        {options.map((o, index) => {
+          const selected = view.selected === o.letter
+          const out = view.eliminated.has(o.letter)
+          return (
+            <div
+              key={o.letter}
+              className="fa-opt"
+              data-state={selected ? 'selected' : out ? 'eliminated' : undefined}
+              data-image={o.figure ? 'true' : undefined}
+            >
+              {/* biome-ignore lint/a11y/useSemanticElements: the approved radio button contains rendered math or an option figure; roving focus and native activation are implemented here. */}
+              <button
+                type="button"
+                className="fa-opt-main"
+                data-testid={`${testId}-${o.letter}`}
+                role="radio"
+                aria-checked={selected}
+                tabIndex={selected || (!view.selected && index === 0) ? 0 : -1}
+                ref={(node) => {
+                  if (node) buttons.current.set(o.letter, node)
+                  else buttons.current.delete(o.letter)
+                }}
+                onKeyDown={(event) => {
+                  if (
+                    event.defaultPrevented ||
+                    event.repeat ||
+                    event.nativeEvent.isComposing ||
+                    event.altKey ||
+                    event.metaKey ||
+                    event.ctrlKey
+                  )
+                    return
+                  const step = ['ArrowDown', 'ArrowRight'].includes(event.key)
+                    ? 1
+                    : ['ArrowUp', 'ArrowLeft'].includes(event.key)
+                      ? -1
+                      : 0
+                  if (step) {
+                    event.preventDefault()
+                    choose(options[(index + step + options.length) % options.length].letter)
+                  }
+                }}
+                onClick={() => act.select(o.letter)}
+              >
+                <span className="fa-letter" aria-hidden>
+                  {o.letter}
+                </span>
+                {view.question.section === 'KVA' && kvaGlyph(o.letter) ? (
+                  <span className="fa-opt-glyph" aria-hidden>
+                    {kvaGlyph(o.letter)}
+                  </span>
+                ) : null}
+                <span className="fa-opt-text">
+                  <span className="fa-sr" lang={sv}>
+                    Alternativ {o.letter}
+                    {out ? ', struket' : ''}:{' '}
+                  </span>
+                  <InLang lang={en}>
+                    <OptionContent o={o} />
+                  </InLang>
+                </span>
+              </button>
+              {!phone || striking ? (
+                <button
+                  type="button"
+                  className="fa-opt-x"
+                  data-testid={`fa-eliminate-${o.letter}`}
+                  lang={sv}
+                  aria-pressed={out}
+                  aria-label={out ? `Ångra strykningen av ${o.letter}` : `Stryk ${o.letter}`}
+                  title={out ? 'Ångra' : 'Stryk alternativet (⇧ + bokstav)'}
+                  onClick={() => act.toggleEliminate(o.letter)}
+                >
+                  {out ? 'Ångra' : 'Stryk'}
+                </button>
+              ) : null}
+            </div>
+          )
+        })}
+      </div>
+      {phone ? (
+        <button
+          type="button"
+          className="fa-more fa-strikemode"
+          aria-pressed={striking}
+          onClick={() => setStriking(!striking)}
+        >
+          Stryk alternativ
+        </button>
+      ) : null}
+    </>
+  )
+}
+
+export function kvaGlyph(letter: AnswerLetter): string | undefined {
+  return { A: '>', B: '<', C: '=', D: '?', E: undefined }[letter]
 }
 
 /** After the answer: the chosen option and the right one, in full and at

@@ -93,7 +93,7 @@ describe('Folio ungraded pass', () => {
     expect(screen.getByTestId('drill-prompt')).toBeVisible()
     for (const letter of ['A', 'B']) {
       fireEvent.click(screen.getByTestId(`option-${letter}`))
-      expect(screen.getByTestId(`option-${letter}`)).toHaveAttribute('aria-pressed', 'true')
+      expect(screen.getByTestId(`option-${letter}`)).toHaveAttribute('aria-checked', 'true')
       expect(container.querySelector('[data-grade], .fa-verdict, .fa-facit')).toBeNull()
       expect(screen.queryByText(/Rätt svar|Ditt svar/)).toBeNull()
       fireEvent.keyDown(screen.getByTestId(`option-${letter}`), { key: 'Enter' })
@@ -115,7 +115,7 @@ describe('Folio ungraded pass', () => {
       container.querySelector('[data-state="right"], [data-state="wrong"], [data-grade]'),
     ).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: 'Föregående fråga' }))
-    expect(screen.getByTestId('option-A')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('option-A')).toHaveAttribute('aria-checked', 'true')
   })
   it('uses the reading plate and phone tools and suspends shortcuts inside the figure viewer', () => {
     h.phone = true
@@ -152,7 +152,7 @@ describe('Folio ungraded pass', () => {
   it('supports letters/numbers, arrows/J/K and M, but ignores modified, repeated, composing and editable events', () => {
     mount()
     fireEvent.keyDown(document.body, { key: '2' })
-    expect(screen.getByTestId('option-B')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('option-B')).toHaveAttribute('aria-checked', 'true')
     fireEvent.keyDown(document.body, { key: 'j' })
     fireEvent.keyDown(document.body, { key: 'a' })
     fireEvent.keyDown(document.body, { key: 'm' })
@@ -171,10 +171,10 @@ describe('Folio ungraded pass', () => {
     input.remove()
     expect(h.attempt).toHaveBeenCalledTimes(2)
     fireEvent.keyDown(document.body, { key: 'k' })
-    expect(screen.getByTestId('option-B')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('option-B')).toHaveAttribute('aria-checked', 'true')
     fireEvent.keyDown(document.body, { key: 'ArrowRight' })
     fireEvent.keyDown(document.body, { key: 'ArrowLeft' })
-    expect(screen.getByTestId('option-B')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('option-B')).toHaveAttribute('aria-checked', 'true')
   })
   it('warns once at 5:00 with a fixed blank list and stays silent after dismissal', () => {
     vi.useFakeTimers()
@@ -314,10 +314,10 @@ describe('Folio ungraded pass', () => {
     expect(screen.getByRole('button', { name: 'Markera' })).toHaveAttribute('aria-pressed', 'true')
     h.userId = 'student-b'
     rerender(renderPass())
-    expect(screen.getByTestId('option-A')).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getByTestId('option-A')).toHaveAttribute('aria-checked', 'false')
     expect(screen.getByRole('button', { name: 'Markera' })).toHaveAttribute('aria-pressed', 'false')
     rerender(renderPass({ ...p, session: { ...p.session, id: 43 } }))
-    expect(screen.getByTestId('option-A')).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getByTestId('option-A')).toHaveAttribute('aria-checked', 'false')
   })
   it('passes axe on the stage, overview, hand-in and abort slips', async () => {
     const { container } = mount()

@@ -1,7 +1,20 @@
-import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  type ReactNode,
+  type RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import type { SessionKind } from '@/api/hooks/useSessions'
 import type { AnswerLetter, Question } from '@/data/questions'
+import { useFolioPrefs } from '@/folio/lib/folioPrefs'
+import { useFolioRootAttrs } from '@/folio/lib/useFolioRootAttrs'
+import { type ScopedKeyBindings, useScopedKeys } from '@/folio/lib/useScopedKeys'
+import { Lit } from '@/folio/ui/Lit'
 import { useViewport } from '@/hooks/useViewport'
+import { formatSitting } from '@/lib/examNames'
 import { DrillHead, TacticNote, Verdict } from './DrillHead'
 import { useDrillCore } from './drillCore'
 import { drillSeam } from './drillSeam'
@@ -29,6 +42,8 @@ export type FolioSessionStageProps = {
   sections?: string
   flagSlot?: ReactNode
   suspended?: boolean
+  /** Shell navigation advances the same core as the in-page next action. */
+  advanceRef?: RefObject<(() => void) | null>
 }
 
 export default function FolioSessionStage(props: FolioSessionStageProps) {
@@ -54,6 +69,7 @@ function BlockStage({
   sessionKind,
   flagSlot,
   suspended = false,
+  advanceRef,
   start,
   end,
 }: FolioSessionStageProps & { start: number; end: number }) {
@@ -101,6 +117,7 @@ function BlockStage({
   const verdict = useRef<HTMLHeadingElement>(null)
   const previousQuestion = useRef<string | null>(null)
   const phone = useViewport() === 'phone'
+  const kbd = useFolioPrefs((s) => s.kbd)
   const [viewerOpen, setViewerOpen] = useState(false)
   const [viewerRotation, setViewerRotation] = useState(0)
   const feedback = view.phase === 'feedback'
@@ -110,6 +127,13 @@ function BlockStage({
   const closeViewer = useCallback(() => {
     setViewerOpen(false)
   }, [])
+  useEffect(() => {
+    if (!advanceRef) return
+    advanceRef.current = act.next
+    return () => {
+      advanceRef.current = null
+    }
+  }, [advanceRef, act.next])
 
   // Focus follows the question and verdict; disclosure buttons retain native Enter.
   useEffect(() => {
@@ -125,39 +149,18 @@ function BlockStage({
     // Question focus preserves the intentional page position; feedback still scrolls.
     target?.focus({ preventScroll: !feedback })
   }, [q.qid, feedback, suspended, viewerOpen, phone, reading])
-  useEffect(() => {
-    if (suspended || viewerOpen) return
-    const onKey = (event: KeyboardEvent) => {
-      if (event.defaultPrevented || event.repeat || event.metaKey || event.ctrlKey || event.altKey)
-        return
-      const target = event.target
-      if (target instanceof HTMLElement) {
-        if (target.closest('input, textarea, select, [contenteditable], [role="dialog"], [inert]'))
-          return
-        if (target !== document.body && !root.current?.contains(target)) return
-        // Native Enter selects an unselected option; only the already-selected
-        // option turns Enter into a commit. Other controls keep native behavior.
-        if (
-          event.key === 'Enter' &&
-          target.closest('button, a, summary, [role="button"]') &&
-          !target.closest('button.fa-opt-main[aria-pressed="true"]')
-        )
-          return
-      }
-      const letter = event.key.toUpperCase() as AnswerLetter
-      if (view.phase === 'question' && view.letters.includes(letter)) {
-        event.preventDefault()
-        if (event.shiftKey) act.toggleEliminate(letter)
-        else act.select(letter)
-      } else if (event.key === 'Enter') {
-        event.preventDefault()
-        if (view.phase === 'question') act.lock()
-        else if (view.phase === 'feedback') act.next()
-      }
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [act, view.phase, view.letters, suspended, viewerOpen])
+  const bindings: ScopedKeyBindings = {
+    ...(feedback
+      ? {}
+      : Object.fromEntries(
+          view.letters.flatMap((letter) => [
+            [letter, () => act.select(letter)],
+            [`Shift+${letter}`, () => act.toggleEliminate(letter)],
+          ]),
+        )),
+    Enter: () => (feedback ? act.next() : act.lock()),
+  }
+  useScopedKeys(root, bindings, { enabled: !suspended && !viewerOpen })
 
   const action = (
     <div className="fa-actionbar">
@@ -181,6 +184,7 @@ function BlockStage({
     </div>
   )
   return (
+    // biome-ignore lint/a11y/noStaticElementInteractions: delegates second Enter from a focused radio; the wrapper itself is not a control.
     <div
       className={`fa-drill fa-quant${reading ? ' rd-drill' : ''}`}
       data-testid="drill-question"
@@ -188,9 +192,36 @@ function BlockStage({
       data-phase={view.phase}
       ref={root}
       inert={suspended || undefined}
+      onKeyDown={(event) => {
+        // Preserve second-Enter commit on a selected radio. The scoped hook
+        // deliberately leaves native button activation to the component.
+        if (
+          event.key !== 'Enter' ||
+          event.defaultPrevented ||
+          event.repeat ||
+          event.nativeEvent.isComposing ||
+          event.shiftKey ||
+          event.ctrlKey ||
+          event.altKey ||
+          event.metaKey ||
+          suspended ||
+          viewerOpen ||
+          !kbd
+        )
+          return
+        const target = event.target
+        if (
+          target instanceof Element &&
+          !target.closest('[data-kbd="off"]') &&
+          target.closest('[role="radio"][aria-checked="true"]')
+        ) {
+          event.preventDefault()
+          act.lock()
+        }
+      }}
     >
       <div className="rd-stage-content" inert={viewerOpen || undefined}>
-        <DrillHead seam={seam} index={index} total={plan.length} />
+        {reading || feedback ? <DrillHead seam={seam} index={index} total={plan.length} /> : null}
         {reading ? (
           <ReadingSpread
             view={view}
@@ -211,30 +242,65 @@ function BlockStage({
             suspended={suspended || viewerOpen}
           />
         ) : (
-          <div className={feedback ? 'fa-feedback-spread' : 'fa-qsheet'}>
+          <Lit
+            className={feedback ? 'fa-feedback-spread' : 'fa-qsheet'}
+            data-figure={q.figure ? 'true' : undefined}
+          >
+            {!feedback && q.figure ? (
+              <div className="fa-figcol">
+                <QuestionFigure key={q.figure.src} figure={q.figure} />
+                <SourceCaption q={q} />
+                <button
+                  type="button"
+                  className="fa-more fa-zoom"
+                  onClick={() => {
+                    setViewerRotation(0)
+                    setViewerOpen(true)
+                  }}
+                >
+                  Förstora figuren
+                </button>
+              </div>
+            ) : null}
             <section
               className="fa-qcol"
               ref={problem}
               tabIndex={-1}
               aria-label={`Uppgift ${index + 1}`}
             >
+              {!feedback ? (
+                <DrillHead
+                  seam={seam}
+                  index={index}
+                  total={plan.length}
+                  questionSection={q.section}
+                />
+              ) : null}
+              {!feedback && !q.figure ? <SourceCaption q={q} /> : null}
               <QuantPage
                 q={q}
                 n={index + 1}
-                hang
+                hang={feedback}
+                selected={view.selected}
                 passageRef={refs.para}
                 flashPara={view.flashPara}
-                figure={q.figure ? <QuestionFigure key={q.figure.src} figure={q.figure} /> : null}
+                figure={
+                  feedback && q.figure ? (
+                    <QuestionFigure key={q.figure.src} figure={q.figure} />
+                  ) : null
+                }
               />
               {feedback ? (
                 <GradedOptions key={q.qid} view={view} all />
               ) : (
                 <>
-                  <Options view={view} act={act} />
-                  <p className="fa-keys">
-                    A–{view.letters.at(-1) ?? 'E'} välj · ⇧ + bokstav stryk · Enter svara
+                  <Options key={`options:${q.qid}`} view={view} act={act} />
+                  <p className="fa-keys fa-ui-keys">
+                    A–{view.letters.at(-1) ?? 'E'} välj · pilar flyttar · ⇧ + bokstav stryk · Enter
+                    svara · när frågan har fokus
                   </p>
                   {action}
+                  <TacticNote key={q.qid} explanation={view.explanation} variant="disclosure" />
                 </>
               )}
             </section>
@@ -257,10 +323,8 @@ function BlockStage({
                 />
                 {action}
               </section>
-            ) : (
-              <TacticNote key={q.qid} explanation={view.explanation} variant="margin" />
-            )}
-          </div>
+            ) : null}
+          </Lit>
         )}
       </div>
       {viewerOpen && q.figure ? (
@@ -270,10 +334,25 @@ function BlockStage({
   )
 }
 
+function SourceCaption({ q }: { q: ReturnType<typeof toDrillQuestion> }) {
+  const pass = q.source.provpass?.replace(/(kvant|verb)([12])$/, '$1 $2')
+  return (
+    <p className="fa-figcap">
+      <span className="fa-source-line">
+        {q.source.authentic
+          ? `${formatSitting(q.source.examId)}${pass ? ` · ${pass}` : ''} · uppgift ${q.number}`
+          : q.source.label}
+      </span>
+      {q.figure && q.source.authentic ? <span>originalfiguren</span> : null}
+    </p>
+  )
+}
+
 function QuestionFigure({ figure }: { figure: DrillFigure }) {
   const [failed, setFailed] = useState(false)
+  const { 'data-theme': theme } = useFolioRootAttrs()
   return (
-    <figure className="fa-figure">
+    <figure className="fa-figure" data-kind={figure.kind} data-theme={theme}>
       {failed ? (
         <p className="fa-prose">Figuren kunde inte laddas.</p>
       ) : (
