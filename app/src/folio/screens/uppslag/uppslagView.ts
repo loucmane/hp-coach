@@ -1,9 +1,10 @@
 import type { LessonProgress } from '@/api/hooks/useLessonProgress'
 import { EXCLUDED_QUESTIONS } from '@/data/figureOverrides'
-import { entryHeadword, type Framework } from '@/data/frameworks'
+import type { Framework } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import { WORKED_EXAMPLE_QIDS } from '@/data/workedExamples.generated'
 import { inWords } from '@/folio/lib/format'
+import { keepMathTogether } from '@/folio/lib/keepMathTogether'
 import { formatSitting } from '@/lib/examNames'
 import { computeSectionScore, rankWeakness, type SectionStats } from '@/lib/scoring'
 import { sectionLongLabel } from '@/lib/sectionRailLabel'
@@ -50,6 +51,13 @@ export const slug = (s: string) =>
 export const lessonHref = (section: Section, id?: string) =>
   `/lektion?section=${encodeURIComponent(section)}${id ? `#${encodeURIComponent(id)}` : ''}`
 export const RETRY_LINE = 'Gick inte att hämta just nu. Försök igen genom att ladda om sidan.'
+
+function entryTitle(entry: Entry, kind: Kind): string {
+  const title = 'question_title' in entry ? entry.question_title?.trim() : null
+  const number = entry.id.match(/\d+$/)?.[0]
+  const fallback = `${capitalised(kind.one)}${number ? ` ${Number(number)}` : ''}`
+  return keepMathTogether(title || fallback)
+}
 
 export function decodeHash(hash: string): string {
   try {
@@ -160,8 +168,10 @@ export function buildUppslagView(input: UppslagInput) {
             })
           return {
             id: entry.id,
-            title: entryHeadword(entry, fw) ?? entry.id,
-            summary: 'tldr' in entry ? entry.tldr || null : null,
+            title: entryTitle(entry, KINDS[fw.family]),
+            // Contents and lesson headings prefer summary to title. The
+            // authored tldr states the answer, even for a previously read trap.
+            summary: null,
             read: input.isRead(entry.id),
             minutes: readingMinutes(entry),
             href: lessonHref(section, entry.id),

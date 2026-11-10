@@ -8,6 +8,7 @@ import { useFolioFonts } from './lib/useFolioFonts'
 import { useFolioRootAttrs } from './lib/useFolioRootAttrs'
 import { currentDestination, currentRailDestination, DESTINATIONS } from './nav'
 import { AccountMenu } from './shell/AccountMenu'
+import { DockBar } from './shell/DockBar'
 import { FocusBar } from './shell/FocusBar'
 import { PhoneBar } from './shell/PhoneBar'
 import { Rail } from './shell/Rail'
@@ -101,6 +102,8 @@ export function FolioShell({ children }: { children: ReactNode }) {
             {phone && !focus ? <PhoneBar account={account} onSearch={openSearch} /> : null}
             {focus ? (
               <FocusBar
+                strip={focus.strip}
+                where={focus.where}
                 exitLabel={focus.exitLabel}
                 onExit={
                   focus.onExit ??
@@ -118,6 +121,7 @@ export function FolioShell({ children }: { children: ReactNode }) {
             >
               {children}
             </main>
+            {focus?.dock ? <DockBar {...focus.dock} /> : null}
             {phone && !focus ? (
               <TabBar current={current} dueCount={data.dueCount} inert={menu || undefined} />
             ) : null}

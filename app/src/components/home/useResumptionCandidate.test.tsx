@@ -10,7 +10,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { LessonProgress } from '@/api/hooks/useLessonProgress'
 import type { ActiveSession } from '@/api/hooks/useSessions'
-import { type Framework, loadFramework } from '@/data/frameworks'
+import { type Framework, loadFramework, type TrapEntry } from '@/data/frameworks'
 
 import { ResumptionPanel } from './ResumptionPanel'
 import { pickCandidate, useResumptionCandidate } from './useResumptionCandidate'
@@ -35,24 +35,86 @@ vi.mock('@tanstack/react-router', () => ({
   ),
 }))
 
-const headword = 'Två yttre marginaler i en 2×2-tabell'
+// KVA-TRAP-001 as served. Its headword, tldr and recognition cue each state
+// the trap's answer, and the resume line shows before the lesson's "Gissa
+// först" step, so the line may carry none of them.
+const headword =
+  'Student ser x² = y² (eller kvadratlikhet) och drar slutsatsen x = y — missar att x = -y är lika giltigt.'
+const tldr = 'Kvadratlikhet låser inte tecknet — x² = y² öppnar både x = y och x = −y.'
+const cue =
+  'När problemet jämför kvadrater (x² = y², "kvadraterna är lika", a² ger b²) eller drar kvadratrot ur en variabel.'
+// The question-form title, with x² = y² held together by no-break spaces.
+const question = 'vid Låser x² = y² tecknet?'
+
+function trap(id: string, title?: string): TrapEntry {
+  return {
+    id,
+    ...(title === undefined ? {} : { question_title: title }),
+    pattern_description: headword,
+    why_it_occurs: '',
+    common_distractor_signature: '',
+    countermeasure: '',
+    example_questions: [],
+    tldr,
+    recognition_cue: cue,
+  }
+}
 const framework: Framework = {
-  section: 'NOG',
-  family: 'nog_traps',
+  section: 'KVA',
+  family: 'kva_traps',
+  version: 1,
+  authored_at: '',
+  entries: [
+    trap('KVA-TRAP-001', 'Låser x² = y² tecknet?'),
+    trap('KVA-TRAP-016'),
+    trap('KVA-TRAP-017', '  '),
+  ],
+}
+const dtk: Framework = {
+  section: 'DTK',
+  family: 'dtk_tactics',
   version: 1,
   authored_at: '',
   entries: [
     {
-      id: 'NOG-TRAP-001',
-      pattern_description: headword,
-      why_it_occurs: '',
-      common_distractor_signature: '',
-      countermeasure: '',
+      id: 'DTK-TACTIC-002',
+      question_title: 'Hur hittar du det största eller minsta värdet?',
+      tactic: 'Skanna visuellt vid extremvärden — läs INTE av varje värde.',
+      when_to_apply: '',
+      example_questions: [],
+    },
+    {
+      id: 'DTK-TACTIC-003',
+      tactic: 'Läs av axlarna innan du räknar.',
+      when_to_apply: '',
+      example_questions: [],
+    },
+  ],
+}
+const ord: Framework = {
+  section: 'ORD',
+  family: 'ord_roots',
+  version: 1,
+  authored_at: '',
+  entries: [
+    {
+      id: 'ORD-ROOT-010',
+      root: 'o-',
+      origin: '',
+      meaning: 'inte',
+      example_words: [],
       example_questions: [],
     },
   ],
 }
 const rawIdPattern = /\b[A-ZÄÖ]+-[A-Z]+-\d+\b/
+
+/** Neither a field that states the trap's answer nor the answer itself. */
+function expectNoAnswer(text: string | null | undefined) {
+  for (const field of [headword, tldr, cue]) expect(text).not.toContain(field)
+  expect(text).not.toMatch(/x\s*=\s*[-−]\s*y/)
+  expect(text).not.toMatch(rawIdPattern)
+}
 
 function drill(over: Partial<ActiveSession> = {}): ActiveSession {
   return {
@@ -140,6 +202,35 @@ describe('pickCandidate', () => {
   })
 })
 
+describe('lesson progress before "Gissa först"', () => {
+  function progressAt(catalog: Framework, frameworkId: string) {
+    return pickCandidate([], lesson({ section: catalog.section, frameworkId }), catalog)?.progress
+  }
+
+  it('uses the question-form title, with the math kept together', () => {
+    expect(progressAt(framework, 'KVA-TRAP-001')).toBe(question)
+  })
+
+  it.each([
+    ['KVA-TRAP-016', 'vid fälla 16'],
+    ['KVA-TRAP-017', 'vid fälla 17'],
+  ])('names a trap without a question title by its number: %s', (frameworkId, progress) => {
+    expect(progressAt(framework, frameworkId)).toBe(progress)
+  })
+
+  it('uses a non-trap question title and stays neutral without one', () => {
+    expect(progressAt(dtk, 'DTK-TACTIC-002')).toBe(
+      'vid Hur hittar du det största eller minsta värdet?',
+    )
+    expect(progressAt(dtk, 'DTK-TACTIC-003')).toBe('pågående lektion')
+    expect(progressAt(ord, 'ORD-ROOT-010')).toBe('pågående lektion')
+  })
+
+  it.each(framework.entries.map((entry) => entry.id))('never shows the answer for %s', (id) => {
+    expectNoAnswer(progressAt(framework, id))
+  })
+})
+
 describe('lesson resume display', () => {
   const now = new Date('2026-05-29T10:00:00.000Z')
   let client: QueryClient
@@ -149,19 +240,28 @@ describe('lesson resume display', () => {
 
   beforeEach(() => {
     live.sessions = []
-    live.lesson = lesson({ section: 'NOG', frameworkId: 'NOG-TRAP-001' })
+    live.lesson = lesson({ section: 'KVA', frameworkId: 'KVA-TRAP-001' })
     vi.mocked(loadFramework).mockReset().mockResolvedValue(framework)
     client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   })
   afterEach(() => client.clear())
 
-  it('uses the cached headword shared with the Folio lesson query', () => {
-    client.setQueryData(['folio-lesson', 'NOG'], framework)
+  it('uses the cached question title shared with the Folio lesson query', () => {
+    client.setQueryData(['folio-lesson', 'KVA'], framework)
     const { result } = renderHook(() => useResumptionCandidate(now), { wrapper })
-    expect(result.current?.progress).toBe(`vid ${headword}`)
-    expect(result.current?.progress).not.toMatch(rawIdPattern)
-    expect(result.current?.href).toBe('/lektion?section=NOG#NOG-TRAP-001')
+    expect(result.current?.progress).toBe(question)
+    expectNoAnswer(result.current?.progress)
+    expect(result.current?.href).toBe('/lektion?section=KVA#KVA-TRAP-001')
     expect(loadFramework).not.toHaveBeenCalled()
+  })
+
+  it('names a cached trap without a question title by its number', () => {
+    live.lesson = lesson({ section: 'KVA', frameworkId: 'KVA-TRAP-016' })
+    client.setQueryData(['folio-lesson', 'KVA'], framework)
+    const { result } = renderHook(() => useResumptionCandidate(now), { wrapper })
+    expect(result.current?.progress).toBe('vid fälla 16')
+    expectNoAnswer(result.current?.progress)
+    expect(result.current?.href).toBe('/lektion?section=KVA#KVA-TRAP-016')
   })
 
   it('stays neutral while loading, then resolves the entry without changing its link', async () => {
@@ -174,59 +274,50 @@ describe('lesson resume display', () => {
     const { result } = renderHook(() => useResumptionCandidate(now), { wrapper })
     expect(result.current?.progress).toBe('pågående lektion')
     expect(result.current?.progress).not.toMatch(rawIdPattern)
-    expect(result.current?.href).toBe('/lektion?section=NOG#NOG-TRAP-001')
-    expect(loadFramework).toHaveBeenCalledWith('NOG')
+    expect(result.current?.href).toBe('/lektion?section=KVA#KVA-TRAP-001')
+    expect(loadFramework).toHaveBeenCalledWith('KVA')
     await act(async () => resolve(framework))
-    await waitFor(() => expect(result.current?.progress).toBe(`vid ${headword}`))
-    expect(result.current?.href).toBe('/lektion?section=NOG#NOG-TRAP-001')
+    await waitFor(() => expect(result.current?.progress).toBe(question))
+    expectNoAnswer(result.current?.progress)
+    expect(result.current?.href).toBe('/lektion?section=KVA#KVA-TRAP-001')
   })
 
-  it.each(['NOG-TRAP-999', null])('stays neutral for a missing entry: %s', (frameworkId) => {
-    live.lesson = lesson({ section: 'NOG', frameworkId })
-    client.setQueryData(['folio-lesson', 'NOG'], framework)
+  it.each(['KVA-TRAP-999', null])('stays neutral for a missing entry: %s', (frameworkId) => {
+    live.lesson = lesson({ section: 'KVA', frameworkId })
+    client.setQueryData(['folio-lesson', 'KVA'], framework)
     const { result } = renderHook(() => useResumptionCandidate(now), { wrapper })
     expect(result.current?.progress).toBe('pågående lektion')
     expect(result.current?.progress).not.toMatch(rawIdPattern)
-    expect(result.current?.href).toBe(`/lektion?section=NOG${frameworkId ? `#${frameworkId}` : ''}`)
+    expect(result.current?.href).toBe(`/lektion?section=KVA${frameworkId ? `#${frameworkId}` : ''}`)
   })
 
   it('stays neutral when the framework request fails', async () => {
     vi.mocked(loadFramework).mockRejectedValue(new Error('offline'))
     const { result } = renderHook(() => useResumptionCandidate(now), { wrapper })
-    await waitFor(() => expect(client.getQueryState(['folio-lesson', 'NOG'])?.status).toBe('error'))
+    await waitFor(() => expect(client.getQueryState(['folio-lesson', 'KVA'])?.status).toBe('error'))
     expect(result.current?.progress).toBe('pågående lektion')
     expect(result.current?.progress).not.toMatch(rawIdPattern)
   })
 
   it('uses the new section and family when the bookmark changes', () => {
-    client.setQueryData(['folio-lesson', 'NOG'], framework)
-    client.setQueryData(['folio-lesson', 'ORD'], {
-      section: 'ORD',
-      family: 'ord_roots',
-      version: 1,
-      authored_at: '',
-      entries: [
-        {
-          id: 'ORD-ROOT-010',
-          root: 'o-',
-          origin: '',
-          meaning: '',
-          example_words: [],
-          example_questions: [],
-        },
-      ],
-    } satisfies Framework)
+    client.setQueryData(['folio-lesson', 'KVA'], framework)
+    client.setQueryData(['folio-lesson', 'DTK'], dtk)
+    client.setQueryData(['folio-lesson', 'ORD'], ord)
     const { result, rerender } = renderHook(() => useResumptionCandidate(now), { wrapper })
-    expect(result.current?.progress).toBe(`vid ${headword}`)
+    expect(result.current?.progress).toBe(question)
+    live.lesson = lesson({ section: 'dtk', frameworkId: 'DTK-TACTIC-002' })
+    rerender()
+    expect(result.current?.progress).toBe('vid Hur hittar du det största eller minsta värdet?')
+    expect(result.current?.href).toBe('/lektion?section=DTK#DTK-TACTIC-002')
     live.lesson = lesson({ section: 'ord', frameworkId: 'ORD-ROOT-010' })
     rerender()
-    expect(result.current?.progress).toBe('vid o-')
+    expect(result.current?.progress).toBe('pågående lektion')
     expect(result.current?.href).toBe('/lektion?section=ORD#ORD-ROOT-010')
   })
 
   it('keeps the fresher session and its question progress unchanged', () => {
     live.sessions = [drill()]
-    client.setQueryData(['folio-lesson', 'NOG'], framework)
+    client.setQueryData(['folio-lesson', 'KVA'], framework)
     const { result } = renderHook(() => useResumptionCandidate(now), { wrapper })
     expect(result.current?.subject).toBe('ORD-övning')
     expect(result.current?.progress).toBe('vid fråga 3 av 10')
@@ -247,21 +338,22 @@ describe('lesson resume display', () => {
     'known',
     'loading',
     'unknown',
-  ] as const)('renders the classic panel without raw ids: %s', (state) => {
+  ] as const)('renders the classic panel without raw ids or the answer: %s', (state) => {
     if (state === 'loading') {
       vi.mocked(loadFramework).mockReturnValue(new Promise(() => {}))
     } else {
-      client.setQueryData(['folio-lesson', 'NOG'], framework)
+      client.setQueryData(['folio-lesson', 'KVA'], framework)
     }
-    if (state === 'unknown') live.lesson = lesson({ section: 'NOG', frameworkId: 'NOG-TRAP-999' })
+    if (state === 'unknown') live.lesson = lesson({ section: 'KVA', frameworkId: 'KVA-TRAP-999' })
     render(<ResumptionPanel now={now} />, { wrapper })
-    expect(screen.getByTestId('home-resumption-marginalia')).toHaveTextContent(
-      state === 'known' ? `vid ${headword}` : 'pågående lektion',
+    // textContent, not toHaveTextContent: that matcher folds the no-break spaces.
+    expect(screen.getByTestId('home-resumption-marginalia').textContent).toContain(
+      state === 'known' ? question : 'pågående lektion',
     )
-    expect(screen.getByTestId('home-resumption-panel').textContent).not.toMatch(rawIdPattern)
+    expectNoAnswer(screen.getByTestId('home-resumption-panel').textContent)
     expect(screen.getByRole('link', { name: 'Fortsätt här' })).toHaveAttribute(
       'href',
-      `/lektion?section=NOG#${live.lesson?.frameworkId}`,
+      `/lektion?section=KVA#${live.lesson?.frameworkId}`,
     )
   })
 })
