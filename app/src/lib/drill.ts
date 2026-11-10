@@ -27,12 +27,38 @@ import {
   SECTION_KEYS,
   type Section,
 } from '@/data/questions'
+import { loadTrapIndex } from '@/lib/trapIndex'
 
 export const DEFAULT_DRILL_LENGTH = 10
+export type DrillCount = 5 | 10 | 20
 
 export type DrillPlan = {
   section: Section
   questions: Question[]
+  traps?: readonly string[]
+}
+
+/** A family drill uses only indexed, playable questions in the requested
+ * section. Unknown/short families stay empty/short; never pad with unrelated
+ * questions. The ordinary picker's order is left untouched. */
+export async function pickTrapDrillQuestions(
+  section: Section,
+  traps: readonly string[],
+  count: number = DEFAULT_DRILL_LENGTH,
+  rng: () => number = Math.random,
+  ratings?: DrillRatings,
+): Promise<Question[]> {
+  if (traps.length === 0 || count <= 0) return []
+  const [bank, index] = await Promise.all([loadBank(), loadTrapIndex()])
+  const qids = new Set(traps.flatMap((id) => [...index.qidsFor(id)]))
+  const pool = questionsInSection(bank, section).filter((q) => qids.has(q.qid))
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1))
+    ;[pool[i], pool[j]] = [pool[j], pool[i]]
+  }
+  if (ratings)
+    pool.sort((a, b) => questionBandScore(a.qid, ratings) - questionBandScore(b.qid, ratings))
+  return pool.slice(0, count)
 }
 
 // ── Learning-band targeting (PL-L.3) ──────────────────────────────────────

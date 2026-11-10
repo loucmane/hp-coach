@@ -1,0 +1,122 @@
+/* r6/A/system.css drillbar/dockbar and Konto's raised segmented choices. */
+[data-folio] .fa-focus-bar.fa-drillbar {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center; gap: 20px; padding: 14px 28px;
+  position: sticky; top: 0; z-index: 6; border: 0;
+  background: var(--fa-table); color: var(--fa-ink); backdrop-filter: blur(8px);
+}
+[data-folio] .fa-drillbar .fa-exit {
+  grid-column: 1; grid-row: 1; justify-self: start;
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+  padding: 0; border: 0; background: transparent; color: var(--fa-ink-2);
+  font: 700 var(--fa-t15)/1.4 var(--fa-sans); cursor: pointer;
+}
+[data-folio] .fa-focus-where {
+  grid-column: 3; grid-row: 1; justify-self: end;
+  display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 12px;
+  min-width: 0; font-size: 14.5px; color: var(--fa-ink-3); overflow-wrap: anywhere;
+}
+[data-folio] .fa-focus-where b { color: var(--fa-ink); font-weight: 700; }
+[data-folio] .fa-drill-strip {
+  grid-column: 2; grid-row: 1; display: flex; align-items: center; gap: 5px;
+  min-width: 0; max-width: 100%; overflow-x: auto; padding: 4px;
+}
+/* The visible cell is 30×8; its button keeps a full-height keyboard/touch target. */
+[data-folio] .fa-strip-cell {
+  display: grid; place-items: center; flex: 0 0 30px; min-width: 24px; min-height: 44px;
+  padding: 0; border: 0; border-radius: 4px; background: transparent; cursor: pointer;
+}
+[data-folio] .fa-strip-cell span {
+  display: block; width: 100%; height: 8px; border-radius: 4px; background: var(--fa-table-3);
+}
+[data-folio] .fa-strip-cell[data-state='back'] span {
+  background: transparent; box-shadow: inset 0 0 0 1.5px var(--fa-strip-c);
+}
+[data-folio] .fa-strip-cell[aria-current='step'] span {
+  height: 14px; background: var(--fa-sheet);
+  box-shadow: 0 0 0 1.5px var(--fa-ink), var(--fa-halo);
+}
+[data-folio] .fa-strip-cell[data-state='ok'] span { background: var(--fa-strip-c); }
+[data-folio] .fa-strip-cell[data-state='back'][aria-current='step'] span {
+  box-shadow: inset 0 0 0 1.5px var(--fa-strip-c), 0 0 0 1.5px var(--fa-ink), var(--fa-halo);
+}
+[data-folio] .fa-strip-cell:disabled { cursor: default; }
+[data-folio] .fa-drillbar .fa-exit:focus-visible,
+[data-folio] .fa-strip-cell:focus-visible,
+[data-folio] .fa-dock-secondary:focus-visible,
+[data-folio] .fa-theme-picker .fa-theme-choices button:focus-visible {
+  outline: var(--fa-ring-w) solid var(--fa-ring); outline-offset: var(--fa-ring-offset);
+}
+
+[data-folio] .fa-dockbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 9;
+  padding: 14px 28px calc(18px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--fa-line); background: var(--fa-table);
+  color: var(--fa-ink); backdrop-filter: blur(10px);
+}
+[data-folio] .fa-dock-inner {
+  max-width: 1200px; margin: 0 auto; display: flex;
+  align-items: center; justify-content: flex-end; gap: 16px;
+}
+[data-folio] .fa-dock-left { margin-right: auto; min-width: 0; }
+[data-folio] .fa-dock-next { display: flex; align-items: center; gap: 14px; min-width: 0; }
+[data-folio] .fa-dock-detail {
+  font-size: 12.5px; line-height: 1.4; color: var(--fa-ink-3); text-align: right;
+}
+[data-folio] .fa-dock-secondary {
+  min-height: 44px; padding: 10px 16px; border: 1px solid var(--fa-line-2);
+  border-radius: var(--fa-r1); background: var(--fa-sheet); color: var(--fa-ink-2);
+  font: 700 var(--fa-t15)/1.4 var(--fa-sans); cursor: pointer;
+}
+[data-folio] .fa-dock-secondary:disabled { color: var(--fa-ink-3); cursor: default; }
+[data-folio] .fa-app[data-focus='true']:has(> .fa-dockbar) > .fa-main {
+  padding-bottom: calc(150px + env(safe-area-inset-bottom, 0px));
+}
+
+[data-folio] .fa-menu.fa-account-menu {
+  border: 1px solid var(--fa-line); border-radius: var(--fa-r2);
+  background: var(--fa-sheet); color: var(--fa-ink); box-shadow: var(--fa-lift-2);
+}
+[data-folio] .fa-account-menu .fa-menu-head { border-bottom: 1px solid var(--fa-line); }
+[data-folio] .fa-account-menu .fa-menu-head b {
+  font-family: var(--fa-display); font-weight: 700; overflow-wrap: anywhere;
+}
+[data-folio] .fa-account-menu .fa-menu-head span { overflow-wrap: anywhere; }
+[data-folio] .fa-account-menu .fa-menu-item {
+  font-family: var(--fa-sans); border-top-color: var(--fa-line);
+}
+[data-folio] .fa-account-menu .fa-menu-item:hover { background: var(--fa-sheet-2); }
+[data-folio] .fa-theme.fa-theme-picker { border-top-color: var(--fa-line); }
+[data-folio] .fa-theme-picker .fa-theme-label { color: var(--fa-ink-3); }
+[data-folio] .fa-theme-picker .fa-theme-choices {
+  display: flex; flex-wrap: wrap; gap: 2px; margin: 0; padding: 4px;
+  border: 0; border-radius: var(--fa-r2); background: var(--fa-table-2);
+}
+[data-folio] .fa-theme-picker .fa-theme-choices button {
+  flex: 1 1 auto; min-height: 44px; padding: 9px 6px;
+  border: 0; border-radius: var(--fa-r1); background: transparent;
+  font: 700 var(--fa-t15)/1.4 var(--fa-sans); color: var(--fa-ink-2);
+  text-align: center; text-decoration: none; cursor: pointer;
+}
+[data-folio] .fa-theme-picker .fa-theme-choices button[aria-pressed='true'] {
+  color: var(--fa-ink); background: var(--fa-sheet);
+  font-weight: 700; text-decoration: none; box-shadow: var(--fa-lift-1);
+}
+[data-folio] .fa-theme-picker .fa-theme-choices button[aria-pressed='true']::after { content: none; }
+
+@media (max-width: 760px) {
+  [data-folio] .fa-focus-bar.fa-drillbar {
+    grid-template-columns: auto minmax(0, 1fr); padding: 8px 16px 10px; gap: 6px 10px;
+  }
+  [data-folio] .fa-focus-where { grid-column: 2; font-size: 13.5px; }
+  [data-folio] .fa-drill-strip { grid-column: 1 / -1; grid-row: 2; justify-content: space-between; }
+  [data-folio] .fa-strip-cell { flex: 1 0 24px; }
+  [data-folio] .fa-dockbar { padding: 10px 12px calc(12px + env(safe-area-inset-bottom, 0px)); }
+  [data-folio] .fa-dock-inner { gap: 10px; }
+  [data-folio] .fa-dock-next { flex: 1; }
+  [data-folio] .fa-dockbar .fa-ui-go { flex: 1; justify-content: space-between; white-space: normal; }
+  [data-folio] .fa-dock-secondary { padding: 0 12px; font-size: 14px; min-height: 52px; }
+  [data-folio] .fa-dock-detail,
+  [data-folio] .fa-dockbar .fa-ui-kbd { display: none; }
+  [data-folio] .fa-menu.fa-account-menu[data-anchor='sheet'] { border-radius: var(--fa-r3) var(--fa-r3) 0 0; }
+}

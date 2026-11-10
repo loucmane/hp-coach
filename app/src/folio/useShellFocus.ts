@@ -6,11 +6,10 @@ export function useShellFocus({
   active = true,
   onExit,
   exitLabel,
-}: {
-  active?: boolean
-  onExit?: () => void
-  exitLabel?: string | null
-} = {}) {
+  strip,
+  where,
+  dock,
+}: FocusRequest & { active?: boolean } = {}) {
   const register = useContext(ShellFocusContext)
   const hasExit = !!onExit
   const latest = useRef(onExit)
@@ -23,10 +22,13 @@ export function useShellFocus({
     const request: FocusRequest = {
       ...(hasExit ? { onExit: () => latest.current?.() } : {}),
       exitLabel,
+      ...(strip !== undefined ? { strip } : {}),
+      ...(where !== undefined ? { where } : {}),
+      ...(dock !== undefined ? { dock } : {}),
     }
     register(request)
     // A lazy child can register before its parent's passive cleanup runs.
     // Only release this effect's own request, never a newer focus owner.
     return () => register((current) => (current === request ? null : current))
-  }, [register, active, hasExit, exitLabel])
+  }, [register, active, hasExit, exitLabel, strip, where, dock])
 }

@@ -1,6 +1,8 @@
-import { fireEvent, render, renderHook, screen, within } from '@testing-library/react'
-import { type ComponentType, StrictMode } from 'react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, renderHook, screen, waitFor, within } from '@testing-library/react'
+import { type ComponentType, type ReactNode, StrictMode } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import type { Framework } from '@/data/frameworks'
 import { FolioHostContext } from '@/folio/host'
 import { logMockEvent } from '@/lib/mockEvents'
 import { PLAN_SCHEMA_VERSION, type PlanItem } from '@/lib/scheduler'
@@ -12,7 +14,8 @@ const extras = vi.hoisted(() => ({
   daysLeft: 170,
   examDate: new Date(2027, 3, 10),
   resume: null as unknown,
-  trapNames: {},
+  frameworks: [] as Framework[],
+  missFrameworks: undefined as Record<string, string | null> | undefined,
   viewport: 'studio',
 }))
 vi.mock('./useIdagExtras', () => ({ useIdagExtras: () => extras, useIdagTelemetry: vi.fn() }))
@@ -44,6 +47,15 @@ vi.mock('@/hooks/useDailyPlan', () => ({ useDailyPlan: routeState.daily }))
 vi.mock('@/components/account/AccountMenu', () => ({ AccountMenu: () => null }))
 vi.mock('@/screens/HomeMobile', () => ({ HomeMobile: () => <div data-testid="classic-home" /> }))
 vi.mock('@/lib/mockEvents', () => ({ logMockEvent: vi.fn() }))
+const data = vi.hoisted(() => ({ framework: vi.fn(), explanation: vi.fn() }))
+vi.mock('@/data/frameworks', () => ({ loadFramework: data.framework }))
+vi.mock('@/data/explanations', () => ({ loadExplanation: data.explanation }))
+vi.mock('@/api/hooks/useUserPrefs', () => ({
+  useUserPrefs: () => ({ data: { dailyMinutes: 20 } }),
+}))
+vi.mock('@/components/home/useResumptionCandidate', () => ({
+  useResumptionCandidate: () => extras.resume,
+}))
 const item: PlanItem = {
   id: 'ord',
   kind: 'drill',
@@ -63,6 +75,10 @@ const plan = {
 const navigateHref = vi.fn()
 beforeEach(() => {
   extras.resume = null
+  extras.frameworks = []
+  extras.missFrameworks = undefined
+  data.framework.mockReset().mockResolvedValue(null)
+  data.explanation.mockReset().mockResolvedValue(null)
   extras.viewport = 'studio'
   extras.daysLeft = 170
   navigateHref.mockClear()
@@ -76,6 +92,90 @@ beforeEach(() => {
 afterEach(() => vi.useRealTimers())
 
 describe('FolioIdag', () => {
+  it.each([
+    'loading',
+    'error',
+    'empty',
+    'cold',
+    'onboarding',
+    'complete',
+  ] as const)('keeps one lit object and action in the %s state', (state) => {
+    const selectedPlan =
+      state === 'loading' || state === 'error'
+        ? null
+        : {
+            ...plan,
+            items:
+              state === 'empty'
+                ? []
+                : [
+                    {
+                      ...item,
+                      id: state === 'cold' || state === 'onboarding' ? `${state}-one` : item.id,
+                      completed: state === 'complete' || state === 'onboarding',
+                    },
+                  ],
+          }
+    const { container } = render(
+      <FolioIdag
+        plan={selectedPlan}
+        planError={state === 'error'}
+        allComplete={state === 'complete' || state === 'onboarding'}
+        navigateHref={navigateHref}
+      />,
+    )
+    expect(container.querySelectorAll('[data-lit="true"]')).toHaveLength(1)
+    expect(container.querySelectorAll('.fa-ui-go')).toHaveLength(1)
+    if (state === 'loading') expect(container.querySelector('.fa-ui-go')).toBeDisabled()
+  })
+  it.each([
+    'studio',
+    'phone',
+  ])('has one lit sheet and one real primary action on %s', (viewport) => {
+    extras.viewport = viewport
+    const { container } = render(<FolioIdag plan={plan} navigateHref={navigateHref} />)
+    expect(container.querySelectorAll('[data-lit="true"]')).toHaveLength(1)
+    expect(container.querySelectorAll('.fa-ui-go')).toHaveLength(1)
+    const go = container.querySelector('.fa-ui-go')!
+    expect(go).toHaveAttribute('href', item.href)
+    expect(Boolean(go.closest('.fa-idag-dock'))).toBe(viewport === 'phone')
+    fireEvent.click(go)
+    expect(navigateHref).toHaveBeenLastCalledWith(item.href)
+    expect(container.textContent).not.toMatch(/streak|svit|klart för idag|förlorar|vila/i)
+  })
+  it('leads the prognosis with a range, and recent sessions with what returns', () => {
+    const { container } = render(
+      <FolioIdag
+        plan={plan}
+        navigateHref={navigateHref}
+        projected={{ total: 0.5, verbal: 0.6, quant: 0.4, band: 0.2 }}
+        history={[
+          {
+            id: 2,
+            kind: 'drill',
+            sections: 'KVA',
+            total: 10,
+            correct: 1,
+            endedAt: extras.now.toISOString(),
+          },
+        ]}
+      />,
+    )
+    expect(container.querySelector('.fa-prog-n')).toHaveTextContent('0,3–0,7')
+    expect(container.querySelector('.fa-ui-band')).toBeInTheDocument()
+    expect(screen.getByTestId('home-recent-pass-2')).toHaveTextContent('9 kommer tillbaka')
+    expect(screen.getByTestId('home-recent-pass-2')).not.toHaveTextContent(/1 av 10|1\/10/)
+  })
+  it('passes axe for the active screen', async () => {
+    const { default: axe } = await import('axe-core')
+    const { container } = render(
+      <main data-folio="" lang="sv">
+        <FolioIdag plan={plan} navigateHref={navigateHref} />
+      </main>,
+    )
+    const result = await axe.run(container, { rules: { 'color-contrast': { enabled: false } } })
+    expect(result.violations).toEqual([])
+  })
   it('makes every day step clickable, including completed and current steps', () => {
     render(
       <FolioIdag
@@ -88,7 +188,7 @@ describe('FolioIdag', () => {
       expect(row).toHaveAttribute('data-completed', String(id === 'done'))
       const link = within(row).getByRole('link')
       expect(link).toHaveAccessibleName(
-        `${id === 'done' ? 'Klar: ' : ''}ORD-övning 10 frågor ${id === 'done' ? 'klar' : 'nu'} Träna orden.`,
+        `${id === 'done' ? 'Klar: ' : ''}ORD-övning 10 frågor · Träna orden. ${id === 'done' ? 'klar' : '8 min'}`,
       )
       expect(link).toHaveAttribute('href', item.href)
       fireEvent.click(link)
@@ -115,7 +215,7 @@ describe('FolioIdag', () => {
     expect(
       within(complete).getByRole('link', { name: 'Vill du fortsätta? Öva en sektion →' }),
     ).toHaveAttribute('href', '/ova')
-    expect(view.container.querySelectorAll('.fa-btn')).toHaveLength(1)
+    expect(view.container.querySelectorAll('.fa-ui-go')).toHaveLength(1)
   })
   it('preserves the first-pass card and its completed result link', () => {
     render(
@@ -151,7 +251,7 @@ describe('FolioIdag', () => {
       '/diagnostik?start=1',
     )
     expect(screen.getByTestId('daily-plan-first-cta')).toHaveTextContent('Starta första övningen →')
-    expect(screen.queryByRole('heading', { name: 'Dagens steg' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Dagens spår' })).not.toBeInTheDocument()
   })
   it('settles plan errors, then renders a cached plan despite a background error', () => {
     const view = render(<FolioIdag plan={null} navigateHref={navigateHref} />)
@@ -168,20 +268,20 @@ describe('FolioIdag', () => {
   it('separates the title and detail in a day link accessible name', () => {
     render(
       <FolioIdag
-        plan={{ ...plan, items: [{ ...item, kind: 'repetition' }] }}
+        plan={{ ...plan, items: [{ ...item, kind: 'repetition', section: null }] }}
         dueCount={12}
         pileCount={30}
         navigateHref={navigateHref}
       />,
     )
     expect(screen.getByTestId('daily-plan-link-ord')).toHaveAccessibleName(
-      'Repetition 10 av 30 missar nu De äldsta missarna först.',
+      'Repetition 10 av 30 missar · De äldsta missarna först. 8 min',
     )
   })
   it('labels the whole margin as an overview and the prognosis section separately', () => {
     render(<FolioIdag plan={plan} navigateHref={navigateHref} />)
-    expect(screen.getByRole('complementary', { name: 'Översikt' })).toBeInTheDocument()
-    expect(screen.getByRole('region', { name: 'Prognos' })).toBeInTheDocument()
+    expect(screen.getByRole('complementary', { name: 'Läget' })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: /Prognos/ })).toBeInTheDocument()
   })
   it.each([
     [0, 'Idag är det högskoleprov'],
@@ -194,9 +294,7 @@ describe('FolioIdag', () => {
       text,
     )
   })
-  it.each([
-    1, 2,
-  ])('uses the correct count wording for %s completed steps and trap occurrences', (count) => {
+  it.each([1, 2])('uses the correct count wording for %s track stations', (count) => {
     render(
       <FolioIdag
         plan={{
@@ -221,9 +319,8 @@ describe('FolioIdag', () => {
       />,
     )
     expect(
-      screen.getByText(`${count} av ${count} ${count === 1 ? 'klart' : 'klara'}`),
+      screen.getByText(new RegExp(`${count} ${count === 1 ? 'station' : 'stationer'}`)),
     ).toBeInTheDocument()
-    expect(screen.getByText(`${count} ${count === 1 ? 'gång' : 'gånger'}`)).toBeInTheDocument()
   })
   it.each([
     ['Idag · 07:52', 'Påbörjad idag 07:52'],
@@ -288,10 +385,10 @@ describe('FolioIdag', () => {
     expect(view.container.textContent).toContain('telefonen')
     expect(view.container.textContent).toContain('mer än en vecka sedan')
     expect(view.container.textContent).not.toMatch(
-      /fråga undefined|vila|paus|sluta|förlorar|klart för idag/i,
+      /fråga undefined|vila|paus|sluta öva|förlorar|klart för idag/i,
     )
   })
-  it('keeps a falling delta and rising trap neutral, and links recent passes', () => {
+  it('keeps the range and returning questions neutral even with a falling delta', () => {
     const view = render(
       <FolioIdag
         plan={plan}
@@ -319,13 +416,10 @@ describe('FolioIdag', () => {
         navigateHref={navigateHref}
       />,
     )
-    expect(screen.getByText('−0,2 sedan förra veckan')).toHaveClass('fa-delta')
-    expect(screen.getByText('−0,2 sedan förra veckan')).not.toHaveAttribute('style')
-    expect(screen.getByTestId('top-trap-link')).toHaveAttribute(
-      'href',
-      '/drill?framework=NOG-TRAP-007',
-    )
-    expect(screen.getByText(/ökar/)).not.toHaveAttribute('style')
+    expect(view.container.querySelector('.fa-prog-n')).toHaveTextContent('1,0–1,4')
+    expect(view.container.querySelector('.fa-prog-n')).not.toHaveAttribute('style')
+    expect(screen.queryByTestId('top-trap-link')).not.toBeInTheDocument()
+    expect(screen.getByTestId('home-recent-pass-7')).toHaveTextContent('2 kommer tillbaka')
     expect(screen.getByTestId('home-recent-pass-7')).toHaveAttribute('href', '/repetition?done=7')
     expect(screen.getByTestId('home-recent-all')).toHaveAttribute('href', '/historik')
     expect(view.container.textContent).not.toMatch(/vila|paus|sluta|förlorar|klart för idag/i)
@@ -348,6 +442,18 @@ describe('FolioIdag', () => {
     document.addEventListener('click', preventNavigation, { once: true })
     fireEvent.click(screen.getByTestId('daily-plan-link-ord'), { ctrlKey: true })
     expect(preventNavigation).toHaveBeenCalledOnce()
+    expect(navigateHref).not.toHaveBeenCalled()
+  })
+
+  it('keeps modified clicks on the Go action native too', () => {
+    const { container } = render(<FolioIdag plan={plan} navigateHref={navigateHref} />)
+    const suppressJsdomNavigation = vi.fn((event: MouseEvent) => {
+      expect(event.defaultPrevented).toBe(false)
+      event.preventDefault()
+    })
+    document.addEventListener('click', suppressJsdomNavigation, { once: true })
+    fireEvent.click(container.querySelector('.fa-ui-go')!, { metaKey: true })
+    expect(suppressJsdomNavigation).toHaveBeenCalledOnce()
     expect(navigateHref).not.toHaveBeenCalled()
   })
 
@@ -385,6 +491,63 @@ describe('FolioIdag', () => {
     expect(
       screen.getByTestId('daily-plan-complete').nextElementSibling?.getAttribute('data-testid'),
     ).toBe('return-prompt')
+  })
+})
+
+describe('Idag lazy data', () => {
+  const framework: Framework = {
+    section: 'KVA',
+    family: 'kva_traps',
+    version: 1,
+    authored_at: '2026-11-04',
+    entries: [
+      {
+        id: 'KVA-TRAP-001',
+        question_title: 'Låser x² = y² tecknet?',
+        family: 'Fri parameter',
+        pattern_description: 'ANSWER LEAK',
+        why_it_occurs: '',
+        common_distractor_signature: '',
+        countermeasure: '',
+        example_questions: [],
+      },
+    ],
+  }
+  it('loads a resumed section without top traps and resolves the full queue without cross-section signals', async () => {
+    const { useIdagExtras } =
+      await vi.importActual<typeof import('./useIdagExtras')>('./useIdagExtras')
+    routeState.userId = 'student-a'
+    extras.resume = { subject: 'KVA-lektion', href: '/lektion?section=KVA#KVA-TRAP-001' }
+    data.framework.mockImplementation(async (section) => (section === 'KVA' ? framework : null))
+    data.explanation.mockImplementation(async (qid) => ({
+      framework_id: qid.endsWith('-1') ? 'KVA-TRAP-001' : 'NOG-TRAP-001',
+    }))
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <QueryClientProvider client={client}>{children}</QueryClientProvider>
+    )
+    const due = ['2024-spring-KVA-1', 'p5-u-r1-LÄS-002'].map((questionId) => ({
+      questionId,
+      nextReviewAt: null,
+    }))
+    const hook = renderHook(() => useIdagExtras([], plan, due), { wrapper })
+    await waitFor(() =>
+      expect(hook.result.current.missFrameworks).toEqual({
+        '2024-spring-KVA-1': 'KVA-TRAP-001',
+        'p5-u-r1-LÄS-002': null,
+      }),
+    )
+    expect(hook.result.current.frameworks).toEqual([framework])
+    expect(hook.result.current.dailyMinutes).toBe(20)
+    expect(data.framework).toHaveBeenCalledWith('KVA')
+    expect(data.explanation).toHaveBeenCalledTimes(2)
+    // A new identity with the same qids must not receive the old account's cached map.
+    data.explanation.mockImplementation(() => new Promise(() => {}))
+    routeState.userId = 'student-b'
+    hook.rerender()
+    expect(hook.result.current.missFrameworks).toBeUndefined()
+    hook.unmount()
+    client.clear()
   })
 })
 

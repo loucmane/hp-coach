@@ -6,16 +6,26 @@
 //   5) The same seed produces the same ordering (replayability)
 //   6) Only fully-parsed questions are in the pool — stubs are filtered
 
-import { beforeAll, describe, expect, it } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { beforeAll, describe, expect, it, vi } from 'vitest'
 
 import { loadBank, type Question, questionsInSection } from '@/data/questions'
+import { WORKED_EXAMPLE_QIDS } from '@/data/workedExamples.generated'
 import { pickFirstSessionQuestions } from '@/lib/firstSession'
+import { loadTrapIndex, type TrapIndexFile } from '@/lib/trapIndex'
+
+vi.mock('@/lib/trapIndex', async (original) => {
+  const actual = await original<typeof import('@/lib/trapIndex')>()
+  const file = JSON.parse(readFileSync('public/trap-index.json', 'utf8')) as TrapIndexFile
+  return { ...actual, loadTrapIndex: async () => actual.buildTrapIndex(file.traps) }
+})
 
 import {
   bandDistance,
   type DrillRatings,
   pickDrillQuestions,
   pickMixedDrillQuestions,
+  pickTrapDrillQuestions,
   predictedPCorrect,
   questionBandScore,
   seededRng,
@@ -26,6 +36,54 @@ import {
 let bank: readonly Question[]
 beforeAll(async () => {
   bank = await loadBank()
+})
+
+describe('trap-set drills', () => {
+  const traps = Array.from({ length: 12 }, (_, i) => `KVA-TRAP-${String(i + 1).padStart(3, '0')}`)
+
+  it.each([5, 10, 20])('builds a distinct, playable %i-question family plan', async (count) => {
+    const index = await loadTrapIndex()
+    const questions = await pickTrapDrillQuestions('KVA', traps, count, seededRng(17))
+    expect(questions).toHaveLength(count)
+    expect(new Set(questions.map((q) => q.qid)).size).toBe(count)
+    for (const q of questions) {
+      expect(q.section).toBe('KVA')
+      expect(traps).toContain(index.trapOf(q.qid))
+      expect(questionsInSection(bank, 'KVA')).toContain(q)
+      expect(WORKED_EXAMPLE_QIDS.has(q.qid)).toBe(false)
+    }
+  })
+
+  it('uses the default count, deduplicates trap ids and replays a seeded pick', async () => {
+    expect(await pickTrapDrillQuestions('KVA', traps)).toHaveLength(10)
+    expect(await pickTrapDrillQuestions('KVA', [...traps, ...traps], 20, seededRng(1))).toEqual(
+      await pickTrapDrillQuestions('KVA', traps, 20, seededRng(1)),
+    )
+  })
+
+  it('never fills an unknown, empty or cross-section family from unrelated questions', async () => {
+    expect(await pickTrapDrillQuestions('KVA', [])).toEqual([])
+    expect(await pickTrapDrillQuestions('KVA', ['KVA-TRAP-999'])).toEqual([])
+    expect(await pickTrapDrillQuestions('ORD', traps)).toEqual([])
+    const pool = await pickTrapDrillQuestions('KVA', [traps[0]], Infinity, seededRng(1))
+    expect(pool.length).toBeGreaterThan(0)
+    expect(await pickTrapDrillQuestions('KVA', [traps[0]], pool.length + 10, seededRng(1))).toEqual(
+      pool,
+    )
+  })
+
+  it('applies the existing learning-band preference inside the family only', async () => {
+    const pool = await pickTrapDrillQuestions('KVA', traps, Infinity, seededRng(2))
+    const preferred = new Set(pool.slice(0, 10).map((q) => q.qid))
+    const difficulty = Object.fromEntries(
+      pool.map((q) => [q.qid, preferred.has(q.qid) ? -163 : 400]),
+    )
+    const picked = await pickTrapDrillQuestions('KVA', traps, 10, seededRng(3), {
+      difficulty,
+      ability: 0,
+    })
+    expect(new Set(picked.map((q) => q.qid))).toEqual(preferred)
+  })
 })
 
 describe('pickDrillQuestions', () => {
