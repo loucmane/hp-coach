@@ -15,6 +15,7 @@ import { getDb } from '../db/client'
 import {
   attempts,
   dailyPlans,
+  firstTries,
   frameworkProgress,
   lessonProgress,
   lessonReads,
@@ -168,6 +169,31 @@ afterEach(() => {
 })
 
 describe('DELETE /api/account — Clerk success', () => {
+  it('explicitly deletes ledger rows before the account, leaving other users intact', async () => {
+    const a = await seedUserData('user_a')
+    const b = await seedUserData('user_b')
+    const db = getDb(d1 as unknown as D1Database)
+    for (const { userId } of [a, b]) {
+      await db.insert(firstTries).values({
+        userId,
+        questionId: 'old-ORD-001',
+        sessionId: 999,
+        attemptId: 999,
+        kind: 'drill',
+        source: 'unknown',
+        correct: false,
+      })
+    }
+    const prepare = vi.spyOn(d1, 'prepare')
+    stubClerk({ status: 200 })
+    expect((await deleteAccount('user_a')).res.status).toBe(200)
+    const queries = prepare.mock.calls.map(([query]) => query)
+    const ledgerDelete = queries.findIndex((q) => q.startsWith('delete from "first_tries"'))
+    const userDelete = queries.findIndex((q) => q.startsWith('delete from "users"'))
+    expect(ledgerDelete).toBeGreaterThanOrEqual(0)
+    expect(ledgerDelete).toBeLessThan(userDelete)
+    expect(await db.select().from(firstTries)).toMatchObject([{ userId: b.userId }])
+  })
   it('cascade-deletes every local row and removes the user row', async () => {
     const { userId } = await seedUserData('user_a')
     const before = await countAllRowsForUser(userId)

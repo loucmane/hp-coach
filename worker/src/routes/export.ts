@@ -7,7 +7,7 @@
 //
 // Envelope: { schemaVersion, exportedAt, user, tables: { ... } }. Every
 // user-scoped table with a LIVE route is included: sessions, attempts,
-// mistakes, lessonProgress, lessonReads, dailyPlans, mockResults, plus
+// mistakes, lessonProgress, lessonReads, dailyPlans, mockResults, firstTries, plus
 // the `users` row itself (prefs).
 //
 // `srsState` still has no producer and is intentionally excluded —
@@ -21,6 +21,9 @@
 // optional, so the envelope stays schemaVersion 1: a backup from before 0016
 // still imports, with each new column at its default. `explanation_feedback`
 // has no route yet and is not exported.
+// The 0017 firstTries ledger is also additive. It survives pruning and must
+// travel independently of attempts/sessions. Older exports omit it; import
+// backfills the available attempts, without inventing already-pruned history.
 //
 // `mastery` and `frameworkProgress` DO have live producers as of the
 // progress-writers change (POST /api/attempts and PUT/DELETE
@@ -67,6 +70,7 @@ import {
   attempts,
   CONFIDENCE_LEVELS,
   dailyPlans,
+  firstTries,
   lessonProgress,
   lessonReads,
   MISTAKE_REASONS,
@@ -76,6 +80,7 @@ import {
   users,
 } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
+import { canonicalQuestion, writeFirstTries } from '../lib/firstTries'
 import { MockBreakdownSchema, type SessionAttempt, scoreMockResult } from '../lib/mockScore'
 import { classifyAttempt } from '../lib/provenance'
 import type { Env, Vars } from '../types'
@@ -99,12 +104,10 @@ const MAX_IMPORT_BYTES = 5 * 1024 * 1024
 //
 // Budget arithmetic: pick a total-statement ceiling comfortably inside any
 // plausible Workers/D1 execution budget, then split it across tables.
-// 20,000 total insert statements, executed in db.batch() chunks of 100
-// (INSERT_CHUNK_SIZE below), is at most 200 sequential batch round trips
-// for the WORST case payload — each round trip is a single D1 call, not a
-// per-row fetch, so 200 of them finishes in low single-digit seconds even
-// on a slow edge, nowhere near the ~30s wall-clock ceiling. The per-table
-// split below sums to exactly that 20,000 budget:
+// Insert statements run in chunks of 100 (INSERT_CHUNK_SIZE below).
+// The original split below sums to 20,000; the durable ledger adds at most
+// 12,000 rows. Together that permits at most 320 insert batch round trips,
+// plus one SQL backfill; the independent 5 MB byte cap still applies.
 //
 //   sessions        2,000
 //   attempts       12,000   (heaviest table — many attempts per session)
@@ -128,6 +131,7 @@ export const TABLE_ROW_CAPS = {
   lessonReads: 1_000,
   dailyPlans: 500,
   mockResults: 1_500,
+  firstTries: 12_000,
 } as const
 
 // Statements per db.batch() call. D1 batches are atomic per chunk (not
@@ -172,6 +176,39 @@ const AttemptShape = z
     timeTakenMs: z.number().int().nullable().optional(),
     createdAt: z.union([z.number(), z.string(), z.null()]).optional(),
     confidence: z.enum(CONFIDENCE_LEVELS).nullable().optional(),
+  })
+  .passthrough()
+
+// A ledger is independently durable: its session/attempt may have been
+// pruned. Validate it before the wipe, and never trust its user ownership or
+// provenance. Epoch timestamps on mock picks use SQLite seconds.
+const LedgerDate = z
+  .union([z.number().finite(), z.string(), z.null()])
+  .refine((v) => v === null || !Number.isNaN(new Date(v).getTime()), 'Invalid ledger date')
+const FirstTryShape = z
+  .object({
+    questionId: z.string().min(1).max(60),
+    sessionId: z.number().int().safe(),
+    attemptId: z.number().int().safe(),
+    createdAt: LedgerDate,
+    correct: z.boolean().nullable(),
+    kind: z.string().nullable(),
+    mockAnswers: z
+      .array(
+        z
+          .object({
+            id: z.number().int().safe(),
+            createdAt: z
+              .number()
+              .int()
+              .safe()
+              .nullable()
+              .refine((v) => v === null || !Number.isNaN(new Date(v * 1000).getTime())),
+            correct: z.boolean().nullable(),
+          })
+          .passthrough(),
+      )
+      .max(40),
   })
   .passthrough()
 
@@ -277,6 +314,18 @@ const ImportBody = z
         lessonReads: z.array(LessonReadShape),
         dailyPlans: z.array(DailyPlanShape),
         mockResults: z.array(MockResultShape),
+        firstTries: z
+          .array(FirstTryShape)
+          .optional()
+          .superRefine((rows, ctx) => {
+            const seen = new Set<string>()
+            for (const row of rows ?? []) {
+              const qid = canonicalQuestion(row.questionId)
+              if (seen.has(qid))
+                ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Duplicate first try' })
+              seen.add(qid)
+            }
+          }),
       })
       .strict(),
   })
@@ -339,6 +388,7 @@ export const exportRoute = new Hono<{ Bindings: Env; Variables: Vars }>().get('/
     lessonReadRows,
     dailyPlanRows,
     mockResultRows,
+    firstTryRows,
   ] = await Promise.all([
     db.select().from(sessions).where(eq(sessions.userId, userId)),
     db.select().from(attempts).where(eq(attempts.userId, userId)),
@@ -347,6 +397,7 @@ export const exportRoute = new Hono<{ Bindings: Env; Variables: Vars }>().get('/
     db.select().from(lessonReads).where(eq(lessonReads.userId, userId)),
     db.select().from(dailyPlans).where(eq(dailyPlans.userId, userId)),
     db.select().from(mockResults).where(eq(mockResults.userId, userId)),
+    db.select().from(firstTries).where(eq(firstTries.userId, userId)),
   ])
 
   return c.json({
@@ -361,6 +412,7 @@ export const exportRoute = new Hono<{ Bindings: Env; Variables: Vars }>().get('/
       lessonReads: lessonReadRows,
       dailyPlans: dailyPlanRows,
       mockResults: mockResultRows,
+      firstTries: firstTryRows,
     },
   })
 })
@@ -428,7 +480,7 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
   for (const [table, cap] of Object.entries(TABLE_ROW_CAPS) as Array<
     [keyof typeof TABLE_ROW_CAPS, number]
   >) {
-    const rowCount = body.tables[table].length
+    const rowCount = body.tables[table]?.length ?? 0
     if (rowCount > cap) {
       return c.json(
         {
@@ -450,6 +502,7 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
   // transactions, so this is the strongest consistency primitive
   // available (see testD1.ts / drizzle-orm/d1 batch docs).
   await db.batch([
+    db.delete(firstTries).where(eq(firstTries.userId, userId)),
     db.delete(mockResults).where(eq(mockResults.userId, userId)),
     db.delete(dailyPlans).where(eq(dailyPlans.userId, userId)),
     db.delete(lessonReads).where(eq(lessonReads.userId, userId)),
@@ -497,7 +550,10 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
     })
   }
 
-  const attemptsToInsert = body.tables.attempts.filter((a) => sessionIdMap.has(a.sessionId))
+  // Preserve (createdAt, original id) ordering even when the JSON rows are shuffled.
+  const attemptsToInsert = body.tables.attempts
+    .filter((a) => sessionIdMap.has(a.sessionId))
+    .sort((a, b) => a.id - b.id)
   const mockResultsToInsert = body.tables.mockResults.filter((mr) => sessionIdMap.has(mr.sessionId))
   // Provenance is re-derived on the server (P5 infold PR 3): a payload's
   // attempt source / itemRevision or mock-result estimateBasis (exports carry
@@ -518,19 +574,68 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
     attemptsBySession.set(a.sessionId, list)
   }
 
-  await insertChunked(db, attemptsToInsert, (a) =>
-    db.insert(attempts).values({
+  const attemptIdMap = new Map<number, number>()
+  for (const chunk of chunksOf(attemptsToInsert, INSERT_CHUNK_SIZE)) {
+    const results = await batchNonEmpty(
+      db,
+      chunk.map((a) =>
+        db
+          .insert(attempts)
+          .values({
+            userId,
+            sessionId: sessionIdMap.get(a.sessionId) as number,
+            questionId: a.questionId,
+            selectedAnswer: a.selectedAnswer ?? null,
+            correct: a.correct ?? null,
+            timeTakenMs: a.timeTakenMs ?? null,
+            createdAt: a.createdAt === null ? null : toDateOrUndefined(a.createdAt),
+            confidence: a.confidence ?? null,
+            ...classifyAttempt(a.questionId),
+          })
+          .returning({ id: attempts.id }),
+      ),
+    )
+    results.forEach((rows, i) => {
+      attemptIdMap.set(chunk[i].id, (rows as Array<{ id: number }>)[0].id)
+    })
+  }
+
+  // Missing ids are historical markers, never FKs. Give pruned evidence a
+  // negative namespace so future autoincrement ids cannot alias it. Keep
+  // original tie order among markers; retained attempts use their new ids.
+  const oldIds = [
+    ...new Set(
+      (body.tables.firstTries ?? []).flatMap((r) => [
+        r.attemptId,
+        ...r.mockAnswers.map((p) => p.id),
+      ]),
+    ),
+  ].sort((a, b) => a - b)
+  const historicalIds = new Map(oldIds.map((id, i) => [id, i - oldIds.length]))
+  const remapAttempt = (id: number) => attemptIdMap.get(id) ?? historicalIds.get(id)!
+  const oldSessions = [...new Set((body.tables.firstTries ?? []).map((r) => r.sessionId))]
+  const historicalSessions = new Map(oldSessions.map((id, i) => [id, -i - 1]))
+  await insertChunked(db, body.tables.firstTries ?? [], (r) =>
+    db.insert(firstTries).values({
       userId,
-      sessionId: sessionIdMap.get(a.sessionId) as number,
-      questionId: a.questionId,
-      selectedAnswer: a.selectedAnswer ?? null,
-      correct: a.correct ?? null,
-      timeTakenMs: a.timeTakenMs ?? null,
-      createdAt: toDateOrUndefined(a.createdAt),
-      confidence: a.confidence ?? null,
-      ...classifyAttempt(a.questionId),
+      questionId: canonicalQuestion(r.questionId),
+      sessionId: sessionIdMap.get(r.sessionId) ?? historicalSessions.get(r.sessionId)!,
+      attemptId: remapAttempt(r.attemptId),
+      createdAt: toDateOrNull(r.createdAt),
+      correct: r.correct,
+      kind: r.kind,
+      source: classifyAttempt(r.questionId).source,
+      mockAnswers: r.mockAnswers.map((p) => ({
+        id: remapAttempt(p.id),
+        createdAt: p.createdAt,
+        correct: p.correct,
+        source: classifyAttempt(r.questionId).source,
+      })),
     }),
   )
+  // Also covers old exports without a ledger, and direct-insert histories
+  // that still use the read fallback. Existing durable anchors participate.
+  await writeFirstTries(db, userId)
   await insertChunked(db, body.tables.mistakes, (m) =>
     db.insert(mistakes).values({
       userId,

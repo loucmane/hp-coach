@@ -25,6 +25,7 @@ import type { Db } from '../db/client'
 import {
   attempts,
   dailyPlans,
+  firstTries,
   frameworkProgress,
   lessonProgress,
   lessonReads,
@@ -53,6 +54,7 @@ export async function cascadeDeleteUser(db: Db, clerkUserId: string): Promise<Ca
   const userId = row.id
 
   await db.batch([
+    db.delete(firstTries).where(eq(firstTries.userId, userId)),
     db.delete(mockResults).where(eq(mockResults.userId, userId)),
     db.delete(dailyPlans).where(eq(dailyPlans.userId, userId)),
     db.delete(lessonReads).where(eq(lessonReads.userId, userId)),
