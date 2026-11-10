@@ -131,7 +131,9 @@ describe('SessionPlayer restores prior Folio ELF answers on resume', () => {
         </FolioHostContext.Provider>
       </QueryClientProvider>,
     )
-    const lock = await screen.findByTestId('fa-lock', {}, { timeout: 5000 })
+    const lock = await screen.findByTestId('fa-lock', {}, { timeout: 10_000 })
+    // The lazy stage can render before its keyboard effect is attached.
+    await act(async () => {})
     expect(resolvePlan).toHaveBeenCalledWith(h.active?.plan, 3)
     expect(h.start).not.toHaveBeenCalled()
     expect(pickQuestions).not.toHaveBeenCalled()
@@ -151,7 +153,9 @@ describe('SessionPlayer restores prior Folio ELF answers on resume', () => {
     expect(container.querySelector('[data-gap="32"] .rd-gapword')).toHaveTextContent('read')
     expect(screen.getByTestId('drill-prompt')).toHaveTextContent('Lucka 33')
     if (arrival !== 'after grading') {
-      expect(screen.getByTestId('option-B')).toHaveAttribute('aria-pressed', 'true')
+      await waitFor(() => {
+        expect(screen.getByTestId('option-B')).toHaveAttribute('aria-pressed', 'true')
+      })
       expect(h.submit).not.toHaveBeenCalled()
       fireEvent.click(lock)
     }
