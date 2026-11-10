@@ -1,6 +1,8 @@
-import { fireEvent, render, renderHook, screen, within } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, renderHook, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import axe from 'axe-core'
+import type { ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Stats } from '@/api/hooks/useStats'
 import { SECTION_KEYS } from '@/data/questions'
@@ -8,7 +10,7 @@ import { useFolioPrefs } from '@/folio/lib/folioPrefs'
 import { computeHonestProjected, formatScoreSv } from '@/lib/scoring'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
 import FolioFramsteg from './FolioFramsteg'
-import { TrendChart } from './TrendChart'
+import { type FramstegInput, type PrognosisWeek, RETRY_LINE } from './framstegView'
 
 const extras = vi.hoisted(() => ({
   viewport: 'studio',
@@ -23,14 +25,27 @@ const extras = vi.hoisted(() => ({
     ],
   },
   active: { data: [{ questionId: '2024v-1-LÄS-2' }] },
+  weekly: {} as NonNullable<FramstegInput['weekly']>,
 }))
 vi.mock('./useFramstegExtras', () => ({ useFramstegExtras: () => extras }))
 const queries = vi.hoisted(() => ({
+  weekly: vi.fn(),
   results: [] as { half: string; sessionId: number; createdAt: number | null }[],
   attempts: vi.fn((id: number | null) => ({
     data: id == null ? undefined : [{ questionId: `pass-${id}-ORD-1`, correct: true }],
   })),
 }))
+vi.mock('@/api/useApiClient', () => ({
+  useApiClient: () => ({
+    api: { me: { insights: { 'prognosis-weekly': { $get: queries.weekly } } } },
+  }),
+}))
+function queryWrapper() {
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } })
+  return ({ children }: { children: ReactNode }) => (
+    <QueryClientProvider client={client}>{children}</QueryClientProvider>
+  )
+}
 vi.mock('@/api/hooks/useMockResults', () => ({ useMockResults: () => ({ data: queries.results }) }))
 vi.mock('@/api/hooks/useSessions', () => ({ useSessionAttempts: queries.attempts }))
 vi.mock('@/api/hooks/useMistakes', () => ({
@@ -73,11 +88,51 @@ const stats = (): Stats => ({
     correct: n == null ? 0 : n * 10,
   })),
 })
+function weeklyRows(): PrognosisWeek[] {
+  return [
+    { iso: '2026-W41', end: '2026-10-12T00:00:00Z', bySection: {} },
+    {
+      iso: '2026-W42',
+      end: '2026-10-19T00:00:00Z',
+      bySection: {
+        ORD: {
+          firstTry90d: 3,
+          firstTryCorrect90d: 2,
+          firstTry7d: 3,
+          firstTryCorrect7d: 2,
+          firstTry7to14d: 0,
+          firstTryCorrect7to14d: 0,
+        },
+      },
+    },
+    ...['2026-W43', '2026-W44'].map((iso) => ({
+      iso,
+      end: '2026-11-02T00:00:00Z',
+      bySection: Object.fromEntries(
+        SECTION_KEYS.map((s) => [
+          s,
+          {
+            firstTry90d: 20,
+            firstTryCorrect90d: 14,
+            firstTry7d: 0,
+            firstTryCorrect7d: 0,
+            firstTry7to14d: 10,
+            firstTryCorrect7to14d: 7,
+          },
+        ]),
+      ),
+    })),
+  ]
+}
 beforeEach(() => {
   navigateHref.mockClear()
   extras.viewport = 'studio'
   extras.sitting.date = new Date(2027, 3, 10)
   extras.days = 170
+  extras.weekly = { data: weeklyRows() }
+  queries.weekly
+    .mockReset()
+    .mockResolvedValue({ ok: true, json: async () => ({ weeks: weeklyRows() }) })
   useFolioPrefs.setState({ kbd: true })
 })
 
@@ -92,7 +147,7 @@ describe('Ljusbord Framsteg', () => {
       { half: 'kvant', sessionId: 10, createdAt: now - 2000 },
     ]
     queries.attempts.mockClear()
-    const { result, rerender } = renderHook(useFramstegExtras)
+    const { result, rerender } = renderHook(useFramstegExtras, { wrapper: queryWrapper() })
     expect(queries.attempts.mock.calls).toEqual([[12], [10]])
     expect(result.current.sample.data.map((a) => a.questionId)).toEqual([
       'pass-12-ORD-1',
@@ -110,6 +165,31 @@ describe('Ljusbord Framsteg', () => {
     expect(result.current.sample.data).toEqual([])
     queries.results = []
   })
+  it('fetches twelve weekly snapshots through the session-bound client', async () => {
+    const { useFramstegExtras } =
+      await vi.importActual<typeof import('./useFramstegExtras')>('./useFramstegExtras')
+    const { result } = renderHook(useFramstegExtras, { wrapper: queryWrapper() })
+    await waitFor(() => expect(result.current.weekly.data).toEqual(weeklyRows()))
+    expect(queries.weekly).toHaveBeenCalledWith({ query: { weeks: '12' } })
+  })
+  it.each([
+    'older deploy',
+    'offline',
+  ])('keeps the screen usable after weekly endpoint failure: %s', async (failure) => {
+    if (failure === 'offline') queries.weekly.mockRejectedValue(new TypeError('offline'))
+    else queries.weekly.mockResolvedValue({ ok: false, status: 404 })
+    const { useFramstegExtras } =
+      await vi.importActual<typeof import('./useFramstegExtras')>('./useFramstegExtras')
+    const { result } = renderHook(useFramstegExtras, { wrapper: queryWrapper() })
+    await waitFor(() => expect(result.current.weekly.isError).toBe(true))
+    extras.weekly = result.current.weekly
+    render(<FolioFramsteg stats={{ data: stats() }} navigateHref={navigateHref} />)
+    expect(screen.getByRole('region', { name: 'Vecka för vecka' })).toHaveTextContent(RETRY_LINE)
+    expect(screen.getByTestId('progress-projected')).not.toHaveTextContent('—')
+    fireEvent.click(screen.getByTestId('framsteg-primary'))
+    expect(navigateHref).toHaveBeenCalled()
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
   it('shows one lit prognosis and one data-backed lever, then the sections', () => {
     const { container } = render(
       <FolioFramsteg stats={{ data: stats() }} navigateHref={navigateHref} />,
@@ -120,7 +200,7 @@ describe('Ljusbord Framsteg', () => {
       'Prognos just nu',
       'Hur säker är den?',
       'Delproven',
-      'Poäng per vecka',
+      'Vecka för vecka',
       'Fler sätt att smalna intervallet',
     ])
     expect(container.querySelectorAll('[data-lit="true"]')).toHaveLength(1)
@@ -238,19 +318,29 @@ describe('Ljusbord Framsteg', () => {
   it.each([
     'studio',
     'phone',
-  ])('preserves the existing trend markup and table in %s', async (viewport) => {
+  ])('renders interval slots and an accessible table in %s without a forecast', async (viewport) => {
     extras.viewport = viewport
     const data = stats()
-    const original = render(<TrendChart weekly={data.weekly} phone={viewport === 'phone'} />)
-    const chartMarkup = original.container.innerHTML
-    original.unmount()
     render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    const region = screen.getByRole('region', { name: 'Poäng per vecka' })
-    expect(region.querySelector('.fa-chart')?.outerHTML).toBe(chartMarkup)
+    const region = screen.getByRole('region', { name: 'Vecka för vecka' })
+    expect(
+      within(region).getByRole('img', {
+        name: /Vecka 41: inget underlag.*Vecka 42: för lite underlag.*Vecka 43:/,
+      }),
+    ).toBeInTheDocument()
+    expect(region.querySelectorAll('.fa-week')).toHaveLength(4)
+    expect(region.querySelectorAll('.fa-week-band')).toHaveLength(2)
+    expect(region.querySelectorAll('[data-state="empty"]')).toHaveLength(1)
+    expect(region.querySelectorAll('[data-state="thin"]')).toHaveLength(1)
+    expect(within(region).getByText('mål 2,0')).toBeInTheDocument()
+    expect(region.querySelector('path, polyline')).toBeNull()
+    expect(region).toHaveTextContent('ingen gissning framåt')
+    expect(region).toHaveTextContent('v 42: för lite underlag')
     const toggle = within(region).getByRole('button', { name: 'Visa som tabell' })
     await userEvent.click(toggle)
     expect(toggle).toHaveAttribute('aria-expanded', 'true')
-    expect(within(region).getByRole('table')).toHaveTextContent('ingen övning')
+    expect(within(region).getByRole('table')).toHaveTextContent('inget underlag')
+    expect(within(region).getByRole('table')).toHaveTextContent('för lite underlag')
     expect(toggle).toHaveFocus()
     await userEvent.keyboard('{Enter}')
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
@@ -269,6 +359,31 @@ describe('Ljusbord Framsteg', () => {
     expect(action.closest('[data-lit="true"]')).toBeNull()
     fireEvent.click(action)
     expect(navigateHref).toHaveBeenCalledExactlyOnceWith('/drill?section=XYZ&start=1')
+  })
+  it('updates the current interval with the headline while preserving past snapshots', () => {
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date('2026-11-05T12:00:00Z'))
+    try {
+      const data = stats()
+      extras.weekly = { data: [...weeklyRows(), { ...weeklyRows()[3], iso: '2026-W45' }] }
+      const { rerender } = render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+      const region = screen.getByRole('region', { name: 'Vecka för vecka' })
+      fireEvent.click(within(region).getByRole('button', { name: 'Visa som tabell' }))
+      const currentRow = () => within(region).getByRole('row', { name: /2026-W45/ })
+      expect(currentRow()).toHaveTextContent(screen.getByTestId('progress-projected').textContent!)
+      const previous = within(region).getByRole('row', { name: /2026-W44/ }).textContent
+      Object.assign(data.bySection.KVA, { firstTry90d: 100, firstTryCorrect90d: 10 })
+      rerender(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+      expect(currentRow()).toHaveTextContent(screen.getByTestId('progress-projected').textContent!)
+      expect(within(region).getByRole('row', { name: /2026-W44/ }).textContent).toBe(previous)
+      expect(region.querySelector('[data-current="true"] .fa-week-band')).not.toBeNull()
+      data.bySection = { ORD: data.bySection.ORD } as Stats['bySection']
+      rerender(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+      expect(currentRow()).toHaveTextContent('för lite underlag')
+      expect(region.querySelector('[data-current="true"] .fa-week-band')).toBeNull()
+    } finally {
+      vi.useRealTimers()
+    }
   })
   it('distinguishes loading, error, empty and a missing half without inventing a total', () => {
     const { container, rerender } = render(
@@ -454,20 +569,16 @@ describe('Ljusbord Framsteg', () => {
     }
   })
   it.each([
-    { fractions: [] },
-    { fractions: [0.5] },
-    { fractions: [0.5, null] },
-  ])('keeps the chart absent until two weeks have scores ($fractions)', ({ fractions }) => {
-    const data = stats()
-    data.weekly = fractions.map((fraction, i) => ({
-      weekStart: Date.UTC(2026, 9, 5 + i * 7),
-      attempts: fraction == null ? 0 : 10,
-      correct: fraction == null ? 0 : fraction * 10,
-    }))
-    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    expect(screen.getByText('Kurvan börjar när du har övat två veckor.')).toBeInTheDocument()
-    expect(screen.queryByRole('img', { name: /Poäng per vecka/ })).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Visa som tabell' })).not.toBeInTheDocument()
+    'empty',
+    'thin',
+    'single',
+  ] as const)('shows slots immediately with %s evidence and no comparison', (state) => {
+    extras.weekly = { data: [weeklyRows()[state === 'empty' ? 0 : state === 'thin' ? 1 : 2]] }
+    render(<FolioFramsteg stats={{ data: stats() }} navigateHref={navigateHref} />)
+    const region = screen.getByRole('region', { name: 'Vecka för vecka' })
+    expect(within(region).getByRole('img')).toBeInTheDocument()
+    expect(region.querySelectorAll('.fa-week-band')).toHaveLength(state === 'single' ? 1 : 0)
+    expect(region.querySelector('.fa-chart-summary')).toBeNull()
   })
   it.each([
     'ready',
@@ -475,10 +586,14 @@ describe('Ljusbord Framsteg', () => {
     'loading',
     'error',
     'phone',
+    'weekly-error',
+    'weekly-loading',
   ] as const)('has no axe violations in %s', async (state) => {
     const data = stats()
     if (state === 'empty') data.bySection = {} as Stats['bySection']
     if (state === 'phone') extras.viewport = 'phone'
+    if (state === 'weekly-error') extras.weekly = { isError: true }
+    if (state === 'weekly-loading') extras.weekly = { isPending: true }
     const { container } = render(
       <main data-folio>
         <FolioFramsteg

@@ -92,11 +92,11 @@ export function FramstegSections({
           visas först vid tio svar.
         </p>
       </section>
-      <section className="fa-section" aria-labelledby="fa-fr-chart-h" data-fa-shade>
-        <h2 className="fa-h2" id="fa-fr-chart-h">
-          Poäng per vecka
+      <section className="fa-section fa-weekly-card" aria-labelledby="fa-fr-chart-h" data-fa-shade>
+        <h2 className="fa-h3" id="fa-fr-chart-h">
+          Vecka för vecka
         </h2>
-        <TrendChart weekly={view.weekly} phone={phone} />
+        <TrendChart chart={view.weekly} phone={phone} />
       </section>
     </>
   )
