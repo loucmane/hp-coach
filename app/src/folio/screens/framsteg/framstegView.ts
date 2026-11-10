@@ -1,36 +1,34 @@
 import type { Mistake } from '@/api/hooks/useMistakes'
-import type { SessionHistoryRow } from '@/api/hooks/useSessions'
-import type { AttemptsDailyBucket, Stats, WeeklyBucket } from '@/api/hooks/useStats'
-import type { TopTrap } from '@/api/hooks/useTopTraps'
-import { SECTION_KEYS, type Section } from '@/data/questions'
-import { countsBySection } from '@/lib/dueBySection'
+import type { Stats, WeeklyBucket } from '@/api/hooks/useStats'
+import { SECTION_KEYS } from '@/data/questions'
+import { DEFAULT_DRILL_LENGTH } from '@/lib/drill'
+import { sectionOfQid } from '@/lib/dueBySection'
+import { REPETITION_SESSION_SIZE } from '@/lib/replay'
+import { repetitionCopy } from '@/lib/scheduler'
 import {
-  computeHonestDelta,
   computeHonestProjected,
-  formatDeltaSv,
+  firstTryStats,
   formatScoreSv,
-  formatSwedishDateShort,
   honestSectionScores,
   isoWeek,
   projectionBasis,
-  QUANT_SECTIONS,
   rankWeakness,
-  type SectionScore,
   scoreBand,
   sectionBasis,
   VERBAL_SECTIONS,
   weeklyScore,
 } from '@/lib/scoring'
+import { SECTION_DURATIONS } from '@/lib/sectionDurations'
 import { sectionLongLabel } from '@/lib/sectionRailLabel'
-import { passLabel } from '@/lib/sessionLabel'
+import { UHR_DELPROV } from '@/lib/uhrPacing'
 
 type QueryState<T> = { data?: T; isPending?: boolean; isError?: boolean }
 export type FramstegInput = {
   stats: QueryState<Stats>
+  /** Recorded answers in the latest completed provpass of each half, oldest first. */
+  sample?: QueryState<readonly { questionId: string; correct: boolean | null }[]>
+  active?: QueryState<readonly Pick<Mistake, 'questionId'>[]>
   due?: QueryState<readonly Pick<Mistake, 'questionId'>[]>
-  history?: QueryState<readonly SessionHistoryRow[]>
-  topTraps?: readonly TopTrap[]
-  trapNames?: Record<string, string>
 }
 export const FIRST_TRY_NOTE =
   'Prognosen räknar bara första försöket på varje fråga, inte repetitioner.'
@@ -39,82 +37,9 @@ const CAVEAT =
 export const RETRY_LINE = 'Gick inte att hämta just nu — försöker igen automatiskt.'
 export const scoreLabel = formatScoreSv
 
-function sectionList(sections: readonly string[]): string {
-  if (sections.length < 2) return sections[0] ?? ''
-  return `${sections.slice(0, -1).join(', ')} och ${sections[sections.length - 1]}`
-}
-
-function historyLabel(row: SessionHistoryRow): string {
-  const label = passLabel(row)
-  const sections = label.split(',').map((s) => s.trim().toUpperCase())
-  return sections.every((s) => SECTION_KEYS.some((key) => key === s))
-    ? sectionList(sections)
-    : label
-}
-
-// Derive comparisons from the displayed decimal too: binary half-ties can
-// differ between Math.round(n * 10) and the shared toFixed(1) formatter.
+// Match the shared displayed decimal, including binary half-ties.
 const displayedTenths = (score: number) =>
   Math.round(Number(scoreLabel(score).replace(',', '.')) * 10)
-
-function queryState<T>(query?: QueryState<T>): 'ready' | 'loading' | 'error' {
-  if (query?.data !== undefined) return 'ready'
-  return query?.isError ? 'error' : 'loading'
-}
-
-/** Comparison wording for sections with enough first tries for a band. */
-export function focusRankLine(index: number, scoredCount: number): string {
-  if (scoredCount === 0) return 'Ett första underlag'
-  if (scoredCount === 1) return 'Enda sektionen med en skattning'
-  return ['Lägsta sektionen just nu', 'Näst lägst just nu', 'Tredje lägst just nu'][
-    Math.min(index, 2)
-  ]
-}
-
-function focusReason(
-  s: SectionScore,
-  index: number,
-  displayedOrder: { section: Section; tenths: number }[],
-): string {
-  if (s.trend != null && s.trend < -0.05) return 'På väg ner'
-  if (Number.isFinite(s.daysSinceLastAttempt) && s.daysSinceLastAttempt >= 14)
-    return `Inte övad på ${s.daysSinceLastAttempt} dagar`
-  // Urgency also weights confidence and improving trends. Compare against
-  // every displayed score before describing its position as lowest/next.
-  if (s.score != null) {
-    const tenths = displayedTenths(s.score)
-    const tied = displayedOrder
-      .filter((other) => other.section !== s.section && other.tenths === tenths)
-      .map((other) => other.section)
-    if (tied.length)
-      return `${tenths === displayedOrder[0]?.tenths ? 'Lägst, tillsammans med' : 'Samma nivå som'} ${sectionList(tied)}`
-    if (tenths === displayedOrder[index]?.tenths) return focusRankLine(index, displayedOrder.length)
-  }
-  return 'Ett delprov att öva vidare på'
-}
-
-function whenLabel(iso: string | null, now: Date): string {
-  if (iso == null) return ''
-  const then = new Date(iso)
-  if (!Number.isFinite(then.getTime())) return ''
-  const midnight = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime()
-  const days = Math.round((midnight(now) - midnight(then)) / 86400000)
-  if (days === 0) return 'Idag'
-  if (days === 1) return 'Igår'
-  if (days > 1 && days < 7) return then.toLocaleDateString('sv-SE', { weekday: 'long' })
-  return formatSwedishDateShort(then)
-}
-
-function heatDays(days: readonly AttemptsDailyBucket[] | undefined, now: Date) {
-  if (!days) return null
-  const byDate = new Map(days.map((day) => [day.date, day]))
-  const end = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
-  return Array.from({ length: 84 }, (_, i) => {
-    const date = new Date(end - (83 - i) * 86400000).toISOString().slice(0, 10)
-    const day = byDate.get(date) ?? { date, n: 0, verbal: 0, quant: 0 }
-    return { ...day, level: day.n === 0 ? 0 : day.n < 5 ? 1 : 2 }
-  })
-}
 
 /** Coordinates and gap bridges are pure so sparse weeks stay inspectable. */
 export function buildTrend(weekly: readonly WeeklyBucket[], phone = false) {
@@ -171,210 +96,133 @@ export function buildTrend(weekly: readonly WeeklyBucket[], phone = false) {
   }
 }
 
+/** Display precision must not turn nonzero uncertainty into a collapsed band. */
+function range(score: number | null, band: number | null) {
+  const low = score != null && band != null ? Math.max(0, score - Math.max(0.1, band)) : null
+  const high = score != null && band != null ? Math.min(2, score + Math.max(0.1, band)) : null
+  return {
+    low,
+    high,
+    rangeLabel: low != null && high != null ? `${scoreLabel(low)}–${scoreLabel(high)}` : null,
+  }
+}
+
 export function buildFramstegView(input: FramstegInput, now = new Date()) {
   const data = input.stats.data
-  const state = queryState(input.stats)
+  const state = data !== undefined ? 'ready' : input.stats.isError ? 'error' : 'loading'
   const bySection: Partial<Stats['bySection']> = data?.bySection ?? {}
-  const scores = honestSectionScores(bySection, now).map((s) => ({
-    ...s,
-    score: scoreBand(s.score, s.attempts90d) == null ? null : s.score,
-    // A null honest delta means one week is below the scorer's minimum (5).
-    // Reuse its eligibility and first-try fallback for every section signal.
-    trend: computeHonestDelta({ [s.section]: bySection[s.section] }) == null ? null : s.trend,
-  }))
-  const halfScore = (half: readonly Section[]) => {
-    const supported = scores.flatMap((s) =>
-      s.score != null && half.includes(s.section) ? [s.score] : [],
-    )
-    return supported.length
-      ? supported.reduce((sum, score) => sum + score, 0) / supported.length
-      : null
-  }
+  const scores = honestSectionScores(bySection, now)
   const projected = computeHonestProjected(bySection)
-  const delta = projected.total == null ? null : computeHonestDelta(bySection)
-  // The display has one decimal: never turn nonzero uncertainty into ±0,0
-  // or a collapsed interval. Keep the shared estimate and raw band intact.
-  const displayedBand = projected.band == null ? null : Math.max(0.1, projected.band)
-  const dayZero = state === 'ready' && projected.total == null
-  const due = countsBySection(input.due?.data)
-  const drillHref = (section: Section) => `/drill?section=${encodeURIComponent(section)}&start=1`
-  const traps = (input.topTraps ?? []).map((t) => ({
-    id: t.framework_id,
-    section: t.section,
-    name: input.trapNames?.[t.framework_id] ?? `Öva ${t.section}`,
-    pattern: t.headline,
-    count: t.count,
-    countLabel: `${t.count} ${t.count === 1 ? 'gång' : 'gånger'}`,
-    rising: t.trend.kind === 'delta' && t.trend.delta > 0,
-    href: `/drill?section=${encodeURIComponent(t.section)}&framework=${encodeURIComponent(t.framework_id)}&start=1`,
-  }))
+  const active = input.active?.data ? new Set(input.active.data.map((row) => row.questionId)) : null
+  // A changed mock pick replaces the earlier pick, just as the submitted result does.
+  const answered = new Map<string, boolean | null>()
+  for (const answer of input.sample?.data ?? []) answered.set(answer.questionId, answer.correct)
   const sections = SECTION_KEYS.map((section) => {
-    const s = scores.find((s) => s.section === section)
-    const score = s?.score ?? null
-    const attempts = s?.attempts90d ?? 0
-    const band = scoreBand(score, attempts)
-    const stale =
-      score != null &&
-      Number.isFinite(s?.daysSinceLastAttempt) &&
-      (s?.daysSinceLastAttempt ?? 0) >= 14
-    const trend =
-      score == null || s?.trend == null
-        ? '—'
-        : s.trend > 0.05
-          ? 'upp'
-          : s.trend < -0.05
-            ? 'ner'
-            : 'stabil'
-    const trap = traps
-      .filter((t) => t.section === section)
-      .sort((a, b) => Number(b.rising) - Number(a.rising) || b.count - a.count)[0]
-    const level =
-      score == null || s?.confidence === 'low'
-        ? null
-        : displayedTenths(score) >= 20
-          ? 'Håll 2,0'
-          : `${scoreLabel(score)} → ${scoreLabel((displayedTenths(score) + 1) / 10)}`
-    let up = {
-      level,
-      label: `Öva ${section}`,
-      href: drillHref(section),
-      text: `Ett ${section}-pass med fokus på missarna.`,
-    }
-    if (score == null) up = { ...up, text: `Fler ${section}-frågor ger ett tydligare underlag.` }
-    else if (stale)
-      up = {
-        ...up,
-        text: `En kort ${section}-runda – delprovet har vilat i ${s?.daysSinceLastAttempt} dagar.`,
-      }
-    else if (trap)
-      up = {
-        ...up,
-        label: 'Öva fällan',
-        href: trap.href,
-        text: `Öva ${trap.name} – ${trap.countLabel}${trap.rising ? ', ökar' : ''}.`,
-      }
-    else if (due[section] > 0)
-      up = {
-        ...up,
-        label: 'Repetera',
-        href: `/repetition?section=${encodeURIComponent(section)}&start=1`,
-        text: `${due[section]} ${section}-${due[section] === 1 ? 'miss' : 'missar'} redo att repetera.`,
-      }
-    else
-      up = {
-        ...up,
-        text:
-          s?.confidence === 'low'
-            ? `Fler ${section}-frågor ger ett tydligare underlag.`
-            : score >= 2
-              ? `Ett ${section}-pass för att hålla nivån.`
-              : `Ett ${section}-pass med fokus på missarna${trend === 'upp' || trend === 'ner' ? ` – trenden pekar ${trend}` : ''}.`,
-      }
+    const raw = bySection[section]
+    const counts = raw ? firstTryStats(raw) : null
+    const attempts = counts?.attempts90d ?? 0
+    const correct = counts?.correct90d ?? 0
+    const tier = attempts === 0 ? 'empty' : attempts < 10 ? 'glimpse' : 'full'
+    const score = scores.find((s) => s.section === section)?.score ?? null
+    const band = tier === 'full' ? scoreBand(score, attempts) : null
+    const dots =
+      tier !== 'glimpse'
+        ? []
+        : [...answered].flatMap(([questionId, correct]) =>
+            correct != null && sectionOfQid(questionId) === section
+              ? [{ questionId, correct, returning: active?.has(questionId) ?? null }]
+              : [],
+          )
     return {
       section,
       name: sectionLongLabel(section),
-      score,
-      scoreLabel: scoreLabel(score),
-      bandLabel: band == null ? null : `±${scoreLabel(Math.max(0.1, band))}`,
       attempts,
-      trend,
-      marked: !!bySection[section] && !sectionBasis(bySection[section]).calibrated,
-      staleLabel: stale ? `${s?.daysSinceLastAttempt} dagar sedan` : null,
+      correct,
+      tier,
+      score,
+      band,
+      ...range(score, band),
+      dots,
+      marked: !!raw && !sectionBasis(raw).calibrated,
       href: `/lektion?section=${encodeURIComponent(section)}`,
-      up,
     }
   })
-  const displayedOrder = scores
-    .flatMap((s) =>
-      s.score == null ? [] : [{ section: s.section, tenths: displayedTenths(s.score) }],
-    )
-    .sort((a, b) => a.tenths - b.tenths)
-  const focus = rankWeakness(scores)
-    .slice(0, 3)
-    .map((s, i) => ({
-      section: s.section,
-      name: sectionLongLabel(s.section),
-      reason: focusReason(s, i, displayedOrder),
-      href: drillHref(s.section),
-    }))
-  const first = focus[0]
-  const mixedHref = '/drill?mixed=1&start=1'
+  const evidence = {
+    full: sections.filter((s) => s.tier === 'full').length,
+    glimpse: sections.filter((s) => s.tier === 'glimpse').length,
+    empty: sections.filter((s) => s.tier === 'empty').length,
+    attempts: sections.reduce((sum, s) => sum + s.attempts, 0),
+  }
+  const dayZero = state === 'ready' && evidence.attempts === 0
+  // Missing halves first, then untried coverage (largest exam share first),
+  // then the thinnest sample. Only established evidence uses practice ranking.
+  const missingHalf = projected.verbal == null ? 'verbal' : projected.quant == null ? 'quant' : null
+  const candidates = sections.filter(
+    (s) =>
+      !missingHalf || (VERBAL_SECTIONS.includes(s.section) ? 'verbal' : 'quant') === missingHalf,
+  )
+  const untried = candidates
+    .filter((s) => s.tier === 'empty')
+    .sort((a, b) => UHR_DELPROV[b.section].questions - UHR_DELPROV[a.section].questions)[0]
+  const thin = candidates
+    .filter((s) => s.tier === 'glimpse' && s.attempts > 1)
+    .sort((a, b) => a.attempts - b.attempts)[0]
+  const practiced = rankWeakness(
+    scores.filter((s) => sections.some((row) => row.section === s.section && row.tier === 'full')),
+  )[0]
+  const lever = untried ?? thin ?? sections.find((s) => s.section === practiced?.section)
   const primary =
     state !== 'ready'
       ? null
       : dayZero
         ? {
-            title: 'Ett första underlag',
-            reason: 'Svara på frågor i båda delarna, så får prognosen något att bygga på.',
+            section: null,
             label: 'Börja här · 10 frågor',
             href: '/diagnostik?start=1',
+            reason: 'Svara på frågor i båda delarna, så får prognosen något att bygga på.',
           }
-        : first
+        : lever
           ? {
-              title: first.name,
-              reason: `${first.section} · ${first.reason}`,
-              label: `Öva ${first.section}`,
-              href: first.href,
+              section: lever.section,
+              label: `${lever.tier === 'full' ? 'Öva' : 'Prova'} ${lever.section} · ${DEFAULT_DRILL_LENGTH} frågor, ca ${SECTION_DURATIONS[lever.section]} min`,
+              href: `/drill?section=${encodeURIComponent(lever.section)}&start=1`,
+              reason:
+                lever.tier === 'empty'
+                  ? `${lever.section} är ${UHR_DELPROV[lever.section].questions} av 40 frågor i ${VERBAL_SECTIONS.includes(lever.section) ? 'verbalpasset' : 'kvantpasset'} och helt oprovat.`
+                  : `Fler ${lever.section}-frågor ger ett tydligare underlag.`,
             }
           : {
-              title: 'Blandad övning',
-              reason: 'Öva över alla åtta delprov.',
-              label: 'Börja blandad övning',
-              href: mixedHref,
+              section: null,
+              label: `Blanda delprov · ${DEFAULT_DRILL_LENGTH} frågor`,
+              href: '/drill?mixed=1&start=1',
+              reason: 'Svara på frågor i båda delarna, så får prognosen något att bygga på.',
             }
+  const dueCount = input.due?.data?.length ?? null
+  const repetitionCount = dueCount == null ? null : Math.min(dueCount, REPETITION_SESSION_SIZE)
   return {
     state,
     dayZero,
     primary,
     sections,
-    focus,
-    traps,
-    mixedHref,
+    evidence,
+    repetition: {
+      count: repetitionCount,
+      minutes: dueCount ? repetitionCopy(dueCount).estimatedMinutes : null,
+      href: '/repetition',
+    },
     statusLine:
       state === 'error' ? RETRY_LINE : state === 'loading' ? 'Laddar dina framsteg…' : null,
     prognosis: {
       ...projected,
-      // Average only band-supported sections, preserving the total and pooled band.
-      verbal: halfScore(VERBAL_SECTIONS),
-      quant: halfScore(QUANT_SECTIONS),
+      ...range(projected.total, projected.band),
+      halfRanges: {
+        verbal: range(projected.verbal, projected.verbalBand ?? null),
+        quant: range(projected.quant, projected.quantBand ?? null),
+      },
       scoreLabel: scoreLabel(projected.total),
-      low:
-        projected.total != null && displayedBand != null
-          ? Math.max(0, projected.total - displayedBand)
-          : null,
-      high:
-        projected.total != null && displayedBand != null
-          ? Math.min(2, projected.total + displayedBand)
-          : null,
       caveat: projectionBasis(bySection).total.calibrated ? null : CAVEAT,
-      deltaLabel:
-        delta?.kind === 'change'
-          ? `${formatDeltaSv(delta.delta)} sedan förra veckan`
-          : delta?.kind === 'stable'
-            ? 'stabil, inom felmarginalen'
-            : null,
     },
-    weekSentence: data
-      ? `${data.attempts.thisWeek} frågor den här veckan${data.accuracy7d == null ? '' : ` · ${Math.round(data.accuracy7d * 100)} % rätt`}.`
-      : '',
-    lifetime: data
-      ? `${data.attempts.total} frågor totalt · ${data.attempts.today} idag · ${data.drills.thisWeek} pass denna vecka`
-      : '',
-    repetition: data?.mistakes ?? null,
-    heat: heatDays(data?.attemptsDaily, now),
     weekly: data?.weekly ?? [],
-    historyState: queryState(input.history),
-    history: (input.history?.data ?? [])
-      .filter((row) => row.kind === 'drill' || row.kind === 'adaptive_review')
-      .slice(0, 5)
-      .map((row) => ({
-        id: row.id,
-        label: historyLabel(row),
-        correct: row.correct,
-        total: row.total,
-        when: whenLabel(row.endedAt, now),
-        href: `${row.kind === 'adaptive_review' ? '/repetition' : '/drill'}?done=${row.id}`,
-      })),
   }
 }
 export type FramstegView = ReturnType<typeof buildFramstegView>

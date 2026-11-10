@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { EXCLUDED_QUESTIONS } from '@/data/figureOverrides'
-import type { Framework, ProtocolEntry } from '@/data/frameworks'
+import type { Framework, ProtocolEntry, TrapCatalog, TrapEntry } from '@/data/frameworks'
 import { SECTION_KEYS } from '@/data/questions'
 import { WORKED_EXAMPLE_QIDS } from '@/data/workedExamples.generated'
 import type { SectionStats } from '@/lib/scoring'
@@ -34,6 +34,70 @@ const sample = (correct: number): SectionStats => ({
 })
 
 describe('Uppslag view', () => {
+  const trap: TrapEntry = {
+    id: 'KVA-TRAP-007',
+    question_title: 'Låser x² = y² tecknet?',
+    pattern_description: 'Studenten missar att x = −y också är giltigt.',
+    tldr: 'Kvadrering döljer tecknet.',
+    recognition_cue: 'Pröva ett negativt värde.',
+    why_it_occurs: '',
+    countermeasure: '',
+    common_distractor_signature: '',
+    example_questions: [],
+  }
+
+  it.each([
+    'xyz_traps',
+    'kva_traps',
+    'nog_traps',
+  ] as const)('keeps %s contents safe for both read and unread entries', (family) => {
+    const fw: TrapCatalog = { ...framework, section: 'KVA', family, entries: [trap] }
+    for (const read of [false, true]) {
+      const view = buildUppslagView({
+        catalogs: { KVA: { data: fw } },
+        section: 'KVA',
+        isRead: () => read,
+      })
+      expect(view.open?.title).toBe('Låser x²\u00a0=\u00a0y² tecknet?')
+      expect(view.open?.summary).toBeNull()
+      const contentsLabel = view.open?.summary ?? view.open?.title
+      for (const answer of [trap.pattern_description, trap.tldr, trap.recognition_cue])
+        expect(contentsLabel).not.toContain(answer)
+      expect(view.open?.entry).toBe(trap)
+    }
+  })
+
+  it.each([undefined, '', '   '])('uses the trap id number when its title is %s', (title) => {
+    const fw: TrapCatalog = {
+      ...framework,
+      section: 'KVA',
+      family: 'kva_traps',
+      entries: [{ ...trap, question_title: title }],
+    }
+    const view = buildUppslagView({
+      catalogs: { KVA: { data: fw } },
+      section: 'KVA',
+      isRead: () => false,
+    })
+    expect(view.open).toMatchObject({ title: 'Fälla 7', summary: null })
+  })
+
+  it('uses question titles or neutral labels for non-trap catalogs too', () => {
+    const fw: Framework = {
+      ...framework,
+      entries: [
+        { ...entries[0], id: 'LAS-TYPE-003', question_title: 'Vad avser ordet här?' },
+        { ...entries[1], id: 'LAS-TYPE-008' },
+      ],
+    }
+    const view = buildUppslagView({ ...input(), section: 'LÄS', catalogs: { LÄS: { data: fw } } })
+    expect(view.chapter?.entries.map((e) => e.summary ?? e.title)).toEqual([
+      'Vad avser ordet här?',
+      'Frågetyp 8',
+    ])
+    expect(view.chapter?.entries.map((e) => e.title).join(' ')).not.toMatch(/Typ A|Typ B/)
+  })
+
   it('keeps all eight chapters in exam order with stable numbers and two parts', () => {
     const view = buildUppslagView(input())
     expect(view.chapters.map((c) => c.section)).toEqual(SECTION_KEYS)

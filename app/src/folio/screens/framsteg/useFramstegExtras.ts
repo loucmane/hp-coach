@@ -1,35 +1,39 @@
-import { useQueries } from '@tanstack/react-query'
-import { useDueMistakes } from '@/api/hooks/useMistakes'
-import { useSessionHistory } from '@/api/hooks/useSessions'
-import { useTopTraps } from '@/api/hooks/useTopTraps'
-import { entryHeadword, loadFramework } from '@/data/frameworks'
+import { useActiveMistakes, useDueMistakes } from '@/api/hooks/useMistakes'
+import { type MockHalf, useMockResults } from '@/api/hooks/useMockResults'
+import { useSessionAttempts } from '@/api/hooks/useSessions'
 import { useViewport } from '@/hooks/useViewport'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
 
-/** Keep Folio-only queries behind the lazy route boundary. */
+/** Folio-only queries stay behind the lazy boundary. No dot is inferred from an aggregate. */
 export function useFramstegExtras() {
-  const topTraps = useTopTraps()
-  const history = useSessionHistory()
+  const results = useMockResults()
+  const recent = (half: MockHalf) =>
+    results.data?.find(
+      (row) =>
+        row.half === half &&
+        row.createdAt != null &&
+        new Date(row.createdAt).getTime() >= Date.now() - 90 * 86400000,
+    )?.sessionId ?? null
+  const verbalId = recent('verbal')
+  const quantId = recent('kvant')
+  const verbal = useSessionAttempts(verbalId)
+  const quant = useSessionAttempts(quantId)
+  const active = useActiveMistakes()
   const due = useDueMistakes()
   const viewport = useViewport()
   const days = useDaysRemaining()
   const sitting = useSitting()
-  const sections = [...new Set(topTraps.map((t) => t.section))]
-  const frameworks = useQueries({
-    queries: sections.map((section) => ({
-      queryKey: ['folio-lesson', section],
-      queryFn: () => loadFramework(section),
-      staleTime: Infinity,
-    })),
-  })
-  const trapNames: Record<string, string> = {}
-  for (const result of frameworks) {
-    const framework = result.data
-    if (framework)
-      for (const entry of framework.entries) {
-        const name = entryHeadword(entry, framework)
-        if (name) trapNames[entry.id] = name
-      }
+  return {
+    active,
+    due,
+    viewport,
+    days,
+    sitting,
+    sample: {
+      data: [
+        ...(verbalId != null ? (verbal.data ?? []) : []),
+        ...(quantId != null ? (quant.data ?? []) : []),
+      ],
+    },
   }
-  return { topTraps, trapNames, history, due, viewport, days, sitting }
 }

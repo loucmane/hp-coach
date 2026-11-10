@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import type { SessionHistoryRow } from '@/api/hooks/useSessions'
 import type { FormattedResumption } from '@/components/home/useResumptionCandidate'
+import type { TrapCatalog } from '@/data/frameworks'
 import { PLAN_SCHEMA_VERSION, type PlanItem } from '@/lib/scheduler'
 import {
   buildIdagView,
   daySentence,
   daySteps,
+  type IdagInput,
   nextUp,
   shortItem,
   tomorrowLine,
@@ -41,6 +43,156 @@ const resume: FormattedResumption = {
   stale: false,
 }
 const base = { plan, now, allComplete: false, examDate: new Date(2027, 3, 10), daysLeft: 170 }
+
+const catalog: TrapCatalog = {
+  section: 'KVA',
+  family: 'kva_traps',
+  version: 1,
+  authored_at: '2026-11-04',
+  entries: [1, 2, 3].map((n) => ({
+    id: `KVA-TRAP-00${n}`,
+    question_title: `Låser x² = y² tecknet?`,
+    family: n < 3 ? 'Fri parameter' : 'Tecken',
+    pattern_description: 'ANSWER LEAK',
+    why_it_occurs: '',
+    common_distractor_signature: '',
+    countermeasure: '',
+    example_questions: [],
+  })),
+}
+const lesson: PlanItem = {
+  ...item,
+  id: 'lesson-KVA',
+  kind: 'lesson',
+  section: 'KVA',
+  framework: 'KVA-TRAP-001',
+  headline: 'KVA-lektion · ANSWER LEAK',
+  rationale: 'ANSWER LEAK',
+  estimatedMinutes: 5,
+  href: '/lektion?section=KVA#KVA-TRAP-001',
+}
+const familyInput: IdagInput = {
+  ...base,
+  plan: { ...plan, items: [lesson] },
+  frameworks: [catalog],
+  dueMistakes: [1, 2, 3, 4].map((n) => ({
+    questionId: `2024-spring-KVA-${n}`,
+    nextReviewAt: null,
+  })),
+  missFrameworks: {
+    '2024-spring-KVA-1': 'KVA-TRAP-001',
+    '2024-spring-KVA-2': 'KVA-TRAP-002',
+    '2024-spring-KVA-3': 'KVA-TRAP-002',
+    '2024-spring-KVA-4': 'KVA-TRAP-003',
+  },
+}
+
+describe('Ljusbord data contract', () => {
+  it('uses question-form copy and counts the entire due family, including non-top traps', () => {
+    const view = buildIdagView(familyInput)
+    expect(view.plan.items[0].questionTitle).toBe('Låser x²\u00a0=\u00a0y² tecknet?')
+    expect(view.plan.items[0].whyNow).toBe(
+      '3 av dina 4 KVA-missar som väntar hör till familjen ”Fri parameter”.',
+    )
+    expect(JSON.stringify(view)).not.toContain('ANSWER LEAK')
+  })
+  it('does not expose cached answer text while catalogs or mappings load', () => {
+    const view = buildIdagView({ ...familyInput, frameworks: undefined, missFrameworks: undefined })
+    expect(JSON.stringify(view)).not.toContain('ANSWER LEAK')
+    expect(view.plan.items[0].questionTitle).toBeUndefined()
+    expect(view.plan.items[0].whyNow).toBeUndefined()
+  })
+  it('labels partial family mappings as a lower bound, ignoring duplicate queue rows', () => {
+    const view = buildIdagView({
+      ...familyInput,
+      dueMistakes: [...familyInput.dueMistakes!, familyInput.dueMistakes![0]],
+      missFrameworks: { '2024-spring-KVA-1': 'KVA-TRAP-001' },
+    })
+    expect(view.plan.items[0].whyNow).toBe(
+      'Minst 1 av dina 4 KVA-missar som väntar hör till familjen ”Fri parameter”.',
+    )
+  })
+  it('deduplicates a resumed lesson station, sanitizes shared progress, and uses its scheduled minutes', () => {
+    const view = buildIdagView({
+      ...familyInput,
+      resume: { ...resume, subject: 'KVA-lektion', href: lesson.href, progress: 'vid ANSWER LEAK' },
+    })
+    expect(daySteps(view)).toHaveLength(1)
+    expect(daySteps(view)[0]).toMatchObject({ state: 'now', page: '5 min', href: lesson.href })
+    expect(view.resume).toMatchObject({
+      minutes: 5,
+      questionTitle: 'Låser x²\u00a0=\u00a0y² tecknet?',
+    })
+    expect(JSON.stringify(view)).not.toContain('ANSWER LEAK')
+  })
+  it('does not invent minutes or lesson steps for an unmatched bookmark', () => {
+    const view = buildIdagView({
+      ...base,
+      resume: { ...resume, subject: 'KVA-lektion', href: lesson.href, progress: 'vid ANSWER LEAK' },
+    })
+    expect(view.resume?.minutes).toBeUndefined()
+    expect(view.resume?.position).toBeUndefined()
+    expect(daySteps(view)[0].page).toBe('Påbörjad')
+  })
+  it('shows scheduled minutes at the current station, never one minute per question', () => {
+    expect(daySteps(buildIdagView(base))[0].page).toBe('8 min')
+  })
+  it('offers the real ORD quick drill even when a short lesson leads', () => {
+    expect(shortItem(buildIdagView(familyInput))).toMatchObject({
+      what: 'Tio ORD-ord',
+      minutes: 3,
+      href: '/drill?section=ORD&words=1&start=1',
+    })
+  })
+  it('uses scheduled mock cadence instead of the prototype date or three-week interval', () => {
+    const view = buildIdagView({
+      ...base,
+      mockPrescription: {
+        due: false,
+        half: 'verbal',
+        daysSinceLast: 10,
+        daysUntilNext: 4,
+        interval: 14,
+      },
+    })
+    expect(view.mock).toMatchObject({
+      href: '/prov?half=verbal',
+      dateLabel: 'måndag 26 oktober',
+      interval: 14,
+    })
+  })
+  it('counts returning questions and qualifying sections from real history and evidence', () => {
+    const view = buildIdagView({
+      ...base,
+      bySection: {
+        KVA: { attempts90d: 10, firstTry90d: 9 },
+        ORD: { attempts90d: 1, firstTry90d: 0 },
+      } as never,
+      history: [
+        {
+          id: 1,
+          kind: 'drill',
+          sections: 'KVA',
+          correct: 1,
+          total: 10,
+          endedAt: now.toISOString(),
+        },
+      ],
+    })
+    expect(view.recent[0]).toMatchObject({ returning: 9, section: 'KVA' })
+    expect(view.prognosis.basis).toBe(
+      'Underlag från 1 av 8 delprov. Fler svar gör intervallet tydligare.',
+    )
+  })
+  it('draws the same conservative decimal range that the headline states', () => {
+    const view = buildIdagView({
+      ...base,
+      projected: { total: 0.56, verbal: 0.6, quant: 0.52, band: 0.19 },
+    })
+    expect(view.prognosis.low).toBe(0.3)
+    expect(view.prognosis.high).toBe(0.8)
+  })
+})
 
 describe('buildIdagView', () => {
   it('splits only the first headline separator and retains the live plan contract', () => {
@@ -229,7 +381,7 @@ describe('buildIdagView', () => {
     ]
     expect(buildIdagView({ ...base, history }).recent[0].label).toBe(label)
   })
-  it.each([1, 2, 21])('uses the correct noun for %s misses in a trap rationale', (count) => {
+  it.each([1, 2, 21])('removes answer-bearing cached rationales for %s misses', (count) => {
     const view = buildIdagView({
       ...base,
       plan: {
@@ -243,11 +395,12 @@ describe('buildIdagView', () => {
         ],
       },
     })
-    expect(view.plan.items[0].rationale).toContain(
-      `${count} ${count === 1 ? 'miss' : 'missar'} senaste veckan`,
+    expect(view.plan.items[0].rationale).toBe(
+      'Samma mönster som i lektionen, i riktiga provfrågor.',
     )
+    expect(JSON.stringify(view)).not.toContain('Algebra')
   })
-  it('resolves traps from headwords with id fallback and a neutral rising marker', () => {
+  it('never carries answer-bearing top-trap summaries into the view', () => {
     const traps = [
       {
         framework_id: 'NOG-TRAP-007',
@@ -260,14 +413,8 @@ describe('buildIdagView', () => {
     const view = buildIdagView({
       ...base,
       topTraps: traps as never,
-      trapNames: { 'NOG-TRAP-007': 'Var för sig' },
     })
-    expect(view.traps[0]).toMatchObject({
-      name: 'Var för sig',
-      rising: true,
-      href: '/drill?framework=NOG-TRAP-007',
-    })
-    expect(buildIdagView({ ...base, topTraps: traps as never }).traps[0].name).toBe('NOG-TRAP-007')
+    expect(JSON.stringify(view)).not.toContain('Ett mönster')
   })
   it('counts unique active UTC days Monday through today without a goal or streak', () => {
     const attemptsDaily = ['2026-10-18', '2026-10-19', '2026-10-22', '2026-10-23'].map((date) => ({
@@ -285,20 +432,19 @@ describe('buildIdagView', () => {
 
 describe('day recommendations', () => {
   it.each([
-    [
-      { ...item, section: 'XYZ', framework: 'XYZ-TRAP-016', headline: 'XYZ-TRAP-016 · 3 frågor' },
-      'en kort övning',
-    ],
-    [{ ...item, section: null, headline: 'Blandad övning · alla sektioner' }, 'en kort övning'],
-    [{ ...item, headline: 'Blandad övning · börja med ORD' }, 'en kort övning'],
-    [{ ...item, headline: 'Ordförrådsövning · 10 frågor' }, 'en ordförrådsövning'],
-    [item, 'en ORD-övning'],
-    [{ ...item, kind: 'lesson', headline: 'Introduktion · ORD' }, 'gör en kort introduktion'],
-    [{ ...item, kind: 'lesson', headline: 'ORD-lektion' }, 'gör en kort ORD-lektion'],
-    [{ ...item, kind: 'mock', headline: 'Provpass · Verbal' }, 'ett provpass'],
-  ] as const)('makes readable day prose for %j', (step, clause) => {
+    { ...item, section: 'XYZ', framework: 'XYZ-TRAP-016', headline: 'XYZ-TRAP-016 · 3 frågor' },
+    { ...item, section: null, headline: 'Blandad övning · alla sektioner' },
+    { ...item, headline: 'Blandad övning · börja med ORD' },
+    { ...item, headline: 'Ordförrådsövning · 10 frågor' },
+    item,
+    { ...item, kind: 'lesson', headline: 'Introduktion · ORD' },
+    { ...item, kind: 'lesson', headline: 'ORD-lektion' },
+    { ...item, kind: 'mock', headline: 'Provpass · Verbal' },
+  ] as const)('uses the day estimate without repeating every station for %j', (step) => {
     const view = buildIdagView({ ...base, plan: { ...plan, items: [step] } })
-    expect(daySentence(view)).toBe(`Idag: ${clause} – ungefär 8 minuter.`)
+    expect(daySentence(view)).toBe(
+      'Ett förslag i taget. Dagens spår tar ungefär 8 minuter, och allt annat finns kvar när du vill ha det.',
+    )
   })
   it.each([0, 1, 2])('inflects a %s-minute day estimate', (minutes) => {
     const view = buildIdagView({
@@ -306,7 +452,9 @@ describe('day recommendations', () => {
       plan: { ...plan, items: [{ ...item, estimatedMinutes: minutes }] },
     })
     expect(daySentence(view)).toBe(
-      `Idag: en ORD-övning${minutes > 0 ? ` – ungefär ${minutes} ${minutes === 1 ? 'minut' : 'minuter'}` : ''}.`,
+      minutes > 0
+        ? `Ett förslag i taget. Dagens spår tar ungefär ${minutes} ${minutes === 1 ? 'minut' : 'minuter'}, och allt annat finns kvar när du vill ha det.`
+        : 'Ett förslag i taget. Allt annat finns kvar när du vill ha det.',
     )
   })
   it.each([
@@ -377,7 +525,7 @@ describe('day recommendations', () => {
       shortItem(
         buildIdagView({ ...base, plan: { ...plan, items: [{ ...item, estimatedMinutes: 4 }] } }),
       ),
-    ).toBeNull()
+    ).toMatchObject({ minutes: 3, what: 'Tio ORD-ord' })
   })
   it('cuts a repetition lead to a real ready section that fits five minutes', () => {
     const dueMistakes = Array.from({ length: 4 }, (_, i) => ({

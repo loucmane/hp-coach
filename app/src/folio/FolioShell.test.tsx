@@ -112,6 +112,7 @@ import { useUiStore } from '@/stores/uiStore'
 import { runAxe } from '@/test/a11y'
 import { FolioHost } from './FolioHost'
 import { FolioShell } from './FolioShell'
+import type { FocusStrip } from './host'
 import { useFolioPrefs } from './lib/folioPrefs'
 import { useShellFocus } from './useShellFocus'
 
@@ -423,6 +424,65 @@ describe('Folio shell', () => {
     )
     expect(screen.getByRole('navigation')).toBeInTheDocument()
     expect(screen.getByText('Fråga 1')).toBeInTheDocument()
+  })
+
+  it('forwards strip, where and dock from useShellFocus and releases them', () => {
+    mocks.pathname = '/drill'
+    const go = vi.fn(),
+      pick = vi.fn()
+    const strip: FocusStrip = {
+      section: 'KVA',
+      cells: [
+        { id: 'q1', state: 'ok', onSelect: pick },
+        { id: 'q2', state: 'back', onSelect: pick },
+        { id: 'q3', state: 'cur', onSelect: pick },
+      ],
+    }
+    function Session({ active, n }: { active: boolean; n: number }) {
+      useShellFocus({
+        active,
+        strip,
+        where: `KVA · ${n} av 3`,
+        dock: { primary: { label: n === 3 ? 'Se facit' : 'Nästa', onClick: go } },
+      })
+      return <h1>Fråga {n}</h1>
+    }
+    const view = render(
+      <FolioShell>
+        <Session active n={2} />
+      </FolioShell>,
+    )
+    const bar = screen.getByRole('navigation', { name: 'Frågor i passet' })
+    expect(
+      within(bar)
+        .getAllByRole('button')
+        .map((cell) => cell.getAttribute('aria-label')),
+    ).toEqual(['Fråga 1 av 3, rätt', 'Fråga 2 av 3, kommer tillbaka', 'Fråga 3 av 3, ej besvarad'])
+    fireEvent.click(within(bar).getByRole('button', { name: 'Fråga 2 av 3, kommer tillbaka' }))
+    expect(pick).toHaveBeenCalledOnce()
+    expect(screen.getByText('KVA · 2 av 3')).toBeInTheDocument()
+    const dock = screen.getByRole('contentinfo', { name: 'Åtgärder i passet' })
+    const main = screen.getByRole('main')
+    expect(main.compareDocumentPosition(dock) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    fireEvent.click(within(dock).getByRole('button', { name: /Nästa/ }))
+    expect(go).toHaveBeenCalledOnce()
+
+    view.rerender(
+      <FolioShell>
+        <Session active n={3} />
+      </FolioShell>,
+    )
+    expect(screen.getByText('KVA · 3 av 3')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Se facit/ })).toBeInTheDocument()
+
+    view.rerender(
+      <FolioShell>
+        <Session active={false} n={3} />
+      </FolioShell>,
+    )
+    expect(screen.queryByRole('navigation', { name: 'Frågor i passet' })).toBeNull()
+    expect(screen.queryByText('KVA · 3 av 3')).toBeNull()
+    expect(screen.queryByRole('contentinfo', { name: 'Åtgärder i passet' })).toBeNull()
   })
 
   it('routes theme and palette through synced setters and reads the store', async () => {

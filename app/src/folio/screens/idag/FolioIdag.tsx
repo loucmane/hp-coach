@@ -2,14 +2,14 @@ import type { MockPrescription } from '@/lib/scheduler'
 import { DayPath } from './DayPath'
 import { IdagLead, IdagLink, type NavigateHref } from './IdagLead'
 import { IdagMargin } from './IdagMargin'
-import { buildIdagView, daySentence, type IdagInput, shortItem, weekLine } from './idagView'
+import { buildIdagView, daySentence, type IdagInput, shortItem } from './idagView'
 import { ReturnLink } from './ReturnLink'
 import { useIdagExtras, useIdagTelemetry } from './useIdagExtras'
 import './idag.css'
 
 export type FolioIdagProps = Omit<
   IdagInput,
-  'now' | 'examDate' | 'daysLeft' | 'resume' | 'trapNames'
+  'now' | 'examDate' | 'daysLeft' | 'resume' | 'frameworks' | 'missFrameworks' | 'dailyMinutes'
 > & {
   navigateHref: NavigateHref
   deferMock?: () => void
@@ -18,7 +18,7 @@ export type FolioIdagProps = Omit<
 }
 
 export default function FolioIdag(props: FolioIdagProps) {
-  const extras = useIdagExtras(props.topTraps ?? [])
+  const extras = useIdagExtras(props.topTraps ?? [], props.plan, props.dueMistakes)
   useIdagTelemetry(props.plan, props.mockPrescription)
   const view = buildIdagView({ ...props, ...extras })
   const sentence = daySentence(view)
@@ -51,29 +51,22 @@ export default function FolioIdag(props: FolioIdagProps) {
         </h1>
         {sentence ? <p className="fa-day">{sentence}</p> : null}
         <div data-testid={props.plan ? 'daily-plan-card' : undefined}>
-          <IdagLead view={view} navigateHref={navigateHref} />
+          <IdagLead view={view} navigateHref={navigateHref} phone={extras.viewport === 'phone'} />
           {view.plan.allComplete && props.plan && !view.resume ? (
-            <ReturnLink plan={props.plan} history={props.history ?? []} />
+            <ReturnLink plan={props.plan} history={props.history ?? []} now={extras.now} />
           ) : null}
           {short ? (
-            <p className="fa-short" data-fa-shade>
-              <IdagLink
-                className="fa-link fa-short-link"
-                href={short.href}
-                navigateHref={navigateHref}
-              >
-                <span>Kort om tid? 5 minuter</span>
-                <span className="fa-short-what">
-                  – {short.what} · {short.minutes} min
-                </span>
-                <span aria-hidden>→</span>
-              </IdagLink>
-            </p>
+            <IdagLink className="fa-short" href={short.href} navigateHref={navigateHref}>
+              <span aria-hidden>⏱</span>
+              <span>
+                <b>Har du bara 5 minuter?</b> {short.what}, ca {short.minutes} min
+              </span>{' '}
+              <span className="fa-short-start">
+                Starta <span aria-hidden>→</span>
+              </span>
+            </IdagLink>
           ) : null}
           <DayPath view={view} navigateHref={navigateHref} deferMock={props.deferMock} />
-          {view.state === 'cold' && weekLine(view.week) ? (
-            <p className="fa-week">{weekLine(view.week)}</p>
-          ) : null}
         </div>
       </div>
       <IdagMargin view={view} navigateHref={navigateHref} statsLoading={props.statsLoading} />
