@@ -1,6 +1,7 @@
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { useFolioPrefs } from '@/folio/lib/folioPrefs'
 import type { PaletteKey } from '@/lib/tokens'
+import './focus.css'
 
 const PALETTES: { key: PaletteKey; label: string }[] = [
   { key: 'spalt', label: 'Spalt' },
@@ -29,9 +30,9 @@ export function ThemePicker() {
   }
   return (
     <>
-      <fieldset className="fa-theme">
+      <fieldset className="fa-theme fa-theme-picker">
         <legend className="fa-theme-label">Tema</legend>
-        <div className="fa-seg">
+        <div className="fa-seg fa-theme-choices">
           <button
             type="button"
             aria-pressed={theme === 'light'}
@@ -56,9 +57,9 @@ export function ThemePicker() {
           </button>
         </div>
       </fieldset>
-      <fieldset className="fa-theme">
+      <fieldset className="fa-theme fa-theme-picker">
         <legend className="fa-theme-label">Färg</legend>
-        <div className="fa-palette-words">
+        <div className="fa-palette-words fa-theme-choices">
           {PALETTES.map(({ key, label }) => (
             <button
               type="button"

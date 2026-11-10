@@ -7,6 +7,7 @@ import { useUiStore } from '@/stores/uiStore'
 import { useDismiss } from '../lib/useDismiss'
 import { ACCOUNT_ROUTES } from '../nav'
 import { ThemePicker } from './ThemePicker'
+import './focus.css'
 
 export function AccountMenu({
   phone,
@@ -37,6 +38,7 @@ export function AccountMenu({
         data-testid="fa-account"
         aria-label="Konto och inställningar"
         aria-expanded={open}
+        aria-haspopup="dialog"
         aria-controls="fa-account-menu"
         onClick={onToggle}
       >
@@ -56,7 +58,7 @@ export function AccountMenu({
           {phone && <div className="fa-scrim" aria-hidden />}
           <div
             ref={root}
-            className="fa-menu"
+            className="fa-menu fa-account-menu"
             id="fa-account-menu"
             data-testid="fa-account-menu"
             data-anchor={phone ? 'sheet' : 'side'}
