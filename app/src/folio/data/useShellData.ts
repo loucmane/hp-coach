@@ -18,7 +18,7 @@ import {
   PLAN_SCHEMA_VERSION,
   prescribeMock,
 } from '@/lib/scheduler'
-import { computeProjected, computeSectionScore, honestSectionScores } from '@/lib/scoring'
+import { computeHonestProjected, computeSectionScore } from '@/lib/scoring'
 import { useDaysRemaining } from '@/stores/examStore'
 import { useUiStore } from '@/stores/uiStore'
 import type { ShellData } from '../contract/viewModel'
@@ -79,43 +79,45 @@ export function useFolioShellData(): ShellData {
   const plannedCount = repetition
     ? Number.parseInt(repetition.headline.match(/\d+/)?.[0] ?? '', 10)
     : NaN
+  const prognosis = stats.data ? computeHonestProjected(stats.data.bySection) : null
   return {
-    subtitles: shellSubtitles({
-      plan:
-        livePlan?.items.map((item) => ({ title: item.headline, completed: item.completed })) ??
-        null,
-      resume:
-        candidate && !candidate.stale
+    subtitles: shellSubtitles(
+      {
+        plan:
+          livePlan?.items.map((item) => ({ title: item.headline, completed: item.completed })) ??
+          null,
+        resume:
+          candidate && !candidate.stale
+            ? {
+                subject: candidate.subject.replace(/-övning$/, ''),
+                progress: candidate.progress.replace(/^vid /, ''),
+                href: candidate.href,
+              }
+            : null,
+        dueNow: ready,
+        dueToday: pile.data?.length ?? 0,
+        repetition: repetition
           ? {
-              subject: candidate.subject.replace(/-övning$/, ''),
-              progress: candidate.progress.replace(/^vid /, ''),
-              href: candidate.href,
+              count: Number.isFinite(plannedCount) ? plannedCount : 0,
+              minutes: repetition.estimatedMinutes,
             }
-          : null,
-      dueNow: ready,
-      dueToday: pile.data?.length ?? 0,
-      repetition: repetition
-        ? {
-            count: Number.isFinite(plannedCount) ? plannedCount : 0,
-            minutes: repetition.estimatedMinutes,
-          }
-        : undefined,
-      provpass:
-        stats.data && mocks.data
-          ? prescribeMock({
-              now,
-              sectionScores: scores,
-              dueMistakeCount: ready,
-              mockHistory: mocks.data,
-              daysToExam,
-            })
-          : null,
-      lesson: title && section ? { section, title } : null,
-      prognosis: stats.data
-        ? computeProjected(honestSectionScores(stats.data.bySection, now)).total
-        : null,
-      practicePasses: stats.data?.drills.total ?? null,
-    }),
+          : undefined,
+        provpass:
+          stats.data && mocks.data
+            ? prescribeMock({
+                now,
+                sectionScores: scores,
+                dueMistakeCount: ready,
+                mockHistory: mocks.data,
+                daysToExam,
+              })
+            : null,
+        lesson: title && section ? { section, title } : null,
+        prognosis: prognosis?.total ?? null,
+        practicePasses: stats.data?.drills.total ?? null,
+      },
+      prognosis?.band ?? null,
+    ),
     dueCount: ready,
     identity: { name: user?.fullName || user?.firstName || 'Ditt konto' },
     prefs: { palette, mode },

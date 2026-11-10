@@ -3,6 +3,7 @@ import { useRef, useState } from 'react'
 import { useLessonProgress } from '@/api/hooks/useLessonProgress'
 import { useLessonReadsQuery } from '@/api/hooks/useLessonReadsApi'
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
+import { lessonPlace } from '@/components/home/useResumptionCandidate'
 import { type Framework, loadFramework } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import { useDailyPlan } from '@/hooks/useDailyPlan'
@@ -35,7 +36,18 @@ export function useOvaExtras() {
     })),
   })
   const catalogs: Partial<Record<Section, Framework>> = {}
-  for (const [i, result] of queries.entries()) if (result.data) catalogs[sections[i]] = result.data
+  for (const [i, result] of queries.entries()) {
+    const catalog = result.data
+    if (!catalog) continue
+    // Presentation copy only: never mutate the shared catalog used after answering.
+    catalogs[sections[i]] = {
+      ...catalog,
+      entries: catalog.entries.map((entry) => ({
+        ...entry,
+        question_title: lessonPlace(entry, catalog) ?? undefined,
+      })),
+    } as Framework // Only the optional title changes; catalog/entry pairing is preserved.
+  }
   async function setSmartDrill(value: boolean) {
     if (saveLock.current) return
     saveLock.current = true
