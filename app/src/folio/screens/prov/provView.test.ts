@@ -1,7 +1,8 @@
+import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import type { MockResultRow } from '@/api/hooks/useMockResults'
 import type { Question } from '@/data/questions'
-import type { PassOption } from '@/lib/mock'
+import { listAuthenticPasses, type PassOption } from '@/lib/mock'
 import { sheetFromAttempts } from '@/lib/mockSheet'
 import type { NormeringSitting } from '@/lib/normering'
 import { buildHubView, buildResultView } from './provView'
@@ -67,13 +68,54 @@ describe('Provpass view builders', () => {
       picked: null,
     })
     expect(view.chosen?.examId).toBe('var-2023')
-    expect(view.eyebrow).toBe('Förslag · minst sett')
+    expect(view.eyebrow).toBe('Föreslaget · minst sett')
     expect(view.sittings.map((s) => s.examId)).toEqual(['host-2025', 'var-2023'])
     expect(view.sittings[0].passes[0]?.totalExposure).toBe(10)
-    expect(view.quota).toBe('40 frågor · ORD 10 · LÄS 10 · MEK 10 · ELF 10')
+    expect(view.quota).toBe('40 frågor') // no invented per-section counts while the bank loads
     const kvant = buildHubView({ half: 'kvant', mode: 'synthetic', passes: [], picked: null })
     expect(kvant.quota).toBe('40 frågor · XYZ 12 · KVA 10 · NOG 6 · DTK 12')
-    expect(kvant.note).toBe('Indikativt resultat — inte ett riktigt pass.')
+    expect(kvant.note).toBe('Ingen poäng: det är inte normerat.')
+  })
+  it('maps the real 27-sitting corpus into year × term × pass without duplicating variants', () => {
+    const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'))
+    const index = read('../../../../public/data/_index.json') as { exams: { exam_id: string }[] }
+    const corpus = index.exams.flatMap(({ exam_id }) =>
+      read(`../../../../public/data/${exam_id}.json`),
+    ) as Question[]
+    const exposed = corpus.find((q) => q.exam_id === 'var-2026' && q.provpass === 'verb1')!
+    const passes = listAuthenticPasses(corpus, { [exposed.qid]: { n: 3, last: 1 } })
+    const view = buildHubView({
+      half: 'verbal',
+      mode: 'authentic',
+      passes,
+      picked: null,
+      bank: corpus,
+    })
+    expect(view.sittings).toHaveLength(27)
+    const cells = view.matrix.flatMap((r) => [r.spring, r.autumn])
+    expect(cells.flatMap((c) => c.passes).filter(Boolean)).toHaveLength(54)
+    expect(cells.filter((c) => c.status === 'cancelled')).toHaveLength(2)
+    expect(view.matrix.filter((r) => r.year === 2022)).toHaveLength(2)
+    expect(view.matrix.filter((r) => r.year === 2019)).toHaveLength(2)
+    const ids = cells.flatMap((c) => (c.examId ? [c.examId] : []))
+    expect(new Set(ids).size).toBe(27)
+    expect(ids).toContain('var-2018-1')
+    expect(view.sections.reduce((n, s) => n + s.count, 0)).toBe(view.chosen?.presented)
+  })
+  it('uses actual available section counts and never labels missing data as cancelled', () => {
+    const passes = listAuthenticPasses(bank, {})
+    const view = buildHubView({ half: 'verbal', mode: 'authentic', passes, picked: null, bank })
+    expect(view.sections).toEqual([
+      { section: 'ORD', count: 1 },
+      { section: 'LÄS', count: 1 },
+    ])
+    expect(view.quota).toBe('2 frågor · ORD 1 · LÄS 1')
+    expect(view.matrix[0].autumn.status).toBe('unavailable')
+    expect(view.short).toMatchObject({
+      count: 10,
+      minutes: 3,
+      href: '/drill?section=ORD&timed=1&start=1',
+    })
   })
   it('uses the official table only for authentic passes and explains both score bases', () => {
     const table: NormeringSitting = {

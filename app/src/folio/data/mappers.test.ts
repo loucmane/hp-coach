@@ -220,9 +220,11 @@ describe('read-only shell adapters', () => {
     expect(result.current.dueCount).toBe(8)
     expect(result.current.subtitles.ova).toBe('Alla delprov')
     expect(result.current.subtitles.repetera).toBe('8 redo')
-    expect(result.current.subtitles.historik).toBe('Pågår: NOG-lektion · Två påståenden')
-    expect(result.current.subtitles.uppslag).toBe('NOG · Två påståenden')
-    expect(result.current.subtitles.idag).toBe('Fortsätt NOG-lektion, Två påståenden')
+    expect(result.current.subtitles.historik).toBe('Pågår: NOG-lektion · fälla 1')
+    // The Uppslag line follows the same no-answer rule (coordinator companion, hpf-qr0p.51.22).
+    expect(result.current.subtitles.uppslag).toBe('NOG · fälla 1')
+    expect(result.current.subtitles.uppslag).not.toContain('Två påståenden')
+    expect(result.current.subtitles.idag).toBe('Fortsätt NOG-lektion, fälla 1')
     expect(result.current.subtitles.idag).not.toMatch(/NOG-TRAP-\d+/)
     expect(result.current.subtitles.framsteg).toBe('Prognos 1,4 av 2,0')
     expect(result.current.identity.name).toBe('Ada')
@@ -280,6 +282,54 @@ describe('read-only shell adapters', () => {
     const { result } = renderHook(() => useFolioShellData())
     expect(result.current.subtitles.idag).toBe('Fortsätt NOG-lektion')
     expect(result.current.subtitles.idag).not.toMatch(/NOG-TRAP-\d+/)
+  })
+
+  it('keeps the trap answer out of the resume lines before "Gissa först"', () => {
+    // KVA-TRAP-001 as served: the headword and tldr both state the answer.
+    const headword =
+      'Student ser x² = y² (eller kvadratlikhet) och drar slutsatsen x = y — missar att x = -y är lika giltigt.'
+    const tldr = 'Kvadratlikhet låser inte tecknet — x² = y² öppnar både x = y och x = −y.'
+    const trap = {
+      id: 'KVA-TRAP-001',
+      question_title: 'Låser x² = y² tecknet?',
+      pattern_description: headword,
+      why_it_occurs: '',
+      common_distractor_signature: '',
+      countermeasure: '',
+      example_questions: [],
+      tldr,
+    }
+    const bookmark: LessonProgress = {
+      id: 1,
+      userId: 1,
+      section: 'KVA',
+      frameworkId: 'KVA-TRAP-001',
+      updatedAt: new Date().toISOString(),
+      device: null,
+    }
+    live.lesson = bookmark
+    live.framework = {
+      section: 'KVA',
+      family: 'kva_traps',
+      version: 1,
+      authored_at: '',
+      entries: [trap, { ...trap, id: 'KVA-TRAP-016', question_title: undefined }],
+    }
+    const { result, rerender } = renderHook(() => useFolioShellData())
+    // Uppslag titles the bookmark itself in useShellData, not through the resume.
+    const { idag, ova, historik } = result.current.subtitles
+    expect(idag).toBe('Fortsätt KVA-lektion, Låser x² = y² tecknet?')
+    expect(historik).toBe('Pågår: KVA-lektion · Låser x² = y² tecknet?')
+    expect(ova).toBe('Alla delprov')
+    for (const line of [idag, ova, historik]) {
+      expect(line).not.toContain(headword)
+      expect(line).not.toContain(tldr)
+      expect(line).not.toMatch(/x\s*=\s*[-−]\s*y/)
+    }
+    live.lesson = { ...bookmark, frameworkId: 'KVA-TRAP-016' }
+    rerender()
+    expect(result.current.subtitles.idag).toBe('Fortsätt KVA-lektion, fälla 16')
+    expect(result.current.subtitles.historik).toBe('Pågår: KVA-lektion · fälla 16')
   })
 
   it('derives current completion without modifying or regenerating the server plan', () => {

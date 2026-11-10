@@ -1,12 +1,6 @@
 import type { MockResultRow } from '@/api/hooks/useMockResults'
 import { ProvLink } from './ProvLead'
-import {
-  historyLabel,
-  type NavigateHref,
-  type ResultsState,
-  RULES,
-  recentResults,
-} from './provView'
+import { historyLabel, type NavigateHref, type ResultsState, recentResults } from './provView'
 
 export function ResultRows({
   rows,
@@ -46,36 +40,58 @@ export function ProvMargin({
   results: ResultsState
   navigateHref: NavigateHref
 }) {
-  const rows = recentResults(results.data ?? []).slice(0, 3)
+  const last = recentResults(results.data ?? [])[0]
+  const label = last ? historyLabel(last) : null
   return (
-    <aside className="fa-aside" aria-label="Om provpasset">
-      <section>
-        <h2 className="fa-h3">Villkoren</h2>
-        <p className="fa-margin-note">{RULES.join(' ')}</p>
-      </section>
-      <section>
-        <h2 className="fa-h3">Poängen</h2>
-        <p className="fa-margin-note">
-          Ett pass ur ett tidigare prov får en härledd poäng från UHR:s normeringstabell när
-          tabellen finns. Annars visas en linjär skattning.
-        </p>
-      </section>
-      <section>
-        <h2 className="fa-h3">Senaste passen</h2>
-        {rows.length ? (
-          <ResultRows rows={rows} navigateHref={navigateHref} />
-        ) : (
-          <p
-            className="fa-margin-note"
-            role={results.isLoading || results.isError ? 'status' : undefined}
-          >
+    <aside className="fa-prov-side" aria-label="Om provpasset">
+      {last && label ? (
+        <ProvLink
+          className="fa-prov-card"
+          href={`/prov?result=${last.id}`}
+          navigateHref={navigateHref}
+        >
+          <h2>
+            Senaste provpasset <span>Resultat →</span>
+          </h2>
+          <div className="fa-prov-past">
+            <span>
+              {label.half} · {last.mode === 'synthetic' ? 'genererat pass' : 'riktigt pass'}
+            </span>
+            <b>
+              {last.correct} av {last.presented}
+            </b>
+            <small>
+              {label.when} · {last.presented} frågor
+            </small>
+            {last.mode === 'synthetic' ? <small>Ingen poäng</small> : null}
+          </div>
+        </ProvLink>
+      ) : (
+        <section className="fa-prov-card">
+          <h2>Senaste provpasset</h2>
+          <p role={results.isLoading || results.isError ? 'status' : undefined}>
             {results.isLoading
               ? 'Laddar tidigare pass …'
               : results.isError
                 ? 'Kunde inte hämta tidigare pass just nu.'
                 : 'Inga pass ännu — det första blir din baslinje.'}
           </p>
-        )}
+        </section>
+      )}
+      <section className="fa-prov-card">
+        <h2 className="fa-h3">Poängen</h2>
+        <p className="fa-margin-note">
+          Bara en hel halva, två riktiga pass med paus som på provdagen, får en poäng ur UHR:s
+          normeringstabell, och den visas som ett spann. Ett enskilt pass visar hur många rätt och
+          ett träffintervall.
+        </p>
+      </section>
+      <section className="fa-prov-card">
+        <h2 className="fa-h3">Klockan</h2>
+        <p className="fa-margin-note">
+          Du kan dölja klockan under passet. Fem minuter före slutet får du en lugn påminnelse om
+          vilka frågor som är obesvarade. Båda går att ändra i Konto.
+        </p>
       </section>
     </aside>
   )

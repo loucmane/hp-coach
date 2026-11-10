@@ -1,8 +1,33 @@
 import { useEffect, useRef, useState } from 'react'
 import type { MockHalf, MockMode } from '@/api/hooks/useMockResults'
+import { Go } from '@/folio/ui/Go'
+import { Lit } from '@/folio/ui/Lit'
 import type { PassOption } from '@/lib/mock'
 import { logMockEvent } from '@/lib/mockEvents'
-import { HALF_LABEL, passName, RULES } from './provView'
+import { HALF_LABEL, passName } from './provView'
+
+export function ConditionsList({ minutes }: { minutes: number }) {
+  return (
+    <ul className="fa-prov-terms" aria-label="Villkoren">
+      <li>
+        <b>{minutes} min</b>
+        <span>en klocka, som du kan dölja</span>
+      </li>
+      <li>
+        <b>Ingen paus</b>
+        <span>men du kan ändra svar tills tiden går ut</span>
+      </li>
+      <li>
+        <b>Inga avdrag</b>
+        <span>lämna ingen fråga tom</span>
+      </li>
+      <li>
+        <b>Avbryter du</b>
+        <span>räknas passet inte, men svaren sparas</span>
+      </li>
+    </ul>
+  )
+}
 
 export function ConditionsSlip({
   half,
@@ -34,9 +59,11 @@ export function ConditionsSlip({
       logMockEvent('confirm_shown')
     }
     const previous = document.activeElement
+    const hub = panel.current?.closest('.fa-prov')
     start.current?.focus()
     return () => {
-      if (previous instanceof HTMLElement) previous.focus()
+      if (previous instanceof HTMLElement && previous.isConnected) previous.focus()
+      else hub?.querySelector<HTMLButtonElement>('[data-testid="prov-start"]')?.focus()
     }
   }, [])
   useEffect(() => {
@@ -107,7 +134,8 @@ export function ConditionsSlip({
         onClick={dismiss}
         disabled={pending}
       />
-      <div
+      <Lit
+        as="div"
         className="fa-slip"
         role="dialog"
         aria-modal="true"
@@ -126,16 +154,15 @@ export function ConditionsSlip({
           {minutes} minuter
         </p>
         <p className="fa-slip-sub">Ingen feedback förrän du lämnar in.</p>
+        {mode === 'synthetic' ? (
+          <p className="fa-slip-sub">Ingen poäng: det är inte normerat.</p>
+        ) : null}
         {pass && mode === 'authentic' && pass.presented < 40 ? (
           <p className="fa-slip-sub">
             {40 - pass.presented} frågor saknas i källan. Passet rättas på {pass.presented}.
           </p>
         ) : null}
-        <ul className="fa-slip-rules" aria-label="Villkoren">
-          {RULES.map((rule) => (
-            <li key={rule}>{rule}</li>
-          ))}
-        </ul>
+        <ConditionsList minutes={minutes} />
         {unavailable ? (
           <p className="fa-status" role="status">
             Inget pass kunde startas. Välj ett annat pass eller försök igen.
@@ -146,22 +173,15 @@ export function ConditionsSlip({
           </p>
         ) : null}
         <div className="fa-slip-actions">
-          <button
+          <Go
             ref={start}
-            type="button"
-            className="fa-btn"
+            kbd={pending ? undefined : '↵'}
             data-testid="mock-confirm-start"
             disabled={pending}
             onClick={confirm}
           >
-            {pending ? (
-              'Startar …'
-            ) : (
-              <>
-                Starta nu <kbd aria-hidden>↵</kbd>
-              </>
-            )}
-          </button>
+            {pending ? 'Startar …' : 'Starta nu'}
+          </Go>
           <button
             type="button"
             className="fa-quiet-btn"
@@ -172,7 +192,7 @@ export function ConditionsSlip({
             Inte nu <kbd aria-hidden>Esc</kbd>
           </button>
         </div>
-      </div>
+      </Lit>
     </div>
   )
 }

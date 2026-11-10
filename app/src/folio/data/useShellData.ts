@@ -8,8 +8,8 @@ import { useLessonReadsQuery } from '@/api/hooks/useLessonReadsApi'
 import { useDueMistakes, usePileMistakes } from '@/api/hooks/useMistakes'
 import { useMockResults } from '@/api/hooks/useMockResults'
 import { useStats } from '@/api/hooks/useStats'
-import { useResumptionCandidate } from '@/components/home/useResumptionCandidate'
-import { entryHeadword, loadFramework } from '@/data/frameworks'
+import { lessonPlace, useResumptionCandidate } from '@/components/home/useResumptionCandidate'
+import { loadFramework } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import { deriveCompletion } from '@/hooks/useDailyPlan'
 import {
@@ -56,7 +56,8 @@ export function useFolioShellData(): ShellData {
     staleTime: Infinity,
   })
   const entry = framework.data?.entries.find((item) => item.id === lesson.data?.frameworkId)
-  const title = entry && framework.data ? entryHeadword(entry, framework.data) : null
+  // Never the headword: it states the trap's answer (hpf-qr0p.51.22).
+  const title = entry && framework.data ? lessonPlace(entry, framework.data) : null
   const scores = stats.data
     ? SECTION_KEYS.map((s) => computeSectionScore(s, stats.data.bySection[s], now))
     : []
