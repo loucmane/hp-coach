@@ -168,7 +168,7 @@ async function questionReady(index = 0) {
   return screen.findByTestId('fa-lock', undefined, { timeout: 5000 })
 }
 function key(key: string, shiftKey = false) {
-  fireEvent.keyDown(document.body, { key, shiftKey })
+  fireEvent.keyDown(document.activeElement ?? document.body, { key, shiftKey })
 }
 
 const note =

@@ -1,9 +1,13 @@
+import { motion as Motion } from 'motion/react'
 import type { ReactNode } from 'react'
 import { splitKvaPrompt } from '@/components/drill/KvaPrompt'
 import { MathText } from '@/components/MathText'
+import type { AnswerLetter } from '@/data/questions'
+import { useFolioMotion } from '@/folio/lib/useFolioMotion'
 import { parseNogPrompt } from '@/lib/nogPrompt'
 import type { DrillCoreRefs } from './drillCore'
 import { GapText } from './GapText'
+import { kvaGlyph } from './Options'
 import type { DrillQuestion } from './types'
 
 function isWord(q: DrillQuestion): boolean {
@@ -13,7 +17,7 @@ function isWord(q: DrillQuestion): boolean {
 /**
  * A problem set the textbook way, per section: XYZ's prompt as it comes;
  * KVA's condition as its own line, then the two quantities side by side in
- * a ruled table (stacked on phone, each under its italic label); NOG's
+ * selection pans (or the existing table for callers without `selected`); NOG's
  * question, its statements hanging in the margin and the italic lead-in;
  * ORD's word at the title size; MEK's blanks as gaps. With `hang`, the
  * problem's number hangs in the margin. `after` sets it as the quiet
@@ -29,6 +33,7 @@ export function QuantPage({
   figure,
   passageRef,
   flashPara,
+  selected,
 }: {
   q: DrillQuestion
   n: number
@@ -40,7 +45,11 @@ export function QuantPage({
   figure?: ReactNode
   passageRef?: DrillCoreRefs['para']
   flashPara?: number | null
+  /** Supplying null opts into the question pans before a choice is made.
+   * Omitted by static/legacy consumers, which retain their quantity table. */
+  selected?: AnswerLetter | null
 }) {
+  const motion = useFolioMotion()
   const prompt = q.prompt ?? ''
   const kva = q.section === 'KVA' ? splitKvaPrompt(prompt) : null
   const nog = q.section === 'NOG' ? parseNogPrompt(prompt) : null
@@ -81,24 +90,66 @@ export function QuantPage({
             {num}
             {kva.condition ? <MathText>{kva.condition}</MathText> : 'Jämför de två kvantiteterna.'}
           </Head>
-          <table className="fa-kva">
-            <thead>
-              <tr>
-                <th scope="col">Kvantitet I</th>
-                <th scope="col">Kvantitet II</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
+          {selected === undefined ? (
+            <table className="fa-kva fa-kva-table">
+              <thead>
+                <tr>
+                  <th scope="col">Kvantitet I</th>
+                  <th scope="col">Kvantitet II</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <MathText>{kva.kvI}</MathText>
+                  </td>
+                  <td>
+                    <MathText>{kva.kvII}</MathText>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          ) : (
+            <div className="fa-kva">
+              <div className="fa-pan">
+                <span className="fa-label">Kvantitet I</span>
+                <p className={/^\d+$/.test(kva.kvI.trim()) ? 'fa-pan-number' : undefined}>
                   <MathText>{kva.kvI}</MathText>
-                </td>
-                <td>
+                </p>
+              </div>
+              <div
+                className="fa-socket"
+                role="status"
+                aria-live="polite"
+                aria-label={
+                  selected
+                    ? `Ditt val: ${q.options?.find((o) => o.letter === selected)?.text ?? selected}`
+                    : 'Ännu inget val'
+                }
+                data-selected={selected ? 'true' : undefined}
+                data-motion={motion.level}
+              >
+                <Motion.span
+                  key={selected ?? 'empty'}
+                  aria-hidden
+                  initial={selected && motion.allowed ? { y: -14, scale: 0.7 } : false}
+                  animate={{ y: 0, scale: 1 }}
+                  transition={{
+                    duration: motion.allowed ? motion.durations.d2 / 1000 : 0,
+                    ease: motion.ease,
+                  }}
+                >
+                  {selected ? kvaGlyph(selected) : '·'}
+                </Motion.span>
+              </div>
+              <div className="fa-pan">
+                <span className="fa-label">Kvantitet II</span>
+                <p className={/^\d+$/.test(kva.kvII.trim()) ? 'fa-pan-number' : undefined}>
                   <MathText>{kva.kvII}</MathText>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                </p>
+              </div>
+            </div>
+          )}
         </fieldset>
       ) : nog ? (
         // The question and both statements read as one, the lead-in with them.

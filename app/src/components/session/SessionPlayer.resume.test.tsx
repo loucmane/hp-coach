@@ -138,7 +138,7 @@ describe('SessionPlayer restores prior Folio ELF answers on resume', () => {
     expect(h.start).not.toHaveBeenCalled()
     expect(pickQuestions).not.toHaveBeenCalled()
     expect(screen.getByTestId('drill-prompt')).toHaveTextContent('Lucka 33')
-    fireEvent.keyDown(document.body, { key: 'b' })
+    fireEvent.keyDown(document.activeElement ?? document.body, { key: 'b' })
     expect(h.submit).not.toHaveBeenCalled()
     if (arrival === 'after grading') fireEvent.click(lock)
     if (arrival !== 'cached') {
@@ -154,7 +154,7 @@ describe('SessionPlayer restores prior Folio ELF answers on resume', () => {
     expect(screen.getByTestId('drill-prompt')).toHaveTextContent('Lucka 33')
     if (arrival !== 'after grading') {
       await waitFor(() => {
-        expect(screen.getByTestId('option-B')).toHaveAttribute('aria-pressed', 'true')
+        expect(screen.getByTestId('option-B')).toHaveAttribute('aria-checked', 'true')
       })
       expect(h.submit).not.toHaveBeenCalled()
       fireEvent.click(lock)

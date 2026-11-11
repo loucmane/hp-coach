@@ -65,6 +65,7 @@ vi.mock('@/components/motion/QuestionPan', () => ({
 import { SessionPlayer, type SessionPlayerProps } from '@/components/session/SessionPlayer'
 import { peekExplanation } from '@/data/explanations'
 import { FolioShell } from '@/folio/FolioShell'
+import { useFolioPrefs } from '@/folio/lib/folioPrefs'
 import { endedSessionIdsThisTab } from '@/lib/endedSessions'
 import { useUiStore } from '@/stores/uiStore'
 import { formatViolations, runAxe } from '@/test/a11y'
@@ -123,6 +124,7 @@ beforeEach(() => {
   })
   h.start.mockResolvedValue({ id: 42 })
   useUiStore.setState({ folioPreview: false, mode: 'light' })
+  useFolioPrefs.setState({ kbd: true, theme: 'light' })
 })
 function mount(folio = true, props: Partial<SessionPlayerProps> = {}) {
   const client = new QueryClient({
@@ -154,10 +156,54 @@ async function questionReady() {
   return lock
 }
 function key(key: string, shiftKey = false) {
-  fireEvent.keyDown(document.body, { key, shiftKey })
+  fireEvent.keyDown(document.activeElement ?? document.body, { key, shiftKey })
 }
 
 describe('Folio through the real SessionPlayer', () => {
+  it('keeps question shortcuts inside the stage and respects the keyboard preference', async () => {
+    mount()
+    await questionReady()
+    fireEvent.keyDown(document.body, { key: 'b' })
+    expect(screen.getByTestId('fa-lock')).toBeDisabled()
+    act(() => useFolioPrefs.setState({ kbd: false }))
+    fireEvent.keyDown(screen.getByRole('region', { name: 'Uppgift 1' }), { key: 'b' })
+    expect(screen.getByTestId('fa-lock')).toBeDisabled()
+    act(() => useFolioPrefs.setState({ kbd: true }))
+    fireEvent.keyDown(screen.getByRole('region', { name: 'Uppgift 1' }), { key: 'b' })
+    expect(screen.getByTestId('fa-lock')).toBeEnabled()
+  })
+  it('composes a lit figure column, source caption and selection-only KVA socket', async () => {
+    useFolioPrefs.setState({ theme: 'dark' })
+    h.bank = [
+      {
+        ...fixture(17, 'KVA'),
+        exam_id: 'host-2022',
+        provpass: 'kvant2',
+        prompt: 'Kvantitet I: 2\nKvantitet II: 1',
+        figure: { src: 'figure.svg', aspect_ratio: 1 },
+      },
+    ]
+    const { container } = mount()
+    await questionReady()
+    expect(container.querySelectorAll('[data-lit="true"]')).toHaveLength(1)
+    expect(container.querySelector('.fa-qsheet > .fa-figcol img')).toHaveAttribute(
+      'src',
+      '/figure.svg',
+    )
+    expect(container.querySelector('.fa-figcol figure')).toHaveAttribute('data-theme', 'dark')
+    expect(container.querySelector('.fa-figcol figure')).toHaveAttribute('data-kind', 'svg')
+    expect(screen.getByText('Hösten 2022 · kvant 2 · uppgift 17')).toHaveClass('fa-source-line')
+    expect(screen.getByRole('status', { name: 'Ännu inget val' })).toHaveTextContent('·')
+    fireEvent.click(screen.getByTestId('option-B'))
+    expect(screen.getByRole('status', { name: /Ditt val:/ })).toHaveTextContent('<')
+    expect(h.submit).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: 'Förstora figuren' }))
+    expect(screen.getByRole('dialog', { name: 'Förstorad figur' })).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toHaveAttribute('data-theme', 'dark')
+    expect(screen.getByRole('dialog')).toHaveAttribute('data-kind', 'svg')
+    fireEvent.click(screen.getByRole('button', { name: 'Stäng' }))
+    expect(screen.getByRole('region', { name: 'Uppgift 1' })).toHaveFocus()
+  })
   it('selects without committing; Svara submits once and retains wrong-answer effects', async () => {
     const onWrong = vi.fn()
     expect(peekExplanation(h.bank[0].qid)).toBeNull()
@@ -165,7 +211,7 @@ describe('Folio through the real SessionPlayer', () => {
     const lock = await questionReady()
     key('b')
     expect(h.submit).not.toHaveBeenCalled()
-    expect(screen.getByTestId('option-B')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('option-B')).toHaveAttribute('aria-checked', 'true')
     fireEvent.click(lock)
     fireEvent.click(lock)
     expect(h.submit).toHaveBeenCalledTimes(1)
@@ -189,7 +235,7 @@ describe('Folio through the real SessionPlayer', () => {
     const option = screen.getByTestId('option-B')
     await user.click(option)
     expect(option).toHaveFocus()
-    expect(option).toHaveAttribute('aria-pressed', 'true')
+    expect(option).toHaveAttribute('aria-checked', 'true')
     expect(h.submit).not.toHaveBeenCalled()
     await user.keyboard('{Enter}')
     expect(h.submit).toHaveBeenCalledTimes(1)
@@ -208,7 +254,7 @@ describe('Folio through the real SessionPlayer', () => {
     expect(option).toHaveFocus()
     await user.keyboard('{Enter}')
     expect(h.submit).not.toHaveBeenCalled()
-    expect(option).toHaveAttribute('aria-pressed', 'true')
+    expect(option).toHaveAttribute('aria-checked', 'true')
     expect(option).toHaveFocus()
     expect(screen.getByTestId('fa-lock')).toBeEnabled()
     await user.keyboard('{Enter}')
@@ -220,14 +266,13 @@ describe('Folio through the real SessionPlayer', () => {
     mount()
     await questionReady()
     await user.click(screen.getByTestId('option-A'))
-    await user.tab()
-    await user.tab()
     const option = screen.getByTestId('option-B')
+    option.focus()
     expect(option).toHaveFocus()
     await user.keyboard('{Enter}')
     expect(h.submit).not.toHaveBeenCalled()
-    expect(screen.getByTestId('option-A')).toHaveAttribute('aria-pressed', 'false')
-    expect(option).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('option-A')).toHaveAttribute('aria-checked', 'false')
+    expect(option).toHaveAttribute('aria-checked', 'true')
     expect(option).toHaveFocus()
     await user.keyboard('{Enter}')
     expect(h.submit).toHaveBeenCalledTimes(1)
@@ -273,8 +318,10 @@ describe('Folio through the real SessionPlayer', () => {
   it('uses the shell exit and suppresses drill shortcuts while the leave sheet is open', async () => {
     mount()
     await questionReady()
-    await waitFor(() => expect(screen.queryByRole('navigation')).toBeNull())
-    fireEvent.click(screen.getByRole('button', { name: 'Avsluta' }))
+    await waitFor(() =>
+      expect(screen.queryByRole('navigation', { name: 'Huvudnavigation' })).toBeNull(),
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Avsluta passet' }))
     expect(screen.getByTestId('session-leave-sheet')).toBeInTheDocument()
     key('a')
     key('Enter')
@@ -417,7 +464,7 @@ describe('Folio through the real SessionPlayer', () => {
           name: section === 'KVA' ? 'Villkoret och kvantiteterna' : 'Frågan och påståendena',
         }),
       ).toBeInTheDocument()
-      const mathSelector = section === 'KVA' ? '.fa-kva td .katex' : '.fa-nog li .katex'
+      const mathSelector = section === 'KVA' ? '.fa-kva .fa-pan .katex' : '.fa-nog li .katex'
       expect(container.querySelectorAll(mathSelector)).toHaveLength(2)
     }
     expect(screen.getByTestId('drill-prompt').querySelector('.katex')).not.toBeNull()
@@ -596,7 +643,7 @@ it.each([
   mount()
   await questionReady()
   vi.mocked(window.scrollTo).mockClear()
-  fireEvent.click(screen.getByRole('button', { name: 'Avsluta' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Avsluta passet' }))
   expect(screen.getByTestId('session-leave-sheet')).toBeInTheDocument()
   fireEvent.click(screen.getByTestId('session-leave-continue'))
   expect(screen.queryByTestId('session-leave-sheet')).toBeNull()
@@ -684,7 +731,7 @@ it.each([
   expect(container.querySelector('[data-gap="31"] s')).toHaveTextContent('skynda')
   expect(container.querySelector('[data-gap="32"]')).toHaveAttribute('data-state', 'right')
   expect(container.querySelector('[data-gap="32"] .rd-gapword')).toHaveTextContent('fundera')
-  expect(screen.getByTestId('option-B')).toHaveAttribute('aria-pressed', 'true')
+  expect(screen.getByTestId('option-B')).toHaveAttribute('aria-checked', 'true')
   expect(h.submit).not.toHaveBeenCalled()
   key('Enter')
   expect(container.querySelector('[data-gap="33"]')).toHaveAttribute('data-state', 'wrong')
