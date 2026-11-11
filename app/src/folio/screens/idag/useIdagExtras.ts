@@ -3,7 +3,7 @@ import { useQueries, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import type { TopTrap } from '@/api/hooks/useTopTraps'
 import { useUserPrefs } from '@/api/hooks/useUserPrefs'
-import { useResumptionCandidate } from '@/components/home/useResumptionCandidate'
+import { lessonPlace, useResumptionCandidate } from '@/components/home/useResumptionCandidate'
 import { loadExplanation } from '@/data/explanations'
 import { type Framework, loadFramework } from '@/data/frameworks'
 import { SECTION_KEYS } from '@/data/questions'
@@ -75,7 +75,21 @@ export function useIdagExtras(
     viewport,
     examDate: sitting.date,
     daysLeft,
-    frameworks: frameworks.map((r) => r.data).filter((f): f is Framework => !!f),
+    // These catalogs feed pre-answer titles; preserve the cached source for facit.
+    frameworks: frameworks
+      .map((r) => r.data)
+      .filter((f): f is Framework => !!f)
+      .map(
+        (f) =>
+          ({
+            ...f,
+            entries: f.entries.map((entry) => ({
+              ...entry,
+              question_title: lessonPlace(entry, f) ?? undefined,
+            })),
+            // Mapping only the optional title preserves the catalog/entry pairing.
+          }) as Framework,
+      ),
     missFrameworks: missFrameworks.data,
     dailyMinutes: prefs.data?.dailyMinutes ?? undefined,
   }

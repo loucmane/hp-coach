@@ -269,4 +269,31 @@ describe('Ljusbord Öva', () => {
     client.clear()
     useUiStore.setState({ smartDrill: true })
   })
+  it.each([
+    ['Låser x² = y² tecknet?', 'Låser x²\u00a0=\u00a0y² tecknet?'],
+    [undefined, 'fälla 1'],
+    ['   ', 'fälla 1'],
+  ])('renders safe catalog text for title %s', async (question_title, expected) => {
+    const { useOvaExtras } =
+      await vi.importActual<typeof import('./useOvaExtras')>('./useOvaExtras')
+    const catalog = {
+      ...h.catalogs.KVA,
+      entries: [{ ...h.catalogs.KVA!.entries[0], question_title }],
+    } as Framework
+    h.loadFramework.mockResolvedValue(catalog)
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+    const hook = renderHook(useOvaExtras, {
+      wrapper: ({ children }: { children: ReactNode }) => (
+        <QueryClientProvider client={client}>{children}</QueryClientProvider>
+      ),
+    })
+    await waitFor(() => expect(hook.result.current.catalogs.KVA).toBeDefined())
+    h.catalogs = hook.result.current.catalogs
+    const { container } = renderPage()
+    expect(container.textContent).toContain(expected)
+    expect(container.textContent).not.toContain('SECRET')
+    expect(catalog.entries[0]).toMatchObject({ question_title })
+    hook.unmount()
+    client.clear()
+  })
 })

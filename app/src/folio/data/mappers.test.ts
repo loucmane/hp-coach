@@ -133,15 +133,26 @@ describe('shellSubtitles', () => {
         .provpass,
     ).toBe('Nästa: kvant, om tre dagar')
   })
-  it('shows the lesson and Swedish prognosis without inventing a missing score', () => {
-    const lines = shellSubtitles({
-      ...empty,
-      lesson: { section: 'NOG', title: 'Två påståenden' },
-      prognosis: 1.4,
-    })
+  it('shows the lesson and a Swedish prognosis range', () => {
+    const lines = shellSubtitles(
+      {
+        ...empty,
+        lesson: { section: 'NOG', title: 'Två påståenden' },
+        prognosis: 1.4,
+      },
+      0.25,
+    )
     expect(lines.uppslag).toBe('NOG · Två påståenden')
-    expect(lines.framsteg).toBe('Prognos 1,4 av 2,0')
-    expect(shellSubtitles({ ...empty, prognosis: 0 }).framsteg).toBe('Prognos 0,0 av 2,0')
+    expect(lines.framsteg).toBe('Prognos 1,1–1,6')
+  })
+  it.each([
+    [0, 0.2, 'Prognos 0,0–0,2'],
+    [2, 0.2, 'Prognos 1,8–2,0'],
+    [1.5, 0.01, 'Prognos 1,4–1,6'],
+    [1.5, null, 'Prognos och historik'],
+    [null, 0.2, 'Prognos och historik'],
+  ])('maps score %s and band %s honestly', (prognosis, band, expected) => {
+    expect(shellSubtitles({ ...empty, prognosis }, band).framsteg).toBe(expected)
   })
 })
 
@@ -226,7 +237,7 @@ describe('read-only shell adapters', () => {
     expect(result.current.subtitles.uppslag).not.toContain('Två påståenden')
     expect(result.current.subtitles.idag).toBe('Fortsätt NOG-lektion, fälla 1')
     expect(result.current.subtitles.idag).not.toMatch(/NOG-TRAP-\d+/)
-    expect(result.current.subtitles.framsteg).toBe('Prognos 1,4 av 2,0')
+    expect(result.current.subtitles.framsteg).toBe('Prognos 1,2–1,6')
     expect(result.current.identity.name).toBe('Ada')
     expect(live.get).toHaveBeenCalledWith(localDateString(new Date()))
     expect(live.put).not.toHaveBeenCalled()
