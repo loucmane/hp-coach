@@ -9,9 +9,17 @@
 import { act, cleanup, renderHook, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import type { TopTrap } from '@/api/hooks/useTopTraps'
 import type { Framework, TrapEntry } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
-import { type DailyPlan, PLAN_SCHEMA_VERSION, type PlanItem, savePlan } from '@/lib/scheduler'
+import {
+  type DailyPlan,
+  loadPlan,
+  markLessonRead,
+  PLAN_SCHEMA_VERSION,
+  type PlanItem,
+  savePlan,
+} from '@/lib/scheduler'
 import type { SectionStats } from '@/lib/scoring'
 import { useUiStore } from '@/stores/uiStore'
 import { deriveCompletion, isItemComplete, useDailyPlan } from './useDailyPlan'
@@ -22,6 +30,7 @@ const putPlan = vi.fn()
 const mutate = vi.fn()
 let remotePlan: DailyPlan | null = null
 let catalogs: Partial<Record<Section, Framework>> = {}
+let topTraps: TopTrap[] = []
 const statsData = {
   attempts: { total: 20 },
   bySection: Object.fromEntries(
@@ -44,7 +53,7 @@ const statsData = {
 const prefs = { mockDeferredDate: '2026-05-18' }
 vi.mock('@/api/hooks/useStats', () => ({ useStats: () => ({ data: statsData }) }))
 vi.mock('@/api/hooks/useMistakes', () => ({ useDueMistakes: () => ({ data: empty }) }))
-vi.mock('@/api/hooks/useTopTraps', () => ({ useTopTraps: () => empty }))
+vi.mock('@/api/hooks/useTopTraps', () => ({ useTopTraps: () => topTraps }))
 vi.mock('@/api/hooks/useAdaptiveReview', () => ({ useAdaptiveReview: () => ({ hotTrap: null }) }))
 vi.mock('@/api/hooks/useMockResults', () => ({ useMockResults: () => ({ data: empty }) }))
 vi.mock('@/api/hooks/useSessions', () => ({ useActiveSessions: () => ({ data: empty }) }))
@@ -67,7 +76,7 @@ vi.mock('@/data/frameworks', async (original) => ({
 }))
 vi.mock('@/data/leverage', () => ({ loadFrameworkLeverage: async () => null }))
 
-describe('useDailyPlan — pre-answer Folio text', () => {
+describe.each([false, true])('useDailyPlan — pre-answer text, Folio=%s', (folioPreview) => {
   const trap: TrapEntry = {
     id: 'KVA-TRAP-007',
     question_title: 'Låser x² = y² tecknet?',
@@ -83,22 +92,28 @@ describe('useDailyPlan — pre-answer Folio text', () => {
     planWith([
       {
         ...masteryItem(),
+        id: `${kind === 'drill' ? 'drill-trap' : 'lesson'}-${trap.id}-2026-05-18`,
         kind,
         section: 'KVA',
         framework: trap.id,
-        href: `/lektion?section=KVA#${trap.id}`,
-        headline: `KVA-lektion · ${trap.pattern_description}`,
-        rationale: `${trap.tldr} ${trap.recognition_cue}`,
+        href: kind === 'drill' ? `/drill?framework=${trap.id}` : `/lektion?section=KVA#${trap.id}`,
+        headline:
+          kind === 'lesson' ? `KVA-lektion · ${trap.pattern_description}` : `${trap.id} · 5 frågor`,
+        rationale:
+          kind === 'lesson'
+            ? 'Svagaste sektionen — 1.0, börja med lektionen.'
+            : `${trap.pattern_description} — 7 missar senaste veckan. Fokuserad drill.`,
       },
     ])
   beforeEach(() => {
     localStorage.clear()
     remotePlan = null
+    topTraps = []
     putPlan.mockClear()
     catalogs = {
       KVA: { section: 'KVA', family: 'kva_traps', version: 1, authored_at: '', entries: [trap] },
     }
-    useUiStore.setState({ folioPreview: true })
+    useUiStore.setState({ folioPreview })
   })
   afterEach(() => {
     cleanup()
@@ -128,8 +143,9 @@ describe('useDailyPlan — pre-answer Folio text', () => {
     remotePlan = unsafePlan('drill')
     const { result } = renderHook(() => useDailyPlan(now))
     await waitFor(() => expect(result.current.plan).not.toBeNull())
-    expect(result.current.plan?.items[0].headline).toContain('Fälla 7')
-    expect(result.current.plan?.items[0].rationale).not.toContain(trap.tldr)
+    expect(result.current.plan?.items[0].rationale).toBe(
+      'Fälla 7 — 7 missar senaste veckan. Fokuserad drill.',
+    )
   })
 
   it('hides stale cached text when the catalog is unavailable', async () => {
@@ -138,7 +154,168 @@ describe('useDailyPlan — pre-answer Folio text', () => {
     const { result } = renderHook(() => useDailyPlan(now))
     await waitFor(() => expect(result.current.plan).not.toBeNull())
     expect(result.current.plan?.items[0].headline).toContain('Fälla 7')
-    expect(result.current.plan?.items[0].rationale).not.toContain(trap.tldr)
+    expect(result.current.plan?.items[0].headline).not.toContain(trap.pattern_description)
+  })
+
+  it.each([
+    'Grunden först: läs XYZ-regeln som den här KVA-fällan bygger på.',
+    'Svagaste sektionen — 1.0, börja med lektionen.',
+  ])('keeps the headword-free lesson rationale verbatim: %s', async (rationale) => {
+    remotePlan = unsafePlan()
+    remotePlan.items[0].rationale = rationale
+    const { result } = renderHook(() => useDailyPlan(now))
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    expect(result.current.plan?.items[0]).toMatchObject({
+      headline: 'KVA-lektion · Låser x²\u00a0=\u00a0y² tecknet?',
+      rationale,
+    })
+  })
+
+  it('replaces only the trap name, preserving drill counts and coaching copy', async () => {
+    remotePlan = unsafePlan('drill')
+    const baseline = JSON.stringify(remotePlan)
+    const { result } = renderHook(() => useDailyPlan(now))
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    expect(result.current.plan?.items[0]).toMatchObject({
+      headline: `${trap.id} · 5 frågor`,
+      rationale: 'Låser x²\u00a0=\u00a0y² tecknet? — 7 missar senaste veckan. Fokuserad drill.',
+    })
+    expect(JSON.stringify(remotePlan)).toBe(baseline)
+    expect(loadPlan(remotePlan.date)).toEqual(remotePlan)
+    expect(putPlan).not.toHaveBeenCalled()
+  })
+
+  it.each([
+    'generated',
+    'local',
+    'server',
+  ] as const)('replaces a tldr-derived trap name in a %s plan without changing persistence', async (source) => {
+    const original = unsafePlan('drill')
+    original.items[0].rationale = `${trap.tldr} — 12 missar senaste veckan. Fokuserad drill.`
+    const originalJson = JSON.stringify(original)
+    if (source === 'generated') {
+      markLessonRead(trap.id)
+      topTraps = [
+        {
+          framework_id: trap.id,
+          section: 'KVA',
+          count: 12,
+          headline: trap.tldr ?? null,
+          trend: { kind: 'unknown' },
+        },
+      ]
+    }
+    if (source === 'local') savePlan(original)
+    if (source === 'server') remotePlan = original
+    const { result } = renderHook(() => useDailyPlan(now))
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    const item = result.current.plan?.items.find((i) => i.id === original.items[0].id)
+    expect(item).toMatchObject({
+      headline: `${trap.id} · 5 frågor`,
+      rationale: 'Låser x²\u00a0=\u00a0y² tecknet? — 12 missar senaste veckan. Fokuserad drill.',
+    })
+    const stored = loadPlan(original.date)
+    expect(stored?.items.find((i) => i.id === original.items[0].id)?.rationale).toBe(
+      original.items[0].rationale,
+    )
+    expect(JSON.stringify(original)).toBe(originalJson)
+    if (source === 'server') expect(putPlan).not.toHaveBeenCalled()
+    else expect(putPlan).toHaveBeenCalledWith(stored)
+  })
+
+  it('replaces a whole composed taxonomy name, including its internal em dash', async () => {
+    catalogs = {
+      LÄS: {
+        section: 'LÄS',
+        family: 'las_taxonomy',
+        version: 1,
+        authored_at: '',
+        entries: [
+          {
+            id: 'LAS-TYPE-001',
+            question_type: 'Direkt detalj',
+            question_title: 'Vad står i texten?',
+            attack_protocol: ['Leta upp samma formulering.'],
+            common_distractors: [],
+            example_questions: [],
+          },
+        ],
+      },
+    }
+    remotePlan = unsafePlan('drill')
+    remotePlan.items[0] = {
+      ...remotePlan.items[0],
+      id: `drill-trap-LAS-TYPE-001-${remotePlan.date}`,
+      section: 'LÄS',
+      framework: 'LAS-TYPE-001',
+      headline: 'LAS-TYPE-001 · 5 frågor',
+      href: '/drill?framework=LAS-TYPE-001',
+      rationale:
+        'Direkt detalj — Leta upp samma formulering. — 3 missar senaste veckan. Fokuserad drill.',
+    }
+    const { result } = renderHook(() => useDailyPlan(now))
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    expect(result.current.plan?.items[0].rationale).toBe(
+      'Vad står i texten? — 3 missar senaste veckan. Fokuserad drill.',
+    )
+    expect(loadPlan(remotePlan.date)).toEqual(remotePlan)
+  })
+
+  it.each([
+    'no title',
+    'no catalog',
+  ] as const)('keeps the trap-drill count with %s', async (missing) => {
+    if (missing === 'no catalog') catalogs = {}
+    else
+      catalogs.KVA = {
+        ...catalogs.KVA!,
+        entries: [{ ...trap, question_title: undefined }],
+      } as Framework
+    remotePlan = unsafePlan('drill')
+    remotePlan.items[0].rationale = `${trap.tldr} — 9 missar senaste veckan. Fokuserad drill.`
+    const { result } = renderHook(() => useDailyPlan(now))
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    expect(result.current.plan?.items[0].rationale).toBe(
+      'Fälla 7 — 9 missar senaste veckan. Fokuserad drill.',
+    )
+    expect(loadPlan(remotePlan.date)).toEqual(remotePlan)
+  })
+
+  it('leaves a generic drill rationale with no headword byte-identical', async () => {
+    remotePlan = unsafePlan('drill')
+    remotePlan.items[0].id = `drill-KVA-${remotePlan.date}`
+    remotePlan.items[0].rationale = 'Svagast — 1.25, övning skärper formen.'
+    const { headline, rationale } = remotePlan.items[0]
+    const { result } = renderHook(() => useDailyPlan(now))
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    expect(result.current.plan?.items[0]).toMatchObject({ headline, rationale })
+  })
+
+  it('keeps a cached headline and rationale with no headword byte-identical', async () => {
+    remotePlan = unsafePlan()
+    remotePlan.items[0].headline = 'Din nästa lektion · 5 min'
+    remotePlan.items[0].rationale = 'Ingen aktivitet på 20 dagar — friska upp grunderna.'
+    const { headline, rationale } = remotePlan.items[0]
+    const { result } = renderHook(() => useDailyPlan(now))
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    expect(result.current.plan?.items[0]).toMatchObject({ headline, rationale })
+  })
+
+  it('replaces the truncated headword in generated lesson headlines, keeping the baseline', async () => {
+    const headword = 'Negativa värden kan ge samma kvadrat, men behöver inte vara lika.'
+    catalogs.KVA = {
+      ...catalogs.KVA!,
+      entries: [{ ...trap, pattern_description: headword }],
+    } as Framework
+    const { result } = renderHook(() => useDailyPlan(now))
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    const baseline = putPlan.mock.calls[0][0] as DailyPlan
+    const stored = baseline.items.find((i) => i.framework === trap.id)
+    expect(stored?.headline).toBe('KVA-lektion · Negativa värden kan ge samma kvadrat, men…')
+    expect(result.current.plan?.items.find((i) => i.framework === trap.id)).toMatchObject({
+      headline: 'KVA-lektion · Låser x²\u00a0=\u00a0y² tecknet?',
+      rationale: stored?.rationale,
+    })
   })
 
   it('looks up the cached target even when the current lesson hint points elsewhere', async () => {
@@ -180,19 +357,41 @@ describe('useDailyPlan — pre-answer Folio text', () => {
     expect(result.current.plan?.items[0].rationale).not.toContain(entry.tactic)
   })
 
-  it('preserves the classic baseline and switches presentation without rewriting it', async () => {
+  it('keeps both presentations safe without rewriting the stored baseline', async () => {
     useUiStore.setState({ folioPreview: false })
     remotePlan = unsafePlan()
+    savePlan(remotePlan)
     const baseline = JSON.stringify(remotePlan)
+    const stored = JSON.stringify(localStorage)
     const { result } = renderHook(() => useDailyPlan(now))
     await waitFor(() => expect(result.current.plan).not.toBeNull())
-    expect(JSON.stringify(result.current.plan)).toBe(baseline)
+    expect(result.current.plan?.items[0].headline).toContain('Låser x²\u00a0=\u00a0y² tecknet?')
     act(() => useUiStore.setState({ folioPreview: true }))
     expect(result.current.plan?.items[0].headline).toContain('Låser x²\u00a0=\u00a0y² tecknet?')
     act(() => useUiStore.setState({ folioPreview: false }))
-    expect(JSON.stringify(result.current.plan)).toBe(baseline)
+    expect(result.current.plan?.items[0].headline).toContain('Låser x²\u00a0=\u00a0y² tecknet?')
     expect(JSON.stringify(remotePlan)).toBe(baseline)
+    expect(JSON.stringify(localStorage)).toBe(stored)
     expect(putPlan).not.toHaveBeenCalled()
+  })
+
+  it('preserves the completed first-pass marker as post-answer content', async () => {
+    remotePlan = unsafePlan()
+    remotePlan.items[0] = {
+      ...remotePlan.items[0],
+      id: `onboarding-${remotePlan.date}`,
+      headline: 'Första passet',
+      rationale: 'Vill du fortsätta? Öva en sektion →',
+      completed: true,
+      estimatedMinutes: 0,
+    }
+    const { result } = renderHook(() => useDailyPlan(now))
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    expect(result.current.plan?.items[0]).toMatchObject({
+      headline: 'Första passet',
+      rationale: 'Vill du fortsätta? Öva en sektion →',
+      completed: true,
+    })
   })
 })
 

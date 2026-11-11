@@ -1,12 +1,13 @@
 """Apply curated parser-typo fixes across the corpus.
 
-Reads `audit/corpus_lint/typo_fixes.json` (hand-curated list of 59
-verified letter-swap typos with high-confidence corrections). Applies
+Reads `audit/corpus_lint/typo_fixes.json` (hand-curated word, phrase,
+and exact option-text corrections). Applies
 each replacement across:
 
 - data/parsed/*.json (gitignored — local-only changes)
 - data/explanations/*.json (committed)
 - frameworks/*.json (committed)
+- app/public/data/*.json (committed app bank)
 
 Uses word-boundary regex so substrings within legitimate words don't
 get affected. Capitalized variants handled by case-preservation
@@ -19,6 +20,10 @@ data/explanations (dict keyed by qid) and data/parsed / app/public/data
 (lists where each item has a `section` field). frameworks/ has no
 section context — rules without `swedish_only` fire there as
 usual; rules with `swedish_only` are skipped to be safe.
+
+Exact option fixes run after spelling corrections. They require a matching
+question id, option letter, and complete old text; prompts, numeric answers
+on other questions, and already-corrected options are left alone.
 
 USAGE:
     python3 audit/corpus_lint/apply_typo_fixes.py            # dry run
@@ -125,7 +130,38 @@ def _section_from_qid(qid: str) -> str | None:
     return m.group(1).upper().replace('LAS', 'LÄS') if m else None
 
 
-def walk_json_file(path: Path, replacements, counts, dry_run=True):
+def build_option_replacements(option_list: list[dict]) -> dict:
+    """Index exact corrections; reject duplicate keys rather than overwrite."""
+    out = {}
+    for fix in option_list:
+        key = (fix['qid'], fix['letter'], fix['text'])
+        if key in out:
+            raise ValueError(f'Duplicate option fix: {key!r}')
+        out[key] = fix['correct']
+    return out
+
+
+def apply_option_fixes(question: dict, option_fixes: dict, counts: dict) -> dict:
+    """Return a corrected question without mutating its other fields."""
+    qid = question.get('qid')
+    if not isinstance(qid, str) or not isinstance(question.get('options'), list):
+        return question
+    options = []
+    for option in question['options']:
+        if not isinstance(option, dict):
+            options.append(option)
+            continue
+        key = (qid, option.get('letter'), option.get('text'))
+        correct = option_fixes.get(key)
+        if correct is not None and correct != option.get('text'):
+            counts[f'{qid} option {option["letter"]}'] += 1
+            options.append({**option, 'text': correct})
+        else:
+            options.append(option)
+    return {**question, 'options': options}
+
+
+def walk_json_file(path: Path, replacements, counts, dry_run=True, option_fixes=None):
     """Walk all string fields in a JSON file and apply replacements.
 
     Tracks section context so rules tagged `swedish_only` skip ELF
@@ -153,7 +189,11 @@ def walk_json_file(path: Path, replacements, counts, dry_run=True):
             # Per-item section override if the dict itself looks like a
             # question object (data/parsed shape).
             inner_section = obj.get('section') if isinstance(obj.get('section'), str) else section
-            return {k: recurse(v, inner_section) for k, v in obj.items()}
+            result = {k: recurse(v, inner_section) for k, v in obj.items()}
+            corrected = apply_option_fixes(result, option_fixes or {}, counts)
+            if corrected != result:
+                file_changed[0] = True
+            return corrected
         return obj
 
     # Top level: if it's a dict-by-qid (data/explanations), parse the
@@ -174,18 +214,24 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--apply', action='store_true', help='Write changes (default: dry run)')
     ap.add_argument('--fix-list', default=str(SCRIPT_DIR / 'typo_fixes.json'))
+    ap.add_argument('--options-only', action='store_true',
+                    help='Apply only exact option fixes, without the word/phrase sweep')
     args = ap.parse_args()
 
     fixes = json.loads(Path(args.fix_list).read_text())
     fix_list = fixes['fix']
     phrase_list = fixes.get('phrase_fix', [])
-    print(f'Loaded {len(fix_list)} verified word fixes + {len(phrase_list)} phrase fixes from {args.fix_list}')
+    option_fixes = build_option_replacements(fixes.get('option_fix', []))
+    print(f'Loaded {len(fix_list)} verified word fixes + {len(phrase_list)} phrase fixes '
+          f'+ {len(option_fixes)} option fixes from {args.fix_list}')
 
     # Phrase replacements run FIRST (greedy multi-token match), then
     # single-word replacements. Order matters because a phrase like
     # "sluten system" must be caught as a phrase before the word-level
     # `sluten` check (which wouldn't fire here anyway, but principle).
     replacements = build_phrase_replacements(phrase_list) + build_replacements(fix_list)
+    if args.options_only:
+        replacements = []
 
     counts = defaultdict(int)
     files_changed = []
@@ -212,7 +258,8 @@ def main():
         for f in sorted(d.glob(pattern)):
             if f.name.startswith('_'):
                 continue
-            if walk_json_file(f, replacements, counts, dry_run=not args.apply):
+            if walk_json_file(f, replacements, counts, dry_run=not args.apply,
+                              option_fixes=option_fixes):
                 files_changed.append(str(f.relative_to(ROOT)))
 
     print()

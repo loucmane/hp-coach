@@ -53,7 +53,8 @@ vi.mock('@/data/explanations', () => ({ loadExplanation: data.explanation }))
 vi.mock('@/api/hooks/useUserPrefs', () => ({
   useUserPrefs: () => ({ data: { dailyMinutes: 20 } }),
 }))
-vi.mock('@/components/home/useResumptionCandidate', () => ({
+vi.mock('@/components/home/useResumptionCandidate', async (original) => ({
+  ...(await original<typeof import('@/components/home/useResumptionCandidate')>()),
   useResumptionCandidate: () => extras.resume,
 }))
 const item: PlanItem = {
@@ -537,7 +538,9 @@ describe('Idag lazy data', () => {
         'p5-u-r1-LÄS-002': null,
       }),
     )
-    expect(hook.result.current.frameworks).toEqual([framework])
+    expect(hook.result.current.frameworks[0].entries[0]).toMatchObject({
+      question_title: 'Låser x²\u00a0=\u00a0y² tecknet?',
+    })
     expect(hook.result.current.dailyMinutes).toBe(20)
     expect(data.framework).toHaveBeenCalledWith('KVA')
     expect(data.explanation).toHaveBeenCalledTimes(2)
@@ -546,6 +549,49 @@ describe('Idag lazy data', () => {
     routeState.userId = 'student-b'
     hook.rerender()
     expect(hook.result.current.missFrameworks).toBeUndefined()
+    hook.unmount()
+    client.clear()
+  })
+  it.each([
+    undefined,
+    '',
+    '   ',
+  ])('renders a safe numbered trap when the title is %s', async (question_title) => {
+    const { useIdagExtras } =
+      await vi.importActual<typeof import('./useIdagExtras')>('./useIdagExtras')
+    const catalog = {
+      ...framework,
+      entries: [{ ...framework.entries[0], question_title }],
+    } as Framework
+    data.framework.mockResolvedValue(catalog)
+    const unsafe = {
+      ...plan,
+      items: [
+        {
+          ...item,
+          kind: 'lesson' as const,
+          section: 'KVA' as const,
+          framework: 'KVA-TRAP-001',
+          href: '/lektion?section=KVA#KVA-TRAP-001',
+          headline: 'ANSWER LEAK',
+          rationale: 'ANSWER LEAK',
+        },
+      ],
+    }
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+    const hook = renderHook(() => useIdagExtras([], unsafe), {
+      wrapper: ({ children }: { children: ReactNode }) => (
+        <QueryClientProvider client={client}>{children}</QueryClientProvider>
+      ),
+    })
+    await waitFor(() => expect(hook.result.current.frameworks).toHaveLength(1))
+    extras.frameworks = hook.result.current.frameworks
+    const { container } = render(
+      <FolioIdag plan={unsafe} allComplete={false} navigateHref={navigateHref} />,
+    )
+    expect(container.textContent).toContain('fälla 1')
+    expect(container.textContent).not.toContain('ANSWER LEAK')
+    expect(catalog.entries[0]).toMatchObject({ question_title })
     hook.unmount()
     client.clear()
   })

@@ -23,10 +23,11 @@ import { useTopTraps } from '@/api/hooks/useTopTraps'
 import { DrillResult, type DrillSummary } from '@/components/drill/DrillResult'
 import { type DrillClockState, QuietClock } from '@/components/drill/QuietClock'
 import { TempoLine } from '@/components/drill/TempoLine'
+import { lessonPlace } from '@/components/home/useResumptionCandidate'
 import { AdaptiveReviewOffer } from '@/components/session/AdaptiveReviewOffer'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { EXCLUDED_QUESTIONS } from '@/data/figureOverrides'
-import { entryHeadword, loadFramework } from '@/data/frameworks'
+import { loadFramework } from '@/data/frameworks'
 import { findQuestion, loadBank, type Question, type Section } from '@/data/questions'
 import { WORKED_EXAMPLE_QIDS } from '@/data/workedExamples.generated'
 import { logAdaptiveEvent } from '@/lib/adaptiveEvents'
@@ -476,22 +477,29 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
       ? qid
       : null
 
-  // Resolve the framework entry's display name (e.g. "för-" for
-  // ORD-ROOT-001) so the idle screen shows what the user is about to
-  // practice instead of the bare ID. Same loadFramework call the picker
-  // makes — Promise is memoised so this hits the cache.
-  const [frameworkHeadword, setFrameworkHeadword] = useState<string | null>(null)
+  // The idle screen is pre-answer: only a question title or neutral location.
+  // Bind the async title to its route so another framework cannot inherit it.
+  const [frameworkTitle, setFrameworkTitle] = useState<{
+    section: string
+    id: string
+    title: string | null
+  } | null>(null)
   useEffect(() => {
-    if (!framework) {
-      setFrameworkHeadword(null)
-      return
-    }
+    if (!framework) return
     let alive = true
-    loadFramework(section as Section).then((fw) => {
-      if (!alive || !fw) return
-      const entry = fw.entries.find((e) => e.id === framework)
-      if (entry) setFrameworkHeadword(entryHeadword(entry, fw))
-    })
+    loadFramework(section as Section)
+      .then((fw) => {
+        if (!alive) return
+        const entry = fw?.entries.find((e) => e.id === framework)
+        setFrameworkTitle({
+          section,
+          id: framework,
+          title: entry && fw ? lessonPlace(entry, fw) : null,
+        })
+      })
+      .catch(() => {
+        if (alive) setFrameworkTitle({ section, id: framework, title: null })
+      })
     return () => {
       alive = false
     }
@@ -613,7 +621,10 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
         ? encodeTreatedMarker(section, framework)
         : section
 
-  const frameworkDisplay = frameworkHeadword ?? framework
+  const frameworkDisplay =
+    (frameworkTitle?.section === section && frameworkTitle.id === framework
+      ? frameworkTitle.title
+      : null) ?? 'Mönsterövning'
   const idleEyebrow = directLinkQid
     ? 'Direktlänk'
     : ar
@@ -626,7 +637,7 @@ function DrillSession({ wordUserId }: { wordUserId?: string }) {
   const idleHeadline = directLinkQid
     ? directLinkQid
     : framework
-      ? (frameworkDisplay ?? framework)
+      ? frameworkDisplay
       : weak
         ? `Svagaste fällorna · ${section}`
         : copy.headline
