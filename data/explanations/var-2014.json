@@ -4574,107 +4574,79 @@
   "_meta": {
    "generated_at": "2026-05-17",
    "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "recipe": "variant-c-ultra-granular",
+   "figure_corrected": "2026-11-11",
+   "corrected_from": "text-only fabrication (guessed an ~18 % Japanese share from a 'manga boom', anchored on facit, leaked a self-correction); actual: 17,5 % (pie chart printed on the question page, p21) × 735 first editions"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "70 är frestande om du missar att se diagrammets fullständiga andel för japanska — eller läser av en annan kategori av översättningar (engelska, tyska) som ligger lägre.",
-    "why_wrong": "Som steg 5 betonar måste du leta upp ANDELEN japanska översättningar i en eventuell paj-/stapeldiagram för översättningsspråk, och multiplicera den med totala antalet förstaupplagor (735 enligt tabellen). 70 är för lite — det motsvarar ca 10 %, mycket lägre än vad japanska representerar bland barnboksöversättningar 2006 (tecknade serier var i hög grad japanska)."
+    "why_tempting": "Det är lätt att råka läsa siffrorna inom parentes, som gäller 2005: 11 % av 625 ≈ 69, alltså ungefär 70.",
+    "why_wrong": "Frågan gäller 2006. Då är andelen 17,5 % och grundtalet 735, och 0,175 · 735 ≈ 129 ≈ 130 (steg 2–4)."
    },
    {
     "letter": "B",
-    "why_tempting": "105 är frestande som mellanvärde. Många landar där om de tar ungefär 14–15 % av 735.",
-    "why_wrong": "Steg 6: andelen japanska översättningar bland förstaupplagor 2006 ligger högre än 15 % — runt 18 %, vilket ger 735 × 0,18 ≈ 132. Det matchar facits 130. 105 är för lågt."
+    "why_tempting": "Första instinkten är ofta att ta rätt andel, 17,5 %, men multiplicera med 625 — förstaupplagorna 2005 inom parentes. Det ger ≈ 109, närmast 105.",
+    "why_wrong": "Både andel och grundtal måste gälla 2006: 17,5 % av 735 ≈ 129, alltså 130 (steg 4)."
    },
    {
     "letter": "D",
-    "why_tempting": "165 är frestande om du tar TOTALA antalet översättningar (förstaupplagor + återutgivningar) och tar japanska-andelen av det. Eller om du blandar in fler kategorier.",
-    "why_wrong": "Frågan handlar specifikt om FÖRSTAUPPLAGOR (inte återutgivning). Steg 4: tabellen ger Summa förstaupplagor 2006 = 735 (med översatta = 142 förstaupplagor — vänta, 142 är 2005-talet). Med rätt grundtal och rätt japanska-andel landar svaret på 130, inte 165."
+    "why_tempting": "Om man räknar med alla översatta titlar 2006 — förstaupplagor och återutgivningar, 735 + 142 = 877 — blir 17,5 % ≈ 153, och då ligger 165 närmast.",
+    "why_wrong": "Frågan gäller bara förstaupplagor, och cirkeldiagrammet beskriver just översatta förstaupplagor. Grundtalet är 735, inte 877 (steg 2 och 6)."
    }
   ],
   "framework_id": "DTK-TACTIC-006",
-  "pitfall": "Den klassiska fällan här är att blanda ihop FÖRSTAUPPLAGOR med ÅTERUTGIVNINGAR, eller TOTALA antalet titlar med antal ÖVERSATTA titlar. Botemedlet: läs frågan noggrant — 'förstaupplagor' utesluter återutgivning, och 'översatta från japanska' låser ett specifikt språk inom översättnings-delmängden.",
+  "pitfall": "Fällan är att blanda år och grupper: siffrorna inom parentes gäller 2005, och återutgivningar hör inte till förstaupplagorna. Botemedlet: markera 2006-värdena i BÅDA källorna — 735 i tabellen och 17,5 % i cirkeldiagrammet — innan du räknar.",
   "pregrade_tactic": {
-   "handle": "Förstaupplagor-och-japansk-andel",
-   "move": "Identifiera totala antalet förstaupplagor av översatta barn- och ungdomsböcker 2006. Multiplicera med japanska språkets andel av översättningar 2006. Jämför mot 70, 105, 130, 165."
+   "handle": "Andel gånger rätt grundtal",
+   "move": "Hämta grundtalet ur tabellen (översatta förstaupplagor 2006) och andelen ur cirkeldiagrammet (japanska 2006). Multiplicera och välj närmaste alternativ."
   },
-  "solution_path": "Facit fastslår 130 (alternativ C). Räknat på data i figuren: andelen japanska översättningar bland förstaupplagor 2006 är runt 18 % av översättningskakan (huvudsakligen drivet av tecknade serier som 2006 till stor del var japanska manga). Multiplicerat med totalt antal översatta förstaupplagor 2006 ≈ 735 ger 735 × 0,18 ≈ 132 ≈ 130.",
+  "solution_path": "Två uppgifter ska kombineras: tabellens summa för översatta förstaupplagor 2006 (735) och cirkeldiagrammets andel japanska 2006 (17,5 %). 17,5 % av 735 är 0,175 · 735 ≈ 129, alltså ungefär 130 — alternativ C. Siffrorna inom parentes gäller 2005 och ska inte användas.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: hur många FÖRSTAUPPLAGOR av barn- och ungdomsböcker utgivna i Sverige 2006 var ÖVERSATTA FRÅN JAPANSKA? Svarsalternativen är 70, 105, 130, 165. Facit fastslår 130 (alternativ C).",
+    "text": "Frågan gäller FÖRSTAUPPLAGOR utgivna 2006 som var ÖVERSATTA FRÅN JAPANSKA. Du behöver två saker: hur många översatta förstaupplagor det fanns 2006, och hur stor andel av dem som kom från japanska.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Vilka data-källor finns?",
-    "text": "Sidan har tre data-element: (a) stapeldiagram över kategorier per år, (b) tabell över förstaupplagor och återutgivning per kategori 2006 (2005 i parentes). En tredje del — översättningsspråk per förstaupplaga — finns sannolikt i diagrammets text-fält eller separat figur. Det är översättningsdelen frågan handlar om.",
+    "title": "Hitta grundtalet i tabellen",
+    "text": "Tabellen visar antalet ÖVERSATTA titlar 2006, uppdelat på förstaupplagor och återutgivning. Raden Summa ger 735 förstaupplagor 2006 (625 inom parentes gäller 2005).",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Vad betyder 'förstaupplaga'?",
-    "text": "Förstaupplaga = första utgåvan av en titel (skiljt från återutgivning, som är en ny tryckning av en redan tidigare utgiven titel). I tabellen anges båda separat: förstaupplagor och återutgivning. För 2006: Summa förstaupplagor = 735.",
-    "tier": "detail"
+    "title": "Hitta andelen i cirkeldiagrammet",
+    "text": "Cirkeldiagrammet visar översatta förstaupplagor 2006 fördelade efter originalspråk. Japanska har 17,5 % (11 % inom parentes gäller 2005).",
+    "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Vad betyder 'översatt från japanska'?",
-    "text": "Översatt = inte originalspråk svenska, utan en bok som skrivits på ett annat språk och översatts till svenska för utgivning. Japanska som källspråk var dominerande inom tecknade serier (manga) i Sverige under mitten av 2000-talet.",
-    "tier": "detail"
+    "title": "Räkna",
+    "text": "17,5 % av 735: 0,175 · 735 ≈ 128,6. I huvudet: 10 % = 73,5, 5 % ≈ 36,8 och 2,5 % ≈ 18,4 — sammanlagt ≈ 128,6.",
+    "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Hitta japanska-andelen",
-    "text": "Av tabellens not står: 'Antalet översatta titlar bland det totala antalet barn- och ungdomsböcker utgivna 2006'. Detta är ÖVERSATTA delmängden. För förstaupplagor är denna delmängd betydligt mindre än totalsumman 735. Andel japanska bland översättningar var hög (runt 30–40 %) tack vare manga-boomen.",
+    "title": "Välj alternativ",
+    "text": "128,6 ligger närmast 130. Svaret är C.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Räkna ut antalet japanska",
-    "text": "Förenklat: om ~30 % av förstaupplagorna är översättningar (typisk siffra), och ~30 % av översättningarna kommer från japanska (huvudsakligen manga), så är japanska förstaupplagor ≈ 735 × 0,30 × 0,30 ≈ 66 — för lågt. Alternativt: tecknade serier 2006 totalt 290 stapel, varav ~200 förstaupplagor, och de flesta är japanska. Ca 130 japanska förstaupplagor matchar facit.",
-    "tier": "essential"
+    "title": "Varför samma grundtal i båda källorna?",
+    "text": "Båda uppgifterna gäller samma grupp: översatta förstaupplagor 2006. Därför kan andelen i diagrammet multipliceras direkt med summan i tabellen — utan att blanda in återutgivningar eller det totala antalet titlar (1 515), som också innehåller böcker skrivna på svenska.",
+    "tier": "detail"
    },
    {
     "n": 7,
-    "title": "Sanity-check mot manga-boomen",
-    "text": "Mitten av 2000-talet är manga-boomens topp i Sverige. Tecknade serier som kategori dominerades av japanska titlar. Om tecknade serier hade 290 totala titlar 2006 och 218 förstaupplagor varav ~80 % japansk = ca 175. Det är högre än facits 130, men frågan inkluderar alla barn-/ungdoms-kategorier — inte bara tecknade serier. Japanska andelen utanför tecknade serier är minimal. 130 är rimligt totalvärde.",
-    "tier": "detail"
-   },
-   {
-    "n": 8,
-    "title": "Räkna på alternativen",
-    "text": "70 ≈ 9,5 % av 735 — för lite, eftersom manga ensam överstiger detta. 105 ≈ 14 % — fortfarande för lite. 130 ≈ 17,7 % — konsistent med manga + lite annan japansk litteratur. 165 ≈ 22,4 % — för mycket, eftersom inte ALLA förstaupplagor är översatta. Facit fastslår 130.",
-    "tier": "detail"
-   },
-   {
-    "n": 9,
-    "title": "Vanlig fälla: räkna totalt istället för förstaupplagor",
-    "text": "Tabellen visar förstaupplagor (735) och återutgivning (142) — totalt 877 titlar 2006. Om du tar 877 × 18 % ≈ 158 (närmare 165, alternativ D). Det är fel — frågan kräver bara förstaupplagor. Lås in 735 som grundtal.",
-    "tier": "detail"
-   },
-   {
-    "n": 10,
-    "title": "Vanlig fälla: blanda 2005 och 2006",
-    "text": "Tabellen visar 2006-värden med 2005 i parentes. Förstaupplagor 2006: 735, 2005: 625. Frågan låser 2006 — använd 735. Med 625 skulle svaret skifta neråt något.",
-    "tier": "detail"
-   },
-   {
-    "n": 11,
-    "title": "Plocka närmaste svarsalternativ",
-    "text": "Av alternativen 70, 105, 130, 165 är 130 (C) konsistent med en japansk-andel runt 17–18 % av 735 förstaupplagor 2006. Facit fastslår C.",
-    "tier": "essential"
-   },
-   {
-    "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är C (130). Insikten i en mening: språk-andelsfrågor kräver att du multiplicerar GRUNDTALET (här: förstaupplagor 2006 = 735) med ANDELEN (japanska bland översättningar) — och låser båda delarna noggrant via texten.",
+    "title": "Slutsats",
+    "text": "Svaret är C (130). Insikten i en mening: när en andel och ett grundtal står i olika figurer, kontrollera att båda gäller samma år och samma grupp innan du multiplicerar.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för andelsfrågor med flera filter (år + utgivningstyp + språk): (1) identifiera GRUNDTALET (rätt år, rätt utgivningstyp — förstaupplagor inte återutgivning), (2) hitta ANDELEN för det specifika språket, (3) multiplicera, (4) jämför mot svarsalternativen. Triggern: 'hur många X år Y var Z' → grundtal × andel."
+  "technique": "DTK-strategi för 'hur många X var Y' när andel och antal står i olika figurer: (1) hitta grundtalet för rätt år och rätt grupp, (2) hitta andelen för samma år och grupp, (3) multiplicera, (4) välj närmaste alternativ. Triggern: en procentfördelning (cirkeldiagram) plus en tabell med antal för samma grupp."
  },
  "var-2014-kvant2-DTK-037": {
   "_meta": {

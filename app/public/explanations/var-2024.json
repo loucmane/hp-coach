@@ -3590,7 +3590,7 @@
   ],
   "framework_id": null,
   "pitfall": "Vanligaste felet är att räkna ett av lådvillkoren (t.ex. 'C ska ha en av varje färg') och glömma de andra (A och B). Botemedlet: skriv ned VAD som måste hända i varje låda innan du börjar räkna — då kan du inte glömma ett villkor.",
-  "solution_path": "För att alla tre lådor ska sluta med en röd och en vit kvar, måste hon ta röd ur A och vit ur B, ELLER vit ur A och röd ur B. Sannolikheterna är \\frac{2}{3}·\\frac{2}{3} + \\frac{1}{3}·\\frac{1}{3} = \\frac{4}{9} + \\frac{1}{9} = \\frac{5}{9}... vänta, vi måste tänka noggrannare. Svaret är D = \\frac{4}{9}.",
+  "solution_path": "Nyckeln är att varje låda ska sluta med en röd och en vit kula. Låda A (två röda, en vit) behåller en av varje bara om Laila tar en RÖD kula, och låda B (en röd, två vita) bara om hon tar en VIT. Då får låda C automatiskt en röd och en vit. Sannolikheten blir \uE000\\dfrac{2}{3} \\cdot \\dfrac{2}{3} = \\dfrac{4}{9}\uE001 — svaret är D.",
   "steps": [
    {
     "n": 1,
@@ -3971,97 +3971,75 @@
   "_meta": {
    "generated_at": "2026-05-17",
    "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "recipe": "variant-c-ultra-granular",
+   "figure_corrected": "2026-11-11",
+   "corrected_from": "legend mapped to the wrong slices (Illegal jakt read as 86, El as 20), so the explanation found B closer and deferred to facit; actual: Illegal jakt 20 + El 84 = 104 ≈ 503/5"
   },
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Illegal jakt (86) + Vindkraftverk (13) = 99 — också ungefär en femtedel av 503 (≈ 100,6). Det är frestande att hamna här om man tar Illegal jakt och första bästa lilla bit i pajen som passar.",
-    "why_wrong": "Som steg 6 visar är 86 + 13 = 99 medan 86 + 20 = 106. Båda är 'ungefär 100' men 100,6 = 503/5 är närmast 106 (avstånd 5,4) snarare än 99 (avstånd 1,6). Hmm 99 är faktiskt NÄRMARE 100,6 än 106 är. Men facit fastslår A — så den korrekta paret är Illegal jakt + El, inte Illegal jakt + Vindkraftverk. Detta kan bero på att de exakta tal-värdena i pajen är något annorlunda än de avläsningar jag har — facit som auktoritativ källa fastslår A."
+    "why_tempting": "Det är lätt att välja Illegal jakt plus en liten sektor om man tror att Illegal jakt är en av de stora sektorerna — då verkar den ensam fylla nästan hela femtedelen.",
+    "why_wrong": "Illegal jakt är den lilla, tätt streckade sektorn högst upp: bara 20. Med Vindkraftverk (4) blir paret 24, ungefär 5 % av 503 (steg 3–4)."
    },
    {
     "letter": "C",
-    "why_tempting": "El (20) + Vindkraftverk (13) = 33 — det är cirka 1/15 av 503, alldeles för litet för en femtedel. Men om man blandar ihop pajen och tror att 1/5 är 'en liten kant' av cirkeln kan C låta rimligt.",
-    "why_wrong": "Steg 7: 1/5 av 503 är 100,6. El+Vindkraftverk = 33 är bara 1/15 av totalen. Inte ens nära en femtedel. Facit fastslår A — Illegal jakt + El (86 + 20 = 106)."
+    "why_tempting": "Snabbsvar är ofta att El, en av de största sektorerna (84), plus Vindkraftverk räcker: 88 ligger inte så långt från 100.",
+    "why_wrong": "88 är ungefär 17,5 % av 503. Illegal jakt + El = 104 ligger mycket närmare en femtedel (≈ 100), så A passar bättre (steg 5)."
    },
    {
     "letter": "D",
-    "why_tempting": "Vindkraftverk (13) + Annan olycka (5) = 18 — också alldeles för litet för 1/5 av 503. Lockar bara om man tappar förbi att räkna.",
-    "why_wrong": "Som steg 7 noterar är 18 mycket långt från 100,6 (1/5 av 503). Facit fastslår A — Illegal jakt + El."
+    "why_tempting": "Om man kopplar sektorerna till fel rader i teckenförklaringen kan Vindkraftverk och Annan olycka se ut att vara stora sektorer.",
+    "why_wrong": "Vindkraftverk (4) och Annan olycka (16) hör till de minsta sektorerna. Tillsammans blir de 20 — ungefär 4 % av 503, långt från en femtedel (steg 4)."
    }
   ],
   "framework_id": "DTK-TACTIC-006",
-  "pitfall": "Den klassiska fällan i 'två kategorier som summerar till en femtedel' är att (a) inte beräkna 1/5 av totalen explicit, (b) bara titta på de största bitarna utan att para ihop dem, eller (c) sluta vid första paret som är 'i närheten' utan att kontrollera om ett annat par är ännu närmare. Botemedlet: beräkna 1/5 av totalen FÖRST, lista pajens tal-värden, prova kandidatpar systematiskt och välj det par som summerar närmast målet.",
+  "pitfall": "Fällan är att koppla sektorerna till fel kategori — särskilt de två streckade, Illegal jakt (20) och El (84). Botemedlet: följ teckenförklaringens ordning medurs från toppen och kontrollera att talen summerar till 503.",
   "pregrade_tactic": {
-   "handle": "Beräkna-mål-och-prova-par",
-   "move": "1/5 av 503 ≈ 100,6. Lista pajens delar med printade tal (Illegal jakt 86, El 20, Vindkraftverk 13, Annan olycka 5 etc.) och hitta paret som summerar närmast 100,6. Illegal jakt + El = 86 + 20 = 106."
+   "handle": "Mål först, sedan rätt sektorer",
+   "move": "Räkna ut en femtedel av 503. Koppla varje sektor till sin kategori via mönstret — teckenförklaringen följer sektorerna medurs från toppen — och pröva sedan paren i alternativen."
   },
-  "solution_path": "Facit fastslår A Illegal jakt och El. Pajen visar 503 totalt med printade delar: Illegal jakt 86, El 20, Vindkraftverk 13, Annan olycka 5 (övriga större bitar Förgiftning 84, Trafik 16, Sjukdom 133, Okänd 142). 1/5 av 503 ≈ 100,6. Illegal jakt (86) + El (20) = 106 — närmast 100,6 av kandidatparen i alternativen.",
+  "solution_path": "En femtedel av 503 är ungefär 100. Med hjälp av mönstren i teckenförklaringen — som räknar upp kategorierna i samma ordning som sektorerna, medurs från toppen — är Illegal jakt 20, El 84, Vindkraftverk 4 och Annan olycka 16. Illegal jakt och El ger 20 + 84 = 104, ungefär en femtedel, medan de andra paren bara ger 24, 88 och 20. Svaret är A.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilka TVÅ dödsorsaker angavs för sammanlagt EN FEMTEDEL av de kungsörnar som inkom till Naturhistoriska riksmuseet 1993-2011? Svar A Illegal jakt + El, B Illegal jakt + Vindkraftverk, C El + Vindkraftverk, D Vindkraftverk + Annan olycka. Facit fastslår A.",
+    "text": "Du söker de TVÅ dödsorsaker som tillsammans står för ungefär EN FEMTEDEL av alla kungsörnar i cirkeldiagrammet.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Orientera dig i diagrammet",
-    "text": "Pajdiagrammet heter 'Dödlighet hos kungsörnar'. Total: 503 kungsörnar 1993-2011, indelade efter dödsorsak. Varje cirkelsektor har en PRINTAD siffra (antal). Legenden listar 9 kategorier: Illegal jakt, Förgiftning, Fälld 'nöd', Trafik, Sjukdom/skada/svält, El, Vindkraftverk, Annan olycka, Okänd.",
+    "title": "Räkna ut målet",
+    "text": "Totalt inkom 503 kungsörnar. En femtedel är 503/5 ≈ 100. Paret du söker ska alltså summera till ungefär 100.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Beräkna målet '1/5 av total'",
-    "text": "1/5 av 503 = 503 / 5 = 100,6. Det är vad de två kategoriernas SUMMA ska vara — alltså närmast 100 eller 101. Detta är den exakta målpunkten du letar efter.",
+    "title": "Koppla sektor till kategori",
+    "text": "Teckenförklaringen räknar upp kategorierna i samma ordning som sektorerna, medurs från klockan tolv: Illegal jakt 20, Förgiftning 13, Fälld \"nöd\" 5, Trafik 133, Sjukdom/skada/svält 86, El 84, Vindkraftverk 4, Annan olycka 16 och Okänd 142. Mönstren bekräftar det: Illegal jakt är tätt streckad, El glest streckad. Kontroll: talen summerar till 503.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Identifiera de printade värdena",
-    "text": "Pajen har dessa printade tal: Illegal jakt 86, Förgiftning 84, Fälld 'nöd' 4, Trafik 16, Sjukdom/skada/svält 133, El 20, Vindkraftverk 13, Annan olycka 5, Okänd 142. Notera att dessa är auktoritativa (printade), inte mätningar.",
+    "title": "Pröva paren i alternativen",
+    "text": "A: Illegal jakt + El = 20 + 84 = 104. B: Illegal jakt + Vindkraftverk = 20 + 4 = 24. C: El + Vindkraftverk = 84 + 4 = 88. D: Vindkraftverk + Annan olycka = 4 + 16 = 20.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Förstå frågan strukturellt",
-    "text": "Du letar TVÅ siffror i listan som summerar till 100-101. Det är ett par-summa-problem — som att hitta två tal i en lista som ger en specifik summa. Pröva varje kandidatpar i svarsalternativen.",
+    "title": "Välj paret närmast målet",
+    "text": "Bara A hamnar nära 100: 104/503 ≈ 0,21, alltså ungefär en femtedel. C (88) är ungefär 17,5 %, och B och D bara runt 5 %.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Pröva par A: Illegal jakt + El",
-    "text": "86 + 20 = 106. Avstånd till 100,6 är 5,4. Detta är 'ungefär en femtedel' — 106/503 = 0,211 = 21,1 %. Nära 20 %.",
-    "tier": "essential"
+    "title": "Två streckade mönster",
+    "text": "Illegal jakt och El är båda streckade. Illegal jakt har tät streckning och är den lilla sektorn högst upp (20); El har gles streckning och är den stora sektorn nere till vänster (84). Blandar man ihop dem blir alla par fel.",
+    "tier": "detail"
    },
    {
     "n": 7,
-    "title": "Pröva par B, C, D",
-    "text": "B Illegal jakt + Vindkraftverk: 86 + 13 = 99. C El + Vindkraftverk: 20 + 13 = 33. D Vindkraftverk + Annan olycka: 13 + 5 = 18. Av dessa är B 99 också nära 100,6 (avstånd 1,6) — närmare matematiskt än A's 106 (avstånd 5,4).",
-    "tier": "essential"
-   },
-   {
-    "n": 8,
-    "title": "Varför facit fastslår A trots B's till synes närmare summa",
-    "text": "Facit fastslår A — vilket innebär att pajens faktiska delar för Illegal jakt och El är så att 86 och 20 är auktoritativa siffror som tillsammans utgör en femtedel enligt UHRs avrundning eller exakta data. Antingen är mina printade-tal-avläsningar något off (Illegal jakt kan vara t.ex. 82 och El 19 = 101), eller så avrundar facit annorlunda. Facit som auktoritativ källa — fastslår A.",
-    "tier": "essential"
-   },
-   {
-    "n": 9,
-    "title": "Vad betyder 'sammanlagt en femtedel'?",
-    "text": "'Sammanlagt' = de TVÅ kategorierna tillsammans. 'En femtedel' = 1/5 = 20 %. Det är inte 'varje för sig en femtedel'; det är 'tillsammans en femtedel'. Detta är en grundläggande lästekninng på frågan.",
-    "tier": "detail"
-   },
-   {
-    "n": 10,
-    "title": "Visuell sanity-check mot pajen",
-    "text": "Illegal jakt-biten är synligt stor i pajen (den största kategorin efter Okänd och Sjukdom). El-biten är medelstor. Tillsammans utgör de visuellt en KNAPP femtedel av cirkeln. Detta stämmer med facit A.",
-    "tier": "detail"
-   },
-   {
-    "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är A — Illegal jakt och El. Insikten i en mening: i 'två kategorier summerar till en bråkdel'-frågor från pajdiagram med printade tal, beräkna målet i absoluta tal först (1/5 av 503 = 100,6), prova kandidatpar och välj det facit-bekräftade svar.",
+    "title": "Slutsats",
+    "text": "Svaret är A — Illegal jakt och El. Insikten i en mening: räkna ut målet i antal först (503/5 ≈ 100) och koppla sedan varje sektor till rätt kategori innan du summerar paren.",
     "tier": "essential"
    }
   ],
@@ -6952,28 +6930,30 @@
   "_meta": {
    "generated_at": "2026-05-14",
    "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "recipe": "variant-c-ultra-granular",
+   "rewritten": "2026-11-11 hpf-ydaz",
+   "corrected_from": "explanation read options B and C as 3 cm and 5 cm (radicals lost in the raw text), concluded D against the key and listed the correct option C as a distractor"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att tro att om K₂ täcker MINDRE av sin egen area (20 % < 25 %), så är K₂ MINDRE än K₁ — sida ~1,6.",
-    "why_wrong": "Steg 3 visar tvärtom: lägre procent betyder STÖRRE kvadrat (eftersom samma absoluta area är en mindre del). 1,6² = 2,56 cm² ger 20 % = 0,51 cm² — inte 1."
+    "why_tempting": "Det är lätt att tro att K₂ är MINDRE eftersom den bara bidrar med 20 % mot K₁:s 25 % — och 2 · 20/25 = 1,6 cm.",
+    "why_wrong": "Samma överlapp är en MINDRE andel av K₂ än av K₁, så K₂ måste vara STÖRRE. Med 1,6 cm blir arean 2,56 cm² och 20 % av den bara ungefär 0,51 cm², inte 1 cm² (steg 4–5)."
    },
    {
     "letter": "B",
-    "why_tempting": "Snabbsvar är ofta s = 3 om man räknar 0,25·4 = 1, sedan tar 1/0,20 = 5 men förväxlar med sidan istället för arean.",
-    "why_wrong": "Steg 5 säger s² = 5 (ARENAN), inte s = 5 direkt. s = √5 ≈ 2,24, inte 3."
+    "why_tempting": "Snabbsvar är ofta att räkna med den del av K₁ som INTE täcks, 4 − 1 = 3 cm², som om det vore K₂:s area — och ta roten ur 3.",
+    "why_wrong": "K₂:s area bestäms av att överlappet (1 cm²) är 20 % av den: 0,20 · s² = 1 ger s² = 5, inte 3 (steg 4–5)."
    },
    {
-    "letter": "C",
-    "why_tempting": "Många stannar vid s² = 5 och hoppar av en mental våning till s = 5.",
-    "why_wrong": "Steg 7 visar att s = √s² = √5, inte 5. Att inte ta kvadratroten är vanligaste felet i kvadratproblem."
+    "letter": "D",
+    "why_tempting": "Om du ser att K₂ är 25/20 = 1,25 gånger så stor som K₁ och skalar SIDAN med 1,25 får du 2 · 1,25 = 2,5 cm.",
+    "why_wrong": "Faktorn 1,25 gäller AREAN: K₂:s area är 1,25 · 4 = 5 cm², så sidan är \uE000\\sqrt{5}\uE001 ≈ 2,24 cm. Med 2,5 cm blir 20 % av arean 1,25 cm², inte 1 cm² (steg 10–11)."
    }
   ],
   "framework_id": "XYZ-TRAP-043",
-  "pitfall": "Vanligaste felet är att glömma kvadratroten — att stanna vid s² och ta det som s. Botemedlet: skriv alltid 's² = ...' explicit och kom ihåg att ta roten i sista steget.",
-  "solution_path": "Överlappet räknat från K₁: 0,25·2^{2} = 1 cm². Räknat från K₂: 0,20·sida², där sida är K₂:s sidlängd. Sätt lika: 0,20·sida² = 1 → sida² = 5 → sida = √5 ≈ 2,24. Närmast 2,5 cm. Svaret är D. Vänta — låt mig kolla: alternativet 'C: 5 cm' ger sida² = 25, och 20 % av 25 = 5, vilket motsvarar K₁-arean 4·25 % = 1 — DET stämmer. Hmm. Med sida 5 cm för K₂: K₂-area = 25, 20 % = 5. K₁-area = 4, 25 % = 1. Men 5 ≠ 1. Så sida = 5 stämmer ej. Sida = √5 ≈ 2,24 är närmast 2,5; men svaret C anges. Låt mig läsa noggrannare.",
+  "pitfall": "Vanligaste felet är att skala SIDAN med procentförhållandet (25/20 = 1,25 → 2,5 cm) i stället för arean. Botemedlet: räkna ut överlappet i cm² först, ställ upp 0,20 · s² = 1 och ta kvadratroten i sista steget.",
+  "solution_path": "Nyckeln är att samma överlapp är 25 % av K₁ och 20 % av K₂. K₁ har arean 2 · 2 = 4 cm², så överlappet är 0,25 · 4 = 1 cm². Då gäller 0,20 · s² = 1 för K₂:s sida s, alltså s² = 5 och s = \uE000\\sqrt{5}\uE001 cm. Svaret är C.",
   "steps": [
    {
     "n": 1,
@@ -7019,31 +6999,31 @@
    },
    {
     "n": 8,
-    "text": "Alternativen är A: 1,6, B: 3, C: 5, D: 2,5. Inget är exakt √5. Den närmaste är D = 2,5 (avstånd 0,26) eller A = 1,6 (avstånd 0,64). D ligger närmast.",
+    "text": "Alternativen är A 1,6 cm, B \uE000\\sqrt{3}\uE001 cm, C \uE000\\sqrt{5}\uE001 cm och D 2,5 cm. s = \uE000\\sqrt{5}\uE001 cm står exakt som alternativ C — ingen avrundning behövs.",
     "tier": "detail",
-    "title": "Vänta — kontrollera mot alternativen"
+    "title": "Jämför med alternativen"
    },
    {
     "n": 9,
-    "text": "Om s = 5: K₂-area = 25; 20 % = 5 cm². K₁-area = 4; 25 % = 1 cm². 5 ≠ 1 — inkonsekvent. C kan inte vara svaret.",
+    "text": "Med s = \uE000\\sqrt{5}\uE001 cm blir K₂:s area 5 cm², och 20 % av 5 cm² är 1 cm² — precis lika mycket som 25 % av K₁:s 4 cm² ✓.",
     "tier": "detail",
-    "title": "Verifiera med C = 5 cm"
+    "title": "Kontrollera C"
    },
    {
     "n": 10,
-    "text": "Om s = 2,5: K₂-area = 6,25; 20 % = 1,25 cm². K₁-area = 4; 25 % = 1 cm². 1,25 ≠ 1 — också inte exakt, men närmare. Förmodligen den avsedda kvalitativa approximationen.",
+    "text": "Med s = 2,5 cm blir K₂:s area 6,25 cm², och 20 % av den är 1,25 cm² — inte 1 cm². 2,5 ligger nära \uE000\\sqrt{5}\uE001 ≈ 2,24 men är inte samma tal.",
     "tier": "detail",
-    "title": "Verifiera med D = 2,5 cm"
+    "title": "Varför inte D = 2,5 cm?"
    },
    {
     "n": 11,
-    "text": "s = √5 ≈ 2,236 cm. Frågan vill ha ett svar med en decimal — och 2,5 är det närmast tillgängliga alternativet, även om det inte är exakt rätt. Detta är en standardfälla där HP-svaret kan vara approximationsbaserat.",
+    "text": "Överlappet ger att K₂:s area är 25/20 = 1,25 gånger K₁:s area. En areafaktor 1,25 ger sidfaktorn \uE000\\sqrt{1{,}25}\uE001 ≈ 1,12, inte 1,25 — därför blir sidan \uE0002 \\cdot \\sqrt{1{,}25} = \\sqrt{5}\uE001 ≈ 2,24 cm och inte 2 · 1,25 = 2,5 cm.",
     "tier": "detail",
-    "title": "Den exakta lösningen"
+    "title": "Skalfaktorn gäller arean"
    },
    {
     "n": 12,
-    "text": "Med exakt räkning s ≈ 2,24 cm, närmast 2,5. Svaret är D. Insikten i en mening: 25 % av K₁ = 20 % av K₂ → K₂-area = (5/4)·K₁-area, så sidan växer med faktor √(5/4) ≈ 1,12 — K₂ är aningen större än K₁.",
+    "text": "Svaret är C: \uE000\\sqrt{5}\uE001 cm. Insikten i en mening: översätt procentsatserna till en area först (överlappet 1 cm² ger K₂:s area 5 cm²) och ta roten sist — en areafaktor är inte en sidfaktor.",
     "tier": "essential",
     "title": "Slutsats"
    }

@@ -12629,97 +12629,76 @@
   }
  },
  "var-2017-kvant2-KVA-013": {
-  "solution_path": "I = (10/3) · 3·5·26 / 13·15. Förenkla: 10·5·26 / (13·15) = 1300/195. Förkorta: 1300/195 = 6,67. Hmm. Räkneresultat. Per facit A: I > II.",
+  "solution_path": "Nyckeln är att förkorta Kvantitet II innan du räknar: \uE000\\dfrac{3 \\cdot 5 \\cdot 26}{13 \\cdot 15} = \\dfrac{3 \\cdot 5 \\cdot 2 \\cdot 13}{13 \\cdot 3 \\cdot 5} = 2\uE001. Kvantitet I är \uE000\\dfrac{10}{3}\uE001 ≈ 3,33, som är större än 2. Svaret är A.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Två multipliceringskvotser.",
+    "text": "Kvantitet I är bråket \uE000\\dfrac{10}{3}\uE001. Kvantitet II är ett bråk med produkter i både täljare och nämnare: \uE000\\dfrac{3 \\cdot 5 \\cdot 26}{13 \\cdot 15}\uE001. Du ska avgöra vilken som är störst.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Förenkla I",
-    "text": "Faktorisera täljare och nämnare till primfaktorer.",
+    "title": "Dela upp i faktorer",
+    "text": "Skriv de sammansatta talen som produkter: 26 = 2 · 13 och 15 = 3 · 5. Då blir Kvantitet II \uE000\\dfrac{3 \\cdot 5 \\cdot 2 \\cdot 13}{13 \\cdot 3 \\cdot 5}\uE001.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Förenkla II",
-    "text": "Samma.",
+    "title": "Förkorta",
+    "text": "Faktorerna 3, 5 och 13 finns både i täljaren och i nämnaren och tar ut varandra. Kvar blir 2. Alltså är Kvantitet II = 2.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Räkna båda värden",
-    "text": "Exakt rationell aritmetik.",
+    "title": "Jämför",
+    "text": "Kvantitet I = \uE000\\dfrac{10}{3}\uE001 ≈ 3,33 och Kvantitet II = 2. Eftersom \uE000\\dfrac{10}{3} > \\dfrac{6}{3} = 2\uE001 är I större än II.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Per facit A",
-    "text": "I > II.",
-    "tier": "essential"
+    "title": "Kontroll utan förkortning",
+    "text": "Räknar du ut allt får du täljaren 3 · 5 · 26 = 390 och nämnaren 13 · 15 = 195, och 390/195 = 2. Samma svar — men förkortningen går snabbare och utan risk för räknefel.",
+    "tier": "detail"
    },
    {
     "n": 6,
-    "title": "Faktorisering hjälper",
-    "text": "Många faktorer kanselleras — räkna stega.",
-    "tier": "detail"
-   },
-   {
-    "n": 7,
-    "title": "Räcker informationen?",
-    "text": "Ja.",
-    "tier": "detail"
-   },
-   {
-    "n": 8,
-    "title": "Tecken-check",
-    "text": "Båda positiva.",
-    "tier": "detail"
-   },
-   {
-    "n": 9,
-    "title": "Verifiera mot facit",
-    "text": "A bekräftad.",
-    "tier": "detail"
-   },
-   {
-    "n": 10,
     "title": "Slutsats",
-    "text": "I > II — svaret är A.",
+    "text": "Kvantitet I är större än Kvantitet II — svaret är A. Insikten i en mening: dela upp talen i faktorer och förkorta innan du multiplicerar — då krymper uttrycket till ett litet tal.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Räknefel.",
-    "why_wrong": "Steg 6: noggrann faktorisering ger A."
+    "why_tempting": "Det är lätt att se den långa produkten i Kvantitet II och tro att den måste vara större än ett enkelt bråk som \uE000\\dfrac{10}{3}\uE001.",
+    "why_wrong": "Nästan alla faktorer i II tar ut varandra: kvar blir bara 2, och 2 är mindre än \uE000\\dfrac{10}{3}\uE001 ≈ 3,33 (steg 3–4)."
    },
    {
     "letter": "C",
-    "why_tempting": "Likhet kräver perfekt matchning.",
-    "why_wrong": "Steg 4: strikt olikhet."
+    "why_tempting": "Snabbsvar är ofta att ett krångligt bråk som går att förkorta är konstruerat för att landa exakt på den andra kvantiteten, alltså \uE000\\dfrac{10}{3}\uE001.",
+    "why_wrong": "Förkortat färdigt blir II exakt 2, inte \uE000\\dfrac{10}{3}\uE001, så kvantiteterna är inte lika (steg 3–4)."
    },
    {
     "letter": "D",
-    "why_tempting": "'Komplexa multiplikationer → otillräcklig'.",
-    "why_wrong": "Steg 7: räcker."
+    "why_tempting": "Om man inte ser att faktorerna går att förkorta kan Kvantitet II se ut att kräva en tung uträkning, och då lockar 'informationen är otillräcklig'.",
+    "why_wrong": "Båda kvantiteterna är fasta tal utan variabler, så de går alltid att jämföra. Efter förkortningen är II = 2 (steg 3)."
    }
   ],
-  "technique": "Primfaktorisering före räkning.",
-  "pitfall": "Botemedlet mot stora produkter: kanseliera först, multiplicera sen.",
+  "technique": "Faktorisera och förkorta: dela upp sammansatta tal i faktorer (26 = 2 · 13, 15 = 3 · 5) och stryk gemensamma faktorer innan du multiplicerar. Här blir II = 2, som är mindre än \uE000\\dfrac{10}{3}\uE001, så I > II. Triggern: ett bråk med produkter i både täljare och nämnare.",
+  "pitfall": "Fällan är att multiplicera ut allt först (390 och 195) och sedan tappa bort sig i divisionen. Botemedlet: förkorta faktorerna innan du räknar — då blir det ingen stor division alls.",
   "framework_id": "KVA-TRAP-024",
   "pregrade_tactic": {
-   "handle": "Faktor-kancellation",
-   "move": "Vid stora kvotsumma-produkter — primfaktorisera, kanselera gemensamma faktorer, räkna resten."
+   "handle": "Förkorta först",
+   "move": "Dela upp 26 = 2 · 13 och 15 = 3 · 5 och stryk faktorer som finns både över och under bråkstrecket. Jämför sedan det som blir kvar med 10/3."
   },
   "_meta": {
    "model": "claude-opus-4-7-via-max-subscription",
    "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "recipe": "variant-c-regen-wave-missing-fill",
+   "rewritten": "2026-11-11 hpf-ydaz",
+   "prompt_repaired": "fractions restored from the PDF: II's numerator 3 · 5 · 26 had been glued onto I as 3^{·} 5^{·} 26 (glyph residue $→·); now I = \\frac{10}{3}, II = \\frac{3 \\cdot 5 \\cdot 26}{13 \\cdot 15}",
+   "corrected_from": "skeletal placeholder steps and leaked facit-fitting reasoning on the misparsed prompt"
   }
  },
  "var-2017-kvant2-KVA-014": {

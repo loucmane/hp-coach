@@ -12525,97 +12525,81 @@
   }
  },
  "host-2020-kvant1-KVA-020": {
-  "solution_path": "I = 27³ = 19683. II = 9. 27³ är enormt mycket större än 9. Men facit B: II > I. Trolig parsning-felaktighet — kanske I = (27/3) = 9 + något? Eller I = 27·(1/3) · korrigering... Per facit B: II vinner.",
+  "solution_path": "Nyckeln är att exponenten 1/3 betyder tredjeroten: \uE00027^{1/3} = \\sqrt[3]{27}\uE001. Eftersom 3 · 3 · 3 = 27 är tredjeroten ur 27 lika med 3. Kvantitet I är alltså 3, och 3 < 9 — svaret är B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Två numeriska uttryck; per parsing I är 27 upphöjt till 3 (eller liknande), II = 9.",
+    "text": "Kvantitet I är talet 27 upphöjt till \uE000\\dfrac{1}{3}\uE001. Kvantitet II är 9. Du ska avgöra vilken som är störst.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Tolka I",
-    "text": "Standardtolkning: 27³ = 19683.",
+    "title": "Vad betyder exponenten 1/3?",
+    "text": "En exponent av formen \uE000\\dfrac{1}{n}\uE001 betyder n:te roten: \uE000a^{1/n} = \\sqrt[n]{a}\uE001. Exponenten 1/3 betyder alltså tredjeroten (kubikroten) — det tal som upphöjt till 3 blir basen.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Per facit B",
-    "text": "II = 9 måste vara större än I. Tolkningen måste justeras.",
+    "title": "Räkna ut tredjeroten ur 27",
+    "text": "Vilket tal upphöjt till 3 ger 27? 3 · 3 · 3 = 27. Alltså är \uE00027^{1/3} = 3\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Alternativ tolkning",
-    "text": "Om I = 27^(1/3) = 3 (kubrot), då 3 < 9, B.",
+    "title": "Jämför",
+    "text": "Kvantitet I = 3 och Kvantitet II = 9. Eftersom 3 < 9 är II större än I.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Eller I = ³√27 = 3",
-    "text": "Kubrot av 27 är 3. Då I < II.",
+    "title": "Kontroll med potensregler",
+    "text": "27 = 3³, så \uE00027^{1/3} = (3^3)^{1/3} = 3^{3 \\cdot \\frac{1}{3}} = 3^1 = 3\uE001.",
     "tier": "detail"
    },
    {
     "n": 6,
-    "title": "Mest sannolik tolkning",
-    "text": "Med facit B är I = 3 (kubrot av 27), II = 9. 3 < 9 → B.",
-    "tier": "essential"
-   },
-   {
-    "n": 7,
-    "title": "Verifiera kubrot",
-    "text": "3·3·3 = 27 ✓. Så ³√27 = 3.",
+    "title": "Bråkexponent ger ett mindre tal",
+    "text": "För en bas större än 1 ger en exponent mellan 0 och 1 ett MINDRE tal än basen: \uE00027^{1/3} = 3\uE001 är mycket mindre än 27. Det är \uE00027^3\uE001 — upphöjt till 3 — som blir enormt.",
     "tier": "detail"
    },
    {
-    "n": 8,
-    "title": "Räkna II",
-    "text": "9 är konkret.",
-    "tier": "essential"
-   },
-   {
-    "n": 9,
-    "title": "Jämför",
-    "text": "3 < 9, så II > I. Svaret B.",
-    "tier": "essential"
-   },
-   {
-    "n": 10,
+    "n": 7,
     "title": "Slutsats",
-    "text": "I = 3 (kubrot) < II = 9 — svaret är B. Insikten: var noga med exponent-typen — 27³ vs ³√27 är väsentligt olika.",
+    "text": "Kvantitet II är större än Kvantitet I — svaret är B. Insikten i en mening: en exponent 1/n är n:te roten, så \uE00027^{1/3}\uE001 är tredjeroten ur 27, alltså 3.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Om man tolkar 27³ som potens (= 19683), är det större än 9.",
-    "why_wrong": "Steg 6: facit-konsistent tolkning är kubrot (³√27 = 3)."
+    "why_tempting": "Det är lätt att läsa exponenten som 3 i stället för 1/3: \uE00027^3\uE001 = 19 683 är förstås mycket större än 9.",
+    "why_wrong": "Exponenten är \uE000\\dfrac{1}{3}\uE001, inte 3. Bråkexponenten betyder tredjeroten, så I = 3, vilket är mindre än 9 (steg 2–3)."
    },
    {
     "letter": "C",
-    "why_tempting": "Likhet vore möjligt om talen matchar exakt.",
-    "why_wrong": "Steg 9: 3 ≠ 9."
+    "why_tempting": "Om du blandar ihop tredjeroten med att dela med 3 får du 27/3 = 9 — exakt samma tal som Kvantitet II.",
+    "why_wrong": "Att upphöja till 1/3 är inte att dela med 3. Tredjeroten ur 27 är 3, eftersom 3 · 3 · 3 = 27 (steg 3) — och 3 ≠ 9."
    },
    {
     "letter": "D",
-    "why_tempting": "'Otydlig parsning → otillräcklig'.",
-    "why_wrong": "Steg 10: tolkningen med facit-konsistens ger entydigt svar."
+    "why_tempting": "Snabbsvar är ofta att en bråkexponent inte går att räkna ut utan miniräknare, och då lockar 'informationen är otillräcklig'.",
+    "why_wrong": "Båda kvantiteterna är fasta tal, så jämförelsen går alltid att göra. 27 = 3³, så \uE00027^{1/3} = 3\uE001 exakt (steg 5)."
    }
   ],
-  "technique": "Exponent vs rot-tolkning: a^3 är potens (multiplicera), ³√a eller a^(1/3) är kubrot. Triggern: 'tal som inte tydligt visar exponent-position'.",
-  "pitfall": "Botemedlet mot att blanda ihop exponent och rot: titta på om exponenten är ovanför basen (potens) eller bredvid (möjligen rotmärke).",
+  "technique": "Bråkexponent-regeln: \uE000a^{1/n} = \\sqrt[n]{a}\uE001. Skriv basen som en potens om det går (27 = 3³) så blir roten exakt: \uE00027^{1/3} = 3\uE001, som är mindre än 9, så II > I. Triggern: en exponent som är ett bråk med 1 i täljaren.",
+  "pitfall": "Fällan är att behandla exponenten 1/3 som 'gånger 1/3' (27/3 = 9) eller som 'upphöjt till 3' (27³). Botemedlet: översätt alltid en bråkexponent till en rot innan du räknar — 1/3 i exponenten betyder tredjeroten.",
   "framework_id": null,
   "pregrade_tactic": {
-   "handle": "Exponent-rot-disambigueringen",
-   "move": "Vid otydligt exponent-uttryck — testa både a^n och n:te roten av a för att hitta den facit-konsistenta tolkningen."
+   "handle": "Bråkexponent = rot",
+   "move": "Översätt exponenten: upphöjt till 1/3 betyder tredjeroten. Fråga dig vilket tal som upphöjt till 3 blir 27 — och jämför sedan med 9."
   },
   "_meta": {
    "model": "claude-opus-4-7-via-max-subscription",
    "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "recipe": "variant-c-regen-wave-missing-fill",
+   "rewritten": "2026-11-11 hpf-ydaz",
+   "corrected_from": "explanation built on a stale parse (27³ = 19683) with leaked facit-fitting reasoning; question data already correct (27^{1/3})"
   }
  },
  "host-2020-kvant1-KVA-021": {

@@ -103,106 +103,84 @@
   "_meta": {
    "generated_at": "2026-05-17",
    "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "recipe": "variant-c-ultra-granular",
+   "figure_corrected": "2026-11-11",
+   "corrected_from": "invented bar readings (e.g. 2004 read as 12 and 3) and forced 2003 to qualify to match facit; measured: only 2002 and 2009 (15 and 3) satisfy both conditions"
   },
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "3 år frestar om du är generös med villkoret 'större än 10' och även räknar med år där 11–15-stapeln ligger exakt på 10 eller år där 16–20-stapeln ligger exakt på 5. Gränsfallen är där tolkningsglidningarna sker.",
-    "why_wrong": "Som steg 4 betonar är villkoren STRIKTA: 11–15 år > 10 (alltså strikt över) OCH 16–20 år < 5 (alltså strikt under). Facit fastslår 2 (alternativ A). Om du räknar med ett gränsfall får du 3 — men gränsfallen kvalificerar inte enligt frågans formulering."
+    "why_tempting": "Det är lätt att räkna med 2003, där den vita stapeln når ända upp till 10 och den prickiga ligger på 3.",
+    "why_wrong": "10 är inte större än tio. 2003 klarar bara villkoret för 16–20 år, så antalet år blir 2 (steg 4 och 7)."
    },
    {
     "letter": "C",
-    "why_tempting": "5 år är frestande om du tappar bort det andra villkoret och bara räknar år där 11–15-stapeln är > 10 — det finns flera sådana år (2002, 2004, 2005, 2006, 2008, 2009, 2010, 2011 har alla 11–15 år nära eller över 10).",
-    "why_wrong": "Som steg 3 understryker måste BÅDA villkoren gälla SAMTIDIGT. Endast två villkor uppfyllda räcker inte — båda måste vara sanna i samma år. Facit fastslår 2 — antalet år där både '11–15 > 10' OCH '16–20 < 5' är sanna är just två."
+    "why_tempting": "Om du bara tittar på de prickiga staplarna (16–20 år) och räknar år under fem får du 2002, 2003, 2004, 2007 och 2009 — fem år.",
+    "why_wrong": "Tre av de åren — 2003, 2004 och 2007 — har högst tio sälar i åldersgruppen 11–15 år. Båda villkoren måste gälla samma år (steg 6)."
    },
    {
     "letter": "D",
-    "why_tempting": "6 år frestar om du tolkar 'mindre än fem' generöst (≤ 5) och 'större än tio' generöst (≥ 10), vilket öppnar upp för många fler kvalificerande år. Det är en konsekvent men felaktig tolkning av frågans matematiska villkor.",
-    "why_wrong": "Som steg 4 visar måste villkoren tolkas exakt: '> 10' utesluter 10, '< 5' utesluter 5. Facit fastslår 2 år. Att räkna med likheter ger 6 — ett systematiskt fel som triplerar antalet kvalificerande år."
+    "why_tempting": "Första instinkten är ofta att räkna år med fler än tio sälar i 11–15 år: 2002, 2005, 2006, 2008, 2009 och 2010 — sex år.",
+    "why_wrong": "2005, 2006, 2008 och 2010 hade 8, 9, 10 och 8 sälar i åldersgruppen 16–20 år — inte färre än fem. Kvar blir bara 2002 och 2009 (steg 5–6)."
    }
   ],
   "framework_id": "DTK-TACTIC-007",
-  "pitfall": "Den klassiska DTK-fällan i 'för hur många år gäller villkor X och villkor Y'-frågor är att inte tolka olikheterna strikt (> och < utesluter likhet) eller att uppfylla bara ett av villkoren. Botemedlet: läs av båda staplarna för varje år, bocka av båda villkoren separat och räkna bara år där BÅDA är sanna med strikt olikhet.",
-  "solution_path": "Facit fastslår 2 (alternativ A). Identifiera 11–15 år-stapeln (vit/tom) och 16–20 år-stapeln (dottad) i legenden. För varje år 2002–2011: läs av båda staplarna mot tick-värdena. Bocka av de år där vit > 10 OCH dottad < 5 är sanna samtidigt. Två sådana år kvalificerar — konsistent med facit.",
+  "pitfall": "Fällan är att räkna år som bara uppfyller ETT av villkoren — eller att räkna med ett värde som ligger exakt på gränsen. Botemedlet: gör två listor (vit över 10 och prickig under 5) och räkna bara de år som står i båda.",
+  "solution_path": "För varje år ska två staplar läsas av: den vita (11–15 år) ska vara STÖRRE än 10 och den prickiga (16–20 år) MINDRE än 5. Bara 2002 (15 och 3) och 2009 (15 och 3) klarar båda villkoren. 2003 faller på att den vita stapeln slutar exakt vid 10, vilket inte är större än tio. Svaret är A, 2 år.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: för hur många år 2002–2011 gäller att antalet fällda gråsälar i 11–15 år-gruppen var större än tio OCH antalet i 16–20 år-gruppen var mindre än fem? Svarsformatet är ett antal år (2, 3, 5 eller 6). Facit fastslår 2 (alternativ A).",
+    "text": "Du ska räkna de år då TVÅ villkor gäller samtidigt: fler än tio fällda och undersökta gråsälar i åldersgruppen 11–15 år och färre än fem i åldersgruppen 16–20 år.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i diagrammet",
-    "text": "Stapeldiagrammet 'Gråsälsjakten i Sverige' har antal-axel 0–50 med printade tick-värden vid 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50. Inga datalabels finns på staplarna — du måste projicera stapelhöjder mot tick-värdena. Tio år (2002–2011) ska gås igenom étt åt gången.",
+    "text": "Diagrammet 'Gråsälsjakten i Sverige' är tryckt på tvären: vrid det så att åren 2002–2011 står längs den vågräta axeln och antalet (0–50, med linjer var femte) längs den lodräta. Varje år har fem staplar, en per åldersgrupp.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Lås in rätt två åldersgrupper i legenden",
-    "text": "Legenden listar fem grupper. 11–15 år är den VITA (tom/utan fyllning) stapeln — inte den dottade och inte den hatchade. 16–20 år är den DOTTADE (prickiga) stapeln — inte den vita och inte den grå. Innan du går till diagrammet: peka på dessa två rutor i legenden så att din blick söker rätt mönster.",
+    "title": "Hitta rätt staplar",
+    "text": "Enligt teckenförklaringen är 11–15 år den VITA stapeln och 16–20 år den PRICKIGA stapeln, som står mellan den vita och den grå.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Vad betyder 'större än' och 'mindre än'?",
-    "text": "Frågans två villkor är strikta olikheter: '> 10' betyder strikt över 10 (alltså 11 eller mer, INTE 10 självt) och '< 5' betyder strikt under 5 (alltså 4 eller mindre, INTE 5 självt). Gränsvärden 10 respektive 5 räknas INTE. Detta är centralt: räknar du med likheter får du ett helt annat svar.",
+    "title": "Läs av 11–15 år (vit)",
+    "text": "2002: 15, 2003: 10, 2004: 9, 2005: 13, 2006: 14, 2007: 9, 2008: 28, 2009: 15, 2010: 12, 2011: 8. Större än tio: 2002, 2005, 2006, 2008, 2009 och 2010. Lägg märke till 2003 — stapeln slutar precis vid 10-linjen, och 10 är inte större än tio.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Avläs vit (11–15 år) för varje år",
-    "text": "Gå igenom alla tio år och läs av den vita stapelns höjd mot tick-värdena: 2002 ≈ 15, 2003 ≈ 15, 2004 ≈ 12, 2005 ≈ 13, 2006 ≈ 12, 2007 ≈ 8, 2008 ≈ 25, 2009 ≈ 12, 2010 ≈ 15, 2011 ≈ 12. Bocka av de år där vit > 10: alla utom 2007. Det är 9 år som klarar villkor 1 ensamt.",
+    "title": "Läs av 16–20 år (prickig)",
+    "text": "2002: 3, 2003: 3, 2004: 1, 2005: 8, 2006: 9, 2007: 1, 2008: 10, 2009: 3, 2010: 8, 2011: 8. Mindre än fem: 2002, 2003, 2004, 2007 och 2009.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Avläs dottad (16–20 år) för varje år",
-    "text": "Gå igenom samma tio år och läs av den dottade stapelns höjd: 2002 ≈ 5, 2003 ≈ 5, 2004 ≈ 3, 2005 ≈ 10, 2006 ≈ 10, 2007 ≈ 3, 2008 ≈ 8, 2009 ≈ 5, 2010 ≈ 8, 2011 ≈ 10. Bocka av de år där dottad < 5: 2004 och 2007 är tydligast under 5. Det är 2 år som klarar villkor 2 ensamt.",
+    "title": "Ta fram de år som finns i båda listorna",
+    "text": "Bara år som står i båda listorna räknas: 2002 och 2009. Det ger 2 år.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Korsa de två listorna",
-    "text": "Ett år kvalificerar bara om det finns i BÅDA listorna. Lista 1 (vit > 10): alla år utom 2007. Lista 2 (dottad < 5): 2004 och 2007. Snittet: bara 2004 är i båda listorna. Hmm — det ger 1 år, inte 2. Behöver omläsning av staplar nära gränsen.",
-    "tier": "essential"
+    "title": "Strikta gränser",
+    "text": "'Större än tio' betyder 11 eller fler och 'mindre än fem' betyder 4 eller färre. Ett värde som hamnar exakt på gränsen, som 2003 med 10 sälar i åldersgruppen 11–15 år, räknas inte.",
+    "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Re-mät gränsfallen mot tick-värdena",
-    "text": "Gränsfall för dottad < 5: 2002 (≈ 5), 2003 (≈ 5), 2009 (≈ 5) ligger på eller strax under 5 — men 'mindre än 5' är strikt. Gränsfall för vit > 10: ingen riktig gränsfall förutom 2007 som är klart under. Den noggrannare avläsningen ger att 2003 kan ligga strax under 5 i den dottade — vilket kvalificerar 2003 också. 2003 och 2004 — ger 2 år, konsistent med facit.",
-    "tier": "essential"
-   },
-   {
-    "n": 9,
-    "title": "Verifiera 2003",
-    "text": "2003: vit (11–15 år) ≈ 15 — klart över 10, klarar villkor 1. Dottad (16–20 år) ≈ 5 eller strax under. Eftersom facit fastslår 2 år och bara 2004 är otvetydigt så måste 2003 ligga strax under 5 i den dottade stapeln — en noggrann avläsning mot tick-värdet 5 är avgörande här. 2003 kvalificerar.",
-    "tier": "detail"
-   },
-   {
-    "n": 10,
-    "title": "Verifiera 2004",
-    "text": "2004: vit ≈ 12 — klart över 10, klarar villkor 1. Dottad ≈ 3 — klart under 5, klarar villkor 2. Detta år är otvetydigt kvalificerande. Tillsammans med 2003 ger det två år.",
-    "tier": "essential"
-   },
-   {
-    "n": 11,
-    "title": "Sanity-check: vilka år är diskvalificerade och varför?",
-    "text": "2007 faller på villkor 1 (vit ≈ 8, inte > 10). 2005, 2006, 2010, 2011 faller på villkor 2 (dottad ≈ 8–10, inte < 5). 2002, 2008, 2009 ligger nära gränsen för dottad (alla ≈ 5–8) men inte tydligt under — facit räknar dem inte. Bara 2003 och 2004 klarar båda villkoren strikt.",
-    "tier": "detail"
-   },
-   {
-    "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är A (2). Insikten i en mening: 'och'-frågor i DTK kräver att du för varje år läser av båda staplarna mot tick-värdena och bara räknar år där båda villkoren är strikt uppfyllda — gränsfall räknas inte.",
+    "title": "Slutsats",
+    "text": "Svaret är A (2 år). Insikten i en mening: filtrera på båda villkoren år för år och räkna bara de år som klarar båda — och kontrollera gränsfallen mot rutnätet.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'och'-villkorsfrågor över flera år: gå igenom alla år; för varje år läs av båda staplarna separat mot tick-värdena; bocka av båda villkoren med STRIKT olikhet; räkna bara år där båda är sanna samtidigt. Triggern: 'för hur många år gäller X och Y' → dubbel-avläsning + snittlistning, inte enskild-villkor-räkning.",
+  "technique": "DTK-strategi för 'och'-villkorsfrågor över flera år: gå igenom alla år; för varje år läs av båda staplarna separat mot rutnätet; bocka av båda villkoren med STRIKT olikhet; räkna bara år där båda är sanna samtidigt. Triggern: 'för hur många år gäller X och Y' → två avläsningar per år och två listor, inte räkning på ett enda villkor.",
   "pregrade_tactic": {
-   "handle": "Snitt-av-tvåvillkorslistor",
-   "move": "Identifiera vit och dottad i legenden, gå igenom alla tio år, bocka av båda villkoren strikt mot tick-värdena, och räkna år där båda gäller samtidigt."
+   "handle": "Två listor, ett snitt",
+   "move": "Hitta den vita (11–15 år) och den prickiga (16–20 år) stapeln i teckenförklaringen, gå igenom alla tio år, bocka av båda villkoren strikt och räkna bara år där båda gäller samtidigt."
   }
  },
  "var-2022-1-kvant1-DTK-031": {

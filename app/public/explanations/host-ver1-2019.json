@@ -5973,7 +5973,7 @@
   ],
   "framework_id": "NOG-TRAP-013",
   "pitfall": "Anta att 'inte sist' är ekvivalent med 'specifik position'. Botemedlet: skriv ut alla möjliga positioner som tillåts av villkoret, eliminera de som strider mot andra villkor.",
-  "solution_path": "Vi vill veta ordningen av Anna (A), David (D), Harald (H), Marie (M). (1): H mellan M och A (M före H, H före A), och M inte först → David först? Möjligen. Räcker det för unik ordning? Test: D, M, H, A — funkar. Annan: går det med någon annan? M är inte först, så M är på position 2, 3, eller 4. H efter M men före A. (1) fastställer M < H < A. Vem är först? Inte M (från villkor). Måste vara D eller... bara D är inte specificerad. Så D är först. Då ordning: D, M, H, A. Unikt. (1) ensamt räcker. (2): D före A och M; H inte sist. Möjliga ordningar: D, H, M, A; D, H, A, M; D, M, H, A; D, M, A, H — vänta, H inte sist tar bort vissa. Faktiskt: med D först (D < A, D < M), H < {A, M, D}? Nej, bara säger H ≠ sist. Flera ordningar möjliga. Otillräckligt. Svaret är A.",
+  "solution_path": "Nyckeln är att (1) ger kedjan Marie före Harald före Anna, och eftersom Marie inte kommer först måste den som kommer före henne vara David. Ordningen blir då David, Marie, Harald, Anna — helt bestämd. (2) säger bara att David kommer före Anna och Marie och att Harald inte är sist, vilket tillåter flera ordningar, till exempel David, Harald, Marie, Anna och David, Harald, Anna, Marie. (1) räcker ensamt men inte (2) — svaret är A.",
   "steps": [
    {
     "n": 1,
