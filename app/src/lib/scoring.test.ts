@@ -520,6 +520,24 @@ describe('computeHonestProjected', () => {
     expect(1.96 * Math.sqrt(scoreVar(0.6, 20))).toBeCloseTo(scoreBand(1.2, 20) ?? Number.NaN, 12)
   })
 
+  it('bands each half with the same pooled variance as the total', () => {
+    const p = computeHonestProjected({ ORD, LÄS: LAS, KVA })
+    const verbal = (scoreVar(0.6, 20) + scoreVar(0.8, 10)) / 4
+    const quant = scoreVar(0.4, 25)
+    expect(p.verbalBand).toBeCloseTo(1.96 * Math.sqrt(verbal), 12)
+    expect(p.quantBand).toBeCloseTo(1.96 * Math.sqrt(quant), 12)
+    // The total pools the halves, so its band is narrower than either.
+    expect(p.band ?? Number.NaN).toBeLessThan(Math.min(p.verbalBand ?? 0, p.quantBand ?? 0))
+  })
+
+  it('leaves a half without a scored section unbanded', () => {
+    const p = computeHonestProjected({ ORD, LÄS: LAS })
+    expect(p.verbalBand).not.toBeNull()
+    expect(p.quant).toBeNull()
+    expect(p.quantBand).toBeNull()
+    expect(p.band).toBeNull()
+  })
+
   it('floors p like scoreBand, so a perfect section still widens the band', () => {
     const p = computeHonestProjected({
       ORD: stats({ attempts90d: 30, correct90d: 30, firstTry90d: 30, firstTryCorrect90d: 30 }),
@@ -546,12 +564,16 @@ describe('computeHonestProjected', () => {
       quant: null,
       total: null,
       band: null,
+      verbalBand: expect.closeTo(1.96 * Math.sqrt(scoreVar(0.6, 20)), 12),
+      quantBand: null,
     })
     expect(computeHonestProjected({})).toEqual({
       verbal: null,
       quant: null,
       total: null,
       band: null,
+      verbalBand: null,
+      quantBand: null,
     })
   })
 

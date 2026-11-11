@@ -125,6 +125,23 @@ function checkJsxColours(source: string) {
 }
 
 describe('Provpass isolation', () => {
+  it('uses Ljusbord primitives and keeps hub-only layout out of shared result selectors', () => {
+    expect(read('./ProvLead.tsx')).toContain("from '@/folio/ui/Lit'")
+    expect(read('./ProvLead.tsx')).toContain("from '@/folio/ui/Go'")
+    expect(read('./ProvLead.tsx')).toContain('dock={phone}')
+    expect(read('./FolioProvpass.tsx')).toContain('useScopedKeys(picker')
+    const hubCss = read('./prov.css').split('/* LJ-29:')[1]
+    expect(hubCss).toBeDefined()
+    for (const match of hubCss.matchAll(/([^{}]+)\{/g)) {
+      const selector = match[1].trim()
+      if (selector.startsWith('@') || selector.includes('*/')) continue
+      for (const part of selector.replace(/\([^)]*\)/g, '(args)').split(','))
+        expect(part.trim()).toMatch(/^\[data-folio\] \.fa-prov\.fa-prov-hub(?:[\s.[:]|$)/)
+    }
+    expect(hubCss).not.toMatch(
+      /--fa-(?:accent|bad|ok|paper|leaf|rule|serif)|\bred\b|#[\da-f]{3,8}\b/i,
+    )
+  })
   it.each([
     "const screen = import('@/folio/screens/drill/Other')",
     "const screen = import('@/folio/screens/drill/Options')",

@@ -45,6 +45,13 @@ import { describe, expect, it } from 'vitest'
 import authenticSet from '../../data/authentic-qids.json'
 import registry from '../../data/p5-qid-registry.json'
 import { cascadeDeleteUser } from '../lib/cascade'
+import {
+  canonicalQuestion,
+  firstTries,
+  firstTryAggregates,
+  firstTryHistory,
+  retainedAnswerHistory,
+} from '../lib/firstTries'
 import { runFit } from '../lib/fit'
 import { classifyAttemptSource, isAuthenticQid } from '../lib/provenance'
 import { RETENTION_DAYS, retentionCutoff, runRetention } from '../lib/retention'
@@ -59,6 +66,85 @@ const BACKFILL_MIGRATION = '0013_attempt_provenance_backfill.sql'
 const TRACK_MIGRATION = '0014_user_ability_authentic_track.sql'
 const TRACK_RESET_MIGRATION = '0015_pre_r2b1_fit_reset.sql'
 const EXPAND_MIGRATION = '0016_ljusbord_expand.sql'
+
+describe('0017 first-try ledger backfill', () => {
+  it('matches the old selection and every weekly window, then survives retention', async () => {
+    const d1 = makeTestD1({ before: '0017_first_tries.sql' })
+    const db = getDb(d1 as unknown as D1Database)
+    await d1.exec(`
+      INSERT INTO users (id, clerk_user_id) VALUES (1, 'first_a'), (2, 'first_b');
+      INSERT INTO sessions (id, user_id, kind) VALUES
+        (1, 1, 'drill'), (2, 1, 'mock'), (3, 1, 'adaptive_review'), (4, 1, 'onboarding'), (5, 2, 'drill');
+      INSERT INTO attempts (id, user_id, session_id, question_id, correct, created_at, source) VALUES
+        (1, 1, 1, 'var-2024-verb1-ORD-001', 0, unixepoch('2026-09-07T12:00:00Z'), 'authentic'),
+        (2, 1, 1, 'var-2024-verb1-ORD-001', 1, unixepoch('2026-12-29T12:00:00Z'), 'authentic'),
+        (3, 1, 2, 'var-2024-verb1-LAS-011', 0, unixepoch('2026-09-06T23:59:00Z'), 'authentic'),
+        (4, 1, 2, 'var-2024-verb1-LÄS-011', 1, unixepoch('2026-09-07T00:01:00Z'), 'authentic'),
+        (5, 1, 2, 'var-2024-verb1-LÄS-011', 0, unixepoch('2026-12-29T12:00:00Z'), 'synthetic'),
+        (6, 1, 2, 'var-2024-verb1-LAS-011', 1, unixepoch('2026-12-29T12:00:00Z'), 'authentic'),
+        (7, 1, 1, 'var-2024-verb1-LAS-011', 0, unixepoch('2026-12-30T12:00:00Z'), 'authentic'),
+        (8, 1, 3, 'var-2024-verb1-ORD-002', 0, unixepoch('2026-09-07T12:00:00Z'), 'authentic'),
+        (9, 1, 1, 'var-2024-verb1-ORD-002', 1, unixepoch('2026-12-29T12:00:00Z'), 'authentic'),
+        (10, 1, 4, 'var-2024-verb1-ORD-003', 0, unixepoch('2026-09-07T12:00:00Z'), 'authentic'),
+        (11, 1, 1, 'var-2024-verb1-ORD-003', 1, unixepoch('2026-12-29T12:00:00Z'), 'authentic'),
+        (12, 1, 1, 'var-2024-verb1-ORD-004', 0, NULL, 'unknown'),
+        (13, 1, 1, 'var-2024-verb1-ORD-004', 1, unixepoch('2026-12-29T12:00:00Z'), 'authentic'),
+        (14, 1, 1, 'var-2024-verb1-ORD-005', 0, unixepoch('2026-12-29T12:00:00Z'), 'synthetic'),
+        (15, 2, 5, 'var-2024-verb1-ORD-001', 1, unixepoch('2026-12-29T12:00:00Z'), 'authentic');
+    `)
+    const retained = await retainedAnswerHistory(db, 1)
+    d1.applyMigration('0017_first_tries.sql')
+    const actual = await firstTryHistory(db, 1)
+    const comparable = (history: typeof retained) =>
+      firstTries(history)
+        .map((a) => ({
+          id: a.id,
+          questionId: canonicalQuestion(a.questionId),
+          correct: a.correct,
+          createdAt: a.createdAt,
+          source: a.source,
+          kind: a.kind,
+        }))
+        .sort((a, b) => a.questionId.localeCompare(b.questionId))
+    expect(comparable(actual)).toEqual(comparable(retained))
+    expect(await db.select().from(schema.firstTries)).toHaveLength(7)
+    const weeks = Array.from(
+      { length: 26 },
+      (_, i) => new Date(Date.UTC(2027, 0, 4) - i * 7 * 86_400_000),
+    )
+    const windows = (history: typeof retained) =>
+      weeks.map((end) =>
+        firstTryAggregates(
+          history.filter((a) => (a.createdAt?.getTime() ?? 0) < +end),
+          end,
+        ),
+      )
+    expect(windows(actual)).toEqual(windows(retained))
+    await runRetention(db, new Date('2027-01-06T12:00:00Z'))
+    expect(windows(await firstTryHistory(db, 1))).toEqual(windows(actual))
+    expect(
+      firstTryAggregates(await firstTryHistory(db, 1), new Date('2027-01-06T12:00:00Z')).ORD
+        .firstTry90d,
+    ).toBe(1)
+    expect(
+      firstTryAggregates(await firstTryHistory(db, 2), new Date('2027-01-06T12:00:00Z')).ORD
+        .firstTryCorrect90d,
+    ).toBe(1)
+  })
+
+  it('enforces one canonical pair and only a user foreign key', async () => {
+    const d1 = makeTestD1()
+    await d1.exec("INSERT INTO users (id, clerk_user_id) VALUES (1, 'first_a')")
+    const insert =
+      "INSERT INTO first_tries (user_id, question_id, session_id, attempt_id, source) VALUES (1, 'q', 99, 99, 'unknown')"
+    await d1.exec(insert)
+    await expect(d1.exec(insert)).rejects.toThrow(/UNIQUE/)
+    const keys = (await d1.prepare('PRAGMA foreign_key_list(first_tries)').all()).results
+    expect(keys).toHaveLength(1)
+    expect(keys[0]).toMatchObject({ table: 'users', from: 'user_id', on_delete: 'CASCADE' })
+    expect((await d1.prepare('PRAGMA foreign_key_check').all()).results).toEqual([])
+  })
+})
 
 type Journal = { entries: Array<{ idx: number; tag: string }> }
 type ColumnInfo = {
@@ -202,15 +288,16 @@ describe('provenance migrations — generated and matching the schema', () => {
     expect(await generateSQLiteMigration(snapshot as never, current)).toEqual([])
   })
 
-  it('journals every SQL file: the columns, their backfill, the authentic rating and its reset, then the Ljusbord expand', () => {
+  it('journals every SQL file through the Ljusbord expand and first-try ledger', () => {
     const journal = readJson<Journal>(join(DRIZZLE, 'meta/_journal.json'))
     expect(journal.entries.map((e) => `${e.tag}.sql`)).toEqual(migrationFiles())
-    expect(migrationFiles().slice(-5)).toEqual([
+    expect(migrationFiles().slice(-6)).toEqual([
       COLUMN_MIGRATION,
       BACKFILL_MIGRATION,
       TRACK_MIGRATION,
       TRACK_RESET_MIGRATION,
       EXPAND_MIGRATION,
+      '0017_first_tries.sql',
     ])
   })
 

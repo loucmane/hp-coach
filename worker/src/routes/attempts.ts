@@ -45,6 +45,7 @@ import { z } from 'zod'
 import { getDb } from '../db/client'
 import { attempts, CONFIDENCE_LEVELS, sessions, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
+import { writeFirstTries } from '../lib/firstTries'
 import { applyMasteryOutcome } from '../lib/progress'
 import { classifyAttempt, masteryLayer1Ids } from '../lib/provenance'
 import { extractSection } from '../lib/section'
@@ -56,6 +57,8 @@ const AttemptBody = z
     questionId: z.string().min(1).max(60),
     selectedAnswer: z.string().min(1).max(8),
     correct: z.boolean(),
+    // Offline answers preserve their original timestamp; absent uses server time.
+    createdAt: z.string().datetime({ offset: true }).optional(),
     timeTakenMs: z
       .number()
       .int()
@@ -104,7 +107,7 @@ export const attemptsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     // A Provpass collects Markera, not confidence: a value sent there is dropped.
     const confidence = session.kind === 'mock' ? null : (body.confidence ?? null)
 
-    // Insert the attempt AND bump the user's lifetime counter atomically
+    // Insert the attempt, preserve its first-try evidence, and bump the counter atomically
     // (one D1 transaction), so the all-time total stays correct even after
     // the retention cron prunes old attempts rows. The counter is practice
     // effort, so it counts every source.
@@ -121,8 +124,10 @@ export const attemptsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
           source,
           itemRevision,
           confidence,
+          createdAt: body.createdAt === undefined ? undefined : new Date(body.createdAt),
         })
         .returning(),
+      writeFirstTries(db, userId, body.questionId),
       db
         .update(users)
         .set({ attemptsTotal: sql`${users.attemptsTotal} + 1` })

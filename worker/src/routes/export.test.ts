@@ -8,9 +8,19 @@ import { Hono } from 'hono'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { getDb } from '../db/client'
-import { attempts, lessonProgress, mistakes, mockResults, sessions, users } from '../db/schema'
+import {
+  attempts,
+  firstTries,
+  lessonProgress,
+  mistakes,
+  mockResults,
+  sessions,
+  users,
+} from '../db/schema'
+import { firstTryAggregates, firstTryHistory, writeFirstTries } from '../lib/firstTries'
 import { makeTestD1, type ShimD1 } from '../lib/testD1'
 import type { Env, Vars } from '../types'
+import { attemptsRoute } from './attempts'
 import { exportRoute, importRoute, SCHEMA_VERSION, TABLE_ROW_CAPS } from './export'
 
 let d1: ShimD1
@@ -24,6 +34,7 @@ function appFor(asUser: string) {
     })
     .route('/export', exportRoute)
     .route('/import', importRoute)
+    .route('/attempts', attemptsRoute)
   return { app, env }
 }
 
@@ -109,6 +120,179 @@ async function countAllRowsForUser(userId: number) {
 
 beforeEach(() => {
   d1 = makeTestD1()
+})
+
+describe('first-try backup portability', () => {
+  const qid = 'var-2024-verb1-ORD-001'
+  const at = new Date('2027-01-06T12:00:00Z')
+  async function seedLedger() {
+    const { userId } = await seedUserData('user_a')
+    const db = getDb(d1 as unknown as D1Database)
+    await db.insert(firstTries).values({
+      userId,
+      questionId: qid,
+      sessionId: 900,
+      attemptId: 800,
+      createdAt: new Date('2026-09-07T12:00:00Z'),
+      correct: false,
+      source: 'authentic',
+      kind: 'mock',
+      mockAnswers: [
+        {
+          id: 801,
+          createdAt: Date.parse('2026-09-08T12:00:00Z') / 1000,
+          correct: true,
+          source: 'authentic',
+        },
+        {
+          id: 802,
+          createdAt: Date.parse('2026-09-15T12:00:00Z') / 1000,
+          correct: false,
+          source: 'authentic',
+        },
+      ],
+    })
+    await writeFirstTries(db, userId)
+    return userId
+  }
+  async function summary(userId: number) {
+    return firstTryAggregates(await firstTryHistory(getDb(d1 as unknown as D1Database), userId), at)
+  }
+
+  it('remaps live mock ids and preserves their tie order across import and another pick', async () => {
+    const { userId } = await seedUserData('user_a')
+    const db = getDb(d1 as unknown as D1Database)
+    const [mock] = await db.select().from(sessions).where(eq(sessions.kind, 'mock'))
+    const when = new Date('2027-01-01T12:00:00Z')
+    for (const correct of [false, true]) {
+      await db.insert(attempts).values({
+        userId,
+        sessionId: mock.id,
+        questionId: qid,
+        correct,
+        source: 'authentic',
+        createdAt: when,
+      })
+    }
+    await writeFirstTries(db, userId)
+    const exported = (await getExport('user_a')).body
+    expect((await postImport('user_b', exported)).res.status).toBe(200)
+    const [b] = await db.select().from(users).where(eq(users.clerkUserId, 'user_b'))
+    const [row] = (await db.select().from(firstTries).where(eq(firstTries.userId, b.id))).filter(
+      (r) => r.questionId === qid,
+    )
+    expect(row.sessionId).not.toBe(mock.id)
+    expect((await summary(b.id)).ORD.firstTryCorrect90d).toBe(1)
+    const { app, env } = appFor('user_b')
+    expect(
+      (
+        await app.request(
+          '/attempts',
+          {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              sessionId: row.sessionId,
+              questionId: qid,
+              selectedAnswer: 'A',
+              correct: false,
+              createdAt: when.toISOString(),
+            }),
+          },
+          env,
+        )
+      ).status,
+    ).toBe(201)
+    expect((await summary(b.id)).ORD).toMatchObject({ firstTry90d: 1, firstTryCorrect90d: 0 })
+    expect((await summary(userId)).ORD.firstTryCorrect90d).toBe(1)
+  })
+
+  it('exports and restores ledger evidence after the original attempts and sessions are gone', async () => {
+    const userId = await seedLedger()
+    const before = await summary(userId)
+    const exported = (await getExport('user_a')).body as { tables: Record<string, unknown[]> }
+    expect(exported.tables.firstTries).toHaveLength(2)
+    const imported = await postImport('user_b', exported)
+    expect(imported.res.status).toBe(200)
+    const db = getDb(d1 as unknown as D1Database)
+    const [b] = await db.select().from(users).where(eq(users.clerkUserId, 'user_b'))
+    expect(await summary(b.id)).toEqual(before)
+    const asOf = new Date('2026-09-14T00:00:00Z')
+    const past = async (id: number) =>
+      firstTryAggregates(
+        (await firstTryHistory(db, id)).filter((a) => (a.createdAt?.getTime() ?? 0) < +asOf),
+        asOf,
+      )
+    expect((await past(userId)).ORD).toMatchObject({ firstTry90d: 1, firstTryCorrect90d: 1 })
+    expect(await past(b.id)).toEqual(await past(userId))
+    const rows = await db.select().from(firstTries).where(eq(firstTries.userId, b.id))
+    const restored = rows.find((r) => r.questionId === qid)!
+    expect(restored).toMatchObject({
+      userId: b.id,
+      correct: false,
+      kind: 'mock',
+      source: 'authentic',
+    })
+    expect(restored.mockAnswers.map((p) => [p.createdAt, p.correct, p.source])).toEqual([
+      [Date.parse('2026-09-15T12:00:00Z') / 1000, false, 'authentic'],
+      [Date.parse('2026-09-08T12:00:00Z') / 1000, true, 'authentic'],
+    ])
+    expect((await postImport('user_b', (await getExport('user_b')).body)).res.status).toBe(200)
+    expect(await summary(b.id)).toEqual(before)
+    expect(await summary(userId)).toEqual(before)
+    expect(await past(b.id)).toEqual(await past(userId))
+  })
+
+  it('rebuilds an old export using original id tie ordering, with no ledger member', async () => {
+    const { userId } = await seedUserData('user_a')
+    const exported = (await getExport('user_a')).body as {
+      tables: Record<string, Array<Record<string, unknown>>>
+    }
+    delete exported.tables.firstTries
+    const sessionId = exported.tables.sessions[0].id
+    exported.tables.attempts = [
+      { id: 20, sessionId, questionId: qid, correct: true, createdAt: '2027-01-01T12:00:00Z' },
+      { id: 10, sessionId, questionId: qid, correct: false, createdAt: '2027-01-01T12:00:00Z' },
+    ]
+    expect((await postImport('user_a', exported)).res.status).toBe(200)
+    const rows = await getDb(d1 as unknown as D1Database)
+      .select()
+      .from(firstTries)
+    expect(rows).toMatchObject([
+      { userId, questionId: qid, correct: false, kind: 'drill', source: 'authentic' },
+    ])
+    expect(rows).toHaveLength(1)
+    expect((await summary(userId)).ORD).toMatchObject({ firstTry90d: 1, firstTryCorrect90d: 0 })
+  })
+
+  it('validates malformed and duplicate ledger rows before wiping any data', async () => {
+    const userId = await seedLedger()
+    const exported = (await getExport('user_a')).body as {
+      tables: Record<string, Array<Record<string, unknown>>>
+    }
+    expect(exported.tables.firstTries).toBeDefined()
+    const original = exported.tables.firstTries
+    const before = await summary(userId)
+    for (const rows of [
+      [{ ...original[0], createdAt: 'invalid-date' }],
+      [original[0], original[0]],
+      [
+        {
+          ...original[0],
+          mockAnswers: Array.from({ length: 41 }, () => ({
+            id: 1,
+            createdAt: 1,
+            correct: true,
+            source: 'authentic',
+          })),
+        },
+      ],
+    ]) {
+      exported.tables.firstTries = rows
+      expect((await postImport('user_a', exported)).res.status).toBe(400)
+      expect(await summary(userId)).toEqual(before)
+    }
+  })
 })
 
 describe('GET /api/me/export', () => {

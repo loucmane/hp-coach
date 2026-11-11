@@ -16,7 +16,7 @@ import { Hono } from 'hono'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { getDb } from '../db/client'
-import { attempts, frameworkProgress, mastery, sessions, users } from '../db/schema'
+import { attempts, firstTries, frameworkProgress, mastery, sessions, users } from '../db/schema'
 import { makeTestD1, type ShimD1 } from '../lib/testD1'
 import type { Env, Vars } from '../types'
 import { attemptsRoute } from './attempts'
@@ -39,6 +39,7 @@ type AttemptPayload = {
   questionId: string
   selectedAnswer: string
   correct: boolean
+  createdAt?: unknown
   timeTakenMs?: number
   layer1Ids?: string[]
   // Typed loosely so the validation tests can send bad values.
@@ -104,6 +105,35 @@ beforeEach(() => {
 afterEach(() => vi.useRealTimers())
 
 describe('POST /api/attempts — the attempt row', () => {
+  it('batches the attempt, ledger and lifetime counter together', async () => {
+    const { userId, sessionId } = await seedSession('user_a')
+    const batch = vi.spyOn(d1, 'batch')
+    const res = await post({ sessionId, questionId: KVA_QID, selectedAnswer: 'B', correct: true })
+    expect(res.status).toBe(201)
+    expect(batch).toHaveBeenCalledTimes(1)
+    expect(batch.mock.calls[0][0]).toHaveLength(3)
+    expect(await db().select().from(firstTries)).toMatchObject([
+      { userId, sessionId, questionId: KVA_QID, correct: true, source: 'authentic', kind: 'drill' },
+    ])
+  })
+
+  it.each([
+    'invalid',
+    null,
+    123,
+  ])('rejects an invalid offline timestamp before writing: %s', async (createdAt) => {
+    const { sessionId } = await seedSession('user_a')
+    const res = await post({
+      sessionId,
+      questionId: KVA_QID,
+      selectedAnswer: 'B',
+      correct: true,
+      createdAt,
+    })
+    expect(res.status).toBe(400)
+    expect(await db().select().from(attempts)).toEqual([])
+    expect(await db().select().from(firstTries)).toEqual([])
+  })
   it('records the attempt and bumps the lifetime counter', async () => {
     const { userId, sessionId } = await seedSession('user_a')
     const res = await post({

@@ -71,20 +71,49 @@ describe('Framsteg isolation', () => {
       for (const selector of group.replace(/\([^)]*\)/g, '(args)').split(','))
         expect(selector.trim()).toMatch(/^\[data-folio\] \.fa-framsteg(?:[\s.[:]|$)/)
     expect(colourViolations(css, '')).toEqual([])
-    const allowed = [
-      '.fa-scale-range',
-      '.fa-scale-mark',
-      '.fa-chart-end',
-      '.fa-chart-value',
-      '[data-heat="1"]',
-      '[data-heat="2"]',
-    ]
+    const allowed = ['.fa-chart-end', '.fa-chart-value']
     const actual: string[] = []
     for (const rule of css.matchAll(/([^{}]+)\{([^{}]*)\}/g))
       if (/var\(--fa-accent/.test(rule[2]))
         for (const selector of rule[1].split(','))
           actual.push(selector.trim().replace('[data-folio] .fa-framsteg ', ''))
     expect([...new Set(actual)].sort()).toEqual(allowed.sort())
+  })
+  it('uses scoped keys and the shared Ljusbord primitives', () => {
+    expect(read('./FolioFramsteg.tsx')).toContain('useScopedKeys')
+    expect(read('./FramstegReport.tsx')).toContain('<Lit')
+    expect(read('./FramstegReport.tsx')).toContain('<Go')
+    expect(read('./FramstegSections.tsx')).toContain('<FramstegBand')
+    expect(read('./FramstegReport.tsx')).toContain('<RangeBand')
+    expect(read('./FramstegReport.tsx')).not.toContain("window.addEventListener('keydown'")
+  })
+  it('keeps decimal punctuation proportional in the display range', () => {
+    const css = read('./framsteg.css')
+    const rules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].filter((r) =>
+      r[1].includes('.fa-result-n'),
+    )
+    expect(rules.some((r) => /font-variant-numeric:\s*proportional-nums/.test(r[2]))).toBe(true)
+    expect(rules.every((r) => !/tabular-nums/.test(r[2]))).toBe(true)
+  })
+  it('constrains the mini-band box and preserves its gradient core after clipping', () => {
+    const css = read('./framsteg.css').replace(/\/\*[\s\S]*?\*\//g, '')
+    const rule = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].find(
+      (r) => r[1].trim() === '[data-folio] .fa-framsteg .fa-fr-band .fa-ui-band-range',
+    )?.[2]
+    expect(rule).toContain('max-width: var(--fa-fr-band-width)')
+    expect(rule).toContain('margin-left: var(--fa-fr-band-shift)')
+    expect(rule).toContain('var(--fa-fr-band-core-start)')
+    expect(rule).toContain('var(--fa-fr-band-core-end)')
+  })
+  it('binds the custom evidence marks to all eight section tokens', () => {
+    const css = read('./framsteg.css')
+    for (const key of ['ord', 'las', 'mek', 'elf', 'xyz', 'kva', 'nog', 'dtk']) {
+      expect(css).toContain(
+        `[data-sec="${key}"] { --fa-fr-c: var(--fa-sec-${key}); --fa-fr-soft: var(--fa-sec-${key}-soft); }`,
+      )
+    }
+    // ui.css binds its private colour variables to SecChip/RangeBand classes only.
+    expect(css).not.toContain('var(--fa-ui-c')
   })
   it.each([
     '<div style={{ color: "red" }} />',

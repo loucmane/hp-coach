@@ -1,42 +1,48 @@
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { fireEvent, render, renderHook, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import axe from 'axe-core'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Stats } from '@/api/hooks/useStats'
 import { SECTION_KEYS } from '@/data/questions'
+import { useFolioPrefs } from '@/folio/lib/folioPrefs'
+import { computeHonestProjected, formatScoreSv } from '@/lib/scoring'
+import { SECTION_DURATIONS } from '@/lib/sectionDurations'
 import FolioFramsteg from './FolioFramsteg'
+import { TrendChart } from './TrendChart'
 
 const extras = vi.hoisted(() => ({
   viewport: 'studio',
   days: 170,
-  sitting: { label: 'Vårprov 27' },
-  history: {
+  sitting: { label: 'Vårprov 27', date: new Date(2027, 3, 10) as Date | undefined },
+  due: { data: Array.from({ length: 12 }, (_, i) => ({ questionId: `2024v-1-ORD-${i + 1}` })) },
+  sample: {
     data: [
-      {
-        id: 7,
-        kind: 'drill',
-        sections: 'ORD',
-        total: 10,
-        correct: 8,
-        endedAt: '2026-10-22T12:00:00Z',
-      },
+      { questionId: '2024v-1-LÄS-1', correct: true },
+      { questionId: '2024v-1-LÄS-2', correct: false },
+      { questionId: '2024v-1-LÄS-3', correct: true },
     ],
   },
-  due: { data: [{ questionId: '2024v-1-XYZ-1' }] },
-  topTraps: [
-    {
-      section: 'KVA',
-      framework_id: 'KVA-001',
-      count: 1,
-      headline: 'Jämför storheterna.',
-      trend: { kind: 'unknown' },
-    },
-  ],
-  trapNames: { 'KVA-001': 'Jämförelser' },
+  active: { data: [{ questionId: '2024v-1-LÄS-2' }] },
 }))
 vi.mock('./useFramstegExtras', () => ({ useFramstegExtras: () => extras }))
+const queries = vi.hoisted(() => ({
+  results: [] as { half: string; sessionId: number; createdAt: number | null }[],
+  attempts: vi.fn((id: number | null) => ({
+    data: id == null ? undefined : [{ questionId: `pass-${id}-ORD-1`, correct: true }],
+  })),
+}))
+vi.mock('@/api/hooks/useMockResults', () => ({ useMockResults: () => ({ data: queries.results }) }))
+vi.mock('@/api/hooks/useSessions', () => ({ useSessionAttempts: queries.attempts }))
+vi.mock('@/api/hooks/useMistakes', () => ({
+  useActiveMistakes: () => extras.active,
+  useDueMistakes: () => extras.due,
+}))
+vi.mock('@/hooks/useViewport', () => ({ useViewport: () => extras.viewport }))
+vi.mock('@/stores/examStore', () => ({
+  useDaysRemaining: () => extras.days,
+  useSitting: () => extras.sitting,
+}))
 const navigateHref = vi.fn()
-const halvesNote = 'Halvorna räknar bara delprov med minst två svar; totalen räknar alla.'
 const stats = (): Stats => ({
   attempts: { total: 100, today: 5, thisWeek: 20 },
   drills: { total: 10, thisWeek: 2 },
@@ -56,6 +62,8 @@ const stats = (): Stats => ({
         attemptsToday: 0,
         avgTimeMs: null,
         lastAttemptedAt: Date.now(),
+        firstTry90d: section === 'LÄS' ? 3 : section === 'XYZ' ? 0 : 20,
+        firstTryCorrect90d: section === 'LÄS' ? 2 : section === 'XYZ' ? 0 : 14,
       },
     ]),
   ) as Stats['bySection'],
@@ -64,45 +72,79 @@ const stats = (): Stats => ({
     attempts: n == null ? 0 : 10,
     correct: n == null ? 0 : n * 10,
   })),
-  attemptsDaily: [{ date: new Date().toISOString().slice(0, 10), n: 5, verbal: 2, quant: 3 }],
 })
 beforeEach(() => {
   navigateHref.mockClear()
-  localStorage.clear()
   extras.viewport = 'studio'
+  extras.sitting.date = new Date(2027, 3, 10)
+  extras.days = 170
+  useFolioPrefs.setState({ kbd: true })
 })
 
-describe('Folio Framsteg', () => {
-  it('keeps the report before the primary action and the remaining overview in order', () => {
+describe('Ljusbord Framsteg', () => {
+  it('loads only the newest recent provpass of each half and discards obsolete samples', async () => {
+    const { useFramstegExtras } =
+      await vi.importActual<typeof import('./useFramstegExtras')>('./useFramstegExtras')
+    const now = Date.now()
+    queries.results = [
+      { half: 'verbal', sessionId: 12, createdAt: now },
+      { half: 'verbal', sessionId: 11, createdAt: now - 1000 },
+      { half: 'kvant', sessionId: 10, createdAt: now - 2000 },
+    ]
+    queries.attempts.mockClear()
+    const { result, rerender } = renderHook(useFramstegExtras)
+    expect(queries.attempts.mock.calls).toEqual([[12], [10]])
+    expect(result.current.sample.data.map((a) => a.questionId)).toEqual([
+      'pass-12-ORD-1',
+      'pass-10-ORD-1',
+    ])
+    expect(result.current.active).toBe(extras.active)
+    expect(result.current.due).toBe(extras.due)
+    queries.results = [
+      { half: 'verbal', sessionId: 12, createdAt: null },
+      { half: 'kvant', sessionId: 10, createdAt: now - 91 * 86400000 },
+    ]
+    queries.attempts.mockClear()
+    rerender()
+    expect(queries.attempts.mock.calls).toEqual([[null], [null]])
+    expect(result.current.sample.data).toEqual([])
+    queries.results = []
+  })
+  it('shows one lit prognosis and one data-backed lever, then the sections', () => {
     const { container } = render(
       <FolioFramsteg stats={{ data: stats() }} navigateHref={navigateHref} />,
     )
-    expect(
-      screen
-        .getAllByRole('heading')
-        .map((h) => h.textContent)
-        .slice(0, 9),
-    ).toEqual([
-      'Framsteg',
-      'Prognos',
-      'Ordförståelse',
-      'Nästa steg uppåt',
-      'Poäng per vecka',
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Var du står, ärligt.')
+    expect(screen.getAllByRole('heading').map((h) => h.textContent)).toEqual([
+      'Var du står, ärligt.',
+      'Prognos just nu',
+      'Hur säker är den?',
       'Delproven',
-      'Sedan',
-      'Historik',
-      'Fällor',
+      'Poäng per vecka',
+      'Fler sätt att smalna intervallet',
     ])
-    expect(container.querySelectorAll('.fa-btn')).toHaveLength(1)
-    expect(screen.getByTestId('progress-projected')).toHaveTextContent('1,4')
-    expect(screen.getByTestId('progress-first-try-note')).toHaveTextContent('bara första försöket')
-    expect(screen.getByTestId('progress-prose')).toHaveTextContent(
-      '20 frågor den här veckan · 75 % rätt.',
+    expect(container.querySelectorAll('[data-lit="true"]')).toHaveLength(1)
+    expect(container.querySelectorAll('.fa-ui-go')).toHaveLength(1)
+    expect(screen.getByTestId('framsteg-primary')).toHaveTextContent('Prova XYZ')
+    expect(screen.getByTestId('framsteg-primary')).toHaveTextContent(
+      `Prova XYZ · 10 frågor, ca ${SECTION_DURATIONS.XYZ} min`,
     )
-    expect(container.textContent).not.toMatch(/\b(?:serie|rekord|mål|fel)\b/i)
-    expect(screen.queryByRole('link', { name: /Alla fällor/ })).not.toBeInTheDocument()
+    expect(screen.getByTestId('framsteg-primary')).toHaveAttribute(
+      'href',
+      '/drill?section=XYZ&start=1',
+    )
+    expect(screen.getByText(/Totalen är medelvärdet av halvorna/)).toHaveTextContent(
+      '123 förstaförsök',
+    )
+    expect(screen.getByTestId('progress-first-try-note')).toHaveTextContent('bara första försöket')
+    expect(container.textContent).not.toMatch(
+      /streak|serie|rekord|du borde|på väg ner|sämst|forecast|prognos framåt/i,
+    )
+    expect(screen.queryByText('Nästa steg uppåt')).not.toBeInTheDocument()
+    expect(screen.queryByText('Sedan')).not.toBeInTheDocument()
+    expect(screen.queryByText('Mönstret i dina KVA-missar')).not.toBeInTheDocument()
   })
-  it('makes every section row, up-step, history row and trap a real destination', () => {
+  it('uses real section links, ten-answer bands and recorded dots', () => {
     render(<FolioFramsteg stats={{ data: stats() }} navigateHref={navigateHref} />)
     for (const s of SECTION_KEYS) {
       expect(screen.getByTestId(`progress-section-${s}`).tagName).toBe('A')
@@ -110,246 +152,265 @@ describe('Folio Framsteg', () => {
         'href',
         `/lektion?section=${encodeURIComponent(s)}`,
       )
-      expect(screen.getByTestId(`framsteg-up-${s}`).tagName).toBe('A')
     }
-    expect(screen.getByTestId('framsteg-up-XYZ')).toHaveAttribute(
-      'href',
-      '/repetition?section=XYZ&start=1',
-    )
-    expect(screen.getByTestId('framsteg-up-KVA')).toHaveAttribute(
-      'href',
-      '/drill?section=KVA&framework=KVA-001&start=1',
-    )
-    expect(screen.getByTestId('framsteg-history-7')).toHaveAttribute('href', '/drill?done=7')
+    const thin = screen.getByTestId('progress-section-LÄS')
+    expect(thin).toHaveTextContent('2 av 3 · första glimt')
+    expect(thin.querySelector('.fa-ui-band')).toBeNull()
+    expect(thin.querySelectorAll('[data-answer]')).toHaveLength(3)
+    expect(thin.querySelectorAll('[data-returning="true"]')).toHaveLength(1)
+    expect(screen.getByTestId('progress-section-ORD').querySelector('.fa-ui-band')).not.toBeNull()
+    expect(screen.getByTestId('progress-section-XYZ')).toHaveTextContent('inte provat')
     expect(screen.getByTestId('progress-historik')).toHaveAttribute('href', '/historik')
-    expect(screen.getByRole('link', { name: 'Jämförelser' })).toHaveAttribute(
-      'href',
-      '/drill?section=KVA&framework=KVA-001&start=1',
-    )
-    expect(screen.getByText('1 gång')).toBeInTheDocument()
   })
-  it('runs the primary with Enter and preserves focused controls and modified links', async () => {
+  it.each([
+    0, 10,
+  ])('fits the soft band inside the axis without moving its core (%s correct)', (correct) => {
+    const data = stats()
+    Object.assign(data.bySection.ORD, { firstTry90d: 10, firstTryCorrect90d: correct })
+    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    const band = screen
+      .getByTestId('progress-section-ORD')
+      .querySelector<HTMLElement>('.fa-fr-band')!
+    expect(band).not.toBeNull()
+    const fill = band.querySelector<HTMLElement>('.fa-ui-band-range')!
+    const rawLeft = Number.parseFloat(fill.style.left)
+    const left = rawLeft + Number.parseFloat(band.style.getPropertyValue('--fa-fr-band-shift'))
+    const width = Number.parseFloat(band.style.getPropertyValue('--fa-fr-band-width'))
+    expect(left).toBeGreaterThanOrEqual(0)
+    expect(left + width).toBeLessThanOrEqual(100.0001)
+    const range = screen
+      .getByTestId('progress-section-ORD')
+      .querySelector('b')!
+      .textContent!.split('–')
+      .map((s) => Number(s.replace(',', '.')))
+    const coreLow =
+      left +
+      (width * Number.parseFloat(band.style.getPropertyValue('--fa-fr-band-core-start'))) / 100
+    const coreHigh =
+      left + (width * Number.parseFloat(band.style.getPropertyValue('--fa-fr-band-core-end'))) / 100
+    // Text rounds to tenths; the painted core retains the scorer's exact endpoints.
+    expect(Math.abs(coreLow / 50 - range[0])).toBeLessThan(0.05)
+    expect(Math.abs(coreHigh / 50 - range[1])).toBeLessThan(0.05)
+    expect(Number.parseFloat(fill.style.width)).toBeGreaterThan(width)
+  })
+  it('keeps Enter scoped, honours preferences and preserves native modified links', async () => {
     const user = userEvent.setup()
     const { container } = render(
       <FolioFramsteg stats={{ data: stats() }} navigateHref={navigateHref} />,
     )
+    const page = screen.getByTestId('folio-framsteg')
     fireEvent.keyDown(document.body, { key: 'Enter' })
-    expect(navigateHref).toHaveBeenCalledExactlyOnceWith('/drill?section=ORD&start=1')
+    expect(navigateHref).not.toHaveBeenCalled()
+    fireEvent.keyDown(page, { key: 'Enter' })
+    expect(navigateHref).toHaveBeenCalledExactlyOnceWith('/drill?section=XYZ&start=1')
     navigateHref.mockClear()
-    const link = screen.getByTestId('progress-section-XYZ')
+    const link = screen.getByTestId('progress-section-ORD')
     link.focus()
     await user.keyboard('{Enter}')
-    expect(navigateHref).toHaveBeenCalledExactlyOnceWith('/lektion?section=XYZ')
+    expect(navigateHref).toHaveBeenCalledExactlyOnceWith('/lektion?section=ORD')
     navigateHref.mockClear()
     fireEvent.click(link, { ctrlKey: true })
-    fireEvent.click(link, { metaKey: true })
+    fireEvent.click(screen.getByTestId('framsteg-primary'), { metaKey: true })
     for (const options of [
       { repeat: true },
       { ctrlKey: true },
-      { metaKey: true },
+      { shiftKey: true },
       { isComposing: true },
     ])
-      fireEvent.keyDown(document.body, { key: 'Enter', ...options })
+      fireEvent.keyDown(page, { key: 'Enter', ...options })
     const input = document.createElement('input')
-    container.appendChild(input)
+    page.appendChild(input)
     fireEvent.keyDown(input, { key: 'Enter' })
-    const page = screen.getByTestId('folio-framsteg')
     page.setAttribute('inert', '')
-    fireEvent.keyDown(document.body, { key: 'Enter' })
+    fireEvent.keyDown(page, { key: 'Enter' })
     page.removeAttribute('inert')
     const dialog = document.createElement('div')
     dialog.setAttribute('role', 'dialog')
     container.appendChild(dialog)
-    fireEvent.keyDown(document.body, { key: 'Enter' })
+    fireEvent.keyDown(page, { key: 'Enter' })
+    expect(navigateHref).not.toHaveBeenCalled()
+    dialog.remove()
+    useFolioPrefs.setState({ kbd: false })
+    await user.keyboard('{Escape}')
+    fireEvent.keyDown(page, { key: 'Enter' })
     expect(navigateHref).not.toHaveBeenCalled()
   })
-  it('expands the 84-day strip and the chart table with accessible controls', async () => {
-    const user = userEvent.setup()
-    render(<FolioFramsteg stats={{ data: stats() }} navigateHref={navigateHref} />)
-    const heat = screen.getByTestId('folio-framsteg-week')
-    expect(heat.querySelectorAll('[data-heat]')).toHaveLength(84)
-    const toggle = within(heat).getByRole('button', { name: 'Visa alla veckor' })
-    expect(toggle).toHaveAttribute('aria-expanded', 'false')
-    await user.click(toggle)
+  it.each([
+    'studio',
+    'phone',
+  ])('preserves the existing trend markup and table in %s', async (viewport) => {
+    extras.viewport = viewport
+    const data = stats()
+    const original = render(<TrendChart weekly={data.weekly} phone={viewport === 'phone'} />)
+    const chartMarkup = original.container.innerHTML
+    original.unmount()
+    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    const region = screen.getByRole('region', { name: 'Poäng per vecka' })
+    expect(region.querySelector('.fa-chart')?.outerHTML).toBe(chartMarkup)
+    const toggle = within(region).getByRole('button', { name: 'Visa som tabell' })
+    await userEvent.click(toggle)
     expect(toggle).toHaveAttribute('aria-expanded', 'true')
-    expect(within(heat).getByRole('button', { name: 'Visa färre veckor' })).toBe(toggle)
+    expect(within(region).getByRole('table')).toHaveTextContent('ingen övning')
     expect(toggle).toHaveFocus()
-    expect(within(heat).getByRole('table')).toBeInTheDocument()
-    expect(within(heat).getByText(/En dag utan övning tar inte bort/)).toBeInTheDocument()
-    await user.keyboard('{Enter}')
-    expect(within(heat).getByRole('button', { name: 'Visa alla veckor' })).toBe(toggle)
+    await userEvent.keyboard('{Enter}')
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
     expect(toggle).toHaveFocus()
-    expect(within(heat).queryByRole('table')).not.toBeInTheDocument()
-    const chartToggle = screen.getByRole('button', { name: 'Visa som tabell' })
-    fireEvent.click(chartToggle)
-    expect(chartToggle).toHaveAttribute('aria-expanded', 'true')
-    expect(screen.getByRole('table', { name: 'Poäng per vecka' })).toHaveTextContent('ingen övning')
-    fireEvent.click(chartToggle)
-    expect(chartToggle).toHaveAttribute('aria-expanded', 'false')
+    expect(within(region).queryByRole('table')).not.toBeInTheDocument()
   })
-  it('renders day zero only after data resolves and keeps the retry line', () => {
+  it('keeps one phone action outside the transformed lit sheet', () => {
+    extras.viewport = 'phone'
+    const { container } = render(
+      <FolioFramsteg stats={{ data: stats() }} navigateHref={navigateHref} />,
+    )
+    expect(container.querySelectorAll('.fa-ui-go')).toHaveLength(1)
+    const action = screen.getByTestId('framsteg-primary')
+    expect(action).toHaveAttribute('data-dock')
+    expect(action).toHaveTextContent(`10 frågor, ca ${SECTION_DURATIONS.XYZ} min`)
+    expect(action.closest('[data-lit="true"]')).toBeNull()
+    fireEvent.click(action)
+    expect(navigateHref).toHaveBeenCalledExactlyOnceWith('/drill?section=XYZ&start=1')
+  })
+  it('distinguishes loading, error, empty and a missing half without inventing a total', () => {
     const { container, rerender } = render(
       <FolioFramsteg stats={{ isPending: true }} navigateHref={navigateHref} />,
     )
     expect(screen.getByRole('status')).toHaveTextContent('Laddar')
     expect(screen.queryByTestId('progress-empty-cta')).not.toBeInTheDocument()
     expect(container.textContent).not.toContain('Ingen prognos än')
-    fireEvent.keyDown(document.body, { key: 'Enter' })
-    expect(navigateHref).not.toHaveBeenCalled()
+    expect(container.querySelectorAll('.fa-ui-go')).toHaveLength(0)
     rerender(<FolioFramsteg stats={{ isError: true }} navigateHref={navigateHref} />)
-    expect(screen.getByRole('status')).toHaveTextContent(
-      'Gick inte att hämta just nu — försöker igen automatiskt.',
-    )
+    expect(screen.getByRole('status')).toHaveTextContent('Gick inte att hämta')
     const data = stats()
-    data.bySection = { ORD: data.bySection.ORD } as Stats['bySection']
-    rerender(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    expect(screen.getByTestId('progress-empty-cta')).toHaveAttribute('href', '/diagnostik?start=1')
-    expect(container.textContent).not.toMatch(/lägst/i)
-    expect(container.textContent).not.toMatch(/sedan förra veckan|inom felmarginalen/i)
-    expect(container.querySelectorAll('.fa-btn')).toHaveLength(1)
-  })
-  it('keeps a single first try neutral in the ledger and up-step', () => {
-    const data = stats()
-    data.bySection.MEK.firstTry90d = 1
-    data.bySection.MEK.firstTryCorrect90d = 1
-    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    const row = screen.getByTestId('progress-section-MEK')
-    expect(row).toHaveTextContent('—')
-    expect(row).toHaveTextContent('underlag: 1 svar')
-    expect(row).not.toHaveTextContent('2,0')
-    const up = screen.getByTestId('framsteg-up-MEK')
-    expect(up).toHaveTextContent('Fler MEK-frågor ger ett tydligare underlag.')
-    expect(up).not.toHaveTextContent(/Håll|2,0/)
-  })
-  it.each([
-    ['ORD', 'Verbal — · Kvant 1,4'],
-    ['KVA', 'Verbal 1,4 · Kvant —'],
-  ] as const)('keeps a one-answer %s half neutral alongside its section row', (sparse, halves) => {
-    const data = stats()
-    data.bySection = { ORD: data.bySection.ORD, KVA: data.bySection.KVA } as Stats['bySection']
-    data.bySection[sparse].firstTry90d = 1
-    data.bySection[sparse].firstTryCorrect90d = 1
-    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    expect(screen.getByText(halves)).toBeInTheDocument()
-    expect(screen.getByText(halvesNote)).toBe(screen.getByText(halves).nextElementSibling)
-    expect(screen.getByTestId(`progress-section-${sparse}`)).toHaveTextContent('—')
-    expect(screen.getByTestId('progress-projected')).toHaveTextContent('1,7')
-    expect(screen.getByRole('img', { name: /Prognos 1,7 av 2,0, intervall/ })).toBeInTheDocument()
-  })
-  it('renders a shared lowest place in both the lead and the following step', () => {
-    const data = stats()
-    data.bySection = { ORD: data.bySection.ORD, XYZ: data.bySection.XYZ } as Stats['bySection']
-    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    expect(screen.getByTestId('folio-framsteg-next')).toHaveTextContent(
-      'ORD · Lägst, tillsammans med XYZ',
-    )
-    expect(screen.getByText('Lägst, tillsammans med ORD')).toBeInTheDocument()
-    expect(screen.queryByText(/näst lägst/i)).not.toBeInTheDocument()
-  })
-  it.each([
-    ['MEK', 'Verbal 1,4 · Kvant 1,4'],
-    ['XYZ', 'Verbal 1,4 · Kvant 1,4'],
-  ] as const)('excludes a single-answer %s from its mixed half on screen', (thin, halves) => {
-    const data = stats()
-    data.bySection = {
-      ORD: data.bySection.ORD,
-      KVA: data.bySection.KVA,
-      [thin]: { ...data.bySection[thin], firstTry90d: 1, firstTryCorrect90d: 1 },
-    } as Stats['bySection']
-    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    expect(screen.getByText(halves)).toBeInTheDocument()
-    expect(screen.getAllByText(halvesNote)).toHaveLength(1)
-    expect(screen.getByText(halvesNote)).toBe(screen.getByText(halves).nextElementSibling)
-    expect(screen.getByTestId(`progress-section-${thin}`)).toHaveTextContent('—')
-    expect(screen.getByTestId('progress-projected')).toHaveTextContent('1,5')
-  })
-  it.each([
-    'all sections',
-    'only answered sections',
-  ])('omits the halves explanation when both halves use every scored section (%s)', (coverage) => {
-    const data = stats()
-    if (coverage === 'only answered sections') {
-      data.bySection = {
-        ORD: data.bySection.ORD,
-        KVA: data.bySection.KVA,
-        MEK: { ...data.bySection.MEK, firstTry90d: 0, firstTryCorrect90d: 0 },
-      } as Stats['bySection']
-    }
-    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    expect(screen.getByText('Verbal 1,4 · Kvant 1,4')).toBeInTheDocument()
-    expect(screen.queryByText(halvesNote)).not.toBeInTheDocument()
-  })
-  it('removes the halves explanation as soon as the last excluded section qualifies', () => {
-    const data = stats()
-    data.bySection.MEK.firstTry90d = 1
-    data.bySection.MEK.firstTryCorrect90d = 0
-    const { rerender } = render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    expect(screen.getByText(halvesNote)).toBeInTheDocument()
-    data.bySection.MEK.firstTry90d = 2
-    rerender(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    expect(screen.queryByText(halvesNote)).not.toBeInTheDocument()
-    expect(screen.getByTestId('progress-section-MEK')).toHaveTextContent('0,0')
-  })
-  it('explains an absent half even when the available half has enough answers', () => {
-    const data = stats()
-    data.bySection = { ORD: data.bySection.ORD } as Stats['bySection']
-    const { rerender } = render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    expect(screen.getByText('Verbal 1,4 · Kvant —')).toBeInTheDocument()
-    expect(screen.getByText(halvesNote)).toBeInTheDocument()
     data.bySection = {} as Stats['bySection']
     rerender(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    expect(screen.getByText('Verbal — · Kvant —')).toBeInTheDocument()
-    expect(screen.getAllByText(halvesNote)).toHaveLength(1)
-  })
-  it('renders Swedish section lists in the lead and following steps', () => {
-    const data = stats()
-    data.bySection = {
-      ORD: data.bySection.ORD,
-      LÄS: data.bySection.LÄS,
-      XYZ: data.bySection.XYZ,
-    } as Stats['bySection']
-    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    expect(screen.getByTestId('folio-framsteg-next')).toHaveTextContent(
-      'ORD · Lägst, tillsammans med LÄS och XYZ',
-    )
-    const following = screen.getByRole('region', { name: 'Sedan' })
-    expect(following).toHaveTextContent('Lägst, tillsammans med ORD och XYZ')
-    expect(following).toHaveTextContent('Lägst, tillsammans med ORD och LÄS')
-  })
-  it('keeps thin trends neutral in the lead, Sedan and up-steps until both weeks qualify', () => {
-    const data = stats()
-    data.bySection = {
-      ORD: { ...data.bySection.ORD, correct90d: 50 },
-      MEK: { ...data.bySection.MEK, correct90d: 60 },
-      XYZ: data.bySection.XYZ,
-    } as Stats['bySection']
-    for (const section of ['ORD', 'MEK'] as const) {
-      Object.assign(data.bySection[section], {
-        firstTry7d: 1,
-        firstTryCorrect7d: 0,
-        firstTry7to14d: 1,
-        firstTryCorrect7to14d: 1,
-      })
-    }
-    const { rerender } = render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    expect(screen.getByTestId('folio-framsteg-next')).not.toHaveTextContent(/på väg ner/i)
-    expect(screen.getByRole('region', { name: 'Sedan' })).not.toHaveTextContent(/på väg ner/i)
-    for (const section of ['ORD', 'MEK'] as const) {
-      expect(screen.getByTestId(`framsteg-up-${section}`)).not.toHaveTextContent('trenden pekar')
-      expect(screen.getByTestId(`progress-section-${section}`)).toHaveTextContent('Trend: —')
-      Object.assign(data.bySection[section], {
-        firstTry7d: 5,
-        firstTry7to14d: 5,
-        firstTryCorrect7to14d: 5,
-      })
-    }
+    expect(screen.getByTestId('progress-empty-cta')).toHaveAttribute('href', '/diagnostik?start=1')
+    expect(screen.getByTestId('progress-projected')).toHaveTextContent('—')
+    data.bySection = { ORD: stats().bySection.ORD } as Stats['bySection']
     rerender(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    expect(screen.getByTestId('folio-framsteg-next')).toHaveTextContent('På väg ner')
-    expect(screen.getByRole('region', { name: 'Sedan' })).toHaveTextContent('På väg ner')
-    for (const section of ['ORD', 'MEK'] as const) {
-      expect(screen.getByTestId(`framsteg-up-${section}`)).toHaveTextContent('trenden pekar ner')
+    expect(screen.getByTestId('framsteg-primary')).toHaveTextContent('Prova XYZ')
+    expect(screen.getByTestId('progress-projected')).toHaveTextContent('—')
+    expect(screen.getByText(/Totalen visas när/)).toBeInTheDocument()
+    expect(screen.getByTestId('framsteg-half-quant')).toHaveTextContent('Kvant inget underlag än')
+    expect(screen.getByTestId('framsteg-half-quant').querySelector('.fa-ui-band')).toBeNull()
+    expect(screen.getByTestId('framsteg-half-verbal').querySelector('.fa-ui-band')).not.toBeNull()
+    expect(screen.getAllByText(/Totalen är medelvärdet av halvorna/)).toHaveLength(1)
+  })
+  it('keeps the real half estimates even for one answer and explains synthetic evidence', () => {
+    const data = stats()
+    data.bySection = {
+      ORD: { ...data.bySection.ORD, firstTry90d: 1, firstTryCorrect90d: 1 },
+      KVA: data.bySection.KVA,
+    } as Stats['bySection']
+    data.bySection.ORD.estimateBasis = { authentic: 0, synthetic: 1, calibrated: false }
+    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.getByTestId('framsteg-half-verbal')).toHaveTextContent('Verbal 0,0–2,0')
+    expect(screen.getByTestId('framsteg-half-quant')).toHaveTextContent('Kvant 1,0–1,8')
+    expect(screen.getByTestId('progress-section-ORD')).toHaveTextContent('1 av 1 · första glimt')
+    expect(screen.getByTestId('progress-section-ORD')).toHaveAttribute(
+      'aria-describedby',
+      'fa-fr-caveat',
+    )
+  })
+  it.each([
+    'studio',
+    'phone',
+  ])('renders each half range with its own soft band in %s', (viewport) => {
+    extras.viewport = viewport
+    const data = stats()
+    const p = computeHonestProjected(data.bySection)
+    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    for (const [half, label] of [
+      ['verbal', 'Verbal'],
+      ['quant', 'Kvant'],
+    ] as const) {
+      const low = Math.max(0, p[half]! - p[`${half}Band`]!)
+      const high = Math.min(2, p[half]! + p[`${half}Band`]!)
+      const row = screen.getByTestId(`framsteg-half-${half}`)
+      expect(row).toHaveTextContent(`${label} ${formatScoreSv(low)}–${formatScoreSv(high)}`)
+      const band = row.querySelector<HTMLElement>('.fa-fr-band')!
+      expect(band).not.toBeNull()
+      expect(band.querySelector('.fa-ui-band')).toHaveAttribute('data-size', 'mini')
+      expect(band.querySelector('.fa-ui-band-plot')).toHaveAttribute('aria-hidden', 'true')
+      const fill = band.querySelector<HTMLElement>('.fa-ui-band-range')!
+      const left =
+        Number.parseFloat(fill.style.left) +
+        Number.parseFloat(band.style.getPropertyValue('--fa-fr-band-shift'))
+      const width = Number.parseFloat(band.style.getPropertyValue('--fa-fr-band-width'))
+      for (const [edge, value] of [
+        ['start', low],
+        ['end', high],
+      ] as const) {
+        const stop = Number.parseFloat(band.style.getPropertyValue(`--fa-fr-band-core-${edge}`))
+        expect((left + (width * stop) / 100) / 50).toBeCloseTo(value, 5)
+      }
     }
+  })
+  it('rounds displayed half ranges and total identically when their endpoints match', () => {
+    const data = stats()
+    for (const s of SECTION_KEYS)
+      Object.assign(data.bySection[s], { firstTry90d: 10000, firstTryCorrect90d: 5750 })
+    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.getByTestId('progress-projected')).toHaveTextContent(/^1,0–1,3$/)
+    expect(screen.getByTestId('framsteg-half-verbal')).toHaveTextContent('Verbal 1,0–1,3')
+    expect(screen.getByTestId('framsteg-half-quant')).toHaveTextContent('Kvant 1,0–1,3')
+  })
+  it.each(['studio', 'phone'])('names the sitting and full date in %s', (viewport) => {
+    extras.viewport = viewport
+    const { rerender } = render(
+      <FolioFramsteg stats={{ data: stats() }} navigateHref={navigateHref} />,
+    )
+    expect(screen.getByText('170 dagar kvar · vårprovet 10 april')).toBeInTheDocument()
+    extras.sitting.date = new Date(2027, 9, 24)
+    extras.days = 40
+    rerender(<FolioFramsteg stats={{ data: stats() }} navigateHref={navigateHref} />)
+    expect(screen.getByText('40 dagar kvar · höstprovet 24 oktober')).toBeInTheDocument()
+    expect(screen.getByTestId('progress-historik')).toHaveAttribute('href', '/historik')
+  })
+  it('gives both other ways their real durations and explanatory sublines', () => {
+    render(<FolioFramsteg stats={{ data: stats() }} navigateHref={navigateHref} />)
+    const more = screen.getByRole('region', { name: 'Fler sätt att smalna intervallet' })
+    const repetition = within(more).getByRole('link', { name: /Repetera · tio frågor, ca 8 min/ })
+    expect(repetition).toHaveTextContent(
+      'Missar som kommer tillbaka i rätt tid är de billigaste poängen.',
+    )
+    expect(repetition).toHaveAttribute('href', '/repetition')
+    const mock = within(more).getByRole('link', { name: /Ett riktigt provpass · 55 min/ })
+    expect(mock).toHaveTextContent('Ett verbalt pass ger LÄS, MEK och ELF tio svar var')
+    expect(mock).not.toHaveTextContent('i stället för tre')
+    expect(mock).toHaveAttribute('href', '/prov')
+    fireEvent.click(repetition)
+    expect(navigateHref).toHaveBeenLastCalledWith('/repetition')
+    fireEvent.click(mock)
+    expect(navigateHref).toHaveBeenLastCalledWith('/prov')
+  })
+  it('keeps the selected sitting label when an older extras source has no date', () => {
+    extras.sitting.date = undefined
+    render(<FolioFramsteg stats={{ data: stats() }} navigateHref={navigateHref} />)
+    expect(screen.getByText('170 dagar kvar · vårprov 27')).toBeInTheDocument()
+    expect(screen.queryByText(/10 april/)).not.toBeInTheDocument()
+  })
+  it('shows a single-answer section as a glimpse without a score promise or a lever', () => {
+    const data = stats()
+    for (const s of SECTION_KEYS)
+      Object.assign(data.bySection[s], { firstTry90d: 20, firstTryCorrect90d: 14 })
+    Object.assign(data.bySection.MEK, { firstTry90d: 1, firstTryCorrect90d: 1 })
+    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    const row = screen.getByTestId('progress-section-MEK')
+    expect(row).toHaveTextContent('1 av 1 · första glimt')
+    expect(row).not.toHaveTextContent(/2,0|Håll/)
+    expect(row.querySelector('.fa-ui-band')).toBeNull()
+    expect(screen.getByTestId('framsteg-primary')).not.toHaveTextContent('MEK')
+  })
+  it('keeps tied evidence neutral with one lever and no ordinal comparison', () => {
+    const data = stats()
+    for (const s of SECTION_KEYS)
+      Object.assign(data.bySection[s], { firstTry90d: 100, firstTryCorrect90d: 75 })
+    const { container } = render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(container.querySelectorAll('.fa-ui-go')).toHaveLength(1)
+    expect(screen.getByTestId('folio-framsteg-next')).not.toHaveTextContent(
+      /lägst|näst|tredje|mest|på väg ner/i,
+    )
+    expect(screen.queryByRole('region', { name: 'Sedan' })).not.toBeInTheDocument()
   })
   it('describes marked section rows only when the caveat is rendered', () => {
     const data = stats()
@@ -371,63 +432,70 @@ describe('Folio Framsteg', () => {
   })
   it('renders a noncollapsed range in both visible and accessible prognosis text', () => {
     const data = stats()
-    for (const s of SECTION_KEYS) {
-      data.bySection[s].firstTry90d = 10000
-      data.bySection[s].firstTryCorrect90d = 9500
-    }
+    for (const s of SECTION_KEYS)
+      Object.assign(data.bySection[s], { firstTry90d: 10000, firstTryCorrect90d: 9500 })
     render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
-    expect(screen.getByText('Intervall 1,8–2,0')).toBeInTheDocument()
+    expect(screen.getByTestId('progress-projected')).toHaveTextContent(/^1,8–2,0$/)
     expect(
       screen.getByRole('img', { name: 'Prognos 1,9 av 2,0, intervall 1,8–2,0' }),
     ).toBeInTheDocument()
   })
-  it('retains mastery peaks per account across decay, remounts and account switches', () => {
-    const props = { stats: { data: stats() }, navigateHref }
-    const { rerender, unmount } = render(
-      <FolioFramsteg {...props} userId="one" patternsHeld={{ mastered: 12, total: 20 }} />,
-    )
-    rerender(<FolioFramsteg {...props} userId="one" patternsHeld={{ mastered: 2, total: 20 }} />)
-    expect(screen.getByText('Mönster som sitter: 12 av 20')).toBeInTheDocument()
-    rerender(<FolioFramsteg {...props} userId="two" patternsHeld={{ mastered: 0, total: 20 }} />)
-    expect(screen.getByText('Mönster som sitter: 0 av 20')).toBeInTheDocument()
-    unmount()
-    render(<FolioFramsteg {...props} userId="one" patternsHeld={{ mastered: 2, total: 10 }} />)
-    expect(screen.getByText('Mönster som sitter: 10 av 10')).toBeInTheDocument()
+  it('keeps the common half explanation as a glimpse grows into a section interval', () => {
+    const data = stats()
+    Object.assign(data.bySection.MEK, { firstTry90d: 1, firstTryCorrect90d: 0 })
+    const { rerender } = render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    for (const n of [1, 2, 10]) {
+      data.bySection.MEK.firstTry90d = n
+      rerender(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+      expect(screen.getAllByText(/Totalen är medelvärdet av halvorna/)).toHaveLength(1)
+      const row = screen.getByTestId('progress-section-MEK')
+      expect(row.querySelector('.fa-ui-band') != null).toBe(n === 10)
+      expect(row).not.toHaveTextContent('Håll')
+    }
   })
-
-  it('uses the phone layout without changing its links or count', () => {
-    extras.viewport = 'phone'
-    render(<FolioFramsteg stats={{ data: stats() }} navigateHref={navigateHref} />)
-    expect(screen.getByTestId('folio-framsteg')).toHaveClass('fa-phome')
-    expect(screen.getByText('170 dagar · vårprov 27')).toBeInTheDocument()
-    expect(screen.getByRole('img', { name: /Poäng per vecka/ })).toHaveAttribute(
-      'viewBox',
-      '0 0 350 200',
-    )
-    expect(screen.getByTestId('progress-historik')).toHaveAttribute('href', '/historik')
+  it.each([
+    { fractions: [] },
+    { fractions: [0.5] },
+    { fractions: [0.5, null] },
+  ])('keeps the chart absent until two weeks have scores ($fractions)', ({ fractions }) => {
+    const data = stats()
+    data.weekly = fractions.map((fraction, i) => ({
+      weekStart: Date.UTC(2026, 9, 5 + i * 7),
+      attempts: fraction == null ? 0 : 10,
+      correct: fraction == null ? 0 : fraction * 10,
+    }))
+    render(<FolioFramsteg stats={{ data }} navigateHref={navigateHref} />)
+    expect(screen.getByText('Kurvan börjar när du har övat två veckor.')).toBeInTheDocument()
+    expect(screen.queryByRole('img', { name: /Poäng per vecka/ })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Visa som tabell' })).not.toBeInTheDocument()
   })
   it.each([
     'ready',
     'empty',
     'loading',
-  ] as const)('has no axe violations in the %s state', async (state) => {
+    'error',
+    'phone',
+  ] as const)('has no axe violations in %s', async (state) => {
     const data = stats()
     if (state === 'empty') data.bySection = {} as Stats['bySection']
+    if (state === 'phone') extras.viewport = 'phone'
     const { container } = render(
       <main data-folio>
         <FolioFramsteg
-          stats={state === 'loading' ? { isPending: true } : { data }}
+          stats={
+            state === 'loading'
+              ? { isPending: true }
+              : state === 'error'
+                ? { isError: true }
+                : { data }
+          }
           navigateHref={navigateHref}
         />
       </main>,
     )
-    if (state === 'ready') {
-      fireEvent.click(screen.getByRole('button', { name: 'Visa alla veckor' }))
+    if (state === 'ready' || state === 'phone')
       fireEvent.click(screen.getByRole('button', { name: 'Visa som tabell' }))
-    }
     const result = await axe.run(container, { rules: { 'color-contrast': { enabled: false } } })
-    expect(
-      result.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) })),
-    ).toEqual([])
+    expect(result.violations).toEqual([])
   })
 })

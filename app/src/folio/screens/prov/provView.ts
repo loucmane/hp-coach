@@ -1,11 +1,12 @@
 import type { MockHalf, MockMode, MockResultRow } from '@/api/hooks/useMockResults'
-import { findQuestion, type Question } from '@/data/questions'
+import { findQuestion, type Question, type Section } from '@/data/questions'
 import { sectionOfQid } from '@/lib/dueBySection'
 import { formatPass, formatSitting } from '@/lib/examNames'
 import type { PassOption } from '@/lib/mock'
 import { type NormeringSitting, normedScore } from '@/lib/normering'
 import { isCalibrated } from '@/lib/provenance'
 import { formatScore } from '@/lib/scoring'
+import { timedDrill } from '@/lib/timedDrill'
 import type { TrapCluster } from '@/lib/trapCluster'
 import { paceNote, uhrRank, uhrTimeMs } from '@/lib/uhrPacing'
 
@@ -59,33 +60,121 @@ function sittingOrder(id: string) {
   const m = /^(var|host)-(?:ver(\d+)-)?(\d{4})(?:-(\d+))?$/.exec(id)
   return m ? Number(m[3]) * 100 + (m[1] === 'host' ? 50 : 0) + Number(m[4] ?? m[2] ?? 0) : 0
 }
+type Sitting = { examId: string; passes: [PassOption | undefined, PassOption | undefined] }
+export type MatrixTerm = {
+  examId?: string
+  passes: Sitting['passes']
+  status: 'available' | 'cancelled' | 'unavailable' | 'counterpart'
+}
+export type MatrixRow = {
+  key: string
+  year: number
+  detail: string
+  spring: MatrixTerm
+  autumn: MatrixTerm
+}
+
+function yearMatrix(sittings: readonly Sitting[]): MatrixRow[] {
+  const years = new Map<number, { spring: Sitting[]; autumn: Sitting[] }>()
+  for (const sitting of sittings) {
+    const match = /^(var|host)-(?:ver\d+-)?(\d{4})(?:-\d+)?$/.exec(sitting.examId)
+    if (!match) continue
+    const year = Number(match[2])
+    const group = years.get(year) ?? { spring: [], autumn: [] }
+    group[match[1] === 'var' ? 'spring' : 'autumn'].push(sitting)
+    years.set(year, group)
+  }
+  return [...years]
+    .sort(([a], [b]) => b - a)
+    .flatMap(([year, group]) => {
+      group.spring.sort((a, b) => sittingOrder(a.examId) - sittingOrder(b.examId))
+      group.autumn.sort((a, b) => sittingOrder(a.examId) - sittingOrder(b.examId))
+      const term = (season: 'spring' | 'autumn', index: number): MatrixTerm => {
+        const sitting = group[season][index]
+        if (sitting) return { ...sitting, status: 'available' }
+        return {
+          passes: [undefined, undefined],
+          status:
+            index > 0
+              ? 'counterpart'
+              : season === 'spring' && (year === 2020 || year === 2021)
+                ? 'cancelled'
+                : 'unavailable',
+        }
+      }
+      return Array.from({ length: Math.max(group.spring.length, group.autumn.length) }, (_, i) => ({
+        key: `${year}-${i}`,
+        year,
+        detail: [group.spring[i], group.autumn[i]]
+          .flatMap((s) => {
+            if (!s) return []
+            const label = formatSitting(s.examId)
+            const qualifier = label.split(' · ')[1]
+            return qualifier
+              ? [`${s.examId.startsWith('var-') ? 'vår' : 'höst'} · ${qualifier}`]
+              : []
+          })
+          .join(' · '),
+        spring: term('spring', i),
+        autumn: term('autumn', i),
+      }))
+    })
+}
 export function buildHubView(input: {
   half: MockHalf
   mode: MockMode
   passes: readonly PassOption[]
   picked: string | null
+  bank?: readonly Question[] | null
 }) {
   const passes = input.passes.filter((p) => p.half === input.half)
   const suggested = passes[0]
   const chosen = passes.find((p) => passKey(p) === input.picked) ?? suggested
-  const bySitting = new Map<
-    string,
-    { examId: string; passes: [PassOption | undefined, PassOption | undefined] }
-  >()
+  const bySitting = new Map<string, Sitting>()
   for (const p of passes) {
     const sitting = bySitting.get(p.examId) ?? { examId: p.examId, passes: [undefined, undefined] }
     sitting.passes[p.provpass.endsWith('2') ? 1 : 0] = p
     bySitting.set(p.examId, sitting)
   }
+  const sittings = [...bySitting.values()].sort(
+    (a, b) => sittingOrder(b.examId) - sittingOrder(a.examId) || b.examId.localeCompare(a.examId),
+  )
+  const counts = new Map<Section, number>()
+  if (input.mode === 'synthetic') {
+    for (const [section, count] of QUOTAS[input.half]) counts.set(section, count)
+  } else if (input.bank && chosen) {
+    for (const q of input.bank) {
+      if (
+        q.exam_id === chosen.examId &&
+        q.provpass === chosen.provpass &&
+        q.parsing_status === 'complete' &&
+        q.options
+      )
+        counts.set(q.section, (counts.get(q.section) ?? 0) + 1)
+    }
+  }
+  const sections = [...counts]
+    .sort(([a], [b]) => uhrRank(a) - uhrRank(b))
+    .map(([section, count]) => ({ section, count }))
+  const presented = input.mode === 'synthetic' ? 40 : (chosen?.presented ?? 0)
+  const short = timedDrill('ORD')!
   return {
     chosen,
     suggested,
-    eyebrow: chosen === suggested ? 'Förslag · minst sett' : 'Valt pass',
-    quota: `40 frågor · ${QUOTAS[input.half].map(([s, n]) => `${s} ${n}`).join(' · ')}`,
-    note: input.mode === 'synthetic' ? 'Indikativt resultat — inte ett riktigt pass.' : null,
-    sittings: [...bySitting.values()].sort(
-      (a, b) => sittingOrder(b.examId) - sittingOrder(a.examId) || b.examId.localeCompare(a.examId),
-    ),
+    eyebrow: chosen === suggested ? 'Föreslaget · minst sett' : 'Valt pass',
+    quota: [
+      `${presented} frågor`,
+      ...sections.map(({ section, count }) => `${section} ${count}`),
+    ].join(' · '),
+    sections,
+    note: input.mode === 'synthetic' ? 'Ingen poäng: det är inte normerat.' : null,
+    sittings,
+    matrix: yearMatrix(sittings),
+    short: {
+      count: short.count,
+      minutes: short.budgetMs / 60_000,
+      href: '/drill?section=ORD&timed=1&start=1',
+    },
   }
 }
 export type HubView = ReturnType<typeof buildHubView>
