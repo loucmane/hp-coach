@@ -87,3 +87,9 @@ Both skills were worked as checklists on every changed field: fact-check of ever
    Once fixed, extend the guard with "Vänta —", "Låt mig", "Faktiskt:", "Per facit", "facit avgör" and "i pixlar".
 3. Figure gap: var-2014-kvant2-DTK-036 needs the language pie chart printed on the question page (PDF p21), but `app/public/figures/dtk/_index.json` maps the question only to p20, so the app shows the table without the 17,5 %. Same class as the known var-2019-kvant2-DTK-037 gap.
 4. The redesign-fixture generator was not run; none of the changed questions is a fixture question, and its source-parity tests run in the full suite.
+
+## 2026-11-11 coordinator host verification
+
+- Host: typecheck and lint clean, full app suite 211/211 files, 6327/6327 tests. KaTeX scan of app/public/explanations: 14315 spans, 0 errors.
+- Bank check against HEAD: 3 questions changed (host-2018 kvant1 XYZ-001 options; host-2023 kvant2 KVA-013 and var-2017 kvant2 KVA-013 prompts); every answer key unchanged.
+- Needs a Codex exact-head review before merge (Claude-built).
