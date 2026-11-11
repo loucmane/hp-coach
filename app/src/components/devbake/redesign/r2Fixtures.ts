@@ -1596,7 +1596,7 @@ export const QUANT_EXPLANATIONS: Record<string, Explanation> = {
       {
         n: 9,
         title: 'Förkorta 63 mot 7',
-        text: '\uE00063 =\uE001 7·9, så \uE000\\dfrac{2}{7} \\cdot 63 = \\dfrac{2 \\cdot 7 \\cdot\uE001 9}{7} \uE000= 2 \\cdot 9 = 18\uE001.',
+        text: '\uE00063 = 7 \\cdot 9\uE001, så \uE000\\dfrac{2}{7} \\cdot 63 = \\dfrac{2 \\cdot 7 \\cdot 9}{7} = 2 \\cdot 9 = 18\uE001.',
         tier: 'essential',
       },
       {
