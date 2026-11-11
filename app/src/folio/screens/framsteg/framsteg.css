@@ -1,4 +1,4 @@
-/* Ljusbord core. The weekly chart rules below remain unchanged for its later bead. */
+/* Ljusbord Framsteg: scoped surfaces and token-based evidence marks. */
 [data-folio] .fa-framsteg {
   color: var(--fa-ink);
   font: 400 var(--fa-t17)/1.55 var(--fa-sans);
@@ -84,18 +84,28 @@
 [data-folio] .fa-framsteg .fa-link:hover,
 [data-folio] .fa-framsteg .fa-more:hover { text-decoration-color: currentColor; }
 [data-folio] .fa-framsteg .fa-empty { margin-top: var(--fa-s4); max-width: 36em; font-family: var(--fa-serif); font-size: var(--fa-t17); font-style: italic; color: var(--fa-ink-2); text-wrap: pretty; }
-[data-folio] .fa-framsteg .fa-chart { margin-top: var(--fa-s4); }
-[data-folio] .fa-framsteg .fa-chart-summary { margin-bottom: var(--fa-s3); font-family: var(--fa-serif); font-size: var(--fa-t17); }
-[data-folio] .fa-framsteg .fa-chart-svg { display: block; width: 100%; height: auto; overflow: visible; }
-[data-folio] .fa-framsteg .fa-chart-axis { stroke: var(--fa-rule-2); stroke-width: 1; }
-[data-folio] .fa-framsteg .fa-chart-grid { stroke: var(--fa-rule); stroke-width: 1; }
-[data-folio] .fa-framsteg .fa-chart-line { fill: none; stroke: var(--fa-ink); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
-[data-folio] .fa-framsteg .fa-chart-bridge { fill: none; stroke: var(--fa-ink-3); stroke-width: 1.5; stroke-dasharray: 1 4; stroke-linecap: round; }
-[data-folio] .fa-framsteg .fa-chart-pt { fill: var(--fa-ink); }
-[data-folio] .fa-framsteg .fa-chart-end { fill: var(--fa-accent); }
-[data-folio] .fa-framsteg .fa-chart-value { fill: var(--fa-accent); font-family: var(--fa-sans); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--fa-paper); stroke-width: 4; }
-[data-folio] .fa-framsteg .fa-chart-tick { fill: var(--fa-ink-3); font-family: var(--fa-sans); font-size: 12px; font-variant-numeric: tabular-nums; }
-[data-folio] .fa-framsteg .fa-chart-caption { margin-top: var(--fa-s2); font-family: var(--fa-serif); font-size: var(--fa-t13); font-style: italic; color: var(--fa-ink-3); }
+[data-folio] .fa-framsteg .fa-weekly-card { padding: 22px 24px; border: 1px solid var(--fa-line); border-radius: var(--fa-r2); background: var(--fa-sheet-2); }
+[data-folio] .fa-framsteg .fa-chart { min-width: 0; }
+[data-folio] .fa-framsteg .fa-chart-caption { margin-top: 4px; font-size: 14px; color: var(--fa-ink-3); }
+[data-folio] .fa-framsteg .fa-chart-summary,
+[data-folio] .fa-framsteg .fa-chart-note,
+[data-folio] .fa-framsteg .fa-chart-status { margin-top: 14px; font-size: 14.5px; color: var(--fa-ink-2); line-height: 1.5; }
+[data-folio] .fa-framsteg .fa-weeks { display: grid; grid-template-columns: 34px repeat(var(--fa-week-count), minmax(0, 1fr)); gap: 6px; align-items: end; margin-top: 32px; height: 170px; position: relative; }
+[data-folio] .fa-framsteg .fa-week-axis { align-self: stretch; display: flex; flex-direction: column; justify-content: space-between; font-size: 11.5px; color: var(--fa-ink-3); padding-bottom: 24px; }
+[data-folio] .fa-framsteg .fa-week { --fa-week-ink: var(--fa-ink-2); display: grid; grid-template-rows: minmax(0, 1fr) 18px; height: 100%; min-width: 0; justify-items: center; gap: 6px; font-size: 11.5px; color: var(--fa-ink-3); }
+[data-folio] .fa-framsteg .fa-week[data-current="true"] { --fa-week-ink: var(--fa-ink); color: var(--fa-ink); font-weight: 700; }
+[data-folio] .fa-framsteg .fa-week-slot { position: relative; width: 100%; max-width: 30px; border-radius: 6px; background: var(--fa-table-2); overflow: hidden; }
+[data-folio] .fa-framsteg .fa-week:not([data-state="scored"]) .fa-week-slot { background: transparent; border: 1.5px dashed var(--fa-line-2); }
+[data-folio] .fa-framsteg .fa-week[data-state="thin"] .fa-week-slot { border-style: dotted; }
+/* Phone: twelve labels collide; keep every other one, counted back from the current (last) week. */
+[data-folio] .fa-framsteg .fa-weeks[data-phone="true"] .fa-week:nth-last-child(even):not([data-current="true"]) .fa-week-label { visibility: hidden; }
+[data-folio] .fa-framsteg .fa-week-band { position: absolute; left: 0; right: 0; }
+/* Extend the fades beyond the stated interval; the 20–80% solid core is
+ * exactly low–high. The slot clips the fades at 0 and 2,0. No chart motion. */
+[data-folio] .fa-framsteg .fa-week-band::before { content: ""; position: absolute; inset: -33.333333% 0; border-radius: 6px; background: linear-gradient(180deg, transparent, var(--fa-week-ink) 20%, var(--fa-week-ink) 80%, transparent); }
+[data-folio] .fa-framsteg .fa-week-label { white-space: nowrap; }
+[data-folio] .fa-framsteg .fa-week-goal { position: absolute; left: 40px; right: 0; top: 0; border-top: 1.5px dotted var(--fa-ink-3); }
+[data-folio] .fa-framsteg .fa-week-goal > span { position: absolute; right: 0; top: -20px; font-size: 11.5px; color: var(--fa-ink-3); }
 [data-folio] .fa-framsteg .fa-table { width: 100%; border-collapse: collapse; font-size: var(--fa-t13); font-variant-numeric: tabular-nums; text-align: left; }
 [data-folio] .fa-framsteg .fa-table :is(th, td) { padding: var(--fa-s2) var(--fa-s2) var(--fa-s2) 0; border-bottom: 1px solid var(--fa-rule); }
 [data-folio] .fa-framsteg .fa-table th { font-weight: 500; }
@@ -121,6 +131,10 @@
   [data-folio] .fa-framsteg .fa-axis-row > span:first-child,
   [data-folio] .fa-framsteg .fa-axis-row > span:last-child { display: none; }
   [data-folio] .fa-framsteg .fa-section-value { text-align: left; }
+  [data-folio] .fa-framsteg .fa-weekly-card { padding: 22px 18px; }
+  [data-folio] .fa-framsteg .fa-weeks[data-phone="true"] { grid-template-columns: 24px repeat(var(--fa-week-count), minmax(0, 1fr)); gap: 4px; }
+  [data-folio] .fa-framsteg .fa-weeks[data-phone="true"] .fa-week-goal { left: 28px; }
+  [data-folio] .fa-framsteg .fa-weeks[data-phone="true"] .fa-week-label { font-size: 10px; }
   [data-folio] .fa-framsteg .fa-fr-dock { position: fixed; z-index: 25; left: 16px; right: 16px; bottom: calc(78px + env(safe-area-inset-bottom)); display: flex; }
 }
 

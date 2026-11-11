@@ -2,10 +2,18 @@ import type { ShellInput } from '../contract/viewModel'
 import { fmtScore, inWords, roundMinutes } from '../lib/format'
 import type { RailDestination } from '../nav'
 
-export function shellSubtitles(input: ShellInput): Record<RailDestination, string> {
+export function shellSubtitles(
+  input: ShellInput,
+  prognosisBand: number | null = null,
+): Record<RailDestination, string> {
   const { plan, resume, dueNow, dueToday, repetition, provpass, lesson, prognosis } = input
   const done = plan?.filter((item) => item.completed).length ?? 0
   const first = plan?.find((item) => !item.completed)
+  // Match Framsteg's displayed precision and the 0–2 score scale.
+  const range =
+    prognosis != null && prognosisBand != null
+      ? `${fmtScore(Math.max(0, prognosis - Math.max(0.1, prognosisBand)))}–${fmtScore(Math.min(2, prognosis + Math.max(0.1, prognosisBand)))}`
+      : null
   const resumeLine = resume
     ? resume.progress === 'pågående lektion'
       ? `Fortsätt ${resume.subject}`
@@ -45,7 +53,7 @@ export function shellSubtitles(input: ShellInput): Record<RailDestination, strin
         ? `Dags för ett pass: ${provpass.half}`
         : `Nästa: ${provpass.half}, om ${inWords(provpass.daysUntilNext)} ${provpass.daysUntilNext === 1 ? 'dag' : 'dagar'}`,
     uppslag: lesson?.title ? `${lesson.section} · ${lesson.title}` : 'Lektioner och ramverk',
-    framsteg: prognosis != null ? `Prognos ${fmtScore(prognosis)} av 2,0` : 'Prognos och historik',
+    framsteg: range ? `Prognos ${range}` : 'Prognos och historik',
     historik: resume
       ? `Pågår: ${resume.subject}${resume.progress === 'pågående lektion' ? '' : ` · ${resume.progress}`}`
       : input.practicePasses != null

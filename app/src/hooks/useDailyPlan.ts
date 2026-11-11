@@ -82,9 +82,9 @@ import {
 } from '@/lib/scheduler'
 import { computeSectionScore, type SectionScore, type SectionStats } from '@/lib/scoring'
 import { useDaysRemaining } from '@/stores/examStore'
-import { useUiStore } from '@/stores/uiStore'
 
 type FrameworkHints = Partial<Record<Section, FrameworkHint>>
+type FrameworkLabel = { title: string; headword: string | null }
 type BySection = Record<Section, SectionStats>
 
 /** Half a default 10-question drill is enough signal that the user
@@ -120,7 +120,6 @@ export type UseDailyPlan = {
 }
 
 export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
-  const folioPreview = useUiStore((s) => s.folioPreview)
   const stats = useStats()
   const due = useDueMistakes()
   // Top recurring traps drive the trap-aware drill rule. We don't
@@ -199,7 +198,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
 
   const [plan, setPlan] = useState<DailyPlan | null>(null)
   const [hints, setHints] = useState<FrameworkHints | null>(null)
-  const [lessonTitles, setLessonTitles] = useState<ReadonlyMap<string, string>>(new Map())
+  const [lessonLabels, setLessonLabels] = useState<ReadonlyMap<string, FrameworkLabel>>(new Map())
   // Provpass (mock exam) prescription — computed from the SAME
   // SchedulerSignals object buildPlan builds for generateDailyPlan (see
   // buildPlan below). Only updated by the build/regenerate effects, not
@@ -236,10 +235,10 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
     if (!progressSettled || due.isLoading) return
     let alive = true
     resolveFrameworkData(mergedReads, frameworkProgress.data, due.data).then(
-      ({ hints, titles }) => {
+      ({ hints, labels }) => {
         if (alive) {
           setHints(hints)
-          setLessonTitles(titles)
+          setLessonLabels(labels)
         }
       },
     )
@@ -498,11 +497,11 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   }, [updatePrefs, today, buildAndCommit, stats.data, due.data, hints])
 
   const allComplete = !!plan && plan.items.length > 0 && plan.items.every((i) => i.completed)
-  // Persist the same baseline for classic/cross-device consumers. Folio
-  // presents safe labels even when an adopted plan contains old answer text.
+  // Both presentations hide answer text, including old adopted plans.
+  // Generation and persistence keep the original shared baseline.
   const presentedPlan = useMemo(
-    () => (folioPreview && plan ? preAnswerPlan(plan, lessonTitles) : plan),
-    [folioPreview, plan, lessonTitles],
+    () => (plan ? preAnswerPlan(plan, lessonLabels) : plan),
+    [plan, lessonLabels],
   )
 
   return {
@@ -526,16 +525,48 @@ function neutralLessonTitle(id: string): string {
   return number ? `${kind} ${Number(number)}` : kind
 }
 
-function preAnswerPlan(plan: DailyPlan, titles: ReadonlyMap<string, string>): DailyPlan {
+function replacePlanHeadword(text: string, headword: string, title: string): string {
+  const names = [headword]
+  // Scheduler lessonItem stores a word-boundary truncation at 48 characters.
+  // Match that literal as well as the full name without rewriting surrounding copy.
+  if (headword.length > 48) {
+    const slice = headword.slice(0, 47)
+    const lastSpace = slice.lastIndexOf(' ')
+    const trimmed = lastSpace > 32 ? slice.slice(0, lastSpace) : slice
+    names.push(`${trimmed.replace(/[ ,.;:—–-]+$/, '')}…`)
+  }
+  const pattern = names.map((name) => name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')
+  return text.replace(new RegExp(pattern, 'g'), () => title)
+}
+
+function preAnswerPlan(plan: DailyPlan, labels: ReadonlyMap<string, FrameworkLabel>): DailyPlan {
   return {
     ...plan,
     items: plan.items.map((item) => {
+      // The completed first-pass marker is post-answer, not a lesson invitation.
+      if (item.completed && item.id === `onboarding-${plan.date}`) return item
       if (!item.framework) return item
-      const title = titles.get(item.framework) ?? neutralLessonTitle(item.framework)
+      const label = labels.get(item.framework)
+      const title = label?.title ?? neutralLessonTitle(item.framework)
+      // Top-trap names may be tldr or composed taxonomy copy, not entryHeadword.
+      // Keep the scheduler's count/coaching suffix verbatim, even if the name
+      // contains an em dash. Other items retain their headword-free rationales.
+      const trapRationale =
+        item.kind === 'drill' && item.id === `drill-trap-${item.framework}-${plan.date}`
+          ? `${title}${item.rationale.match(/ — \d+ missar senaste veckan\. Fokuserad drill\.$/)?.[0] ?? ''}`
+          : null
+      if (label?.headword) {
+        return {
+          ...item,
+          headline: replacePlanHeadword(item.headline, label.headword, title),
+          rationale: trapRationale ?? replacePlanHeadword(item.rationale, label.headword, title),
+        }
+      }
+      // Without the catalog's headword, cached copy cannot be checked for leaks.
       return {
         ...item,
         headline: `${item.section ? `${item.section}-` : ''}${item.kind === 'lesson' ? 'lektion' : 'drill'} · ${title}`,
-        rationale: title,
+        rationale: trapRationale ?? title,
       }
     }),
   }
@@ -667,7 +698,7 @@ async function resolveFrameworkData(
   reads: Set<string>,
   progress: readonly FrameworkProgressRow[] | undefined,
   dueMistakes: readonly { questionId: string }[] = [],
-): Promise<{ hints: FrameworkHints; titles: ReadonlyMap<string, string> }> {
+): Promise<{ hints: FrameworkHints; labels: ReadonlyMap<string, FrameworkLabel> }> {
   const qids = [...new Set(dueMistakes.map(({ questionId }) => questionId))]
   const [loaded, rawGraph, loadedLeverage, explanations] = await Promise.all([
     Promise.all(
@@ -681,21 +712,20 @@ async function resolveFrameworkData(
     Promise.all(qids.map((qid) => loadExplanation(qid).catch(() => null))),
   ])
 
-  // Keep legacy headwords inside the shared scheduler baseline; Folio uses
-  // a separate safe title index, including cached or cross-section entries.
-  const index = new Map<string, { section: Section; headword: string | null }>()
-  const titles = new Map<string, string>()
+  // Keep legacy headwords inside the shared scheduler baseline. The same index
+  // supplies safe replacements for presentation, including cached/cross-section entries.
+  const index = new Map<string, FrameworkLabel & { section: Section }>()
   for (const { section, fw } of loaded) {
     if (!fw) continue
     for (const entry of fw.entries) {
-      index.set(entry.id, { section, headword: entryHeadword(entry, fw) })
-      titles.set(
-        entry.id,
-        keepMathTogether(
+      index.set(entry.id, {
+        section,
+        headword: entryHeadword(entry, fw),
+        title: keepMathTogether(
           ('question_title' in entry && entry.question_title?.trim()) ||
             neutralLessonTitle(entry.id),
         ),
-      )
+      })
     }
   }
   // Unknown ids can only be judged against the full catalog set; while one is
@@ -742,7 +772,7 @@ async function resolveFrameworkData(
         }
       : { id: pick.id, headword: target.headword }
   }
-  return { hints: out, titles }
+  return { hints: out, labels: index }
 }
 
 /** Derive completion for every plan item from current signals.

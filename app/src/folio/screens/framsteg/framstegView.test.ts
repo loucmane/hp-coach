@@ -4,7 +4,7 @@ import { SECTION_KEYS } from '@/data/questions'
 import { repetitionCopy } from '@/lib/scheduler'
 import { computeHonestProjected, formatScoreSv, type SectionStats, scoreBand } from '@/lib/scoring'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
-import { buildFramstegView, buildTrend } from './framstegView'
+import { buildFramstegView, buildTrend, type PrognosisWeek, RETRY_LINE } from './framstegView'
 
 const now = new Date('2026-11-05T12:00:00Z')
 const section = (n = 20, correct = 12): SectionStats => ({
@@ -32,6 +32,24 @@ const stats = (bySection = Object.fromEntries(SECTION_KEYS.map((s) => [s, sectio
   streakDays: 99,
   bySection: bySection as Stats['bySection'],
   weekly: [],
+})
+// The endpoint sends only these six counts, not the rest of SectionStats.
+const week = (iso: string, bySection = stats().bySection): PrognosisWeek => ({
+  iso,
+  end: '2026-11-05T12:00:00Z',
+  bySection: Object.fromEntries(
+    Object.entries(bySection).map(([key, s]) => [
+      key,
+      {
+        firstTry90d: s.firstTry90d ?? 0,
+        firstTryCorrect90d: s.firstTryCorrect90d ?? 0,
+        firstTry7d: s.firstTry7d ?? 0,
+        firstTryCorrect7d: s.firstTryCorrect7d ?? 0,
+        firstTry7to14d: s.firstTry7to14d ?? 0,
+        firstTryCorrect7to14d: s.firstTryCorrect7to14d ?? 0,
+      },
+    ]),
+  ),
 })
 
 describe('Ljusbord Framsteg view', () => {
@@ -232,27 +250,90 @@ describe('Ljusbord Framsteg view', () => {
     delete data.bySection.XYZ.estimateBasis
     expect(buildFramstegView({ stats: { data } }, now).prognosis.caveat).toBeNull()
   })
-  it('preserves weekly input and trend output, including gaps and phone geometry', () => {
+  it('scores real weekly aggregate shapes, including quiet, empty and one-half weeks', () => {
+    const data = stats({ ORD: section(23, 8), MEK: section(3, 3), KVA: section(10, 2) })
+    const quiet = week('2026-W43', data.bySection)
+    for (const s of Object.values(quiet.bySection))
+      Object.assign(s, { firstTry7d: 0, firstTryCorrect7d: 0 })
+    const chart = buildTrend(
+      [
+        week('2026-W41', stats({}).bySection),
+        week('2026-W42', stats({ ORD: section(3, 2) }).bySection),
+        quiet,
+        week('2026-W44', data.bySection),
+      ],
+      undefined,
+      now,
+    )
+    expect(chart.weeks.map((w) => w.state)).toEqual(['empty', 'thin', 'scored', 'scored'])
+    expect(chart.weeks[0].rangeLabel).toBeNull()
+    expect(chart.weeks[1].rangeLabel).toBeNull()
+    const expected = buildFramstegView({ stats: { data } }, now).prognosis
+    for (const w of chart.weeks.slice(2)) {
+      expect(w).toMatchObject({
+        low: expected.low,
+        high: expected.high,
+        rangeLabel: expected.rangeLabel,
+      })
+      expect(w.bottom).toBeCloseTo(expected.low! * 50)
+      expect(w.height).toBeCloseTo((expected.high! - expected.low!) * 50)
+    }
+  })
+  it('keeps the current week equal to the headline even while the weekly cache is stale', () => {
     const data = stats()
-    data.weekly = [0.5, null, 0.7].map((fraction, i) => ({
-      weekStart: Date.UTC(2026, 9, 5 + i * 7),
-      attempts: fraction == null ? 0 : 10,
-      correct: fraction == null ? 0 : fraction * 10,
-    }))
-    expect(buildFramstegView({ stats: { data } }, now).weekly).toBe(data.weekly)
-    const chart = buildTrend(data.weekly)
-    expect(chart).toMatchObject({
-      ready: true,
-      width: 640,
-      height: 220,
-      solid: [],
-      bridges: ['M36.0,131.3 L576.0,84.4'],
-      summary: 'Från 1,0 i vecka 41 till 1,4 i vecka 43 – upp 0,4.',
+    const old = stats({ ORD: section(1, 1), KVA: section(1, 0) })
+    const view = buildFramstegView(
+      {
+        stats: { data },
+        weekly: { data: [week('2026-W44', old.bySection), week('2026-W45', old.bySection)] },
+      },
+      now,
+    )
+    expect(view.weekly.weeks[1]).toMatchObject({
+      current: true,
+      low: view.prognosis.low,
+      high: view.prognosis.high,
+      rangeLabel: view.prognosis.rangeLabel,
     })
-    expect(chart.points.map((p) => p.score)).toEqual([1, null, 1.4])
-    expect(buildTrend(data.weekly, true)).toMatchObject({ width: 350, height: 200 })
-    expect(buildTrend([]).ready).toBe(false)
-    expect(buildTrend(data.weekly.slice(0, 1)).ready).toBe(false)
+    expect(view.weekly.weeks[0].rangeLabel).not.toBe(view.prognosis.rangeLabel)
+  })
+  it('uses the ISO week year at New Year and never paints a future estimate', () => {
+    const data = stats()
+    const chart = buildTrend(
+      [week('2026-W53'), week('2027-W01')],
+      data.bySection,
+      new Date('2027-01-01T12:00:00Z'),
+    )
+    expect(chart.weeks).toHaveLength(1)
+    expect(chart.weeks[0]).toMatchObject({ iso: '2026-W53', current: true })
+  })
+  it.each([0, 20])('clamps weekly intervals at both scale edges (%s correct)', (correct) => {
+    const chart = buildTrend(
+      [week('2026-W44', stats({ ORD: section(20, correct), KVA: section(20, correct) }).bySection)],
+      undefined,
+      now,
+    )
+    const w = chart.weeks[0]
+    expect(w.low).toBeGreaterThanOrEqual(0)
+    expect(w.high).toBeLessThanOrEqual(2)
+    expect(correct === 0 ? w.low : w.high).toBe(correct === 0 ? 0 : 2)
+    expect(w.bottom! + w.height!).toBeLessThanOrEqual(100)
+    expect(w.height).toBeGreaterThan(0)
+  })
+  it('keeps weekly loading and failure local, retaining cached intervals with a retry line', () => {
+    expect(
+      buildFramstegView({ stats: { data: stats() }, weekly: { isPending: true } }, now).weekly
+        .statusLine,
+    ).toContain('Laddar')
+    const view = buildFramstegView({ stats: { data: stats() }, weekly: { isError: true } }, now)
+    expect(view.state).toBe('ready')
+    expect(view.weekly).toMatchObject({ weeks: [], statusLine: RETRY_LINE })
+    const cached = buildFramstegView(
+      { stats: { data: stats() }, weekly: { data: [week('2026-W44')], isError: true } },
+      now,
+    )
+    expect(cached.weekly.weeks[0].state).toBe('scored')
+    expect(cached.weekly.statusLine).toBe(RETRY_LINE)
   })
 
   it('uses first tries consistently in the total, halves, section scores and bands', () => {
@@ -370,26 +451,45 @@ describe('Ljusbord Framsteg view', () => {
       buildFramstegView({ stats: { data: stats() }, due: { isPending: true } }, now).repetition,
     ).toMatchObject({ count: null, minutes: null })
   })
-  it('shows a chart after two scored weeks, breaking runs over missing weeks', () => {
-    const buckets = [null, 0.5, 0.6, null, 0.8, null].map((fraction, i) => ({
-      weekStart: Date.UTC(2026, 8, 7 + i * 7),
-      attempts: fraction == null ? 0 : 10,
-      correct: fraction == null ? 0 : fraction * 10,
-    }))
-    const chart = buildTrend(buckets)
-    expect(chart.ready).toBe(true)
-    expect(chart.solid).toHaveLength(1)
-    expect(chart.bridges).toHaveLength(1)
-    expect(chart.summary).toMatch(/Från 1,0.*till 1,6.*upp 0,6/)
-    expect(chart.points.map((p) => p.score)).toEqual([null, 1, 1.2, null, 1.6, null])
-    expect(buildTrend(buckets.slice(0, 2)).ready).toBe(false)
-    expect(buildTrend([]).ready).toBe(false)
+  it('compares the first and latest scored week with the displayed rounding', () => {
+    const early = week('2026-W41', stats({ ORD: section(20, 10), KVA: section(20, 10) }).bySection)
+    const late = week(
+      '2026-W44',
+      stats({ ORD: section(10000, 5750), KVA: section(10000, 5750) }).bySection,
+    )
+    const chart = buildTrend(
+      [
+        week('2026-W40', stats({}).bySection),
+        early,
+        week('2026-W42', stats({ ORD: section() }).bySection),
+        late,
+      ],
+      undefined,
+      now,
+    )
+    expect(chart.weeks[1].rangeLabel).toBe('0,7–1,3')
+    expect(chart.weeks[3].rangeLabel).toBe('1,0–1,3')
+    expect(chart.summary).toBe(
+      'Intervallet har smalnat från 0,7–1,3 till 1,0–1,3 mellan vecka 41 och vecka 44.',
+    )
+    // A tiny mathematical narrowing that rounds to the same width is not a visible narrowing.
+    const tied = buildTrend(
+      [early, week('2026-W42', stats({ ORD: section(21, 10), KVA: section(21, 10) }).bySection)],
+      undefined,
+      now,
+    )
+    expect(tied.summary).not.toContain('smalnat')
+    expect(buildTrend([late, { ...early, iso: '2026-W45' }], undefined, now).summary).not.toContain(
+      'smalnat',
+    )
   })
-  it('describes chart changes using the same rounded numbers the reader sees', () => {
-    const chart = buildTrend([
-      { weekStart: Date.UTC(2026, 9, 5), attempts: 40, correct: 23 },
-      { weekStart: Date.UTC(2026, 9, 12), attempts: 40, correct: 24 },
-    ])
-    expect(chart.summary).toMatch(/Från 1,1.*till 1,2.*upp 0,1/)
+  it('omits comparisons until two distinct weeks have a band', () => {
+    for (const weeks of [
+      [],
+      [week('2026-W44')],
+      [week('2026-W43', stats({ ORD: section() }).bySection), week('2026-W44')],
+    ]) {
+      expect(buildTrend(weeks, undefined, now).summary).toBeNull()
+    }
   })
 })
