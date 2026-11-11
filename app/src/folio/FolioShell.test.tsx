@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import type { ComponentProps, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -730,10 +730,11 @@ describe('Folio shell', () => {
       </FolioHost>,
     )
     await screen.findByTestId('folio-shell')
+    await screen.findByRole('heading', { name: 'Idag' })
     expect(screen.queryByTestId('nav-rail')).toBeNull()
     expect(screen.queryByTestId('bottom-tabs')).toBeNull()
     expect(screen.getAllByRole('main')).toHaveLength(1)
-    expect(mounts).toBe(1)
+    await waitFor(() => expect(mounts).toBe(1))
     expect(await runAxe(container)).toEqual([])
   })
 
@@ -757,6 +758,7 @@ describe('authenticated root composition', () => {
     expect(screen.getByTestId(phone ? 'bottom-tabs' : 'nav-rail')).toBeInTheDocument()
     act(() => useUiStore.getState().setFolioPreview(true))
     await screen.findByTestId('folio-shell')
+    await screen.findByRole('heading', { name: 'Routesidan' })
     expect(screen.getAllByRole('main')).toHaveLength(1)
     expect(screen.queryByTestId('nav-rail')).toBeNull()
     expect(screen.queryByTestId('bottom-tabs')).toBeNull()
@@ -767,6 +769,7 @@ describe('authenticated root composition', () => {
     mocks.pathname = '/welcome'
     const view = render(<Root />)
     await screen.findByTestId('folio-shell')
+    await screen.findByRole('heading', { name: 'Routesidan' })
     mocks.pathname = '/hjalp'
     view.rerender(<Root />)
     expect(screen.queryByTestId('folio-shell')).toBeNull()
