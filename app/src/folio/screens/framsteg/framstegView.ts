@@ -1,5 +1,5 @@
 import type { Mistake } from '@/api/hooks/useMistakes'
-import type { Stats, WeeklyBucket } from '@/api/hooks/useStats'
+import type { Stats } from '@/api/hooks/useStats'
 import { SECTION_KEYS } from '@/data/questions'
 import { DEFAULT_DRILL_LENGTH } from '@/lib/drill'
 import { sectionOfQid } from '@/lib/dueBySection'
@@ -13,18 +13,39 @@ import {
   isoWeek,
   projectionBasis,
   rankWeakness,
+  type SectionStats,
   scoreBand,
   sectionBasis,
   VERBAL_SECTIONS,
-  weeklyScore,
 } from '@/lib/scoring'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
 import { sectionLongLabel } from '@/lib/sectionRailLabel'
 import { UHR_DELPROV } from '@/lib/uhrPacing'
 
 type QueryState<T> = { data?: T; isPending?: boolean; isError?: boolean }
+export type PrognosisWeek = {
+  iso: string
+  end: string
+  bySection: Partial<
+    Record<
+      (typeof SECTION_KEYS)[number],
+      Required<
+        Pick<
+          SectionStats,
+          | 'firstTry90d'
+          | 'firstTryCorrect90d'
+          | 'firstTry7d'
+          | 'firstTryCorrect7d'
+          | 'firstTry7to14d'
+          | 'firstTryCorrect7to14d'
+        >
+      >
+    >
+  >
+}
 export type FramstegInput = {
   stats: QueryState<Stats>
+  weekly?: QueryState<readonly PrognosisWeek[]>
   /** Recorded answers in the latest completed provpass of each half, oldest first. */
   sample?: QueryState<readonly { questionId: string; correct: boolean | null }[]>
   active?: QueryState<readonly Pick<Mistake, 'questionId'>[]>
@@ -41,59 +62,65 @@ export const scoreLabel = formatScoreSv
 const displayedTenths = (score: number) =>
   Math.round(Number(scoreLabel(score).replace(',', '.')) * 10)
 
-/** Coordinates and gap bridges are pure so sparse weeks stay inspectable. */
-export function buildTrend(weekly: readonly WeeklyBucket[], phone = false) {
-  const width = phone ? 350 : 640
-  const height = phone ? 200 : 220
-  const left = 36
-  const right = phone ? 52 : 64
-  const top = 14
-  const bottom = 30
-  const raw = weekly.map((w, i) => ({
-    i,
-    score: weeklyScore(w),
-    week: isoWeek(new Date(w.weekStart)),
-    weekStart: w.weekStart,
-  }))
-  const known = raw.filter((p): p is typeof p & { score: number } => p.score != null)
-  const lo = Math.max(0, Math.floor((Math.min(1, ...known.map((p) => p.score)) - 0.1) * 2) / 2)
-  const x = (i: number) => left + (i / Math.max(1, raw.length - 1)) * (width - left - right)
-  const y = (v: number) => top + (1 - (v - lo) / (2 - lo)) * (height - top - bottom)
-  const at = (p: (typeof known)[number]) => `${x(p.i).toFixed(1)},${y(p.score).toFixed(1)}`
-  const solid: string[] = []
-  const bridges: string[] = []
-  let run: string[] = []
-  let prev: (typeof known)[number] | undefined
-  for (const point of known) {
-    if (prev && point.i - prev.i > 1) {
-      bridges.push(`M${at(prev)} L${at(point)}`)
-      if (run.length > 1) solid.push(run.join(' '))
-      run = []
-    }
-    run.push(at(point))
-    prev = point
-  }
-  if (run.length > 1) solid.push(run.join(' '))
-  const first = known[0]
-  const last = known[known.length - 1]
-  const change = first && last ? displayedTenths(last.score) - displayedTenths(first.score) : 0
-  return {
-    ready: known.length >= 2,
-    width,
-    height,
-    left,
-    right,
-    bottom,
-    solid,
-    bridges,
-    points: raw.map((p) => ({ ...p, x: x(p.i), y: p.score == null ? null : y(p.score) })),
-    last: last ? { ...last, x: x(last.i), y: y(last.score) } : null,
-    ticks: [0, 0.5, 1, 1.5, 2].filter((v) => v >= lo).map((value) => ({ value, y: y(value) })),
-    summary:
-      first && last
-        ? `Från ${scoreLabel(first.score)} i vecka ${first.week} till ${scoreLabel(last.score)} i vecka ${last.week} – ${change === 0 ? 'samma nivå' : `${change > 0 ? 'upp' : 'ner'} ${scoreLabel(Math.abs(change) / 10)}`}.`
-        : '',
-  }
+/** Weekly snapshots use the exact headline scorer and display range. */
+export function buildTrend(
+  weekly: readonly PrognosisWeek[],
+  headline?: Partial<Stats['bySection']>,
+  now = new Date(),
+) {
+  const thursday = new Date(now)
+  thursday.setUTCDate(thursday.getUTCDate() + 4 - (thursday.getUTCDay() || 7))
+  const currentIso = `${thursday.getUTCFullYear()}-W${String(isoWeek(now)).padStart(2, '0')}`
+  const weeks = weekly
+    .filter((w) => w.iso <= currentIso)
+    .map((w) => {
+      const current = w.iso === currentIso
+      // The endpoint provides only first-try counts. The neutral ancillary fields
+      // satisfy SectionStats; firstTryStats supplies every score input unchanged.
+      const snapshot: Partial<Stats['bySection']> = Object.fromEntries(
+        Object.entries(w.bySection).map(([key, counts]) => [
+          key,
+          {
+            attempts90d: 0,
+            correct90d: 0,
+            attempts7d: 0,
+            correct7d: 0,
+            attempts7to14d: 0,
+            correct7to14d: 0,
+            attemptsToday: 0,
+            avgTimeMs: null,
+            lastAttemptedAt: null,
+            ...counts,
+          },
+        ]),
+      )
+      // Independent queries can refresh in either order. The current column is
+      // the same estimate the student is reading at the top of this render.
+      const bySection = current && headline !== undefined ? headline : snapshot
+      const projected = computeHonestProjected(bySection)
+      const band = range(projected.total, projected.band)
+      const hasEvidence = Object.values(bySection).some((s) => firstTryStats(s).attempts90d > 0)
+      const state = band.rangeLabel ? 'scored' : hasEvidence ? 'thin' : 'empty'
+      return {
+        iso: w.iso,
+        week: Number(w.iso.slice(-2)),
+        current,
+        state,
+        ...band,
+        label: band.rangeLabel ?? (hasEvidence ? 'för lite underlag' : 'inget underlag'),
+        bottom: band.low == null ? null : band.low * 50,
+        height: band.low == null || band.high == null ? null : (band.high - band.low) * 50,
+      }
+    })
+  const scored = weeks.filter((w) => w.low != null && w.high != null)
+  const first = scored[0]
+  const last = scored[scored.length - 1]
+  const width = (w: typeof first) => displayedTenths(w.high!) - displayedTenths(w.low!)
+  const summary =
+    scored.length < 2
+      ? null
+      : `${width(last) < width(first) ? 'Intervallet har smalnat från' : 'Intervallet var'} ${first.rangeLabel} ${width(last) < width(first) ? 'till' : 'och är'} ${last.rangeLabel} mellan vecka ${first.week} och vecka ${last.week}.`
+  return { weeks, summary }
 }
 
 /** Display precision must not turn nonzero uncertainty into a collapsed band. */
@@ -222,7 +249,14 @@ export function buildFramstegView(input: FramstegInput, now = new Date()) {
       scoreLabel: scoreLabel(projected.total),
       caveat: projectionBasis(bySection).total.calibrated ? null : CAVEAT,
     },
-    weekly: data?.weekly ?? [],
+    weekly: {
+      ...buildTrend(input.weekly?.data ?? [], data?.bySection, now),
+      statusLine: input.weekly?.isError
+        ? RETRY_LINE
+        : input.weekly?.data === undefined
+          ? 'Laddar veckornas intervall…'
+          : null,
+    },
   }
 }
 export type FramstegView = ReturnType<typeof buildFramstegView>

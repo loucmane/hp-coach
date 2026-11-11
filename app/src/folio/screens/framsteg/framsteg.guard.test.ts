@@ -71,13 +71,32 @@ describe('Framsteg isolation', () => {
       for (const selector of group.replace(/\([^)]*\)/g, '(args)').split(','))
         expect(selector.trim()).toMatch(/^\[data-folio\] \.fa-framsteg(?:[\s.[:]|$)/)
     expect(colourViolations(css, '')).toEqual([])
-    const allowed = ['.fa-chart-end', '.fa-chart-value']
+    const allowed: string[] = []
     const actual: string[] = []
     for (const rule of css.matchAll(/([^{}]+)\{([^{}]*)\}/g))
       if (/var\(--fa-accent/.test(rule[2]))
         for (const selector of rule[1].split(','))
           actual.push(selector.trim().replace('[data-folio] .fa-framsteg ', ''))
     expect([...new Set(actual)].sort()).toEqual(allowed.sort())
+  })
+  it('uses token-only vertical bands with a stationary, phone-sized weekly grid', () => {
+    const css = read('./framsteg.css')
+    expect(css).toContain('repeat(var(--fa-week-count), minmax(0, 1fr))')
+    expect(css).toContain('.fa-week-band::before')
+    expect(css).toContain(
+      'linear-gradient(180deg, transparent, var(--fa-week-ink) 20%, var(--fa-week-ink) 80%, transparent)',
+    )
+    const weeklyRules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].filter((r) =>
+      /\.fa-(?:week|chart)/.test(r[1]),
+    )
+    expect(weeklyRules.length).toBeGreaterThan(5)
+    const declarations = read('../../styles/tokens.css') + css + read('./TrendChart.tsx')
+    for (const rule of weeklyRules) {
+      expect(rule[2]).not.toMatch(/animation:|transition:|min-width:\s*\d+px/)
+      for (const [, token] of rule[2].matchAll(/var\((--fa-[\w-]+)/g))
+        expect(declarations).toMatch(new RegExp(`${token}['"]?\\s*:`))
+    }
+    expect(read('./TrendChart.tsx')).not.toMatch(/<path|<polyline|weeklyScore/)
   })
   it('uses scoped keys and the shared Ljusbord primitives', () => {
     expect(read('./FolioFramsteg.tsx')).toContain('useScopedKeys')
