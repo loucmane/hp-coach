@@ -1,9 +1,10 @@
-// Explanation math fences must contain whole LaTeX groups (hpf-hhlz).
+// Explanation math fences must contain whole, parseable LaTeX (hpf-hhlz, hpf-hhrn).
 // Visit every string, including titles, distractors and nested steps.
 import { readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { render } from '@testing-library/react'
+import katex from 'katex'
 import { createElement } from 'react'
 import { describe, expect, it } from 'vitest'
 
@@ -98,6 +99,48 @@ describe('explanation math fences', () => {
     }
     expect(spans).toBeGreaterThan(0)
     expect(offenders).toEqual([])
+  })
+
+  it('KaTeX-parses every fenced span in every served explanation file', () => {
+    expect(EXAMS.length).toBeGreaterThan(0)
+    let spans = 0
+    const offenders: string[] = []
+    for (const { file, entries } of EXAMS) {
+      for (const [qid, entry] of Object.entries(entries)) {
+        for (const [field, text] of strings(entry)) {
+          for (const [index, match] of [
+            ...text.matchAll(/\uE000([^\uE000\uE001]*)\uE001/g),
+          ].entries()) {
+            spans++
+            try {
+              katex.renderToString(match[1], { throwOnError: true, strict: 'ignore' })
+            } catch (error) {
+              offenders.push(`${file} | ${qid} | ${field} | span ${index + 1}: ${String(error)}`)
+            }
+          }
+        }
+      }
+    }
+    expect(spans).toBeGreaterThan(0)
+    expect(offenders).toEqual([])
+  })
+
+  it.each([
+    ['host-2016.json', 'host-2016-kvant2-XYZ-009', 'solution_path'],
+    ['host-2017.json', 'host-2017-kvant1-XYZ-007', 'steps[7].text'],
+    ['host-2018.json', 'host-2018-kvant1-XYZ-010', 'steps[2].text'],
+    ['host-2016.json', 'host-2016-kvant2-XYZ-008', 'steps[0].text'],
+    ['host-2016.json', 'host-2016-kvant1-NOG-026', 'steps[4].text'],
+    ['host-2018.json', 'host-2018-kvant2-KVA-017', 'pitfall'],
+    ['host-2020.json', 'host-2020-kvant2-NOG-028', 'technique'],
+    ['host-2022.json', 'host-2022-kvant1-XYZ-002', 'technique'],
+  ])('renders repaired %s | %s | %s without a KaTeX error', (file, qid, field) => {
+    const entry = EXAMS.find((exam) => exam.file === file)?.entries[qid]
+    const text = [...strings(entry)].find(([key]) => key === field)?.[1]
+    expect(text).toBeDefined()
+    const { container } = render(createElement(MathText, null, text))
+    expect(container.querySelectorAll('.katex').length).toBeGreaterThan(0)
+    expect(container.querySelector('.katex-error')).toBeNull()
   })
 
   it('renders XYZ-009 step 9 as two complete formulas without a KaTeX error', () => {
