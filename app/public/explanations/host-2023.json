@@ -2104,7 +2104,7 @@
    },
    {
     "n": 5,
-    "text": "(1) ger två olikheter och en totalsumma — flera lösningar finns. Exempel: SR = 43, LR = 0, SG = 0, LG = 42 (totalt 85 ✓, röd ≥ 43 ✓, stora ≥ 43 ✓ — vänta, stora = 43 ✓). Eller SR = 30, LR = 20, SG = 20, LG = 15 (totalt 85, röd = 50, stora = 50). Båda passar — SR skiljer sig (43 vs 30).",
+    "text": "(1) ger två olikheter och en totalsumma — flera lösningar finns. Exempel 1: SR = 43, LR = 0, SG = 0, LG = 42 (totalt 85 ✓, röda = 43 ✓, stora = 43 ✓). Exempel 2: SR = 30, LR = 20, SG = 20, LG = 15 (totalt 85 ✓, röda = 50 ✓, stora = 50 ✓). Båda passar — men SR skiljer sig (43 mot 30).",
     "tier": "essential",
     "title": "Testa (1) ensamt"
    },
@@ -2409,7 +2409,7 @@
    "handle": "Villkorsräkningen",
    "move": "Räkna antalet oberoende villkor mot antalet obekanta siffror — fem siffror kräver fem fasta villkor för att låsa talet."
   },
-  "solution_path": "(1) ger första, andra och tredje siffran. (2) ger en relation mellan första och fjärde siffran. Den femte siffran låses från (1) eftersom första = 2·femte och första+andra = 7. Men EN siffra (oftast en av dem mellan tredje och fjärde, eller fjärde i sig) saknar information även tillsammans. Faktiskt: (1) ger siffrorna 1, 2, 3, 5. (2) ger siffra 4 från siffra 1. Sammantaget vet vi siffra 1, 2, 3, 4, 5 om vi också vet siffra 1. Men siffra 5 från (1):s villkor 'första = 2·femte' med första+andra=7: möjliga (första,femte): (2,1) med andra=5, (4,2) med andra=3, (6,3) med andra=1. Tre möjligheter — inte unikt. Svaret är E.",
+  "solution_path": "Nyckeln är att även (1) och (2) tillsammans lämnar två möjliga tal. (1) ger tredje siffran 7 och tre möjliga par för första och femte siffran (2 och 1, 4 och 2, 6 och 3), med andra siffran 7 minus den första, men säger inget om fjärde siffran. (2) ger fjärde siffran = 2 · första siffran; det stryker paret med första siffran 6 (fjärde siffran skulle bli 12) men lämnar både 25741 och 43782. Inget unikt tal — svaret är E.",
   "steps": [
    {
     "n": 1,
@@ -2455,13 +2455,13 @@
    },
    {
     "n": 8,
-    "text": "Vi har: s_1 = 2·s_5, s_2 = 7 − s_1, s_3 = 7, s_4 = 2·s_1. Tre giltiga (s_5, s_1, s_2)-tripletter från steg 4: (1,2,5), (2,4,3), (3,6,1). För varje ger (2) s_4 = 2·s_1: (1,2,5,4,1) → talet 25471, (2,4,3,8,2) → 43782, (3,6,1,12,3) — s_4 = 12 är OMÖJLIGT (siffra ≤ 9). Så två giltiga tal: 25471 och 43782.",
+    "text": "Vi har: s_1 = 2·s_5, s_2 = 7 − s_1, s_3 = 7, s_4 = 2·s_1. Tre giltiga (s_5, s_1, s_2)-tripletter från steg 4: (1,2,5), (2,4,3), (3,6,1). (2) ger s_4 = 2·s_1: s_1 = 2 ger s_4 = 4 → talet 25741; s_1 = 4 ger s_4 = 8 → talet 43782; s_1 = 6 ger s_4 = 12 — OMÖJLIGT (en siffra är högst 9). Så två giltiga tal: 25741 och 43782.",
     "tier": "essential",
     "title": "Kombinera (1) + (2)"
    },
    {
     "n": 9,
-    "text": "Tal 25471: s_1=2=2·s_5(=1) ✓, s_1+s_2=2+5=7 ✓, s_3=4? NEJ — vänta, talet 25471: s_1=2, s_2=5, s_3=4, s_4=7, s_5=1. Hm, s_3 ska vara 7. Låt mig korrigera: tripletten är (s_5=1, s_1=2, s_2=5) → talet börjar 2,5, sedan s_3=7, sedan s_4=2·2=4, sedan s_5=1: talet är 25741. Verifiera: s_1=2=2·1=2·s_5 ✓; s_1+s_2=7 ✓; s_3=7 ✓; s_4=4=2·2=2·s_1 ✓. För andra: (s_5=2, s_1=4, s_2=3) → talet 4,3,7,8,2 = 43782. Verifiera: s_1=4=2·2 ✓; 4+3=7 ✓; s_3=7 ✓; s_4=8=2·4 ✓.",
+    "text": "Talet 25741: s_1 = 2 = 2·1 = 2·s_5 ✓; s_1 + s_2 = 2 + 5 = 7 ✓; s_3 = 7 ✓; s_4 = 4 = 2·2 = 2·s_1 ✓. Talet 43782: s_1 = 4 = 2·2 = 2·s_5 ✓; s_1 + s_2 = 4 + 3 = 7 ✓; s_3 = 7 ✓; s_4 = 8 = 2·4 = 2·s_1 ✓. Båda talen uppfyller alla villkor.",
     "tier": "detail",
     "title": "Verifiera båda kandidater"
    },
@@ -4944,95 +4944,80 @@
   "_meta": {
    "generated_at": "2026-05-14",
    "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "recipe": "variant-c-ultra-granular",
+   "rewritten": "2026-11-11 hpf-ydaz",
+   "prompt_repaired": "radicals restored from the PDF: x · x → \\sqrt{x} \\cdot \\sqrt{x} (glyph residue $ had eaten them)",
+   "corrected_from": "generator reasoned about the misparsed prompt (x·x vs x) and deferred to facit"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Om I tolkas som x² (x gånger x = kvadrat) och x > 1, är I > II.",
-    "why_wrong": "Steg 3 visar att den tolkningen ger D, inte A — riktningen växlar beroende på om x > 1 eller x < 1."
+    "why_tempting": "Det är lätt att läsa förbi rottecknen och se 'x gånger x' — alltså x², som ju är större än x när x > 1.",
+    "why_wrong": "Rottecknen gör hela skillnaden: det är \uE000\\sqrt{x}\uE001 gånger \uE000\\sqrt{x}\uE001, inte x gånger x. Produkten blir x, inte x² (steg 3)."
    },
    {
     "letter": "B",
-    "why_tempting": "Om I tolkas som x² och x < 1, är I < II.",
-    "why_wrong": "Steg 3: samma som A i motsatt riktning — den tolkningen är D, inte B."
+    "why_tempting": "Om du läser I som x² och testar med ett tal mellan 0 och 1, till exempel x = 0,5, blir x² = 0,25 mindre än 0,5 — och då pekar det på B.",
+    "why_wrong": "I är inte x² utan \uE000\\sqrt{x} \\cdot \\sqrt{x} = x\uE001 — exakt samma värde som II för alla x > 0, även för tal mellan 0 och 1 (steg 5)."
    },
    {
     "letter": "D",
-    "why_tempting": "Snabbsvar för 'osäker' prompt är ofta D.",
-    "why_wrong": "Steg 4–6 visar att facit anger C, vilket kräver att uttrycken är identiska — inte att informationen är otillräcklig."
+    "why_tempting": "Snabbsvar är ofta D när ett villkor som x > 0 står med och värdet på x inte anges — man misstänker att svaret beror på x.",
+    "why_wrong": "Här beror inget på x: \uE000\\sqrt{x} \\cdot \\sqrt{x} = x\uE001 gäller för varje positivt x. Två uttryck som alltid är lika ger C, inte D (steg 4)."
    }
   ],
   "framework_id": null,
-  "pitfall": "Den vanligaste fällan är att lita på den parsade prompten utan att jämföra mot facit. Botemedlet: när du tränar — verifiera alltid att din tolkning av prompten ger samma svar som facit innan du bygger en strategi runt det.",
-  "solution_path": "x · x = x², men eftersom det inte står något tecken på vänster sida betyder uttrycken 'x gånger x' (Kvantitet I) och 'x' (Kvantitet II). VÄNTA: faktiskt är Kvantitet I = x·x och Kvantitet II = x. Med x > 0 testar vi: x = 0,5 → I = 0,25 < 0,5 = II; x = 2 → I = 4 > 2 = II. Olika riktningar — vänta, originalet kan vara att jämföra x·x med x (utan kvadrat-tecken). Hmm. Givet svaret är C (lika) borde uttrycken vara identiska. Mer troligt: prompten visar 'x · x' som ska tolkas som något annat. Re-läs: 'Kvantitet I: x · x, Kvantitet II: x'. Med x > 0 är x·x ≠ x generellt. Eftersom facit säger C (lika): tolka som 'x · 1 = x' i båda — kanske · är skiljetecken, inte multiplikation? Mest sannolik tolkning är att båda uttrycken är samma sak (t.ex. de tappar i parsning) eller att x·x SKA tolkas som något givet svaret. Vi går på facit: I = II.",
+  "pitfall": "Fällan är att läsa förbi rottecknen och se 'x gånger x' — då ser det ut som x², och svaret verkar bero på om x är större eller mindre än 1. Botemedlet: skriv om \uE000\\sqrt{x} \\cdot \\sqrt{x}\uE001 som \uE000(\\sqrt{x})^2\uE001 innan du jämför; en kvadrat tar ut roten.",
+  "solution_path": "Nyckeln är att roten ur x gånger roten ur x alltid blir x: \uE000\\sqrt{x} \\cdot \\sqrt{x} = (\\sqrt{x})^2 = x\uE001 för alla x > 0. Kvantitet I är alltså exakt samma tal som Kvantitet II, vilket x du än väljer. Svaret är C.",
   "pregrade_tactic": {
-   "handle": "Facit-konsistenskollen",
-   "move": "När promptens råtext verkar inkonsistent med facit, räkna ut vad varje rimlig tolkning skulle ge och välj den som matchar."
+   "handle": "Rot gånger rot",
+   "move": "Förenkla innan du testar tal: skriv √x · √x som (√x)² och fråga dig vad en kvadrat gör med en rot."
   },
   "steps": [
    {
     "n": 1,
-    "text": "Givet x > 0, jämför Kvantitet I (skrivet som 'x · x') med Kvantitet II (skrivet som 'x'). Eftersom facit säger att de är lika (C), måste uttrycken vara samma matematiska storhet — sannolikt en parsningsmiss där I egentligen är samma uttryck som II.",
+    "text": "Givet x > 0 ska du jämföra Kvantitet I, \uE000\\sqrt{x} \\cdot \\sqrt{x}\uE001, med Kvantitet II, x. Frågan är om den ena alltid är större, om de alltid är lika, eller om det beror på x.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "Som råtext ser Kvantitet I = x · x ut som x², vilket inte är lika med x för alla x > 0. Detta strider mot facit C, så någon detalj i prompten har gått förlorad i parsning.",
+    "text": "\uE000\\sqrt{x}\uE001 är det positiva tal som multiplicerat med sig självt blir x. Villkoret x > 0 gör att roten alltid finns.",
     "tier": "detail",
-    "title": "Notera parsningsutmaningen"
+    "title": "Vad betyder √x?"
    },
    {
     "n": 3,
-    "text": "Om Kvantitet I = x² och Kvantitet II = x: för x = 0,5 är I = 0,25 < 0,5 = II; för x = 2 är I = 4 > 2 = II. Olika riktningar → svaret hade blivit D, inte C.",
-    "tier": "detail",
-    "title": "Vad gäller om I = x²?"
+    "text": "Att multiplicera ett tal med sig självt är att kvadrera det: \uE000\\sqrt{x} \\cdot \\sqrt{x} = (\\sqrt{x})^2\uE001. Och roten ur x i kvadrat är per definition x. Alltså är Kvantitet I = x.",
+    "tier": "essential",
+    "title": "Multiplicera roten med sig själv"
    },
    {
     "n": 4,
-    "text": "Om båda uttrycken egentligen är 'x' (samma uttryck), är de trivialt lika och svaret blir C. Detta är den enda tolkning som matchar facit.",
+    "text": "Kvantitet I = x och Kvantitet II = x. De är identiska för varje x > 0 — svaret är C.",
     "tier": "essential",
-    "title": "Vad gäller om båda är x?"
+    "title": "Jämför"
    },
    {
     "n": 5,
-    "text": "x = 1: I = 1, II = 1 → lika. x = 0,5: I = 0,5, II = 0,5 → lika. x = 3: I = 3, II = 3 → lika. Konsistent med C.",
-    "tier": "essential",
-    "title": "Sätt in tal i den föreslagna tolkningen"
+    "text": "x = 4: \uE000\\sqrt{4} \\cdot \\sqrt{4} = 2 \\cdot 2 = 4\uE001. x = 0,25: \uE000\\sqrt{0{,}25} \\cdot \\sqrt{0{,}25} = 0{,}5 \\cdot 0{,}5 = 0{,}25\uE001. Lika i båda fallen — både för ett tal större än 1 och för ett tal mellan 0 och 1.",
+    "tier": "detail",
+    "title": "Kontroll med tal"
    },
    {
     "n": 6,
-    "text": "Givet att facit anger C ('I är lika med II'), tolkar vi prompten som att båda uttrycken representerar samma värde — sannolikt har den ursprungliga formuleringen förlorat detaljer (t.ex. en exponent på II eller en delning på I).",
-    "tier": "essential",
-    "title": "Slutsats baserat på facit"
+    "text": "Regeln \uE000\\sqrt{a} \\cdot \\sqrt{b} = \\sqrt{ab}\uE001 ger samma resultat: \uE000\\sqrt{x} \\cdot \\sqrt{x} = \\sqrt{x \\cdot x} = \\sqrt{x^2} = x\uE001, eftersom x är positivt.",
+    "tier": "detail",
+    "title": "Samma sak med rotregeln"
    },
    {
     "n": 7,
-    "text": "Inga andra svarsalternativ är konsistenta med ett villkor som tvingar fram likhet för alla x > 0.",
-    "tier": "detail",
-    "title": "Verifikation"
-   },
-   {
-    "n": 8,
-    "text": "Använd facit som ledtråd. Räkna ut vad varje tolkning skulle ge för svar, och välj den tolkning som matchar facit.",
-    "tier": "detail",
-    "title": "Allmän strategi för KVA där prompten är otydlig"
-   },
-   {
-    "n": 9,
-    "text": "Denna fråga bör flaggas för manuell granskning av PDF-källan; troligen behöver något extra (kvadratrot, faktor) återinföras i Kvantitet II för att matematiken ska stämma.",
-    "tier": "detail",
-    "title": "Notera för parser-fix"
-   },
-   {
-    "n": 10,
-    "text": "Kvantitet I = Kvantitet II, alternativ C. Insikten i en mening: när KVA-prompt verkar inkonsistent med facit, är det oftast en parsfälla — välj svar som facit anger och fortsätt.",
+    "text": "Kvantitet I är lika med Kvantitet II — svaret är C. Insikten i en mening: en rot gånger sig själv tar ut roten, så \uE000\\sqrt{x} \\cdot \\sqrt{x}\uE001 är bara x.",
     "tier": "essential",
     "title": "Slutsats"
    }
   ],
-  "technique": "Facit-konsistens-strategin för parsfellfält: när promptens råtext verkar inkonsistent med facit, försök rekonstruera den ursprungliga formuleringen baserat på det enda svar som ger logisk konsistens. Triggern: ett uttryck som ser ut att ge svar D men där facit säger C."
+  "technique": "Rot gånger rot: \uE000\\sqrt{a} \\cdot \\sqrt{a} = a\uE001 för a ≥ 0. Här blir Kvantitet I exakt x, alltså I = II (C) för alla x > 0. Triggern: samma rot multiplicerad med sig själv — förenkla innan du testar tal."
  },
  "host-2023-kvant2-KVA-014": {
   "_meta": {
@@ -6514,12 +6499,12 @@
    },
    {
     "letter": "C",
-    "why_tempting": "Många stannar vid 'multiplicera ut 2(x+4) = 2x + 8' och delar inte och får 2x + 8 + 8 = 2x + 16... vänta, eller bara 'plus 8 igen' utan att förkorta.",
-    "why_wrong": "Steg 4 förkortar 2:orna FÖRST: täljaren och nämnarens 2 tar ut varandra. Att glömma förkortningen lämnar koefficient 2 på x — det är fel."
+    "why_tempting": "Många stannar vid att multiplicera ut täljaren, 2(x + 4) = 2x + 8, och dela bara x-termen med 2: då blir bråket x + 8, och + 8 ger x + 16.",
+    "why_wrong": "Steg 4: nämnarens 2 delar HELA täljaren — både 2x och 8. \uE000\\dfrac{2x + 8}{2} = x + 4\uE001, inte x + 8, så summan blir x + 12."
    },
    {
     "letter": "D",
-    "why_tempting": "Om man multiplicerar ut 2(x+4) = 2x + 8 i täljaren och GLÖMMER dela med nämnarens 2 alls, landar man på 2x + 8 + 8 − 6 = 2x + 10.",
+    "why_tempting": "Om man både glömmer att multiplicera in 2:an i parentesen (2x + 4 i stället för 2x + 8) och bara delar den sista termen med 2, blir bråket 2x + 2 — och + 8 ger 2x + 10.",
     "why_wrong": "Steg 4: man MÅSTE dela täljaren med nämnaren. Koefficienten på x måste vara 1, inte 2."
    }
   ],

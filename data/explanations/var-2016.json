@@ -521,103 +521,75 @@
   "_meta": {
    "generated_at": "2026-05-17",
    "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "recipe": "variant-c-ultra-granular",
+   "figure_corrected": "2026-11-11",
+   "corrected_from": "values copied from neighbouring rows (1979/80, 1986/87) and 1992/93 read from the premiär Totalt column (204) instead of Utl (185); kept the key by appeal to facit"
   },
   "framework_id": null,
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "1978/79 har också relativt låga total besök och premiär-utländska över 200, så det är frestande att fastna på det första som verkar passa utan att kontrollera ALLA tre villkor.",
-    "why_wrong": "1978/79: UTL-Vis-Besök är cirka 18 miljoner — TOTAL besök ÖVER 15 miljoner. Som steg 5 visar bryter detta mot villkor 1 (totalt < 15 miljoner). Facit fastslår B (1983/84), där alla tre villkor stämmer."
+    "why_tempting": "Det är lätt att börja med de två villkor som stämmer — 250 utländska premiärer och 1 994 210 svenska premiärbesök, strax under 2 miljoner — och missa besökssumman.",
+    "why_wrong": "Villkor 1 gäller alla visade filmer: redan de utländska filmerna hade 17 779 852 besök, och med de svenska blir det över 21 miljoner (steg 3)."
    },
    {
     "letter": "C",
-    "why_tempting": "1987/88 har också total besök runt 15-miljoners-strecket och premiärvisade utländska över 200 — det är frestande för en snabb avläsning.",
-    "why_wrong": "1987/88: UTL-Vis-Besök 11 510 536, SV-Vis-Besök cirka 2,6 miljoner → totalt cirka 14,1M (klarar villkor 1). Premiär-utländska = 229 > 200 ✓. MEN SV-Prem-Besök = 2 040 718 — JUST ÖVER 2 miljoner. Villkor 'premiärvisade svenska färre än 2 miljoner besök' bryts marginellt. Som steg 7 visar är 1983/84 det enda år som klarar ALLA tre villkor med marginal."
+    "why_tempting": "Många stannar vid att 1987/88 klarar besöksgränsen — 14 941 009 besök, strax under 15 miljoner — och har 208 utländska premiärer.",
+    "why_wrong": "Villkor 2 bryts: de premiärvisade svenska filmerna hade 2 432 304 besök, alltså över 2 miljoner (steg 5)."
    },
    {
     "letter": "D",
-    "why_tempting": "1992/93 har lågt totalbesök och premiärvisade utländska runt 200-strecket — det kan kännas rimligt utan exakt kontroll.",
-    "why_wrong": "1992/93: premiärvisade utländska = 204, gränsfall, men SV-Prem-Besök = cirka 1,8 miljoner ✓. Totalt besök ≈ 12 miljoner ✓. Hmm — det här ser ut att kunna stämma. Men 1992/93s premiärvisade utländska 204 är NÄRA 200, och 1983/84:s 231 är tydligare över 200. Facit fastslår 1983/84, så även om 1992/93 ser nära ut, är det inte det enda år som uppfyller villkoren — och facit avgör."
+    "why_tempting": "Om du läser premiärkolumnen 'Totalt' i stället för 'Utl' ser 1992/93 ut att ha 204 premiärer, och de andra två villkoren stämmer.",
+    "why_wrong": "Frågan gäller premiärvisade UTLÄNDSKA filmer: kolumnen Utl visar 185, vilket inte är fler än 200. Totalt (204) räknar också in svenska filmer och samproduktioner (steg 6)."
    }
   ],
-  "pitfall": "Klassiska fällan i flervillkorsfrågor: stanna vid första villkoret som verkar stämma utan att kontrollera ALLA tre samtidigt. Botemedlet: skriv ner de tre kriterierna och bocka av dem ETT FÖR ETT mot varje alternativ — det år som klarar alla tre är svaret.",
+  "pitfall": "Fällan är att läsa fel kolumn: 'Totalt' under premiärvisade filmer räknar in svenska filmer och samproduktioner, så 1992/93 ser ut att ha 204 premiärer fast de utländska var 185. Botemedlet: ringa in exakt den kolumn varje villkor pekar på innan du läser av något värde.",
   "pregrade_tactic": {
    "handle": "Tre-villkor-bockas-av-per-år",
    "move": "Skriv: (1) total besök < 15M, (2) SV-Prem-besök < 2M, (3) premiärvisade utländska > 200. Gå alternativ för alternativ (1978/79, 1983/84, 1987/88, 1992/93), avläs de tre värdena från tabellen, bocka av — välj det år där alla tre står med bock."
   },
-  "solution_path": "Facit fastslår B (1983/84). Tre villkor: total besök (UTL + SV Visade) < 15 miljoner, premiärvisade svenska < 2 miljoner besök, premiärvisade utländska > 200 filmer. För 1983/84: UTL-Vis-Besök 12 112 248 + SV-Vis-Besök 2 227 234 = 14,3M (✓ <15M); SV-Prem-Besök 1 672 290 (✓ <2M); premiärvisade utländska 231 (✓ >200). Alla tre klara.",
+  "solution_path": "Kontrollera de tre villkoren år för år: (1) utländska plus svenska besök för visade filmer under 15 miljoner, (2) besök för premiärvisade svenska filmer under 2 miljoner, (3) fler än 200 premiärvisade UTLÄNDSKA filmer (kolumnen Utl, inte Totalt). 1983/84 klarar alla tre: 12 112 248 + 2 227 234 ≈ 14,3 miljoner besök, 1 672 290 svenska premiärbesök och 231 utländska premiärer. 1978/79 har för många besök, 1987/88 för många svenska premiärbesök och 1992/93 bara 185 utländska premiärer — svaret är B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilket filmår avses, givet TRE villkor — (a) totala antalet visade filmer registrerade < 15 miljoner besök, (b) premiärvisade svenska filmer hade < 2 miljoner besök, (c) premiärvisade utländska filmer var fler än 200. Alternativen: 1978/79, 1983/84, 1987/88, 1992/93. Facit fastslår B (1983/84).",
+    "text": "Du söker det filmår där tre villkor gäller samtidigt: (1) färre än 15 miljoner besök för det totala antalet visade filmer, (2) färre än 2 miljoner besök för de premiärvisade svenska filmerna, (3) fler än 200 premiärvisade utländska filmer.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Skriv ner kriterielistan",
-    "text": "Vid flervillkorsfrågor: skriv ned kriterierna explicit. (1) Total besök < 15 000 000. (2) SV-Premiärvisade-Antal besök < 2 000 000. (3) Utländska premiärvisade filmer > 200 (antal filmer, inte besök). Ett enda årtal måste klara ALLA tre — annars är det fel årtal.",
+    "title": "Hitta rätt kolumner",
+    "text": "Villkor 1: summera 'Antal besök' för utländska filmer (Visade) och för svenska filmer (Visade). Villkor 2: 'Antal besök' under Svenska filmer → Därav premiärvisade, kolumnen längst till höger. Villkor 3: kolumnen 'Utl' under Samtliga filmer → Därav premiärvisade filmer — inte 'Totalt' bredvid, som också räknar in svenska filmer och samproduktioner.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Var hittar du varje villkor i tabellen?",
-    "text": "Total besök = UTL-Visade-Antal besök + SV-Visade-Antal besök (de två 'Antal besök'-kolumnerna under 'Visade' i UTL- respektive SV-blocket). SV-Premiärvisade-Antal besök = sista kolumnen (längst till höger). Premiärvisade utländska antal = kolumnen 'Utl' under SAMTLIGA FILMER → Därav premiärvisade filmer.",
+    "title": "Granska 1978/79",
+    "text": "De utländska filmerna hade 17 779 852 besök — redan över 15 miljoner utan de svenska. Villkor 1 bryts.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Granska 1978/79",
-    "text": "Total besök 1978/79: UTL-Visade-Antal besök ungefär 18 072 506 ENSAMT — redan över 15 miljoner. Villkor 1 BRYTS direkt. Inget behov att kolla de andra två. Inte 1978/79.",
+    "title": "Granska 1983/84",
+    "text": "Besök: 12 112 248 + 2 227 234 = 14 339 482 < 15 miljoner ✓. Svenska premiärer: 1 672 290 besök < 2 miljoner ✓. Utländska premiärer: 231 > 200 ✓. Alla tre villkor stämmer.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Granska 1983/84",
-    "text": "1983/84: UTL-Vis-Besök 12 112 248. SV-Vis-Besök 2 227 234. Total = 14 339 482 ≈ 14,3 miljoner < 15 miljoner ✓. SV-Prem-Besök 1 672 290 < 2 miljoner ✓. Premiärvisade utländska = 231 > 200 ✓. ALLA TRE villkor klara! Detta är vår kandidat.",
+    "title": "Granska 1987/88",
+    "text": "Besök: 11 697 816 + 3 243 193 = 14 941 009 — strax under 15 miljoner ✓. Utländska premiärer: 208 ✓. Men de svenska premiärerna hade 2 432 304 besök, över 2 miljoner. Villkor 2 bryts.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Granska 1987/88",
-    "text": "1987/88: UTL-Vis-Besök 11 510 536. SV-Vis-Besök cirka 2,6 miljoner. Total ≈ 14,1M < 15M ✓. Premiärvisade utländska = 229 > 200 ✓. MEN SV-Prem-Besök 2 040 718 — strax ÖVER 2 miljoner. Villkor 2 bryts. Inte 1987/88.",
+    "title": "Granska 1992/93",
+    "text": "Besök: 12 349 575 + 2 526 599 = 14 876 174 ✓. Svenska premiärer: 1 834 319 besök ✓. Men utländska premiärer var bara 185 — det är kolumnen Totalt (204) som ligger över 200. Villkor 3 bryts.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Granska 1992/93",
-    "text": "1992/93: UTL-Vis-Besök cirka 12 miljoner, SV-Vis-Besök cirka 1,3 miljoner → total cirka 13,3M < 15M ✓. SV-Prem-Besök 215 466 ≈ 0,2M ✓. MEN premiärvisade utländska antal: 204 — visserligen > 200, men nätt och jämnt. Facit pekar på 1983/84 där ALLA tre kriterier är tydligt uppfyllda med marginal; 1992/93 hamnar precis på gränsen för villkor 3.",
-    "tier": "essential"
-   },
-   {
-    "n": 8,
-    "title": "Vad betyder 'totalt antal visade filmer' i denna kontext?",
-    "text": "'Totala antalet visade filmer registrerades färre än 15 miljoner besök' — detta syftar på TOTALA besök till alla visade filmer (UTL + SV), inte antalet filmer. Hade det handlat om antal FILMER skulle 15 miljoner vara ett orimligt högt tal. Lägg märke till att frågan formulerar villkoret som antal BESÖK, så summera de två 'Antal besök'-kolumnerna under Visade.",
-    "tier": "detail"
-   },
-   {
-    "n": 9,
-    "title": "Sanity-check 1983/84 igen",
-    "text": "Skriv tabellraden helt: 1983/84 har UTL Visade 1262 filmer, SV Visade 179 filmer, total 1441. Premiärvisade UTL 231 > 200 ✓. Premiärvisade SV 13. Visade UTL besök 12 112 248. Visade SV besök 2 227 234. Total = 14 339 482 < 15M ✓. Premiärvisade SV besök 1 672 290 < 2M ✓. Tre bock — det är vårt år.",
-    "tier": "detail"
-   },
-   {
-    "n": 10,
-    "title": "Korsa de fyra alternativen i tabellform",
-    "text": "1978/79: villkor 1 ✗ (total ~20M). 1983/84: ✓✓✓. 1987/88: villkor 2 ✗ (SV-Prem-Besök 2,04M). 1992/93: gränsfall på villkor 3 (204 är knappt över 200). Endast 1983/84 klarar alla tre med marginal — det matchar facit.",
-    "tier": "essential"
-   },
-   {
-    "n": 11,
-    "title": "Plocka närmaste svarsalternativ",
-    "text": "Av alternativen är 1983/84 (B) det enda som passar alla tre villkor. De andra alternativen bryter minst ett villkor (oftast villkor 1 om totala besök).",
-    "tier": "essential"
-   },
-   {
-    "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är B (1983/84). Insikten i en mening: i identifieringsfrågor med flera villkor, bocka av varje villkor separat per kandidat i stället för att leta 'det år som ser ut att passa' — endast det år som klarar ALLA villkor är korrekt.",
+    "title": "Slutsats",
+    "text": "Bara 1983/84 klarar alla tre villkor — svaret är B. Insikten i en mening: i flervillkorsfrågor ska varje villkor läsas i exakt rätt kolumn, och ett enda brutet villkor räcker för att stryka ett år.",
     "tier": "essential"
    }
   ],
@@ -5830,7 +5802,7 @@
   }
  },
  "var-2016-kvant2-NOG-024": {
-  "solution_path": "Cirkelbågen BC är en kvartcirkel (1/4 av cirkel) med medelpunkt A. Radie = AC = AB. Rektangel ADEF har F på AC, D på AB, E på bågen. Sidor: AF=DE och AD=FE. Pytagoras: AE² = AD² + DE² = r² (eftersom E ligger på bågen). (1) DE=5 ensam: en ekvation, en obekant kvar (AD). Otillräcklig. (2) CF=8: AF = r−8, men AD och DE fortfarande fria. Otillräcklig. Tillsammans: DE=5, AF=AD=r−CF (nej — AF=r−CF=r−8 och AD=DE=5, fel — vänta, behöver räkna noggrant). Båda krävs för Pytagoras-ekvationen. Svar: C.",
+  "solution_path": "Nyckeln är att motstående sidor i rektangeln är lika långa, så AF = DE, och att radien AC = AF + FC. Med (1) och (2) tillsammans blir radien 5 + 8 = 13 cm och båglängden \uE000\\dfrac{13\\pi}{2}\uE001 cm. Var för sig räcker de inte: (1) ger bara AF = 5 utan att säga hur lång FC är, och (2) ger bara FC = 8 utan att säga hur lång AF är. Svaret är C.",
   "steps": [
    {
     "n": 1,
@@ -6205,7 +6177,7 @@
   }
  },
  "var-2016-kvant2-NOG-027": {
-  "solution_path": "Medel(a,b,c,d) = 69 → a+b+c+d = 276. Vi söker hur många av a,b,c,d som är exakt 69. (1) medel(a,b,c) = 69 → a+b+c = 207, så d = 69. Men hur många av a,b,c som är 69 är fortfarande obestämt (kan vara 0, 1, 2 eller 3). (2): minst 2 är 69 — kan vara 2, 3 eller 4. Tillsammans: d=69 och minst 2 av a,b,c är 69 — så minst 3 är 69, men kan vara 3 eller 4. Otillräckligt. Svar: E.",
+  "solution_path": "Nyckeln är att antalet 69:or aldrig kan vara exakt 3: summan är 4 · 69 = 276, så om tre av talen är 69 måste det fjärde vara 276 − 207 = 69. (1) ger d = 69, men antalet 69:or kan fortfarande vara 1, 2 eller 4. (2) tillåter 2 eller 4, och även tillsammans går både 2 (a = 69, b = 70, c = 68, d = 69) och 4 (alla fyra är 69). Antalet är inte bestämt — svaret är E.",
   "steps": [
    {
     "n": 1,
@@ -6246,13 +6218,13 @@
    {
     "n": 7,
     "title": "Översätt (2)",
-    "text": "(2): minst 2 av talen är 69. Det är en svag utsaga — tillåter antalet 2, 3 eller 4.",
+    "text": "(2): minst 2 av talen är 69. Tillsammans med summan 276 betyder det att antalet är 2 eller 4 — inte 3, eftersom tre 69:or tvingar även det fjärde talet att bli 276 − 3 · 69 = 69.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Testa (2) ensamt",
-    "text": "Antalet kan vara 2 (t.ex. a=b=69, c=70, d=68), 3 (a=b=c=69, d=69 — vänta, då är alla 4 — eller a=b=c=69, d behöver vara 69 för total 276, så det blir 4). Vänta: med a=b=69, vad är c+d=276−138=138, så c+d=138, vilket tillåter c=d=69 (4 av talen) eller c=70, d=68 (2 av talen).",
+    "text": "Kan antalet vara 3? Om tre av talen är 69 är deras summa 207, och då måste det fjärde vara 276 − 207 = 69 — alltså blir det 4. Antalet 2 går däremot: a = b = 69 ger c + d = 138, till exempel c = 70 och d = 68. Med c = d = 69 blir antalet 4. Två möjliga antal → otillräckligt.",
     "tier": "essential"
    },
    {
@@ -6276,7 +6248,7 @@
    {
     "n": 12,
     "title": "Bekräfta otillräckligheten",
-    "text": "Även tillsammans kan antalet vara 2, 3 eller 4. Otillräckligt.",
+    "text": "Även tillsammans kan antalet vara 2 eller 4. Otillräckligt.",
     "tier": "essential"
    },
    {
@@ -6290,17 +6262,17 @@
    {
     "letter": "A",
     "why_tempting": "Det är lätt att tro att d = 69 räcker när vi söker antalet — det är en konkret låsning.",
-    "why_wrong": "Steg 5–6: även med d=69 kan a, b, c innehålla 0, 1, 2 eller 3 stycken 69:or och fortfarande summera till 207."
+    "why_wrong": "Steg 5–6: även med d = 69 kan a, b och c innehålla noll, en eller tre 69:or och fortfarande summera till 207 — antalet blir 1, 2 eller 4."
    },
    {
     "letter": "B",
     "why_tempting": "Snabbsvar är ofta att 'minst 2 är 69' är konkret nog.",
-    "why_wrong": "Steg 8–9: 'minst 2' lämnar antalet i {2, 3, 4} — tre möjligheter."
+    "why_wrong": "Steg 8–9: 'minst 2' lämnar antalet 2 eller 4 — två möjligheter."
    },
    {
     "letter": "C",
     "why_tempting": "Första instinkten är att kombinera båda för säkerhet — d=69 + 'minst 2' känns starkt.",
-    "why_wrong": "Steg 11: även tillsammans kan antalet vara 2 (a=69, b=70, c=68, d=69) eller 3 (a=b=69, c=69 → blir 4) eller 4. Två olika scenarier kvar."
+    "why_wrong": "Steg 11: även tillsammans kan antalet vara 2 (a = 69, b = 70, c = 68, d = 69) eller 4 (alla fyra är 69). Två olika antal kvar."
    },
    {
     "letter": "D",

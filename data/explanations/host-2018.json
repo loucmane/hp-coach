@@ -1335,7 +1335,8 @@
   "_meta": {
    "generated_at": "2026-05-14",
    "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "recipe": "variant-c-ultra-granular",
+   "prompt_repaired": "options restored from the PDF: A and C had glyph residue 14^{·} for 14 \\cdot; D had lost its exponent (14(46+35) → 14^{(46+35)})"
   },
   "distractors": [
    {
@@ -1350,8 +1351,8 @@
    },
    {
     "letter": "D",
-    "why_tempting": "D ser intressant ut eftersom 14(46+35) faktiskt har samma numeriska värde som C. Snabbsvar är ofta att välja det mest komprimerade uttrycket.",
-    "why_wrong": "Strukturellt är D och C ekvivalenta, men HP-konventionen är att skriva ut multiplikationstecknet när man uttryckligen syftar på 'produkten av'. Som steg 9 visar är C den ord-för-ord-trogna översättningen; D skriver implicit multiplikation, vilket är formellt korrekt men inte den valda standarden."
+    "why_tempting": "Det är lätt att se 14 och (46 + 35) stå tätt ihop och läsa det som 14(46 + 35) — ett tal direkt framför en parentes betyder ju multiplikation. Men i D står parentesen upphöjd, som exponent.",
+    "why_wrong": "Steg 9: en upphöjd parentes är en exponent. \uE00014^{(46+35)} = 14^{81}\uE001 är 14 multiplicerat med sig självt 81 gånger — inte 14 gånger summan 81. 'Produkten av' kräver multiplikation, som i C."
    }
   ],
   "framework_id": "XYZ-TRAP-006",
@@ -1412,7 +1413,7 @@
    },
    {
     "n": 9,
-    "text": "D: 14(46+35). Hmm — i matematisk notation BETYDER 14(46+35) faktiskt samma sak som 14·(46+35), eftersom ett tal direkt framför en parentes innebär multiplikation. Strukturellt är D och C alltså identiska. På HP är konventionen ändå att skriva ut multiplikationstecknet när man syftar på 'produkten av', och då blir C det tydligare svaret. Båda läser samma värde, men C matchar formuleringen ord-för-ord.",
+    "text": "D: \uE00014^{(46+35)}\uE001. Här står (46 + 35) uppe som EXPONENT — det betyder 14 upphöjt till 81, alltså 14 multiplicerat med sig självt 81 gånger. Det är en potens, inte produkten av 14 och summan. Fel operation.",
     "tier": "essential",
     "title": "Granska alternativen — D"
    },
@@ -12745,97 +12746,81 @@
   }
  },
  "host-2018-kvant1-KVA-019": {
-  "solution_path": "I = √(5/9) ≈ 0,745. II = √(2/3) ≈ 0,816. Hmm, II > I, som ger B. Men facit A. Tolkning kan vara: I = √5/√9 = √5/3 ≈ 2,236/3 ≈ 0,745. II = √(2/3) ≈ 0,816. Räkning skulle ge B, inte A. Per facit A: I > II. Sannolikt I = √(5/√9) eller en annan tolkning.",
+  "solution_path": "Nyckeln är att skriva båda kvantiteterna med samma nämnare: \uE000\\sqrt{\\dfrac{5}{9}} = \\dfrac{\\sqrt{5}}{3}\uE001 och \uE000\\dfrac{2}{3} = \\dfrac{\\sqrt{4}}{3}\uE001. Då räcker det att jämföra √5 med √4, och eftersom 5 > 4 är √5 > √4. Alltså är I större än II — svaret är A.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Två bråkuttryck med rotter; per parsing I innefattar 5 och 9, II innefattar 2 och 3.",
+    "text": "Kvantitet I är kvadratroten ur bråket \uE000\\dfrac{5}{9}\uE001. Kvantitet II är bråket \uE000\\dfrac{2}{3}\uE001 — utan rottecken. Du ska avgöra vilken som är störst.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Tolka I",
-    "text": "I = \\sqrt{\\frac{5}{9}} = √5/3 ≈ 0,745 (om så tolkat).",
+    "title": "Dela upp roten",
+    "text": "Roten ur ett bråk är roten ur täljaren delad med roten ur nämnaren: \uE000\\sqrt{\\dfrac{5}{9}} = \\dfrac{\\sqrt{5}}{\\sqrt{9}} = \\dfrac{\\sqrt{5}}{3}\uE001.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Tolka II",
-    "text": "II = \\sqrt{\\frac{2}{3}} ≈ 0,816 (om så tolkat).",
+    "title": "Skriv II med samma nämnare",
+    "text": "Täljaren 2 kan skrivas som en rot: 2 = √4. Då är \uE000\\dfrac{2}{3} = \\dfrac{\\sqrt{4}}{3}\uE001 — samma nämnare som I.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Jämför",
-    "text": "Med dessa tolkningar är II > I.",
+    "title": "Jämför täljarna",
+    "text": "Med samma nämnare avgör täljarna: √5 mot √4. Roten växer när talet under den växer, och 5 > 4, så √5 > √4. Alltså är I > II.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Per facit",
-    "text": "Facit A betyder I > II. En annan tolkning behövs.",
-    "tier": "essential"
+    "title": "Alternativ väg: kvadrera",
+    "text": "Båda kvantiteterna är positiva, så du kan jämföra deras kvadrater i stället. I i kvadrat är \uE000\\dfrac{5}{9}\uE001 och II i kvadrat är \uE000\\left(\\dfrac{2}{3}\\right)^2 = \\dfrac{4}{9}\uE001. Eftersom 5/9 > 4/9 är I > II.",
+    "tier": "detail"
    },
    {
     "n": 6,
-    "title": "Alternativ: 5/9 vs 2/3",
-    "text": "5/9 ≈ 0,556; 2/3 ≈ 0,667. II > I.",
+    "title": "Rimlighetskoll med decimaler",
+    "text": "√5 ≈ 2,24, så I ≈ 2,24/3 ≈ 0,75. II = 2/3 ≈ 0,67. Samma slutsats: I är störst.",
     "tier": "detail"
    },
    {
     "n": 7,
-    "title": "Alternativ: 9/5 vs 3/2",
-    "text": "9/5 = 1,8 > 3/2 = 1,5. I > II. Detta stämmer med facit A.",
-    "tier": "detail"
-   },
-   {
-    "n": 8,
-    "title": "Trolig tolkning",
-    "text": "Bråken är ENA vägen runt: 9/5 = I, 3/2 = II. Med 9/5 > 3/2 är facit A.",
-    "tier": "essential"
-   },
-   {
-    "n": 9,
-    "title": "Verifiera",
-    "text": "9/5 = 18/10 och 3/2 = 15/10. 18 > 15. I > II. Stämmer.",
-    "tier": "detail"
-   },
-   {
-    "n": 10,
     "title": "Slutsats",
-    "text": "I > II — svaret är A. Insikten: när parser slingrar bråk, försök båda orienteringar (a/b vs b/a) för att hitta facit-konsistent tolkning.",
+    "text": "Kvantitet I är större än Kvantitet II — svaret är A. Insikten i en mening: när en rot ska jämföras med ett bråk, skriv båda med samma nämnare (eller kvadrera båda) så att du bara behöver jämföra två heltal.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Om man har bråken upp och ner kan B verka korrekt.",
-    "why_wrong": "Steg 7: korrekt orientering ger I > II."
+    "why_tempting": "Om du glömmer rottecknet och jämför \uE000\\dfrac{5}{9}\uE001 med \uE000\\dfrac{2}{3} = \\dfrac{6}{9}\uE001 ser II större ut — och då landar du på B.",
+    "why_wrong": "Roten ändrar storleken: för tal mellan 0 och 1 blir roten STÖRRE än talet. \uE000\\sqrt{\\dfrac{5}{9}} = \\dfrac{\\sqrt{5}}{3} \\approx 0{,}75\uE001, vilket är mer än 2/3 ≈ 0,67 (steg 4 och 6)."
    },
    {
     "letter": "C",
-    "why_tempting": "Likhet kräver exakt matchning; bråken matchar inte.",
-    "why_wrong": "Steg 9: 18/10 ≠ 15/10."
+    "why_tempting": "Snabbsvar är ofta att \uE000\\sqrt{\\dfrac{5}{9}}\uE001 ungefär blir \uE000\\dfrac{2}{3}\uE001, eftersom √9 = 3 ger samma nämnare och √5 känns nära 2.",
+    "why_wrong": "Samma nämnare räcker inte — täljarna måste också vara lika. √5 är inte 2 utan ungefär 2,24, så I och II skiljer sig (steg 4)."
    },
    {
     "letter": "D",
-    "why_tempting": "'Otydlig parsing → otillräcklig'.",
-    "why_wrong": "Steg 10: konkret tolkning ger entydigt svar."
+    "why_tempting": "Det kan kännas som att du behöver räkna ut √5 exakt för att kunna jämföra, och utan miniräknare lockar 'informationen är otillräcklig'.",
+    "why_wrong": "Båda kvantiteterna är fasta tal utan variabler, så en jämförelse går alltid att göra. Med samma nämnare räcker det att se att √5 > √4 = 2 (steg 3–4)."
    }
   ],
-  "technique": "Bråk-jämförelse via gemensam nämnare. Triggern: 'två bråk med olika nämnare'.",
-  "pitfall": "Botemedlet mot tolkningsfel: räkna båda möjliga orienteringar (a/b vs b/a) och välj den som matchar facit.",
+  "technique": "Samma-nämnare-strategin för rötter: skriv \uE000\\sqrt{\\dfrac{a}{b^2}} = \\dfrac{\\sqrt{a}}{b}\uE001 och gör om den andra kvantiteten till samma nämnare — då jämför du bara √a med en annan rot. Här ger √5 > √4 att I > II. Triggern: en rot ur ett bråk ska jämföras med ett bråk utan rot.",
+  "pitfall": "Fällan är att glömma rottecknet och jämföra 5/9 direkt med 2/3 — då ser II större ut. Botemedlet: kom ihåg att roten ur ett tal mellan 0 och 1 är STÖRRE än talet självt, och räkna alltid med roten.",
   "framework_id": "KVA-TRAP-023",
   "pregrade_tactic": {
-   "handle": "Bråk-orienterings-checken",
-   "move": "Vid parsade bråk där orientering kan vara tvetydig — räkna båda möjligheter och välj den som ger entydig olikhet."
+   "handle": "Samma nämnare under roten",
+   "move": "Skriv √(5/9) som √5/3 och 2/3 som √4/3 — jämför sedan bara täljarna √5 och √4."
   },
   "_meta": {
    "model": "claude-opus-4-7-via-max-subscription",
    "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "recipe": "variant-c-regen-wave-missing-fill",
+   "rewritten": "2026-11-11 hpf-ydaz",
+   "corrected_from": "leaked facit-fitting reasoning: II misread as √(2/3), then reinterpreted as 9/5 vs 3/2; question data was already correct (√(5/9) vs 2/3)"
   }
  },
  "host-2018-kvant2-KVA-013": {

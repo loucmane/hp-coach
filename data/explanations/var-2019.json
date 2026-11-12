@@ -10739,100 +10739,84 @@
   "_meta": {
    "generated_at": "2026-05-17",
    "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "recipe": "variant-c-ultra-granular",
+   "figure_corrected": "2026-11-11",
+   "corrected_from": "misread curve (1990 ≈ 700, plateau ≈ 1 000 from 1993) and anchored the choice on facit; measured from the figure: ≈ 570, 580, 810, then ≈ 890–1 000 (mean ≈ 870)"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "750 är en rimlig undervärdering om du lutar avläsningen mot 1990-årets startvärde (cirka 700) och inte väger upp för hur snabbt ridsporten ökar till över 1000 mot år 2000. Många underskattar genomsnittet när kurvan startar lågt.",
-    "why_wrong": "Som steg 6 visar är 1990-värdet visserligen cirka 700, men kurvan klättrar snabbt till cirka 1000 redan vid 1993 och håller 950–1000 från 1993 till 2000. Genomsnittet drivs upp av plateå-perioden, inte ned av 1990-bottenvärdet. Facit fastslår 850 (alternativ B)."
+    "why_tempting": "Det är lätt att ta medelvärdet av start och slut: (570 + 1 000)/2 ≈ 790, och då ligger 750 nära.",
+    "why_wrong": "Start- och slutvärdet räcker inte när kurvan inte är rak: den ligger kring 950 i åtta av elva år, så snittet blir ungefär 870, inte 790 (steg 4–5)."
    },
    {
     "letter": "C",
-    "why_tempting": "950 ligger i höjd med ridsportkurvans plateå (1995–2000), och om du bara läser av plateån utan att räkna in den brantare uppgångsfasen 1990–1993 blir det lätt 950. Det är ett 'plateå-bias'-fel.",
-    "why_wrong": "Steg 4 och 7 betonar: genomsnittet över 1990–2000 inkluderar både den brantare startfasen (700→1000) och plateån (1000 från 1995). Inte hela perioden är 950 — ungefär de första tre åren ligger en god bit under det. Facit fastslår 850, vilket är konsistent med ett medel mellan startvärdet 700 och plateåvärdet 1000."
+    "why_tempting": "Många stannar vid nivån där kurvan ligger större delen av perioden, runt 950, och tar den som genomsnitt.",
+    "why_wrong": "De tre första åren (≈ 570, 580 och 810) ligger långt under 950 och drar ned snittet till ungefär 870 (steg 5)."
    },
    {
     "letter": "D",
-    "why_tempting": "1 050 är frestande om du läser av kurvtoppen (omkring 1996) och tar det som genomsnittet. Toppen är diagrammets högsta ridsport-punkt och syns tydligt — den 'lockar' till sig en överskattning av medel.",
-    "why_wrong": "Som steg 9 visar är 1 050 över både plateå-värdet (cirka 1000) och alla 1990-startår. Att maxvärdet är 1 050 betyder INTE att medelvärdet är 1 050 — det förutsätter att hela perioden låg vid eller över maxvärdet. Facit fastslår 850 — drygt 200 lägre."
+    "why_tempting": "Snabbsvar är ofta att läsa av kurvans högsta punkter, runt 1 000, och runda uppåt.",
+    "why_wrong": "Ett medelvärde kan aldrig vara större än det största värdet i perioden, och ridsportkurvan når som mest ungefär 1 000 under 1990–2000 (steg 7)."
    }
   ],
   "framework_id": "DTK-TACTIC-006",
-  "pitfall": "Den klassiska fällan i genomsnitt-över-period-frågor är att fastna vid plateåvärdet eller vid toppvärdet och anta att det är genomsnittet. Botemedlet: identifiera kurvans LÄGSTA värde i perioden, dess HÖGSTA värde, och gissa ett medel någonstans mellan dem — gärna närmare den värdet kurvan stannar längst vid, men inte exakt det.",
-  "solution_path": "Facit fastslår 850 (alternativ B). Identifiera ridsportkurvan i mittpanelen. Kurvan startar 1990 vid cirka 700 och stiger till en plateå runt 1000 från 1995–2000. Medelvärdet över 1990–2000 ligger mellan startvärdet (700) och plateåvärdet (1000) — närmare plateån eftersom kurvan tillbringar fler år där, men inte vid plateån. 850 är konsistent med ett vägt medel.",
+  "pitfall": "Fällan är att låta ett enda värde stå för hela perioden — slutnivån (≈ 950–1 000) eller medelvärdet av start och slut. Botemedlet: dela upp perioden där kurvan byter nivå och väg ihop delarna efter hur många år de omfattar.",
+  "solution_path": "Ridsportkurvan i det mellersta diagrammet ligger lågt i början av perioden: ungefär 570 år 1990, 580 år 1991 och 810 år 1992. Under de åtta åren 1993–2000 ligger den mellan ungefär 890 och 1 000, i snitt runt 950. Medelvärdet blir ungefär (570 + 580 + 810 + 8 · 950)/11 ≈ 9 560/11 ≈ 870, vilket ligger närmast 850 — alternativ B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: hur många ridsportföreningar fanns det i genomsnitt per år under perioden 1990–2000? Svarsformatet är antal föreningar (750, 850, 950, 1 050). Facit fastslår 850 (alternativ B). Du letar efter ett MEDELVÄRDE över en 11-årsperiod, inte ett enskilt års värde.",
+    "text": "Frågan gäller GENOMSNITTET per år för antalet ridsportföreningar under de elva åren 1990–2000 — inte värdet ett enskilt år.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Orientera dig i diagrammet",
-    "text": "Ridsport finns i den MELLERSTA panelen tillsammans med Tennis och Golf. Y-axeln har tick-värden 0, 200, 400, 600, 800, 1000, 1200. X-axeln går 1985–2012. Du ska läsa av ridsportkurvan över intervallet 1990–2000 (de sex röda x-tick-värdena 1990, 1995, 2000).",
+    "title": "Hitta rätt kurva",
+    "text": "Ridsport finns i det mellersta diagrammet, tillsammans med Tennis (streckad linje) och Golf. Ridsportkurvan är den heldragna linjen som stiger brant i början av 1990-talet och sedan ligger högst, runt 1 000. Y-axeln går från 0 till 1 200 med linjer var 200:e.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Lås in rätt kurva",
-    "text": "Ridsportkurvan är märkt 'Ridsport' i mittpanelen. Det är den kurva som STIGER brantast i mitten av panelen — från cirka 200 vid 1985 upp till cirka 1000 mellan 1995 och 2005. Tennis är märkt 'Tennis' och är fallande från cirka 900 (1985) ner till cirka 450. Golf är märkt 'Golf' och stiger flackare. Peka på ridsport-etiketten innan du läser av.",
+    "title": "Läs av de första åren",
+    "text": "1990 ligger kurvan strax under 600 (≈ 570), och 1991 ungefär lika (≈ 580). Mellan 1991 och 1992 gör den ett stort språng, till ungefär 810 år 1992.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Vad betyder 'genomsnitt per år under perioden 1990–2000'?",
-    "text": "Det är medelvärdet av ridsportkurvans värde över de åren — visuellt: höjden hos en TÄNKT VATTENRÄTT linje som har lika mycket kurva ovan som nedan inom det intervallet. Det är inte enskilt 1990-värdet och inte enskilt 2000-värdet — det är medelhöjden för ridsportkurvan från 1990 till 2000.",
-    "tier": "detail"
+    "title": "Läs av resten av perioden",
+    "text": "Från 1993 till 2000 ligger kurvan mellan ungefär 890 och 1 000: ≈ 890 (1993), 930, 940, 940, 990, 970, 980 och ≈ 1 000 (2000). Snittet för de åtta åren är omkring 950.",
+    "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Inga printade datalabels — använd tick-värden",
-    "text": "Inga siffror är printade på själva kurvorna. Y-axelns tick-värden (0, 200, 400, 600, 800, 1000, 1200) är dina enda hårda referenspunkter. Allt avläsande sker genom att projicera kurvpunkter ner till dem.",
-    "tier": "detail"
+    "title": "Räkna medelvärdet",
+    "text": "De tre första åren ger 570 + 580 + 810 = 1 960, och de åtta sista ungefär 8 · 950 = 7 600 — totalt ≈ 9 560. Dela med 11 år: ≈ 870.",
+    "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Läs av startvärdet 1990",
-    "text": "Vid x = 1990 ligger ridsportkurvan strax under tick-värdet 800 — närmare 700. Den har precis börjat den branta uppgången från 1985-värdet (cirka 200). Beskriv för dig själv: '1990-värdet ≈ 700'.",
+    "title": "Välj alternativ",
+    "text": "870 ligger närmast 850 (B): avståndet till 850 är ungefär 20 och till 950 ungefär 80, så små avläsningsfel ändrar inte valet.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Läs av plateåvärdet 1995-2000",
-    "text": "Från cirka 1993 och framåt planar ridsportkurvan ut nära tick-värdet 1000 — kurvan är där en bred plateau som håller sig nära 1000 (kanske marginellt över 1995, marginellt under 2000). Beskriv: 'plateå ≈ 1000 för åren 1993–2000'.",
-    "tier": "essential"
+    "title": "Rimlighetskoll",
+    "text": "Kurvans högsta värde under perioden är ungefär 1 000, så genomsnittet kan aldrig bli 1 050. Och eftersom kurvan ligger nära 1 000 under större delen av perioden drar de åtta höga åren upp snittet långt över 750.",
+    "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Beräkna ett vägt medel",
-    "text": "Perioden 1990–2000 är 11 år. De första cirka 3 åren (1990, 1991, 1992) är ridsportkurvan i uppgångsfas — värdena 700→1000. De återstående ungefär 8 åren ligger nära plateåvärdet 1000. Vägt medel: (3 × ~850 + 8 × ~1000) / 11 ≈ (2550 + 8000) / 11 ≈ 960. Hmm — men det överskattar; uppgångsfasen är inte linjär och en del av 1995-värdet kan vara strax under 1000. En mer försiktig uppskattning: medel ≈ 850–900.",
-    "tier": "essential"
-   },
-   {
-    "n": 9,
-    "title": "Korsmätning: alternativens spridning",
-    "text": "Alternativen är 750, 850, 950, 1 050 — separerade med 100. 750 (A) ligger UNDER 1990-startvärdet (700) — men knappast under och 750 är för lågt eftersom plateåfasen dominerar. 1 050 (D) ligger ÖVER plateåvärdet (1000) — inte rimligt som medel. Det rimliga intervallet är 850 (B) eller 950 (C).",
-    "tier": "essential"
-   },
-   {
-    "n": 10,
-    "title": "Mellan 850 och 950 — välj med facit som ankare",
-    "text": "Båda B och C ligger inom rimligt avläsningsspann. Facit fastslår 850 (B). Det är konsistent med att uppgångsfasen 1990–1993 (där värdet ligger under 1000) drar ned medelvärdet märkbart från plateå-värdet 1000. Om medlet vore 950 skulle hela perioden behöva ligga nära plateån — vilket 1990-startvärdet (700) motsäger.",
-    "tier": "essential"
-   },
-   {
-    "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är B (850). Insikten i en mening: ett genomsnitt över en period med tydlig uppgångsfas drar ned medel från plateåvärdet — räkna in både startfasen och plateån och välj alternativet som ligger mellan dem.",
+    "title": "Slutsats",
+    "text": "Svaret är B (850). Insikten i en mening: dela upp perioden i en låg och en hög del, uppskatta snittet i varje del och väg ihop efter antalet år.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för genomsnitt-över-period-frågor på linjediagram: (1) hitta startvärdet vid periodens början, (2) hitta slutvärdet eller plateån vid periodens slut, (3) väg ihop med hänsyn till hur stor del av perioden kurvan tillbringar nära varje värde, (4) plocka alternativet som ligger mellan startvärde och plateå. Triggern: 'i genomsnitt per år under perioden X–Y' → start + plateå + viktning, inte ett enskilt års avläsning.",
+  "technique": "DTK-strategi för medelvärde över en period i ett linjediagram: läs av kurvan år för år (eller i block med ungefär samma nivå), summera och dela med antalet år. Triggern: 'i genomsnitt per år under perioden X–Y' — titta särskilt på år där kurvan ligger långt från resten.",
   "pregrade_tactic": {
-   "handle": "Start-plus-plateå-vägning",
-   "move": "Läs av ridsportkurvan vid 1990 (cirka 700) och dess plateå runt 1995-2000 (cirka 1000), och uppskatta medel inom det intervallet — närmare plateån men inte vid den."
+   "handle": "Låg del plus hög del",
+   "move": "Dela upp 1990–2000 där ridsportkurvan byter nivå: läs av de låga åren i början och den höga nivån därefter, och väg ihop efter antalet år innan du jämför med alternativen."
   }
  },
  "var-2019-kvant1-DTK-031": {
