@@ -1,19 +1,16 @@
-import { ChevronRight } from 'lucide-react'
-import { type ReactNode, useState } from 'react'
+import { type ReactNode, useId, useRef, useState } from 'react'
+import { getFeedback, submitFeedback } from '@/api/feedback'
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
 import { MathText } from '@/components/MathText'
-import type { DistractorExplanation, ExplanationStep } from '@/data/explanations'
-import {
-  type DrillCoreActions,
-  type DrillCoreRefs,
-  type DrillCoreView,
-  splitStepRefs,
-} from './drillCore'
+import type { DistractorExplanation, Explanation } from '@/data/explanations'
+import type { DrillCoreActions, DrillCoreRefs, DrillCoreView } from './drillCore'
+import { FacitMap } from './FacitMap'
+import { Cites, type FacitActions, FacitSteps, InLang, Rich } from './FacitSteps'
+import { type FacitConfidence, type FacitSection, facitOrder } from './facitOrder'
+import { refutes } from './refutes'
+import './facit.css'
 
 type Pointing = { active: string | null; point: (source: string | null) => void }
-function InLang({ lang, children }: { lang: 'en' | undefined; children: ReactNode }) {
-  return lang ? <span lang={lang}>{children}</span> : children
-}
 const FAMILY_WORD: Record<string, string> = {
   TRAP: 'fälla',
   TACTIC: 'taktik',
@@ -22,8 +19,7 @@ const FAMILY_WORD: Record<string, string> = {
   RULE: 'regel',
 }
 
-/** A framework's readable name: its headword, else its id said in words
- *  ("XYZ · fälla 17"), never the raw id. */
+/** A readable headword, falling back to the framework id said in words. */
 export function entryName(
   id: string | undefined,
   names: Readonly<Record<string, string>>,
@@ -39,19 +35,10 @@ export function entryName(
 export type FacitView = Pick<
   DrillCoreView,
   'question' | 'explanation' | 'correct' | 'picked' | 'openSteps' | 'stepCites' | 'distractorCites'
->
+> & { confidence?: FacitConfidence | null }
 
-type FacitAct = Pick<DrillCoreActions, 'cite' | 'goToStep' | 'toggleStep'>
-
-/**
- * The explanation, ordered for learning: why the chosen option tempted
- * (and why it is wrong), what to take away (pitfall, technique), the
- * solution and its steps, and last the other options, folded. Without an
- * explanation yet, a plain line says so; the verdict above still stands.
- * An ELF explanation is English under Swedish heads: each body is
- * lang="en", and a missing body goes with its head. The framework line
- * names the pattern; navigation away from feedback is deferred.
- */
+/** All teaching content stays open. The map changes position, never visibility.
+ * Confidence and an authored retrieval item are optional seams for LJ-24/C2. */
 export function Facit({
   view,
   act,
@@ -59,225 +46,135 @@ export function Facit({
   active,
   point,
   frameworks,
+  lockIn,
 }: {
   view: FacitView
-  act: FacitAct
+  act: FacitActions
   refs: Pick<DrillCoreRefs, 'step'>
   frameworks: Readonly<Record<string, string>>
+  lockIn?: ReactNode
 } & Pointing) {
-  const [stepsShown, setStepsShown] = useState(false)
+  const id = useId()
+  const body = useRef<HTMLDivElement>(null)
   const e = view.explanation
-  if (!e) {
+  if (!e)
     return (
       <div className="fa-facit">
         <p className="fa-empty fa-fsec">Förklaring saknas ännu för den här frågan.</p>
       </div>
     )
-  }
   const q = view.question
-  const en = q.section === 'ELF' ? 'en' : undefined
-  const optionText = (letter: string) => q.options?.find((o) => o.letter === letter)?.text ?? ''
-  const mine = view.correct ? null : e.distractors.find((d) => d.letter === view.picked)
-  const others = e.distractors.filter((d) => d.letter !== mine?.letter)
-  const frameworkId = e.framework_id
-  const framework = entryName(frameworkId, frameworks)
+  const lang = q.section === 'ELF' ? 'en' : undefined
+  const mine =
+    view.correct === false ? e.distractors.find((d) => d.letter === view.picked) : undefined
+  const others = e.distractors.filter((d) => d !== mine)
   const steps = resolveSteps(e)
-  const hover = (source: string) => ({
-    onMouseEnter: () => point(source),
-    onMouseLeave: () => point(null),
-    onFocus: () => point(source),
-    onBlur: () => point(null),
-  })
-  const stepAct = {
-    ...act,
-    goToStep: (n: number) => {
-      setStepsShown(true)
-      act.goToStep(n)
-    },
+  const framework = entryName(e.framework_id, frameworks)
+  const labels: Record<FacitSection, string> = {
+    own: 'Ditt val, först',
+    core: 'Kärnan',
+    steps: 'Lösningen',
+    alternatives: mine ? 'De andra alternativen' : 'Alternativen',
+    takeaway:
+      e.pitfall && e.technique ? 'Fallgropen och tekniken' : e.pitfall ? 'Fallgropen' : 'Tekniken',
+    framework: 'Ramverket',
+    lock: 'Lås in det',
+    feedback: 'Hjälpte förklaringen?',
   }
-  return (
-    <div className="fa-facit">
-      {mine && (mine.why_tempting || mine.why_wrong) ? (
-        <section
-          className="fa-fsec fa-fsec--lure"
-          data-testid={`fa-distractor-${mine.letter}`}
-          {...hover(`why-${mine.letter}`)}
-        >
-          {/* Two siblings, so one heading style for both. */}
-          {mine.why_tempting ? (
-            <>
-              <h3 className="fa-h3">Därför lockade {mine.letter}</h3>
-              <p className="fa-prose" lang={en}>
-                <Rich text={mine.why_tempting} act={stepAct} />
-              </p>
-              <Cites
-                list={view.distractorCites[mine.letter]?.tempting ?? []}
-                source={`why-${mine.letter}`}
-                act={stepAct}
-              />
-            </>
-          ) : null}
-          {mine.why_wrong ? (
-            <>
-              <h3 className={mine.why_tempting ? 'fa-h3 fa-h3--next' : 'fa-h3'}>
-                Varför {mine.letter} är fel
-              </h3>
-              <p className="fa-prose" lang={en}>
-                <Rich text={mine.why_wrong} act={stepAct} />
-              </p>
-              <Cites
-                list={view.distractorCites[mine.letter]?.wrong ?? []}
-                source={`why-${mine.letter}`}
-                act={stepAct}
-              />
-            </>
-          ) : null}
-        </section>
-      ) : null}
-
-      {e.pitfall || e.technique ? (
-        <section className="fa-fsec fa-notes">
-          <h3 className="fa-h3">Att ta med dig</h3>
+  const distractor = (d: DistractorExplanation) => (
+    <Distractor
+      key={d.letter}
+      d={d}
+      text={q.options?.find((option) => option.letter === d.letter)?.text ?? ''}
+      cites={view.distractorCites[d.letter] ?? { tempting: [], wrong: [] }}
+      act={act}
+      active={active}
+      point={point}
+      lang={lang}
+      own={d === mine}
+    />
+  )
+  const content: Record<FacitSection, ReactNode> = {
+    own: mine ? distractor(mine) : null,
+    core: e.solution_path ? (
+      <p className="fa-prose" lang={lang}>
+        <MathText>{e.solution_path}</MathText>
+      </p>
+    ) : null,
+    steps: steps.length ? (
+      <FacitSteps
+        steps={steps}
+        tags={refutes(steps, e.distractors)}
+        picked={mine?.letter ?? null}
+        cites={view.stepCites}
+        act={act}
+        refs={refs}
+        point={point}
+        lang={lang}
+      />
+    ) : null,
+    alternatives: others.length ? (
+      <div className="fa-facit-alternatives">{others.map(distractor)}</div>
+    ) : null,
+    takeaway:
+      e.pitfall || e.technique ? (
+        <div className="fa-facit-pair">
           {e.pitfall ? (
             <div className="fa-note-item" data-testid="fa-pitfall">
-              <span className="fa-sub">Fallgropen</span>
-              <p className="fa-prose" lang={en}>
+              <h4>Fallgropen</h4>
+              <p className="fa-prose" lang={lang}>
                 <MathText>{e.pitfall}</MathText>
               </p>
             </div>
           ) : null}
           {e.technique ? (
             <div className="fa-note-item" data-testid="fa-technique">
-              <span className="fa-sub">Tekniken</span>
-              <p className="fa-prose" lang={en}>
+              <h4>Tekniken</h4>
+              <p className="fa-prose" lang={lang}>
                 <MathText>{e.technique}</MathText>
               </p>
             </div>
           ) : null}
-        </section>
-      ) : null}
-
-      {e.solution_path ? (
-        <section className="fa-fsec">
-          <h3 className="fa-h3">Lösningen</h3>
-          <p className="fa-prose" lang={en}>
-            <MathText>{e.solution_path}</MathText>
-          </p>
-        </section>
-      ) : null}
-
-      {steps.length ? (
-        <section className="fa-fsec">
-          <h3 className="fa-h3">Steg för steg</h3>
-          <button
-            type="button"
-            className="fa-more"
-            aria-expanded={stepsShown}
-            onClick={() => setStepsShown(!stepsShown)}
-          >
-            {stepsShown ? 'Dölj steg för steg' : 'Visa steg för steg'}
-          </button>
-          {stepsShown ? (
-            <ol>
-              {steps.map((s) => (
-                <Step
-                  key={s.n}
-                  step={s}
-                  view={view}
-                  act={stepAct}
-                  refs={refs}
-                  hover={hover}
-                  lang={en}
-                />
-              ))}
-            </ol>
-          ) : null}
-        </section>
-      ) : null}
-
-      {others.length ? (
-        <section className="fa-fsec">
-          <h3 className="fa-h3">{mine ? 'De andra alternativen' : 'Alternativen'}</h3>
-          {others.map((d) => (
-            <Distractor
-              key={d.letter}
-              d={d}
-              text={optionText(d.letter)}
-              cites={view.distractorCites[d.letter] ?? { tempting: [], wrong: [] }}
-              act={stepAct}
-              active={active}
-              lang={en}
-            />
-          ))}
-        </section>
-      ) : null}
-
-      {framework && frameworkId ? (
-        <p className="fa-framework">
-          Ramverk: <b>{framework}</b>
-        </p>
-      ) : null}
-    </div>
-  )
-}
-
-function Step({
-  step,
-  view,
-  act,
-  refs,
-  hover,
-  lang,
-}: {
-  step: ExplanationStep
-  view: Pick<FacitView, 'openSteps' | 'stepCites'>
-  act: FacitAct
-  refs: Pick<DrillCoreRefs, 'step'>
-  hover: (source: string) => Record<string, () => void>
-  /** 'en' for an ELF explanation's title and text. */
-  lang?: 'en'
-}) {
-  const detail = step.tier === 'detail'
-  const open = !detail || view.openSteps.has(step.n)
-  const source = `step-${step.n}`
-  return (
-    <li
-      className="fa-step"
-      data-tier={step.tier ?? 'essential'}
-      data-testid={`fa-step-${step.n}`}
-      ref={refs.step(step.n)}
-      {...hover(source)}
-    >
-      <span className="fa-step-n" aria-hidden>
-        {step.n}
-      </span>
-      <div>
-        <div className="fa-step-head">
-          <h4 className="fa-step-title">
-            <span className="fa-sr">Steg {step.n}: </span>
-            <InLang lang={lang}>{step.title}</InLang>
-          </h4>
-          <Cites list={view.stepCites[step.n] ?? []} source={source} act={act} />
         </div>
-        {open ? (
-          <p className="fa-step-text" lang={lang}>
-            <Rich text={step.text} act={act} />
-          </p>
-        ) : null}
-        {detail ? (
-          <button
-            type="button"
-            className="fa-more"
-            data-testid={`fa-step-toggle-${step.n}`}
-            aria-expanded={open}
-            onClick={() => act.toggleStep(step.n)}
+      ) : null,
+    framework: framework ? (
+      <p className="fa-facit-framework">
+        <b>{framework}</b>
+      </p>
+    ) : null,
+    lock: lockIn ?? null,
+    feedback: <Feedback key={q.qid} qid={q.qid} explanation={e} />,
+  }
+  const order = facitOrder(view.correct, view.confidence).filter((section) =>
+    Boolean(content[section]),
+  )
+  const entries = order.map((section) => ({ id: `${id}-${section}`, label: labels[section] }))
+  return (
+    <div className="fa-facit fa-facit--open">
+      <FacitMap entries={entries} body={body} />
+      <div className="fa-facit-body" ref={body}>
+        {order.map((section, index) => (
+          <section
+            key={section}
+            id={`${id}-${section}`}
+            className={`fa-fsec fa-facit-${section}`}
+            data-facit-section={section}
+            aria-labelledby={`${id}-${section}-heading`}
           >
-            {open ? 'Dölj fördjupningen' : 'Fördjupning'}
-            <ChevronRight size={14} strokeWidth={1.75} aria-hidden />
-          </button>
-        ) : null}
+            <header className="fa-facit-heading">
+              <h3 id={`${id}-${section}-heading`}>
+                <span className="fa-map-n" aria-hidden>
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                {labels[section]}
+              </h3>
+              {section === 'steps' ? <small>{steps.length} steg · alla visas</small> : null}
+            </header>
+            {content[section]}
+          </section>
+        ))}
       </div>
-    </li>
+    </div>
   )
 }
 
@@ -287,136 +184,99 @@ function Distractor({
   cites,
   act,
   active,
+  point,
   lang,
+  own,
 }: {
   d: DistractorExplanation
   text: string
   cites: { tempting: number[]; wrong: number[] }
-  act: FacitAct
-  active: string | null
-  /** 'en' for an ELF option and its reasons. */
+  act: Pick<DrillCoreActions, 'cite' | 'goToStep'>
   lang?: 'en'
-}) {
-  const [open, setOpen] = useState(false)
-  const bodyId = `fa-dis-${d.letter}`
-  const reasons = Boolean(d.why_tempting || d.why_wrong)
+  own: boolean
+} & Pointing) {
   return (
     <article
       className="fa-dis"
+      data-own={own}
       data-testid={`fa-distractor-${d.letter}`}
-      data-active={String(active === `why-${d.letter}`)}
+      data-active={active === `why-${d.letter}`}
+      onMouseEnter={() => point(`why-${d.letter}`)}
+      onMouseLeave={() => point(null)}
+      onFocus={() => point(`why-${d.letter}`)}
+      onBlur={() => point(null)}
     >
       <div className="fa-dis-head">
         <span className="fa-letter" aria-hidden>
           {d.letter}
         </span>
-        <div>
-          <p className="fa-dis-opt">
-            <span className="fa-sr">Alternativ {d.letter}: </span>
-            <InLang lang={lang}>
-              <MathText>{text}</MathText>
-            </InLang>
-          </p>
-          {/* Each disclosure is named by its own letter (one name for all
-           *  of them told a screen reader nothing); its state is
-           *  aria-expanded, and the chevron turns. */}
-          {reasons ? (
-            <button
-              type="button"
-              className="fa-more fa-dis-more"
-              aria-expanded={open}
-              aria-controls={bodyId}
-              onClick={() => setOpen(!open)}
-            >
-              Varför inte {d.letter}
-              <ChevronRight size={14} strokeWidth={1.75} aria-hidden />
-            </button>
-          ) : null}
-        </div>
+        <p className="fa-dis-opt">
+          <span className="fa-sr">Alternativ {d.letter}: </span>
+          <InLang lang={lang}>
+            <MathText>{text}</MathText>
+          </InLang>
+        </p>
       </div>
-      {open && reasons ? (
-        <div className="fa-dis-body" id={bodyId}>
-          {d.why_tempting ? (
-            <>
-              <span className="fa-sub">Varför det lockar</span>
-              <p className="fa-prose" lang={lang}>
-                <Rich text={d.why_tempting} act={act} />
-              </p>
-              <Cites list={cites.tempting} source={`why-${d.letter}`} act={act} />
-            </>
-          ) : null}
-          {d.why_wrong ? (
-            <>
-              <span className="fa-sub">Varför det är fel</span>
-              <p className="fa-prose" lang={lang}>
-                <Rich text={d.why_wrong} act={act} />
-              </p>
-              <Cites list={cites.wrong} source={`why-${d.letter}`} act={act} />
-            </>
-          ) : null}
-        </div>
-      ) : null}
+      <div className="fa-dis-body">
+        {d.why_tempting ? (
+          <div>
+            <h4>{own ? 'Varför det lockade' : 'Varför det lockar'}</h4>
+            <p className="fa-prose" lang={lang}>
+              <Rich text={d.why_tempting} act={act} />
+            </p>
+            <Cites list={cites.tempting} source={`why-${d.letter}`} act={act} />
+          </div>
+        ) : null}
+        {d.why_wrong ? (
+          <div>
+            <h4>Varför det är fel</h4>
+            <p className="fa-prose" lang={lang}>
+              <Rich text={d.why_wrong} act={act} />
+            </p>
+            <Cites list={cites.wrong} source={`why-${d.letter}`} act={act} />
+          </div>
+        ) : null}
+      </div>
     </article>
   )
 }
 
-/** Citations as a footnote's "see": inline ¶ references, no pills. */
-function Cites({
-  list,
-  source,
-  act,
-}: {
-  list: number[]
-  source: string
-  act: Pick<DrillCoreActions, 'cite'>
-}) {
-  if (list.length === 0) return null
+/** Keep the existing local feedback store until LJ-26 supplies its data seam.
+ * Partial feedback requests revision, with the student's exact choice in notes. */
+function Feedback({ qid, explanation }: { qid: string; explanation: Explanation }) {
+  const [saved, setSaved] = useState(() => getFeedback(qid))
+  const selected =
+    saved?.status === 'approved'
+      ? 'Ja'
+      : saved?.status === 'rejected'
+        ? saved.notes === 'Delvis'
+          ? 'Delvis'
+          : 'Nej'
+        : null
+  const choose = (label: string) => {
+    const entry = {
+      qid,
+      status: label === 'Ja' ? ('approved' as const) : ('rejected' as const),
+      notes: label === 'Delvis' ? label : undefined,
+      model: explanation._meta?.model ?? '',
+      generated_at: explanation._meta?.generated_at ?? 0,
+      reviewed_at: Date.now(),
+    }
+    submitFeedback(entry)
+    setSaved(entry)
+  }
   return (
-    <span className="fa-cites">
-      <span className="fa-cites-see" aria-hidden>
-        Se
-      </span>
-      {list.map((n) => (
+    <div className="fa-facit-feedback-buttons">
+      {['Ja', 'Delvis', 'Nej'].map((label) => (
         <button
-          key={n}
+          key={label}
           type="button"
-          className="fa-cite"
-          data-testid={`rd-cite-${n}`}
-          data-fa-cite={`${source}:${n}`}
-          onClick={() => act.cite(n, source)}
-          aria-label={`Visa stycke ${n} i texten`}
+          aria-pressed={label === selected}
+          onClick={() => choose(label)}
         >
-          ¶{n}
+          {label}
         </button>
       ))}
-    </span>
-  )
-}
-
-/** Explanation text, verbatim (math rendered), with its "(steg 2)"
- *  references made into links to the step. */
-function Rich({ text, act }: { text: string; act: Pick<DrillCoreActions, 'goToStep'> }) {
-  let at = 0
-  return (
-    <>
-      {splitStepRefs(text).map((seg) => {
-        const key = at
-        at += seg.text.length
-        return seg.kind === 'text' ? (
-          <span key={key}>
-            <MathText>{seg.text}</MathText>
-          </span>
-        ) : (
-          <button
-            key={key}
-            type="button"
-            className="fa-stepref"
-            onClick={() => act.goToStep(seg.steps[0])}
-          >
-            {seg.text}
-          </button>
-        )
-      })}
-    </>
+    </div>
   )
 }
