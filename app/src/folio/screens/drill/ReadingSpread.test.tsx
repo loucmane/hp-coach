@@ -278,7 +278,7 @@ describe('Reading through SessionPlayer and the Folio host', () => {
     expect(
       Array.from(content?.children ?? [])
         .slice(0, 4)
-        .map((node) => node.className),
+        .map((node) => node.classList[0]),
     ).toEqual(
       phone
         ? ['fa-verdict', 'fa-prompt', 'fa-opts', 'fa-facit']
@@ -309,7 +309,7 @@ describe('Reading through SessionPlayer and the Folio host', () => {
       expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'full')
       expect(screen.getByTestId('rd-document')).toHaveAttribute('inert')
     }
-    fireEvent.click(screen.getByRole('button', { name: 'Visa steg för steg' }))
+    expect(screen.getByTestId('fa-step-1')).toBeVisible()
     await accessible(container)
     const citedBefore = [1, 2].map((n) =>
       screen.getByTestId(`rd-para-${n}`).getAttribute('data-cited'),
@@ -398,7 +398,9 @@ describe('Reading through SessionPlayer and the Folio host', () => {
     key('b')
     key('Enter')
     expect(container.querySelector('[data-gap="31"] s')).toHaveTextContent('wrote')
-    expect(screen.getByText('Choose the verb.').closest('[lang]')).toHaveAttribute('lang', 'en')
+    for (const body of screen.getAllByText('Choose the verb.')) {
+      expect(body.closest('[lang]')).toHaveAttribute('lang', 'en')
+    }
     await accessible(container)
     key('Enter')
     await questionReady(1)

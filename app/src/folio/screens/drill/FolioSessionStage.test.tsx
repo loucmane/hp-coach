@@ -377,7 +377,7 @@ describe('Folio through the real SessionPlayer', () => {
     fireEvent.click(screen.getByRole('button', { name: /Slutför genomgången/ }))
     expect(onComplete).toHaveBeenCalledWith(42)
   })
-  it('renders MEK gaps and follows step references into collapsed detail', async () => {
+  it('renders MEK gaps and follows step references into visible detail', async () => {
     h.bank = [{ ...fixture(1, 'MEK'), prompt: 'Han _____ hem.' }]
     h.explanation!.distractors[0].why_wrong = 'Se (steg 2).'
     mount()
@@ -406,7 +406,7 @@ describe('Folio through the real SessionPlayer', () => {
     )
     expect(h.submit).not.toHaveBeenCalled()
   })
-  it('renders every distractor, steps on request, detail toggles and the framework', async () => {
+  it('renders every distractor, all step tiers and the framework by default', async () => {
     mount()
     await questionReady()
     key('b')
@@ -415,15 +415,12 @@ describe('Folio through the real SessionPlayer', () => {
     expect(screen.getByText('Lockar B')).toBeInTheDocument()
     expect(screen.getByText('Blanda inte ihop orden.')).toBeInTheDocument()
     for (const letter of ['C', 'D']) {
-      fireEvent.click(screen.getByRole('button', { name: `Varför inte ${letter}` }))
+      expect(screen.getByText(`Lockar ${letter}`)).toBeVisible()
       expect(screen.getByText(`Orsak ${letter}`)).toBeInTheDocument()
     }
-    expect(screen.queryByText('Första steget.')).toBeNull()
-    fireEvent.click(screen.getByRole('button', { name: 'Visa steg för steg' }))
     expect(screen.getByText('Första steget.')).toBeInTheDocument()
-    expect(screen.queryByText('Andra steget.')).toBeNull()
-    fireEvent.click(screen.getByTestId('fa-step-toggle-2'))
     expect(screen.getByText('Andra steget.')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Visa steg för steg' })).toBeNull()
     expect(screen.queryByText('Slå upp')).toBeNull()
   })
   it('uses resolveSteps for prose-only explanations', async () => {
@@ -432,7 +429,6 @@ describe('Folio through the real SessionPlayer', () => {
     await questionReady()
     key('a')
     key('Enter')
-    fireEvent.click(screen.getByRole('button', { name: 'Visa steg för steg' }))
     expect(screen.getByTestId('fa-step-1')).toHaveTextContent('Del ett.')
     expect(screen.getByTestId('fa-step-2')).toHaveTextContent('Del två.')
   })
@@ -475,7 +471,7 @@ describe('Folio through the real SessionPlayer', () => {
     key('Enter')
     expect(screen.getByTestId('fa-verdict')).toBeInTheDocument()
     expect(container.querySelectorAll('.fa-opt .katex .mfrac')).toHaveLength(4)
-    expect(container.querySelectorAll('.fa-dis-opt .katex .mfrac')).toHaveLength(2)
+    expect(container.querySelectorAll('.fa-dis-opt .katex .mfrac')).toHaveLength(3)
     const feedbackViolations = await runAxe(container)
     expect(feedbackViolations, formatViolations(feedbackViolations)).toEqual([])
   })
@@ -488,10 +484,9 @@ describe('Folio through the real SessionPlayer', () => {
     key('b')
     key('Enter')
     expect(screen.getByTestId('drill-question')).toHaveAttribute('data-phase', 'feedback')
-    fireEvent.click(screen.getByRole('button', { name: 'Visa steg för steg' }))
-    fireEvent.click(screen.getByTestId('fa-step-toggle-2'))
+    expect(screen.getByTestId('fa-step-2')).toBeVisible()
     for (const letter of ['C', 'D']) {
-      fireEvent.click(screen.getByRole('button', { name: `Varför inte ${letter}` }))
+      expect(screen.getByTestId(`fa-distractor-${letter}`)).toBeVisible()
     }
     const feedbackViolations = await runAxe(container)
     expect(feedbackViolations, formatViolations(feedbackViolations)).toEqual([])
@@ -535,10 +530,13 @@ describe('Folio through the real SessionPlayer', () => {
     expect(h.start).toHaveBeenCalledTimes(1)
     expect(h.submit).toHaveBeenCalledTimes(2)
   })
-  it('renders question and option figures', async () => {
+  it.each([
+    'KVA',
+    'XYZ',
+  ] as const)('keeps %s question and option figures visible in facit', async (section) => {
     h.bank = [
       {
-        ...fixture(),
+        ...fixture(1, section),
         figure: { src: 'figure.svg', aspect_ratio: 1.5 },
         options: [{ letter: 'A', text: 'Bild A', figure: { src: 'option.svg', aspect_ratio: 2 } }],
       },
@@ -550,6 +548,13 @@ describe('Folio through the real SessionPlayer', () => {
       'src',
       '/option.svg',
     )
+    key('a')
+    key('Enter')
+    expect(screen.getByTestId('fa-verdict')).toBeVisible()
+    expect(screen.getByAltText('Figur till uppgift 1')).toBeVisible()
+    expect(
+      within(screen.getByRole('list', { name: 'Svarsalternativ, rättade' })).getByRole('img'),
+    ).toBeVisible()
   })
   it('handles absent explanations without blocking a grade', async () => {
     h.load.mockRejectedValue(new Error('offline'))
