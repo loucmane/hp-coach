@@ -12,6 +12,7 @@ import type { AnswerLetter, Question } from '@/data/questions'
 import { useFolioPrefs } from '@/folio/lib/folioPrefs'
 import { useFolioRootAttrs } from '@/folio/lib/useFolioRootAttrs'
 import { type ScopedKeyBindings, useScopedKeys } from '@/folio/lib/useScopedKeys'
+import { Go } from '@/folio/ui/Go'
 import { Lit } from '@/folio/ui/Lit'
 import { useViewport } from '@/hooks/useViewport'
 import { formatSitting } from '@/lib/examNames'
@@ -162,24 +163,30 @@ function BlockStage({
   }
   useScopedKeys(root, bindings, { enabled: !suspended && !viewerOpen })
 
+  const PrimaryAction = reading ? Go : 'button'
   const action = (
     <div className="fa-actionbar">
       {flagSlot}
       {feedback ? (
-        <button type="button" className="fa-btn" data-testid="drill-next" onClick={act.next}>
+        <PrimaryAction
+          type="button"
+          className={reading ? undefined : 'fa-btn'}
+          data-testid="drill-next"
+          onClick={act.next}
+        >
           {index === plan.length - 1 ? seam.last : seam.next}
           <span aria-hidden> →</span>
-        </button>
+        </PrimaryAction>
       ) : (
-        <button
+        <PrimaryAction
           type="button"
-          className="fa-btn"
+          className={reading ? undefined : 'fa-btn'}
           data-testid="fa-lock"
           disabled={!view.selected}
           onClick={act.lock}
         >
           Svara
-        </button>
+        </PrimaryAction>
       )}
     </div>
   )
@@ -221,7 +228,7 @@ function BlockStage({
       }}
     >
       <div className="rd-stage-content" inert={viewerOpen || undefined}>
-        {reading || feedback ? <DrillHead seam={seam} index={index} total={plan.length} /> : null}
+        {!reading && feedback ? <DrillHead seam={seam} index={index} total={plan.length} /> : null}
         {reading ? (
           <ReadingSpread
             view={view}

@@ -160,6 +160,29 @@ function key(key: string, shiftKey = false) {
 }
 
 describe('Folio through the real SessionPlayer', () => {
+  it.each([
+    'LÄS',
+    'ELF',
+    'DTK',
+  ] as const)('keeps %s location only in the focus bar', async (section) => {
+    h.bank = [
+      {
+        ...fixture(11, section),
+        context: section === 'DTK' ? null : 'Textens titel\n\nTextens första stycke.',
+        figure: section === 'DTK' ? { src: 'plate.jpg', aspect_ratio: 0.7 } : undefined,
+      },
+    ]
+    const { container } = mount()
+    await questionReady()
+    expect(container.querySelector('.fa-focus-where')).toHaveTextContent(`${section} · 1 av 1`)
+    expect(container.querySelector('.rd-stage-content .fa-runhead')).toBeNull()
+    expect(screen.getByText(/Hösten 2025.*uppgift/)).toBeInTheDocument()
+    key('a')
+    key('Enter')
+    expect(container.querySelector('.rd-stage-content .fa-runhead')).toBeNull()
+    expect(screen.getByTestId('fa-verdict')).toHaveTextContent('Rätt. Svaret är A.')
+  })
+
   it('keeps question shortcuts inside the stage and respects the keyboard preference', async () => {
     mount()
     await questionReady()
@@ -577,12 +600,11 @@ it.each([
   { section: 'LÄS', phone: true },
   { section: 'ELF', phone: true },
   { section: 'DTK', phone: true },
-] as const)('starts new $section questions at the top except within phone reading blocks, phone=$phone', async ({
+] as const)('starts new $section questions at the top, with passage scroll kept separately on phone, phone=$phone', async ({
   section,
   phone,
 }) => {
   h.phone = phone
-  const reading = ['LÄS', 'ELF', 'DTK'].includes(section)
   h.bank = [1, 2, 3].map((n) => ({
     ...fixture(n, section),
     context: section === 'LÄS' || section === 'ELF' ? `Text ${n < 3 ? 1 : 2}.` : null,
@@ -608,14 +630,10 @@ it.each([
       const focusIndex = focus.mock.contexts.indexOf(question)
       expect(focusIndex).toBeGreaterThanOrEqual(0)
       expect(focus.mock.calls[focusIndex]).toEqual([{ preventScroll: true }])
-      if (phone && reading && index === 1) {
-        expect(scroll).not.toHaveBeenCalled()
-      } else {
-        expect(scroll).toHaveBeenCalledExactlyOnceWith({ top: 0, behavior: 'instant' })
-        expect(scroll.mock.invocationCallOrder[0]).toBeLessThan(
-          focus.mock.invocationCallOrder[focusIndex],
-        )
-      }
+      expect(scroll).toHaveBeenCalledExactlyOnceWith({ top: 0, behavior: 'instant' })
+      expect(scroll.mock.invocationCallOrder[0]).toBeLessThan(
+        focus.mock.invocationCallOrder[focusIndex],
+      )
     }
   } finally {
     focus.mockRestore()
@@ -630,6 +648,7 @@ it.each([
   h.bank = [{ ...fixture(1, 'DTK'), figure: { src: 'plate.jpg', aspect_ratio: 0.7 } }]
   mount()
   await questionReady()
+  if (phone) fireEvent.click(screen.getByRole('tab', { name: 'Texten' }))
   vi.mocked(window.scrollTo).mockClear()
   fireEvent.click(screen.getByRole('button', { name: 'Förstora' }))
   expect(screen.getByRole('dialog')).toBeInTheDocument()

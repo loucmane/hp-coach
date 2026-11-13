@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useFolioRootAttrs } from '@/folio/lib/useFolioRootAttrs'
 import type { DrillQuestion } from './types'
 
 const ORDINALS = ['Första', 'Andra', 'Tredje', 'Fjärde', 'Femte', 'Sjätte']
@@ -29,13 +30,14 @@ export function DtkPlate({
 }) {
   const [failed, setFailed] = useState(false)
   const [rotation, setRotation] = useState(0)
+  const { 'data-theme': theme } = useFolioRootAttrs()
   const figure = questions[0].figure
   const aspect = figure ? figure.width / figure.height : 1
   const turned = rotation === 90 || rotation === 270
   const effectiveAspect = turned ? 1 / aspect : aspect
   const cue = groupCue(index, questions.length)
   return (
-    <figure className="rd-plate" data-testid="rd-plate">
+    <figure className="rd-plate" data-testid="rd-plate" data-kind={figure?.kind} data-theme={theme}>
       {figure && !failed ? (
         <>
           <div className="rd-figure-box" style={{ aspectRatio: String(effectiveAspect) }}>

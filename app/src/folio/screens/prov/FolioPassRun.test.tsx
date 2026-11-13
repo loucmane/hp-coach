@@ -117,11 +117,24 @@ describe('Folio ungraded pass', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Föregående fråga' }))
     expect(screen.getByTestId('option-A')).toHaveAttribute('aria-checked', 'true')
   })
+  it('reveals the question when revisiting a phone reading question after using Texten', () => {
+    h.phone = true
+    mount({ plan: [question('LÄS'), question('LÄS', 2)] })
+    fireEvent.click(screen.getByRole('tab', { name: 'Texten' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Nästa fråga' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Föregående fråga' }))
+    expect(screen.getByRole('tab', { name: 'Frågan' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByTestId('drill-prompt')).toBeVisible()
+    expect(screen.getByRole('region', { name: 'Uppgift 1' })).toHaveFocus()
+  })
   it('uses the reading plate and phone tools and suspends shortcuts inside the figure viewer', () => {
     h.phone = true
     const { container } = mount({ plan: [question('DTK'), question('DTK', 2)] })
+    fireEvent.click(screen.getByRole('tab', { name: 'Texten' }))
     const image = screen.getByRole('img')
     fireEvent.click(screen.getByRole('button', { name: 'Nästa fråga' }))
+    expect(screen.getByRole('tab', { name: 'Frågan' })).toHaveAttribute('aria-selected', 'true')
+    fireEvent.click(screen.getByRole('tab', { name: 'Texten' }))
     expect(screen.getByRole('img')).toBe(image)
     fireEvent.click(screen.getByTestId('question-figure'))
     expect(screen.getByRole('dialog')).toBeVisible()
@@ -130,6 +143,7 @@ describe('Folio ungraded pass', () => {
     fireEvent.keyDown(document.body, { key: 'Escape' })
     expect(screen.queryByRole('dialog')).toBeNull()
     expect(container.querySelector('.rd-sheet')).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'Frågan' })).toHaveAttribute('aria-selected', 'true')
   })
   it('marks questions, exposes answer/blank/marked states in the index and jumps', async () => {
     const user = userEvent.setup()

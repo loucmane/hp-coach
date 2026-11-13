@@ -77,6 +77,9 @@ export function PassageView({
       <h2 className="rd-title" id={`${id}-title`}>
         {passage.title ?? <span lang="sv">Texten</span>}
       </h2>
+      <p className="rd-source" lang="sv">
+        {view.question.source.label} · uppgift {view.question.number}
+      </p>
       <div data-testid={passage.lang === 'en' ? 'rd-elf-passage' : 'rd-passage'}>
         {passage.paragraphs.map((text, i) => {
           const n = i + 1
@@ -93,7 +96,7 @@ export function PassageView({
               tabIndex={-1}
             >
               <span className="rd-para-n" aria-hidden>
-                {n}
+                ¶ {n}
               </span>
               {tokens[i]?.length ? (
                 <GapRun text={text} tokens={tokens[i]} model={gaps} />
