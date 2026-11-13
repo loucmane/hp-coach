@@ -37,8 +37,18 @@ const rules = [...fixes.phrase_fix, ...fixes.fix].map((fix) => ({
   ),
 }))
 
+// One combined pre-check: most strings match no rule, so skip the per-rule
+// pass for them (the corpus scan otherwise exceeds CI's time budget).
+const anyRule = new RegExp(
+  rules
+    .map((rule) => (rule.phrase ?? rule.typo ?? '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .join('|'),
+  'iu',
+)
+
 function sweep(value: unknown, section?: string): unknown {
   if (typeof value === 'string') {
+    if (!anyRule.test(value)) return value
     return rules.reduce((text, rule) => {
       if (rule.swedish_only && (!section || section === 'ELF')) return text
       return text.replace(rule.pattern, (matched) => {
