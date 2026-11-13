@@ -8,13 +8,13 @@
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Första instinkten är att \"högre exponent ger större tal\" — så x^{3} borde vara större än x^{2}.",
+    "why_tempting": "Första instinkten är att \"högre exponent ger större tal\" — så \uE000x^{3}\uE001 borde vara större än \uE000x^{2}\uE001.",
     "why_wrong": "Den regeln gäller bara för positiva tal. För negativa x vänder mönstret eftersom tecknet växlar mellan jämna och udda potenser. Steg 4–5 låser fast tecknet."
    },
    {
     "letter": "C",
-    "why_tempting": "Det är lätt att tänka att x^{2} och x^{3} är \"nästan samma\" för x nära noll.",
-    "why_wrong": "Även för x = −0,01 är x^{2} = 0{,}0001 (positivt) och x^{3} = -0{,}000001 (negativt). Skillnaden i tecken är total — likhet kräver att båda är noll, men x < 0 utesluter det."
+    "why_tempting": "Det är lätt att tänka att \uE000x^{2}\uE001 och \uE000x^{3}\uE001 är \"nästan samma\" för x nära noll.",
+    "why_wrong": "Även för \uE000x =\uE001 −0,01 är \uE000x^{2} =\uE001 0{,}0001 (positivt) och \uE000x^{3} =\uE001 -0{,}000001 (negativt). Skillnaden i tecken är total — likhet kräver att båda är noll, men \uE000x < 0\uE001 utesluter det."
    },
    {
     "letter": "D",
@@ -24,17 +24,17 @@
   ],
   "framework_id": "KVA-TRAP-013",
   "pitfall": null,
-  "solution_path": "När x är negativ blir x^{2} alltid positiv (negativ gånger negativ = positiv) medan x^{3} förblir negativ. Positivt är alltid större än negativt, så svaret är A.",
+  "solution_path": "När x är negativ blir \uE000x^{2}\uE001 alltid positiv (negativ gånger negativ \uE000=\uE001 positiv) medan \uE000x^{3}\uE001 förblir negativ. Positivt är alltid större än negativt, så svaret är A.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi vet att x är ett negativt tal (x < 0). Vi ska jämföra x^{2} mot x^{3} — alltså x kvadrerad mot x i kubik. Vilken är störst?",
+    "text": "Vi vet att x är ett negativt tal (x \uE000<\uE001 0). Vi ska jämföra \uE000x^{2}\uE001 mot \uE000x^{3}\uE001 — alltså x kvadrerad mot x i kubik. Vilken är störst?",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "x^{2} betyder x gånger x. x^{3} betyder x gånger x gånger x. Exponenten räknar bara hur många gånger x multipliceras med sig själv.",
+    "text": "\uE000x^{2}\uE001 betyder x gånger x. \uE000x^{3}\uE001 betyder x gånger x gånger x. Exponenten räknar bara hur många gånger x multipliceras med sig själv.",
     "tier": "detail",
     "title": "Vad betyder x² och x³?"
    },
@@ -46,13 +46,13 @@
    },
    {
     "n": 4,
-    "text": "x^{2} = x \\cdot x. Två negativa faktorer (eftersom x är negativ). Två är jämnt → resultatet är positivt. Kvantitet I är POSITIV.",
+    "text": "\uE000x^{2} = x \\cdot x\uE001. Två negativa faktorer (eftersom x är negativ). Två är jämnt \uE000→\uE001 resultatet är positivt. Kvantitet I är POSITIV.",
     "tier": "essential",
     "title": "Räkna ut tecknet på Kvantitet I"
    },
    {
     "n": 5,
-    "text": "x^{3} = x \\cdot x \\cdot x. Tre negativa faktorer. Tre är udda → resultatet är negativt. Kvantitet II är NEGATIV.",
+    "text": "\uE000x^{3} = x \\cdot x \\cdot x\uE001. Tre negativa faktorer. Tre är udda \uE000→\uE001 resultatet är negativt. Kvantitet II är NEGATIV.",
     "tier": "essential",
     "title": "Räkna ut tecknet på Kvantitet II"
    },
@@ -64,13 +64,13 @@
    },
    {
     "n": 7,
-    "text": "Sätt x = −2. Då är x^{2} = (-2)(-2) = 4 (positivt). Och x^{3} = (-2)(-2)(-2) = 4 \\cdot (-2) = -8 (negativt). 4 > −8. Stämmer.",
+    "text": "Sätt \uE000x =\uE001 −2. Då är \uE000x^{2} =\uE001 (-2)(-2) \uE000= 4 (positivt)\uE001. Och \uE000x^{3} =\uE001 (-2)(-2)(-2) \uE000= 4 \\cdot (-2) = -8 (negativt)\uE001. \uE0004 >\uE001 −8. Stämmer.",
     "tier": "detail",
     "title": "Testa med ett konkret tal"
    },
    {
     "n": 8,
-    "text": "Sätt x = −0,5. x^{2} = 0{,}25 (positivt). x^{3} = -0{,}125 (negativt). Fortfarande I > II. Mönstret håller för ALLA negativa x.",
+    "text": "Sätt \uE000x =\uE001 −0,5. \uE000x^{2} =\uE001 0{,}25 (positivt). \uE000x^{3} =\uE001 -0{,}125 (negativt). Fortfarande \uE000I >\uE001 II. Mönstret håller för ALLA negativa x.",
     "tier": "detail",
     "title": "Testa med x nära noll"
    },
@@ -82,7 +82,7 @@
    },
    {
     "n": 10,
-    "text": "x^{2} är positivt, x^{3} är negativt, alltså är I alltid större än II. Svaret är A. Insikten i en mening: jämn exponent på ett negativt tal ger positivt, udda exponent behåller minustecknet.",
+    "text": "\uE000x^{2}\uE001 är positivt, \uE000x^{3}\uE001 är negativt, alltså är I alltid större än II. Svaret är A. Insikten i en mening: jämn exponent på ett negativt tal ger positivt, udda exponent behåller minustecknet.",
     "tier": "essential",
     "title": "Slutsats"
    }
@@ -417,12 +417,12 @@
    }
   ],
   "framework_id": "KVA-TRAP-013",
-  "pitfall": "Den vanligaste fallgropen är tecken vid (-1)^{3} mot (-1)^{2} — många får dem omkastade. Botemedlet: räkna alltid potensen separat på sidan av pappret och skriv ut tecknet innan du sätter in i polynomet.",
-  "solution_path": "Sätt in x = −1 och x = 0 i f(x)=3x^{3}+2x^{2}-5x+1. f(−1) = −3 + 2 + 5 + 1 = 5. f(0) = 1. 5 > 1, så I > II. Svaret är A.",
+  "pitfall": "Den vanligaste fallgropen är tecken vid \uE000(-1)^{3}\uE001 mot \uE000(-1)^{2}\uE001 — många får dem omkastade. Botemedlet: räkna alltid potensen separat på sidan av pappret och skriv ut tecknet innan du sätter in i polynomet.",
+  "solution_path": "Sätt in \uE000x =\uE001 −1 och \uE000x = 0 i f(x)=3x^{3}+2x^{2}-5x+1\uE001. \uE000f(−1) =\uE001 −3 \uE000+ 2 + 5 + 1 = 5\uE001. \uE000f(0) = 1\uE001. \uE0005 > 1\uE001, så \uE000I >\uE001 II. Svaret är A.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi har funktionen f(x)=3x^{3}+2x^{2}-5x+1. Vi jämför värdet f(−1) (Kvantitet I) mot f(0) (Kvantitet II).",
+    "text": "Vi har funktionen \uE000f(x)=3x^{3}+2x^{2}-5x+1\uE001. Vi jämför värdet f(−1) (Kvantitet I) mot f(0) (Kvantitet II).",
     "tier": "essential",
     "title": "Förstå problemet"
    },
@@ -434,19 +434,19 @@
    },
    {
     "n": 3,
-    "text": "x^{3} = x \\cdot x \\cdot x. För x = −1: (-1)^{3} = (-1)\\cdot(-1)\\cdot(-1). Två negativa multiplicerade ger +1, sedan gångrat med −1 igen ger −1. Alltså (-1)^{3} = -1.",
+    "text": "\uE000x^{3} = x \\cdot x \\cdot x\uE001. För \uE000x =\uE001 −1: \uE000(-1)^{3} = (-1)\\cdot(-1)\\cdot(-1)\uE001. Två negativa multiplicerade ger +1, sedan gångrat med −1 igen ger −1. Alltså \uE000(-1)^{3} = -1\uE001.",
     "tier": "detail",
-    "title": "Vad är x^{3}?"
+    "title": "Vad är \uE000x^{3}\uE001?"
    },
    {
     "n": 4,
-    "text": "x^{2} = x \\cdot x. För x = −1: (-1)^{2} = (-1)\\cdot(-1) = 1 (två negativa = positivt).",
+    "text": "\uE000x^{2} = x \\cdot x\uE001. För \uE000x =\uE001 −1: \uE000(-1)^{2} = (-1)\\cdot(-1) = 1\uE001 (två negativa \uE000=\uE001 positivt).",
     "tier": "detail",
-    "title": "Vad är x^{2}?"
+    "title": "Vad är \uE000x^{2}\uE001?"
    },
    {
     "n": 5,
-    "text": "3x^{3} blir 3·(−1) = −3. 2x^{2} blir 2·1 = 2. −5x blir −5·(−1) = 5. Konstanten +1 förblir +1.",
+    "text": "\uE0003x^{3}\uE001 blir 3·(−1) \uE000=\uE001 −3. \uE0002x^{2}\uE001 blir 2·1 \uE000= 2\uE001. −5x blir −5·(−1) \uE000= 5\uE001. Konstanten +1 förblir +1.",
     "tier": "essential",
     "title": "Räkna f(−1) term för term"
    },
@@ -458,7 +458,7 @@
    },
    {
     "n": 7,
-    "text": "För x = 0: 3·0^{3} = 0, 2·0^{2} = 0, −5·0 = 0, +1 förblir 1. Alla x-termer försvinner, bara konstantleden +1 är kvar. f(0) = 1.",
+    "text": "För \uE000x = 0\uE001: \uE0003·0^{3} = 0\uE001, \uE0002·0^{2} = 0\uE001, −5·0 \uE000= 0\uE001, +1 förblir 1. Alla x-termer försvinner, bara konstantleden +1 är kvar. \uE000f(0) = 1\uE001.",
     "tier": "essential",
     "title": "Räkna f(0)"
    },
@@ -518,7 +518,7 @@
   ],
   "framework_id": null,
   "pitfall": null,
-  "solution_path": "Kub med volym 125 cm³ har sidan \\sqrt[3]{125} = 5 cm. Sex sidoytor à 5·5 = 25 cm² ger total area 6·25 = 150 cm². 150 > 125, så I > II. Svaret är A.",
+  "solution_path": "Kub med volym 125 cm³ har sidan \uE000\\sqrt[3]{125} = 5\uE001 cm. Sex sidoytor à 5·5 \uE000= 25\uE001 cm² ger total area 6·25 \uE000= 150\uE001 cm². \uE000150 > 125\uE001, så \uE000I >\uE001 II. Svaret är A.",
   "steps": [
    {
     "n": 1,
@@ -534,19 +534,19 @@
    },
    {
     "n": 3,
-    "text": "Volymen av en kub är sidlängden upphöjd till tre: V = s^{3}. Att räkna s^{3} betyder s · s · s.",
+    "text": "Volymen av en kub är sidlängden upphöjd till tre: \uE000V = s^{3}\uE001. Att räkna \uE000s^{3}\uE001 betyder \uE000s · s · s\uE001.",
     "tier": "essential",
     "title": "Volymformel för kub"
    },
    {
     "n": 4,
-    "text": "V = 125, så s^{3} = 125. Vi söker det tal som upphöjt till 3 ger 125. 5^{3} = 5\\cdot 5\\cdot 5 = 25 \\cdot 5 = 125. Alltså s = 5 cm.",
+    "text": "\uE000V = 125\uE001, så \uE000s^{3} = 125\uE001. Vi söker det tal som upphöjt till 3 ger 125. \uE0005^{3} = 5\\cdot 5\\cdot 5 = 25 \\cdot 5 = 125\uE001. Alltså \uE000s = 5\uE001 cm.",
     "tier": "essential",
     "title": "Hitta sidlängden"
    },
    {
     "n": 5,
-    "text": "Kubikroten av 125 är det tal vars kub är 125. Den skrivs \\sqrt[3]{125} och här är den 5. Det är inversen av att kubera.",
+    "text": "Kubikroten av 125 är det tal vars kub är 125. Den skrivs \uE000\\sqrt[3]{125}\uE001 och här är den 5. Det är inversen av att kubera.",
     "tier": "detail",
     "title": "Vad betyder kubikrot?"
    },
@@ -582,7 +582,7 @@
    },
    {
     "n": 11,
-    "text": "Total sidoyta = 150 cm², vilket är större än 125 cm². Svaret är A. Insikten i en mening: kub med volym v har sidan ∛v och total ytarea 6·v^(2/3) — här ger v = 125 sidan 5 och ytarean 150.",
+    "text": "Total sidoyta \uE000= 150\uE001 cm², vilket är större än 125 cm². Svaret är A. Insikten i en mening: kub med volym v har sidan ∛v och total ytarea \uE0006·v^(2/3)\uE001 — här ger \uE000v = 125\uE001 sidan 5 och ytarean 150.",
     "tier": "essential",
     "title": "Slutsats"
    }
@@ -602,7 +602,7 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att tro att 7^{3} = 343 är ett \"stort kubiskt tal\" och därför större än 111·något.",
+    "why_tempting": "Det är lätt att tro att \uE0007^{3} = 343\uE001 är ett \"stort kubiskt tal\" och därför större än 111·något.",
     "why_wrong": "Räkningen 111·π ≈ 348 (steg 4) är något STÖRRE än 343, inte mindre. Marginalen är liten men entydig."
    },
    {
@@ -618,17 +618,17 @@
   ],
   "framework_id": "KVA-TRAP-046",
   "pitfall": "Det är lätt att avrunda för grovt med π = 3 och få 111·3 = 333, som är MINDRE än 343 — och dra fel slutsats. Botemedlet: använd alltid minst π = 3,14 (eller 22/7) — aldrig π = 3 — vid jämförelser där skillnaden kan vara liten.",
-  "solution_path": "7^{3} = 343. 111π ≈ 111 · 3,14159 ≈ 348. 348 > 343, så II > I. Svaret är B.",
+  "solution_path": "\uE0007^{3} = 343\uE001. 111π \uE000≈ 111 · 3,14159 ≈ 348\uE001. \uE000348 > 343\uE001, så II \uE000> I\uE001. Svaret är B.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi jämför 7^{3} (Kvantitet I) mot 111\\pi (Kvantitet II). Båda är reella tal — vi behöver bara räkna ut dem.",
+    "text": "Vi jämför \uE0007^{3}\uE001 (Kvantitet I) mot \uE000111\\pi\uE001 (Kvantitet II). Båda är reella tal — vi behöver bara räkna ut dem.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "7^{3} = 7\\cdot 7\\cdot 7. Räkna stegvis: 7·7 = 49. 49·7 = ? 49·7 = 50·7 − 1·7 = 350 − 7 = 343. Alltså 7^{3} = 343.",
+    "text": "\uE0007^{3} = 7\\cdot 7\\cdot 7\uE001. Räkna stegvis: 7·7 \uE000= 49\uE001. 49·7 \uE000=\uE001 ? 49·7 \uE000=\uE001 50·7 − 1·7 \uE000= 350\uE001 − \uE0007 = 343\uE001. Alltså \uE0007^{3} = 343\uE001.",
     "tier": "essential",
     "title": "Vad är 7³?"
    },
@@ -664,7 +664,7 @@
    },
    {
     "n": 8,
-    "text": "343 = 7^{3}. 111π har π ≈ 3,14159… Skillnaden 111π − 343 = 5,72… > 0. Alltid positivt.",
+    "text": "\uE000343 = 7^{3}\uE001. 111π har π \uE000≈\uE001 3,14159… Skillnaden 111π − \uE000343 =\uE001 5,72… \uE000> 0\uE001. Alltid positivt.",
     "tier": "essential",
     "title": "Vilket håll vinner — exakt?"
    },
@@ -840,7 +840,7 @@
    },
    {
     "n": 4,
-    "text": "Distributiva lagen: 0{,}55(x+10) = 0{,}55\\cdot x + 0{,}55\\cdot 10 = 0{,}55x + 5{,}5.",
+    "text": "Distributiva lagen: 0{,}55(x+10) \uE000= 0{,}55\\cdot x + 0{,}55\\cdot 10 =\uE001 0{,}55x \uE000+\uE001 5{,}5.",
     "tier": "essential",
     "title": "Multiplicera ut höger sida"
    },
@@ -1022,13 +1022,13 @@
    {
     "n": 2,
     "title": "Vad är likformighet?",
-    "text": "Likformig betyder att alla motsvarande sidor har samma förhållande och alla motsvarande vinklar är lika. Det finns en skalfaktor k så att varje sida i EFGH = k · motsvarande sida i ABCD.",
+    "text": "Likformig betyder att alla motsvarande sidor har samma förhållande och alla motsvarande vinklar är lika. Det finns en skalfaktor \uE000k\uE001 så att varje sida i EFGH = \uE000k\uE001 · motsvarande sida i ABCD.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Notation",
-    "text": "Låt sidorna i ABCD vara a_1, a_2, a_3, a_4 (givna proportionellt av figuren) och sidorna i EFGH motsvarande k a_1, k a_2, k a_3, k a_4.",
+    "text": "Låt sidorna i ABCD vara \uE000a_1, a_2, a_3, a_4\uE001 (givna proportionellt av figuren) och sidorna i EFGH motsvarande \uE000k a_1, k a_2, k a_3, k a_4\uE001.",
     "tier": "essential"
    },
    {
@@ -1040,7 +1040,7 @@
    {
     "n": 5,
     "title": "Tolka utsaga (1)",
-    "text": "Omkretsen av ABCD = a_1 + a_2 + a_3 + a_4 = 21 cm. Tillsammans med figurens förhållanden ger detta de absoluta sidlängderna i ABCD.",
+    "text": "Omkretsen av ABCD = \uE000a_1 + a_2 + a_3 + a_4 = 21\uE001 cm. Tillsammans med figurens förhållanden ger detta de absoluta sidlängderna i ABCD.",
     "tier": "essential"
    },
    {
@@ -1064,13 +1064,13 @@
    {
     "n": 9,
     "title": "Kombinera (1) och (2)",
-    "text": "Från (1): alla sidor i ABCD i cm. Identifiera vilken sida i ABCD som motsvarar FG (via märkningen). Skalfaktor k = 10 / a_{\\text{motsvarande}}.",
+    "text": "Från (1): alla sidor i ABCD i cm. Identifiera vilken sida i ABCD som motsvarar FG (via märkningen). Skalfaktor \uE000k = 10 / a_{\\text{motsvarande}}\uE001.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Räkna ut x",
-    "text": "Beroende på var x ligger: om x i EFGH → x = k · motsvarande ABCD-sida; om x i ABCD → x direkt från omkretsfördelningen. Båda fall är låsta tillsammans.",
+    "text": "Beroende på var x ligger: om x i EFGH → x = \uE000k\uE001 · motsvarande ABCD-sida; om x i ABCD → x direkt från omkretsfördelningen. Båda fall är låsta tillsammans.",
     "tier": "essential"
    },
    {
@@ -1572,24 +1572,24 @@
   }
  },
  "host-2015-kvant1-XYZ-001": {
-  "solution_path": "Räkna \\frac{3}{7}-\\frac{2}{3}. Gemensam nämnare 21: \\frac{9}{21}-\\frac{14}{21}=-\\frac{5}{21}.",
+  "solution_path": "Räkna \uE000\\frac{3}{7}-\\frac{2}{3}\uE001. Gemensam nämnare 21: \uE000\\frac{9}{21}-\\frac{14}{21}=-\\frac{5}{21}\uE001.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Du ska beräkna \\frac{3}{7}-\\frac{2}{3} (tolkning av uttrycket utifrån alternativen).",
+    "text": "Du ska beräkna \uE000\\frac{3}{7}-\\frac{2}{3}\uE001 (tolkning av uttrycket utifrån alternativen).",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Definition: bråksubtraktion",
-    "text": "För att subtrahera två bråk måste de ha SAMMA nämnare. Då gäller \\frac{a}{n}-\\frac{b}{n}=\\frac{a-b}{n} — subtrahera täljarna, behåll nämnaren.",
+    "text": "För att subtrahera två bråk måste de ha SAMMA nämnare. Då gäller \uE000\\frac{a}{n}-\\frac{b}{n}=\\frac{a-b}{n}\uE001 — subtrahera täljarna, behåll nämnaren.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Hitta gemensam nämnare",
-    "text": "Minsta gemensamma multipel av 7 och 3. Eftersom 7 och 3 är primtal (saknar gemensam delare) är MGM = 7\\cdot 3=21.",
+    "text": "Minsta gemensamma multipel av 7 och 3. Eftersom 7 och 3 är primtal (saknar gemensam delare) är MGM = \uE0007\\cdot 3=21\uE001.",
     "tier": "essential"
    },
    {
@@ -1601,50 +1601,50 @@
    {
     "n": 5,
     "title": "Skriv om 3/7 med nämnare 21",
-    "text": "\\frac{3}{7}=\\frac{3\\cdot 3}{7\\cdot 3}=\\frac{9}{21}.",
+    "text": "\uE000\\frac{3}{7}=\\frac{3\\cdot 3}{7\\cdot 3}=\\frac{9}{21}\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Skriv om 2/3 med nämnare 21",
-    "text": "\\frac{2}{3}=\\frac{2\\cdot 7}{3\\cdot 7}=\\frac{14}{21}.",
+    "text": "\uE000\\frac{2}{3}=\\frac{2\\cdot 7}{3\\cdot 7}=\\frac{14}{21}\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Subtrahera",
-    "text": "\\frac{9}{21}-\\frac{14}{21}=\\frac{9-14}{21}=\\frac{-5}{21}=-\\frac{5}{21}.",
+    "text": "\uE000\\frac{9}{21}-\\frac{14}{21}=\\frac{9-14}{21}=\\frac{-5}{21}=-\\frac{5}{21}\uE001.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Kolla tecknet",
-    "text": "Eftersom \\frac{3}{7}\\approx 0{,}43<\\frac{2}{3}\\approx 0{,}67 är differensen NEGATIV. Tecknet stämmer.",
+    "text": "Eftersom \uE000\\frac{3}{7}\\approx 0{,}43<\\frac{2}{3}\\approx 0{,}67\uE001 är differensen NEGATIV. Tecknet stämmer.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Förenkla om möjligt",
-    "text": "-\\frac{5}{21}: 5 och 21 saknar gemensam faktor (5 är primtal, 21 = 3·7). Inte förenkligt vidare.",
+    "text": "\uE000-\\frac{5}{21}\uE001: 5 och 21 saknar gemensam faktor (5 är primtal, 21 = 3·7). Inte förenkligt vidare.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Sanity-check med decimaler",
-    "text": "0,4286 − 0,6667 ≈ −0,2381. -\\frac{5}{21}\\approx -0{,}2381 ✓.",
+    "text": "0,4286 − 0,6667 ≈ −0,2381. \uE000-\\frac{5}{21}\\approx -0{,}2381\uE001 ✓.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Svaret är B: -\\frac{5}{21}. Insikten i en mening: gemensam nämnare (här 7·3=21) först — sedan subtrahera bara täljarna.",
+    "text": "Svaret är B: \uE000-\\frac{5}{21}\uE001. Insikten i en mening: gemensam nämnare (här 7·3=21) först — sedan subtrahera bara täljarna.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att 'subtrahera täljare och nämnare var för sig': \\frac{3-2}{7-3}=\\frac{1}{4}, sen vända tecken slarvigt.",
+    "why_tempting": "Det är lätt att 'subtrahera täljare och nämnare var för sig': \uE000\\frac{3-2}{7-3}=\\frac{1}{4}\uE001, sen vända tecken slarvigt.",
     "why_wrong": "Steg 2 säger: bråk subtraheras med GEMENSAM nämnare. Direkt term-för-term ger fel."
    },
    {
@@ -1683,25 +1683,25 @@
    {
     "n": 2,
     "title": "Definition: omkrets",
-    "text": "Omkretsen av en polygon är SUMMAN av alla sidornas längder. För femhörning: s_{1}+s_{2}+s_{3}+s_{4}+s_{5}=\\text{omkrets}.",
+    "text": "Omkretsen av en polygon är SUMMAN av alla sidornas längder. För femhörning: \uE000s_{1}+s_{2}+s_{3}+s_{4}+s_{5}=\\text{omkrets}\uE001.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Sätt upp ekvationen",
-    "text": "s_{1}+s_{2}+s_{3}+s_{4}+x=19, där s_{1},\\dots,s_{4} är de fyra givna sidorna.",
+    "text": "\uE000s_{1}+s_{2}+s_{3}+s_{4}+x=19\uE001, där \uE000s_{1},\\dots,s_{4}\uE001 är de fyra givna sidorna.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Summera de givna sidorna",
-    "text": "Av figuren (standardkonfiguration för denna uppgift) är summan av de fyra synliga sidorna s_{1}+s_{2}+s_{3}+s_{4}=15{,}5 cm.",
+    "text": "Av figuren (standardkonfiguration för denna uppgift) är summan av de fyra synliga sidorna \uE000s_{1}+s_{2}+s_{3}+s_{4}=15{,}5\uE001 cm.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Lös ut x",
-    "text": "x=19-15{,}5=3{,}5 cm.",
+    "text": "\uE000x=19-15{,}5=3{,}5\uE001 cm.",
     "tier": "essential"
    },
    {
@@ -1719,7 +1719,7 @@
    {
     "n": 8,
     "title": "Verifiera summan",
-    "text": "Med x = 3,5: \\text{summa}=15{,}5+3{,}5=19 cm ✓. Stämmer med given omkrets.",
+    "text": "Med x = 3,5: \uE000\\text{summa}=15{,}5+3{,}5=19\uE001 cm ✓. Stämmer med given omkrets.",
     "tier": "essential"
    },
    {
@@ -1890,7 +1890,7 @@
   ],
   "framework_id": "XYZ-TRAP-007",
   "pitfall": "Tecken är den vanligaste fallgropen: att addera positivt och negativt går ofta fel i huvudet under tidspress. Botemedlet: skriv ALLTID ut uttrycket på papper med parentes runt negativa tal — (−3) + 7 — innan du räknar.",
-  "solution_path": "Mittpunkten mellan två punkter har koordinater som är medelvärden av ändpunkternas koordinater. \\left(\\frac{-3+7}{2}, \\frac{1+(-3)}{2}\\right) = (2, −1). Svaret är C.",
+  "solution_path": "Mittpunkten mellan två punkter har koordinater som är medelvärden av ändpunkternas koordinater. \uE000\\left(\\frac{-3+7}{2}, \\frac{1+(-3)}{2}\\right)\uE001 = (2, −1). Svaret är C.",
   "steps": [
    {
     "n": 1,
@@ -1906,7 +1906,7 @@
    },
    {
     "n": 3,
-    "text": "För två punkter (x_1, y_1) och (x_2, y_2) är mittpunkten \\left(\\frac{x_1+x_2}{2}, \\frac{y_1+y_2}{2}\\right). Mittpunkten har x-koordinat = medelvärdet av x-koordinaterna och y-koordinat = medelvärdet av y-koordinaterna.",
+    "text": "För två punkter (x\uE000_1\uE001, y\uE000_1\uE001) och (x\uE000_2\uE001, y\uE000_2\uE001) är mittpunkten \uE000\\left(\\frac{x_1+x_2}{2}, \\frac{y_1+y_2}{2}\\right)\uE001. Mittpunkten har x-koordinat = medelvärdet av x-koordinaterna och y-koordinat = medelvärdet av y-koordinaterna.",
     "tier": "essential",
     "title": "Mittpunktens regel"
    },
@@ -1918,13 +1918,13 @@
    },
    {
     "n": 5,
-    "text": "x_1 = −3, x_2 = 7. Medelvärdet är \\frac{-3+7}{2} = \\frac{4}{2} = 2.",
+    "text": "x\uE000_1\uE001 = −3, x\uE000_2\uE001 = 7. Medelvärdet är \uE000\\frac{-3+7}{2} = \\frac{4}{2} = 2\uE001.",
     "tier": "essential",
     "title": "Räkna ut x-koordinaten"
    },
    {
     "n": 6,
-    "text": "y_1 = 1, y_2 = −3. Medelvärdet är \\frac{1+(-3)}{2} = \\frac{-2}{2} = -1.",
+    "text": "y\uE000_1\uE001 = 1, y\uE000_2\uE001 = −3. Medelvärdet är \uE000\\frac{1+(-3)}{2} = \\frac{-2}{2} = -1\uE001.",
     "tier": "essential",
     "title": "Räkna ut y-koordinaten"
    },
@@ -1960,60 +1960,60 @@
   }
  },
  "host-2015-kvant1-XYZ-005": {
-  "solution_path": "Om x^{-1}=\\frac{2}{7} så är x=\\frac{7}{2}. Då x^{-2}=\\frac{1}{x^{2}}=\\left(\\frac{2}{7}\\right)^{2}=\\frac{4}{49}.",
+  "solution_path": "Om \uE000x^{-1}=\\frac{2}{7}\uE001 så är \uE000x=\\frac{7}{2}\uE001. Då \uE000x^{-2}=\\frac{1}{x^{2}}=\\left(\\frac{2}{7}\\right)^{2}=\\frac{4}{49}\uE001.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Givet att x^{-1}=\\frac{2}{7}, beräkna x^{-2}.",
+    "text": "Givet att \uE000x^{-1}=\\frac{2}{7}\uE001, beräkna \uE000x^{-2}\uE001.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Definition: negativ exponent",
-    "text": "x^{-n}=\\frac{1}{x^{n}} för positivt n. Negativ exponent betyder INVERS (1 delat med), inte negation (minustecken).",
+    "text": "\uE000x^{-n}=\\frac{1}{x^{n}}\uE001 för positivt n. Negativ exponent betyder INVERS (1 delat med), inte negation (minustecken).",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Lös ut x från x⁻¹",
-    "text": "x^{-1}=\\frac{1}{x}=\\frac{2}{7}. Inversen av \\frac{2}{7} är \\frac{7}{2}, så x=\\frac{7}{2}.",
+    "text": "\uE000x^{-1}=\\frac{1}{x}=\\frac{2}{7}\uE001. Inversen av \uE000\\frac{2}{7}\uE001 är \uE000\\frac{7}{2}\uE001, så \uE000x=\\frac{7}{2}\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Definition: x⁻² i termer av x⁻¹",
-    "text": "x^{-2}=(x^{-1})^{2}. Den negativa exponenten KVADRERAS genom att kvadrera basen x^{-1}.",
+    "text": "\uE000x^{-2}=(x^{-1})^{2}\uE001. Den negativa exponenten KVADRERAS genom att kvadrera basen \uE000x^{-1}\uE001.",
     "tier": "detail"
    },
    {
     "n": 5,
     "title": "Använd genvägen",
-    "text": "x^{-2}=\\left(\\frac{2}{7}\\right)^{2}. Direkt kvadrering av x^{-1} utan att gå via x.",
+    "text": "\uE000x^{-2}=\\left(\\frac{2}{7}\\right)^{2}\uE001. Direkt kvadrering av \uE000x^{-1}\uE001 utan att gå via x.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Definition: kvadrera ett bråk",
-    "text": "\\left(\\frac{a}{b}\\right)^{2}=\\frac{a^{2}}{b^{2}}. Täljaren och nämnaren kvadreras separat.",
+    "text": "\uE000\\left(\\frac{a}{b}\\right)^{2}=\\frac{a^{2}}{b^{2}}\uE001. Täljaren och nämnaren kvadreras separat.",
     "tier": "detail"
    },
    {
     "n": 7,
     "title": "Räkna kvadraterna",
-    "text": "2^{2}=4 och 7^{2}=49.",
+    "text": "\uE0002^{2}=4\uE001 och \uE0007^{2}=49\uE001.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Sammansätt",
-    "text": "x^{-2}=\\frac{4}{49}. Positivt eftersom kvadrat av reellt tal alltid är ≥ 0.",
+    "text": "\uE000x^{-2}=\\frac{4}{49}\uE001. Positivt eftersom kvadrat av reellt tal alltid är ≥ 0.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Verifiera via x = 7/2",
-    "text": "x^{2}=\\left(\\frac{7}{2}\\right)^{2}=\\frac{49}{4}. Då x^{-2}=\\frac{1}{x^{2}}=\\frac{4}{49} ✓.",
+    "text": "\uE000x^{2}=\\left(\\frac{7}{2}\\right)^{2}=\\frac{49}{4}\uE001. Då \uE000x^{-2}=\\frac{1}{x^{2}}=\\frac{4}{49}\uE001 ✓.",
     "tier": "detail"
    },
    {
@@ -2031,33 +2031,33 @@
    {
     "n": 12,
     "title": "Slutsats",
-    "text": "Svaret är B: \\frac{4}{49}. Insikten i en mening: negativ exponent = invers, kvadratet bevarar tecknet — x^{-2}=(x^{-1})^{2}.",
+    "text": "Svaret är B: \uE000\\frac{4}{49}\uE001. Insikten i en mening: negativ exponent = invers, kvadratet bevarar tecknet — \uE000x^{-2}=(x^{-1})^{2}\uE001.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att glömma att kvadrering tar bort minustecknet och tro att x^{-2}=-\\frac{4}{49}.",
+    "why_tempting": "Det är lätt att glömma att kvadrering tar bort minustecknet och tro att \uE000x^{-2}=-\\frac{4}{49}\uE001.",
     "why_wrong": "Steg 10: kvadrat av reellt tal är POSITIVT. Minustecknet i exponenten gör inte resultatet negativt."
    },
    {
     "letter": "C",
-    "why_tempting": "Om du minns regeln som 'x^{-2}=-2x' blir det -\\frac{7}{2}.",
-    "why_wrong": "Steg 2: negativ exponent betyder INVERS, inte negation. x^{-2}=\\frac{1}{x^{2}}."
+    "why_tempting": "Om du minns regeln som '\uE000x^{-2}=-2x\uE001' blir det \uE000-\\frac{7}{2}\uE001.",
+    "why_wrong": "Steg 2: negativ exponent betyder INVERS, inte negation. \uE000x^{-2}=\\frac{1}{x^{2}}\uE001."
    },
    {
     "letter": "D",
-    "why_tempting": "Snabbsvar är ofta att räkna x^{2} istället för x^{-2} och få något som blandas till 7/2.",
-    "why_wrong": "Steg 5: x^{-2}=\\left(\\frac{2}{7}\\right)^{2}=\\frac{4}{49}, inte 7/2 (det är x självt)."
+    "why_tempting": "Snabbsvar är ofta att räkna \uE000x^{2}\uE001 istället för \uE000x^{-2}\uE001 och få något som blandas till 7/2.",
+    "why_wrong": "Steg 5: \uE000x^{-2}=\\left(\\frac{2}{7}\\right)^{2}=\\frac{4}{49}\uE001, inte 7/2 (det är x självt)."
    }
   ],
-  "technique": "Negativ exponent: x^{-n}=\\frac{1}{x^{n}}. Kvadrering bevarar tecknet (positivt resultat oavsett ingång).",
-  "pitfall": "Botemedlet mot 'minustecknet i exponenten = negativt resultat': skriv ALLTID ut definitionen x^{-n}=\\frac{1}{x^{n}} — då försvinner illusionen.",
+  "technique": "Negativ exponent: \uE000x^{-n}=\\frac{1}{x^{n}}\uE001. Kvadrering bevarar tecknet (positivt resultat oavsett ingång).",
+  "pitfall": "Botemedlet mot 'minustecknet i exponenten = negativt resultat': skriv ALLTID ut definitionen \uE000x^{-n}=\\frac{1}{x^{n}}\uE001 — då försvinner illusionen.",
   "framework_id": "XYZ-TRAP-028",
   "pregrade_tactic": {
    "handle": "Invers-kvadrering-receptet",
-   "move": "När du har x^{-1} och vill ha x^{-2}: kvadrera x^{-1} direkt — x^{-2}=(x^{-1})^{2}, ingen extra invertering behövs."
+   "move": "När du har \uE000x^{-1}\uE001 och vill ha \uE000x^{-2}\uE001: kvadrera \uE000x^{-1}\uE001 direkt — \uE000x^{-2}=(x^{-1})^{2}\uE001, ingen extra invertering behövs."
   },
   "_meta": {
    "model": "claude-opus-4-7-via-max-subscription",
@@ -2185,7 +2185,7 @@
    {
     "letter": "D",
     "why_tempting": "Snabbsvar är ofta \"kvadrater kan göra konstiga saker med tecken och paritet\".",
-    "why_wrong": "Kvadrering bevarar paritet: jämnt^2 är alltid jämnt (steg 6–7). (x − y) är jämn här eftersom båda är jämna."
+    "why_wrong": "Kvadrering bevarar paritet: \uE000jämnt^2\uE001 är alltid jämnt (steg 6–7). (x − y) är jämn här eftersom båda är jämna."
    }
   ],
   "framework_id": "XYZ-TRAP-047",
@@ -2224,15 +2224,15 @@
    },
    {
     "n": 6,
-    "text": "x − y = jämnt − jämnt = jämnt. (jämnt)^{2} = jämnt \\cdot jämnt = jämnt. Alltid jämnt.",
+    "text": "x − y = jämnt − jämnt = jämnt. \uE000(jämnt)^{2} = jämnt \\cdot jämnt = jämnt\uE001. Alltid jämnt.",
     "tier": "essential",
-    "title": "Pröva D: (x − y)^2"
+    "title": "Pröva D: (x − \uE000y)^2\uE001"
    },
    {
     "n": 7,
-    "text": "a^{2} = a \\cdot a. Om a = 6, då är a^{2} = 36. Att kvadrera ett jämnt tal ger alltid ett jämnt tal eftersom faktorerna båda är jämna.",
+    "text": "\uE000a^{2} = a \\cdot a\uE001. Om \uE000a = 6\uE001, då är \uE000a^{2} = 36\uE001. Att kvadrera ett jämnt tal ger alltid ett jämnt tal eftersom faktorerna båda är jämna.",
     "tier": "detail",
-    "title": "Vad betyder ^2?"
+    "title": "Vad betyder \uE000^2\uE001?"
    },
    {
     "n": 8,
@@ -2290,7 +2290,7 @@
   ],
   "framework_id": "XYZ-TRAP-041",
   "pitfall": "Lätt att förväxla ABCD med rektangeln som bildas av linjerna och de yttre tangentpunkterna. Botemedlet: hitta först VILKA punkter som är hörn (här D och B är medelpunkter, A och C är tangentpunkter) och rita ut sidorna — då blir det tydligt att alla sidor är radier och att fyrhörningen är en romb.",
-  "solution_path": "Eftersom cirklarnas radier båda är 3 cm är de parallella linjernas avstånd 6 cm (= 2 radier). ABCD är en romb med diagonaler 6 cm (lodrätt, mellan tangentpunkterna) och 6 cm (vågrätt, mellan medelpunkterna). Romb-area = (d1·d2)/2 = 36/2 = 18 cm^{2}. Svaret är B.",
+  "solution_path": "Eftersom cirklarnas radier båda är 3 cm är de parallella linjernas avstånd 6 cm (= 2 radier). ABCD är en romb med diagonaler 6 cm (lodrätt, mellan tangentpunkterna) och 6 cm (vågrätt, mellan medelpunkterna). Romb-area \uE000=\uE001 (d1·d2)/2 \uE000=\uE001 36/2 \uE000= 18 cm^{2}\uE001. Svaret är B.",
   "steps": [
    {
     "n": 1,
@@ -2524,7 +2524,7 @@
    },
    {
     "n": 6,
-    "text": "Distributiva lagen: a(x+y) = ax + ay. Här gångrar vi parentesen (12 − p) med (−1/2): −(1/2)·12 + (1/2)·p = −6 + p/2. Så höger sida blir −6 + p/2 + 1 = p/2 − 5.",
+    "text": "Distributiva lagen: \uE000a(x+y) = ax + ay\uE001. Här gångrar vi parentesen (12 − p) med (−1/2): −(1/2)·12 + (1/2)·p = −6 + p/2. Så höger sida blir −6 + p/2 + 1 = p/2 − 5.",
     "tier": "detail",
     "title": "Distributiva lagen i höger sida"
    },
@@ -2668,13 +2668,13 @@
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Det är frestande att tro att \"−16 är mindre än −8\" → därför är 7^(−16) mindre... och så blanda ihop riktningen och tro II > I.",
+    "why_tempting": "Det är frestande att tro att \"−16 är mindre än −8\" \uE000→\uE001 därför är \uE0007^(−16)\uE001 mindre... och så blanda ihop riktningen och tro II \uE000> I\uE001.",
     "why_wrong": "Resonemanget är rätt åt fel håll. −16 är mindre exponent, vilket ger ETT MINDRE positivt resultat, alltså Kvantitet II mindre. Steg 7 låser fast riktningen."
    },
    {
     "letter": "C",
     "why_tempting": "Många tror att \"båda är så små att de är ungefär noll och därför lika\".",
-    "why_wrong": "Båda är små positiva tal, men exakt definierade: 1/7^{8} ≈ 1,77·10⁻⁷ och 1/7^{16} ≈ 3,14·10⁻¹⁴ — olika storleksordningar."
+    "why_wrong": "Båda är små positiva tal, men exakt definierade: \uE0001/7^{8} ≈\uE001 1,77·10⁻⁷ och \uE0001/7^{16} ≈\uE001 3,14·10⁻¹⁴ — olika storleksordningar."
    },
    {
     "letter": "D",
@@ -2683,36 +2683,36 @@
    }
   ],
   "framework_id": "KVA-TRAP-029",
-  "pitfall": "Den vanligaste fallgropen är att tänka \"−16 < −8 så 7^(−16) < 7^(−8)\" — vilket är RÄTT slutsats men ofta härleds av FEL skäl och leder till tecken-fel. Botemedlet: alltid invertera till bråk-form först, då blir tecknet på storleksjämförelsen otvetydigt.",
-  "solution_path": "7^{-8} = 1/7^{8} och 7^{-16} = 1/7^{16}. Eftersom 7^{16} > 7^{8} (större nämnare) är 1/7^{16} < 1/7^{8}. Alltså I > II. Svaret är A.",
+  "pitfall": "Den vanligaste fallgropen är att tänka \"−16 \uE000<\uE001 −8 så \uE0007^(−16) < 7^(−8)\"\uE001 — vilket är RÄTT slutsats men ofta härleds av FEL skäl och leder till tecken-fel. Botemedlet: alltid invertera till bråk-form först, då blir tecknet på storleksjämförelsen otvetydigt.",
+  "solution_path": "\uE0007^{-8} = 1/7^{8}\uE001 och \uE0007^{-16} = 1/7^{16}\uE001. Eftersom \uE0007^{16} > 7^{8}\uE001 (större nämnare) är \uE0001/7^{16} < 1/7^{8}\uE001. Alltså \uE000I >\uE001 II. Svaret är A.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi jämför 7^{-8} mot 7^{-16}. Båda är negativa potenser av 7 — vi behöver veta hur de förhåller sig storleksmässigt.",
+    "text": "Vi jämför \uE0007^{-8}\uE001 mot \uE0007^{-16}\uE001. Båda är negativa potenser av 7 — vi behöver veta hur de förhåller sig storleksmässigt.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "a^{-n} = 1/a^{n}. Negativ exponent betyder \"inverterat\" — räkna positiva potensen och ta inversen. T.ex. 2^{-3} = 1/8.",
+    "text": "\uE000a^{-n} = 1/a^{n}\uE001. Negativ exponent betyder \"inverterat\" — räkna positiva potensen och ta inversen. T.ex. \uE0002^{-3} =\uE001 1/8.",
     "tier": "essential",
     "title": "Vad betyder negativ exponent?"
    },
    {
     "n": 3,
-    "text": "7^{-8} = 1/7^{8}.",
+    "text": "\uE0007^{-8} = 1/7^{8}\uE001.",
     "tier": "essential",
     "title": "Skriv om Kvantitet I"
    },
    {
     "n": 4,
-    "text": "7^{-16} = 1/7^{16}.",
+    "text": "\uE0007^{-16} = 1/7^{16}\uE001.",
     "tier": "essential",
     "title": "Skriv om Kvantitet II"
    },
    {
     "n": 5,
-    "text": "7^{16} är MYCKET större än 7^{8} (eftersom 7^{16} = 7^{8}\\cdot 7^{8}, dvs. 7^{8} multiplicerat med sig självt en gång till).",
+    "text": "\uE0007^{16}\uE001 är MYCKET större än \uE0007^{8}\uE001 (eftersom \uE0007^{16} = 7^{8}\\cdot 7^{8}\uE001, dvs. \uE0007^{8}\uE001 multiplicerat med sig självt en gång till).",
     "tier": "essential",
     "title": "Jämför nämnarna"
    },
@@ -2724,19 +2724,19 @@
    },
    {
     "n": 7,
-    "text": "1/7^{16} < 1/7^{8} eftersom 7^{16} > 7^{8}. Alltså är Kvantitet II mindre än Kvantitet I.",
+    "text": "\uE0001/7^{16} < 1/7^{8}\uE001 eftersom \uE0007^{16} > 7^{8}\uE001. Alltså är Kvantitet II mindre än Kvantitet I.",
     "tier": "essential",
     "title": "Slutsats om bråken"
    },
    {
     "n": 8,
-    "text": "2^{-1} = 1/2 = 0{,}5. 2^{-2} = 1/4 = 0{,}25. Större negativ exponent ger MINDRE positivt tal. Samma mönster för bas 7.",
+    "text": "\uE0002^{-1} =\uE001 1/2 \uE000=\uE001 0{,}5. \uE0002^{-2} =\uE001 1/4 \uE000=\uE001 0{,}25. Större negativ exponent ger MINDRE positivt tal. Samma mönster för bas 7.",
     "tier": "detail",
     "title": "Konkret kontroll med små tal"
    },
    {
     "n": 9,
-    "text": "B (II > I) skulle kräva 7^{-16} > 7^{-8} — men negativa exponenter följer motsatt regel mot positiva. Steg 8 ger motexempel även med små tal.",
+    "text": "B (II \uE000>\uE001 I) skulle kräva \uE0007^{-16} > 7^{-8}\uE001 — men negativa exponenter följer motsatt regel mot positiva. Steg 8 ger motexempel även med små tal.",
     "tier": "detail",
     "title": "Avfärda B"
    },
@@ -2748,12 +2748,12 @@
    },
    {
     "n": 11,
-    "text": "7^{-8} > 7^{-16}. Svaret är A. Insikten i en mening: för negativa exponenter gäller att MINDRE absolutvärde på exponenten = STÖRRE positivt tal (eftersom bråket bara är inversen av motsvarande positiva potens).",
+    "text": "\uE0007^{-8} > 7^{-16}\uE001. Svaret är A. Insikten i en mening: för negativa exponenter gäller att MINDRE absolutvärde på exponenten \uE000=\uE001 STÖRRE positivt tal (eftersom bråket bara är inversen av motsvarande positiva potens).",
     "tier": "essential",
     "title": "Slutsats"
    }
   ],
-  "technique": "Negativa-exponenter-strategin: skriv om {MO}a^{{-n}}{MC} som {MO}1/a^{{n}}{MC} och jämför bråken med samma täljare via deras nämnare. Triggern är negativa exponenter — invertera dem till bråk, då blir storleksjämförelsen mekanisk.",
+  "technique": "Negativa-exponenter-strategin: skriv om \uE000{MO}a^{{-n}}{MC}\uE001 som \uE000{MO}1/a^{{n}}{MC}\uE001 och jämför bråken med samma täljare via deras nämnare. Triggern är negativa exponenter — invertera dem till bråk, då blir storleksjämförelsen mekanisk.",
   "pregrade_tactic": {
    "handle": "Negativ-exponent-inversen",
    "move": "Skriv om varje negativ potens som ett bråk: a upphöjt till minus n blir ett delat med a upphöjt till n."
@@ -2870,12 +2870,12 @@
    {
     "letter": "A",
     "why_tempting": "Det är frestande att tro att radie och höjd är \"likvärdiga\" och att större höjd ger större volym.",
-    "why_wrong": "Höjden är linjär, radien kvadrerad i formeln \\pi r^{2} h. Större radie vinner ALLTID över större höjd (av samma differens). Steg 4–6 räknar exakt."
+    "why_wrong": "Höjden är linjär, radien kvadrerad i formeln \uE000\\pi r^{2} h\uE001. Större radie vinner ALLTID över större höjd (av samma differens). Steg 4–6 räknar exakt."
    },
    {
     "letter": "C",
     "why_tempting": "Det är frestande att tro att eftersom r·h-produkten är samma (3·4 = 4·3 = 12), måste volymerna vara lika.",
-    "why_wrong": "Volymen är \\pi r^{2} h, inte π·r·h. r² · h ≠ r · h². Stegen 4–5 räknar olika tal."
+    "why_wrong": "Volymen är \uE000\\pi r^{2} h\uE001, inte π·r·h. r² \uE000· h ≠ r ·\uE001 h². Stegen 4–5 räknar olika tal."
    },
    {
     "letter": "D",
@@ -2884,8 +2884,8 @@
    }
   ],
   "framework_id": "KVA-TRAP-020",
-  "pitfall": "Vanligaste fallgropen är att glömma kvadreringen och räkna \\pi r h, vilket skulle göra cylindrarna lika. Botemedlet: räkna r^{2} SEPARAT som en första rad innan du multiplicerar med h.",
-  "solution_path": "Cylindervolym = \\pi r^{2} h. Kvantitet I (r=3, h=4): \\pi \\cdot 9 \\cdot 4 = 36\\pi. Kvantitet II (r=4, h=3): \\pi \\cdot 16 \\cdot 3 = 48\\pi. 48π > 36π. Svaret är B.",
+  "pitfall": "Vanligaste fallgropen är att glömma kvadreringen och räkna \uE000\\pi r h\uE001, vilket skulle göra cylindrarna lika. Botemedlet: räkna \uE000r^{2}\uE001 SEPARAT som en första rad innan du multiplicerar med h.",
+  "solution_path": "Cylindervolym \uE000= \\pi r^{2} h\uE001. Kvantitet I (r=3, h=4): \uE000\\pi \\cdot 9 \\cdot 4 = 36\\pi\uE001. Kvantitet II (r=4, h=3): \uE000\\pi \\cdot 16 \\cdot 3 = 48\\pi\uE001. 48π \uE000>\uE001 36π. Svaret är B.",
   "steps": [
    {
     "n": 1,
@@ -2895,25 +2895,25 @@
    },
    {
     "n": 2,
-    "text": "Volym = basytan · höjd. Basytan är en cirkel med radie r och area \\pi r^{2}. Alltså V = \\pi r^{2} h.",
+    "text": "Volym \uE000=\uE001 basytan \uE000·\uE001 höjd. Basytan är en cirkel med radie r och area \uE000\\pi r^{2}\uE001. Alltså \uE000V = \\pi r^{2} h\uE001.",
     "tier": "essential",
     "title": "Formel för cylinder-volym"
    },
    {
     "n": 3,
-    "text": "r^{2} = r \\cdot r. Kvadrering av radien står för \"hur mycket area\" cirkeln har, i förhållande till radie 1.",
+    "text": "\uE000r^{2} = r \\cdot r\uE001. Kvadrering av radien står för \"hur mycket area\" cirkeln har, i förhållande till radie 1.",
     "tier": "detail",
     "title": "Vad betyder r²?"
    },
    {
     "n": 4,
-    "text": "r = 3, h = 4. V_{I} = \\pi \\cdot 3^{2} \\cdot 4 = \\pi \\cdot 9 \\cdot 4 = 36\\pi cm³.",
+    "text": "\uE000r = 3\uE001, \uE000h = 4\uE001. \uE000V_{I} = \\pi \\cdot 3^{2} \\cdot 4 = \\pi \\cdot 9 \\cdot 4 = 36\\pi\uE001 cm³.",
     "tier": "essential",
     "title": "Räkna Kvantitet I"
    },
    {
     "n": 5,
-    "text": "r = 4, h = 3. V_{II} = \\pi \\cdot 4^{2} \\cdot 3 = \\pi \\cdot 16 \\cdot 3 = 48\\pi cm³.",
+    "text": "\uE000r = 4\uE001, \uE000h = 3\uE001. \uE000V_{II} = \\pi \\cdot 4^{2} \\cdot 3 = \\pi \\cdot 16 \\cdot 3 = 48\\pi\uE001 cm³.",
     "tier": "essential",
     "title": "Räkna Kvantitet II"
    },
@@ -2925,7 +2925,7 @@
    },
    {
     "n": 7,
-    "text": "I V = \\pi r^{2} h kvadreras radien men inte höjden. Det betyder att en ändring i radien får MYCKET större effekt än en lika stor ändring i höjden. Att byta från r=3 till r=4 nästan dubblar bidraget från r²-faktorn (9 → 16).",
+    "text": "\uE000I V = \\pi r^{2} h\uE001 kvadreras radien men inte höjden. Det betyder att en ändring i radien får MYCKET större effekt än en lika stor ändring i höjden. Att byta från r=3 till r=4 nästan dubblar bidraget från r²-faktorn (9 \uE000→\uE001 16).",
     "tier": "detail",
     "title": "Varför viktigare radie?"
    },
@@ -2954,7 +2954,7 @@
     "title": "Slutsats"
    }
   ],
-  "technique": "Cylinder-volym-formel-strategin: {MO}V = \\pi r^{{2}} h{MC} — komihåg att RADIEN kvadreras. Triggern är två cylindrar med olika r och h — när du behöver jämföra, räkna {MO}r^{{2}} h{MC} (utan π-faktor, den är gemensam) och jämför.",
+  "technique": "Cylinder-volym-formel-strategin: {MO}V \uE000= \\pi r^{{2}}\uE001 h{MC} — komihåg att RADIEN kvadreras. Triggern är två cylindrar med olika r och h — när du behöver jämföra, räkna \uE000{MO}r^{{2}}\uE001 h{MC} (utan π-faktor, den är gemensam) och jämför.",
   "pregrade_tactic": {
    "handle": "Cylindervolymen",
    "move": "Vid cylinder: räkna radien i kvadrat gånger höjden (π är gemensam för båda och kan strykas) och jämför."
@@ -3069,13 +3069,13 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är frestande att tro att 2\\square 2 är större eftersom båda \"talen\" är 2 (icke-noll), medan 0\\square 3 har en nolla.",
-    "why_wrong": "Räkneoperationen är kvadrat-sum: 3^{2} = 9 är större än 2^{2} + 2^{2} = 8. Steg 3–4 låser fast värdena."
+    "why_tempting": "Det är frestande att tro att \uE0002\\square 2\uE001 är större eftersom båda \"talen\" är 2 (icke-noll), medan \uE0000\\square 3\uE001 har en nolla.",
+    "why_wrong": "Räkneoperationen är kvadrat-sum: \uE0003^{2} = 9\uE001 är större än \uE0002^{2} + 2^{2} = 8\uE001. Steg 3–4 låser fast värdena."
    },
    {
     "letter": "C",
     "why_tempting": "Många tror att operationen är symmetrisk och därför ger samma värde.",
-    "why_wrong": "Operationen är symmetrisk i argumenten, men det betyder bara x\\square y = y\\square x — inte att olika argumentpar ger samma värde. (2,2) och (0,3) är olika par, ger olika summor."
+    "why_wrong": "Operationen är symmetrisk i argumenten, men det betyder bara \uE000x\\square y = y\\square x\uE001 — inte att olika argumentpar ger samma värde. (2,2) och (0,3) är olika par, ger olika summor."
    },
    {
     "letter": "D",
@@ -3084,30 +3084,30 @@
    }
   ],
   "framework_id": null,
-  "pitfall": "Vanligt fel är att glömma kvadreringen och bara addera argumenten: tycka 2\\square 2 = 4 (= 2 + 2) och 0\\square 3 = 3 (= 0 + 3). Botemedlet: läs formeln EXAKT — vad står efter likhetstecknet? Här x^{2} + y^{2}, alltså kvadrater.",
-  "solution_path": "Räkneoperationen är definierad som x \\square y = x^{2} + y^{2}. Kvantitet I: 2\\square 2 = 4 + 4 = 8. Kvantitet II: 0\\square 3 = 0 + 9 = 9. 9 > 8, alltså II > I. Svaret är B.",
+  "pitfall": "Vanligt fel är att glömma kvadreringen och bara addera argumenten: tycka \uE0002\\square 2 = 4\uE001 (= \uE0002 +\uE001 2) och \uE0000\\square 3 = 3\uE001 (= \uE0000 +\uE001 3). Botemedlet: läs formeln EXAKT — vad står efter likhetstecknet? Här \uE000x^{2} + y^{2}\uE001, alltså kvadrater.",
+  "solution_path": "Räkneoperationen är definierad som \uE000x \\square y = x^{2} + y^{2}\uE001. Kvantitet I: \uE0002\\square 2 = 4 + 4 = 8\uE001. Kvantitet II: \uE0000\\square 3 = 0 + 9 = 9\uE001. \uE0009 > 8\uE001, alltså II \uE000> I\uE001. Svaret är B.",
   "steps": [
    {
     "n": 1,
-    "text": "En NY räkneoperation definieras: x \\square y = x^{2} + y^{2}. Vi ska räkna ut 2 \\square 2 och 0 \\square 3 och jämföra.",
+    "text": "En NY räkneoperation definieras: \uE000x \\square y = x^{2} + y^{2}\uE001. Vi ska räkna ut \uE0002 \\square 2\uE001 och \uE0000 \\square 3\uE001 och jämföra.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "När en uppgift definierar en symbol (här \\square) med en formel (x^{2} + y^{2}), ska du tolka symbolen exakt enligt formeln. Det är som att lära sig en ny räknesatsen som bara gäller för den här uppgiften.",
+    "text": "När en uppgift definierar en symbol (här \uE000\\square)\uE001 med en formel \uE000(x^{2} + y^{2})\uE001, ska du tolka symbolen exakt enligt formeln. Det är som att lära sig en ny räknesatsen som bara gäller för den här uppgiften.",
     "tier": "detail",
     "title": "Vad är en \"definierad operation\"?"
    },
    {
     "n": 3,
-    "text": "2 \\square 2 = 2^{2} + 2^{2} = 4 + 4 = 8.",
+    "text": "\uE0002 \\square 2 = 2^{2} + 2^{2} = 4 + 4 = 8\uE001.",
     "tier": "essential",
     "title": "Räkna Kvantitet I"
    },
    {
     "n": 4,
-    "text": "0 \\square 3 = 0^{2} + 3^{2} = 0 + 9 = 9.",
+    "text": "\uE0000 \\square 3 = 0^{2} + 3^{2} = 0 + 9 = 9\uE001.",
     "tier": "essential",
     "title": "Räkna Kvantitet II"
    },
@@ -3154,7 +3154,7 @@
     "title": "Slutsats"
    }
   ],
-  "technique": "Definierad-operation-strategin: läs definitionen av den nya symbolen och substituera in argumentvärdena precis enligt formeln. Triggern är en udda symbol med en \"x \\square y = ...\"-definition — det är bara en alternativ notation för ett vanligt aritmetiskt uttryck.",
+  "technique": "Definierad-operation-strategin: läs definitionen av den nya symbolen och substituera in argumentvärdena precis enligt formeln. Triggern är en udda symbol med en \"x \uE000\\square y =\uE001 ...\"-definition — det är bara en alternativ notation för ett vanligt aritmetiskt uttryck.",
   "pregrade_tactic": {
    "handle": "Definierad-operation",
    "move": "Läs definitionen av den nya symbolen som en formel och sätt bara in argumenten — det är vanlig aritmetik i förklädnad."
@@ -3286,12 +3286,12 @@
    {
     "letter": "D",
     "why_tempting": "Snabbsvar är ofta \"linjernas konfiguration kan variera, kanske saknas info\".",
-    "why_wrong": "Frågan handlar om MAXIMUM, inte ett specifikt fall. Maximum är väldefinierat och låst av kombinatoriken: {MO}\\binom{{8}}{{2}} = 28{MC}."
+    "why_wrong": "Frågan handlar om MAXIMUM, inte ett specifikt fall. Maximum är väldefinierat och låst av kombinatoriken: \uE000{MO}\\binom{{8}}{{2}} =\uE001 28{MC}."
    }
   ],
   "framework_id": null,
   "pitfall": "Vanligt fel är att fortsätta uppgivna mönster linjärt (3 linjer → 3 skärningar, antagande 8 → 8 eller 24). Botemedlet: räkna explicit antalet par för n=4: 6 (inte 4 eller 8) — då blir det kombinatoriska mönstret tydligt.",
-  "solution_path": "Maximalt antal skärningspunkter för n linjer är \\binom{n}{2} = \\frac{n(n-1)}{2}. För n = 8: 8·7/2 = 28. 28 > 24, så I > II. Svaret är A.",
+  "solution_path": "Maximalt antal skärningspunkter för n linjer är \uE000\\binom{n}{2} = \\frac{n(n-1)}{2}\uE001. För \uE000n = 8\uE001: 8·7/2 \uE000= 28\uE001. \uE00028 > 24\uE001, så \uE000I >\uE001 II. Svaret är A.",
   "steps": [
    {
     "n": 1,
@@ -3319,7 +3319,7 @@
    },
    {
     "n": 5,
-    "text": "Antal par av n objekt är \\binom{n}{2} = \\frac{n(n-1)}{2}. Förklaring: välj första objektet av n sätt, andra av (n−1) sätt, men ordningen spelar ingen roll (par är oordnade), så dela med 2.",
+    "text": "Antal par av n objekt är \uE000\\binom{n}{2} = \\frac{n(n-1)}{2}\uE001. Förklaring: välj första objektet av n sätt, andra av (n−1) sätt, men ordningen spelar ingen roll (par är oordnade), så dela med 2.",
     "tier": "detail",
     "title": "Formel för antal par"
    },
@@ -3367,12 +3367,12 @@
    },
    {
     "n": 13,
-    "text": "Max antal skärningspunkter för 8 linjer = 28 > 24. Svaret är A. Insikten i en mening: maximalt antal skärningspunkter för n linjer är \\binom{n}{2} = n(n-1)/2 — det är antalet par.",
+    "text": "Max antal skärningspunkter för 8 linjer \uE000= 28 > 24\uE001. Svaret är A. Insikten i en mening: maximalt antal skärningspunkter för n linjer är \uE000\\binom{n}{2} =\uE001 n(n-1)/2 — det är antalet par.",
     "tier": "essential",
     "title": "Slutsats"
    }
   ],
-  "technique": "Par-räknings-strategin: för \"hur många skärningar/par/möten\" med n objekt, använd binomialkoefficienten {MO}\\binom{{n}}{{2}} = n(n-1)/2{MC}. Triggern är frågan om ATT VÄLJA PAR (par av linjer, par av lag, ...) — det är inte multiplikation utan kombination.",
+  "technique": "Par-räknings-strategin: för \"hur många skärningar/par/möten\" med n objekt, använd binomialkoefficienten \uE000{MO}\\binom{{n}}{{2}} =\uE001 n(n-1)/2{MC}. Triggern är frågan om ATT VÄLJA PAR (par av linjer, par av lag, ...) — det är inte multiplikation utan kombination.",
   "pregrade_tactic": {
    "handle": "Par-räkningen",
    "move": "Vid frågan ”hur många par” av n objekt: räkna n gånger (n minus 1) delat med två — inte n gånger n."
@@ -4097,7 +4097,7 @@
    },
    {
     "n": 3,
-    "text": "a(b + c) = a\\cdot b + a\\cdot c. Multiplicera faktorn framför parentesen med varje term inom parentesen.",
+    "text": "a(b \uE000+\uE001 c) \uE000= a\\cdot b + a\\cdot c\uE001. Multiplicera faktorn framför parentesen med varje term inom parentesen.",
     "tier": "detail",
     "title": "Vad är distributiva lagen?"
    },
@@ -4166,7 +4166,7 @@
    {
     "letter": "A",
     "why_tempting": "Det är frestande att tro att ett \"stort\" upphöjt tal slutar på 0 (som potenser av 10 gör).",
-    "why_wrong": "5^n slutar aldrig på 0 — det krävs faktorer av både 2 och 5, men 5^n innehåller bara 5:or. Stegen 3–4 visar mönstret 5, 25, 125, 625."
+    "why_wrong": "\uE0005^n\uE001 slutar aldrig på 0 — det krävs faktorer av både 2 och 5, men \uE0005^n\uE001 innehåller bara 5:or. Stegen 3–4 visar mönstret 5, 25, 125, 625."
    },
    {
     "letter": "B",
@@ -4176,16 +4176,16 @@
    {
     "letter": "D",
     "why_tempting": "Snabbsvar är ofta att tippa \"någon hög siffra som 9\" för stora tal.",
-    "why_wrong": "Bas 5 ger alltid 5 (steg 4). Inga andra entalssiffror är möjliga för 5^n med n ≥ 1."
+    "why_wrong": "Bas 5 ger alltid 5 (steg 4). Inga andra entalssiffror är möjliga för \uE0005^n\uE001 med \uE000n ≥ 1\uE001."
    }
   ],
   "framework_id": null,
   "pitfall": null,
-  "solution_path": "Entalssiffran i 5 upphöjt till vilket positivt heltal som helst är ALLTID 5 (5·5 = 25 slutar på 5, 25·5 = 125 slutar på 5, osv.). Alltså är entalssiffran i 5^{33} också 5. Svaret är C.",
+  "solution_path": "Entalssiffran i 5 upphöjt till vilket positivt heltal som helst är ALLTID 5 (5·5 \uE000= 25\uE001 slutar på 5, 25·5 \uE000= 125\uE001 slutar på 5, osv.). Alltså är entalssiffran \uE000i 5^{33}\uE001 också 5. Svaret är C.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi har talet 5^{33} (5 multiplicerat med sig själv 33 gånger). Vi vill veta entalssiffran (sista siffran) i resultatet.",
+    "text": "Vi har talet \uE0005^{33}\uE001 (5 multiplicerat med sig själv 33 gånger). Vi vill veta entalssiffran (sista siffran) i resultatet.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
@@ -4197,7 +4197,7 @@
    },
    {
     "n": 3,
-    "text": "5^1 = 5. 5^2 = 25. 5^3 = 125. 5^4 = 625.",
+    "text": "\uE0005^1 = 5\uE001. \uE0005^2 = 25\uE001. \uE0005^3 = 125\uE001. \uE0005^4 = 625\uE001.",
     "tier": "essential",
     "title": "Räkna första potenserna av 5"
    },
@@ -4221,36 +4221,36 @@
    },
    {
     "n": 7,
-    "text": "5^{33} = 5 multiplicerat med sig själv 33 gånger. Varje multiplikation bevarar entalssiffran 5. Slutresultatet har därför entalssiffra 5.",
+    "text": "\uE0005^{33} = 5\uE001 multiplicerat med sig själv 33 gånger. Varje multiplikation bevarar entalssiffran 5. Slutresultatet har därför entalssiffra 5.",
     "tier": "essential",
-    "title": "Tillämpa på 5^33"
+    "title": "Tillämpa på \uE0005^33\uE001"
    },
    {
     "n": 8,
-    "text": "Entalssiffran 0 förekommer i potenser av 10, inte 5. 5^n slutar aldrig på 0 (det skulle kräva en faktor 2, som 5 saknar).",
+    "text": "Entalssiffran 0 förekommer i potenser av 10, inte 5. \uE0005^n\uE001 slutar aldrig på 0 (det skulle kräva en faktor 2, som 5 saknar).",
     "tier": "detail",
     "title": "Avfärda 0"
    },
    {
     "n": 9,
-    "text": "Entalssiffran 1 förekommer ibland (t.ex. 11^n) men aldrig i potenser av 5. 5^n är alltid delbart med 5 men ändå inte 1 modulo 10.",
+    "text": "Entalssiffran 1 förekommer ibland (t.ex. \uE00011^n\uE001) men aldrig i potenser av 5. \uE0005^n\uE001 är alltid delbart med 5 men ändå inte 1 modulo 10.",
     "tier": "detail",
     "title": "Avfärda 1"
    },
    {
     "n": 10,
-    "text": "Entalssiffran 9 är typisk för t.ex. 3^n vid vissa n, eller 7^n 5^n har en låst entalssiffra och den är 5.",
+    "text": "Entalssiffran 9 är typisk för t.ex. \uE0003^n\uE001 vid vissa n, eller \uE0007^n 5^n\uE001 har en låst entalssiffra och den är 5.",
     "tier": "detail",
     "title": "Avfärda 9"
    },
    {
     "n": 11,
-    "text": "Entalssiffran i 5^{33} är 5. Svaret är C. Insikten i en mening: potenser av tal som slutar på 5 har alltid entalssiffran 5 — mönstret stabiliseras direkt från 5^2.",
+    "text": "Entalssiffran \uE000i 5^{33}\uE001 är 5. Svaret är C. Insikten i en mening: potenser av tal som slutar på 5 har alltid entalssiffran 5 — mönstret stabiliseras direkt från \uE0005^2\uE001.",
     "tier": "essential",
     "title": "Slutsats"
    }
   ],
-  "technique": "Entalssiffre-strategin: räkna ut de första potenserna för att hitta cykeln av entalssiffror. Triggern är \"sista siffran i a^n\" — entalssiffrorna upprepar sig ofta i ett kort mönster (för bas 5 låst på 5, för bas 2 cykel 2-4-8-6-2-4...).",
+  "technique": "Entalssiffre-strategin: räkna ut de första potenserna för att hitta cykeln av entalssiffror. Triggern är \"sista siffran \uE000i a^n\"\uE001 — entalssiffrorna upprepar sig ofta i ett kort mönster (för bas 5 låst på 5, för bas 2 cykel 2-4-8-6-2-4...).",
   "pregrade_tactic": {
    "handle": "Entalssiffrans-cykel",
    "move": "Räkna ut de första potenserna för att se hur sista siffran upprepar sig — basen 5 har alltid 5 som entalssiffra."
@@ -4285,13 +4285,13 @@
   "steps": [
    {
     "n": 1,
-    "text": "Vi ska räkna ut 0{,}4 - \\frac{1}{4}. Det är en blandning av decimaltal och bråk — bäst att konvertera till samma form.",
+    "text": "Vi ska räkna ut 0{,}4 \uE000- \\frac{1}{4}\uE001. Det är en blandning av decimaltal och bråk — bäst att konvertera till samma form.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "0,4 betyder 4 tiondelar = 4/10. Förenkla: dela täljare och nämnare med 2 → 2/5. Alltså 0{,}4 = \\frac{2}{5}.",
+    "text": "0,4 betyder 4 tiondelar \uE000=\uE001 4/10. Förenkla: dela täljare och nämnare med \uE0002 →\uE001 2/5. Alltså 0{,}4 \uE000= \\frac{2}{5}\uE001.",
     "tier": "essential",
     "title": "Skriv 0,4 som bråk"
    },
@@ -4315,7 +4315,7 @@
    },
    {
     "n": 6,
-    "text": "\\frac{8}{20} - \\frac{5}{20} = \\frac{8-5}{20} = \\frac{3}{20}.",
+    "text": "\uE000\\frac{8}{20} - \\frac{5}{20} = \\frac{8-5}{20} = \\frac{3}{20}\uE001.",
     "tier": "essential",
     "title": "Subtrahera"
    },
@@ -4481,35 +4481,35 @@
   ],
   "framework_id": "XYZ-TRAP-026",
   "pitfall": "Vanligt fel är att blanda ihop reglerna för multiplikation (addera exp.), division (subtrahera exp.) och potens av potens (multiplicera exp.). Botemedlet: skriv ut alla tre regler på en lapp och referera till den under räkningen.",
-  "solution_path": "När du multiplicerar potenser med samma bas, ADDERAR du exponenterna: x^{k+1} \\cdot x^{k} = x^{(k+1)+k} = x^{2k+1}. Svaret är B.",
+  "solution_path": "När du multiplicerar potenser med samma bas, ADDERAR du exponenterna: \uE000x^{k+1} \\cdot x^{k} = x^{(k+1)+k} = x^{2k+1}\uE001. Svaret är B.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi ska förenkla uttrycket x^{k+1} \\cdot x^{k} givet att x > 0. Båda faktorerna har samma bas (x) men olika exponenter.",
+    "text": "Vi ska förenkla uttrycket \uE000x^{k+1} \\cdot x^{k}\uE001 givet att \uE000x > 0\uE001. Båda faktorerna har samma bas (x) men olika exponenter.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "x^{n} betyder x multiplicerat med sig själv n gånger. T.ex. x^{3} = x\\cdot x\\cdot x.",
+    "text": "\uE000x^{n}\uE001 betyder x multiplicerat med sig själv n gånger. T.ex. \uE000x^{3} = x\\cdot x\\cdot x\uE001.",
     "tier": "detail",
     "title": "Vad betyder x upphöjt till en exponent?"
    },
    {
     "n": 3,
-    "text": "När man multiplicerar potenser med samma bas adderar man exponenterna: x^{a} \\cdot x^{b} = x^{a+b}.",
+    "text": "När man multiplicerar potenser med samma bas adderar man exponenterna: \uE000x^{a} \\cdot x^{b} = x^{a+b}\uE001.",
     "tier": "essential",
     "title": "Potens-regeln för multiplikation"
    },
    {
     "n": 4,
-    "text": "x^{3}\\cdot x^{2} = (x·x·x)·(x·x) = x·x·x·x·x = x^{5}. Antalet faktorer adderas. Det är dit regeln x^{a}\\cdot x^{b}=x^{a+b} kommer ifrån.",
+    "text": "\uE000x^{3}\\cdot x^{2} =\uE001 (x·x·x)·(x·x) \uE000=\uE001 x·x·x·x·x \uE000= x^{5}\uE001. Antalet faktorer adderas. Det är dit regeln \uE000x^{a}\\cdot x^{b}=x^{a+b}\uE001 kommer ifrån.",
     "tier": "detail",
     "title": "Varför adderar man exponenterna?"
    },
    {
     "n": 5,
-    "text": "x^{k+1}\\cdot x^{k} = x^{(k+1)+k}. Adderar exponenterna.",
+    "text": "\uE000x^{k+1}\\cdot x^{k} = x^{(k+1)+k}\uE001. Adderar exponenterna.",
     "tier": "essential",
     "title": "Tillämpa på vårt uttryck"
    },
@@ -4521,7 +4521,7 @@
    },
    {
     "n": 7,
-    "text": "x^{k+1}\\cdot x^{k} = x^{2k+1}.",
+    "text": "\uE000x^{k+1}\\cdot x^{k} = x^{2k+1}\uE001.",
     "tier": "essential",
     "title": "Sätt ihop slututtrycket"
    },
@@ -4533,31 +4533,31 @@
    },
    {
     "n": 9,
-    "text": "k(k+1) skulle kräva att man MULTIPLICERAR exponenterna, vilket är reglen för (x^{a})^{b} = x^{ab} (potens av potens), inte x^{a}\\cdot x^{b} (produkt av potenser). Två olika regler.",
+    "text": "k(k+1) skulle kräva att man MULTIPLICERAR exponenterna, vilket är reglen för \uE000(x^{a})^{b} = x^{ab}\uE001 (potens av potens), inte \uE000x^{a}\\cdot x^{b}\uE001 (produkt av potenser). Två olika regler.",
     "tier": "detail",
     "title": "Varför inte k(k + 1) som exponent?"
    },
    {
     "n": 10,
-    "text": "A skulle vara x^{k(k+1)}, dvs. multiplikation av exponenterna. Det stämmer bara om operationen vore en potens av en potens, inte en produkt.",
+    "text": "A skulle vara \uE000x^{k(k+1)}\uE001, dvs. multiplikation av exponenterna. Det stämmer bara om operationen vore en potens av en potens, inte en produkt.",
     "tier": "detail",
     "title": "Avfärda A"
    },
    {
     "n": 11,
-    "text": "C skulle vara x^{1} = x — bara om exponenterna tog ut varandra, vilket de inte gör.",
+    "text": "C skulle vara \uE000x^{1} = x\uE001 — bara om exponenterna tog ut varandra, vilket de inte gör.",
     "tier": "detail",
     "title": "Avfärda C"
    },
    {
     "n": 12,
-    "text": "D skulle vara x^{2k-1}. Det skulle gälla om man SUBTRAHERADE exponenterna — vilket är regeln för DIVISION (x^{a}/x^{b}=x^{a-b}), inte multiplikation.",
+    "text": "D skulle vara \uE000x^{2k-1}\uE001. Det skulle gälla om man SUBTRAHERADE exponenterna — vilket är regeln för DIVISION \uE000(x^{a}/x^{b}=x^{a-b})\uE001, inte multiplikation.",
     "tier": "detail",
     "title": "Avfärda D"
    },
    {
     "n": 13,
-    "text": "x^{k+1}\\cdot x^{k} = x^{2k+1}. Svaret är B. Insikten i en mening: vid multiplikation av potenser med samma bas — addera exponenter; vid division — subtrahera; vid potens av potens — multiplicera.",
+    "text": "\uE000x^{k+1}\\cdot x^{k} = x^{2k+1}\uE001. Svaret är B. Insikten i en mening: vid multiplikation av potenser med samma bas — addera exponenter; vid division — subtrahera; vid potens av potens — multiplicera.",
     "tier": "essential",
     "title": "Slutsats"
    }
@@ -4569,7 +4569,7 @@
   }
  },
  "host-2015-kvant2-XYZ-006": {
-  "solution_path": "Av figurens villkor (rektangel med konstant area 36 = x · y) följer direkt att y=\\frac{36}{x} — det är den enda relation som med säkerhet gäller för alla giltiga (x, y).",
+  "solution_path": "Av figurens villkor (rektangel med konstant area 36 = x · y) följer direkt att \uE000y=\\frac{36}{x}\uE001 — det är den enda relation som med säkerhet gäller för alla giltiga (x, y).",
   "steps": [
    {
     "n": 1,
@@ -4580,19 +4580,19 @@
    {
     "n": 2,
     "title": "Definition: konstant produkt",
-    "text": "Om x\\cdot y=c (konstant) gäller relationen oavsett enskilda värden. T.ex. (x, y) = (4, 9), (6, 6), (12, 3) — alla uppfyller x\\cdot y=36.",
+    "text": "Om \uE000x\\cdot y=c\uE001 (konstant) gäller relationen oavsett enskilda värden. T.ex. (x, y) = (4, 9), (6, 6), (12, 3) — alla uppfyller \uE000x\\cdot y=36\uE001.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Skriv om produkten",
-    "text": "Lös ut y: y=\\frac{36}{x} (för x\\neq 0). Det är alternativ C direkt.",
+    "text": "Lös ut y: \uE000y=\\frac{36}{x}\uE001 (för \uE000x\\neq 0\uE001). Det är alternativ C direkt.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Granska A (x + y = 12)",
-    "text": "Testa (x, y) = (4, 9): 4+9=13 ≠ 12. (x, y) = (6, 6): 6+6=12 ✓. (x, y) = (12, 3): 15 ≠ 12. Summan är INTE konstant.",
+    "text": "Testa (x, y) = (4, 9): \uE0004+9=13\uE001 ≠ 12. (x, y) = (6, 6): \uE0006+6=12\uE001 ✓. (x, y) = (12, 3): 15 ≠ 12. Summan är INTE konstant.",
     "tier": "essential"
    },
    {
@@ -4622,7 +4622,7 @@
    {
     "n": 9,
     "title": "Verifiera C universellt",
-    "text": "Om xy=36 så är y=\\frac{36}{x} för varje tillåtet x ≠ 0. Sambandet är en omskrivning av samma ekvation.",
+    "text": "Om \uE000xy=36\uE001 så är \uE000y=\\frac{36}{x}\uE001 för varje tillåtet x ≠ 0. Sambandet är en omskrivning av samma ekvation.",
     "tier": "essential"
    },
    {
@@ -4634,7 +4634,7 @@
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Svaret är C: \\frac{36}{x}=y. Insikten i en mening: konstant produkt xy=c ger universellt sambandet y=c/x — andra relationer kräver specifika x- och y-värden.",
+    "text": "Svaret är C: \uE000\\frac{36}{x}=y\uE001. Insikten i en mening: konstant produkt \uE000xy=c\uE001 ger universellt sambandet \uE000y=c/x\uE001 — andra relationer kräver specifika x- och y-värden.",
     "tier": "essential"
    }
   ],
@@ -4651,11 +4651,11 @@
    },
    {
     "letter": "D",
-    "why_tempting": "Snabbsvar är ofta att kvadrera summan: (x+y)^{2}=36 — siffran 36 dyker upp så det 'känns rätt'.",
-    "why_wrong": "Steg 6: (x+y)^{2} är en helt annan storhet än xy. Identiska siffervärden bara genom slump för enstaka fall."
+    "why_tempting": "Snabbsvar är ofta att kvadrera summan: \uE000(x+y)^{2}=36\uE001 — siffran 36 dyker upp så det 'känns rätt'.",
+    "why_wrong": "Steg 6: \uE000(x+y)^{2}\uE001 är en helt annan storhet än \uE000xy\uE001. Identiska siffervärden bara genom slump för enstaka fall."
    }
   ],
-  "technique": "Konstant produkt xy = c: y=\\frac{c}{x} är direkt omskrivning. För 'med säkerhet'-frågor: testa varje alternativ mot FLERA (x, y)-fall.",
+  "technique": "Konstant produkt xy = c: \uE000y=\\frac{c}{x}\uE001 är direkt omskrivning. För 'med säkerhet'-frågor: testa varje alternativ mot FLERA (x, y)-fall.",
   "pitfall": "Botemedlet mot att gissa baserat på siffrans likhet: prova ALLTID två olika testfall med samma produkt — bara den korrekta relationen håller för båda.",
   "framework_id": null,
   "pregrade_tactic": {
@@ -4980,7 +4980,7 @@
     "title": "Slutsats"
    }
   ],
-  "technique": "Prefix-omvandlings-strategin: skriv alla alternativ i meter (eller bas-enheten) med tio-potenser. Triggern är jämförelse mellan tal med olika SI-prefix — översätt alla till samma enhet med 10^n-form och jämför exponenter.",
+  "technique": "Prefix-omvandlings-strategin: skriv alla alternativ i meter (eller bas-enheten) med tio-potenser. Triggern är jämförelse mellan tal med olika SI-prefix — översätt alla till samma enhet med \uE00010^n-form\uE001 och jämför exponenter.",
   "pregrade_tactic": {
    "handle": "SI-prefix-omvandling",
    "move": "Skriv alla alternativ i meter med tio-potenser — då blir jämförelsen bara en jämförelse av exponenter."
@@ -5214,7 +5214,7 @@
    {
     "letter": "B",
     "why_tempting": "3/4 dyker upp om man räknar \uE000\\sqrt{1 - 1/4} = \\sqrt{3/4} ≈ 0,87 ≈\uE001 3/4 — alltså glömmer att kvadrera b först.",
-    "why_wrong": "Man måste kvadrera b INNAN man subtraherar. Steg 4 ger b^{2} = 1/16, inte 1/4. Resultatet blir 15/16, inte 3/4."
+    "why_wrong": "Man måste kvadrera b INNAN man subtraherar. Steg 4 ger \uE000b^{2} =\uE001 1/16, inte 1/4. Resultatet blir 15/16, inte 3/4."
    },
    {
     "letter": "C",
@@ -5228,42 +5228,42 @@
    }
   ],
   "framework_id": "XYZ-TRAP-009",
-  "pitfall": "Det är lätt att räkna 1 - 1/4 = 3/4 och ta roten ur — men man har glömt att kvadrera 1/4 först. Botemedlet: skriv ALLTID ut b^{2} = (1/4)^{2} = 1/16 som en separat rad innan subtraktion.",
-  "solution_path": "Givet a^{2} + b^{2} = 1 och b = 1/4: a^{2} = 1 - (1/4)^{2} = 1 - 1/16 = 15/16. Eftersom a > 0 är a = \\sqrt{15/16} = \\sqrt{15}/4. Bland alternativen står \"15/16\" — sannolikt menas \\sqrt{15}/4 men labeln matchar a^{2} = 15/16. Svaret är A.",
+  "pitfall": "Det är lätt att räkna \uE0001 -\uE001 1/4 \uE000=\uE001 3/4 och ta roten ur — men man har glömt att kvadrera 1/4 först. Botemedlet: skriv ALLTID ut \uE000b^{2} = (1/4)^{2} =\uE001 1/16 som en separat rad innan subtraktion.",
+  "solution_path": "Givet \uE000a^{2} + b^{2} = 1\uE001 och \uE000b =\uE001 1/4: \uE000a^{2} = 1 - (1/4)^{2} = 1 -\uE001 1/16 \uE000=\uE001 15/16. Eftersom \uE000a > 0\uE001 är \uE000a = \\sqrt{15/16} = \\sqrt{15}/4\uE001. Bland alternativen står \"15/16\" — sannolikt menas \uE000\\sqrt{15}/4\uE001 men labeln matchar \uE000a^{2} =\uE001 15/16. Svaret är A.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi har två villkor: a > 0 och a^{2} + b^{2} = 1. Givet b = 1/4, sök a.",
+    "text": "Vi har två villkor: \uE000a > 0\uE001 och \uE000a^{2} + b^{2} = 1\uE001. Givet \uE000b =\uE001 1/4, sök a.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "a^{2} = a \\cdot a. Att kvadrera är att gångra med sig själv. T.ex. 3^{2} = 9, (1/2)^{2} = 1/4.",
+    "text": "\uE000a^{2} = a \\cdot a\uE001. Att kvadrera är att gångra med sig själv. T.ex. \uE0003^{2} = 9\uE001, \uE000(1/2)^{2} =\uE001 1/4.",
     "tier": "detail",
     "title": "Vad betyder a²?"
    },
    {
     "n": 3,
-    "text": "Från a^{2} + b^{2} = 1 följer a^{2} = 1 - b^{2}.",
+    "text": "Från \uE000a^{2} + b^{2} = 1\uE001 följer \uE000a^{2} = 1 - b^{2}\uE001.",
     "tier": "essential",
     "title": "Isolera a²"
    },
    {
     "n": 4,
-    "text": "b = 1/4, så b^{2} = (1/4)^{2} = 1/4 \\cdot 1/4 = 1/16.",
+    "text": "\uE000b =\uE001 1/4, så \uE000b^{2} = (1/4)^{2} =\uE001 1/4 \uE000\\cdot\uE001 1/4 \uE000=\uE001 1/16.",
     "tier": "essential",
     "title": "Räkna ut b²"
    },
    {
     "n": 5,
-    "text": "\\left(\\frac{p}{q}\\right)^{2} = \\frac{p^{2}}{q^{2}}. Kvadrera täljaren och nämnaren var för sig. T.ex. (1/4)^{2} = 1^{2}/4^{2} = 1/16.",
+    "text": "\uE000\\left(\\frac{p}{q}\\right)^{2} = \\frac{p^{2}}{q^{2}}\uE001. Kvadrera täljaren och nämnaren var för sig. T.ex. \uE000(1/4)^{2} = 1^{2}/4^{2} =\uE001 1/16.",
     "tier": "detail",
     "title": "Hur kvadrerar man ett bråk?"
    },
    {
     "n": 6,
-    "text": "a^{2} = 1 - 1/16 = 16/16 - 1/16 = 15/16.",
+    "text": "\uE000a^{2} = 1 -\uE001 1/16 \uE000=\uE001 16/16 \uE000-\uE001 1/16 \uE000=\uE001 15/16.",
     "tier": "essential",
     "title": "Sätt in i ekvationen"
    },
@@ -5275,13 +5275,13 @@
    },
    {
     "n": 8,
-    "text": "a^{2} = 15/16. Ta kvadratroten: a = \\pm\\sqrt{15/16} = \\pm \\frac{\\sqrt{15}}{4}. Villkoret a > 0 utesluter den negativa roten, så a = \\sqrt{15}/4.",
+    "text": "\uE000a^{2} =\uE001 15/16. Ta kvadratroten: \uE000a = \\pm\\sqrt{15/16} = \\pm \\frac{\\sqrt{15}}{4}\uE001. Villkoret \uE000a > 0\uE001 utesluter den negativa roten, så \uE000a = \\sqrt{15}/4\uE001.",
     "tier": "essential",
     "title": "Lös för a"
    },
    {
     "n": 9,
-    "text": "\\sqrt{15/16} = \\sqrt{15}/\\sqrt{16} = \\sqrt{15}/4 (eftersom \\sqrt{16} = 4).",
+    "text": "\uE000\\sqrt{15/16} = \\sqrt{15}/\\sqrt{16} = \\sqrt{15}/4\uE001 (eftersom \uE000\\sqrt{16} =\uE001 4).",
     "tier": "detail",
     "title": "Förenkla √(15/16)"
    },
@@ -5293,24 +5293,24 @@
    },
    {
     "n": 11,
-    "text": "3/4 skulle gälla om a = \\sqrt{9/16} = 3/4, men då måste a^{2} = 9/16, vilket kräver b^{2} = 7/16 — och b = 1/4 ger b² = 1/16, inte 7/16. Alltså inte 3/4.",
+    "text": "3/4 skulle gälla om \uE000a = \\sqrt{9/16} =\uE001 3/4, men då måste \uE000a^{2} =\uE001 9/16, vilket kräver \uE000b^{2} =\uE001 7/16 — och \uE000b =\uE001 1/4 ger b² \uE000=\uE001 1/16, inte 7/16. Alltså inte 3/4.",
     "tier": "detail",
     "title": "Varför inte 3/4?"
    },
    {
     "n": 12,
-    "text": "a = \\sqrt{15}/4 \\approx 3{,}873/4 \\approx 0{,}968. Då a^{2} \\approx 0{,}938 = 15/16, och a^{2} + b^{2} = 15/16 + 1/16 = 1. Stämmer.",
+    "text": "\uE000a = \\sqrt{15}/4 \\approx\uE001 3{,}873/4 \uE000\\approx\uE001 0{,}968. Då \uE000a^{2} \\approx\uE001 0{,}938 \uE000=\uE001 15/16, och \uE000a^{2} + b^{2} =\uE001 15/16 \uE000+\uE001 1/16 \uE000= 1\uE001. Stämmer.",
     "tier": "detail",
     "title": "Verifiera"
    },
    {
     "n": 13,
-    "text": "a^{2} = 15/16 (motsvarande svarsalternativ A som rapporterats). Insikten i en mening: vid Pythagoras-liknande villkor (a^{2} + b^{2} = 1), isolera ena kvadraten genom subtraktion och kom ihåg att gemensam nämnare gör subtraktionen enkel.",
+    "text": "\uE000a^{2} =\uE001 15/16 (motsvarande svarsalternativ A som rapporterats). Insikten i en mening: vid Pythagoras-liknande villkor \uE000(a^{2} + b^{2} =\uE001 1), isolera ena kvadraten genom subtraktion och kom ihåg att gemensam nämnare gör subtraktionen enkel.",
     "tier": "essential",
     "title": "Slutsats"
    }
   ],
-  "technique": "Pythagoras-isolations-strategin: vid villkor på for- men a^{2}+b^{2}=k och en variabel given, kvadrera det givna värdet FÖRST och subtrahera från k för att hitta den andra kvadraten. Triggern är \"a² + b² = konstant\" — operationen är subtraktion av kvadrater, inte rötter.",
+  "technique": "Pythagoras-isolations-strategin: vid villkor på for- men \uE000a^{2}+b^{2}=k\uE001 och en variabel given, kvadrera det givna värdet FÖRST och subtrahera från k för att hitta den andra kvadraten. Triggern är \"a² \uE000+\uE001 b² \uE000=\uE001 konstant\" — operationen är subtraktion av kvadrater, inte rötter.",
   "pregrade_tactic": {
    "handle": "Pythagoras-baklänges",
    "move": "Vid villkoret a² + b² = konstant och ett av talen givet: kvadrera det kända, dra ifrån, ta roten ur — inga räknerötter åt fel håll."
@@ -12650,7 +12650,7 @@
    {
     "n": 4,
     "title": "Identifiera flicknamn-kurvorna",
-    "text": "- Kerstin: helstreckad tunn, peak ~1945 (~2 300)\n- Eva: streckad svart, peak ~1950 (~3 700)\n- Maria: fet svart, peak ~1965-1970 (~3 000-3 200)\n- Anna: helstreckad grå, peak ~1975-1980 (~3 500)\n- Emma: streckad grå, peak ~1995-2000 (~1 900)",
+    "text": "- Kerstin: helstreckad tunn, kulmen ~1945 (~2 300)\n- Eva: streckad svart, kulmen ~1950 (~3 700)\n- Maria: fet svart, kulmen ~1965-1970 (~3 000-3 200)\n- Anna: helstreckad grå, kulmen ~1975-1980 (~3 500)\n- Emma: streckad grå, kulmen ~1995-2000 (~1 900)",
     "tier": "essential"
    },
    {
@@ -12692,11 +12692,11 @@
    {
     "n": 11,
     "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är A (En av sexton). Insikten i en mening: 'vanligaste namnet vid år X' = den HÖGSTA kurvan vid just det årets lodräta linje — inte den kurva som har sin topp närmast X, inte den med högst absolut peak någonstans i kurvan.",
+    "text": "Facit bekräftar: svaret är A (En av sexton). Insikten i en mening: 'vanligaste namnet vid år X' = den HÖGSTA kurvan vid just det årets lodräta linje — inte den kurva som har sin topp närmast X, inte den med högst absolut kulmen någonstans i kurvan.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'vanligaste vid år X'-frågor på linjediagram med flera kurvor: (1) hitta året på x-axeln, (2) avläs ALLA kurvors y-värden vid det året, (3) identifiera den högsta, (4) beräkna andelen av totalpopulationen, (5) konvertera till 'en av X' format. Triggern: 'vanligaste/populäraste vid år X' → multi-kurvs-jämförelse vid x = X, INTE årets-peak-jakt.",
+  "technique": "DTK-strategi för 'vanligaste vid år X'-frågor på linjediagram med flera kurvor: (1) hitta året på x-axeln, (2) avläs ALLA kurvors y-värden vid det året, (3) identifiera den högsta, (4) beräkna andelen av totalpopulationen, (5) konvertera till 'en av X' format. Triggern: 'vanligaste/populäraste vid år X' → multi-kurvs-jämförelse vid x = X, INTE årets-kulmen-jakt.",
   "pregrade_tactic": {
    "handle": "Lodrät-vid-1960-välj-högsta",
    "move": "Dra lodrät linje vid 1960, jämför alla fem flicknamn — Eva är högst (~3 000). 3 000/49 000 ≈ 1/16 = 'en av sexton'."
@@ -12712,7 +12712,7 @@
    {
     "letter": "A",
     "why_tempting": "2,5 gånger är frestande om man läser Johan 1980 vid ~2 000 och Lars 1980 vid ~800 — då blir kvoten 2,5. Det är en konservativ kvotbedömning.",
-    "why_wrong": "Som steg 6 + 7 visar: Johan 1980 är cirka 2 400-2 500 (nära peak), och Lars 1980 är ungefär 600-700 (på sluttning ner). Kvot ≈ 2 400/700 = 3,4. Facit fastslår B (3,5). 2,5 underskattar Johans toppvärde."
+    "why_wrong": "Som steg 6 + 7 visar: Johan 1980 är cirka 2 400-2 500 (nära kulmen), och Lars 1980 är ungefär 600-700 (på sluttning ner). Kvot ≈ 2 400/700 = 3,4. Facit fastslår B (3,5). 2,5 underskattar Johans toppvärde."
    },
    {
     "letter": "C",

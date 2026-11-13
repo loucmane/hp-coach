@@ -24,35 +24,35 @@
   ],
   "framework_id": "KVA-TRAP-018",
   "pitfall": null,
-  "solution_path": "Kvantitet I = 0{,}99^{99} är ett tal mindre än 1 (eftersom basen < 1) — närmar sig 0 ju högre exponent. Kvantitet II = 1{,}1^{11} är ett tal större än 1 (eftersom basen > 1). Alltså II > I. Svaret är B.",
+  "solution_path": "Kvantitet I = \uE0000{,}99^{99}\uE001 är ett tal mindre än 1 (eftersom basen < 1) — närmar sig 0 ju högre exponent. Kvantitet II = \uE0001{,}1^{11}\uE001 är ett tal större än 1 (eftersom basen > 1). Alltså II > I. Svaret är B.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi ska jämföra två potenser: 0{,}99^{99} mot 1{,}1^{11}. Inga räknehjälpmedel — vi måste resonera om storleksordningen.",
+    "text": "Vi ska jämföra två potenser: \uE0000{,}99^{99}\uE001 mot \uE0001{,}1^{11}\uE001. Inga räknehjälpmedel — vi måste resonera om storleksordningen.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "När 0 < a < 1, så är a^{n} ett positivt tal mindre än 1. Och ju större exponent, desto MINDRE blir resultatet. Exempel: 0{,}5^{1} = 0{,}5, 0{,}5^{2} = 0{,}25, 0{,}5^{3} = 0{,}125 — talet krymper mot 0.",
+    "text": "När 0 < a < 1, så är \uE000a^{n}\uE001 ett positivt tal mindre än 1. Och ju större exponent, desto MINDRE blir resultatet. Exempel: \uE0000{,}5^{1} = 0{,}5\uE001, \uE0000{,}5^{2} = 0{,}25\uE001, \uE0000{,}5^{3} = 0{,}125\uE001 — talet krymper mot 0.",
     "tier": "detail",
     "title": "Vad händer när basen är mellan 0 och 1?"
    },
    {
     "n": 3,
-    "text": "När a > 1, så är a^{n} ett tal större än 1. Och ju större exponent, desto STÖRRE blir resultatet. Exempel: 2^{1} = 2, 2^{2} = 4, 2^{3} = 8 — talet växer.",
+    "text": "När a > 1, så är \uE000a^{n}\uE001 ett tal större än 1. Och ju större exponent, desto STÖRRE blir resultatet. Exempel: \uE0002^{1} = 2\uE001, \uE0002^{2} = 4\uE001, \uE0002^{3} = 8\uE001 — talet växer.",
     "tier": "detail",
     "title": "Vad händer när basen är större än 1?"
    },
    {
     "n": 4,
-    "text": "Basen är 0,99, vilket är mellan 0 och 1. Då är 0{,}99^{99} ett positivt tal MINDRE än 1.",
+    "text": "Basen är 0,99, vilket är mellan 0 och 1. Då är \uE0000{,}99^{99}\uE001 ett positivt tal MINDRE än 1.",
     "tier": "essential",
     "title": "Klassa Kvantitet I"
    },
    {
     "n": 5,
-    "text": "Basen är 1,1, vilket är större än 1. Då är 1{,}1^{11} ett tal STÖRRE än 1.",
+    "text": "Basen är 1,1, vilket är större än 1. Då är \uE0001{,}1^{11}\uE001 ett tal STÖRRE än 1.",
     "tier": "essential",
     "title": "Klassa Kvantitet II"
    },
@@ -64,7 +64,7 @@
    },
    {
     "n": 7,
-    "text": "För känsla: 1{,}1^{2} = 1{,}21, 1{,}1^{3} ≈ 1{,}33, …, 1{,}1^{11} ≈ 2{,}85. Och Kvantitet I är runt 0{,}37 (eftersom 0{,}99^{99} ≈ 1/e ≈ 0{,}37). Skillnaden är stor.",
+    "text": "För känsla: \uE0001{,}1^{2} = 1{,}21\uE001, \uE0001{,}1^{3} ≈ 1{,}33\uE001, …, \uE0001{,}1^{11} ≈ 2{,}85\uE001. Och Kvantitet I är runt \uE0000{,}37\uE001 (eftersom \uE0000{,}99^{99}\uE001 ≈ 1/e ≈ 0{,}37). Skillnaden är stor.",
     "tier": "detail",
     "title": "Hur mycket större är II egentligen?"
    },
@@ -76,7 +76,7 @@
    },
    {
     "n": 9,
-    "text": "Även 0{,}99^{2} = 0{,}9801 < 1 och 1{,}1^{2} = 1{,}21 > 1. Slutsatsen 'II > I' gäller redan vid små exponenter — vid 99 respektive 11 är skillnaden bara större.",
+    "text": "Även \uE0000{,}99^{2} = 0{,}9801 < 1\uE001 och \uE0001{,}1^{2} = 1{,}21 > 1\uE001. Slutsatsen 'II > I' gäller redan vid små exponenter — vid 99 respektive 11 är skillnaden bara större.",
     "tier": "detail",
     "title": "Sanity-check med små exponenter"
    },
@@ -87,7 +87,7 @@
     "title": "Slutsats"
    }
   ],
-  "technique": "Bas-mot-1-strategi: när du jämför potenser med olika baser, klassa varje bas som <1, =1 eller >1. Triggern: 'jämför a^m och b^n med olika baser nära 1' → räkna inte ut, ranka via basens läge mot 1.",
+  "technique": "Bas-mot-1-strategi: när du jämför potenser med olika baser, klassa varje bas som <1, =1 eller >1. Triggern: 'jämför \uE000a^m\uE001 och \uE000b^n\uE001 med olika baser nära 1' \uE000→\uE001 räkna inte ut, ranka via basens läge mot 1.",
   "pregrade_tactic": {
    "handle": "Basläge-mot-1",
    "move": "Klassa varje bas: ligger den under 1 eller över 1? Räkna inte ut potenserna — basens läge mot 1 avgör vilken som krymper och vilken som växer."
@@ -308,13 +308,13 @@
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Det är lätt att tro att (x^{3})^{2} på något sätt 'tappar' en exponent och blir x^{5} eller mindre.",
+    "why_tempting": "Det är lätt att tro att \uE000(x^{3})^{2}\uE001 på något sätt 'tappar' en exponent och blir \uE000x^{5}\uE001 eller mindre.",
     "why_wrong": "Steg 4: regeln är att MULTIPLICERA inre och yttre exponenter, inte att addera dem som termer. 3·2 = 6, inte 3+2 = 5."
    },
    {
     "letter": "C",
-    "why_tempting": "Om man minns regeln som '(x^{m})^{n} = x^{m+n}' fel — vilket är multiplikationsregeln för x^{m} \\cdot x^{n} — landar man på x^{5} och tror att I = II.",
-    "why_wrong": "Steg 3–4: två olika regler. x^{m} \\cdot x^{n} = x^{m+n} (multiplikation = addition av exponenter). (x^{m})^{n} = x^{m \\cdot n} (potens av potens = multiplikation av exponenter). Här är det den andra."
+    "why_tempting": "Om man minns regeln som '\uE000(x^{m})^{n} = x^{m+n}\uE001' fel — vilket är multiplikationsregeln för \uE000x^{m} \\cdot x^{n}\uE001 — landar man på \uE000x^{5}\uE001 och tror att I = II.",
+    "why_wrong": "Steg 3–4: två olika regler. \uE000x^{m} \\cdot x^{n} = x^{m+n}\uE001 (multiplikation = addition av exponenter). \uE000(x^{m})^{n} = x^{m \\cdot n}\uE001 (potens av potens = multiplikation av exponenter). Här är det den andra."
    },
    {
     "letter": "D",
@@ -324,59 +324,59 @@
   ],
   "framework_id": "KVA-TRAP-018",
   "pitfall": null,
-  "solution_path": "(x^{3})^{2} = x^{3 \\cdot 2} = x^{6}. Kvantitet I = x^{6} och Kvantitet II = x^{5}. Eftersom x > 1 är x^{6} > x^{5}. Svaret är A.",
+  "solution_path": "\uE000(x^{3})^{2} = x^{3 \\cdot 2} = x^{6}\uE001. Kvantitet I = \uE000x^{6}\uE001 och Kvantitet II = \uE000x^{5}\uE001. Eftersom x > 1 är \uE000x^{6} > x^{5}\uE001. Svaret är A.",
   "steps": [
    {
     "n": 1,
-    "text": "Givet x > 1. Vi ska jämföra (x^{3})^{2} mot x^{5}.",
+    "text": "Givet x > 1. Vi ska jämföra \uE000(x^{3})^{2}\uE001 mot \uE000x^{5}\uE001.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "En potens upphöjt till en potens. Yttre exponent 2 betyder 'kvadrera det inre uttrycket': (x^{3})^{2} = x^{3} \\cdot x^{3}.",
+    "text": "En potens upphöjt till en potens. Yttre exponent 2 betyder 'kvadrera det inre uttrycket': \uE000(x^{3})^{2} = x^{3} \\cdot x^{3}\uE001.",
     "tier": "detail",
-    "title": "Vad betyder (x^{3})^{2}?"
+    "title": "Vad betyder \uE000(x^{3})^{2}\uE001?"
    },
    {
     "n": 3,
-    "text": "Regel: a^{m} \\cdot a^{n} = a^{m+n}. Exempel: x^{3} \\cdot x^{3} = x^{3+3} = x^{6}. Vi adderar exponenterna.",
+    "text": "Regel: \uE000a^{m} \\cdot a^{n} = a^{m+n}\uE001. Exempel: \uE000x^{3} \\cdot x^{3} = x^{3+3} = x^{6}\uE001. Vi adderar exponenterna.",
     "tier": "detail",
     "title": "Multiplikation av potenser med samma bas"
    },
    {
     "n": 4,
-    "text": "(x^{3})^{2} = x^{3} \\cdot x^{3} = x^{6}. Generellt: (a^{m})^{n} = a^{m \\cdot n} — multiplicera exponenterna.",
+    "text": "\uE000(x^{3})^{2} = x^{3} \\cdot x^{3} = x^{6}\uE001. Generellt: \uE000(a^{m})^{n} = a^{m \\cdot n}\uE001 — multiplicera exponenterna.",
     "tier": "essential",
     "title": "Förenkla Kvantitet I"
    },
    {
     "n": 5,
-    "text": "Vi har nu Kvantitet I = x^{6} och Kvantitet II = x^{5}. Båda har samma bas (x) men olika exponenter (6 vs 5).",
+    "text": "Vi har nu Kvantitet I = \uE000x^{6}\uE001 och Kvantitet II = \uE000x^{5}\uE001. Båda har samma bas (x) men olika exponenter (6 vs 5).",
     "tier": "essential",
     "title": "Jämför exponenter"
    },
    {
     "n": 6,
-    "text": "När basen är > 1, ger STÖRRE EXPONENT ett STÖRRE tal. Exempel: 2^{6} = 64, 2^{5} = 32 — sexan vinner.",
+    "text": "När basen är > 1, ger STÖRRE EXPONENT ett STÖRRE tal. Exempel: \uE0002^{6} = 64\uE001, \uE0002^{5} = 32\uE001 — sexan vinner.",
     "tier": "essential",
     "title": "Vilken är större när basen > 1?"
    },
    {
     "n": 7,
-    "text": "x > 1, så x^{6} > x^{5}. Alltså är Kvantitet I > Kvantitet II.",
+    "text": "x > 1, så \uE000x^{6} > x^{5}\uE001. Alltså är Kvantitet I > Kvantitet II.",
     "tier": "essential",
     "title": "Tillämpa på vår fråga"
    },
    {
     "n": 8,
-    "text": "Kvantitet I: (2^{3})^{2} = 8^{2} = 64. Kvantitet II: 2^{5} = 32. 64 > 32 ✓.",
+    "text": "Kvantitet I: \uE000(2^{3})^{2} = 8^{2} = 64\uE001. Kvantitet II: \uE0002^{5} = 32\uE001. 64 > 32 ✓.",
     "tier": "detail",
     "title": "Sanity-check med x = 2"
    },
    {
     "n": 9,
-    "text": "1{,}1^{6} ≈ 1{,}77 och 1{,}1^{5} ≈ 1{,}61. I > II ✓ även för bas nära 1.",
+    "text": "\uE0001{,}1^{6} ≈ 1{,}77\uE001 och \uE0001{,}1^{5} ≈ 1{,}61\uE001. I > II ✓ även för bas nära 1.",
     "tier": "detail",
     "title": "Sanity-check med x = 1.1"
    },
@@ -388,12 +388,12 @@
    },
    {
     "n": 11,
-    "text": "Svaret är A: Kvantitet I > Kvantitet II. Insikten i en mening: vid x > 1 ger högre exponent större tal, och (x^{3})^{2} = x^{6} har högre exponent än x^{5}.",
+    "text": "Svaret är A: Kvantitet I > Kvantitet II. Insikten i en mening: vid x > 1 ger högre exponent större tal, och \uE000(x^{3})^{2} = x^{6}\uE001 har högre exponent än \uE000x^{5}\uE001.",
     "tier": "essential",
     "title": "Slutsats"
    }
   ],
-  "technique": "Potens-av-potens-regeln: (a^{m})^{n} = a^{m \\cdot n}. Triggern: parenteser runt en potens med yttre exponent — multiplicera exponenterna (skilj från a^{m} \\cdot a^{n} som ADDERAR).",
+  "technique": "Potens-av-potens-regeln: \uE000(a^{m})^{n} = a^{m \\cdot n}\uE001. Triggern: parenteser runt en potens med yttre exponent — multiplicera exponenterna (skilj från \uE000a^{m} \\cdot a^{n}\uE001 som ADDERAR).",
   "pregrade_tactic": {
    "handle": "Potens-av-potens-regeln",
    "move": "När en potens är inkapslad i en parentes med yttre exponent: multiplicera exponenterna, addera dem inte."
@@ -1238,7 +1238,7 @@
   }
  },
  "var-2015-kvant1-NOG-027": {
-  "solution_path": "x är ett heltal; vi vill veta om 15 delar x. (1): x/10 är ett heltal — alltså 10 delar x. Men 10 = 2·5 saknar faktorn 3, så 15 (= 3·5) delar inte nödvändigtvis x (motexempel: x=10). Otillräckligt. (2): x² är delbart med 30 = 2·3·5. För varje primtal p gäller p \\mid x^2 \\Leftrightarrow p \\mid x, så 2, 3 och 5 delar x — alltså 30 delar x och därmed 15. Räcker. Svar: B.",
+  "solution_path": "x är ett heltal; vi vill veta om 15 delar x. (1): x/10 är ett heltal — alltså 10 delar x. Men 10 = 2·5 saknar faktorn 3, så 15 (= 3·5) delar inte nödvändigtvis x (motexempel: x=10). Otillräckligt. (2): x² är delbart med 30 = 2·3·5. För varje primtal p gäller \uE000p \\mid x^2 \\Leftrightarrow p \\mid x\uE001, så 2, 3 och 5 delar x — alltså 30 delar x och därmed 15. Räcker. Svar: B.",
   "steps": [
    {
     "n": 1,
@@ -1255,13 +1255,13 @@
    {
     "n": 3,
     "title": "Primtalsfaktorisering",
-    "text": "Varje positivt heltal har en unik primtalsfaktorisering, t.ex. 60 = 2^2 \\cdot 3 \\cdot 5. Delbarhet av x med k motsvarar att x:s faktorisering innehåller k:s faktorisering.",
+    "text": "Varje positivt heltal har en unik primtalsfaktorisering, t.ex. \uE00060 = 2^2 \\cdot 3 \\cdot 5\uE001. Delbarhet av x med k motsvarar att x:s faktorisering innehåller k:s faktorisering.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Översätt (1)",
-    "text": "(1): 'x/10 är ett heltal' betyder 10 delar x, dvs 10 \\mid x. Eftersom 10 = 2·5 har x faktorerna 2 och 5.",
+    "text": "(1): 'x/10 är ett heltal' betyder 10 delar x, dvs \uE00010 \\mid x\uE001. Eftersom 10 = 2·5 har x faktorerna 2 och 5.",
     "tier": "essential"
    },
    {
@@ -1285,13 +1285,13 @@
    {
     "n": 8,
     "title": "Primfaktorregeln",
-    "text": "För varje primtal p: om p \\mid x^2 så p \\mid x. Bevis: skriv x = p^a · (annat), då x² = p^(2a) · (annat)². Om p delar x² måste 2a ≥ 1, alltså a ≥ 1 (heltal), så p delar x.",
+    "text": "För varje primtal p: om \uE000p \\mid x^2\uE001 så \uE000p \\mid x\uE001. Bevis: skriv \uE000x = p^a · (annat)\uE001, då x² \uE000= p^(2a) ·\uE001 (annat)². Om p delar x² måste \uE0002a ≥ 1\uE001, alltså \uE000a ≥ 1 (heltal)\uE001, så p delar x.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Tillämpa primfaktorregeln på (2)",
-    "text": "Eftersom 2, 3 och 5 är primtal och alla tre delar x², delar alla tre också x. Alltså 2 \\cdot 3 \\cdot 5 = 30 delar x, och i synnerhet 15 = 3 \\cdot 5 delar x.",
+    "text": "Eftersom 2, 3 och 5 är primtal och alla tre delar x², delar alla tre också x. Alltså \uE0002 \\cdot 3 \\cdot 5 = 30\uE001 delar x, och i synnerhet \uE00015 = 3 \\cdot 5\uE001 delar x.",
     "tier": "essential"
    },
    {
@@ -1578,13 +1578,13 @@
    },
    {
     "letter": "D",
-    "why_tempting": "Om du minns regeln som 'multiplicera koefficienterna båda sidor' kan du landa på 6x^{2} (genom att räkna 2·3·x·x).",
-    "why_wrong": "Steg 5: x · 3x = 3x^{2}, inte 6x^{2}. Det finns bara EN trea i längdens uttryck."
+    "why_tempting": "Om du minns regeln som 'multiplicera koefficienterna båda sidor' kan du landa på \uE0006x^{2}\uE001 (genom att räkna 2·3·x·x).",
+    "why_wrong": "Steg 5: x · 3x = \uE0003x^{2}\uE001, inte \uE0006x^{2}\uE001. Det finns bara EN trea i längdens uttryck."
    }
   ],
   "framework_id": null,
   "pitfall": null,
-  "solution_path": "Bredd är x, längd är 3x. Area = bredd · längd = x · 3x = 3x^{2}. Villkoret 'arean mindre än 10' blir 3x^{2} < 10. Svaret är A.",
+  "solution_path": "Bredd är x, längd är 3x. Area = bredd · längd = x · 3x = \uE0003x^{2}\uE001. Villkoret 'arean mindre än 10' blir \uE0003x^{2}\uE001 < 10. Svaret är A.",
   "steps": [
    {
     "n": 1,
@@ -1612,13 +1612,13 @@
    },
    {
     "n": 5,
-    "text": "x · 3x = 3 · x · x = 3 · x^{2} = 3x^{2}. (Notation: x^{2} betyder x gånger x — multiplicera x med sig själv.)",
+    "text": "x · 3x = 3 · x · x = 3 · \uE000x^{2}\uE001 = \uE0003x^{2}\uE001. (Notation: \uE000x^{2}\uE001 betyder x gånger x — multiplicera x med sig själv.)",
     "tier": "detail",
     "title": "Förenkla x · 3x"
    },
    {
     "n": 6,
-    "text": "'Arean mindre än 10' betyder area < 10. Med area = 3x^{2} blir det 3x^{2} < 10.",
+    "text": "'Arean mindre än 10' betyder area < 10. Med area = \uE0003x^{2}\uE001 blir det \uE0003x^{2}\uE001 < 10.",
     "tier": "essential",
     "title": "Sätt upp olikheten"
    },
@@ -1630,19 +1630,19 @@
    },
    {
     "n": 8,
-    "text": "A: 3x^{2} < 10 — matchar exakt. B: 4x < 10 — det är omkretsformeln (2b+2l = 2x+6x = 8x), inte area. C: 3x^{2} > 10 — fel olikhetsriktning. D: 6x^{2} < 10 — fel koefficient.",
+    "text": "A: \uE0003x^{2}\uE001 < 10 — matchar exakt. B: 4x < 10 — det är omkretsformeln (2b+2l = 2x+6x = 8x), inte area. C: \uE0003x^{2}\uE001 > 10 — fel olikhetsriktning. D: \uE0006x^{2}\uE001 < 10 — fel koefficient.",
     "tier": "essential",
     "title": "Matcha mot alternativen"
    },
    {
     "n": 9,
-    "text": "A säger 3x^{2} < 10. Det är precis vad vi härledde i steg 6.",
+    "text": "A säger \uE0003x^{2}\uE001 < 10. Det är precis vad vi härledde i steg 6.",
     "tier": "detail",
     "title": "Verifiera A"
    },
    {
     "n": 10,
-    "text": "Svaret är A: 3x^{2} < 10. Insikten i en mening: när längden uttrycks som en faktor gånger bredden, hamnar bredden i kvadrat i arean.",
+    "text": "Svaret är A: \uE0003x^{2}\uE001 < 10. Insikten i en mening: när längden uttrycks som en faktor gånger bredden, hamnar bredden i kvadrat i arean.",
     "tier": "essential",
     "title": "Slutsats"
    }
@@ -1660,50 +1660,50 @@
    "recipe": "variant-c-regen-wave"
   },
   "framework_id": "XYZ-TRAP-033",
-  "solution_path": "Räkna \\sqrt{84} - \\sqrt{10} var för sig. \\sqrt{84} ligger mellan \\sqrt{81} = 9 och \\sqrt{100} = 10 — nära 9,17. \\sqrt{10} ligger mellan \\sqrt{9} = 3 och \\sqrt{16} = 4 — nära 3,16. Differens: 9{,}17 - 3{,}16 \\approx 6{,}01. Närmast 6 (alternativ B).",
-  "technique": "Differens av rötter: räkna varje rot separat och subtrahera. \\sqrt{a} - \\sqrt{b} är INTE \\sqrt{a - b}. Använd närmaste kvadrattal för approximation.",
-  "pitfall": "Botemedlet mot 'rot av differens'-fällan: skriv ut \\sqrt{a} - \\sqrt{b} separat. Sedan approximera varje rot via närmaste perfekta kvadrat: \\sqrt{84} \\approx \\sqrt{81} = 9 (lite mer), \\sqrt{10} \\approx \\sqrt{9} = 3 (lite mer).",
+  "solution_path": "Räkna \uE000\\sqrt{84} - \\sqrt{10}\uE001 var för sig. \uE000\\sqrt{84}\uE001 ligger mellan \uE000\\sqrt{81} = 9\uE001 och \uE000\\sqrt{100} = 10\uE001 — nära 9,17. \uE000\\sqrt{10}\uE001 ligger mellan \uE000\\sqrt{9} = 3\uE001 och \uE000\\sqrt{16} = 4\uE001 — nära 3,16. Differens: \uE0009{,}17 - 3{,}16 \\approx 6{,}01\uE001. Närmast 6 (alternativ B).",
+  "technique": "Differens av rötter: räkna varje rot separat och subtrahera. \uE000\\sqrt{a} - \\sqrt{b}\uE001 är INTE \uE000\\sqrt{a - b}\uE001. Använd närmaste kvadrattal för approximation.",
+  "pitfall": "Botemedlet mot 'rot av differens'-fällan: skriv ut \uE000\\sqrt{a} - \\sqrt{b}\uE001 separat. Sedan approximera varje rot via närmaste perfekta kvadrat: \uE000\\sqrt{84} \\approx \\sqrt{81} = 9\uE001 (lite mer), \uE000\\sqrt{10} \\approx \\sqrt{9} = 3\uE001 (lite mer).",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Beräkna \\sqrt{84} - \\sqrt{10} approximativt och välj närmaste värde bland 4, 6, 8, 10.",
+    "text": "Beräkna \uE000\\sqrt{84} - \\sqrt{10}\uE001 approximativt och välj närmaste värde bland 4, 6, 8, 10.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Vanlig fälla: rot-av-differens",
-    "text": "Frestelse: räkna \\sqrt{84 - 10} = \\sqrt{74} \\approx 8{,}6 och svara 8. FEL. \\sqrt{a} - \\sqrt{b} \\ne \\sqrt{a - b} i allmänhet — rotuttrycket distribuerar INTE över subtraktion.",
+    "text": "Frestelse: räkna \uE000\\sqrt{84 - 10} = \\sqrt{74} \\approx 8{,}6\uE001 och svara 8. FEL. \uE000\\sqrt{a} - \\sqrt{b} \\ne \\sqrt{a - b}\uE001 i allmänhet — rotuttrycket distribuerar INTE över subtraktion.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Definiera kvadratrot",
-    "text": "\\sqrt{n} är det positiva tal som upphöjt till 2 ger n. Närmast kvadrattal: \\sqrt{81} = 9, \\sqrt{100} = 10.",
+    "text": "\uE000\\sqrt{n}\uE001 är det positiva tal som upphöjt till 2 ger n. Närmast kvadrattal: \uE000\\sqrt{81} = 9\uE001, \uE000\\sqrt{100} = 10\uE001.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Approximera √84",
-    "text": "84 ligger nära 81. Linjär approximation: \\sqrt{84} \\approx 9 + (84-81)/(2 \\cdot 9) = 9 + 3/18 \\approx 9{,}17 (använder regeln \\sqrt{n+k} \\approx \\sqrt{n} + k/(2\\sqrt{n})).",
+    "text": "84 ligger nära 81. Linjär approximation: \uE000\\sqrt{84} \\approx 9 + (84-81)/(2 \\cdot 9) = 9 + 3/18 \\approx 9{,}17\uE001 (använder regeln \uE000\\sqrt{n+k} \\approx \\sqrt{n} + k/(2\\sqrt{n})\uE001).",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Approximera √10",
-    "text": "10 ligger nära 9. \\sqrt{10} \\approx 3 + (10-9)/(2 \\cdot 3) = 3 + 1/6 \\approx 3{,}17.",
+    "text": "10 ligger nära 9. \uE000\\sqrt{10} \\approx 3 + (10-9)/(2 \\cdot 3) = 3 + 1/6 \\approx 3{,}17\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Räkna differensen",
-    "text": "\\sqrt{84} - \\sqrt{10} \\approx 9{,}17 - 3{,}17 = 6{,}00 (eller 9{,}17 - 3{,}16 \\approx 6{,}01 med precisare värden).",
+    "text": "\uE000\\sqrt{84} - \\sqrt{10} \\approx 9{,}17 - 3{,}17 = 6{,}00\uE001 (eller \uE0009{,}17 - 3{,}16 \\approx 6{,}01\uE001 med precisare värden).",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Sanity-check med övre och undre gräns",
-    "text": "Undre gräns: \\sqrt{81} - \\sqrt{16} = 9 - 4 = 5. Övre gräns: \\sqrt{100} - \\sqrt{9} = 10 - 3 = 7. Vårt värde 6 ligger mitt emellan — rimligt.",
+    "text": "Undre gräns: \uE000\\sqrt{81} - \\sqrt{16} = 9 - 4 = 5\uE001. Övre gräns: \uE000\\sqrt{100} - \\sqrt{9} = 10 - 3 = 7\uE001. Vårt värde 6 ligger mitt emellan — rimligt.",
     "tier": "detail"
    },
    {
@@ -1715,13 +1715,13 @@
    {
     "n": 9,
     "title": "Korskontroll: andra approximationsmetod",
-    "text": "Räkna \\sqrt{84} = \\sqrt{4 \\cdot 21} = 2\\sqrt{21}. \\sqrt{21} \\approx 4{,}58 (mellan \\sqrt{16} = 4 och \\sqrt{25} = 5). 2 \\cdot 4{,}58 = 9{,}16. \\sqrt{10} \\approx 3{,}16. Differens 9,16 − 3,16 = 6,00 ✓.",
+    "text": "Räkna \uE000\\sqrt{84} = \\sqrt{4 \\cdot 21} = 2\\sqrt{21}\uE001. \uE000\\sqrt{21} \\approx 4{,}58\uE001 (mellan \uE000\\sqrt{16} = 4\uE001 och \uE000\\sqrt{25} = 5\uE001). \uE0002 \\cdot 4{,}58 = 9{,}16\uE001. \uE000\\sqrt{10} \\approx 3{,}16\uE001. Differens 9,16 − 3,16 = 6,00 ✓.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Avvisa 'rot-av-differens'-fällan",
-    "text": "Om någon räknar \\sqrt{84 - 10} = \\sqrt{74} \\approx 8{,}6 hamnar de på alternativ C (8). Det är fel räknesätt: rotutdragning är INTE linjär över subtraktion.",
+    "text": "Om någon räknar \uE000\\sqrt{84 - 10} = \\sqrt{74} \\approx 8{,}6\uE001 hamnar de på alternativ C (8). Det är fel räknesätt: rotutdragning är INTE linjär över subtraktion.",
     "tier": "detail"
    },
    {
@@ -1733,30 +1733,30 @@
    {
     "n": 12,
     "title": "Slutsats",
-    "text": "Svar: B, 6. Insikten i en mening: \\sqrt{a} - \\sqrt{b} måste räknas TERM FÖR TERM — rotutdragning är inte linjär över subtraktion.",
+    "text": "Svar: B, 6. Insikten i en mening: \uE000\\sqrt{a} - \\sqrt{b}\uE001 måste räknas TERM FÖR TERM — rotutdragning är inte linjär över subtraktion.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att räkna \\sqrt{84 - 10} = \\sqrt{74} \\approx 8{,}6 \\approx 4 om man avrundar fel.",
-    "why_wrong": "Steg 2 förbjuder ‘rot-av-differens’-fällan. Och även om man gjorde det felet, \\sqrt{74} \\approx 8{,}6 är inte 4."
+    "why_tempting": "Det är lätt att räkna \uE000\\sqrt{84 - 10} = \\sqrt{74} \\approx 8{,}6 \\approx 4\uE001 om man avrundar fel.",
+    "why_wrong": "Steg 2 förbjuder ‘rot-av-differens’-fällan. Och även om man gjorde det felet, \uE000\\sqrt{74} \\approx 8{,}6\uE001 är inte 4."
    },
    {
     "letter": "C",
-    "why_tempting": "Snabbsvar är ofta 8 om man räknar \\sqrt{74} \\approx 8{,}6 \\approx 8 (rot-av-differens-fällan exakt).",
-    "why_wrong": "Steg 10 nämner uttryckligen denna fälla. \\sqrt{a} - \\sqrt{b} \\ne \\sqrt{a-b} — räknaren ovan ger 6, inte 8."
+    "why_tempting": "Snabbsvar är ofta 8 om man räknar \uE000\\sqrt{74} \\approx 8{,}6 \\approx 8\uE001 (rot-av-differens-fällan exakt).",
+    "why_wrong": "Steg 10 nämner uttryckligen denna fälla. \uE000\\sqrt{a} - \\sqrt{b} \\ne \\sqrt{a-b}\uE001 — räknaren ovan ger 6, inte 8."
    },
    {
     "letter": "D",
-    "why_tempting": "Många stannar vid 10 om de avläser \\sqrt{84} \\approx 10 utan att dra ifrån \\sqrt{10}.",
-    "why_wrong": "Steg 6: subtraktionen är obligatorisk. \\sqrt{84} \\approx 9{,}17 (inte 10), och minus \\sqrt{10} ≈ 3,17 ger 6."
+    "why_tempting": "Många stannar vid 10 om de avläser \uE000\\sqrt{84} \\approx 10\uE001 utan att dra ifrån \uE000\\sqrt{10}\uE001.",
+    "why_wrong": "Steg 6: subtraktionen är obligatorisk. \uE000\\sqrt{84} \\approx 9{,}17\uE001 (inte 10), och minus \uE000\\sqrt{10}\uE001 ≈ 3,17 ger 6."
    }
   ],
   "pregrade_tactic": {
    "handle": "Rot-för-rot-räkningen",
-   "move": "Räkna VARJE rot separat via närmaste perfekta kvadrat — subtrahera sist; \\sqrt{a} - \\sqrt{b} är ALDRIG \\sqrt{a-b}."
+   "move": "Räkna VARJE rot separat via närmaste perfekta kvadrat — subtrahera sist; \uE000\\sqrt{a} - \\sqrt{b}\uE001 är ALDRIG \uE000\\sqrt{a-b}\uE001."
   }
  },
  "var-2015-kvant1-XYZ-004": {
@@ -1863,7 +1863,7 @@
    {
     "letter": "A",
     "why_tempting": "Det är lätt att tappa parenteserna och räkna fel, så att 'något runt 110' verkar rimligt.",
-    "why_wrong": "Steg 4: korrekt utveckling ger x^{2} - 1 = 121 - 1 = 120, inte 110. 110 skulle innebära att x^{2} hade varit 111."
+    "why_wrong": "Steg 4: korrekt utveckling ger \uE000x^{2} - 1 = 121 - 1 = 120\uE001, inte 110. 110 skulle innebära att \uE000x^{2}\uE001 hade varit 111."
    },
    {
     "letter": "B",
@@ -1872,53 +1872,53 @@
    },
    {
     "letter": "D",
-    "why_tempting": "Vänster-till-höger-läsning ger 'svaret är x^{2}, alltså 121' — om man helt struntar i att (x+1) och (x−1) ändrar uttrycket.",
-    "why_wrong": "Steg 4–6: (x+1)(x−1) = x^{2} - 1, alltså 120 — inte x^{2} självt. Konjugatregeln tar bort precis 1."
+    "why_tempting": "Vänster-till-höger-läsning ger 'svaret är \uE000x^{2}\uE001, alltså 121' — om man helt struntar i att (x+1) och (x−1) ändrar uttrycket.",
+    "why_wrong": "Steg 4–6: (x+1)(x−1) = \uE000x^{2} - 1\uE001, alltså 120 — inte \uE000x^{2}\uE001 självt. Konjugatregeln tar bort precis 1."
    }
   ],
   "framework_id": "XYZ-TRAP-012",
-  "pitfall": "Det är frestande att räkna ut x först (x = ±11) och sedan substituera överallt. Botemedlet: kolla om uttrycket kan skrivas som x^{{2}} ± konstant — gör det det, behövs inte x självt alls.",
-  "solution_path": "Konjugatregeln: (x+1)(x-1) = x^{2} - 1. Med x^{2} = 121 blir det 121 − 1 = 120. Svaret är C.",
+  "pitfall": "Det är frestande att räkna ut x först (x = ±11) och sedan substituera överallt. Botemedlet: kolla om uttrycket kan skrivas som \uE000x^{{2}}\uE001 ± konstant — gör det det, behövs inte x självt alls.",
+  "solution_path": "Konjugatregeln: \uE000(x+1)(x-1) = x^{2} - 1\uE001. Med \uE000x^{2} = 121\uE001 blir det 121 − 1 = 120. Svaret är C.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi får veta att x^{2} = 121 och ska beräkna (x+1)(x−1). x självt efterfrågas aldrig — vi behöver bara dess kvadrat.",
+    "text": "Vi får veta att \uE000x^{2} = 121\uE001 och ska beräkna (x+1)(x−1). x självt efterfrågas aldrig — vi behöver bara dess kvadrat.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "x^{2} betyder x gånger x. Om x = 3 så är x^{2} = 9. Här är x^{2} = 121, vilket betyder att x · x = 121. (x kan vara 11 eller −11 — men det spelar ingen roll, som vi snart ser.)",
+    "text": "\uE000x^{2}\uE001 betyder x gånger x. Om x = 3 så är \uE000x^{2} = 9\uE001. Här är \uE000x^{2} = 121\uE001, vilket betyder att x · x = 121. (x kan vara 11 eller −11 — men det spelar ingen roll, som vi snart ser.)",
     "tier": "detail",
-    "title": "Vad betyder x^{2}?"
+    "title": "Vad betyder \uE000x^{2}\uE001?"
    },
    {
     "n": 3,
-    "text": "Två parenteser multipliceras med 'varje term mot varje term': (x+1)(x−1) = x·x + x·(−1) + 1·x + 1·(−1) = x^{2} - x + x - 1.",
+    "text": "Två parenteser multipliceras med 'varje term mot varje term': (x+1)(x−1) = x·x + x·(−1) + 1·x + 1·(−1) = \uE000x^{2} - x + x - 1\uE001.",
     "tier": "essential",
     "title": "Multiplicera ut (x+1)(x−1)"
    },
    {
     "n": 4,
-    "text": "−x + x = 0. Termerna i mitten tar ut varandra. Kvar: x^{2} - 1.",
+    "text": "−x + x = 0. Termerna i mitten tar ut varandra. Kvar: \uE000x^{2} - 1\uE001.",
     "tier": "essential",
     "title": "Förenkla mellantermerna"
    },
    {
     "n": 5,
-    "text": "Det mönster vi just härledde är konjugatregeln: (a+b)(a-b) = a^{2} - b^{2}. Den fungerar för alla a och b: mellantermerna tar alltid ut varandra. Lärs utantill — den dyker upp ständigt.",
+    "text": "Det mönster vi just härledde är konjugatregeln: \uE000(a+b)(a-b) = a^{2} - b^{2}\uE001. Den fungerar för alla a och b: mellantermerna tar alltid ut varandra. Lärs utantill — den dyker upp ständigt.",
     "tier": "detail",
     "title": "Vad just hände? — konjugatregeln"
    },
    {
     "n": 6,
-    "text": "Vi har x^{2} - 1 och vet att x^{2} = 121. Byt ut: 121 − 1 = 120.",
+    "text": "Vi har \uE000x^{2} - 1\uE001 och vet att \uE000x^{2} = 121\uE001. Byt ut: 121 − 1 = 120.",
     "tier": "essential",
     "title": "Substituera in värdet"
    },
    {
     "n": 7,
-    "text": "Uttrycket beror BARA på {MO}x^{{2}}{MC}, inte på x självt. Det är därför båda lösningarna x = 11 och x = −11 ger samma svar — och varför uppgiften inte ber oss välja en av dem.",
+    "text": "Uttrycket beror BARA på \uE000{MO}x^{{2}}{MC}\uE001, inte på x självt. Det är därför båda lösningarna \uE000x = 11\uE001 och \uE000x =\uE001 −11 ger samma svar — och varför uppgiften inte ber oss välja en av dem.",
     "tier": "detail",
     "title": "Varför behövde vi inte räkna ut x?"
    },
@@ -1936,12 +1936,12 @@
    },
    {
     "n": 10,
-    "text": "Svaret är C: 120. Insikten i en mening: när du ser (x+a)(x−a), tänk konjugatregel — uttrycket är alltid x^{2} - a^{2}, inget annat.",
+    "text": "Svaret är C: 120. Insikten i en mening: när du ser (x+a)(x−a), tänk konjugatregel — uttrycket är alltid \uE000x^{2} - a^{2}\uE001, inget annat.",
     "tier": "essential",
     "title": "Slutsats"
    }
   ],
-  "technique": "Konjugatregeln: (a+b)(a-b) = a^{2} - b^{2}. Triggern: när två parenteser har samma två tal/variabler fast en med plus och en med minus mellan dem — utveckla aldrig term-för-term, använd regeln direkt.",
+  "technique": "Konjugatregeln: \uE000(a+b)(a-b) = a^{2} - b^{2}\uE001. Triggern: när två parenteser har samma två tal/variabler fast en med plus och en med minus mellan dem — utveckla aldrig term-för-term, använd regeln direkt.",
   "pregrade_tactic": {
    "handle": "Konjugatregeln",
    "move": "Två parenteser med samma två termer fast tecken-flippade: hoppa över utvecklingen, skriv direkt första-i-kvadrat minus andra-i-kvadrat."
@@ -1956,8 +1956,8 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är frestande att tro att x = 1 ger 'snygga tal' — 4^{1} = 4 ser ut som ett 'svar'.",
-    "why_wrong": "Steg 9: x = 1 ger 4 - 1/4 = 3{,}75, inte 0. Värdena är inte ens i närheten."
+    "why_tempting": "Det är frestande att tro att x = 1 ger 'snygga tal' — \uE0004^{1} = 4\uE001 ser ut som ett 'svar'.",
+    "why_wrong": "Steg 9: x = 1 ger \uE0004 - 1/4 = 3{,}75\uE001, inte 0. Värdena är inte ens i närheten."
    },
    {
     "letter": "B",
@@ -1967,46 +1967,46 @@
    {
     "letter": "C",
     "why_tempting": "Snabbsvar är ofta 'något litet bråk' — och 1/4 är synligt i basen 4 så det 'rim mar'.",
-    "why_wrong": "Steg 9: x = 1/4 ger 4^{1/4} - 4^{-1/4} ≈ 1{,}41 − 0{,}71 ≈ 0{,}70, inte 0. Basen 4 sätter inte exponenten — exponenten måste lösas separat."
+    "why_wrong": "Steg 9: x = 1/4 ger \uE0004^{1/4} - 4^{-1/4}\uE001 ≈ 1{,}41 − 0{,}71 ≈ 0{,}70, inte 0. Basen 4 sätter inte exponenten — exponenten måste lösas separat."
    }
   ],
   "framework_id": "XYZ-TRAP-027",
   "pitfall": null,
-  "solution_path": "4^{x} = 4^{-x} betyder att exponenterna är lika: x = −x, alltså 2x = 0 och x = 0. Svaret är D.",
+  "solution_path": "\uE0004^{x} = 4^{-x}\uE001 betyder att exponenterna är lika: x = −x, alltså 2x = 0 och x = 0. Svaret är D.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi har ekvationen 4^{x} - 4^{-x} = 0 och ska hitta x.",
+    "text": "Vi har ekvationen \uE0004^{x} - 4^{-x} = 0\uE001 och ska hitta x.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "4^{x} betyder '4 multiplicerat med sig själv x gånger'. Exempel: 4^{1} = 4, 4^{2} = 16, 4^{3} = 64.",
+    "text": "\uE0004^{x}\uE001 betyder '4 multiplicerat med sig själv x gånger'. Exempel: \uE0004^{1} = 4\uE001, \uE0004^{2} = 16\uE001, \uE0004^{3} = 64\uE001.",
     "tier": "detail",
-    "title": "Vad betyder 4^{x}?"
+    "title": "Vad betyder \uE0004^{x}\uE001?"
    },
    {
     "n": 3,
-    "text": "Negativ exponent betyder 'ett delat med': 4^{-x} = \\frac{1}{4^{x}}. Exempel: 4^{-1} = 1/4, 4^{-2} = 1/16.",
+    "text": "Negativ exponent betyder 'ett delat med': \uE0004^{-x} = \\frac{1}{4^{x}}\uE001. Exempel: \uE0004^{-1} = 1/4\uE001, \uE0004^{-2} = 1/16\uE001.",
     "tier": "detail",
-    "title": "Vad betyder 4^{-x}?"
+    "title": "Vad betyder \uE0004^{-x}\uE001?"
    },
    {
     "n": 4,
-    "text": "4^{x} - 4^{-x} = 0 skrivs om till 4^{x} = 4^{-x} genom att addera 4^{-x} till båda sidor.",
+    "text": "\uE0004^{x} - 4^{-x} = 0\uE001 skrivs om till \uE0004^{x} = 4^{-x}\uE001 genom att addera \uE0004^{-x}\uE001 till båda sidor.",
     "tier": "essential",
     "title": "Flytta över så båda sidor är positiva"
    },
    {
     "n": 5,
-    "text": "Två potenser med SAMMA BAS är lika om — och endast om — exponenterna är lika. Alltså: 4^{x} = 4^{-x} kräver x = −x.",
+    "text": "Två potenser med SAMMA BAS är lika om — och endast om — exponenterna är lika. Alltså: \uE0004^{x} = 4^{-x}\uE001 kräver x = −x.",
     "tier": "essential",
     "title": "När är två potenser med samma bas lika?"
    },
    {
     "n": 6,
-    "text": "Funktionen 4^{t} är strikt växande i t (4 är större än 1, så större exponent ger större tal). Om två potenser är lika, måste exponenterna vara lika — det finns inget annat sätt att producera samma värde.",
+    "text": "Funktionen \uE0004^{t}\uE001 är strikt växande i t (4 är större än 1, så större exponent ger större tal). Om två potenser är lika, måste exponenterna vara lika — det finns inget annat sätt att producera samma värde.",
     "tier": "detail",
     "title": "Varför är det så?"
    },
@@ -2018,24 +2018,24 @@
    },
    {
     "n": 8,
-    "text": "Sätt x = 0: 4^{0} - 4^{-0} = 4^{0} - 4^{0} = 1 - 1 = 0 ✓. (Påminnelse: 4^{0} = 1 — varje icke-noll tal upphöjt till 0 är 1.)",
+    "text": "Sätt x = 0: \uE0004^{0} - 4^{-0} = 4^{0} - 4^{0} = 1 - 1 = 0\uE001 ✓. (Påminnelse: \uE0004^{0} = 1\uE001 — varje icke-noll tal upphöjt till 0 är 1.)",
     "tier": "detail",
     "title": "Verifiera"
    },
    {
     "n": 9,
-    "text": "x = 1: 4^{1} - 4^{-1} = 4 - 1/4 = 3{,}75 ≠ 0. x = 1/4: 4^{1/4} - 4^{-1/4} ≈ 1{,}41 − 0{,}71 ≠ 0. x = −1/4: samma siffror med byta tecken — fortfarande ≠ 0.",
+    "text": "x = 1: \uE0004^{1} - 4^{-1} = 4 - 1/4 = 3{,}75\uE001 ≠ 0. x = 1/4: \uE0004^{1/4} - 4^{-1/4}\uE001 ≈ 1{,}41 − 0{,}71 ≠ 0. x = −1/4: samma siffror med byta tecken — fortfarande ≠ 0.",
     "tier": "detail",
     "title": "Kontrollera de andra alternativen"
    },
    {
     "n": 10,
-    "text": "Svaret är D: x = 0. Insikten i en mening: a^{b} - a^{c} = 0 ⇔ b = c, eftersom exponentialfunktionen är 1-till-1.",
+    "text": "Svaret är D: x = 0. Insikten i en mening: \uE000a^{b} - a^{c} = 0\uE001 ⇔ b = c, eftersom exponentialfunktionen är 1-till-1.",
     "tier": "essential",
     "title": "Slutsats"
    }
   ],
-  "technique": "Exponentmatchning: när a^{p} = a^{q} (samma bas), så är p = q. Triggern: ekvation med samma bas på båda sidor → ställ upp en linjär ekvation i exponenterna.",
+  "technique": "Exponentmatchning: när \uE000a^{p} = a^{q}\uE001 (samma bas), så är p = q. Triggern: ekvation med samma bas på båda sidor → ställ upp en linjär ekvation i exponenterna.",
   "pregrade_tactic": {
    "handle": "Exponentmatchning",
    "move": "Skriv om båda led så att de har samma bas — då kan du sätta exponenterna lika och få en linjär ekvation."
@@ -2050,39 +2050,39 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är frestande att sätta in a = 1 och få x^{2} = -4 och tro att det är 'en' lösning (eftersom det 'ser ut' som ett tal).",
-    "why_wrong": "Steg 7: x^{2} = -4 har INGEN reell lösning, eftersom x·x aldrig blir negativt. 'Ingen' är inte 'exakt en'."
+    "why_tempting": "Det är frestande att sätta in a = 1 och få \uE000x^{2} = -4\uE001 och tro att det är 'en' lösning (eftersom det 'ser ut' som ett tal).",
+    "why_wrong": "Steg 7: \uE000x^{2} = -4\uE001 har INGEN reell lösning, eftersom x·x aldrig blir negativt. 'Ingen' är inte 'exakt en'."
    },
    {
     "letter": "C",
-    "why_tempting": "Om man minns regeln som 'positivt högerled = positiv lösning' kan a = 3 verka rätt (x^{2} = 4, x = 2).",
-    "why_wrong": "Steg 7: x^{2} = 4 har faktiskt TVÅ lösningar — x = 2 OCH x = −2. Båda räknas, alltså inte 'exakt en'."
+    "why_tempting": "Om man minns regeln som 'positivt högerled = positiv lösning' kan a = 3 verka rätt (\uE000x^{2} = 4\uE001, x = 2).",
+    "why_wrong": "Steg 7: \uE000x^{2} = 4\uE001 har faktiskt TVÅ lösningar — x = 2 OCH x = −2. Båda räknas, alltså inte 'exakt en'."
    },
    {
     "letter": "D",
     "why_tempting": "Många stannar vid 'det största alternativet' när hjärnan letar efter 'mer information = mer lösbar', och a = 4 ser ut som en 'färdig' siffra.",
-    "why_wrong": "Steg 7: a = 4 ger x^{2} = 8 → x = ±2√2, fortfarande två lösningar. Större a gör inte ekvationen 'mer låst'."
+    "why_wrong": "Steg 7: a = 4 ger \uE000x^{2} = 8\uE001 → x = ±2√2, fortfarande två lösningar. Större a gör inte ekvationen 'mer låst'."
    }
   ],
   "framework_id": "XYZ-TRAP-009",
   "pitfall": null,
-  "solution_path": "En ekvation av typen x^{2} = k har exakt en lösning bara när k = 0 (då x = 0). Sätt 4a − 8 = 0 → a = 2. Svaret är B.",
+  "solution_path": "En ekvation av typen \uE000x^{2} = k\uE001 har exakt en lösning bara när k = 0 (då x = 0). Sätt 4a − 8 = 0 → a = 2. Svaret är B.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi har ekvationen x^{2} = 4a - 8. Vi ska hitta det värde på konstanten a som gör att ekvationen har EXAKT EN lösning för x.",
+    "text": "Vi har ekvationen \uE000x^{2} = 4a - 8\uE001. Vi ska hitta det värde på konstanten a som gör att ekvationen har EXAKT EN lösning för x.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "x^{2} är x gånger x. Vi söker tal som ger ett visst värde när de kvadreras. Exempel: x^{2} = 9 har två lösningar — x = 3 och x = −3. x^{2} = 0 har bara EN lösning — x = 0. x^{2} = -4 har INGEN reell lösning — inget reellt tal i kvadrat blir negativt.",
+    "text": "\uE000x^{2}\uE001 är x gånger x. Vi söker tal som ger ett visst värde när de kvadreras. Exempel: \uE000x^{2} = 9\uE001 har två lösningar — x = 3 och x = −3. \uE000x^{2} = 0\uE001 har bara EN lösning — x = 0. \uE000x^{2} = -4\uE001 har INGEN reell lösning — inget reellt tal i kvadrat blir negativt.",
     "tier": "detail",
-    "title": "Vad betyder x^{2} = k?"
+    "title": "Vad betyder \uE000x^{2} = k\uE001?"
    },
    {
     "n": 3,
-    "text": "Om k > 0: x^{2} = k har TVÅ lösningar (±√k). Om k = 0: EN lösning (x = 0). Om k < 0: INGEN reell lösning. Vi vill ha 'exakt en' — alltså k = 0.",
+    "text": "Om k > 0: \uE000x^{2} = k\uE001 har TVÅ lösningar (±√k). Om k = 0: EN lösning (x = 0). Om k < 0: INGEN reell lösning. Vi vill ha 'exakt en' — alltså k = 0.",
     "tier": "essential",
     "title": "Tre fall för antalet lösningar"
    },
@@ -2100,13 +2100,13 @@
    },
    {
     "n": 6,
-    "text": "Sätt in a = 2: x^{2} = 4·2 - 8 = 0. Den enda lösningen är x = 0.",
+    "text": "Sätt in a = 2: \uE000x^{2} = 4·2 - 8 = 0\uE001. Den enda lösningen är x = 0.",
     "tier": "essential",
     "title": "Vad innebär a = 2 för ekvationen?"
    },
    {
     "n": 7,
-    "text": "a = 1: x^{2} = -4 → ingen reell lösning. a = 3: x^{2} = 4 → två lösningar (x = 2 och x = −2). a = 4: x^{2} = 8 → två lösningar (x = ±2√2). Bara a = 2 ger exakt en.",
+    "text": "a = 1: \uE000x^{2} = -4\uE001 → ingen reell lösning. a = 3: \uE000x^{2} = 4\uE001 → två lösningar (x = 2 och x = −2). a = 4: \uE000x^{2} = 8\uE001 → två lösningar (x = ±2√2). Bara a = 2 ger exakt en.",
     "tier": "detail",
     "title": "Verifiera de andra alternativen"
    },
@@ -2118,18 +2118,18 @@
    },
    {
     "n": 9,
-    "text": "En vanlig instinkt är att ett positivt högerled (typ x^{2} = 4) ger en lösning. Men det ger TVÅ. Det är symmetrin kring noll som tvingar fram dubbeln.",
+    "text": "En vanlig instinkt är att ett positivt högerled (typ \uE000x^{2} = 4\uE001) ger en lösning. Men det ger TVÅ. Det är symmetrin kring noll som tvingar fram dubbeln.",
     "tier": "detail",
     "title": "Tankefälla: 'positiv konstant räcker'"
    },
    {
     "n": 10,
-    "text": "Svaret är B: a = 2. Insikten i en mening: x^{2} = k har exakt en lösning ⇔ k = 0 — alla andra k-värden ger antingen två lösningar eller ingen.",
+    "text": "Svaret är B: a = 2. Insikten i en mening: \uE000x^{2} = k\uE001 har exakt en lösning ⇔ k = 0 — alla andra k-värden ger antingen två lösningar eller ingen.",
     "tier": "essential",
     "title": "Slutsats"
    }
   ],
-  "technique": "Diskriminantintuition för x²-ekvationer: x^{2} = k ger antal lösningar enligt k:s tecken (2/1/0 för positiv/noll/negativ). Triggern: 'exakt en lösning' på en kvadrerings-ekvation → sätt högerledet till noll.",
+  "technique": "Diskriminantintuition för x²-ekvationer: \uE000x^{2} = k\uE001 ger antal lösningar enligt k:s tecken (2/1/0 för positiv/noll/negativ). Triggern: 'exakt en lösning' på en kvadrerings-ekvation → sätt högerledet till noll.",
   "pregrade_tactic": {
    "handle": "Diskriminantläsning",
    "move": "x² = k har 2, 1 eller 0 lösningar beroende på om k är positivt, noll eller negativt — sätt k = 0 för 'exakt en lösning'."
@@ -2360,7 +2360,7 @@
   ],
   "framework_id": "XYZ-TRAP-041",
   "pitfall": "Det är frestande att direkt räkna 'cirkel minus något' istället för 'sektor minus triangel'. Botemedlet: zooma in på den del av figuren som är skuggad — i ett klassiskt 90°-segment är det bara en kvart av cirkeln som spelar roll, inte hela.",
-  "solution_path": "Cirkelns area är \\pi r^{2} = 4\\pi cm². Ett 90°-sektorområde är en fjärdedel: π cm². Det skuggade segmentet är sektorn minus den räta triangel som chordan klipper bort: π − (1/2)·2·2 = π − 2 cm². Svaret är D.",
+  "solution_path": "Cirkelns area är \uE000\\pi r^{2} = 4\\pi\uE001 cm². Ett 90°-sektorområde är en fjärdedel: π cm². Det skuggade segmentet är sektorn minus den räta triangel som chordan klipper bort: π − (1/2)·2·2 = π − 2 cm². Svaret är D.",
   "steps": [
    {
     "n": 1,
@@ -2376,7 +2376,7 @@
    },
    {
     "n": 3,
-    "text": "Hela cirkelns area = \\pi r^{2}. Med r = 2: area = \\pi \\cdot 2^{2} = 4\\pi cm².",
+    "text": "Hela cirkelns area = \uE000\\pi r^{2}\uE001. Med r = 2: area = \uE000\\pi \\cdot 2^{2} = 4\\pi\uE001 cm².",
     "tier": "detail",
     "title": "Formel för cirkelarea"
    },
@@ -2388,7 +2388,7 @@
    },
    {
     "n": 5,
-    "text": "En 90°-sektor är en fjärdedel av cirkeln: (90/360)·4\\pi = \\pi cm².",
+    "text": "En 90°-sektor är en fjärdedel av cirkeln: (90/360)·\uE0004\\pi\uE001 = \uE000\\pi\uE001 cm².",
     "tier": "essential",
     "title": "Räkna 90°-sektorn"
    },
@@ -2424,7 +2424,7 @@
    },
    {
     "n": 11,
-    "text": "Svaret är D: (π − 2) cm². Insikten i en mening: 90°-segmentets area är 'sektor minus triangel', där triangeln är (1/2)·r·r — när du ser ett kvart-cirkel-segment ska du tänka \\pi r^{{2}}/4 - r^{{2}}/2.",
+    "text": "Svaret är D: (π − 2) cm². Insikten i en mening: 90°-segmentets area är 'sektor minus triangel', där triangeln är (1/2)·r·r — när du ser ett kvart-cirkel-segment ska du tänka \uE000\\pi r^{{2}}/4 - r^{{2}}/2\uE001.",
     "tier": "essential",
     "title": "Slutsats"
    }
@@ -2538,69 +2538,69 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Snabbsvar är ofta '500/4 = 125, så a = 3 om man tappar att det är a^{3} (kuben) som ska vara 125 — och blandar in talet 3 (exponenten) som svaret.",
-    "why_wrong": "Steg 5–6: a^{3} = 125 kräver a = 5, inte a = 3. 3 är EXPONENTEN, inte basen."
+    "why_tempting": "Snabbsvar är ofta '500/4 = 125, så a = 3 om man tappar att det är \uE000a^{3}\uE001 (kuben) som ska vara 125 — och blandar in talet 3 (exponenten) som svaret.",
+    "why_wrong": "Steg 5–6: \uE000a^{3} = 125\uE001 kräver a = 5, inte a = 3. 3 är EXPONENTEN, inte basen."
    },
    {
     "letter": "B",
     "why_tempting": "Det är frestande att tänka att 'a = något runt 4' eftersom f(0) = 4. Konstanten C och basen a blandas ihop.",
-    "why_wrong": "Steg 3: f(0) = C, inte a. Med a = 4: 4^{3} = 64 och 4·64 = 256, inte 500."
+    "why_wrong": "Steg 3: f(0) = C, inte a. Med a = 4: \uE0004^{3} = 64\uE001 och 4·64 = 256, inte 500."
    },
    {
     "letter": "D",
-    "why_tempting": "Om man räknar fel kub och tror 6^{3} = 125 kan a = 6 verka rätt.",
-    "why_wrong": "Steg 6: 6^{3} = 216, inte 125. Med a = 6: f(3) = 4·216 = 864 — för stort."
+    "why_tempting": "Om man räknar fel kub och tror \uE0006^{3} = 125\uE001 kan a = 6 verka rätt.",
+    "why_wrong": "Steg 6: \uE0006^{3} = 216\uE001, inte 125. Med a = 6: f(3) = 4·216 = 864 — för stort."
    }
   ],
   "framework_id": "XYZ-TRAP-034",
   "pitfall": null,
-  "solution_path": "f(0) = C · a^{0} = C · 1 = C, så C = 4. f(3) = 4 · a^{3} = 500 → a^{3} = 125 → a = 5. Svaret är C.",
+  "solution_path": "f(0) = C · \uE000a^{0}\uE001 = C · 1 = C, så C = 4. f(3) = 4 · \uE000a^{3}\uE001 = 500 → \uE000a^{3} = 125\uE001 → a = 5. Svaret är C.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi har en funktion f(x) = C \\cdot a^{x} med två okända konstanter C och a. Två datapunkter ges: f(0) = 4 och f(3) = 500. Vi ska hitta a.",
+    "text": "Vi har en funktion f(x) = \uE000C \\cdot a^{x}\uE001 med två okända konstanter C och a. Två datapunkter ges: f(0) = 4 och f(3) = 500. Vi ska hitta a.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "a^{x} är 'a multiplicerat med sig själv x gånger'. Specialfall: a^{0} = 1 för varje a ≠ 0 — varje tal upphöjt till 0 ger 1.",
+    "text": "\uE000a^{x}\uE001 är 'a multiplicerat med sig själv x gånger'. Specialfall: \uE000a^{0} = 1\uE001 för varje a ≠ 0 — varje tal upphöjt till 0 ger 1.",
     "tier": "detail",
-    "title": "Vad betyder a^{x}?"
+    "title": "Vad betyder \uE000a^{x}\uE001?"
    },
    {
     "n": 3,
-    "text": "f(0) = C · a^{0} = C · 1 = C. Vi vet f(0) = 4, alltså C = 4.",
+    "text": "f(0) = C · \uE000a^{0}\uE001 = C · 1 = C. Vi vet f(0) = 4, alltså C = 4.",
     "tier": "essential",
     "title": "Använd f(0) för att låsa C"
    },
    {
     "n": 4,
-    "text": "f(x) blir nu 4 · a^{x}. En obekant kvar: a.",
+    "text": "f(x) blir nu 4 · \uE000a^{x}\uE001. En obekant kvar: a.",
     "tier": "essential",
     "title": "Sätt in C = 4"
    },
    {
     "n": 5,
-    "text": "f(3) = 4 · a^{3} = 500. Dela båda sidor med 4: a^{3} = 125.",
+    "text": "f(3) = 4 · \uE000a^{3}\uE001 = 500. Dela båda sidor med 4: \uE000a^{3} = 125\uE001.",
     "tier": "essential",
     "title": "Använd f(3) för att låsa a"
    },
    {
     "n": 6,
-    "text": "a^{3} betyder a · a · a. Vi söker det a som ger 125. Pröva: 4^{3} = 64 (för litet), 5^{3} = 125 ✓, 6^{3} = 216 (för stort). Alltså a = 5.",
+    "text": "\uE000a^{3}\uE001 betyder a · a · a. Vi söker det a som ger 125. Pröva: \uE0004^{3} = 64\uE001 (för litet), \uE0005^{3} = 125\uE001 ✓, \uE0006^{3} = 216\uE001 (för stort). Alltså a = 5.",
     "tier": "essential",
     "title": "Vad är talet vars kub är 125?"
    },
    {
     "n": 7,
-    "text": "Kubikroten av k är det tal som kuberat ger k. Skrivs \\sqrt[3]{k} eller k^{1/3}. Här: \\sqrt[3]{125} = 5.",
+    "text": "Kubikroten av k är det tal som kuberat ger k. Skrivs \uE000\\sqrt[3]{k}\uE001 eller \uE000k^{1/3}\uE001. Här: \uE000\\sqrt[3]{125} = 5\uE001.",
     "tier": "detail",
     "title": "Vad är en kubikrot?"
    },
    {
     "n": 8,
-    "text": "Med C = 4, a = 5: f(0) = 4 · 5^{0} = 4 · 1 = 4 ✓. f(3) = 4 · 5^{3} = 4 · 125 = 500 ✓.",
+    "text": "Med C = 4, a = 5: f(0) = 4 · \uE0005^{0}\uE001 = 4 · 1 = 4 ✓. f(3) = 4 · \uE0005^{3}\uE001 = 4 · 125 = 500 ✓.",
     "tier": "detail",
     "title": "Verifiera"
    },
@@ -2617,7 +2617,7 @@
     "title": "Slutsats"
    }
   ],
-  "technique": "Två-datapunkter-strategin för exponentialfunktioner: använd punkten x = 0 först för att låsa C (eftersom a^0 = 1), sedan en andra punkt för att lösa ut a. Triggern: en funktion med två konstanter + två kända värden → utvärdera vid x = 0 om möjligt.",
+  "technique": "Två-datapunkter-strategin för exponentialfunktioner: använd punkten \uE000x = 0\uE001 först för att låsa C (eftersom \uE000a^0 = 1\uE001), sedan en andra punkt för att lösa ut a. Triggern: en funktion med två konstanter \uE000+\uE001 två kända värden \uE000→\uE001 utvärdera vid \uE000x = 0\uE001 om möjligt.",
   "pregrade_tactic": {
    "handle": "Exponentiell-tvåpunktslås",
    "move": "Sätt in den enklare punkten (helst x=0, så a^x blir 1) först — då låser du C. Sätt sedan in den andra punkten och lös ut basen."
@@ -2671,19 +2671,19 @@
    {
     "n": 8,
     "title": "Beräkna P(I)",
-    "text": "P(\\text{samma}) = 2/4 = 1/2. Detta är Kvantitet I.",
+    "text": "\uE000P(\\text{samma}) = 2/4 = 1/2\uE001. Detta är Kvantitet I.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Beräkna P(II)",
-    "text": "P(\\text{olika}) = 2/4 = 1/2. Detta är Kvantitet II.",
+    "text": "\uE000P(\\text{olika}) = 2/4 = 1/2\uE001. Detta är Kvantitet II.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Komplement-kontroll",
-    "text": "Eftersom „samma” och „olika” är komplement i utfallsrummet gäller P(\\text{samma}) + P(\\text{olika}) = 1. Med båda 1/2 stjämmer det: 1/2 + 1/2 = 1.",
+    "text": "Eftersom „samma” och „olika” är komplement i utfallsrummet gäller \uE000P(\\text{samma}) + P(\\text{olika}) = 1\uE001. Med båda 1/2 stjämmer det: 1/2 + 1/2 = 1.",
     "tier": "detail"
    },
    {
@@ -2716,7 +2716,7 @@
     "why_wrong": "Steg 11 visar att symmetri (ej myntets specifika vägning) ger likheten — utfallsrummet är symmetriskt oavsett."
    }
   ],
-  "technique": "För små sannolikhetsproblem: lista det fullständiga utfallsrummet och räkna gynnsamma utfall. Klassisk Laplace-metod: P = \\frac{\\text{gynnsamma}}{\\text{möjliga}}.",
+  "technique": "För små sannolikhetsproblem: lista det fullständiga utfallsrummet och räkna gynnsamma utfall. Klassisk Laplace-metod: \uE000P = \\frac{\\text{gynnsamma}}{\\text{möjliga}}\uE001.",
   "pitfall": "Botemedlet mot att glömma ordning: skriv ut paren med ordning (HT ≠ TH) så du räknar varje utfall exakt en gång.",
   "framework_id": "KVA-TRAP-028",
   "pregrade_tactic": {
@@ -2747,31 +2747,31 @@
    {
     "n": 3,
     "title": "Variabel för kombinationen",
-    "text": "Låt v = antal vänsterhänta pojkar. Då kan vi härleda övriga celler: vänsterhänta flickor = 40 − v, högerhänta pojkar = 60 − v, högerhänta flickor = 30 − (40 − v) = v − 10.",
+    "text": "Låt \uE000v\uE001 = antal vänsterhänta pojkar. Då kan vi härleda övriga celler: vänsterhänta flickor = 40 − v, högerhänta pojkar = 60 − v, högerhänta flickor = 30 − (40 − v) = v − 10.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Skriv ner totalsummorna",
-    "text": "Pojkar: v + (60-v) = 60 \\checkmark. Flickor: (40-v) + (v-10) = 30 \\checkmark. Allt stämmer.",
+    "text": "Pojkar: \uE000v + (60-v) = 60 \\checkmark\uE001. Flickor: \uE000(40-v) + (v-10) = 30 \\checkmark\uE001. Allt stämmer.",
     "tier": "detail"
    },
    {
     "n": 5,
     "title": "Cellerna måste vara icke-negativa",
-    "text": "Alla celler är antal människor, alltså \\geq 0. Det ger fyra olikheter: v \\geq 0, 60-v \\geq 0, 40-v \\geq 0, v-10 \\geq 0.",
+    "text": "Alla celler är antal människor, alltså \uE000\\geq 0\uE001. Det ger fyra olikheter: \uE000v \\geq 0\uE001, \uE00060-v \\geq 0\uE001, \uE00040-v \\geq 0\uE001, \uE000v-10 \\geq 0\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Sammanfatta intervallet",
-    "text": "Olikheterna ger v \\geq 10 (från sista cellen) och v \\leq 40 (från vänsterhänta flickor). Därmed 10 \\leq v \\leq 40.",
+    "text": "Olikheterna ger \uE000v \\geq 10\uE001 (från sista cellen) och \uE000v \\leq 40\uE001 (från vänsterhänta flickor). Därmed \uE00010 \\leq v \\leq 40\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Testa låg ände: v = 10",
-    "text": "Tabell: vänster-pojke 10, vänster-flicka 30, höger-pojke 50, höger-flicka 0. Alla \\geq 0, summa 90 — giltigt.",
+    "text": "Tabell: vänster-pojke 10, vänster-flicka 30, höger-pojke 50, höger-flicka 0. Alla \uE000\\geq 0\uE001, summa 90 — giltigt.",
     "tier": "detail"
    },
    {
@@ -2808,7 +2808,7 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att tro att den förväntade andelen (40 \\cdot 60)/90 \\approx 27 alltid gäller.",
+    "why_tempting": "Det är lätt att tro att den förväntade andelen \uE000(40 \\cdot 60)/90 \\approx 27\uE001 alltid gäller.",
     "why_wrong": "Som steg 7 visar kan v vara så lågt som 10 (alla flickor vänsterhänta) — oberoende är inte givet."
    },
    {
@@ -2822,7 +2822,7 @@
     "why_wrong": "Steg 10 visar att 20 bara är en av flera giltiga — v har 31 möjliga heltalsvärden."
    }
   ],
-  "technique": "För en tvåvägstabell med endast marginalsummor: låt den sökta cellen vara variabel v, härled de övriga, och kräv \\geq 0 i alla — då ser du intervallet för v direkt. Om jämförelsepunkten ligger inom är svaret D.",
+  "technique": "För en tvåvägstabell med endast marginalsummor: låt den sökta cellen vara variabel v, härled de övriga, och kräv \uE000\\geq 0\uE001 i alla — då ser du intervallet för v direkt. Om jämförelsepunkten ligger inom är svaret D.",
   "pitfall": "Botemedlet mot att antaga oberoende mellan kön och händighet: utan explicit oberoende-villkor finns en hel familj av fördelningar med samma marginaler.",
   "framework_id": "KVA-TRAP-006",
   "pregrade_tactic": {
@@ -2836,12 +2836,12 @@
   }
  },
  "var-2015-kvant2-KVA-015": {
-  "solution_path": "Med prioritetsordning: I = 9 + 144 - 25 = 128 och II = 9 - 144 + 25 = -110. Eftersom 128 > 0 > −110 är I > II tydligt — svar A.",
+  "solution_path": "Med prioritetsordning: \uE000I = 9 + 144 - 25 = 128\uE001 och \uE000II = 9 - 144 + 25 = -110\uE001. Eftersom 128 > 0 > −110 är I > II tydligt — svar A.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Två numeriska uttryck ska utvärderas och jämföras. Kvantitet I = 3^2 + 4 \\cdot 6^2 - 5^2 och Kvantitet II = 3^2 - 4 \\cdot 6^2 + 5^2. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+    "text": "Två numeriska uttryck ska utvärderas och jämföras. Kvantitet I = \uE0003^2 + 4 \\cdot 6^2 - 5^2\uE001 och Kvantitet II = \uE0003^2 - 4 \\cdot 6^2 + 5^2\uE001. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
     "tier": "essential"
    },
    {
@@ -2853,43 +2853,43 @@
    {
     "n": 3,
     "title": "Räkna ut potenserna",
-    "text": "3^2 = 9, 6^2 = 36, 5^2 = 25. Detta är byggblock som används i båda uttrycken.",
+    "text": "\uE0003^2 = 9\uE001, \uE0006^2 = 36\uE001, \uE0005^2 = 25\uE001. Detta är byggblock som används i båda uttrycken.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Multiplikationen 4 \\cdot 6^2",
-    "text": "Efter steg 3 är 6^2 = 36, så 4 \\cdot 36 = 144. Multiplikation kommer före addition/subtraktion.",
+    "title": "Multiplikationen \uE0004 \\cdot 6^2\uE001",
+    "text": "Efter steg 3 är \uE0006^2 = 36\uE001, så \uE0004 \\cdot 36 = 144\uE001. Multiplikation kommer före addition/subtraktion.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Skriv om Kvantitet I",
-    "text": "\\text{I} = 9 + 144 - 25. Nu är alla termer i grundform.",
+    "text": "\uE000\\text{I} = 9 + 144 - 25\uE001. Nu är alla termer i grundform.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Beräkna I steg för steg",
-    "text": "9 + 144 = 153; 153 - 25 = 128. Alltså I = 128.",
+    "text": "\uE0009 + 144 = 153\uE001; \uE000153 - 25 = 128\uE001. Alltså I = 128.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Skriv om Kvantitet II",
-    "text": "\\text{II} = 9 - 144 + 25. Själva talen är samma som i I men tecknen i mellantermerna är flippade.",
+    "text": "\uE000\\text{II} = 9 - 144 + 25\uE001. Själva talen är samma som i I men tecknen i mellantermerna är flippade.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Beräkna II steg för steg",
-    "text": "9 - 144 = -135; -135 + 25 = -110. Alltså II = −110.",
+    "text": "\uE0009 - 144 = -135\uE001; \uE000-135 + 25 = -110\uE001. Alltså II = −110.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Snabbgång: skillnaden I − II",
-    "text": "\\text{I} - \\text{II} = (9+144-25) - (9-144+25) = 2 \\cdot 144 - 2 \\cdot 25 = 288 - 50 = 238 — alternativ kontroll av att I > II.",
+    "text": "\uE000\\text{I} - \\text{II} = (9+144-25) - (9-144+25) = 2 \\cdot 144 - 2 \\cdot 25 = 288 - 50 = 238\uE001 — alternativ kontroll av att I > II.",
     "tier": "detail"
    },
    {
@@ -2924,12 +2924,12 @@
    },
    {
     "letter": "D",
-    "why_tempting": "Det är frestande att tro att räkneordningen är tvetydig när man ser -4 \\cdot 6^2.",
+    "why_tempting": "Det är frestande att tro att räkneordningen är tvetydig när man ser \uE000-4 \\cdot 6^2\uE001.",
     "why_wrong": "Steg 2 etablerar standardprioritet — PEMDAS är helt deterministisk, inget tvetydigt."
    }
   ],
   "technique": "För aritmetiska uttryck med blandade operationer: följ PEMDAS strikt, räkna potenserna först, sedan multiplikation, sist addition/subtraktion. Vid tecken-flipp mellan uttryck är I − II ofta enklare.",
-  "pitfall": "Botemedlet mot „att minus framför en multiplikation gäller bara talet”: skriv ut -4 \\cdot 6^2 = -(4 \\cdot 36) = -144 i ett mellansteg så du håller tecken intakt.",
+  "pitfall": "Botemedlet mot „att minus framför en multiplikation gäller bara talet”: skriv ut \uE000-4 \\cdot 6^2 = -(4 \\cdot 36) = -144\uE001 i ett mellansteg så du håller tecken intakt.",
   "framework_id": "KVA-TRAP-040",
   "pregrade_tactic": {
    "handle": "PEMDAS-receptet",
@@ -2942,12 +2942,12 @@
   }
  },
  "var-2015-kvant2-KVA-016": {
-  "solution_path": "Från x - y = y - x följer 2x = 2y, dvs x = y. Detta fixar bara att x och y är lika — inte vilket värde de har. Jamförelsen 0 mot x beror på värdet — svar D.",
+  "solution_path": "Från \uE000x - y = y - x\uE001 följer \uE0002x = 2y\uE001, dvs \uE000x = y\uE001. Detta fixar bara att x och y är lika — inte vilket värde de har. Jamförelsen 0 mot x beror på värdet — svar D.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Ekvationen x - y = y - x ges. Vi ska jämföra 0 (Kvantitet I) mot x (Kvantitet II). KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+    "text": "Ekvationen \uE000x - y = y - x\uE001 ges. Vi ska jämföra 0 (Kvantitet I) mot x (Kvantitet II). KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
     "tier": "essential"
    },
    {
@@ -2959,19 +2959,19 @@
    {
     "n": 3,
     "title": "Förenkla ekvationen",
-    "text": "Flytta alla x-termer till vänster och y-termer till höger: x + x = y + y, dvs 2x = 2y.",
+    "text": "Flytta alla x-termer till vänster och y-termer till höger: \uE000x + x = y + y\uE001, dvs \uE0002x = 2y\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Vad betyder är-lika-tecknet?",
-    "text": "Likheten a = b betyder att uttrycken har samma värde — inte att uttrycken är identiska bokstavsför-bokstavs. Alltså kan x = y vara sann för många olika värden.",
+    "text": "Likheten \uE000a = b\uE001 betyder att uttrycken har samma värde — inte att uttrycken är identiska bokstavsför-bokstavs. Alltså kan \uE000x = y\uE001 vara sann för många olika värden.",
     "tier": "detail"
    },
    {
     "n": 5,
     "title": "Lös ut sambandet",
-    "text": "Dela båda sidor av 2x = 2y med 2: x = y. Detta är enda begränsningen.",
+    "text": "Dela båda sidor av \uE0002x = 2y\uE001 med 2: \uE000x = y\uE001. Detta är enda begränsningen.",
     "tier": "essential"
    },
    {
@@ -2983,19 +2983,19 @@
    {
     "n": 7,
     "title": "Testa x = 0",
-    "text": "Med x = 0 (och därmed y = 0): I = 0, II = 0 — lika. Ekvationen blir -0 = 0, stämmer.",
+    "text": "Med x = 0 (och därmed y = 0): I = 0, II = 0 — lika. Ekvationen blir \uE000-0 = 0\uE001, stämmer.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Testa x = 5",
-    "text": "Med x = 5 (och y = 5): I = 0, II = 5 — II > I. Ekvationen blir 0 = 0, stämmer.",
+    "text": "Med x = 5 (och y = 5): I = 0, II = 5 — II > I. Ekvationen blir \uE0000 = 0\uE001, stämmer.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Testa x = −3",
-    "text": "Med x = −3 (och y = −3): I = 0, II = −3 — I > II. Ekvationen blir 0 = 0, stämmer.",
+    "text": "Med x = −3 (och y = −3): I = 0, II = −3 — I > II. Ekvationen blir \uE0000 = 0\uE001, stämmer.",
     "tier": "essential"
    },
    {
@@ -3007,7 +3007,7 @@
    {
     "n": 11,
     "title": "Verifiera",
-    "text": "Reduktion av x - y = y - x är entydig och ger bara x = y — inget extra villkor som skulle fixera ett tal.",
+    "text": "Reduktion av \uE000x - y = y - x\uE001 är entydig och ger bara \uE000x = y\uE001 — inget extra villkor som skulle fixera ett tal.",
     "tier": "detail"
    },
    {
@@ -3048,54 +3048,54 @@
   }
  },
  "var-2015-kvant2-KVA-017": {
-  "solution_path": "Beräkna h(3) = 15 och g(3) = -4. Då är I = h(3) - g(3) = 15 - (-4) = 19 och II = h(3) + g(3) = 15 + (-4) = 11. Eftersom 19 > 11 är I > II — svar A.",
+  "solution_path": "Beräkna \uE000h(3) = 15\uE001 och \uE000g(3) = -4\uE001. Då är I = \uE000h(3) - g(3) = 15 - (-4) = 19\uE001 och II = \uE000h(3) + g(3) = 15 + (-4) = 11\uE001. Eftersom 19 > 11 är I > II — svar A.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Två funktioner h(z) = 3(z+2) och g(z) = 2(1-z) ges. Vi ska jämföra h(3) - g(3) mot h(3) + g(3). KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
+    "text": "Två funktioner \uE000h(z) = 3(z+2)\uE001 och \uE000g(z) = 2(1-z)\uE001 ges. Vi ska jämföra \uE000h(3) - g(3)\uE001 mot \uE000h(3) + g(3)\uE001. KVA-koder: A = I > II, B = II > I, C = lika, D = otillräckligt.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Vad betyder funktionsnotation?",
-    "text": "h(z) betyder „h av z” — ersätt z med argumentet. T.ex. h(3) betyder att vi sätter z = 3 överallt i uttrycket.",
+    "text": "\uE000h(z)\uE001 betyder „h av z” — ersätt z med argumentet. T.ex. \uE000h(3)\uE001 betyder att vi sätter z = 3 överallt i uttrycket.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Beräkna h(3) — paranteser först",
-    "text": "h(3) = 3 \\cdot (3+2). Parentesen är 3 + 2 = 5.",
+    "text": "\uE000h(3) = 3 \\cdot (3+2)\uE001. Parentesen är \uE0003 + 2 = 5\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Multiplikation 3 \\cdot 5",
-    "text": "h(3) = 3 \\cdot 5 = 15.",
+    "title": "Multiplikation \uE0003 \\cdot 5\uE001",
+    "text": "\uE000h(3) = 3 \\cdot 5 = 15\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Beräkna g(3) — paranteser först",
-    "text": "g(3) = 2 \\cdot (1-3). Parentesen är 1 - 3 = -2.",
+    "text": "\uE000g(3) = 2 \\cdot (1-3)\uE001. Parentesen är \uE0001 - 3 = -2\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Multiplikation 2 \\cdot (-2)",
-    "text": "g(3) = 2 \\cdot (-2) = -4. Notera tecknet — positiv gånger negativ = negativ.",
+    "title": "Multiplikation \uE0002 \\cdot (-2)\uE001",
+    "text": "\uE000g(3) = 2 \\cdot (-2) = -4\uE001. Notera tecknet — positiv gånger negativ = negativ.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Beräkna Kvantitet I (skillnaden)",
-    "text": "\\text{I} = h(3) - g(3) = 15 - (-4) = 15 + 4 = 19. Subtraktion av ett negativt tal = addition.",
+    "text": "\uE000\\text{I} = h(3) - g(3) = 15 - (-4) = 15 + 4 = 19\uE001. Subtraktion av ett negativt tal = addition.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Beräkna Kvantitet II (summan)",
-    "text": "\\text{II} = h(3) + g(3) = 15 + (-4) = 11.",
+    "text": "\uE000\\text{II} = h(3) + g(3) = 15 + (-4) = 11\uE001.",
     "tier": "essential"
    },
    {
@@ -3107,7 +3107,7 @@
    {
     "n": 10,
     "title": "Snabbgenväg: I − II",
-    "text": "\\text{I} - \\text{II} = (h(3) - g(3)) - (h(3) + g(3)) = -2 g(3) = -2 \\cdot (-4) = 8 — positiv, alltså I > II oberoende av h(3).",
+    "text": "\uE000\\text{I} - \\text{II} = (h(3) - g(3)) - (h(3) + g(3)) = -2 g(3) = -2 \\cdot (-4) = 8\uE001 — positiv, alltså I > II oberoende av h(3).",
     "tier": "detail"
    },
    {
@@ -3119,7 +3119,7 @@
    {
     "n": 12,
     "title": "Slutsats",
-    "text": "I > II, svar A. Insikten i en mening: när en KVA-uppgift jämför a - b mot a + b reduceras jämförelsen till tecknet på b ensam — om b < 0 är differensen större än summan.",
+    "text": "I > II, svar A. Insikten i en mening: när en KVA-uppgift jämför \uE000a - b\uE001 mot \uE000a + b\uE001 reduceras jämförelsen till tecknet på b ensam — om b < 0 är differensen större än summan.",
     "tier": "essential"
    }
   ],
@@ -3127,7 +3127,7 @@
    {
     "letter": "B",
     "why_tempting": "Det är lätt att räkna fel på tecknet i differensen och tro att I < II.",
-    "why_wrong": "Steg 7 visar 15 - (-4) = 19 — dubbel-negativ blir positiv addition."
+    "why_wrong": "Steg 7 visar \uE00015 - (-4) = 19\uE001 — dubbel-negativ blir positiv addition."
    },
    {
     "letter": "C",
@@ -3140,12 +3140,12 @@
     "why_wrong": "Steg 3-6 beräknar båda exakt från givna formler — alla data finns."
    }
   ],
-  "technique": "Vid funktionssubstitutioner: ersätt argumentet stegvis och utför parenteser före multiplikation. Vid jämförelser av a-b mot a+b reduceras allt till tecknet på b.",
-  "pitfall": "Botemedlet mot tecken-glitchar i a - (-b): skriv ut det mellanled som a + b i ett separat steg.",
+  "technique": "Vid funktionssubstitutioner: ersätt argumentet stegvis och utför parenteser före multiplikation. Vid jämförelser av \uE000a-b\uE001 mot \uE000a+b\uE001 reduceras allt till tecknet på b.",
+  "pitfall": "Botemedlet mot tecken-glitchar i \uE000a - (-b)\uE001: skriv ut det mellanled som \uE000a + b\uE001 i ett separat steg.",
   "framework_id": null,
   "pregrade_tactic": {
    "handle": "Substitutionsstrategin",
-   "move": "När KVA frågar om a - b vs a + b: räkna bägges tecken — om b < 0 är differensen större, om b > 0 är summan större."
+   "move": "När KVA frågar om \uE000a - b\uE001 vs \uE000a + b\uE001: räkna bägges tecken — om b < 0 är differensen större, om b > 0 är summan större."
   },
   "_meta": {
    "model": "claude-opus-4-7-via-max-subscription",
@@ -3171,7 +3171,7 @@
    {
     "n": 3,
     "title": "Triangelolikheten",
-    "text": "För en triangel måste varje sida vara mindre än summan av de andra två: a + b > c för alla permutationer. Detta begränsar möjliga konfigurationer.",
+    "text": "För en triangel måste varje sida vara mindre än summan av de andra två: \uE000a + b > c\uE001 för alla permutationer. Detta begränsar möjliga konfigurationer.",
     "tier": "detail"
    },
    {
@@ -3183,7 +3183,7 @@
    {
     "n": 5,
     "title": "Fall A: 12 är basen",
-    "text": "Låt sidorna vara a, a, 12 med 2a + 12 = 40. Då a = 14, alltså 14, 14, 12.",
+    "text": "Låt sidorna vara \uE000a, a, 12\uE001 med \uE0002a + 12 = 40\uE001. Då \uE000a = 14\uE001, alltså 14, 14, 12.",
     "tier": "essential"
    },
    {
@@ -3195,7 +3195,7 @@
    {
     "n": 7,
     "title": "Fall B: 12 är en av de lika sidorna",
-    "text": "Låt sidorna vara 12, 12, b med 12 + 12 + b = 40, alltså b = 16.",
+    "text": "Låt sidorna vara \uE00012, 12, b\uE001 med \uE00012 + 12 + b = 40\uE001, alltså \uE000b = 16\uE001.",
     "tier": "essential"
    },
    {
@@ -3260,60 +3260,60 @@
   }
  },
  "var-2015-kvant2-KVA-022": {
-  "solution_path": "Tvåsiffriga talet R = 10Q + P och villkoret P^2 = R ger P(P-1) = 10Q. För ensiffriga P, Q ger P = 5 (Q = 2) och P = 6 (Q = 3) de två lösningarna. I båda fallen är P > Q — svar A.",
+  "solution_path": "Tvåsiffriga talet \uE000R = 10Q + P\uE001 och villkoret \uE000P^2 = R\uE001 ger \uE000P(P-1) = 10Q\uE001. För ensiffriga P, Q ger P = 5 (Q = 2) och P = 6 (Q = 3) de två lösningarna. I båda fallen är P > Q — svar A.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "P och Q är två olika ensiffriga positiva heltal (alltså 1 \\leq P, Q \\leq 9, P \\neq Q). R är tvåsiffrigt med tiotalssiffran Q och entalssiffran P. Villkor: P \\cdot P = R. KVA-koder: A = P > Q, B = Q > P, C = lika, D = otillräckligt.",
+    "text": "P och Q är två olika ensiffriga positiva heltal (alltså \uE0001 \\leq P, Q \\leq 9\uE001, \uE000P \\neq Q\uE001). R är tvåsiffrigt med tiotalssiffran Q och entalssiffran P. Villkor: \uE000P \\cdot P = R\uE001. KVA-koder: A = P > Q, B = Q > P, C = lika, D = otillräckligt.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Vad betyder „tvåsiffrigt”?",
-    "text": "Ett tvåsiffrigt tal har tiotalssiffran \\geq 1 (annars vore det ensiffrigt). Alltså Q \\geq 1. Det skrivs som 10 \\cdot Q + P.",
+    "text": "Ett tvåsiffrigt tal har tiotalssiffran \uE000\\geq 1\uE001 (annars vore det ensiffrigt). Alltså \uE000Q \\geq 1\uE001. Det skrivs som \uE00010 \\cdot Q + P\uE001.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Ekvationen i variabler",
-    "text": "P^2 = 10Q + P. Detta är en diofantisk ekvation — vi söker heltalslösningar.",
+    "text": "\uE000P^2 = 10Q + P\uE001. Detta är en diofantisk ekvation — vi söker heltalslösningar.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Flytta termer",
-    "text": "P^2 - P = 10Q, alltså P(P-1) = 10Q.",
+    "text": "\uE000P^2 - P = 10Q\uE001, alltså \uE000P(P-1) = 10Q\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Begränsningar på P",
-    "text": "Eftersom P är ensiffrig och positiv: 1 \\leq P \\leq 9. Dessutom måste R = P^2 vara tvåsiffrigt, alltså 10 \\leq P^2 \\leq 99, vilket ger 4 \\leq P \\leq 9.",
+    "text": "Eftersom P är ensiffrig och positiv: \uE0001 \\leq P \\leq 9\uE001. Dessutom måste \uE000R = P^2\uE001 vara tvåsiffrigt, alltså \uE00010 \\leq P^2 \\leq 99\uE001, vilket ger \uE0004 \\leq P \\leq 9\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Pröva P = 4",
-    "text": "P^2 = 16. Tiotalssiffran Q ska vara 1, entalssiffran P ska vara 4. Men R = 16 har tiotal 1, ental 6 — entalet är 6, inte 4. Avvisas.",
+    "text": "\uE000P^2 = 16\uE001. Tiotalssiffran Q ska vara 1, entalssiffran P ska vara 4. Men R = 16 har tiotal 1, ental 6 — entalet är 6, inte 4. Avvisas.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Pröva P = 5",
-    "text": "P^2 = 25. R är 25, tiotalssiffran är 2 = Q, entalssiffran är 5 = P — stämmer. P = 5, Q = 2, R = 25.",
+    "text": "\uE000P^2 = 25\uE001. R är 25, tiotalssiffran är 2 = Q, entalssiffran är 5 = P — stämmer. P = 5, Q = 2, R = 25.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Pröva P = 6",
-    "text": "P^2 = 36. R är 36, tiotalssiffran 3 = Q, entalssiffran 6 = P — stämmer. P = 6, Q = 3, R = 36.",
+    "text": "\uE000P^2 = 36\uE001. R är 36, tiotalssiffran 3 = Q, entalssiffran 6 = P — stämmer. P = 6, Q = 3, R = 36.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Pröva P = 7, 8, 9",
-    "text": "P = 7: P^2 = 49, ental 9 ≠ 7. P = 8: P^2 = 64, ental 4 ≠ 8. P = 9: P^2 = 81, ental 1 ≠ 9. Inga ytterligare lösningar.",
+    "text": "P = 7: \uE000P^2 = 49\uE001, ental 9 ≠ 7. P = 8: \uE000P^2 = 64\uE001, ental 4 ≠ 8. P = 9: \uE000P^2 = 81\uE001, ental 1 ≠ 9. Inga ytterligare lösningar.",
     "tier": "detail"
    },
    {
@@ -3331,7 +3331,7 @@
    {
     "n": 12,
     "title": "Verifiera",
-    "text": "Algebraiskt: P(P−1) = 10Q. För P \\geq 5 är P-1 \\geq 4 medan P/Q = P/(P(P-1)/10) = 10/(P-1). Det ger P/Q > 1 vilket utvisäger P > Q.",
+    "text": "Algebraiskt: P(P−1) = 10Q. För \uE000P \\geq 5\uE001 är \uE000P-1 \\geq 4\uE001 medan \uE000P/Q = P/(P(P-1)/10) = 10/(P-1)\uE001. Det ger \uE000P/Q > 1\uE001 vilket utvisäger P > Q.",
     "tier": "detail"
    },
    {
@@ -3358,8 +3358,8 @@
     "why_wrong": "Som steg 10-11 visar har vi exakt två lösningar och båda har P > Q — ordningen är konstant."
    }
   ],
-  "technique": "För sifferpussel: skriv tvåsiffrigt tal som 10Q + P och tolka villkoret som diofantisk ekvation. Begränsa kandidater via ensiffriga skäl, pröva alla, kontrollera entalssiffran.",
-  "pitfall": "Botemedlet mot att förväxla siffrornas position: skriv R = 10Q + P explicit (Q i tiotal, P i ental) innan du substituerar.",
+  "technique": "För sifferpussel: skriv tvåsiffrigt tal som \uE00010Q + P\uE001 och tolka villkoret som diofantisk ekvation. Begränsa kandidater via ensiffriga skäl, pröva alla, kontrollera entalssiffran.",
+  "pitfall": "Botemedlet mot att förväxla siffrornas position: skriv \uE000R = 10Q + P\uE001 explicit (Q i tiotal, P i ental) innan du substituerar.",
   "framework_id": "KVA-TRAP-036",
   "pregrade_tactic": {
    "handle": "Sifferpussel-enumeringen",
@@ -3383,7 +3383,7 @@
    {
     "n": 2,
     "title": "Medelvärdets definition",
-    "text": "Medelvärdet av n tal är \\bar{x} = \\frac{x_1 + x_2 + \\ldots + x_n}{n}. Det räcker att veta totalsumman för att räkna medelvärdet.",
+    "text": "Medelvärdet av n tal är \uE000\\bar{x} = \\frac{x_1 + x_2 + \\ldots + x_n}{n}\uE001. Det räcker att veta totalsumman för att räkna medelvärdet.",
     "tier": "essential"
    },
    {
@@ -3500,7 +3500,7 @@
    {
     "n": 3,
     "title": "Areal av en kvadrat",
-    "text": "En kvadrat med sida s har area s^2. Om vi vet sidan kan vi räkna ut arean direkt.",
+    "text": "En kvadrat med sida s har area \uE000s^2\uE001. Om vi vet sidan kan vi räkna ut arean direkt.",
     "tier": "essential"
    },
    {
@@ -3524,7 +3524,7 @@
    {
     "n": 7,
     "title": "Räkna area per platta från (2)",
-    "text": "Sida = 0,3 m → area per platta = 0,3 \\cdot 0,3 = 0,09 m².",
+    "text": "Sida = 0,3 m → area per platta = \uE0000,3 \\cdot 0,3 = 0,09\uE001 m².",
     "tier": "essential"
    },
    {
@@ -3600,7 +3600,7 @@
   }
  },
  "var-2015-kvant2-NOG-025": {
-  "solution_path": "En grupp på n personer delar lika på vinstsumman V; varje får V/n. (1): hypotetiskt — om 8 personer avstår får de övriga 20 kr mer, dvs V/(n-8) - V/n = 20. Förenkling: V = 2{,}5 \\cdot n \\cdot (n-8) — relation mellan V och n, men inte V ensam. (2): n = 20 (antalet). Ensamt ger inget belopp. Tillsammans: V = 2,5·20·12 = 600 kr. Svar: C.",
+  "solution_path": "En grupp på n personer delar lika på vinstsumman V; varje får V/n. (1): hypotetiskt — om 8 personer avstår får de övriga 20 kr mer, dvs \uE000V/(n-8) - V/n = 20\uE001. Förenkling: \uE000V = 2{,}5 \\cdot n \\cdot (n-8)\uE001 — relation mellan V och n, men inte V ensam. (2): n = 20 (antalet). Ensamt ger inget belopp. Tillsammans: V = 2,5·20·12 = 600 kr. Svar: C.",
   "steps": [
    {
     "n": 1,
@@ -3611,13 +3611,13 @@
    {
     "n": 2,
     "title": "Sätt upp variabler",
-    "text": "Två obekanta: n (antal personer, heltal ≥ 1) och V (vinstsumma, positiv). Belopp per person: v = V/n. För att låsa V behövs minst två oberoende ekvationer.",
+    "text": "Två obekanta: n (antal personer, heltal ≥ 1) och V (vinstsumma, positiv). Belopp per person: \uE000v = V/n\uE001. För att låsa V behövs minst två oberoende ekvationer.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Översätt (1)",
-    "text": "(1): om 8 personer avstår blir det (n − 8) personer som delar. Var och en av dessa får V/(n−8). Differensen mot ursprungligt belopp: V/(n-8) - V/n = 20 kr per person.",
+    "text": "(1): om 8 personer avstår blir det (n − 8) personer som delar. Var och en av dessa får V/(n−8). Differensen mot ursprungligt belopp: \uE000V/(n-8) - V/n = 20\uE001 kr per person.",
     "tier": "essential"
    },
    {
@@ -3629,13 +3629,13 @@
    {
     "n": 5,
     "title": "Förenkla ekvationen",
-    "text": "Gemensam nämnare: \\frac{V}{n-8} - \\frac{V}{n} = \\frac{V \\cdot n - V \\cdot (n-8)}{n(n-8)} = \\frac{8V}{n(n-8)} = 20.",
+    "text": "Gemensam nämnare: \uE000\\frac{V}{n-8} - \\frac{V}{n} = \\frac{V \\cdot n - V \\cdot (n-8)}{n(n-8)} = \\frac{8V}{n(n-8)} = 20\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Isolera V",
-    "text": "Multiplicera båda sidor med n(n−8) / 8: V = \\frac{20 \\cdot n(n-8)}{8} = 2{,}5 \\cdot n \\cdot (n-8). Detta är en RELATION mellan V och n — inte ett tal.",
+    "text": "Multiplicera båda sidor med n(n−8) / 8: \uE000V = \\frac{20 \\cdot n(n-8)}{8} = 2{,}5 \\cdot n \\cdot (n-8)\uE001. Detta är en RELATION mellan V och n — inte ett tal.",
     "tier": "essential"
    },
    {
@@ -3659,7 +3659,7 @@
    {
     "n": 10,
     "title": "Kombinera",
-    "text": "Sätt n = 20 i V = 2,5·n·(n−8): V = 2{,}5 \\cdot 20 \\cdot 12 = 600 kr.",
+    "text": "Sätt n = 20 i V = 2,5·n·(n−8): \uE000V = 2{,}5 \\cdot 20 \\cdot 12 = 600\uE001 kr.",
     "tier": "essential"
    },
    {
@@ -3690,7 +3690,7 @@
    {
     "letter": "B",
     "why_tempting": "Snabbsvar är ofta att 'antalet räcker' eftersom det är ett konkret tal (n = 20).",
-    "why_wrong": "Steg 9: (2) ger n men inget belopp. V kan vara vad som helst — vinst summan är inte specifierad."
+    "why_wrong": "Steg 9: (2) ger n men inget belopp. V kan vara vad som helst — vinst summan är inte specificerad."
    },
    {
     "letter": "D",
@@ -3707,7 +3707,7 @@
   "pitfall": "I (1) ÖKAR beloppet per person när 8 personer avstår — räknetecknet är V/(n−8) − V/n = 20, inte V/n − V/(n−8). Botemedlet: räkna alltid 'mer per person' = 'större bråk minus mindre bråk'.",
   "framework_id": "NOG-TRAP-011",
   "pregrade_tactic": {
-   "handle": "Hypotetik-låsaren",
+   "handle": "Hypotes-låsaren",
    "move": "Vid hypotetiska omfördelningar: skriv ut differensen som bråk-ekvation och förenkla — om resultatet är en relation V = f(n) räcker det inte ensamt; kombinera med absolut n-villkor."
   },
   "_meta": {
@@ -3746,13 +3746,13 @@
    {
     "n": 5,
     "title": "Förenkla ekvationen",
-    "text": "1{,}5t - t = 0{,}5t. Så 0{,}5t = 5.",
+    "text": "\uE0001{,}5t - t = 0{,}5t\uE001. Så \uE0000{,}5t = 5\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Lös för t",
-    "text": "t = 5 / 0{,}5 = 10 min.",
+    "text": "\uE000t = 5 / 0{,}5 = 10\uE001 min.",
     "tier": "essential"
    },
    {
@@ -3770,7 +3770,7 @@
    {
     "n": 9,
     "title": "Tid kräver hastighet",
-    "text": "Sambandet sträcka–hastighet–tid: s = v \\cdot t, alltså t = s/v. För att räkna tiden från sträckan behövs hastigheten.",
+    "text": "Sambandet sträcka–hastighet–tid: \uE000s = v \\cdot t\uE001, alltså \uE000t = s/v\uE001. För att räkna tiden från sträckan behövs hastigheten.",
     "tier": "essential"
    },
    {
@@ -3839,7 +3839,7 @@
    {
     "n": 2,
     "title": "Grundekvation",
-    "text": "S + V + C = 40. En ekvation i tre obekanta — vi behöver minst två oberoende villkor till för att låsa alla tre.",
+    "text": "\uE000S + V + C = 40\uE001. En ekvation i tre obekanta — vi behöver minst två oberoende villkor till för att låsa alla tre.",
     "tier": "essential"
    },
    {
@@ -3875,7 +3875,7 @@
    {
     "n": 8,
     "title": "Räkna C från (2)",
-    "text": "C = 40 - (V + S) = 40 - 31{,}2 = 8{,}8 kg.",
+    "text": "\uE000C = 40 - (V + S) = 40 - 31{,}2 = 8{,}8\uE001 kg.",
     "tier": "essential"
    },
    {
@@ -3950,13 +3950,13 @@
    {
     "n": 2,
     "title": "Sätt upp variabler",
-    "text": "Låt a = antal 20-kronorssedlar, b = antal 5-kronor. Båda är heltal ≥ 0. Värdet: 20a + 5b = 125.",
+    "text": "Låt a = antal 20-kronorssedlar, b = antal 5-kronor. Båda är heltal ≥ 0. Värdet: \uE00020a + 5b = 125\uE001.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Förenkla ekvationen",
-    "text": "Dela med 5: 4a + b = 25, dvs b = 25 - 4a. För att b ≥ 0 måste a ≤ 6.",
+    "text": "Dela med 5: \uE0004a + b = 25\uE001, dvs \uE000b = 25 - 4a\uE001. För att b ≥ 0 måste a ≤ 6.",
     "tier": "essential"
    },
    {
@@ -4078,7 +4078,7 @@
   "steps": [
    {
     "n": 1,
-    "text": "Vi ska lösa ekvationen \\frac{x}{3} + \\frac{x}{4} = \\frac{35}{12}.",
+    "text": "Vi ska lösa ekvationen \uE000\\frac{x}{3}\uE001 + \uE000\\frac{x}{4}\uE001 = \uE000\\frac{35}{12}\uE001.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
@@ -4202,7 +4202,7 @@
    },
    {
     "n": 6,
-    "text": "För två tal a, b med a + b = S, är produkten ab = a(S − a) = aS − a^{2}, en nedåtbuktande parabel i a. Den maximeras när a = S/2, här a = 8. Vi rundar till närmaste tillåtna (udda) värden: 7 och 9.",
+    "text": "För två tal a, b med a + b = S, är produkten ab = a(S − a) = aS − \uE000a^{2}\uE001, en nedåtbuktande parabel i a. Den maximeras när a = S/2, här a = 8. Vi rundar till närmaste tillåtna (udda) värden: 7 och 9.",
     "tier": "detail",
     "title": "Algebraisk intuition"
    },
@@ -4350,7 +4350,7 @@
    "recipe": "variant-c-regen-wave"
   },
   "framework_id": "XYZ-TRAP-037",
-  "solution_path": "AB ∥ CD med en tvärgående linje. Identifiera vinkeln på AB som markeras 70°. Vinkeln x på CD är på MOTSATT sida av tvärgående jämfört med 70° — alltså supplementär. x = 180^{\\circ} - 70^{\\circ} = 110^{\\circ} (alternativ C).",
+  "solution_path": "AB ∥ CD med en tvärgående linje. Identifiera vinkeln på AB som markeras 70°. Vinkeln x på CD är på MOTSATT sida av tvärgående jämfört med 70° — alltså supplementär. \uE000x = 180^{\\circ} - 70^{\\circ} = 110^{\\circ}\uE001 (alternativ C).",
   "technique": "Parallella linjer + tvärgående: tre regler — likbelägna vinklar är LIKA, alternatvinklar är LIKA, supplementsvinklar (samhörande på olika sidor av tvärgående) summerar till 180°. Tre regler räcker för att flytta vinklar mellan linjerna.",
   "pitfall": "Botemedlet mot tecken/sida-blanding: rita en pil längs tvärgående, märk ena sidan ‘ovan’ och andra ‘under’ — likbelägna vinklar är båda i SAMMA hörnposition (t.ex. båda ‘ovan-höger’). Är de motsatt placerade, är de supplementära.",
   "steps": [
@@ -4363,7 +4363,7 @@
    {
     "n": 2,
     "title": "Definiera parallella linjer",
-    "text": "Två linjer är parallella om de aldrig möts — de har samma riktning. Symbol: \\parallel. När en tvärgående linje korsar två parallella linjer uppstår systematiska vinkelrelationer.",
+    "text": "Två linjer är parallella om de aldrig möts — de har samma riktning. Symbol: \uE000\\parallel\uE001. När en tvärgående linje korsar två parallella linjer uppstår systematiska vinkelrelationer.",
     "tier": "detail"
    },
    {
@@ -4393,19 +4393,19 @@
    {
     "n": 7,
     "title": "Tillämpa supplement-relationen",
-    "text": "x + 70^{\\circ} = 180^{\\circ}.",
+    "text": "\uE000x + 70^{\\circ} = 180^{\\circ}\uE001.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Lös ut x",
-    "text": "x = 180^{\\circ} - 70^{\\circ} = 110^{\\circ}.",
+    "text": "\uE000x = 180^{\\circ} - 70^{\\circ} = 110^{\\circ}\uE001.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Sanity-check via likbelägen",
-    "text": "Alternativ kontroll: den likbelägna vinkeln till 70° (på CD, i samma position) är också 70°. Då är x supplementär till den, så x = 180^{\\circ} - 70^{\\circ} = 110^{\\circ} ✓.",
+    "text": "Alternativ kontroll: den likbelägna vinkeln till 70° (på CD, i samma position) är också 70°. Då är x supplementär till den, så \uE000x = 180^{\\circ} - 70^{\\circ} = 110^{\\circ}\uE001 ✓.",
     "tier": "detail"
    },
    {
@@ -4417,7 +4417,7 @@
    {
     "n": 11,
     "title": "Verifiera",
-    "text": "x + 70^{\\circ} = 110^{\\circ} + 70^{\\circ} = 180^{\\circ} ✓ (rät linje). Vinklar nära tvärgående summerar konsistent.",
+    "text": "\uE000x + 70^{\\circ} = 110^{\\circ} + 70^{\\circ} = 180^{\\circ}\uE001 ✓ (rät linje). Vinklar nära tvärgående summerar konsistent.",
     "tier": "essential"
    },
    {
@@ -4441,7 +4441,7 @@
    {
     "letter": "D",
     "why_tempting": "Första instinkten är att addera istället för subtrahera och få 130° — eller blanda in en tredje vinkel.",
-    "why_wrong": "Steg 8 är explicit: 180^{\\circ} - 70^{\\circ} = 110^{\\circ}, inte 130°. 130° skulle kräva 180 - 50 eller 60 + 70 — ingen av dem matchar figuren."
+    "why_wrong": "Steg 8 är explicit: \uE000180^{\\circ} - 70^{\\circ} = 110^{\\circ}\uE001, inte 130°. 130° skulle kräva \uE000180 - 50\uE001 eller \uE00060 + 70\uE001 — ingen av dem matchar figuren."
    }
   ],
   "pregrade_tactic": {
@@ -4575,7 +4575,7 @@
    {
     "n": 3,
     "title": "Räkna sidan",
-    "text": "Omkrets = summa av alla 6 sidor. Med samma sidlängd s: 6s = 84, alltså s = 14 cm.",
+    "text": "Omkrets = summa av alla 6 sidor. Med samma sidlängd s: \uE0006s = 84\uE001, alltså \uE000s = 14\uE001 cm.",
     "tier": "essential"
    },
    {
@@ -4593,7 +4593,7 @@
    {
     "n": 6,
     "title": "Varför trianglarna är liksidiga",
-    "text": "Varje central vinkel är 360^{\\circ}/6 = 60^{\\circ}. I triangel OAB är OA = OB (radier) och vinkeln vid O är 60°. Två lika sidor + 60°-vinkel ger en liksidig triangel (alla tre vinklar 60°, alla tre sidor lika).",
+    "text": "Varje central vinkel är \uE000360^{\\circ}/6 = 60^{\\circ}\uE001. I triangel OAB är OA = OB (radier) och vinkeln vid O är 60°. Två lika sidor + 60°-vinkel ger en liksidig triangel (alla tre vinklar 60°, alla tre sidor lika).",
     "tier": "detail"
    },
    {
@@ -4605,7 +4605,7 @@
    {
     "n": 8,
     "title": "AD passerar genom centrum",
-    "text": "A och D är motstående hörn (3 steg runt). Linjen AD går RAKT genom centrum O. Alltså: AD = AO + OD = 14 + 14 = 28 cm.",
+    "text": "A och D är motstående hörn (3 steg runt). Linjen AD går RAKT genom centrum O. Alltså: \uE000AD = AO + OD = 14 + 14 = 28\uE001 cm.",
     "tier": "essential"
    },
    {
@@ -4641,7 +4641,7 @@
    },
    {
     "letter": "B",
-    "why_tempting": "Snabbsvar är ofta 14√2 om man förväxlar sexhörning med kvadrat (där diagonalen är \\sqrt{2} × sidan).",
+    "why_tempting": "Snabbsvar är ofta 14√2 om man förväxlar sexhörning med kvadrat (där diagonalen är \uE000\\sqrt{2}\uE001 × sidan).",
     "why_wrong": "Steg 4: 14√2 ≈ 19,8 cm är diagonalen i en KVADRAT med sidan 14. Sexhörningens längsta diagonal är 2 · 14 = 28 cm."
    },
    {
@@ -4662,44 +4662,44 @@
    "recipe": "variant-c-regen-wave"
   },
   "framework_id": "XYZ-TRAP-032",
-  "solution_path": "Tolka uttrycket som \\sqrt{8 \\cdot 20 - 4} (baserat på facit D = 12). Räkna under roten: 8 \\cdot 20 = 160, 160 - 4 = 156. \\sqrt{156} ligger mellan \\sqrt{144} = 12 och \\sqrt{169} = 13 — närmare 12. Svaret är 12.",
-  "technique": "Approximativ rotutdragning: räkna värdet under roten exakt, sedan jämför mot närmaste perfekta kvadrater. n^2 \\le V < (n+1)^2 ger n \\le \\sqrt{V} < n+1.",
-  "pitfall": "Botemedlet mot rot-fällan: räkna ALLTID värdet under roten klart innan du försöker dra ut. 8 \\cdot 20 - 4 = 156, inte 8·(20−4) = 128 — paranteser och räkneordning gäller.",
+  "solution_path": "Tolka uttrycket som \uE000\\sqrt{8 \\cdot 20 - 4}\uE001 (baserat på facit D = 12). Räkna under roten: \uE0008 \\cdot 20 = 160\uE001, \uE000160 - 4 = 156\uE001. \uE000\\sqrt{156}\uE001 ligger mellan \uE000\\sqrt{144} = 12\uE001 och \uE000\\sqrt{169} = 13\uE001 — närmare 12. Svaret är 12.",
+  "technique": "Approximativ rotutdragning: räkna värdet under roten exakt, sedan jämför mot närmaste perfekta kvadrater. \uE000n^2 \\le V < (n+1)^2\uE001 ger \uE000n \\le \\sqrt{V} < n+1\uE001.",
+  "pitfall": "Botemedlet mot rot-fällan: räkna ALLTID värdet under roten klart innan du försöker dra ut. \uE0008 \\cdot 20 - 4 = 156\uE001, inte 8·(20−4) = 128 — paranteser och räkneordning gäller.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Beräkna \\sqrt{8 \\cdot 20 - 4} och välj närmaste värde bland 2·41, 8, 156, 12.",
+    "text": "Beräkna \uE000\\sqrt{8 \\cdot 20 - 4}\uE001 och välj närmaste värde bland 2·41, 8, 156, 12.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Räkneordning under roten",
-    "text": "Multiplikation FÖRE subtraktion (kom ihåg: gånger/dela före plus/minus, om inte parenteser säger annat). 8 \\cdot 20 - 4 = (8 \\cdot 20) - 4 = 160 - 4 = 156.",
+    "text": "Multiplikation FÖRE subtraktion (kom ihåg: gånger/dela före plus/minus, om inte parenteser säger annat). \uE0008 \\cdot 20 - 4 = (8 \\cdot 20) - 4 = 160 - 4 = 156\uE001.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Definiera kvadratrot",
-    "text": "\\sqrt{n} är det positiva tal som upphöjt till 2 ger n. Vi söker alltså ett tal vars kvadrat är 156.",
+    "text": "\uE000\\sqrt{n}\uE001 är det positiva tal som upphöjt till 2 ger n. Vi söker alltså ett tal vars kvadrat är 156.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Hitta närmaste perfekta kvadrater",
-    "text": "12^2 = 144, 13^2 = 169. Eftersom 144 \\le 156 < 169 är \\sqrt{156} mellan 12 och 13.",
+    "text": "\uE00012^2 = 144\uE001, \uE00013^2 = 169\uE001. Eftersom \uE000144 \\le 156 < 169\uE001 är \uE000\\sqrt{156}\uE001 mellan 12 och 13.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Avgör närhet",
-    "text": "156 − 144 = 12 (avstånd till 144). 169 − 156 = 13 (avstånd till 169). Närmare 144, så \\sqrt{156} är närmare 12 än 13.",
+    "text": "156 − 144 = 12 (avstånd till 144). 169 − 156 = 13 (avstånd till 169). Närmare 144, så \uE000\\sqrt{156}\uE001 är närmare 12 än 13.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Mer exakt approximation",
-    "text": "Linjär approximation: \\sqrt{156} \\approx 12 + 12/(2 \\cdot 12) = 12 + 12/24 = 12 + 0{,}5 = 12{,}5.",
+    "text": "Linjär approximation: \uE000\\sqrt{156} \\approx 12 + 12/(2 \\cdot 12) = 12 + 12/24 = 12 + 0{,}5 = 12{,}5\uE001.",
     "tier": "detail"
    },
    {
@@ -4717,7 +4717,7 @@
    {
     "n": 9,
     "title": "Sanity-check",
-    "text": "12^2 = 144 och vi söker värdet vars kvadrat är 156 — bara lite över 144, så talet är bara lite över 12. Konsistent med 12,5.",
+    "text": "\uE00012^2 = 144\uE001 och vi söker värdet vars kvadrat är 156 — bara lite över 144, så talet är bara lite över 12. Konsistent med 12,5.",
     "tier": "detail"
    },
    {
@@ -4729,7 +4729,7 @@
    {
     "n": 11,
     "title": "Verifiera",
-    "text": "12{,}5^2 = 156{,}25 \\approx 156 ✓. \\sqrt{156} \\approx 12{,}5 \\approx 12 (närmast heltal). Stämmer.",
+    "text": "\uE00012{,}5^2 = 156{,}25 \\approx 156\uE001 ✓. \uE000\\sqrt{156} \\approx 12{,}5 \\approx 12\uE001 (närmast heltal). Stämmer.",
     "tier": "essential"
    },
    {
@@ -4743,12 +4743,12 @@
    {
     "letter": "A",
     "why_tempting": "Det är lätt att räkna 2·41 = 82 om man missläser uttrycket helt och tar fel operation.",
-    "why_wrong": "Steg 2: räkneordningen är fastlåst. 8·20 − 4 = 156, inte 82. \\sqrt{156} \\approx 12{,}5 är långt från 82."
+    "why_wrong": "Steg 2: räkneordningen är fastlåst. 8·20 − 4 = 156, inte 82. \uE000\\sqrt{156} \\approx 12{,}5\uE001 är långt från 82."
    },
    {
     "letter": "B",
-    "why_tempting": "Snabbsvar är ofta 8 om man tar \\sqrt{8 \\cdot 20 - 4} = \\sqrt{8 \\cdot 16} = \\sqrt{128} (felaktig parantesering: (20-4) = 16).",
-    "why_wrong": "Steg 2: 20 - 4 är INTE inom parentes — multiplikation går först. Och även \\sqrt{128} \\approx 11{,}3, inte 8."
+    "why_tempting": "Snabbsvar är ofta 8 om man tar \uE000\\sqrt{8 \\cdot 20 - 4} = \\sqrt{8 \\cdot 16} = \\sqrt{128}\uE001 (felaktig parantesering: \uE000(20-4) = 16\uE001).",
+    "why_wrong": "Steg 2: \uE00020 - 4\uE001 är INTE inom parentes — multiplikation går först. Och även \uE000\\sqrt{128} \\approx 11{,}3\uE001, inte 8."
    },
    {
     "letter": "C",
@@ -4956,92 +4956,92 @@
   }
  },
  "var-2015-kvant2-XYZ-011": {
-  "solution_path": "Punkten (3, 3) sätts in i y = kx - 3 så att k kan lösas: k = 2. Sätt sedan in x = -3: y = 2(-3) - 3 = -9. Svar A.",
+  "solution_path": "Punkten (3, 3) sätts in i \uE000y = kx - 3\uE001 så att \uE000k\uE001 kan lösas: \uE000k = 2\uE001. Sätt sedan in \uE000x = -3\uE001: \uE000y = 2(-3) - 3 = -9\uE001. Svar A.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "En rät linje har formen y = kx - 3 där lutningen k är okänd. Vi vet att punkten (3, 3) ligger på linjen och söker y när x = -3.",
+    "text": "En rät linje har formen \uE000y = kx - 3\uE001 där lutningen \uE000k\uE001 är okänd. Vi vet att punkten (3, 3) ligger på linjen och söker \uE000y\uE001 när \uE000x = -3\uE001.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Vad betyder 'ligger på linjen'?",
-    "text": "Att en punkt ligger på en linje betyder att dess koordinater satisfierar ekvationen. Sätter du in x = 3 och y = 3 i y = kx - 3 ska likheten gälla.",
+    "text": "Att en punkt ligger på en linje betyder att dess koordinater satisfierar ekvationen. Sätter du in \uE000x = 3\uE001 och \uE000y = 3\uE001 i \uE000y = kx - 3\uE001 ska likheten gälla.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Substituera kända värden",
-    "text": "Stoppa in x = 3 och y = 3: 3 = k \\cdot 3 - 3. Det här är en vanlig ekvation i k — målet är att isolera k.",
+    "text": "Stoppa in \uE000x = 3\uE001 och \uE000y = 3\uE001: \uE0003 = k \\cdot 3 - 3\uE001. Det här är en vanlig ekvation i \uE000k\uE001 — målet är att isolera \uE000k\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Lös ut k",
-    "text": "Addera 3 till båda leden: 6 = 3k. Dela båda leden med 3: k = 2. Lutningen är alltså 2.",
+    "text": "Addera 3 till båda leden: \uE0006 = 3k\uE001. Dela båda leden med 3: \uE000k = 2\uE001. Lutningen är alltså 2.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Skriv den färdiga linjen",
-    "text": "Med k = 2 blir ekvationen y = 2x - 3. Nu är linjen helt bestämd.",
+    "text": "Med \uE000k = 2\uE001 blir ekvationen \uE000y = 2x - 3\uE001. Nu är linjen helt bestämd.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Sätt in det nya x-värdet",
-    "text": "Vi vill veta y när x = -3. Stoppa in: y = 2 \\cdot (-3) - 3.",
+    "text": "Vi vill veta \uE000y\uE001 när \uE000x = -3\uE001. Stoppa in: \uE000y = 2 \\cdot (-3) - 3\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Multiplicera först",
-    "text": "Multiplikation går före subtraktion (prioritetsregeln): 2 \\cdot (-3) = -6. Negativ gånger positiv ger negativ.",
+    "text": "Multiplikation går före subtraktion (prioritetsregeln): \uE0002 \\cdot (-3) = -6\uE001. Negativ gånger positiv ger negativ.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Subtrahera resten",
-    "text": "Nu står det y = -6 - 3. Subtraktion av positivt tal från ett negativt drar talet längre åt vänster på tallinjen: y = -9.",
+    "text": "Nu står det \uE000y = -6 - 3\uE001. Subtraktion av positivt tal från ett negativt drar talet längre åt vänster på tallinjen: \uE000y = -9\uE001.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Verifiera",
-    "text": "Kontroll: med k = 2 ska (3, 3) ligga på linjen. 2 \\cdot 3 - 3 = 6 - 3 = 3 ✓. Och y vid x = -3 är -9 ✓.",
+    "text": "Kontroll: med \uE000k = 2\uE001 ska (3, 3) ligga på linjen. \uE0002 \\cdot 3 - 3 = 6 - 3 = 3\uE001 ✓. Och \uE000y\uE001 vid \uE000x = -3\uE001 är \uE000-9\uE001 ✓.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Slutsats",
-    "text": "Svaret är A: -9. Insikten i en mening: när en punkt ges på en linje med okänd lutning, lös k ur substitutionen först — sedan är resten ren inmatning.",
+    "text": "Svaret är A: \uE000-9\uE001. Insikten i en mening: när en punkt ges på en linje med okänd lutning, lös \uE000k\uE001 ur substitutionen först — sedan är resten ren inmatning.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Det är lätt att hoppa över att lösa k och bara läsa av konstanten -3 i y = kx - 3.",
-    "why_wrong": "Som steg 3–4 visar måste k bestämmas från punkten (3, 3); annars finns ingen linje att räkna med. Slutvärdet är -9, inte -3."
+    "why_tempting": "Det är lätt att hoppa över att lösa \uE000k\uE001 och bara läsa av konstanten \uE000-3\uE001 i \uE000y = kx - 3\uE001.",
+    "why_wrong": "Som steg 3–4 visar måste \uE000k\uE001 bestämmas från punkten (3, 3); annars finns ingen linje att räkna med. Slutvärdet är \uE000-9\uE001, inte \uE000-3\uE001."
    },
    {
     "letter": "C",
-    "why_tempting": "Snabbsvar är ofta 0 när x byter tecken — som om linjen vore symmetrisk kring origo.",
-    "why_wrong": "Linjen y = 2x - 3 går inte genom origo (konstanten -3 förskjuter den). Steg 8 ger -9."
+    "why_tempting": "Snabbsvar är ofta 0 när \uE000x\uE001 byter tecken — som om linjen vore symmetrisk kring origo.",
+    "why_wrong": "Linjen \uE000y = 2x - 3\uE001 går inte genom origo (konstanten \uE000-3\uE001 förskjuter den). Steg 8 ger \uE000-9\uE001."
    },
    {
     "letter": "D",
-    "why_tempting": "Många stannar vid 6 om de glömmer det avslutande -3 och bara räknar 2 \\cdot 3 = 6 med fel tecken.",
-    "why_wrong": "Steg 6–8 visar två operationer: först 2 \\cdot (-3) = -6, sedan -6 - 3 = -9. Konstanttermen får inte tappas."
+    "why_tempting": "Många stannar vid 6 om de glömmer det avslutande \uE000-3\uE001 och bara räknar \uE0002 \\cdot 3 = 6\uE001 med fel tecken.",
+    "why_wrong": "Steg 6–8 visar två operationer: först \uE0002 \\cdot (-3) = -6\uE001, sedan \uE000-6 - 3 = -9\uE001. Konstanttermen får inte tappas."
    }
   ],
-  "technique": "Linje med okänd lutning: substituera den givna punkten för att lösa k först, sedan är linjen helt definierad och nya x-värden ger y direkt.",
-  "pitfall": "Det kluriga är att man kan vilja räkna direkt med x = -3 utan att först bestämma k. Botemedlet: skriv om uppgiften som två faser — fas 1 hittar k, fas 2 räknar nytt y.",
+  "technique": "Linje med okänd lutning: substituera den givna punkten för att lösa \uE000k\uE001 först, sedan är linjen helt definierad och nya \uE000x\uE001-värden ger \uE000y\uE001 direkt.",
+  "pitfall": "Det kluriga är att man kan vilja räkna direkt med \uE000x = -3\uE001 utan att först bestämma \uE000k\uE001. Botemedlet: skriv om uppgiften som två faser — fas 1 hittar \uE000k\uE001, fas 2 räknar nytt \uE000y\uE001.",
   "framework_id": "XYZ-TRAP-004",
   "pregrade_tactic": {
    "handle": "Lutningsjakten",
-   "move": "När linjens ekvation har en okänd k och en punkt på linjen är given: stoppa in punkten, lös k, och först då räkna med nya x-värden."
+   "move": "När linjens ekvation har en okänd \uE000k\uE001 och en punkt på linjen är given: stoppa in punkten, lös \uE000k\uE001, och först då räkna med nya \uE000x\uE001-värden."
   },
   "_meta": {
    "model": "claude-opus-4-7-via-max-subscription",
@@ -5050,92 +5050,92 @@
   }
  },
  "var-2015-kvant2-XYZ-012": {
-  "solution_path": "Uttrycket är x^{-3} = 8. Negativ exponent ger \\frac{1}{x^{3}} = 8, så x^{3} = \\frac{1}{8} och x = \\frac{1}{2}. Svar A.",
+  "solution_path": "Uttrycket är \uE000x^{-3} = 8\uE001. Negativ exponent ger \uE000\\frac{1}{x^{3}} = 8\uE001, så \uE000x^{3} = \\frac{1}{8}\uE001 och \uE000x = \\frac{1}{2}\uE001. Svar A.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Uppgiften ger en ekvation där en okänd x upphöjs till en negativ exponent och resultatet är 8. Vi ska hitta x.",
+    "text": "Uppgiften ger en ekvation där en okänd \uE000x\uE001 upphöjs till en negativ exponent och resultatet är 8. Vi ska hitta \uE000x\uE001.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Vad är en negativ exponent?",
-    "text": "Definition: x^{-n} = \\frac{1}{x^{n}} för x \\neq 0. En negativ exponent betyder 'ett delat med samma uttryck med positiv exponent'.",
+    "text": "Definition: \uE000x^{-n} = \\frac{1}{x^{n}}\uE001 för \uE000x \\neq 0\uE001. En negativ exponent betyder 'ett delat med samma uttryck med positiv exponent'.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Skriv om ekvationen",
-    "text": "Med definitionen blir x^{-3} = 8 detsamma som \\frac{1}{x^{3}} = 8. Nu står x i nämnaren.",
+    "text": "Med definitionen blir \uE000x^{-3} = 8\uE001 detsamma som \uE000\\frac{1}{x^{3}} = 8\uE001. Nu står \uE000x\uE001 i nämnaren.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Invertera båda leden",
-    "text": "Om \\frac{1}{a} = b så är a = \\frac{1}{b} (gäller när inga led är 0). Tillämpa: x^{3} = \\frac{1}{8}.",
+    "text": "Om \uE000\\frac{1}{a} = b\uE001 så är \uE000a = \\frac{1}{b}\uE001 (gäller när inga led är 0). Tillämpa: \uE000x^{3} = \\frac{1}{8}\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Dra kubikroten",
-    "text": "För att isolera x ur x^{3} drar man kubikroten i båda led: x = \\sqrt[3]{\\frac{1}{8}}. Kubikroten av ett bråk är kubikroten av täljaren delat med kubikroten av nämnaren.",
+    "text": "För att isolera \uE000x\uE001 ur \uE000x^{3}\uE001 drar man kubikroten i båda led: \uE000x = \\sqrt[3]{\\frac{1}{8}}\uE001. Kubikroten av ett bråk är kubikroten av täljaren delat med kubikroten av nämnaren.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Räkna ut kubikroten",
-    "text": "\\sqrt[3]{1} = 1 och \\sqrt[3]{8} = 2 (eftersom 2^{3} = 8). Alltså x = \\frac{1}{2}.",
+    "text": "\uE000\\sqrt[3]{1} = 1\uE001 och \uE000\\sqrt[3]{8} = 2\uE001 (eftersom \uE0002^{3} = 8\uE001). Alltså \uE000x = \\frac{1}{2}\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Sanity-check: storleksordning",
-    "text": "Ett tal upphöjt till en negativ exponent som ger ett STORT resultat (8) måste självt vara LITET. \\frac{1}{2} < 1 — det passar.",
+    "text": "Ett tal upphöjt till en negativ exponent som ger ett STORT resultat (8) måste självt vara LITET. \uE000\\frac{1}{2} < 1\uE001 — det passar.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Verifiera genom insättning",
-    "text": "Pröva x = \\frac{1}{2} i ursprunget: (\\frac{1}{2})^{-3} = \\frac{1}{(\\frac{1}{2})^{3}} = \\frac{1}{1/8} = 8 ✓.",
+    "text": "Pröva \uE000x = \\frac{1}{2}\uE001 i ursprunget: \uE000(\\frac{1}{2})^{-3} = \\frac{1}{(\\frac{1}{2})^{3}} = \\frac{1}{1/8} = 8\uE001 ✓.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Notera tecknets effekt",
-    "text": "Om exponenten varit positiv (x^{3} = 8) hade svaret varit x = 2. Negativ exponent vänder talet: stort blir litet, litet blir stort.",
+    "text": "Om exponenten varit positiv (\uE000x^{3} = 8\uE001) hade svaret varit \uE000x = 2\uE001. Negativ exponent vänder talet: stort blir litet, litet blir stort.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Slutsats",
-    "text": "Svaret är A: \\frac{1}{2}. Insikten i en mening: en negativ exponent vänder bråket — lös först med positiv exponent, ta sedan inversen om tecknet var minus.",
+    "text": "Svaret är A: \uE000\\frac{1}{2}\uE001. Insikten i en mening: en negativ exponent vänder bråket — lös först med positiv exponent, ta sedan inversen om tecknet var minus.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Det är lätt att tappa minustecknet i exponenten och lösa x^{3} = 8 direkt, vilket ger x = 2 — men sedan skriva det fel.",
-    "why_wrong": "Steg 3 visar att tecknet vänder bråket: x^{-3} = 8 leder till x^{3} = \\frac{1}{8}, inte x^{3} = 8."
+    "why_tempting": "Det är lätt att tappa minustecknet i exponenten och lösa \uE000x^{3} = 8\uE001 direkt, vilket ger \uE000x = 2\uE001 — men sedan skriva det fel.",
+    "why_wrong": "Steg 3 visar att tecknet vänder bråket: \uE000x^{-3} = 8\uE001 leder till \uE000x^{3} = \\frac{1}{8}\uE001, inte \uE000x^{3} = 8\uE001."
    },
    {
     "letter": "C",
-    "why_tempting": "Snabbsvar är ofta 2, eftersom 2^{3} = 8 dyker upp omedelbart i huvudet.",
-    "why_wrong": "Som steg 9 visar är 2 svaret på ekvationen UTAN minustecken. Med x^{-3} = 8 vänds resultatet till \\frac{1}{2}."
+    "why_tempting": "Snabbsvar är ofta 2, eftersom \uE0002^{3} = 8\uE001 dyker upp omedelbart i huvudet.",
+    "why_wrong": "Som steg 9 visar är 2 svaret på ekvationen UTAN minustecken. Med \uE000x^{-3} = 8\uE001 vänds resultatet till \uE000\\frac{1}{2}\uE001."
    },
    {
     "letter": "D",
-    "why_tempting": "Många stannar vid 8 själv — talet i högerledet — och tror att det är x.",
-    "why_wrong": "8 är värdet av hela uttrycket x^{-3}, inte av x. Steg 4–6 löser ut x explicit till \\frac{1}{2}."
+    "why_tempting": "Många stannar vid 8 själv — talet i högerledet — och tror att det är \uE000x\uE001.",
+    "why_wrong": "8 är värdet av hela uttrycket \uE000x^{-3}\uE001, inte av \uE000x\uE001. Steg 4–6 löser ut \uE000x\uE001 explicit till \uE000\\frac{1}{2}\uE001."
    }
   ],
-  "technique": "Negativ exponent: skriv om x^{-n} som \\frac{1}{x^{n}}, invertera båda leden, dra sedan n:te roten.",
+  "technique": "Negativ exponent: skriv om \uE000x^{-n}\uE001 som \uE000\\frac{1}{x^{n}}\uE001, invertera båda leden, dra sedan \uE000n\uE001:te roten.",
   "pitfall": "Det kluriga är att exponenten 3 och resultatet 8 lockar omedelbart till svaret 2 — men minustecknet vänder bråket. Botemedlet: skriv ALLTID om negativa exponenter som bråk innan du börjar lösa.",
   "framework_id": "XYZ-TRAP-028",
   "pregrade_tactic": {
    "handle": "Tecken-vändet",
-   "move": "Ser du en negativ exponent: skriv direkt om som \\frac{1}{x^{n}} = \\text{höger} och invertera — tappa aldrig minustecknet på vägen."
+   "move": "Ser du en negativ exponent: skriv direkt om som \uE000\\frac{1}{x^{n}} = \\text{höger}\uE001 och invertera — tappa aldrig minustecknet på vägen."
   },
   "_meta": {
    "model": "claude-opus-4-7-via-max-subscription",
@@ -12814,30 +12814,30 @@
   }
  },
  "var-2015-kvant1-KVA-021": {
-  "solution_path": "I = \\left(\\frac{1}{7}\\right)^{-2}. En negativ exponent betyder invertera: \\left(\\frac{1}{7}\\right)^{-2}=\\left(\\frac{7}{1}\\right)^{2}=7^{2}=49. II = 49. Alltså I = 49 = II — kvantiteterna är lika. Svaret är C.",
+  "solution_path": "I = \uE000\\left(\\frac{1}{7}\\right)^{-2}\uE001. En negativ exponent betyder invertera: \uE000\\left(\\frac{1}{7}\\right)^{-2}=\\left(\\frac{7}{1}\\right)^{2}=7^{2}=49\uE001. II = 49. Alltså I = 49 = II — kvantiteterna är lika. Svaret är C.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Vi jämför I = \\left(\\frac{1}{7}\\right)^{-2} med II = 49. Hela uppgiften handlar om att tolka den NEGATIVA exponenten rätt.",
+    "text": "Vi jämför I = \uE000\\left(\\frac{1}{7}\\right)^{-2}\uE001 med II = 49. Hela uppgiften handlar om att tolka den NEGATIVA exponenten rätt.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Vad betyder negativ exponent?",
-    "text": "En negativ exponent betyder 'ett delat med': a^{-n}=\\frac{1}{a^{n}}. Ekvivalent, för ett bråk: \\left(\\frac{p}{q}\\right)^{-n}=\\left(\\frac{q}{p}\\right)^{n} — man vänder bråket och gör exponenten positiv.",
+    "text": "En negativ exponent betyder 'ett delat med': \uE000a^{-n}=\\frac{1}{a^{n}}\uE001. Ekvivalent, för ett bråk: \uE000\\left(\\frac{p}{q}\\right)^{-n}=\\left(\\frac{q}{p}\\right)^{n}\uE001 — man vänder bråket och gör exponenten positiv.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Vänd bråket",
-    "text": "Tillämpa regeln: \\left(\\frac{1}{7}\\right)^{-2}=\\left(\\frac{7}{1}\\right)^{2}=7^{2}.",
+    "text": "Tillämpa regeln: \uE000\\left(\\frac{1}{7}\\right)^{-2}=\\left(\\frac{7}{1}\\right)^{2}=7^{2}\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Räkna ut",
-    "text": "7^{2}=7\\cdot 7=49. Alltså I = 49.",
+    "text": "\uE0007^{2}=7\\cdot 7=49\uE001. Alltså I = 49.",
     "tier": "essential"
    },
    {
@@ -12849,13 +12849,13 @@
    {
     "n": 6,
     "title": "Dubbelkolla med den andra regeln",
-    "text": "\\left(\\frac{1}{7}\\right)^{-2}=\\frac{1}{\\left(\\frac{1}{7}\\right)^{2}}=\\frac{1}{\\frac{1}{49}}=49. Samma svar — bekräftar tolkningen.",
+    "text": "\uE000\\left(\\frac{1}{7}\\right)^{-2}=\\frac{1}{\\left(\\frac{1}{7}\\right)^{2}}=\\frac{1}{\\frac{1}{49}}=49\uE001. Samma svar — bekräftar tolkningen.",
     "tier": "detail"
    },
    {
     "n": 7,
     "title": "Vanligt feltänk",
-    "text": "Om man ignorerar minustecknet räknar man \\left(\\frac{1}{7}\\right)^{2}=\\frac{1}{49} och tror I är pytteliten. Minustecknet vänder just detta uppochner.",
+    "text": "Om man ignorerar minustecknet räknar man \uE000\\left(\\frac{1}{7}\\right)^{2}=\\frac{1}{49}\uE001 och tror I är pytteliten. Minustecknet vänder just detta uppochner.",
     "tier": "detail"
    },
    {
@@ -12873,7 +12873,7 @@
    {
     "n": 10,
     "title": "Slutsats",
-    "text": "I = II = 49 — svaret är C. Insikten: negativ exponent på ett bråk = vänd bråket och gör exponenten positiv; \\left(\\frac{1}{7}\\right)^{-2} är alltså 7^{2}=49.",
+    "text": "I = II = 49 — svaret är C. Insikten: negativ exponent på ett bråk = vänd bråket och gör exponenten positiv; \uE000\\left(\\frac{1}{7}\\right)^{-2}\uE001 är alltså \uE0007^{2}=49\uE001.",
     "tier": "essential"
    }
   ],
@@ -12881,12 +12881,12 @@
    {
     "letter": "A",
     "why_tempting": "Om du vänder bråket men överdriver kan du tro att I blir större än 49.",
-    "why_wrong": "Steg 3–4 ger exakt 7^{2}=49. I är precis 49, inte större."
+    "why_wrong": "Steg 3–4 ger exakt \uE0007^{2}=49\uE001. I är precis 49, inte större."
    },
    {
     "letter": "B",
-    "why_tempting": "Missar du minustecknet räknar du \\left(\\frac17\\right)^{2}=\\frac{1}{49}, en pytteliten I, och svarar att II (49) vinner.",
-    "why_wrong": "Minustecknet i exponenten VÄNDER bråket (steg 2–3). Rätt värde är 49, inte \\frac{1}{49}. I är inte mindre."
+    "why_tempting": "Missar du minustecknet räknar du \uE000\\left(\\frac17\\right)^{2}=\\frac{1}{49}\uE001, en pytteliten I, och svarar att II (49) vinner.",
+    "why_wrong": "Minustecknet i exponenten VÄNDER bråket (steg 2–3). Rätt värde är 49, inte \uE000\\frac{1}{49}\uE001. I är inte mindre."
    },
    {
     "letter": "D",
@@ -12894,8 +12894,8 @@
     "why_wrong": "Steg 9: allt är bestämt. En negativ exponent är en vanlig räkneoperation, inte en okänd. Informationen räcker."
    }
   ],
-  "technique": "Negativ-exponent-regeln: \\left(\\frac{p}{q}\\right)^{-n}=\\left(\\frac{q}{p}\\right)^{n} — vänd bråket, gör exponenten positiv. Triggern: ett bråk upphöjt till en negativ exponent → invertera först, räkna sen.",
-  "pitfall": "Vanliga fällan är att tappa minustecknet och räkna som om exponenten vore +2, vilket ger \\frac{1}{49} istället för 49. Botemedlet: skriv alltid om negativ exponent som en inversion INNAN du kvadrerar.",
+  "technique": "Negativ-exponent-regeln: \uE000\\left(\\frac{p}{q}\\right)^{-n}=\\left(\\frac{q}{p}\\right)^{n}\uE001 — vänd bråket, gör exponenten positiv. Triggern: ett bråk upphöjt till en negativ exponent → invertera först, räkna sen.",
+  "pitfall": "Vanliga fällan är att tappa minustecknet och räkna som om exponenten vore +2, vilket ger \uE000\\frac{1}{49}\uE001 istället för 49. Botemedlet: skriv alltid om negativ exponent som en inversion INNAN du kvadrerar.",
   "pregrade_tactic": {
    "handle": "Inverteringen",
    "move": "Se en negativ exponent på ett bråk? Vänd bråket och gör exponenten positiv innan du räknar."
@@ -13190,66 +13190,66 @@
   }
  },
  "var-2015-kvant2-XYZ-005": {
-  "solution_path": "Skriv 4^4 som potens av 2: 4^4 = (2^2)^4 = 2^8. Då blir ekvationen 2^{2x} = 2^8, vilket ger 2x = 8 och därmed x = 4.",
+  "solution_path": "Skriv \uE0004^4\uE001 som potens av 2: \uE0004^4 = (2^2)^4 = 2^8\uE001. Då blir ekvationen \uE0002^{2x} = 2^8\uE001, vilket ger \uE0002x = 8\uE001 och därmed \uE000x = 4\uE001.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Ekvationen är (i läsbar form) 2^{2x} = 4^4. Sök x. Hela tricket är att skriva båda sidor på SAMMA bas.",
+    "text": "Ekvationen är (i läsbar form) \uE0002^{2x} = 4^4\uE001. Sök x. Hela tricket är att skriva båda sidor på SAMMA bas.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Definition: potens av potens",
-    "text": "(a^m)^n = a^{m\\cdot n}. Exponenterna multipliceras (de adderas INTE).",
+    "text": "\uE000(a^m)^n = a^{m\\cdot n}\uE001. Exponenterna multipliceras (de adderas INTE).",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Skriv om 4 som 2²",
-    "text": "4 = 2^2, så 4^4 = (2^2)^4 = 2^{2\\cdot 4} = 2^8.",
+    "text": "\uE0004 = 2^2\uE001, så \uE0004^4 = (2^2)^4 = 2^{2\\cdot 4} = 2^8\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Skriv om ekvationen",
-    "text": "2^{2x} = 2^8.",
+    "text": "\uE0002^{2x} = 2^8\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Definition: jämför exponenter",
-    "text": "Om a^P = a^Q och a > 1, så är P = Q. Exponentfunktionen är injektiv.",
+    "text": "Om \uE000a^P = a^Q\uE001 och a > 1, så är P = Q. Exponentfunktionen är injektiv.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Sätt exponenterna lika",
-    "text": "2x = 8.",
+    "text": "\uE0002x = 8\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Lös ut x",
-    "text": "Dela med 2: x = 4.",
+    "text": "Dela med 2: \uE000x = 4\uE001.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Verifiera",
-    "text": "2^{2\\cdot 4} = 2^8 = 256, och 4^4 = 256. ✓",
+    "text": "\uE0002^{2\\cdot 4} = 2^8 = 256\uE001, och \uE0004^4 = 256\uE001. ✓",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Varför inte x = 2?",
-    "text": "2^{2\\cdot 2} = 2^4 = 16, men 4^4 = 256. Stannar man vid 2 har man bara löst halvvägs.",
+    "text": "\uE0002^{2\\cdot 2} = 2^4 = 16\uE001, men \uE0004^4 = 256\uE001. Stannar man vid 2 har man bara löst halvvägs.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Varför inte x = 8?",
-    "text": "x = 8 skulle ge 2^{16} = 65\\,536, mycket större än 256. Det är att förväxla x med 2x:s värde.",
+    "text": "x = 8 skulle ge \uE0002^{16} = 65\\,536\uE001, mycket större än 256. Det är att förväxla x med 2x:s värde.",
     "tier": "detail"
    },
    {
@@ -13263,12 +13263,12 @@
    {
     "letter": "A",
     "why_tempting": "Det är lätt att räkna x = 2 om man tror att 'samma bas på båda sidor' ger 'samma exponent'.",
-    "why_wrong": "Steg 4 visar att vänstersidans exponent är 2x, inte x. Sätta 2x = 4 ger x = 2 men det är förväxling — 4^4 är 2^8, inte 2^4."
+    "why_wrong": "Steg 4 visar att vänstersidans exponent är 2x, inte x. Sätta \uE0002x = 4\uE001 ger \uE000x = 2\uE001 men det är förväxling — \uE0004^4\uE001 är \uE0002^8\uE001, inte \uE0002^4\uE001."
    },
    {
     "letter": "C",
     "why_tempting": "Många stannar vid 6 om de räknar 2 + 4 = 6 (adderar exponenter) felaktigt.",
-    "why_wrong": "Steg 2 säger att (a^m)^n MULTIPLICERAR exponenterna, inte adderar. Steg 6 ger 2x = 8 → x = 4."
+    "why_wrong": "Steg 2 säger att \uE000(a^m)^n\uE001 MULTIPLICERAR exponenterna, inte adderar. Steg 6 ger \uE0002x = 8 → x = 4\uE001."
    },
    {
     "letter": "D",
@@ -13277,7 +13277,7 @@
    }
   ],
   "technique": "Samma-bas-receptet: omvandla båda sidor till samma bas via potens-av-potens-regeln, sätt sedan exponenterna lika. Ingen logaritm behövs när baserna är heltalspotenser av varandra.",
-  "pitfall": "Botemedlet mot 'addera exponenter': skriv ut potens-av-potens-regeln (a^m)^n = a^(m·n) explicit varje gång — då hamnar du aldrig fel.",
+  "pitfall": "Botemedlet mot 'addera exponenter': skriv ut potens-av-potens-regeln \uE000(a^m)^n = a^(m·n)\uE001 explicit varje gång — då hamnar du aldrig fel.",
   "framework_id": "XYZ-TRAP-026",
   "pregrade_tactic": {
    "handle": "Samma-bas-strategin",
