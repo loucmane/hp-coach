@@ -99,9 +99,8 @@
     {"typo": "cuen", "correct": "ledtråden", "freq": 4, "swedish_only": true, "note": "anglicism — English `cue` + Swedish definite suffix; swedish_only so the rule doesn't fire on ELF English prose — Pass-1 wave 1"},
     {"typo": "INFLUENCERA", "correct": "INFLUERA", "freq": 1, "note": "anglicism — English `influence` + Swedish verb suffix; correct loanword is influera — Pass-1 wave 1"},
     {"typo": "OPTIONELLT", "correct": "VALFRITT", "freq": 1, "note": "anglicism — English `optional` form — Pass-1 wave 1"},
-    {"typo": "PEAK", "correct": "KULMEN", "freq": 1, "swedish_only": true, "note": "English noun in Swedish context; swedish_only — caught mangling ELF prose \"athletes peak professionally\" — Pass-1 wave 1"},
+    {"typo": "PEAK", "correct": "kulmen", "freq": 1, "swedish_only": true, "note": "English noun in Swedish context; swedish_only — caught mangling ELF prose \"athletes peak professionally\" — Pass-1 wave 1"},
     {"typo": "bilingual", "correct": "tvåspråkig", "freq": 5, "swedish_only": true, "note": "anglicism in Swedish text; swedish_only so ELF passages talking about bilingualism stay English — Pass-1 wave 1"},
-    {"typo": "drift", "correct": "drift", "freq": 0, "note": "placeholder — do NOT auto-replace; `drift` is valid Swedish for operation/instinct"},
 
     {"typo": "heteroseksuell", "correct": "heterosexuell", "freq": 1, "note": "Swedish uses x, not Danish/Norwegian k — Pass-1 wave 2"},
     {"typo": "homoseksuell", "correct": "homosexuell", "freq": 1, "note": "Swedish uses x, not Danish/Norwegian k — Pass-1 wave 2"},
@@ -138,11 +137,9 @@
     {"typo": "kompliserar", "correct": "komplicerar", "freq": 1, "note": "s→c (loanword spelling) — Pass-1 wave 3"},
     {"typo": "oddt", "correct": "udda", "freq": 2, "note": "anglicism (English odd) — Pass-1 wave 3"},
     {"typo": "specifierar", "correct": "specificerar", "freq": 1, "note": "missing -ic- (same family as specifierad) — Pass-1 wave 3"},
-    {"typo": "kateterna", "correct": "kateterna", "freq": 0, "note": "placeholder — do NOT auto-replace; checking via katederna"},
     {"typo": "katederna", "correct": "kateterna", "freq": 1, "note": "letter-swap (d↔t) — Pass-1 wave 3"},
     {"typo": "rektangelar", "correct": "rektanglar", "freq": 1, "note": "vowel slip — Pass-1 wave 3"},
     {"typo": "sniittet", "correct": "snittet", "freq": 1, "note": "doubled i — Pass-1 wave 3"},
-    {"typo": "Etisk", "correct": "Etisk", "freq": 0, "note": "placeholder — Etisk by itself is valid (utrum); only flag when followed by `och juridiskt`"},
     {"typo": "ekstra", "correct": "extra", "freq": 0, "note": "covered by `ekstra-` phrase fix"},
     {"typo": "räkningstecknet", "correct": "räknetecknet", "freq": 1, "note": "wrong compound stem (`räkning` = bill; `räkne-` = compute-) — Pass-1 wave 3"},
     {"typo": "räkningstecken", "correct": "räknetecken", "freq": 0, "note": "indefinite singular variant — Pass-1 wave 3"},
@@ -155,13 +152,12 @@
     {"typo": "Tvåblanksdrag", "correct": "tvåblanksdrag", "freq": 0, "note": "lowercase preferred when not sentence-initial — pass-3 will calibrate"},
 
     {"typo": "cue", "correct": "ledtråd", "freq": 36, "swedish_only": true, "note": "anglicism (English `cue`); swedish_only enforces the original audit's ELF-excluded assumption at apply time — Pass-1 wave 4"},
-    {"typo": "intercept", "correct": "y-skärning", "freq": 27, "swedish_only": true, "note": "anglicism in Swedish math contexts; swedish_only — \"intercept\" is normal English math vocabulary in ELF — Pass-1 wave 4"},
     {"typo": "verdict", "correct": "svaret", "freq": 26, "swedish_only": true, "note": "anglicism in quant contexts (`ger ... verdict A` etc.); swedish_only so the rule skips ELF English prose like \"the verdict sentence\" — Pass-1 wave 4"},
     {"typo": "baseline", "correct": "utgångsläge", "freq": 5, "swedish_only": true, "note": "anglicism; swedish_only so the rule skips legit English usage in ELF prose (\"a baseline reading\") — Pass-1 wave 4"},
     {"typo": "rektioner", "correct": "kollokationer", "freq": 18, "note": "plural of rektion (covered by `fel rektion` fix; this catches remaining plural variants) — Pass-1 wave 4"},
     {"typo": "Backåt", "correct": "Bakåt", "freq": 2, "note": "double k typo — Pass-1 wave 4"},
     {"typo": "Backåtblickande", "correct": "Bakåtblickande", "freq": 0, "note": "compound variant — Pass-1 wave 4"},
-    {"typo": "Hypotetik", "correct": "Hypotes", "freq": 1, "note": "invented noun; the abstract noun is hypotes — Pass-1 wave 4"},
+    {"typo": "Hypotetik", "correct": "hypotes", "freq": 1, "note": "invented noun; the abstract noun is hypotes — Pass-1 wave 4"},
     {"typo": "hypotetik", "correct": "hypotes", "freq": 0, "note": "lowercase variant — Pass-1 wave 4"},
     {"typo": "hypotetiker", "correct": "hypoteser", "freq": 1, "note": "invented (looks like agent-noun); meant is hypoteser (plural of hypotes) — Pass-1 wave 4"},
     {"typo": "säljpitch", "correct": "säljpresentation", "freq": 3, "note": "anglicism (English `pitch`) — Pass-1 wave 4"},
@@ -240,9 +236,13 @@
     {"typo": "flim", "correct": "film", "freq": 1, "note": "li↔il swap; Phase D.3 corpus QA (host-2020)"}
   ],
 
-  "phrase_fix_comment": "Multi-token replacements. Same case-preservation logic as `fix` array, but matches a phrase rather than a single word boundary. Applied AFTER single-word fixes.",
+  "phrase_fix_comment": "Multi-token replacements. Same case-preservation logic as `fix` array, but matches a phrase rather than a single word boundary. Applied BEFORE single-word fixes.",
 
   "phrase_fix": [
+    {"phrase": "y-intercept", "correct": "y-skärning", "swedish_only": true, "note": "Explicit y-axis intercept; do not rewrite x-intercept or intercept-teoremet."},
+    {"phrase": "enklast intercept", "correct": "enklast y-skärning", "swedish_only": true, "note": "host-2013-kvant2-XYZ-009: line constant used to solve for y."},
+    {"phrase": "lutning −1 och intercept 10", "correct": "lutning −1 och y-skärning 10", "swedish_only": true, "note": "host-2023-kvant2-NOG-024: y = −x + 10, so 10 is the y-axis intercept."},
+
     {"phrase": "sluten system", "correct": "slutet system", "freq": 11, "note": "system is neuter → adjective takes -t (slutet) — Pass-1 batch 000 + corpus-wide grep"},
     {"phrase": "Gammelt nordiskt", "correct": "Gammalt nordiskt", "freq": 12, "note": "ord is neuter → Gammalt; `Gammelt` is Danish/Norwegian or stylistic error — Pass-1 batch 000 + corpus-wide grep"},
     {"phrase": "Engångs ankomst", "correct": "Engångsankomst", "freq": 1, "note": "särskrivning — closed compound required — Pass-1 batch 000"},
@@ -324,7 +324,7 @@
     {"phrase": "kontrastet", "correct": "kontrasten", "freq": 1, "note": "kontrast is en-word — Pass-1 batch 021"},
     {"phrase": "Båda texter", "correct": "Båda texterna", "freq": 1, "note": "definite plural required — Pass-1 batch 023"},
     {"phrase": "båda länder", "correct": "båda länderna", "freq": 0, "note": "definite plural variant — Pass-1 batch 023"},
-    {"phrase": "Total värde", "correct": "Totalt värde", "freq": 1, "note": "värde is neutrum — Pass-1 batch 023"},
+    {"phrase": "Total värde", "correct": "totalt värde", "freq": 1, "note": "värde is neutrum — Pass-1 batch 023"},
     {"phrase": "Hoffmanns äran", "correct": "Hoffmanns ära", "freq": 1, "note": "ära in fixed expression — Pass-1 batch 023"},
     {"phrase": "Multiplikation av rotor", "correct": "Multiplikation av rötter", "freq": 1, "note": "rotor = mechanical rotor; plural of rot is rötter — Pass-1 batch 020"},
     {"phrase": "Förenkla rotor", "correct": "Förenkla rötter", "freq": 1, "note": "rotor = mechanical; plural of rot is rötter — Pass-1 batches 018+024"},
@@ -362,7 +362,7 @@
     {"phrase": "OBSERVERBART HÄNDELSE", "correct": "OBSERVERBAR HÄNDELSE", "freq": 1, "note": "händelse is en-word → utrum form — Pass-1 batch 028"},
     {"phrase": "tekniska fackterm", "correct": "teknisk fackterm", "freq": 1, "note": "fackterm is en-word; en-form adjective — Pass-1 batch 028"},
     {"phrase": "modern engagemang", "correct": "modernt engagemang", "freq": 1, "note": "engagemang is neutrum — Pass-1 batch 032"},
-    {"phrase": "negativ y", "correct": "negativt y", "freq": 1, "note": "y as math variable takes neuter — Pass-1 batch 030"},
+    {"phrase": "negativ y", "correct": "negativt y", "exclude_hyphenated": true, "freq": 1, "note": "y as math variable takes neuter — Pass-1 batch 030"},
     {"phrase": "efter att tolkat", "correct": "efter att ha tolkat", "freq": 1, "note": "missing auxiliary ha — Pass-1 batch 030"},
     {"phrase": "av gud", "correct": "av Gud", "freq": 1, "note": "Gud is capitalized — Pass-1 batch 027"},
     {"phrase": "en absolut tal", "correct": "ett absolut tal", "freq": 1, "note": "tal is neutrum — Pass-1 batch 029"},
@@ -447,15 +447,15 @@
     {
       "qid": "host-2013-kvant2-XYZ-008",
       "letter": "D",
-      "text": "81x^{12} y^{8} z^{4} 2 4",
-      "correct": "81x^{12} y^{8} z^{4}",
+      "text": "81\uE000x^{12}\uE001 \uE000y^{8}\uE001 \uE000z^{4}\uE001 2 4",
+      "correct": "81\uE000x^{12}\uE001 \uE000y^{8}\uE001 \uE000z^{4}\uE001",
       "note": "hpf-90vb: option D checked against the cached exam PDF; remove adjacent prompt/figure tokens"
     },
     {
       "qid": "host-2013-kvant2-XYZ-010",
       "letter": "D",
-      "text": "\\frac{m}{7} x x x x 1 1 1",
-      "correct": "\\frac{m}{7}",
+      "text": "\uE000\\frac{m}{7}\uE001 x x x x 1 1 1",
+      "correct": "\uE000\\frac{m}{7}\uE001",
       "note": "hpf-90vb: option D checked against the cached exam PDF; remove adjacent prompt/figure tokens"
     },
     {
@@ -622,15 +622,15 @@
     {
       "qid": "host-2020-kvant2-KVA-014",
       "letter": "D",
-      "text": "informationen är otillräcklig \\frac{1}{6}",
+      "text": "informationen är otillräcklig \uE000\\frac{1}{6}\uE001",
       "correct": "informationen är otillräcklig",
       "note": "hpf-90vb: stray PDF content after the fixed KVA D template"
     },
     {
       "qid": "host-2021-kvant2-XYZ-010",
       "letter": "D",
-      "text": "x = \\frac{3}{2} · \\frac{7}{4} 4 ? 7",
-      "correct": "x = \\frac{3}{2} · \\frac{7}{4}",
+      "text": "x = \uE000\\frac{3}{2}\uE001 · \uE000\\frac{7}{4}\uE001 4 ? 7",
+      "correct": "x = \uE000\\frac{3}{2}\uE001 · \uE000\\frac{7}{4}\uE001",
       "note": "hpf-90vb: option D checked against the cached exam PDF; remove adjacent prompt/figure tokens"
     },
     {
@@ -643,14 +643,14 @@
     {
       "qid": "host-2022-kvant1-KVA-019",
       "letter": "D",
-      "text": "informationen är otillräcklig 3^{2}",
+      "text": "informationen är otillräcklig \uE0003^{2}\uE001",
       "correct": "informationen är otillräcklig",
       "note": "hpf-90vb: stray PDF content after the fixed KVA D template"
     },
     {
       "qid": "host-2023-kvant1-KVA-014",
       "letter": "D",
-      "text": "informationen är otillräcklig 5^{5}",
+      "text": "informationen är otillräcklig \uE0005^{5}\uE001",
       "correct": "informationen är otillräcklig",
       "note": "hpf-90vb: stray PDF content after the fixed KVA D template"
     },
@@ -811,7 +811,7 @@
     {
       "qid": "var-2018-1-kvant1-KVA-013",
       "letter": "D",
-      "text": "informationen är otillräcklig 7^{2}",
+      "text": "informationen är otillräcklig \uE0007^{2}\uE001",
       "correct": "informationen är otillräcklig",
       "note": "hpf-90vb: stray PDF content after the fixed KVA D template"
     },
@@ -825,14 +825,14 @@
     {
       "qid": "var-2022-1-kvant1-KVA-016",
       "letter": "D",
-      "text": "informationen är otillräcklig 2^{2}",
+      "text": "informationen är otillräcklig \uE0002^{2}\uE001",
       "correct": "informationen är otillräcklig",
       "note": "hpf-90vb: stray PDF content after the fixed KVA D template"
     },
     {
       "qid": "var-2022-1-kvant2-KVA-014",
       "letter": "D",
-      "text": "informationen är otillräcklig \\frac{Koordinatsystemet}{kan användas för} att lösa uppgiften.",
+      "text": "informationen är otillräcklig \uE000\\frac{Koordinatsystemet}{kan användas för}\uE001 att lösa uppgiften.",
       "correct": "informationen är otillräcklig",
       "note": "hpf-90vb: stray PDF content after the fixed KVA D template"
     },
@@ -853,7 +853,7 @@
     {
       "qid": "var-2023-kvant1-KVA-018",
       "letter": "D",
-      "text": "informationen är otillräcklig 10^{3}",
+      "text": "informationen är otillräcklig \uE00010^{3}\uE001",
       "correct": "informationen är otillräcklig",
       "note": "hpf-90vb: stray PDF content after the fixed KVA D template"
     }
@@ -881,5 +881,26 @@
     {"typo": "view's", "reason": "English fragment with apostrophe"},
     {"typo": "ofo'", "reason": "apostrophe fragment, unclear"},
     {"typo": "hja'", "reason": "apostrophe fragment, unclear"}
+  ],
+
+  "prompt_fix": [
+    {
+      "qid": "host-ver1-2019-kvant1-KVA-020",
+      "text": "Linjen A går genom punkterna (1, 1) och (5, 3). Linjen B är vinkelrät mot linjen A. Kvantitet I: y-koordinaten för den punkt på linjen A där x = 0 Kvantitet II: y-koordinaten för den punkt på linjen B där x = 0",
+      "correct": "Linjen A går genom punkterna (1, 1) och (5, 3). Linjen B är vinkelrät mot linjen A. Koordinatsystemet kan användas för att lösa uppgiften. Kvantitet I: y-koordinaten för den punkt på linjen A där x = 0 Kvantitet II: y-koordinaten för den punkt på linjen B där x = 0",
+      "note": "Verified in hp_databas.json, host-ver1-2019 kvant1 question 20; instruction precedes the quantities."
+    },
+    {
+      "qid": "var-2022-1-kvant2-KVA-014",
+      "text": "De fyra punkterna A, B, C och D är placerade i samma koordinatsystem. \uE000\\frac{A = (0, 0)}{B = (4, 3)}\uE001 \uE000\\frac{C = (8, 0)}{D = (8, 1)}\uE001 Kvantitet I: Den sammanlagda längden av sträckorna AB och BC Kvantitet II: Längden av sträckan AD",
+      "correct": "De fyra punkterna A, B, C och D är placerade i samma koordinatsystem. \uE000\\frac{A = (0, 0)}{B = (4, 3)}\uE001 \uE000\\frac{C = (8, 0)}{D = (8, 1)}\uE001 Koordinatsystemet kan användas för att lösa uppgiften. Kvantitet I: Den sammanlagda längden av sträckorna AB och BC Kvantitet II: Längden av sträckan AD",
+      "note": "Verified in hp_databas.json, var-2022-1 kvant2 question 14; instruction precedes the quantities."
+    },
+    {
+      "qid": "var-2023-kvant1-KVA-015",
+      "text": "Hörnen i fyrhörningen ABCD har koordinaterna: \uE000\\frac{A = (1, 1)}{B = (1, 5)}\uE001 \uE000\\frac{C = (-2, 1)}{D = (-2, -3)}\uE001 Kvantitet I:\t Arean av fyrhörningen ABCD Kvantitet II:\t 20 areaenheter",
+      "correct": "Hörnen i fyrhörningen ABCD har koordinaterna: \uE000\\frac{A = (1, 1)}{B = (1, 5)}\uE001 \uE000\\frac{C = (-2, 1)}{D = (-2, -3)}\uE001 Koordinatsystemet kan användas för att lösa uppgiften. Kvantitet I:\t Arean av fyrhörningen ABCD Kvantitet II:\t 20 areaenheter",
+      "note": "Verified in hp_databas.json, var-2023 kvant1 question 15; instruction precedes the quantities."
+    }
   ]
 }

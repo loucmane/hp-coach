@@ -3910,7 +3910,7 @@ export const FRAMEWORK_INDEX: FrameworkIndexSection[] = [
         headword:
           "Hypotetisk omfördelning som binder bara EN obekant ('om alla fick lika mycket') ger en sluten ekvation — räknas ofta som otillräcklig av misstag.",
         kicker:
-          "Ett 'om'-scenario kan vara en fullvärdig ekvation — avskriv inte hypotetik utan att skriva ner den algebraiskt.",
+          "Ett 'om'-scenario kan vara en fullvärdig ekvation — avskriv inte hypotes utan att skriva ner den algebraiskt.",
         examples: 6,
       },
       {

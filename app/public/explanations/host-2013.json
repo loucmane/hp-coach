@@ -1,17 +1,17 @@
 {
  "host-2013-kvant1-KVA-013": {
-  "solution_path": "Bryt ut gemensam faktor: 69 \\cdot 116 - 68 \\cdot 117 = 116(69-68) - 68 = 116 - 68 = 48 > 0. Alltså är I större än II, utan att räkna ut produkterna.",
+  "solution_path": "Bryt ut gemensam faktor: \uE00069 \\cdot 116 - 68 \\cdot 117 = 116(69-68) - 68 = 116 - 68 = 48 > 0\uE001. Alltså är I större än II, utan att räkna ut produkterna.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Du ska jämföra 69 \\cdot 116 med 68 \\cdot 117 utan miniräknare. Båda produkter har två tvåsiffriga faktorer och ligger nära varandra — direktberäkning slukar tid och är felbenägen.",
+    "text": "Du ska jämföra \uE00069 \\cdot 116\uE001 med \uE00068 \\cdot 117\uE001 utan miniräknare. Båda produkter har två tvåsiffriga faktorer och ligger nära varandra — direktberäkning slukar tid och är felbenägen.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Sätt namn på storheterna",
-    "text": "Kalla I = 69 \\cdot 116 och II = 68 \\cdot 117. Du vill veta tecknet på I − II; om det är positivt vinner I, negativt vinner II, noll betyder likhet.",
+    "text": "Kalla I = \uE00069 \\cdot 116\uE001 och II = \uE00068 \\cdot 117\uE001. Du vill veta tecknet på I − II; om det är positivt vinner I, negativt vinner II, noll betyder likhet.",
     "tier": "essential"
    },
    {
@@ -23,43 +23,43 @@
    {
     "n": 4,
     "title": "Distributiva lagen",
-    "text": "Distributiva lagen säger a(b+c) = ab + ac: en produkt med en sumfaktor kan klyvas i två delprodukter. Den fungerar baklänges också — det är just det vi behöver för att klumpa ihop termer.",
+    "text": "Distributiva lagen säger \uE000a(b+c) = ab + ac\uE001: en produkt med en sumfaktor kan klyvas i två delprodukter. Den fungerar baklänges också — det är just det vi behöver för att klumpa ihop termer.",
     "tier": "detail"
    },
    {
     "n": 5,
     "title": "Skriv om II med 116",
-    "text": "Ersätt 117 = 116 + 1 i II: 68 \\cdot 117 = 68 \\cdot (116 + 1) = 68 \\cdot 116 + 68. Nu har II en 68 \\cdot 116-bit, samma struktur som I.",
+    "text": "Ersätt 117 = 116 + 1 i II: \uE00068 \\cdot 117 = 68 \\cdot (116 + 1) = 68 \\cdot 116 + 68\uE001. Nu har II en \uE00068 \\cdot 116\uE001-bit, samma struktur som I.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Skriv om I med 116",
-    "text": "Ersätt 69 = 68 + 1 i I: 69 \\cdot 116 = (68+1) \\cdot 116 = 68 \\cdot 116 + 116. Nu syns den gemensamma 68 \\cdot 116-stommen.",
+    "text": "Ersätt 69 = 68 + 1 i I: \uE00069 \\cdot 116 = (68+1) \\cdot 116 = 68 \\cdot 116 + 116\uE001. Nu syns den gemensamma \uE00068 \\cdot 116\uE001-stommen.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Bilda skillnaden",
-    "text": "Subtrahera: I - II = (68 \\cdot 116 + 116) - (68 \\cdot 116 + 68). Den gemensamma stommen 68 \\cdot 116 försvinner.",
+    "text": "Subtrahera: \uE000I - II = (68 \\cdot 116 + 116) - (68 \\cdot 116 + 68)\uE001. Den gemensamma stommen \uE00068 \\cdot 116\uE001 försvinner.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Förenkla skillnaden",
-    "text": "Kvar blir I - II = 116 - 68 = 48. Skillnaden är ett rent litet heltal — inga stora produkter behövdes.",
+    "text": "Kvar blir \uE000I - II = 116 - 68 = 48\uE001. Skillnaden är ett rent litet heltal — inga stora produkter behövdes.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Tolka tecknet",
-    "text": "48 > 0 betyder att I − II är positivt, alltså I > II. Detta är hela hemligheten med \"två produkter som ligger nära varandra\"-typen.",
+    "text": "\uE00048 > 0\uE001 betyder att I − II är positivt, alltså I > II. Detta är hela hemligheten med \"två produkter som ligger nära varandra\"-typen.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Verifiera med uppskattning",
-    "text": "Snabb sanity check: båda produkter är runt 68{,}5 \\cdot 116{,}5 \\approx 7980. I är ungefär 24 över medelvärdet, II ungefär 24 under — skillnad ≈ 48. Stämmer.",
+    "text": "Snabb sanity check: båda produkter är runt \uE00068{,}5 \\cdot 116{,}5 \\approx 7980\uE001. I är ungefär 24 över medelvärdet, II ungefär 24 under — skillnad ≈ 48. Stämmer.",
     "tier": "detail"
    },
    {
@@ -87,7 +87,7 @@
    }
   ],
   "technique": "När två kvantiteter är produkter med faktorer som skiljer sig med ±1, bryt ut den gemensamma faktorn istället för att räkna produkterna. Triggern är: \"två tvåsiffriga produkter, faktorerna ligger nära varandra\". Du förvandlar då jämförelsen till en enkel subtraktion.",
-  "pitfall": "Botemedlet mot \"jag måste räkna båda\": leta strukturen 69 = 68 + 1 innan du tar fram pennan. Skriv om så att en gemensam term 68 \\cdot 116 dyker upp i båda kvantiteterna och stryk den.",
+  "pitfall": "Botemedlet mot \"jag måste räkna båda\": leta strukturen \uE00069 = 68 + 1\uE001 innan du tar fram pennan. Skriv om så att en gemensam term 68 \uE000\\cdot\uE001 116 dyker upp i båda kvantiteterna och stryk den.",
   "framework_id": "KVA-TRAP-024",
   "pregrade_tactic": {
    "handle": "Gemensam-faktor-tricket",
@@ -100,24 +100,24 @@
   }
  },
  "host-2013-kvant1-KVA-014": {
-  "solution_path": "Villkoret ger xy = zw, men säger inget om xw mot yz. Två testfall — (x=2, y=10, z=10, w=2) ger I < II; (x=10, y=2, z=2, w=10) ger I > II — räcker för att slå fast D.",
+  "solution_path": "Villkoret ger \uE000xy = zw\uE001, men säger inget om \uE000xw\uE001 mot \uE000yz\uE001. Två testfall — (x=2, y=10, z=10, w=2) ger I < II; (x=10, y=2, z=2, w=10) ger I > II — räcker för att slå fast D.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "\"x procent av y\" betyder \\frac{x}{100} \\cdot y = \\frac{xy}{100}. På samma sätt z procent av w är \\frac{zw}{100}. Likheten i texten översätts alltså till en enda algebraisk identitet.",
+    "text": "\"x procent av y\" betyder \uE000\\frac{x}{100} \\cdot y = \\frac{xy}{100}\uE001. På samma sätt \uE000z\uE001 procent av \uE000w\uE001 är \uE000\\frac{zw}{100}\uE001. Likheten i texten översätts alltså till en enda algebraisk identitet.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Översätt villkoret",
-    "text": "Multiplicera båda led med 100: xy = zw. Det är allt vi vet. Du ska jämföra xw (kvantitet I) med yz (kvantitet II).",
+    "text": "Multiplicera båda led med 100: \uE000xy = zw\uE001. Det är allt vi vet. Du ska jämföra \uE000xw\uE001 (kvantitet I) med \uE000yz\uE001 (kvantitet II).",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Förstå frågan strukturellt",
-    "text": "Villkoret xy = zw parar ihop (x, y) med (z, w), men frågan parar (x, w) mot (y, z) — en KORS-parning. Det är ingen automatisk implikation.",
+    "text": "Villkoret \uE000xy = zw\uE001 parar ihop \uE000(x, y)\uE001 med \uE000(z, w)\uE001, men frågan parar \uE000(x, w)\uE001 mot \uE000(y, z)\uE001 — en KORS-parning. Det är ingen automatisk implikation.",
     "tier": "essential"
    },
    {
@@ -129,25 +129,25 @@
    {
     "n": 5,
     "title": "Konstruera testfall 1",
-    "text": "Välj x = 2, y = 10, då xy = 20. Hitta z, w med zw = 20: ta z = 10, w = 2. Då blir xw = 2 \\cdot 2 = 4 och yz = 10 \\cdot 10 = 100.",
+    "text": "Välj \uE000x = 2, y = 10\uE001, då \uE000xy = 20\uE001. Hitta \uE000z, w\uE001 med \uE000zw = 20\uE001: ta \uE000z = 10, w = 2\uE001. Då blir \uE000xw = 2 \\cdot 2 = 4\uE001 och \uE000yz = 10 \\cdot 10 = 100\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Tolka testfall 1",
-    "text": "xw = 4 < yz = 100, alltså I < II i detta fall. Det utesluter A (I > II) och C (I = II) som universella svar.",
+    "text": "\uE000xw = 4 < yz = 100\uE001, alltså I < II i detta fall. Det utesluter A (I > II) och C (I = II) som universella svar.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Konstruera testfall 2",
-    "text": "Spegla värdena: x = 10, y = 2, z = 2, w = 10. Kontroll: xy = 20 = zw. Då xw = 10 \\cdot 10 = 100 och yz = 2 \\cdot 2 = 4.",
+    "text": "Spegla värdena: \uE000x = 10, y = 2, z = 2, w = 10\uE001. Kontroll: \uE000xy = 20 = zw\uE001. Då \uE000xw = 10 \\cdot 10 = 100\uE001 och \uE000yz = 2 \\cdot 2 = 4\uE001.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Tolka testfall 2",
-    "text": "xw = 100 > yz = 4, alltså I > II i detta fall. Det utesluter B (II > I) som universellt svar.",
+    "text": "\uE000xw = 100 > yz = 4\uE001, alltså I > II i detta fall. Det utesluter B (II > I) som universellt svar.",
     "tier": "essential"
    },
    {
@@ -159,13 +159,13 @@
    {
     "n": 10,
     "title": "Generaliserad insikt",
-    "text": "xy = zw kan skrivas som \\frac{x}{z} = \\frac{w}{y} — ett förhållande som inte säger något om absolut storlek. xw/yz = (x/y)(w/z), vilket är fritt.",
+    "text": "\uE000xy = zw\uE001 kan skrivas som \uE000\\frac{x}{z} = \\frac{w}{y}\uE001 — ett förhållande som inte säger något om absolut storlek. \uE000xw/yz = (x/y)(w/z)\uE001, vilket är fritt.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Verifiera båda fall",
-    "text": "Kontrollera testfall 1: 2 \\cdot 10 = 20 = 10 \\cdot 2 ✓. Kontrollera testfall 2: 10 \\cdot 2 = 20 = 2 \\cdot 10 ✓. Båda är giltiga ingångar.",
+    "text": "Kontrollera testfall 1: \uE0002 \\cdot 10 = 20 = 10 \\cdot 2\uE001 ✓. Kontrollera testfall 2: \uE00010 \\cdot 2 = 20 = 2 \\cdot 10\uE001 ✓. Båda är giltiga ingångar.",
     "tier": "detail"
    },
    {
@@ -206,42 +206,42 @@
   }
  },
  "host-2013-kvant1-KVA-016": {
-  "solution_path": "x = -y betyder att x och y är spegelbilder i 0. Tre fall: y = 0 \\Rightarrow x = y (C); y > 0 \\Rightarrow x < 0 < y (B); y < 0 \\Rightarrow x > 0 > y (A). Alla tre möjliga — D.",
+  "solution_path": "\uE000x = -y\uE001 betyder att \uE000x\uE001 och \uE000y\uE001 är spegelbilder i 0. Tre fall: \uE000y = 0 \\Rightarrow x = y\uE001 (C); \uE000y > 0 \\Rightarrow x < 0 < y\uE001 (B); \uE000y < 0 \\Rightarrow x > 0 > y\uE001 (A). Alla tre möjliga — D.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå villkoret",
-    "text": "x = -y är en linjär koppling: x är y med ombytt tecken. Det säger ingenting om y:s storlek eller tecken — y kan vara vilket reellt tal som helst.",
+    "text": "\uE000x = -y\uE001 är en linjär koppling: x är y med ombytt tecken. Det säger ingenting om y:s storlek eller tecken — y kan vara vilket reellt tal som helst.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Sätt upp jämförelsen",
-    "text": "Du ska jämföra I = x med II = y. Ersätt x med -y från villkoret: jämförelsen blir -y mot y.",
+    "text": "Du ska jämföra I = x med II = y. Ersätt x med -y från villkoret: jämförelsen blir \uE000-y\uE001 mot \uE000y\uE001.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Definiera negation",
-    "text": "För varje reellt tal a är -a det tal som ligger lika långt från noll som a men på motsatt sida. Speciellt: -(positivt) = negativt, -(negativt) = positivt, -0 = 0.",
+    "text": "För varje reellt tal \uE000a\uE001 är \uE000-a\uE001 det tal som ligger lika långt från noll som \uE000a\uE001 men på motsatt sida. Speciellt: \uE000-(positivt) = negativt\uE001, \uE000-(negativt) = positivt\uE001, \uE000-0 = 0\uE001.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Fall 1: y = 0",
-    "text": "Då blir x = -0 = 0 = y. I = II — rangordningen är likhet (kandidat C).",
+    "text": "Då blir \uE000x = -0 = 0 = y\uE001. I = II — rangordningen är likhet (kandidat C).",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Fall 2: y > 0",
-    "text": "Då blir x = -y < 0 < y. Konkret med y = 1: x = -1, alltså -1 < 1 → I < II (kandidat B).",
+    "text": "Då blir \uE000x = -y < 0 < y\uE001. Konkret med \uE000y = 1\uE001: \uE000x = -1\uE001, alltså \uE000-1 < 1\uE001 → I < II (kandidat B).",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Fall 3: y < 0",
-    "text": "Då blir x = -y > 0 > y. Konkret med y = -1: x = -(-1) = 1, alltså 1 > -1 → I > II (kandidat A).",
+    "text": "Då blir \uE000x = -y > 0 > y\uE001. Konkret med \uE000y = -1\uE001: \uE000x = -(-1) = 1\uE001, alltså \uE0001 > -1\uE001 → I > II (kandidat A).",
     "tier": "essential"
    },
    {
@@ -259,7 +259,7 @@
    {
     "n": 9,
     "title": "Algebraisk bild",
-    "text": "Skillnaden I - II = x - y = -y - y = -2y. Tecknet på -2y beror helt på y:s tecken.",
+    "text": "Skillnaden \uE000I - II = x - y = -y - y = -2y\uE001. Tecknet på \uE000-2y\uE001 beror helt på y:s tecken.",
     "tier": "detail"
    },
    {
@@ -306,24 +306,24 @@
   }
  },
  "host-2013-kvant1-KVA-018": {
-  "solution_path": "(-10)^{11} har udda exponent → negativt. (-11)^{10} har jämn exponent → positivt. Ett positivt tal är alltid större än ett negativt, alltså II > I → B.",
+  "solution_path": "\uE000(-10)^{11}\uE001 har udda exponent → negativt. \uE000(-11)^{10}\uE001 har jämn exponent → positivt. Ett positivt tal är alltid större än ett negativt, alltså II > I → B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Du ska jämföra (-10)^{11} med (-11)^{10}. Båda är negativa baser upphöjda till stora exponenter — magnituderna är gigantiska och osmidiga.",
+    "text": "Du ska jämföra \uE000(-10)^{11}\uE001 med \uE000(-11)^{10}\uE001. Båda är negativa baser upphöjda till stora exponenter — magnituderna är gigantiska och osmidiga.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Sätt namn",
-    "text": "Kalla I = (-10)^{11} och II = (-11)^{10}. Du letar tecknet på I − II — men först vill du veta tecknet på var och en separat.",
+    "text": "Kalla I = \uE000(-10)^{11}\uE001 och II = \uE000(-11)^{10}\uE001. Du letar tecknet på I − II — men först vill du veta tecknet på var och en separat.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Definiera potens av negativt tal",
-    "text": "(-a)^n = (-1)^n \\cdot a^n. Tecknet styrs alltså av (-1)^n: (-1)^n = -1 om n är udda, (-1)^n = +1 om n är jämn.",
+    "text": "\uE000(-a)^n = (-1)^n \\cdot a^n\uE001. Tecknet styrs alltså av \uE000(-1)^n\uE001: \uE000(-1)^n = -1\uE001 om n är udda, \uE000(-1)^n = +1\uE001 om n är jämn.",
     "tier": "detail"
    },
    {
@@ -335,13 +335,13 @@
    {
     "n": 5,
     "title": "Tecknet på I",
-    "text": "Exponenten 11 är udda. Alltså (-10)^{11} = -10^{11} — ett stort negativt tal.",
+    "text": "Exponenten 11 är udda. Alltså \uE000(-10)^{11} = -10^{11}\uE001 — ett stort negativt tal.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Tecknet på II",
-    "text": "Exponenten 10 är jämn. Alltså (-11)^{10} = 11^{10} — ett stort POSITIVT tal.",
+    "text": "Exponenten 10 är jämn. Alltså \uE000(-11)^{10} = 11^{10}\uE001 — ett stort POSITIVT tal.",
     "tier": "essential"
    },
    {
@@ -353,13 +353,13 @@
    {
     "n": 8,
     "title": "Tillämpa på I och II",
-    "text": "I är negativt, II är positivt → I < II → II > I. Du behöver aldrig räkna ut 10^{11} eller 11^{10}.",
+    "text": "I är negativt, II är positivt → I < II → II > I. Du behöver aldrig räkna ut \uE00010^{11}\uE001 eller \uE00011^{10}\uE001.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Bekräfta storleksgrov",
-    "text": "Som bonus: 10^{11} = 100\\,000\\,000\\,000 och 11^{10} \\approx 2{,}6 \\cdot 10^{10}. Men det är överflödigt — tecknet räcker.",
+    "text": "Som bonus: \uE00010^{11} = 100\\,000\\,000\\,000\uE001 och \uE00011^{10} \\approx 2{,}6 \\cdot 10^{10}\uE001. Men det är överflödigt — tecknet räcker.",
     "tier": "detail"
    },
    {
@@ -371,13 +371,13 @@
    {
     "n": 11,
     "title": "Verifiera",
-    "text": "Test med små tal: (-2)^3 = -8 (udda exponent → negativ); (-3)^2 = 9 (jämn → positiv). Samma mönster, småskaligt.",
+    "text": "Test med små tal: \uE000(-2)^3 = -8\uE001 (udda exponent → negativ); \uE000(-3)^2 = 9\uE001 (jämn → positiv). Samma mönster, småskaligt.",
     "tier": "detail"
    },
    {
     "n": 12,
     "title": "Slutsats",
-    "text": "Svaret är B: II är större än I. Insikten i en mening: vid (-a)^n-jämförelser, kolla pariteten på n FÖRST — om tecknen skiljer sig är magnituden irrelevant.",
+    "text": "Svaret är B: II är större än I. Insikten i en mening: vid \uE000(-a)^n-jämförelser\uE001, kolla pariteten på n FÖRST — om tecknen skiljer sig är magnituden irrelevant.",
     "tier": "essential"
    }
   ],
@@ -398,7 +398,7 @@
     "why_wrong": "Steg 3-7 löser jämförelsen via paritet allena — ingen ytterligare information behövs."
    }
   ],
-  "technique": "Vid (-a)^n: bedöm pariteten på n innan magnituden. Trigger: \"negativ bas upphöjt till heltal\". När en exponent är udda och den andra är jämn, är teckenfrågan ensam tillräcklig.",
+  "technique": "Vid \uE000(-a)^n\uE001: bedöm pariteten på n innan magnituden. Trigger: \"negativ bas upphöjt till heltal\". När en exponent är udda och den andra är jämn, är teckenfrågan ensam tillräcklig.",
   "pitfall": "Botemedlet mot \"räkna magnituden\": skriv ner tecknet bredvid varje potens. Om tecknen skiljer sig kan du sluta räkna direkt.",
   "framework_id": "KVA-TRAP-013",
   "pregrade_tactic": {
@@ -412,7 +412,7 @@
   }
  },
  "host-2013-kvant1-KVA-019": {
-  "solution_path": "Omkrets 36 ger l + b = 18, där l \\geq b > 0. Längsta sidan l ligger i [9, 18). Kvadratomkretsen är 4 \\cdot 3 = 12. Eftersom 12 är inuti intervallet kan l vara <, =, eller > 12 → D.",
+  "solution_path": "Omkrets 36 ger \uE000l + b = 18\uE001, där \uE000l \\geq b > 0\uE001. Längsta sidan \uE000l\uE001 ligger i \uE000[9, 18)\uE001. Kvadratomkretsen är \uE0004 \\cdot 3 = 12\uE001. Eftersom 12 är inuti intervallet kan \uE000l\uE001 vara <, =, eller > 12 → D.",
   "steps": [
    {
     "n": 1,
@@ -423,55 +423,55 @@
    {
     "n": 2,
     "title": "Räkna ut II först",
-    "text": "En kvadrat med sida 3 cm har omkrets 4 \\cdot 3 = 12 cm. II = 12 är ett fast tal.",
+    "text": "En kvadrat med sida 3 cm har omkrets \uE0004 \\cdot 3 = 12\uE001 cm. II = 12 är ett fast tal.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Definiera rektangelns omkrets",
-    "text": "En rektangel med längd l och bredd b har omkrets 2l + 2b = 2(l+b). Det är två gånger summan av sidorna.",
+    "text": "En rektangel med längd \uE000l\uE001 och bredd \uE000b\uE001 har omkrets \uE0002l + 2b = 2(l+b)\uE001. Det är två gånger summan av sidorna.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Översätt villkoret",
-    "text": "2(l + b) = 36 \\Rightarrow l + b = 18. Det är den enda begränsningen. Notera att l, b > 0 (positiva sidor) och vi definierar l \\geq b så att l är längsta sidan.",
+    "text": "\uE0002(l + b) = 36 \\Rightarrow l + b = 18\uE001. Det är den enda begränsningen. Notera att \uE000l, b > 0\uE001 (positiva sidor) och vi definierar \uE000l \\geq b\uE001 så att \uE000l\uE001 är längsta sidan.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Hitta nedre gräns för l",
-    "text": "Eftersom l \\geq b och l + b = 18, måste l \\geq 9 — annars vore b > l. Likhet l = 9 inträffar exakt när rektangeln är en kvadrat med sida 9.",
+    "text": "Eftersom \uE000l \\geq b\uE001 och \uE000l + b = 18\uE001, måste \uE000l \\geq 9\uE001 — annars vore \uE000b > l\uE001. Likhet \uE000l = 9\uE001 inträffar exakt när rektangeln är en kvadrat med sida 9.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Hitta övre gräns för l",
-    "text": "b > 0 ger l < 18. Värdet l = 18 skulle kräva b = 0, vilket inte är en rektangel. Alltså 9 \\leq l < 18.",
+    "text": "\uE000b > 0\uE001 ger \uE000l < 18\uE001. Värdet \uE000l = 18\uE001 skulle kräva \uE000b = 0\uE001, vilket inte är en rektangel. Alltså \uE0009 \\leq l < 18\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Placera II i intervallet",
-    "text": "II = 12 ligger inuti [9, 18): 9 \\leq 12 < 18. Båda riktningar av jämförelsen är geometriskt möjliga.",
+    "text": "II = 12 ligger inuti \uE000[9, 18)\uE001: \uE0009 \\leq 12 < 18\uE001. Båda riktningar av jämförelsen är geometriskt möjliga.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Konstruera fall I = II",
-    "text": "För l = 12: b = 18 - 12 = 6. Rektangel 12×6 har omkrets 2(12+6) = 36 ✓. Då I = 12 = II.",
+    "text": "För \uE000l = 12\uE001: \uE000b = 18 - 12 = 6\uE001. Rektangel 12×6 har omkrets \uE0002(12+6) = 36\uE001 ✓. Då I = 12 = II.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Konstruera fall I < II",
-    "text": "För l = 10: b = 8. Rektangel 10×8, omkrets 2(10+8) = 36 ✓. Då I = 10 < 12 = II.",
+    "text": "För \uE000l = 10\uE001: \uE000b = 8\uE001. Rektangel 10×8, omkrets \uE0002(10+8) = 36\uE001 ✓. Då I = 10 < 12 = II.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Konstruera fall I > II",
-    "text": "För l = 15: b = 3. Rektangel 15×3, omkrets 2(15+3) = 36 ✓. Då I = 15 > 12 = II.",
+    "text": "För \uE000l = 15\uE001: \uE000b = 3\uE001. Rektangel 15×3, omkrets \uE0002(15+3) = 36\uE001 ✓. Då I = 15 > 12 = II.",
     "tier": "essential"
    },
    {
@@ -505,7 +505,7 @@
    }
   ],
   "technique": "När en geometrisk kvantitet beror på en form med en frihetsgrad (t.ex. rektangel med fixerad omkrets), hitta intervallet av möjliga värden och kolla om jämförelsetalet ligger inuti det. Trigger: \"längsta sidan / största arean / minsta avståndet\" + en enda begränsning.",
-  "pitfall": "Botemedlet mot \"specifika fallet\": tänk ALDRIG på en bestämd rektangel — tänk på hela familjen som uppfyller villkoret. Två gränspunkter (l=9 och l \\to 18) plus ett mellanvärde räcker.",
+  "pitfall": "Botemedlet mot \"specifika fallet\": tänk ALDRIG på en bestämd rektangel — tänk på hela familjen som uppfyller villkoret. Två gränspunkter (l=9 och l \uE000\\to\uE001 18) plus ett mellanvärde räcker.",
   "framework_id": "KVA-TRAP-004",
   "pregrade_tactic": {
    "handle": "Intervalljakten",
@@ -518,7 +518,7 @@
   }
  },
  "host-2013-kvant1-KVA-020": {
-  "solution_path": "Två lika summor av positiva tal kan ha vilken kombination av antal termer som helst. Ett enda tal (n=1) kan vara lika med en summa av många små (m \\geq 2) — och vice versa. Båda riktningar möjliga → D.",
+  "solution_path": "Två lika summor av positiva tal kan ha vilken kombination av antal termer som helst. Ett enda tal (\uE000n=1\uE001) kan vara lika med en summa av många små (\uE000m \\geq 2\uE001) — och vice versa. Båda riktningar möjliga → D.",
   "steps": [
    {
     "n": 1,
@@ -529,7 +529,7 @@
    {
     "n": 2,
     "title": "Sätt upp notation",
-    "text": "Skriv a_1 + a_2 + \\dots + a_n = b_1 + b_2 + \\dots + b_m där alla a_i > 0 och alla b_j > 0. Den enda kopplingen är likheten — termernas storlekar är fria.",
+    "text": "Skriv \uE000a_1 + a_2 + \\dots + a_n = b_1 + b_2 + \\dots + b_m\uE001 där alla \uE000a_i > 0\uE001 och alla \uE000b_j > 0\uE001. Den enda kopplingen är likheten — termernas storlekar är fria.",
     "tier": "essential"
    },
    {
@@ -541,7 +541,7 @@
    {
     "n": 4,
     "title": "Bygg fall där n > m",
-    "text": "Välj a_1 = a_2 = a_3 = 1 (n = 3, summa 3). Välj b_1 = 3 (m = 1, summa 3). Summor lika. Här är n = 3 > 1 = m.",
+    "text": "Välj \uE000a_1 = a_2 = a_3 = 1\uE001 (n = 3, summa 3). Välj \uE000b_1 = 3\uE001 (m = 1, summa 3). Summor lika. Här är n = 3 > 1 = m.",
     "tier": "essential"
    },
    {
@@ -553,7 +553,7 @@
    {
     "n": 6,
     "title": "Bygg fall där n < m",
-    "text": "Välj a_1 = 2 (n = 1, summa 2). Välj b_1 = b_2 = 1 (m = 2, summa 2). Summor lika. Här är n = 1 < 2 = m.",
+    "text": "Välj \uE000a_1 = 2\uE001 (n = 1, summa 2). Välj \uE000b_1 = b_2 = 1\uE001 (m = 2, summa 2). Summor lika. Här är n = 1 < 2 = m.",
     "tier": "essential"
    },
    {
@@ -565,7 +565,7 @@
    {
     "n": 8,
     "title": "Bygg fall där n = m",
-    "text": "Välj a_1 = a_2 = 1, b_1 = b_2 = 1 (n = 2, m = 2, båda summor 2). Likhet kan också uppstå.",
+    "text": "Välj \uE000a_1 = a_2 = 1, b_1 = b_2 = 1\uE001 (n = 2, m = 2, båda summor 2). Likhet kan också uppstå.",
     "tier": "detail"
    },
    {
@@ -624,91 +624,91 @@
   }
  },
  "host-2013-kvant1-KVA-022": {
-  "solution_path": "x(1-x) > 0 kräver att båda faktorerna har samma tecken; eftersom 1−x och x inte kan vara negativa samtidigt (det skulle kräva x < 0 OCH x > 1), måste båda vara positiva: 0 < x < 1. I det intervallet gäller x > x^2 → A.",
+  "solution_path": "\uE000x(1-x) > 0\uE001 kräver att båda faktorerna har samma tecken; eftersom 1−x och x inte kan vara negativa samtidigt (det skulle kräva x < 0 OCH x > 1), måste båda vara positiva: \uE0000 < x < 1\uE001. I det intervallet gäller \uE000x > x^2\uE001 → A.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå villkoret",
-    "text": "x(1-x) > 0 är en olikhet — produkten av två uttryck ska vara strikt positiv. Frågan jämför sedan x med x^2.",
+    "text": "\uE000x(1-x) > 0\uE001 är en olikhet — produkten av två uttryck ska vara strikt positiv. Frågan jämför sedan \uE000x\uE001 med \uE000x^2\uE001.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "När är en produkt positiv?",
-    "text": "a \\cdot b > 0 kräver att a och b har SAMMA tecken: båda positiva, eller båda negativa. Aldrig blandat.",
+    "text": "\uE000a \\cdot b > 0\uE001 kräver att a och b har SAMMA tecken: båda positiva, eller båda negativa. Aldrig blandat.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Tillämpa på vår produkt",
-    "text": "Här är faktorerna x och 1-x. Fall 1: båda positiva — x > 0 och 1-x > 0. Fall 2: båda negativa — x < 0 och 1-x < 0.",
+    "text": "Här är faktorerna \uE000x\uE001 och \uE0001-x\uE001. Fall 1: båda positiva — \uE000x > 0\uE001 och \uE0001-x > 0\uE001. Fall 2: båda negativa — \uE000x < 0\uE001 och \uE0001-x < 0\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Lös fall 1",
-    "text": "x > 0 och 1-x > 0 \\Leftrightarrow x < 1. Snitt: 0 < x < 1.",
+    "text": "\uE000x > 0\uE001 och \uE0001-x > 0 \\Leftrightarrow x < 1\uE001. Snitt: \uE0000 < x < 1\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Lös fall 2",
-    "text": "x < 0 och 1-x < 0 \\Leftrightarrow x > 1. Snitt: x < 0 OCH x > 1 samtidigt — omöjligt, tom mängd.",
+    "text": "\uE000x < 0\uE001 och \uE0001-x < 0 \\Leftrightarrow x > 1\uE001. Snitt: \uE000x < 0\uE001 OCH \uE000x > 1\uE001 samtidigt — omöjligt, tom mängd.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Sammanfatta lösningsmängden",
-    "text": "Bara fall 1 ger något. x måste ligga i öppna intervallet (0, 1): strikt mellan 0 och 1.",
+    "text": "Bara fall 1 ger något. \uE000x\uE001 måste ligga i öppna intervallet \uE000(0, 1)\uE001: strikt mellan 0 och 1.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Jämför x och x^2 — sätt upp skillnaden",
-    "text": "x - x^2 = x(1-x). Hoppsan — det är EXAKT vänsterledet i villkoret.",
+    "title": "Jämför x och \uE000x^2\uE001 — sätt upp skillnaden",
+    "text": "\uE000x - x^2 = x(1-x)\uE001. Hoppsan — det är EXAKT vänsterledet i villkoret.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Använd villkoret igen",
-    "text": "Eftersom x(1-x) > 0 enligt antagandet, gäller x - x^2 > 0 \\Leftrightarrow x > x^2. Det är direkt svaret.",
+    "text": "Eftersom \uE000x(1-x) > 0\uE001 enligt antagandet, gäller \uE000x - x^2 > 0 \\Leftrightarrow x > x^2\uE001. Det är direkt svaret.",
     "tier": "essential"
    },
    {
     "n": 9,
-    "title": "Bygg intuition om x mot x^2",
-    "text": "För x \\in (0, 1) krymper kvadrering talet: 0,5 → 0,25; 0,9 → 0,81; 0,1 → 0,01. Multiplikation med ett tal mindre än 1 minskar.",
+    "title": "Bygg intuition om x mot \uE000x^2\uE001",
+    "text": "För \uE000x \\in (0, 1)\uE001 krymper kvadrering talet: 0,5 → 0,25; 0,9 → 0,81; 0,1 → 0,01. Multiplikation med ett tal mindre än 1 minskar.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Verifiera med ett tal",
-    "text": "Välj x = 0{,}5. Kontrollera villkoret: 0{,}5 \\cdot 0{,}5 = 0{,}25 > 0 ✓. Jämför: x = 0{,}5 mot x^2 = 0{,}25 — I > II ✓.",
+    "text": "Välj \uE000x = 0{,}5\uE001. Kontrollera villkoret: \uE0000{,}5 \\cdot 0{,}5 = 0{,}25 > 0\uE001 ✓. Jämför: \uE000x = 0{,}5\uE001 mot \uE000x^2 = 0{,}25\uE001 — I > II ✓.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Granska de tre regimerna",
-    "text": "Generellt: x > x^2 \\Leftrightarrow x > 0 OCH x < 1 (i.e. x \\in (0,1)); x = x^2 \\Leftrightarrow x = 0 eller x = 1; x < x^2 annars. Vi är i den första regimen.",
+    "text": "Generellt: \uE000x > x^2 \\Leftrightarrow x > 0\uE001 OCH \uE000x < 1\uE001 (i.e. \uE000x \\in (0,1)\uE001); \uE000x = x^2 \\Leftrightarrow x = 0\uE001 eller \uE000x = 1\uE001; \uE000x < x^2\uE001 annars. Vi är i den första regimen.",
     "tier": "detail"
    },
    {
     "n": 12,
     "title": "Slutsats",
-    "text": "Svaret är A: I är större än II. Insikten i en mening: x(1-x) > 0 är exakt villkoret för x > x^2 — samma uttryck dyker upp på båda sidor.",
+    "text": "Svaret är A: I är större än II. Insikten i en mening: \uE000x(1-x) > 0\uE001 är exakt villkoret för \uE000x > x^2\uE001 — samma uttryck dyker upp på båda sidor.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Det är lätt att blanda ihop med fallet x > 1, där x^2 > x.",
-    "why_wrong": "Som steg 5 visar är fall 2 (x > 1) helt utesluten av villkoret; steg 8 ger strikt x > x^2."
+    "why_tempting": "Det är lätt att blanda ihop med fallet \uE000x > 1\uE001, där \uE000x^2 > x\uE001.",
+    "why_wrong": "Som steg 5 visar är fall 2 (x \uE000> 1\uE001) helt utesluten av villkoret; steg 8 ger strikt \uE000x > x^2\uE001."
    },
    {
     "letter": "C",
     "why_tempting": "Många stannar vid att x = 1 ger likhet och tror att det gäller över hela definitionsmängden.",
-    "why_wrong": "Steg 6 visar att x = 1 är utesluten (1 \\cdot 0 = 0, inte > 0); inom öppna intervallet (0,1) är olikheten strikt."
+    "why_wrong": "Steg 6 visar att x \uE000=\uE001 1 är utesluten (1 \uE000\\cdot 0 =\uE001 0, inte \uE000>\uE001 0); inom öppna intervallet (0,1) är olikheten strikt."
    },
    {
     "letter": "D",
@@ -716,7 +716,7 @@
     "why_wrong": "Steg 3-6 låser intervallet entydigt till (0, 1); villkoret är fullt informationsbärande."
    }
   ],
-  "technique": "Vid x mot x^2: identifiera tre regimer beroende på var x ligger relativt 0 och 1. Trigger: \"jämför x och en potens av x\". Skriv ner skillnaden x - x^2 = x(1-x) och utnyttja olikhetsvillkoret direkt om det är samma uttryck.",
+  "technique": "Vid x mot \uE000x^2\uE001: identifiera tre regimer beroende på var x ligger relativt 0 och 1. Trigger: \"jämför x och en potens av x\". Skriv ner skillnaden \uE000x - x^2 = x(1-x)\uE001 och utnyttja olikhetsvillkoret direkt om det är samma uttryck.",
   "pitfall": "Botemedlet mot \"kvadrering förstorar alltid\": kvadrering FÖRMINSKAR i intervallet (0,1) och FÖRSTORAR utanför [0,1]; vid 0 och 1 är värdena lika.",
   "framework_id": "KVA-TRAP-018",
   "pregrade_tactic": {
@@ -741,19 +741,19 @@
    {
     "n": 2,
     "title": "Notation",
-    "text": "Låt m = antal män med hatt och k = antal kvinnor med hatt. Det sökta talet är m + k. Vi behöver alltså låsa både m och k.",
+    "text": "Låt m = antal män med hatt och k = antal kvinnor med hatt. Det sökta talet är \uE000m + k\uE001. Vi behöver alltså låsa både m och k.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Vad betyder tillräcklig?",
-    "text": "I NOG räcker en utsaga bara om den ger ETT entydigt värde på m + k. En relation utan absolutvärden räcker inte — flera värden överlever då.",
+    "text": "I NOG räcker en utsaga bara om den ger ETT entydigt värde på \uE000m + k\uE001. En relation utan absolutvärden räcker inte — flera värden överlever då.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Tolka utsaga (1)",
-    "text": "\"En fjärdedel av männen har hatt\" = \\frac{1}{4} \\cdot 8 = 2. Alltså m = 2. Detta är ett absolut tal för männen.",
+    "text": "\"En fjärdedel av männen har hatt\" = \uE000\\frac{1}{4} \\cdot 8 = 2\uE001. Alltså m = 2. Detta är ett absolut tal för männen.",
     "tier": "essential"
    },
    {
@@ -765,13 +765,13 @@
    {
     "n": 6,
     "title": "Tolka utsaga (2)",
-    "text": "\"Om en man med hatt kliver av blir kvinnor med hatt = 4 gånger män med hatt.\" Översätt: k = 4(m - 1). Detta är en RELATION mellan k och m, inte ett absoluttal.",
+    "text": "\"Om en man med hatt kliver av blir kvinnor med hatt = 4 gånger män med hatt.\" Översätt: \uE000k = 4(m - 1)\uE001. Detta är en RELATION mellan k och m, inte ett absoluttal.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Vad är en hypotetisk utsaga?",
-    "text": "Att en man \"kliver av\" är bara ett sätt att uttrycka relationen k = 4(m-1). Ingen verklig avstigning sker — det är ren algebra om de aktuella antalen.",
+    "text": "Att en man \"kliver av\" är bara ett sätt att uttrycka relationen \uE000k = 4(m-1)\uE001. Ingen verklig avstigning sker — det är ren algebra om de aktuella antalen.",
     "tier": "detail"
    },
    {
@@ -783,13 +783,13 @@
    {
     "n": 9,
     "title": "Kombinera (1) och (2)",
-    "text": "Från (1): m = 2. Sätt in i (2): k = 4(2-1) = 4. Båda dimensionerna är nu låsta.",
+    "text": "Från (1): m = 2. Sätt in i (2): \uE000k = 4(2-1) = 4\uE001. Båda dimensionerna är nu låsta.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Räkna summan",
-    "text": "Totalt med hatt = m + k = 2 + 4 = 6 personer. Detta är ett unikt tal.",
+    "text": "Totalt med hatt = \uE000m + k = 2 + 4 = 6\uE001 personer. Detta är ett unikt tal.",
     "tier": "essential"
    },
    {
@@ -828,7 +828,7 @@
    }
   ],
   "technique": "I NOG-frågor om summor med fraktion + relation: en utsaga ger ofta ett absolutvärde för en delgrupp och den andra en relation mellan delgrupper. Var för sig saknar de antingen ett tal eller en koppling — kombinerat låser de hela summan.",
-  "pitfall": "En hypotetisk formulering (\"om en kliver av\") är fortfarande bara en relation mellan två okända. Botemedlet: skriv ner som en ekvation k = 4(m-1) och räkna obekanta före du gissar.",
+  "pitfall": "En hypotetisk formulering (\"om en kliver av\") är fortfarande bara en relation mellan två okända. Botemedlet: skriv ner som en ekvation \uE000k = 4(m-1)\uE001 och räkna obekanta före du gissar.",
   "framework_id": "NOG-TRAP-024",
   "pregrade_tactic": {
    "handle": "Absolut-plus-relation-receptet",
@@ -841,7 +841,7 @@
   }
  },
  "host-2013-kvant1-NOG-024": {
-  "solution_path": "Sökt: totalt antal djur. (1) ger får = 5 (absolut) och grisar = total/8 (fraktion). (2) ger höns = total/4 (fraktion). Tillsammans: \\text{total} - \\text{total}/8 - \\text{total}/4 = 5 → total = 8.",
+  "solution_path": "Sökt: totalt antal djur. (1) ger får = 5 (absolut) och grisar = total/8 (fraktion). (2) ger höns = total/4 (fraktion). Tillsammans: \uE000\\text{total} - \\text{total}/8 - \\text{total}/4 = 5\uE001 → total = 8.",
   "steps": [
    {
     "n": 1,
@@ -864,7 +864,7 @@
    {
     "n": 4,
     "title": "Tolka utsaga (1)",
-    "text": "\"Fem får\" → F = 5. \"1/8 av djuren är grisar\" → G = T/8. Två fakta i en utsaga.",
+    "text": "\"Fem får\" → F = 5. \"1/8 av djuren är grisar\" → \uE000G = T/8\uE001. Två fakta i en utsaga.",
     "tier": "essential"
    },
    {
@@ -876,7 +876,7 @@
    {
     "n": 6,
     "title": "Tolka utsaga (2)",
-    "text": "\"25 % av djuren är höns\" → H = T/4. En enda fraktion utan absolutvärden.",
+    "text": "\"25 % av djuren är höns\" → \uE000H = T/4\uE001. En enda fraktion utan absolutvärden.",
     "tier": "essential"
    },
    {
@@ -888,19 +888,19 @@
    {
     "n": 8,
     "title": "Kombinera (1) och (2)",
-    "text": "G = T/8, H = T/4, F = 5. Eftersom G + H + F = T: T/8 + T/4 + 5 = T.",
+    "text": "G = T/8, H = T/4, F = 5. Eftersom G + H + F = T: \uE000T/8 + T/4 + 5 = T\uE001.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Förenkla bråken",
-    "text": "Gemensam nämnare 8: T/8 + 2T/8 + 5 = T, alltså 3T/8 + 5 = T.",
+    "text": "Gemensam nämnare 8: \uE000T/8 + 2T/8 + 5 = T\uE001, alltså \uE0003T/8 + 5 = T\uE001.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Lös för T",
-    "text": "Flytta 3T/8 till höger: 5 = T - 3T/8 = 5T/8. Multiplicera båda sidor med 8/5: T = 8.",
+    "text": "Flytta 3T/8 till höger: \uE0005 = T - 3T/8 = 5T/8\uE001. Multiplicera båda sidor med 8/5: \uE000T = 8\uE001.",
     "tier": "essential"
    },
    {
@@ -963,13 +963,13 @@
    {
     "n": 2,
     "title": "Bakgrundsfakta 1: vinkelsumman",
-    "text": "I varje triangel gäller a + b + c = 180°. Detta är en oföränderlig regel.",
+    "text": "I varje triangel gäller \uE000a + b + c = 180°\uE001. Detta är en oföränderlig regel.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Bakgrundsfakta 2: yttervinkelsatsen",
-    "text": "En yttervinkel + dess intilliggande inre vinkel = 180°. Alltså d + c = 180°, vilket ger d = 180° - c = a + b. Detta gäller ALLTID — det är en sats, inte en utsagas-information.",
+    "text": "En yttervinkel + dess intilliggande inre vinkel = 180°. Alltså \uE000d + c = 180°\uE001, vilket ger \uE000d = 180° - c = a + b\uE001. Detta gäller ALLTID — det är en sats, inte en utsagas-information.",
     "tier": "essential"
    },
    {
@@ -1175,7 +1175,7 @@
   "technique": "NOG-systemstrategin: 1) översätt varje påstående till en ekvation, 2) räkna ekvationer mot obekanta, 3) lös systemet när antalet oberoende ekvationer matchar antalet obekanta. Regel: en ekvation + två obekanta = otillräckligt; två oberoende ekvationer + två obekanta = unik lösning. Detta gäller oavsett hur 'konkret' siffrorna i påståendena ser ut."
  },
  "host-2013-kvant1-NOG-027": {
-  "solution_path": "Totala sträckan delar bilarna 234 km på 2 h vid motsatta riktningar, så v_r + v_g = 117 km/h. (1) ger differensen v_r - v_g = 27 → unikt. (2) ger förhållandet v_r = 1{,}6 v_g → unikt. Båda räcker var för sig.",
+  "solution_path": "Totala sträckan delar bilarna 234 km på 2 h vid motsatta riktningar, så \uE000v_r + v_g = 117\uE001 km/h. (1) ger differensen \uE000v_r - v_g = 27\uE001 → unikt. (2) ger förhållandet \uE000v_r = 1{,}6 v_g\uE001 → unikt. Båda räcker var för sig.",
   "steps": [
    {
     "n": 1,
@@ -1186,43 +1186,43 @@
    {
     "n": 2,
     "title": "Notation",
-    "text": "Låt v_r = röd bils medelhastighet (km/h) och v_g = grön bils medelhastighet (km/h). Sökt: båda värden.",
+    "text": "Låt \uE000v_r\uE001 = röd bils medelhastighet (km/h) och \uE000v_g\uE001 = grön bils medelhastighet (km/h). Sökt: båda värden.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Översätt totalen",
-    "text": "På 2 timmar kör röd 2v_r km och grön 2v_g km. Tillsammans 234 km ger 2v_r + 2v_g = 234, alltså v_r + v_g = 117.",
+    "text": "På 2 timmar kör röd \uE0002v_r\uE001 km och grön \uE0002v_g\uE001 km. Tillsammans 234 km ger \uE0002v_r + 2v_g = 234\uE001, alltså \uE000v_r + v_g = 117\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Vad behövs för entydighet?",
-    "text": "En enda ekvation i två okända räcker inte. Vi behöver EN till oberoende koppling mellan v_r och v_g för att låsa båda.",
+    "text": "En enda ekvation i två okända räcker inte. Vi behöver EN till oberoende koppling mellan \uE000v_r\uE001 och \uE000v_g\uE001 för att låsa båda.",
     "tier": "detail"
    },
    {
     "n": 5,
     "title": "Tolka utsaga (1)",
-    "text": "\"27 km/h högre\" → v_r - v_g = 27. Detta är en linjär differens.",
+    "text": "\"27 km/h högre\" → \uE000v_r - v_g = 27\uE001. Detta är en linjär differens.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Test (1) ensamt",
-    "text": "Med v_r + v_g = 117 och v_r - v_g = 27 är systemet 2x2 linjärt med determinant ≠ 0. Lös: addera ekvationerna → 2v_r = 144 \\Rightarrow v_r = 72, sedan v_g = 45. Unikt. Tillräckligt.",
+    "text": "Med \uE000v_r + v_g = 117\uE001 och \uE000v_r - v_g = 27\uE001 är systemet 2x2 linjärt med determinant ≠ 0. Lös: addera ekvationerna → \uE0002v_r = 144 \\Rightarrow v_r = 72\uE001, sedan \uE000v_g = 45\uE001. Unikt. Tillräckligt.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Tolka utsaga (2)",
-    "text": "\"60 procent högre\" betyder v_r = v_g + 0{,}6 v_g = 1{,}6 v_g. Detta är ett förhållande, inte en differens.",
+    "text": "\"60 procent högre\" betyder \uE000v_r = v_g + 0{,}6 v_g = 1{,}6 v_g\uE001. Detta är ett förhållande, inte en differens.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Test (2) ensamt",
-    "text": "Sätt in i totalen: 1{,}6 v_g + v_g = 117 \\Rightarrow 2{,}6 v_g = 117 \\Rightarrow v_g = 45. Sedan v_r = 1{,}6 \\cdot 45 = 72. Unikt. Tillräckligt.",
+    "text": "Sätt in i totalen: \uE0001{,}6 v_g + v_g = 117 \\Rightarrow 2{,}6 v_g = 117 \\Rightarrow v_g = 45\uE001. Sedan \uE000v_r = 1{,}6 \\cdot 45 = 72\uE001. Unikt. Tillräckligt.",
     "tier": "essential"
    },
    {
@@ -1259,7 +1259,7 @@
    {
     "letter": "B",
     "why_tempting": "Snabbsvar är ofta att förhållandet (2) är \"mer informativt\" än en differens.",
-    "why_wrong": "Steg 6 visar att (1) räcker lika bra — additionsmetoden ger v_r = 72 direkt."
+    "why_wrong": "Steg 6 visar att (1) räcker lika bra — additionsmetoden ger \uE000v_r = 72\uE001 direkt."
    },
    {
     "letter": "C",
@@ -1277,7 +1277,7 @@
   "framework_id": "NOG-TRAP-024",
   "pregrade_tactic": {
    "handle": "Summa-plus-relation-receptet",
-   "move": "När frågestammen ger summan av två okända: vardera utsaga som ger en oberoende linjär relation räcker ensam — testa båda före du svarar C."
+   "move": "När frågestammen ger summan av två okända: vardera utsaga som ger en oberoende linjär relation räcker ensam — testa båda innan du svarar C."
   },
   "_meta": {
    "model": "claude-opus-4-7-via-max-subscription",
@@ -1397,89 +1397,89 @@
   }
  },
  "host-2013-kvant1-XYZ-001": {
-  "solution_path": "Räkneordning: multiplikation går före addition. Räkna \\frac{1}{2}\\cdot\\frac{1}{3}=\\frac{1}{6} först, addera sedan 1 och få \\frac{7}{6}.",
+  "solution_path": "Räkneordning: multiplikation går före addition. Räkna \uE000\\frac{1}{2}\\cdot\\frac{1}{3}=\\frac{1}{6}\uE001 först, addera sedan 1 och få \uE000\\frac{7}{6}\uE001.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Du ska beräkna 1+\\frac{1}{2}\\cdot\\frac{1}{3}. Frågan är vilken ordning du gör operationerna i — och hur du multiplicerar två bråk korrekt.",
+    "text": "Du ska beräkna \uE0001+\\frac{1}{2}\\cdot\\frac{1}{3}\uE001. Frågan är vilken ordning du gör operationerna i — och hur du multiplicerar två bråk korrekt.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Räkneordningen",
-    "text": "Multiplikation (·) binder hårdare än addition (+). Det betyder att \\frac{1}{2}\\cdot\\frac{1}{3} är EN storhet som ska räknas ut innan ettan adderas.",
+    "text": "Multiplikation (·) binder hårdare än addition (+). Det betyder att \uE000\\frac{1}{2}\\cdot\\frac{1}{3}\uE001 är EN storhet som ska räknas ut innan ettan adderas.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Definition: multiplikation av bråk",
-    "text": "Multiplikation av två bråk: \\frac{a}{b}\\cdot\\frac{c}{d}=\\frac{a\\cdot c}{b\\cdot d}. Täljare gångras med täljare och nämnare gångras med nämnare — ingenting adderas.",
+    "text": "Multiplikation av två bråk: \uE000\\frac{a}{b}\\cdot\\frac{c}{d}=\\frac{a\\cdot c}{b\\cdot d}\uE001. Täljare gångras med täljare och nämnare gångras med nämnare — ingenting adderas.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Multiplicera täljarna",
-    "text": "Täljarna är 1 och 1: 1\\cdot 1=1. Det ger den nya täljaren.",
+    "text": "Täljarna är 1 och 1: \uE0001\\cdot 1=1\uE001. Det ger den nya täljaren.",
     "tier": "detail"
    },
    {
     "n": 5,
     "title": "Multiplicera nämnarna",
-    "text": "Nämnarna är 2 och 3: 2\\cdot 3=6. Det ger den nya nämnaren.",
+    "text": "Nämnarna är 2 och 3: \uE0002\\cdot 3=6\uE001. Det ger den nya nämnaren.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Sammansätt produkten",
-    "text": "Produkten blir \\frac{1}{2}\\cdot\\frac{1}{3}=\\frac{1}{6}. Det är ett bråk i sin enklaste form.",
+    "text": "Produkten blir \uE000\\frac{1}{2}\\cdot\\frac{1}{3}=\\frac{1}{6}\uE001. Det är ett bråk i sin enklaste form.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Definition: addera heltal till bråk",
-    "text": "Heltalet 1 skrivs som \\frac{6}{6} om vi vill ha gemensam nämnare med \\frac{1}{6}. Då fungerar additionen som täljare-plus-täljare.",
+    "text": "Heltalet 1 skrivs som \uE000\\frac{6}{6}\uE001 om vi vill ha gemensam nämnare med \uE000\\frac{1}{6}\uE001. Då fungerar additionen som täljare-plus-täljare.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Addera 1 till 1/6",
-    "text": "1+\\frac{1}{6}=\\frac{6}{6}+\\frac{1}{6}=\\frac{7}{6}. Täljarna adderas, nämnaren behålls.",
+    "text": "\uE0001+\\frac{1}{6}=\\frac{6}{6}+\\frac{1}{6}=\\frac{7}{6}\uE001. Täljarna adderas, nämnaren behålls.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Verifiera mot alternativen",
-    "text": "\\frac{7}{6} matchar alternativ B exakt. Inget förenklingssteg behövs eftersom 7 och 6 saknar gemensam delare.",
+    "text": "\uE000\\frac{7}{6}\uE001 matchar alternativ B exakt. Inget förenklingssteg behövs eftersom 7 och 6 saknar gemensam delare.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Verifiera storleken",
-    "text": "Sanity-check: \\frac{1}{2}\\cdot\\frac{1}{3} är mindre än \\frac{1}{2} och mindre än \\frac{1}{3} — så svaret ska vara strax över 1, vilket \\frac{7}{6}\\approx 1{,}17 är.",
+    "text": "Sanity-check: \uE000\\frac{1}{2}\\cdot\\frac{1}{3}\uE001 är mindre än \uE000\\frac{1}{2}\uE001 och mindre än \uE000\\frac{1}{3}\uE001 — så svaret ska vara strax över 1, vilket \uE000\\frac{7}{6}\\approx 1{,}17\uE001 är.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Svaret är B: \\frac{7}{6}. Insikten i en mening: räkneordningen sätts av operatorn, inte av läsordningen — multiplikation före addition oavsett var den står i texten.",
+    "text": "Svaret är B: \uE000\\frac{7}{6}\uE001. Insikten i en mening: räkneordningen sätts av operatorn, inte av läsordningen — multiplikation före addition oavsett var den står i texten.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Vänster-till-höger-läsning ger 1+\\frac{1}{2} först, alltså \\frac{3}{2}\\cdot\\frac{1}{3}=\\frac{1}{2}=\\frac{3}{6}.",
+    "why_tempting": "Vänster-till-höger-läsning ger \uE0001+\\frac{1}{2}\uE001 först, alltså \uE000\\frac{3}{2}\\cdot\\frac{1}{3}=\\frac{1}{2}=\\frac{3}{6}\uE001.",
     "why_wrong": "Som steg 2 visar binder · hårdare än +. Multiplikationen måste komma först oavsett ordning i texten."
    },
    {
     "letter": "C",
-    "why_tempting": "Om du minns multiplikationsregeln som 'addera nämnarna' blir det 1+\\frac{1}{2+3}=1+\\frac{1}{5}=\\frac{6}{5}.",
-    "why_wrong": "Steg 3 säger att nämnare MULTIPLICERAS, inte adderas: \\frac{1}{2}\\cdot\\frac{1}{3}=\\frac{1}{6}, inte \\frac{1}{5}."
+    "why_tempting": "Om du minns multiplikationsregeln som 'addera nämnarna' blir det \uE0001+\\frac{1}{2+3}=1+\\frac{1}{5}=\\frac{6}{5}\uE001.",
+    "why_wrong": "Steg 3 säger att nämnare MULTIPLICERAS, inte adderas: \uE000\\frac{1}{2}\\cdot\\frac{1}{3}=\\frac{1}{6}\uE001, inte \uE000\\frac{1}{5}\uE001."
    },
    {
     "letter": "D",
-    "why_tempting": "Det är frestande att addera täljare och nämnare separat: \\frac{1+1}{2+3}=\\frac{2}{5}, sen 1+\\frac{2}{5}=\\frac{7}{5}.",
+    "why_tempting": "Det är frestande att addera täljare och nämnare separat: \uE000\\frac{1+1}{2+3}=\\frac{2}{5}\uE001, sen \uE0001+\\frac{2}{5}=\\frac{7}{5}\uE001.",
     "why_wrong": "Genvägen finns inte. Steg 4–5 visar att täljare gångras med täljare, nämnare med nämnare."
    }
   ],
@@ -1497,12 +1497,12 @@
   }
  },
  "host-2013-kvant1-XYZ-003": {
-  "solution_path": "Hitta b som måste dela både 22 och 26. Då \\gcd(22,26)=2 ger b = 2 (eller 1), och med b = 2: a = 11, c = 13 och summan blir 26.",
+  "solution_path": "Hitta b som måste dela både 22 och 26. Då \uE000\\gcd(22,26)=2\uE001 ger b = 2 (eller 1), och med b = 2: a = 11, c = 13 och summan blir 26.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Tre positiva heltal a, b, c uppfyller a\\cdot b=22 och b\\cdot c=26. Du letar efter ett möjligt värde på a + b + c bland alternativen.",
+    "text": "Tre positiva heltal a, b, c uppfyller \uE000a\\cdot b=22\uE001 och \uE000b\\cdot c=26\uE001. Du letar efter ett möjligt värde på a + b + c bland alternativen.",
     "tier": "essential"
    },
    {
@@ -1514,7 +1514,7 @@
    {
     "n": 3,
     "title": "Definition: delare",
-    "text": "Ett tal d är delare till n om n/d är ett heltal. Delarna till 22 är 1, 2, 11, 22. Delarna till 26 är 1, 2, 13, 26.",
+    "text": "Ett tal d är delare till n om \uE000n/d\uE001 är ett heltal. Delarna till 22 är 1, 2, 11, 22. Delarna till 26 är 1, 2, 13, 26.",
     "tier": "detail"
    },
    {
@@ -1526,19 +1526,19 @@
    {
     "n": 5,
     "title": "Testa b = 1",
-    "text": "Då blir a=22 och c=26. Summan: 22+1+26=49 — inte i alternativen.",
+    "text": "Då blir \uE000a=22\uE001 och \uE000c=26\uE001. Summan: \uE00022+1+26=49\uE001 — inte i alternativen.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Testa b = 2",
-    "text": "Då blir a=22/2=11 och c=26/2=13. Båda är positiva heltal — kandidaten håller.",
+    "text": "Då blir \uE000a=22/2=11\uE001 och \uE000c=26/2=13\uE001. Båda är positiva heltal — kandidaten håller.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Räkna summan",
-    "text": "Med b = 2: a+b+c=11+2+13=26.",
+    "text": "Med b = 2: \uE000a+b+c=11+2+13=26\uE001.",
     "tier": "essential"
    },
    {
@@ -1550,13 +1550,13 @@
    {
     "n": 9,
     "title": "Kolla varför 22, 24, 48 inte fungerar",
-    "text": "Alternativ 22 är a\\cdot b, alternativ 48 är 22+26 (vilket räknar b dubbelt). Inget heltals-b ger summan 24.",
+    "text": "Alternativ 22 är \uE000a\\cdot b\uE001, alternativ 48 är \uE00022+26\uE001 (vilket räknar b dubbelt). Inget heltals-b ger summan 24.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Verifiera baklänges",
-    "text": "Med (a, b, c) = (11, 2, 13): 11\\cdot 2=22 ✓ och 2\\cdot 13=26 ✓. Båda originalekvationerna stämmer.",
+    "text": "Med (a, b, c) = (11, 2, 13): \uE00011\\cdot 2=22\uE001 ✓ och \uE0002\\cdot 13=26\uE001 ✓. Båda originalekvationerna stämmer.",
     "tier": "essential"
    },
    {
@@ -1579,7 +1579,7 @@
    },
    {
     "letter": "D",
-    "why_tempting": "Första instinkten är att lägga ihop 22+26=48, som om båda produkterna kunde adderas direkt.",
+    "why_tempting": "Första instinkten är att lägga ihop \uE00022+26=48\uE001, som om båda produkterna kunde adderas direkt.",
     "why_wrong": "Steg 9 förklarar: 22 och 26 delar faktorn b. Att addera räknar b två gånger — fel operation."
    }
   ],
@@ -1597,7 +1597,7 @@
   }
  },
  "host-2013-kvant1-XYZ-004": {
-  "solution_path": "Skriv om procenten som decimaler: 0{,}06x=0{,}05y. Lös ut: y=\\frac{0{,}06}{0{,}05}x=1{,}2x. Eftersom y är 1,2 gånger x och båda är positiva, är y större än x.",
+  "solution_path": "Skriv om procenten som decimaler: \uE0000{,}06x=0{,}05y\uE001. Lös ut: \uE000y=\\frac{0{,}06}{0{,}05}x=1{,}2x\uE001. Eftersom y är 1,2 gånger x och båda är positiva, är y större än x.",
   "steps": [
    {
     "n": 1,
@@ -1608,25 +1608,25 @@
    {
     "n": 2,
     "title": "Definition: procent",
-    "text": "n % av ett tal betyder \\frac{n}{100} av talet. Så 6 % av x = 0{,}06x och 5 % av y = 0{,}05y.",
+    "text": "n % av ett tal betyder \uE000\\frac{n}{100}\uE001 av talet. Så 6 % av x = \uE0000{,}06x\uE001 och 5 % av y = \uE0000{,}05y\uE001.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Skriv ekvationen",
-    "text": "Sambandet i uppgiften: 0{,}06x=0{,}05y.",
+    "text": "Sambandet i uppgiften: \uE0000{,}06x=0{,}05y\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Rensa decimaler",
-    "text": "Multiplicera båda sidor med 100: 6x=5y. Lika lätt att tolka utan decimaler.",
+    "text": "Multiplicera båda sidor med 100: \uE0006x=5y\uE001. Lika lätt att tolka utan decimaler.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Lös ut y",
-    "text": "Dela båda sidor med 5: y=\\frac{6}{5}x=1{,}2x.",
+    "text": "Dela båda sidor med 5: \uE000y=\\frac{6}{5}x=1{,}2x\uE001.",
     "tier": "essential"
    },
    {
@@ -1656,7 +1656,7 @@
    {
     "n": 10,
     "title": "Verifiera ekvationen",
-    "text": "Med x = 100, y = 120: 0{,}06\\cdot 100=6 och 0{,}05\\cdot 120=6 ✓. Ekvationen håller.",
+    "text": "Med x = 100, y = 120: \uE0000{,}06\\cdot 100=6\uE001 och \uE0000{,}05\\cdot 120=6\uE001 ✓. Ekvationen håller.",
     "tier": "essential"
    },
    {
@@ -1679,7 +1679,7 @@
    },
    {
     "letter": "D",
-    "why_tempting": "Om du minns regeln som 'kryssmultiplicera procenten' blir det 6x=5y men D påstår 5x=6y — fel position.",
+    "why_tempting": "Om du minns regeln som 'kryssmultiplicera procenten' blir det \uE0006x=5y\uE001 men D påstår \uE0005x=6y\uE001 — fel position.",
     "why_wrong": "Steg 4 ger 6x = 5y. D har siffrorna i fel ordning."
    }
   ],
@@ -1697,7 +1697,7 @@
   }
  },
  "host-2013-kvant1-XYZ-006": {
-  "solution_path": "Det skuggade området = kvartscirkelsektorn ACD minus triangeln ACD. Kvartscirkel med radie 10: \\frac{1}{4}\\pi\\cdot 10^{2}=25\\pi. Triangel med kateter 10: \\frac{10\\cdot 10}{2}=50. Skillnad: 25\\pi-50 cm².",
+  "solution_path": "Det skuggade området = kvartscirkelsektorn ACD minus triangeln ACD. Kvartscirkel med radie 10: \uE000\\frac{1}{4}\\pi\\cdot 10^{2}=25\\pi\uE001. Triangel med kateter 10: \uE000\\frac{10\\cdot 10}{2}=50\uE001. Skillnad: \uE00025\\pi-50\uE001 cm².",
   "steps": [
    {
     "n": 1,
@@ -1714,13 +1714,13 @@
    {
     "n": 3,
     "title": "Definition: cirkelsektor",
-    "text": "En cirkelsektor med vinkel \\theta och radie r har arean \\frac{\\theta}{2\\pi}\\cdot\\pi r^{2}. För en KVARTscirkel är \\theta=\\pi/2, alltså arean \\frac{1}{4}\\pi r^{2}.",
+    "text": "En cirkelsektor med vinkel \uE000\\theta\uE001 och radie r har arean \uE000\\frac{\\theta}{2\\pi}\\cdot\\pi r^{2}\uE001. För en KVARTscirkel är \uE000\\theta=\\pi/2\uE001, alltså arean \uE000\\frac{1}{4}\\pi r^{2}\uE001.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Räkna sektorns area",
-    "text": "Med r = 10: \\frac{1}{4}\\pi\\cdot 10^{2}=\\frac{100\\pi}{4}=25\\pi cm². Det är hela 'tårtbiten' från D ut till bågen.",
+    "text": "Med r = 10: \uE000\\frac{1}{4}\\pi\\cdot 10^{2}=\\frac{100\\pi}{4}=25\\pi\uE001 cm². Det är hela 'tårtbiten' från D ut till bågen.",
     "tier": "essential"
    },
    {
@@ -1732,13 +1732,13 @@
    {
     "n": 6,
     "title": "Definition: rätvinklig triangelarea",
-    "text": "Arean av en rätvinklig triangel med kateter a och b är \\frac{a\\cdot b}{2}. Kateterna är de två sidorna som möts i den räta vinkeln.",
+    "text": "Arean av en rätvinklig triangel med kateter a och b är \uE000\\frac{a\\cdot b}{2}\uE001. Kateterna är de två sidorna som möts i den räta vinkeln.",
     "tier": "detail"
    },
    {
     "n": 7,
     "title": "Räkna triangelarean",
-    "text": "Med kateter 10 och 10: \\frac{10\\cdot 10}{2}=\\frac{100}{2}=50 cm².",
+    "text": "Med kateter 10 och 10: \uE000\\frac{10\\cdot 10}{2}=\\frac{100}{2}=50\uE001 cm².",
     "tier": "essential"
    },
    {
@@ -1750,36 +1750,36 @@
    {
     "n": 9,
     "title": "Subtrahera",
-    "text": "Skuggad area: 25\\pi-50 cm². Talet är positivt eftersom 25\\pi\\approx 78{,}5>50.",
+    "text": "Skuggad area: \uE00025\\pi-50\uE001 cm². Talet är positivt eftersom \uE00025\\pi\\approx 78{,}5>50\uE001.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Verifiera storleken",
-    "text": "Kvadratens halva area är 50 cm². Skuggat område \\approx 28{,}5 cm² — rimligen mindre än halva kvadraten, vilket en 'månskärm' mellan korda och båge ska vara.",
+    "text": "Kvadratens halva area är 50 cm². Skuggat område \uE000\\approx 28{,}5\uE001 cm² — rimligen mindre än halva kvadraten, vilket en 'månskärm' mellan korda och båge ska vara.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Svaret är B: (25\\pi-50)\\,\\mathrm{cm}^{2}. Insikten i en mening: ett 'månskärms'-område mellan en cirkelbåge och en korda räknas alltid som sektor minus triangel.",
+    "text": "Svaret är B: \uE000(25\\pi-50)\\,\\mathrm{cm}^{2}\uE001. Insikten i en mening: ett 'månskärms'-område mellan en cirkelbåge och en korda räknas alltid som sektor minus triangel.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att räkna triangelarean som 25 (genom att dela med 4 istället för 2) och få 25\\pi-25.",
-    "why_wrong": "Steg 6–7 visar att rätvinklig area är \\frac{a\\cdot b}{2}, inte \\frac{a\\cdot b}{4}. Kateterna 10 och 10 ger area 50."
+    "why_tempting": "Det är lätt att räkna triangelarean som 25 (genom att dela med 4 istället för 2) och få \uE00025\\pi-25\uE001.",
+    "why_wrong": "Steg 6–7 visar att rätvinklig area är \uE000\\frac{a\\cdot b}{2}\uE001, inte \uE000\\frac{a\\cdot b}{4}\uE001. Kateterna 10 och 10 ger area 50."
    },
    {
     "letter": "C",
-    "why_tempting": "Om du räknar HALV cirkel istället för kvartscirkel: \\frac{1}{2}\\pi\\cdot 10^{2}=50\\pi, sen minus 50.",
+    "why_tempting": "Om du räknar HALV cirkel istället för kvartscirkel: \uE000\\frac{1}{2}\\pi\\cdot 10^{2}=50\\pi\uE001, sen minus 50.",
     "why_wrong": "Steg 1 säger att bågen är EN FJÄRDEDEL av en cirkel. Steg 4 ger 25π, inte 50π."
    },
    {
     "letter": "D",
-    "why_tempting": "Snabbsvar är ofta att kombinera fel cirkelandel med fel triangelarea: 50\\pi och 100.",
+    "why_tempting": "Snabbsvar är ofta att kombinera fel cirkelandel med fel triangelarea: \uE00050\\pi\uE001 och 100.",
     "why_wrong": "Båda värdena är fel: steg 4 ger 25π (kvart, inte halv) och steg 7 ger 50 (triangel, inte hela kvadraten)."
    }
   ],
@@ -1820,37 +1820,37 @@
    {
     "n": 4,
     "title": "Sortera bort multipler av 5",
-    "text": "45 slutar på 5 och är därmed delbart med 5 (45=5\\cdot 9). Inte primtal.",
+    "text": "45 slutar på 5 och är därmed delbart med 5 (\uE00045=5\\cdot 9\uE001). Inte primtal.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Definition: prövdivision upp till roten",
-    "text": "För att avgöra om n är primtal räcker det att pröva delbarhet med primtal upp till \\sqrt{n}. För tal under 50 betyder det 2, 3, 5, 7.",
+    "text": "För att avgöra om n är primtal räcker det att pröva delbarhet med primtal upp till \uE000\\sqrt{n}\uE001. För tal under 50 betyder det 2, 3, 5, 7.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Testa 41",
-    "text": "41 är udda (inte delbart med 2), 4+1=5 ej delbart med 3, slutar inte på 0 eller 5, och 41/7\\approx 5{,}86 ej heltal. 41 är primtal.",
+    "text": "41 är udda (inte delbart med 2), \uE0004+1=5\uE001 ej delbart med 3, slutar inte på 0 eller 5, och \uE00041/7\\approx 5{,}86\uE001 ej heltal. 41 är primtal.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Testa 43",
-    "text": "43 är udda, 4+3=7 ej delbart med 3, slutar inte på 0/5, och 43/7\\approx 6{,}14 ej heltal. 43 är primtal.",
+    "text": "43 är udda, \uE0004+3=7\uE001 ej delbart med 3, slutar inte på 0/5, och \uE00043/7\\approx 6{,}14\uE001 ej heltal. 43 är primtal.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Testa 47",
-    "text": "47 är udda, 4+7=11 ej delbart med 3, slutar inte på 0/5, 47/7\\approx 6{,}71 ej heltal. 47 är primtal.",
+    "text": "47 är udda, \uE0004+7=11\uE001 ej delbart med 3, slutar inte på 0/5, \uE00047/7\\approx 6{,}71\uE001 ej heltal. 47 är primtal.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Testa 49",
-    "text": "49 är udda, men 49=7\\cdot 7=7^{2} — alltså delbart med 7. Inte primtal.",
+    "text": "49 är udda, men \uE00049=7\\cdot 7=7^{2}\uE001 — alltså delbart med 7. Inte primtal.",
     "tier": "essential"
    },
    {
@@ -1868,7 +1868,7 @@
    {
     "n": 12,
     "title": "Slutsats",
-    "text": "Svaret är B: 3. Insikten i en mening: i ett intervall av storleksordningen 10 ovanför 40 räcker prövdivision med 2, 3, 5, 7 — alla primtal under \\sqrt{50}.",
+    "text": "Svaret är B: 3. Insikten i en mening: i ett intervall av storleksordningen 10 ovanför 40 räcker prövdivision med 2, 3, 5, 7 — alla primtal under \uE000\\sqrt{50}\uE001.",
     "tier": "essential"
    }
   ],
@@ -1903,7 +1903,7 @@
   }
  },
  "host-2013-kvant1-XYZ-008": {
-  "solution_path": "Volymen skalar med kuben av linjärfaktorn. Halveras alla kanter, ändras volymen med faktor \\left(\\frac{1}{2}\\right)^{3}=\\frac{1}{8}. Ny volym: 12\\cdot\\frac{1}{8}=1{,}5 dm³.",
+  "solution_path": "Volymen skalar med kuben av linjärfaktorn. Halveras alla kanter, ändras volymen med faktor \uE000\\left(\\frac{1}{2}\\right)^{3}=\\frac{1}{8}\uE001. Ny volym: \uE00012\\cdot\\frac{1}{8}=1{,}5\uE001 dm³.",
   "steps": [
    {
     "n": 1,
@@ -1914,37 +1914,37 @@
    {
     "n": 2,
     "title": "Definition: rätblockets volym",
-    "text": "Ett rätblock med kanter a, b, c har volym V=a\\cdot b\\cdot c. Tre linjära mått multipliceras.",
+    "text": "Ett rätblock med kanter a, b, c har volym \uE000V=a\\cdot b\\cdot c\uE001. Tre linjära mått multipliceras.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Halvera kanterna",
-    "text": "Om varje kant blir hälften så lång: nya kanterna är \\frac{a}{2}, \\frac{b}{2}, \\frac{c}{2}.",
+    "text": "Om varje kant blir hälften så lång: nya kanterna är \uE000\\frac{a}{2}, \\frac{b}{2}, \\frac{c}{2}\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Räkna ny volym",
-    "text": "V_{\\text{ny}}=\\frac{a}{2}\\cdot\\frac{b}{2}\\cdot\\frac{c}{2}=\\frac{abc}{8}.",
+    "text": "\uE000V_{\\text{ny}}=\\frac{a}{2}\\cdot\\frac{b}{2}\\cdot\\frac{c}{2}=\\frac{abc}{8}\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Definition: skalningsfaktorn k³",
-    "text": "Om varje linjär mått skalas med faktor k, skalas volymen med k^{3}. Halvering: k=\\frac{1}{2} ger k^{3}=\\frac{1}{8}.",
+    "text": "Om varje linjär mått skalas med faktor k, skalas volymen med \uE000k^{3}\uE001. Halvering: \uE000k=\\frac{1}{2}\uE001 ger \uE000k^{3}=\\frac{1}{8}\uE001.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Tillämpa på 12",
-    "text": "V_{\\text{ny}}=\\frac{V_{\\text{gammal}}}{8}=\\frac{12}{8}.",
+    "text": "\uE000V_{\\text{ny}}=\\frac{V_{\\text{gammal}}}{8}=\\frac{12}{8}\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Förenkla bråket",
-    "text": "\\frac{12}{8}=\\frac{3}{2}=1{,}5 dm³.",
+    "text": "\uE000\\frac{12}{8}=\\frac{3}{2}=1{,}5\uE001 dm³.",
     "tier": "essential"
    },
    {
@@ -1976,17 +1976,17 @@
    {
     "letter": "B",
     "why_tempting": "Det är lätt att tro att 'halvering' bara halverar volymen — men siffran 2 dyker upp av blandad räkning.",
-    "why_wrong": "Steg 5 visar att volymen skalar med k^{3}=\\frac{1}{8}. \\frac{12}{8}=1{,}5, inte 2."
+    "why_wrong": "Steg 5 visar att volymen skalar med \uE000k^{3}=\\frac{1}{8}\uE001. \uE000\\frac{12}{8}=1{,}5\uE001, inte 2."
    },
    {
     "letter": "C",
-    "why_tempting": "Om du minns regeln som 'kvadrat-skalning' (1/4) blir det 12/4=3.",
-    "why_wrong": "Steg 5 säger att kvadrat-skalning gäller AREA, inte volym. Volym kräver kub: \\left(\\frac{1}{2}\\right)^{3}=\\frac{1}{8}."
+    "why_tempting": "Om du minns regeln som 'kvadrat-skalning' (1/4) blir det \uE00012/4=3\uE001.",
+    "why_wrong": "Steg 5 säger att kvadrat-skalning gäller AREA, inte volym. Volym kräver kub: \uE000\\left(\\frac{1}{2}\\right)^{3}=\\frac{1}{8}\uE001."
    },
    {
     "letter": "D",
-    "why_tempting": "Snabbsvar är ofta att halvera direkt: 12/2=6.",
-    "why_wrong": "Steg 9 förklarar: att halvera ALLA tre kanter ger \\frac{1}{2}\\cdot\\frac{1}{2}\\cdot\\frac{1}{2}=\\frac{1}{8}, inte 1/2."
+    "why_tempting": "Snabbsvar är ofta att halvera direkt: \uE00012/2=6\uE001.",
+    "why_wrong": "Steg 9 förklarar: att halvera ALLA tre kanter ger \uE000\\frac{1}{2}\\cdot\\frac{1}{2}\\cdot\\frac{1}{2}=\\frac{1}{8}\uE001, inte 1/2."
    }
   ],
   "technique": "Skalning av volym: om alla linjära mått ändras med faktor k, ändras volymen med faktor k³. Halvering → 1/8, dubblering → 8, en tredjedel → 1/27.",
@@ -2003,24 +2003,24 @@
   }
  },
  "host-2013-kvant1-XYZ-009": {
-  "solution_path": "Medelvärde = summa delat med antal. Gör gemensam nämnare: \\frac{7}{8}+\\left(-\\frac{3}{4}\\right)=\\frac{7}{8}-\\frac{6}{8}=\\frac{1}{8}. Dela med 2: \\frac{1/8}{2}=\\frac{1}{16}.",
+  "solution_path": "Medelvärde = summa delat med antal. Gör gemensam nämnare: \uE000\\frac{7}{8}+\\left(-\\frac{3}{4}\\right)=\\frac{7}{8}-\\frac{6}{8}=\\frac{1}{8}\uE001. Dela med 2: \uE000\\frac{1/8}{2}=\\frac{1}{16}\uE001.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Du ska räkna ut medelvärdet av talen \\frac{7}{8} och -\\frac{3}{4}.",
+    "text": "Du ska räkna ut medelvärdet av talen \uE000\\frac{7}{8}\uE001 och \uE000-\\frac{3}{4}\uE001.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Definition: medelvärde",
-    "text": "Medelvärdet av n tal är deras summa delat med n. För två tal: \\frac{a+b}{2}.",
+    "text": "Medelvärdet av n tal är deras summa delat med n. För två tal: \uE000\\frac{a+b}{2}\uE001.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Sätt upp uttrycket",
-    "text": "Här: \\text{medel}=\\frac{\\frac{7}{8}+\\left(-\\frac{3}{4}\\right)}{2}=\\frac{\\frac{7}{8}-\\frac{3}{4}}{2}.",
+    "text": "Här: \uE000\\text{medel}=\\frac{\\frac{7}{8}+\\left(-\\frac{3}{4}\\right)}{2}=\\frac{\\frac{7}{8}-\\frac{3}{4}}{2}\uE001.",
     "tier": "essential"
    },
    {
@@ -2032,31 +2032,31 @@
    {
     "n": 5,
     "title": "Skriv om 3/4 med nämnare 8",
-    "text": "\\frac{3}{4}=\\frac{3\\cdot 2}{4\\cdot 2}=\\frac{6}{8}. Multiplicera täljare och nämnare med 2.",
+    "text": "\uE000\\frac{3}{4}=\\frac{3\\cdot 2}{4\\cdot 2}=\\frac{6}{8}\uE001. Multiplicera täljare och nämnare med 2.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Subtrahera bråken",
-    "text": "\\frac{7}{8}-\\frac{6}{8}=\\frac{7-6}{8}=\\frac{1}{8}. Subtrahera täljarna, behåll nämnaren.",
+    "text": "\uE000\\frac{7}{8}-\\frac{6}{8}=\\frac{7-6}{8}=\\frac{1}{8}\uE001. Subtrahera täljarna, behåll nämnaren.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Definition: dela bråk med 2",
-    "text": "Att dela ett tal med 2 är samma som att multiplicera med \\frac{1}{2}. För bråk: nämnaren dubbleras, täljaren oförändrad.",
+    "text": "Att dela ett tal med 2 är samma som att multiplicera med \uE000\\frac{1}{2}\uE001. För bråk: nämnaren dubbleras, täljaren oförändrad.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Dividera med 2",
-    "text": "\\frac{1/8}{2}=\\frac{1}{8}\\cdot\\frac{1}{2}=\\frac{1}{16}.",
+    "text": "\uE000\\frac{1/8}{2}=\\frac{1}{8}\\cdot\\frac{1}{2}=\\frac{1}{16}\uE001.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Sanity-check med decimaler",
-    "text": "\\frac{7}{8}=0{,}875 och -\\frac{3}{4}=-0{,}75. Summa: 0,125. Halva: 0,0625. \\frac{1}{16}=0{,}0625 ✓.",
+    "text": "\uE000\\frac{7}{8}=0{,}875\uE001 och \uE000-\\frac{3}{4}=-0{,}75\uE001. Summa: 0,125. Halva: 0,0625. \uE000\\frac{1}{16}=0{,}0625\uE001 ✓.",
     "tier": "detail"
    },
    {
@@ -2068,20 +2068,20 @@
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Svaret är A: \\frac{1}{16}. Insikten i en mening: medelvärde av tal med olika tecken kan vara mycket mindre än varje enskilt tal eftersom summan delvis tar ut sig.",
+    "text": "Svaret är A: \uE000\\frac{1}{16}\uE001. Insikten i en mening: medelvärde av tal med olika tecken kan vara mycket mindre än varje enskilt tal eftersom summan delvis tar ut sig.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Det är lätt att glömma division med 2 i sista steget och svara med summan: \\frac{1}{8}.",
-    "why_wrong": "Steg 8 visar att medelvärde kräver division med antalet. \\frac{1}{8} är summan, inte medelvärdet."
+    "why_tempting": "Det är lätt att glömma division med 2 i sista steget och svara med summan: \uE000\\frac{1}{8}\uE001.",
+    "why_wrong": "Steg 8 visar att medelvärde kräver division med antalet. \uE000\\frac{1}{8}\uE001 är summan, inte medelvärdet."
    },
    {
     "letter": "C",
     "why_tempting": "Många stannar vid 'medelvärdet av åttondelar och fjärdedelar är ungefär ett par åttondelar' — utan att hantera minustecknet.",
-    "why_wrong": "Steg 6 visar att minustecknet vänder additionen till subtraktion: \\frac{7}{8}-\\frac{6}{8}=\\frac{1}{8}, inte \\frac{2}{8}."
+    "why_wrong": "Steg 6 visar att minustecknet vänder additionen till subtraktion: \uE000\\frac{7}{8}-\\frac{6}{8}=\\frac{1}{8}\uE001, inte \uE000\\frac{2}{8}\uE001."
    },
    {
     "letter": "D",
@@ -2090,7 +2090,7 @@
    }
   ],
   "technique": "Medelvärde av två tal: addera (med korrekt tecken via gemensam nämnare), dela med 2 = multiplicera nämnaren med 2.",
-  "pitfall": "Botemedlet mot 'glömma dela med 2': skriv ut formeln \\frac{a+b}{2} explicit varje gång — då ser du delningen.",
+  "pitfall": "Botemedlet mot 'glömma dela med 2': skriv ut formeln \uE000\\frac{a+b}{2}\uE001 explicit varje gång — då ser du delningen.",
   "framework_id": "XYZ-TRAP-016",
   "pregrade_tactic": {
    "handle": "Medelvärdes-bråk-receptet",
@@ -2103,7 +2103,7 @@
   }
  },
  "host-2013-kvant1-XYZ-011": {
-  "solution_path": "Sätt antalet äpplen = x. Päron är en tredjedel: \\frac{x}{3}. Bananer är en niondel av päron: \\frac{x}{27}. Total: x+\\frac{x}{3}+\\frac{x}{27}=\\frac{27x+9x+x}{27}=\\frac{37x}{27}.",
+  "solution_path": "Sätt antalet äpplen = x. Päron är en tredjedel: \uE000\\frac{x}{3}\uE001. Bananer är en niondel av päron: \uE000\\frac{x}{27}\uE001. Total: \uE000x+\\frac{x}{3}+\\frac{x}{27}=\\frac{27x+9x+x}{27}=\\frac{37x}{27}\uE001.",
   "steps": [
    {
     "n": 1,
@@ -2114,7 +2114,7 @@
    {
     "n": 2,
     "title": "Definition: 'A är k gånger så många som B'",
-    "text": "Påståendet A=k\\cdot B betyder att A är större (om k > 1) och B=\\frac{A}{k}. Riktningen matters: A är multipeln, B är bråkdelen.",
+    "text": "Påståendet \uE000A=k\\cdot B\uE001 betyder att A är större (om k > 1) och \uE000B=\\frac{A}{k}\uE001. Riktningen matters: A är multipeln, B är bråkdelen.",
     "tier": "detail"
    },
    {
@@ -2126,25 +2126,25 @@
    {
     "n": 4,
     "title": "Uttryck päron i x",
-    "text": "Äpplen = 3 · päron, alltså x=3P, vilket ger P=\\frac{x}{3}.",
+    "text": "Äpplen = 3 · päron, alltså \uE000x=3P\uE001, vilket ger \uE000P=\\frac{x}{3}\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Uttryck bananer i päron",
-    "text": "Päron = 9 · bananer, alltså P=9B, vilket ger B=\\frac{P}{9}.",
+    "text": "Päron = 9 · bananer, alltså \uE000P=9B\uE001, vilket ger \uE000B=\\frac{P}{9}\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Substituera P i bananer",
-    "text": "Med P=\\frac{x}{3}: B=\\frac{x/3}{9}=\\frac{x}{27}.",
+    "text": "Med \uE000P=\\frac{x}{3}\uE001: \uE000B=\\frac{x/3}{9}=\\frac{x}{27}\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Skriv totalen",
-    "text": "Totalt antal frukter: x+\\frac{x}{3}+\\frac{x}{27}.",
+    "text": "Totalt antal frukter: \uE000x+\\frac{x}{3}+\\frac{x}{27}\uE001.",
     "tier": "essential"
    },
    {
@@ -2156,25 +2156,25 @@
    {
     "n": 9,
     "title": "Skriv om varje term",
-    "text": "x=\\frac{27x}{27}, \\frac{x}{3}=\\frac{9x}{27}, \\frac{x}{27} är redan klart.",
+    "text": "\uE000x=\\frac{27x}{27}\uE001, \uE000\\frac{x}{3}=\\frac{9x}{27}\uE001, \uE000\\frac{x}{27}\uE001 är redan klart.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Addera täljarna",
-    "text": "\\frac{27x+9x+x}{27}=\\frac{37x}{27}.",
+    "text": "\uE000\\frac{27x+9x+x}{27}=\\frac{37x}{27}\uE001.",
     "tier": "essential"
    },
    {
     "n": 11,
     "title": "Sanity-check med konkret tal",
-    "text": "Säg x = 27. Päron: 9. Bananer: 1. Total: 37. \\frac{37\\cdot 27}{27}=37 ✓.",
+    "text": "Säg x = 27. Päron: 9. Bananer: 1. Total: 37. \uE000\\frac{37\\cdot 27}{27}=37\uE001 ✓.",
     "tier": "detail"
    },
    {
     "n": 12,
     "title": "Slutsats",
-    "text": "Svaret är D: \\frac{37}{27}x. Insikten i en mening: 'A är k gånger så många som B' betyder att B är BRÅKDELEN A/k — vänd inte på riktningen.",
+    "text": "Svaret är D: \uE000\\frac{37}{27}x\uE001. Insikten i en mening: 'A är k gånger så många som B' betyder att B är BRÅKDELEN A/k — vänd inte på riktningen.",
     "tier": "essential"
    }
   ],
@@ -2191,12 +2191,12 @@
    },
    {
     "letter": "C",
-    "why_tempting": "Snabbsvar är ofta att glömma bananerna och bara summera äpplen + päron: x+\\frac{x}{3}=\\frac{4x}{3}\\approx\\frac{13x}{3}.",
-    "why_wrong": "Steg 6 fångar bananerna: \\frac{x}{27} är liten men reell. Med dem i kalkylen blir nämnaren 27, inte 3."
+    "why_tempting": "Snabbsvar är ofta att glömma bananerna och bara summera äpplen + päron: \uE000x+\\frac{x}{3}=\\frac{4x}{3}\\approx\\frac{13x}{3}\uE001.",
+    "why_wrong": "Steg 6 fångar bananerna: \uE000\\frac{x}{27}\uE001 är liten men reell. Med dem i kalkylen blir nämnaren 27, inte 3."
    }
   ],
   "technique": "Kedjeproportion 'k gånger så många': uttryck varje variabel som bråkdel av den största, sätt allt över gemensam nämnare.",
-  "pitfall": "Botemedlet mot 'bakvänd riktning': skriv ut likheten A=k\\cdot B explicit — då ser du vem som är multipel och vem som är bråkdel.",
+  "pitfall": "Botemedlet mot 'bakvänd riktning': skriv ut likheten \uE000A=k\\cdot B\uE001 explicit — då ser du vem som är multipel och vem som är bråkdel.",
   "framework_id": "XYZ-TRAP-023",
   "pregrade_tactic": {
    "handle": "Kedje-bråk-receptet",
@@ -2209,7 +2209,7 @@
   }
  },
  "host-2013-kvant1-XYZ-012": {
-  "solution_path": "Inklusion-exklusion: 100 % − 40 % (varken) = 60 % som kan minst ett språk. Formeln |T\\cup F|=|T|+|F|-|T\\cap F| ger 60=47+43-x, alltså x = 30 %.",
+  "solution_path": "Inklusion-exklusion: 100 % − 40 % (varken) = 60 % som kan minst ett språk. Formeln \uE000|T\\cup F|=|T|+|F|-|T\\cap F|\uE001 ger \uE00060=47+43-x\uE001, alltså x = 30 %.",
   "steps": [
    {
     "n": 1,
@@ -2220,43 +2220,43 @@
    {
     "n": 2,
     "title": "Definition: union och snitt",
-    "text": "Snitt |T\\cap F| = andelen som kan BÅDA språken. Union |T\\cup F| = andelen som kan MINST ETT av dem.",
+    "text": "Snitt \uE000|T\\cap F|\uE001 = andelen som kan BÅDA språken. Union \uE000|T\\cup F|\uE001 = andelen som kan MINST ETT av dem.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Översätt 'varken'",
-    "text": "'Varken tyska eller franska' = utanför unionen. |T\\cup F|=100\\%-40\\%=60\\% kan minst ett språk.",
+    "text": "'Varken tyska eller franska' = utanför unionen. \uE000|T\\cup F|=100\\%-40\\%=60\\%\uE001 kan minst ett språk.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Definition: inklusion-exklusion",
-    "text": "För två mängder gäller |A\\cup B|=|A|+|B|-|A\\cap B|. Snittet dras bort för att inte räknas två gånger (en gång i |A|, en gång i |B|).",
+    "text": "För två mängder gäller \uE000|A\\cup B|=|A|+|B|-|A\\cap B|\uE001. Snittet dras bort för att inte räknas två gånger (en gång i |A|, en gång i |B|).",
     "tier": "detail"
    },
    {
     "n": 5,
     "title": "Sätt in värdena",
-    "text": "|T\\cup F|=|T|+|F|-|T\\cap F| ger 60=47+43-x, där x = andelen som kan båda.",
+    "text": "\uE000|T\\cup F|=|T|+|F|-|T\\cap F|\uE001 ger \uE00060=47+43-x\uE001, där x = andelen som kan båda.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Förenkla högerledet",
-    "text": "47+43=90. Ekvationen blir 60=90-x.",
+    "text": "\uE00047+43=90\uE001. Ekvationen blir \uE00060=90-x\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Lös ut x",
-    "text": "Dra bort 60 från båda sidor och flytta x: x=90-60=30. Alltså 30 %.",
+    "text": "Dra bort 60 från båda sidor och flytta x: \uE000x=90-60=30\uE001. Alltså 30 %.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Sanity-check med fyra disjunkta grupper",
-    "text": "Bara tyska: 47-30=17 %. Bara franska: 43-30=13 %. Båda: 30 %. Ingetdera: 40 %. Summa: 17+13+30+40=100 ✓.",
+    "text": "Bara tyska: \uE00047-30=17\uE001 %. Bara franska: \uE00043-30=13\uE001 %. Båda: 30 %. Ingetdera: 40 %. Summa: \uE00017+13+30+40=100\uE001 ✓.",
     "tier": "detail"
    },
    {
@@ -2281,13 +2281,13 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att göra felräkning: 47+43-100=-10 eller 'differensen' av 47 och 43 +/− något → 10 %.",
+    "why_tempting": "Det är lätt att göra felräkning: \uE00047+43-100=-10\uE001 eller 'differensen' av 47 och 43 +/− något → 10 %.",
     "why_wrong": "Steg 3 visar att unionen är 60 % (inte 100 %). Inklusion-exklusion med rätt totalmängd ger 30 %."
    },
    {
     "letter": "B",
-    "why_tempting": "Många stannar vid 47+43=90 och tror att 'överlappet' är skillnaden mellan 90 och 100, alltså 10. Lägg på något → 20.",
-    "why_wrong": "Steg 6 fångar felet: skillnaden ska vara mot 60 (unionen), inte 100. 90-60=30."
+    "why_tempting": "Många stannar vid \uE00047+43=90\uE001 och tror att 'överlappet' är skillnaden mellan 90 och 100, alltså 10. Lägg på något → 20.",
+    "why_wrong": "Steg 6 fångar felet: skillnaden ska vara mot 60 (unionen), inte 100. \uE00090-60=30\uE001."
    },
    {
     "letter": "D",
@@ -2295,7 +2295,7 @@
     "why_wrong": "Steg 10 visar att 50 % är omöjligt: snittet kan inte överstiga någon av delmängderna (47 %)."
    }
   ],
-  "technique": "Inklusion-exklusion för två mängder: |A\\cup B|=|A|+|B|-|A\\cap B|. Vid 'varken'-data: räkna unionen som 100 % − varken, sätt sedan in.",
+  "technique": "Inklusion-exklusion för två mängder: \uE000|A\\cup B|=|A|+|B|-|A\\cap B|\uE001. Vid 'varken'-data: räkna unionen som 100 % − varken, sätt sedan in.",
   "pitfall": "Botemedlet mot '90 − 100 = −10'-felet: räkna ALLTID unionen först (100 % − varken), inte direkt mot 100 %.",
   "framework_id": null,
   "pregrade_tactic": {
@@ -2316,101 +2316,101 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är frestande att se -2a^{2}-ter- men i Kvantitet I (synligt minustecken, stor koefficient) och tro att den drar ner I jämfört med II:s 'rena' parentes.",
-    "why_wrong": "Detta är ett ytligt formresonemang. När du faktiskt distribuerar a in i II:s parentes (steg 9-11) får du exakt samma -a^{2}-term som i I. Algebran är identisk — for- men ljuger om innehållet. Den specifika manövern som avslöjar det är steg 10-11."
+    "why_tempting": "Det är frestande att se \uE000-2a^{2}\uE001-ter- men i Kvantitet I (synligt minustecken, stor koefficient) och tro att den drar ner I jämfört med II:s 'rena' parentes.",
+    "why_wrong": "Detta är ett ytligt formresonemang. När du faktiskt distribuerar a in i II:s parentes (steg 9-11) får du exakt samma \uE000-a^{2}\uE001-term som i I. Algebran är identisk — for- men ljuger om innehållet. Den specifika manövern som avslöjar det är steg 10-11."
    },
    {
     "letter": "B",
-    "why_tempting": "Om du läser 'parentes med minus inuti' som 'negativt bidrag', kan II:s a(b - 2a) se ut som ett uttryck som drar ner II under I.",
-    "why_wrong": "Båda uttrycken har samma negativa term (-a^{2}) efter förenkling — varken är 'mer negativt' än det andra. Det specifika steget som visar det är steg 8 för I och steg 11 för II — båda landar på a - a^{2}."
+    "why_tempting": "Om du läser 'parentes med minus inuti' som 'negativt bidrag', kan II:s \uE000a(b - 2a)\uE001 se ut som ett uttryck som drar ner II under I.",
+    "why_wrong": "Båda uttrycken har samma negativa term \uE000(-a^{2})\uE001 efter förenkling — varken är 'mer negativt' än det andra. Det specifika steget som visar det är steg 8 för I och steg 11 för II — båda landar på \uE000a - a^{2}\uE001."
    },
    {
     "letter": "D",
     "why_tempting": "Det är lätt att tro att man behöver veta tecknet på a (positivt? negativt? noll?) eller ett konkret värde innan man kan avgöra. D är ju 'informationen är otillräcklig'.",
-    "why_wrong": "Det behövs inte. När båda kvantiteterna förenklas till exakt samma uttryck (a - a^{2}, se steg 12) gäller likheten för ALLA värden av a — positiva, negativa, noll. D är reserverat för fall där villkoret tillåter flera olika utfall (I > II för vissa värden, I < II för andra). Här är I = II ALLTID."
+    "why_wrong": "Det behövs inte. När båda kvantiteterna förenklas till exakt samma uttryck (\uE000a - a^{2}\uE001, se steg 12) gäller likheten för ALLA värden av a — positiva, negativa, noll. D är reserverat för fall där villkoret tillåter flera olika utfall (I > II för vissa värden, I < II för andra). Här är I = II ALLTID."
    }
   ],
   "framework_id": "KVA-TRAP-024",
   "pitfall": "Två uttryck som SER olika ut innan förenkling kan vara algebraiskt identiska. KVA väljer ofta att skriva I och II i olika form (utvecklat vs. parentes) för att fresta studenter att gissa A eller B utifrån for- men istället för att räkna. Botemedlet: när for- men är 'misstänkt olik' — utveckla ALLT till samma form (alla parenteser borta, alla termer i ordning) innan du drar slutsatsen.",
-  "solution_path": "Villkoret b = a + 1 låter oss byta ut b överallt. När båda kvantiteterna substitueras och förenklas blir resultatet a - a^{2} i båda — algebraiskt identiska. Svaret är C.",
+  "solution_path": "Villkoret \uE000b = a + 1\uE001 låter oss byta ut b överallt. När båda kvantiteterna substitueras och förenklas blir resultatet \uE000a - a^{2}\uE001 i båda — algebraiskt identiska. Svaret är C.",
   "steps": [
    {
     "n": 1,
-    "text": "Du har ett villkor: b = a + 1 (det betyder att b alltid har värdet 'a plus 1', vad än a är). Sedan två uttryck: Kvantitet I = ab - 2a^{2} och Kvantitet II = a(b - 2a). Frågan: vilken är störst, eller är de lika, eller går det inte att avgöra?",
+    "text": "Du har ett villkor: \uE000b = a + 1\uE001 (det betyder att b alltid har värdet 'a plus 1', vad än a är). Sedan två uttryck: Kvantitet I = \uE000ab - 2a^{2}\uE001 och Kvantitet II = \uE000a(b - 2a)\uE001. Frågan: vilken är störst, eller är de lika, eller går det inte att avgöra?",
     "tier": "essential",
     "title": "Läs problemet noggrant"
    },
    {
     "n": 2,
-    "text": "I uttrycken ser du a^{2} — detta är 'a i kvadrat'. Kvadrera betyder att gångra ett tal med sig självt: a^{2} = a \\cdot a. Om a = 3, då är a^{2} = 9. Om a = -2, då är a^{2} = 4.",
+    "text": "I uttrycken ser du \uE000a^{2}\uE001 — detta är 'a i kvadrat'. Kvadrera betyder att gångra ett tal med sig självt: \uE000a^{2} = a \\cdot a\uE001. Om \uE000a = 3\uE001, då är \uE000a^{2} = 9\uE001. Om \uE000a = -2\uE001, då är \uE000a^{2} = 4\uE001.",
     "tier": "detail",
     "title": "Vad är 'kvadrera'?"
    },
    {
     "n": 3,
-    "text": "När två variabler står bredvid varandra (som ab) är multiplikationen underförstådd: ab betyder a \\cdot b. Detta är en konvention i algebra — vi sparar ett tecken genom att utelämna multiplikationspunkten när det inte är tvetydigt.",
+    "text": "När två variabler står bredvid varandra (som \uE000ab\uE001) är multiplikationen underförstådd: \uE000ab\uE001 betyder \uE000a \\cdot b\uE001. Detta är en konvention i algebra — vi sparar ett tecken genom att utelämna multiplikationspunkten när det inte är tvetydigt.",
     "tier": "detail",
     "title": "Vad är 'ab'?"
    },
    {
     "n": 4,
-    "text": "Båda uttrycken innehåller både a och b. Eftersom vi har ett villkor som relaterar dem (b = a + 1), kan vi 'byta ut' b mot 'a + 1' överallt. Då försvinner b och vi har bara a kvar i båda uttrycken — kan jämföra direkt. Detta heter substitution.",
+    "text": "Båda uttrycken innehåller både a och b. Eftersom vi har ett villkor som relaterar dem (\uE000b = a + 1\uE001), kan vi 'byta ut' b mot 'a + 1' överallt. Då försvinner b och vi har bara a kvar i båda uttrycken — kan jämföra direkt. Detta heter substitution.",
     "tier": "essential",
     "title": "Välj strategi — substitution"
    },
    {
     "n": 5,
-    "text": "Kvantitet I = ab - 2a^{2}. Här är b — byt ut det mot (a + 1): a \\cdot (a + 1) - 2a^{2}. Parentes behövs för att hålla ihop 'a + 1' som en enhet — annars skulle vi felräkna a \\cdot a + 1.",
+    "text": "Kvantitet I = \uE000ab - 2a^{2}\uE001. Här är b — byt ut det mot \uE000(a + 1)\uE001: \uE000a \\cdot (a + 1) - 2a^{2}\uE001. Parentes behövs för att hålla ihop 'a + 1' som en enhet — annars skulle vi felräkna \uE000a \\cdot a + 1\uE001.",
     "tier": "essential",
     "title": "Substituera b i Kvantitet I"
    },
    {
     "n": 6,
-    "text": "Den distributiva lagen säger: a(x + y) = a \\cdot x + a \\cdot y — gångra a separat med varje term inuti parentesen. Här: a \\cdot (a + 1) = a \\cdot a + a \\cdot 1 = a^{2} + a (eftersom a \\cdot a = a^{2} och a \\cdot 1 = a).",
+    "text": "Den distributiva lagen säger: \uE000a(x + y) = a \\cdot x + a \\cdot y\uE001 — gångra a separat med varje term inuti parentesen. Här: \uE000a \\cdot (a + 1) = a \\cdot a + a \\cdot 1 = a^{2} + a\uE001 (eftersom \uE000a \\cdot a = a^{2}\uE001 och \uE000a \\cdot 1 = a\uE001).",
     "tier": "essential",
     "title": "Multiplicera ut parentesen i Kvantitet I"
    },
    {
     "n": 7,
-    "text": "Hela Kvantitet I efter steg 6: a^{2} + a - 2a^{2}. Det är vad vi har att förenkla nu.",
+    "text": "Hela Kvantitet I efter steg 6: \uE000a^{2} + a - 2a^{2}\uE001. Det är vad vi har att förenkla nu.",
     "tier": "detail",
     "title": "Skriv om Kvantitet I efter multiplikationen"
    },
    {
     "n": 8,
-    "text": "'Liknande termer' är termer med samma variabel-del. Här har vi a^{2} och -2a^{2} — båda har a^{2} som variabel-del, så de kan slås ihop. Vi adderar koefficienterna: 1 + (-2) = -1. Resultatet är -a^{2} (eller -1 \\cdot a^{2}, samma sak). Kvantitet I förenklas till a - a^{2}.",
+    "text": "'Liknande termer' är termer med samma variabel-del. Här har vi \uE000a^{2}\uE001 och \uE000-2a^{2}\uE001 — båda har \uE000a^{2}\uE001 som variabel-del, så de kan slås ihop. Vi adderar koefficienterna: \uE0001 + (-2) = -1\uE001. Resultatet är \uE000-a^{2}\uE001 (eller \uE000-1 \\cdot a^{2}\uE001, samma sak). Kvantitet I förenklas till \uE000a - a^{2}\uE001.",
     "tier": "essential",
     "title": "Slå ihop liknande termer"
    },
    {
     "n": 9,
-    "text": "Kvantitet II = a(b - 2a). Byt ut b: a((a + 1) - 2a). Notera att den inre parentesen innehåller (a + 1 - 2a) — ett uttryck vi kan förenkla innan vi gör multiplikationen.",
+    "text": "Kvantitet II = \uE000a(b - 2a)\uE001. Byt ut b: \uE000a((a + 1) - 2a)\uE001. Notera att den inre parentesen innehåller \uE000(a + 1 - 2a)\uE001 — ett uttryck vi kan förenkla innan vi gör multiplikationen.",
     "tier": "essential",
     "title": "Substituera b i Kvantitet II — yttre led"
    },
    {
     "n": 10,
-    "text": "Inuti parentesen: a + 1 - 2a. Slå ihop a-termerna: a - 2a = -a (koefficient 1 - 2 = -1). Plus 1:an i mitten kvarstår. Resultat: 1 - a. Hela Kvantitet II är nu a(1 - a).",
+    "text": "Inuti parentesen: \uE000a + 1 - 2a\uE001. Slå ihop a-termerna: \uE000a - 2a = -a\uE001 (koefficient \uE0001 - 2 = -1\uE001). Plus 1:an i mitten kvarstår. Resultat: \uE0001 - a\uE001. Hela Kvantitet II är nu \uE000a(1 - a)\uE001.",
     "tier": "detail",
     "title": "Förenkla den inre parentesen i Kvantitet II"
    },
    {
     "n": 11,
-    "text": "Återigen distributiv lag: a \\cdot (1 - a) = a \\cdot 1 - a \\cdot a = a - a^{2}. Notera tecknet på den andra ter- men: a \\cdot (-a) = -a^{2} — minustecknet följer med eftersom -a är vad vi multiplicerar.",
+    "text": "Återigen distributiv lag: \uE000a \\cdot (1 - a) = a \\cdot 1 - a \\cdot a = a - a^{2}\uE001. Notera tecknet på den andra ter- men: \uE000a \\cdot (-a) = -a^{2}\uE001 — minustecknet följer med eftersom -a är vad vi multiplicerar.",
     "tier": "essential",
     "title": "Multiplicera ut parentesen i Kvantitet II"
    },
    {
     "n": 12,
-    "text": "Kvantitet I = a - a^{2}. Kvantitet II = a - a^{2}. Termvis identiska — samma uttryck, oavsett vad a är (positivt, negativt, noll). Svaret är C. Insikten i en mening: KVA testar ofta om du faktiskt gör algebran eller bara tittar på for- men — uttryck som ser olika ut kan vara identiska efter förenkling.",
+    "text": "Kvantitet I = \uE000a - a^{2}\uE001. Kvantitet II = \uE000a - a^{2}\uE001. Termvis identiska — samma uttryck, oavsett vad a är (positivt, negativt, noll). Svaret är C. Insikten i en mening: KVA testar ofta om du faktiskt gör algebran eller bara tittar på for- men — uttryck som ser olika ut kan vara identiska efter förenkling.",
     "tier": "essential",
     "title": "Jämför och dra slutsats"
    }
   ],
-  "technique": "Substitutionsstrategin: när du har ett villkor (typ b = a + 1) och två uttryck med flera variabler, byt ut villkorets variabel överallt och förenkla. Då har du bara EN variabel kvar i båda och kan jämföra direkt. Detta är KVA:s vanligaste tekniska beslut — så vanligt att det är värt att memorera triggern: 'villkor som ger b i termer av a + uttryck med både a och b → substitution'."
+  "technique": "Substitutionsstrategin: när du har ett villkor (typ \uE000b = a + 1\uE001) och två uttryck med flera variabler, byt ut villkorets variabel överallt och förenkla. Då har du bara EN variabel kvar i båda och kan jämföra direkt. Detta är KVA:s vanligaste tekniska beslut — så vanligt att det är värt att memorera triggern: 'villkor som ger b i termer av a + uttryck med både a och b → substitution'."
  },
  "host-2013-kvant2-KVA-020": {
-  "solution_path": "3 varv på 18 m ger omkrets 18/3 = 6 m. Omkrets = \\pi d → diameter d = 6/\\pi \\approx 1{,}91 m, mindre än 2 m → B.",
+  "solution_path": "3 varv på 18 m ger omkrets \uE00018/3 = 6\uE001 m. Omkrets = \uE000\\pi d\uE001 → diameter \uE000d = 6/\\pi \\approx 1{,}91\uE001 m, mindre än 2 m → B.",
   "steps": [
    {
     "n": 1,
@@ -2427,31 +2427,31 @@
    {
     "n": 3,
     "title": "Räkna ut omkretsen",
-    "text": "3 \\cdot O = 18 \\text{ m} \\Rightarrow O = 6 \\text{ m}. Ett varv = 6 meter.",
+    "text": "\uE0003 \\cdot O = 18 \\text{ m} \\Rightarrow O = 6 \\text{ m}\uE001. Ett varv = 6 meter.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Formel för cirkels omkrets",
-    "text": "För en cirkel med diameter d gäller O = \\pi \\cdot d. (\\pi är förhållandet mellan omkrets och diameter — definitionen av \\pi.)",
+    "text": "För en cirkel med diameter \uE000d\uE001 gäller \uE000O = \\pi \\cdot d\uE001. (\uE000\\pi\uE001 är förhållandet mellan omkrets och diameter — definitionen av \uE000\\pi\uE001.)",
     "tier": "detail"
    },
    {
     "n": 5,
     "title": "Lös ut diametern",
-    "text": "\\pi d = 6 \\Rightarrow d = \\frac{6}{\\pi} meter.",
+    "text": "\uE000\\pi d = 6 \\Rightarrow d = \\frac{6}{\\pi}\uE001 meter.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Approximera π",
-    "text": "Standardvärde: \\pi \\approx 3{,}1416. För grov uppskattning räcker \\pi \\approx 3{,}14 eller till och med \\pi > 3.",
+    "text": "Standardvärde: \uE000\\pi \\approx 3{,}1416\uE001. För grov uppskattning räcker \uE000\\pi \\approx 3{,}14\uE001 eller till och med \uE000\\pi > 3\uE001.",
     "tier": "detail"
    },
    {
     "n": 7,
     "title": "Räkna ut numeriskt",
-    "text": "d = 6 / 3{,}1416 \\approx 1{,}9099 meter — ungefär 1,91 m.",
+    "text": "\uE000d = 6 / 3{,}1416 \\approx 1{,}9099\uE001 meter — ungefär 1,91 m.",
     "tier": "essential"
    },
    {
@@ -2463,38 +2463,38 @@
    {
     "n": 9,
     "title": "Kontrollera med π > 3",
-    "text": "Om \\pi > 3 så är d = 6/\\pi < 6/3 = 2. Denna grova uppskattning räcker — ingen exakt \\pi behövs för svaret.",
+    "text": "Om \uE000\\pi > 3\uE001 så är \uE000d = 6/\\pi < 6/3 = 2\uE001. Denna grova uppskattning räcker — ingen exakt \uE000\\pi\uE001 behövs för svaret.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Granska fällan: omkrets vs diameter",
-    "text": "En vanlig miss är att tro att 6 m är diametern. Men 6 m är OMKRETSEN — diametern är omkretsen dividerat med \\pi, alltid ungefär en tredjedel av omkretsen.",
+    "text": "En vanlig miss är att tro att 6 m är diametern. Men 6 m är OMKRETSEN — diametern är omkretsen dividerat med \uE000\\pi\uE001, alltid ungefär en tredjedel av omkretsen.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Verifiera",
-    "text": "Bakåtkoll: om d = 1{,}91, blir omkretsen \\pi \\cdot 1{,}91 \\approx 6{,}00 m. 3 varv = 3 \\cdot 6 = 18 m ✓.",
+    "text": "Bakåtkoll: om \uE000d = 1{,}91\uE001, blir omkretsen \uE000\\pi \\cdot 1{,}91 \\approx 6{,}00\uE001 m. 3 varv = \uE0003 \\cdot 6 = 18\uE001 m ✓.",
     "tier": "detail"
    },
    {
     "n": 12,
     "title": "Slutsats",
-    "text": "Svaret är B: II är större än I. Insikten i en mening: för rullande hjul, sträcka per varv är omkretsen (\\pi d), inte diametern — dela med \\pi för att hitta d.",
+    "text": "Svaret är B: II är större än I. Insikten i en mening: för rullande hjul, sträcka per varv är omkretsen (\uE000\\pi d\uE001), inte diametern — dela med \uE000\\pi\uE001 för att hitta \uE000d\uE001.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att blanda omkrets och diameter — om du tror omkretsen är 2 m är diametern större än 6/\\pi.",
-    "why_wrong": "Som steg 4-5 visar är omkretsen \\pi d, inte d; diametern är 6/\\pi \\approx 1{,}91 < 2."
+    "why_tempting": "Det är lätt att blanda omkrets och diameter — om du tror omkretsen är 2 m är diametern större än \uE0006/\\pi\uE001.",
+    "why_wrong": "Som steg 4-5 visar är omkretsen \uE000\\pi\uE001 d, inte d; diametern är \uE0006/\\pi \\approx\uE001 1{,}91 \uE000<\uE001 2."
    },
    {
     "letter": "C",
-    "why_tempting": "Snabbsvar är ofta att 6/\\pi \\approx 2 och kalla det jämnt.",
-    "why_wrong": "Steg 7-9: 6/\\pi \\approx 1{,}91, märkbart mindre än 2 — approximationen \\pi \\approx 3 är för grov här."
+    "why_tempting": "Snabbsvar är ofta att \uE0006/\\pi \\approx\uE001 2 och kalla det jämnt.",
+    "why_wrong": "Steg 7-9: \uE0006/\\pi \\approx\uE001 1{,}91, märkbart mindre än 2 — approximationen \uE000\\pi \\approx\uE001 3 är för grov här."
    },
    {
     "letter": "D",
@@ -2502,8 +2502,8 @@
     "why_wrong": "Steg 2-3: sträcka per varv = omkrets är hela kopplingen — inget mer behövs för att räkna ut diametern."
    }
   ],
-  "technique": "Rullande hjul: sträcka per varv = omkrets = \\pi d. Trigger: \"hjul rullar utan att glida, x meter på n varv\". Dela med n för omkrets, sedan med \\pi för diameter eller 2\\pi för radie.",
-  "pitfall": "Botemedlet mot \"6 m är diametern\": SKRIV alltid ut \\pi d bredvid omkretsen — det påminner dig att dela med \\pi.",
+  "technique": "Rullande hjul: sträcka per varv \uE000=\uE001 omkrets \uE000= \\pi\uE001 d. Trigger: \"hjul rullar utan att glida, x meter på n varv\". Dela med n för omkrets, sedan med \uE000\\pi\uE001 för diameter eller \uE0002\\pi\uE001 för radie.",
+  "pitfall": "Botemedlet mot \"6 m är diametern\": SKRIV alltid ut \uE000\\pi\uE001 d bredvid omkretsen — det påminner dig att dela med \uE000\\pi\uE001.",
   "framework_id": "KVA-TRAP-053",
   "pregrade_tactic": {
    "handle": "Rullnings-receptet",
@@ -2516,60 +2516,60 @@
   }
  },
  "host-2013-kvant2-KVA-021": {
-  "solution_path": "Distribuera båda. I: x(y+z) + x^2 + yz = xy + xz + x^2 + yz. II: (x+z)(y+x) = xy + x^2 + zy + zx. Termvis identiska — C.",
+  "solution_path": "Distribuera båda. I: \uE000x(y+z) + x^2 + yz = xy + xz + x^2 + yz\uE001. II: \uE000(x+z)(y+x) = xy + x^2 + zy + zx\uE001. Termvis identiska — C.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Du ska jämföra två polynomuttryck i x, y, z. Det är allmänt — gäller för alla värden — så strategin är ALGEBRAISK förenkling, inte talval.",
+    "text": "Du ska jämföra två polynomuttryck i \uE000x, y, z\uE001. Det är allmänt — gäller för alla värden — så strategin är ALGEBRAISK förenkling, inte talval.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Notation",
-    "text": "Kalla I = x(y+z) + x^2 + yz och II = (x+z)(y+x). Du vill kolla om I − II = 0 (likhet) eller har bestämt tecken.",
+    "text": "Kalla I = \uE000x(y+z) + x^2 + yz\uE001 och II = \uE000(x+z)(y+x)\uE001. Du vill kolla om I − II = 0 (likhet) eller har bestämt tecken.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Distributiva lagen",
-    "text": "Distributiva lagen: a(b+c) = ab + ac. Den klyver en faktor över en summa. För en produkt av två summor: (a+b)(c+d) = ac + ad + bc + bd — alla par.",
+    "text": "Distributiva lagen: \uE000a(b+c) = ab + ac\uE001. Den klyver en faktor över en summa. För en produkt av två summor: \uE000(a+b)(c+d) = ac + ad + bc + bd\uE001 — alla par.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Distribuera I — första termen",
-    "text": "x(y+z) = xy + xz. Använd distributiva lagen.",
+    "text": "\uE000x(y+z) = xy + xz\uE001. Använd distributiva lagen.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Skriv ut I fullständigt",
-    "text": "I = xy + xz + x^2 + yz. Fyra termer.",
+    "text": "\uE000I = xy + xz + x^2 + yz\uE001. Fyra termer.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Distribuera II — paren",
-    "text": "(x+z)(y+x) = x \\cdot y + x \\cdot x + z \\cdot y + z \\cdot x = xy + x^2 + zy + zx.",
+    "text": "\uE000(x+z)(y+x) = x \\cdot y + x \\cdot x + z \\cdot y + z \\cdot x = xy + x^2 + zy + zx\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Skriv ut II fullständigt",
-    "text": "II = xy + x^2 + zy + zx. Fyra termer.",
+    "text": "\uE000II = xy + x^2 + zy + zx\uE001. Fyra termer.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Identifiera likadana termer",
-    "text": "Multiplikation är kommutativ: zy = yz, zx = xz. Skriv om II: II = xy + x^2 + yz + xz.",
+    "text": "Multiplikation är kommutativ: \uE000zy = yz\uE001, \uE000zx = xz\uE001. Skriv om II: \uE000II = xy + x^2 + yz + xz\uE001.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Jämför term för term",
-    "text": "I: xy + xz + x^2 + yz. II: xy + x^2 + yz + xz. Båda har exakt samma fyra termer (bara ordningen skiljer).",
+    "text": "I: \uE000xy + xz + x^2 + yz\uE001. II: \uE000xy + x^2 + yz + xz\uE001. Båda har exakt samma fyra termer (bara ordningen skiljer).",
     "tier": "essential"
    },
    {
@@ -2581,7 +2581,7 @@
    {
     "n": 11,
     "title": "Verifiera med konkreta tal",
-    "text": "Sätt x=1, y=2, z=3. I: 1(2+3) + 1 + 6 = 5 + 1 + 6 = 12. II: (1+3)(2+1) = 4 \\cdot 3 = 12 ✓. Likhet bekräftad.",
+    "text": "Sätt \uE000x=1, y=2, z=3\uE001. I: \uE0001(2+3) + 1 + 6 = 5 + 1 + 6 = 12\uE001. II: \uE000(1+3)(2+1) = 4 \\cdot 3 = 12\uE001 ✓. Likhet bekräftad.",
     "tier": "detail"
    },
    {
@@ -2600,7 +2600,7 @@
    {
     "letter": "B",
     "why_tempting": "Om du minns regeln som \"(x+z)(y+x) ≈ xy + zx\" missar du de två extra termerna och underskattar II.",
-    "why_wrong": "Som steg 6 visar ger hela utvecklingen FYRA termer (xy + x^2 + zy + zx) — exakt vad I har enligt steg 5."
+    "why_wrong": "Som steg 6 visar ger hela utvecklingen FYRA termer (xy \uE000+ x^2 +\uE001 zy \uE000+\uE001 zx) — exakt vad I har enligt steg 5."
    },
    {
     "letter": "D",
@@ -2622,7 +2622,7 @@
   }
  },
  "host-2013-kvant2-KVA-022": {
-  "solution_path": "(2,2) och (2,4) är lodrätt placerade. Rätvinkeln kan sitta vid (2,2) ⇒ benet till (−1, a) måste vara vågrätt ⇒ a = 2; eller vid (2,4) ⇒ benet vågrätt ⇒ a = 4. Två giltiga värden ger I = II och I > II — D.",
+  "solution_path": "(2,2) och (2,4) är lodrätt placerade. Rätvinkeln kan sitta vid (2,2) ⇒ benet till (−1, a) måste vara vågrätt ⇒ \uE000a = 2\uE001; eller vid (2,4) ⇒ benet vågrätt ⇒ \uE000a = 4\uE001. Två giltiga värden ger I = II och I > II — D.",
   "steps": [
    {
     "n": 1,
@@ -2639,7 +2639,7 @@
    {
     "n": 3,
     "title": "Analysera de två fixa hörnen",
-    "text": "(2, 2) och (2, 4) har samma x-koordinat (2) — de ligger på en lodrät linje. Avståndet mellan dem är |4-2| = 2 enheter.",
+    "text": "(2, 2) och (2, 4) har samma x-koordinat (2) — de ligger på en lodrät linje. Avståndet mellan dem är \uE000|4-2| = 2\uE001 enheter.",
     "tier": "essential"
    },
    {
@@ -2651,7 +2651,7 @@
    {
     "n": 5,
     "title": "Vågrät linje genom (2, 2)",
-    "text": "En vågrät linje har konstant y-koordinat. För att (−1, a) ska ligga på linjen genom (2, 2) krävs a = 2. Då blir konfigurationen: (−1, 2), (2, 2), (2, 4) — höger triangel med ben 3 (vågrätt) och 2 (lodrätt). ✓",
+    "text": "En vågrät linje har konstant y-koordinat. För att (−1, a) ska ligga på linjen genom (2, 2) krävs \uE000a = 2\uE001. Då blir konfigurationen: (−1, 2), (2, 2), (2, 4) — höger triangel med ben 3 (vågrätt) och 2 (lodrätt). ✓",
     "tier": "essential"
    },
    {
@@ -2663,25 +2663,25 @@
    {
     "n": 7,
     "title": "Vågrät linje genom (2, 4)",
-    "text": "För att (−1, a) ska ligga vågrätt från (2, 4) krävs a = 4. Konfiguration: (−1, 4), (2, 2), (2, 4) — höger triangel med ben 3 (vågrätt) och 2 (lodrätt). ✓",
+    "text": "För att (−1, a) ska ligga vågrätt från (2, 4) krävs \uE000a = 4\uE001. Konfiguration: (−1, 4), (2, 2), (2, 4) — höger triangel med ben 3 (vågrätt) och 2 (lodrätt). ✓",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Vad krävs för 90° vid (−1, a)?",
-    "text": "Benen från (−1, a) går till (2, 2) och till (2, 4). De ska vara vinkelräta. Riktningsvektorer: (3, 2-a) och (3, 4-a).",
+    "text": "Benen från (−1, a) går till (2, 2) och till (2, 4). De ska vara vinkelräta. Riktningsvektorer: \uE000(3, 2-a)\uE001 och \uE000(3, 4-a)\uE001.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Lös skalärprodukt = 0",
-    "text": "Vinkelräthet: (3)(3) + (2-a)(4-a) = 0 \\Rightarrow 9 + (2-a)(4-a) = 0. Expansion: (2-a)(4-a) = 8 - 2a - 4a + a^2 = a^2 - 6a + 8. Ger 9 + a^2 - 6a + 8 = 0 \\Rightarrow a^2 - 6a + 17 = 0.",
+    "text": "Vinkelräthet: \uE000(3)(3) + (2-a)(4-a) = 0 \\Rightarrow 9 + (2-a)(4-a) = 0\uE001. Expansion: \uE000(2-a)(4-a) = 8 - 2a - 4a + a^2 = a^2 - 6a + 8\uE001. Ger \uE0009 + a^2 - 6a + 8 = 0 \\Rightarrow a^2 - 6a + 17 = 0\uE001.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Diskriminanten",
-    "text": "a^2 - 6a + 17 = 0 \\Rightarrow a = \\frac{6 \\pm \\sqrt{36 - 68}}{2}. Diskriminanten 36 - 68 = -32 < 0 — ingen reell lösning. Rätvinkel vid (−1, a) är geometriskt omöjligt.",
+    "text": "\uE000a^2 - 6a + 17 = 0 \\Rightarrow a = \\frac{6 \\pm \\sqrt{36 - 68}}{2}\uE001. Diskriminanten \uE00036 - 68 = -32 < 0\uE001 — ingen reell lösning. Rätvinkel vid (−1, a) är geometriskt omöjligt.",
     "tier": "detail"
    },
    {
@@ -2850,55 +2850,55 @@
    {
     "n": 2,
     "title": "Notation",
-    "text": "Låt V_f = före-värde, V_e = efter-värde, n_f = antal före, n_e = antal efter. Sökt: n_e - n_f.",
+    "text": "Låt \uE000V_f\uE001 = före-värde, \uE000V_e\uE001 = efter-värde, \uE000n_f\uE001 = antal före, \uE000n_e\uE001 = antal efter. Sökt: \uE000n_e - n_f\uE001.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Procentökning som faktor",
-    "text": "\"Ökade 25 %\" betyder V_e = 1{,}25 \\cdot V_f. Detta är frågestammens givna villkor.",
+    "text": "\"Ökade 25 %\" betyder \uE000V_e = 1{,}25 \\cdot V_f\uE001. Detta är frågestammens givna villkor.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Tolka utsaga (1)",
-    "text": "\"Före köpet 40 skulpturer värda 12 miljoner kronor\" → n_f = 40, V_f = 12\\,000\\,000 kr.",
+    "text": "\"Före köpet 40 skulpturer värda 12 miljoner kronor\" → \uE000n_f = 40\uE001, \uE000V_f = 12\\,000\\,000\uE001 kr.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Test (1) ensamt",
-    "text": "Med (1) får vi V_e = 1{,}25 \\cdot 12 = 15 Mkr. Men inget sägs om medelvärdet efter — n_e är fritt (skulpturerna kan vara olika dyra). Otillräckligt.",
+    "text": "Med (1) får vi \uE000V_e = 1{,}25 \\cdot 12 = 15\uE001 Mkr. Men inget sägs om medelvärdet efter — \uE000n_e\uE001 är fritt (skulpturerna kan vara olika dyra). Otillräckligt.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Tolka utsaga (2)",
-    "text": "\"Efter köpet var det genomsnittliga värdet 300 000 kronor per skulptur\" → V_e / n_e = 300\\,000.",
+    "text": "\"Efter köpet var det genomsnittliga värdet 300 000 kronor per skulptur\" → \uE000V_e / n_e = 300\\,000\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Test (2) ensamt",
-    "text": "Vi har en relation mellan V_e och n_e men inga absolutvärden. Före-värdet och före-antalet är okända. Otillräckligt.",
+    "text": "Vi har en relation mellan \uE000V_e\uE001 och \uE000n_e\uE001 men inga absolutvärden. Före-värdet och före-antalet är okända. Otillräckligt.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Kombinera (1) och (2)",
-    "text": "Från (1): V_e = 15\\,000\\,000 kr. Från (2): n_e = V_e / 300\\,000 = 15\\,000\\,000 / 300\\,000.",
+    "text": "Från (1): \uE000V_e = 15\\,000\\,000\uE001 kr. Från (2): \uE000n_e = V_e / 300\\,000 = 15\\,000\\,000 / 300\\,000\uE001.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Räkna divisionen",
-    "text": "15\\,000\\,000 / 300\\,000 = 50 skulpturer efter köpet.",
+    "text": "\uE00015\\,000\\,000 / 300\\,000 = 50\uE001 skulpturer efter köpet.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Beräkna nya skulpturer",
-    "text": "Nya = n_e - n_f = 50 - 40 = 10 skulpturer.",
+    "text": "Nya = \uE000n_e - n_f = 50 - 40 = 10\uE001 skulpturer.",
     "tier": "essential"
    },
    {
@@ -2933,7 +2933,7 @@
    {
     "letter": "E",
     "why_tempting": "Det är frestande att tro att utan absolut antal-efter går det inte.",
-    "why_wrong": "Steg 8 räknar fram n_e = V_e / \\text{medel} direkt — total och medel ger antal."
+    "why_wrong": "Steg 8 räknar fram \uE000n_e = V_e / \\text{medel}\uE001 direkt — total och medel ger antal."
    }
   ],
   "technique": "Procentökning + före-värde ger efter-värde; efter-värde delat med medel ger antal. NOG-receptet: 25 %-ökning är en multiplikator (1,25), inte ett tillägg på antal.",
@@ -2961,7 +2961,7 @@
    {
     "n": 2,
     "title": "Räkna föroreningar i gram",
-    "text": "1 kg = 1000 g. 0,4 % av 1000 g = 0{,}004 \\cdot 1000 = 4 g föroreningar totalt.",
+    "text": "1 kg = 1000 g. 0,4 % av 1000 g = \uE0000{,}004 \\cdot 1000 = 4\uE001 g föroreningar totalt.",
     "tier": "essential"
    },
    {
@@ -2979,7 +2979,7 @@
    {
     "n": 5,
     "title": "Tolka utsaga (1)",
-    "text": "\"500 ppm\" (parts per million) = 500/1 000 000 = 0,0005 av totalvikten 1000 g. Så N = 1000 \\cdot 0{,}0005 = 0{,}5 g.",
+    "text": "\"500 ppm\" (parts per million) = 500/1 000 000 = 0,0005 av totalvikten 1000 g. Så N = \uE0001000 \\cdot 0{,}0005 = 0{,}5\uE001 g.",
     "tier": "essential"
    },
    {
@@ -3003,7 +3003,7 @@
    {
     "n": 9,
     "title": "Kombinera (1) och (2)",
-    "text": "N = 0,5 g (från (1)) och Z = 1 g (från (2)). Ekvationen K + Z + N = 4 ger K = 4 - 1 - 0{,}5 = 2{,}5 g.",
+    "text": "N = 0,5 g (från (1)) och Z = 1 g (från (2)). Ekvationen K + Z + N = 4 ger \uE000K = 4 - 1 - 0{,}5 = 2{,}5\uE001 g.",
     "tier": "essential"
    },
    {
@@ -3072,7 +3072,7 @@
    {
     "n": 2,
     "title": "Notation",
-    "text": "Låt k_1, k_2, k_3 vara kastlängderna. Frågestammen ger k_1 = k_3. Sökt: k_3.",
+    "text": "Låt \uE000k_1, k_2, k_3\uE001 vara kastlängderna. Frågestammen ger \uE000k_1 = k_3\uE001. Sökt: \uE000k_3\uE001.",
     "tier": "essential"
    },
    {
@@ -3084,7 +3084,7 @@
    {
     "n": 4,
     "title": "Tolka utsaga (1)",
-    "text": "\"Andra kastet är en tredjedel av de två övriga sammanlagt\" → k_2 = \\frac{k_1 + k_3}{3} = \\frac{2k_3}{3} (eftersom k1 = k3).",
+    "text": "\"Andra kastet är en tredjedel av de två övriga sammanlagt\" → \uE000k_2 = \\frac{k_1 + k_3}{3} = \\frac{2k_3}{3}\uE001 (eftersom k1 = k3).",
     "tier": "essential"
    },
    {
@@ -3096,31 +3096,31 @@
    {
     "n": 6,
     "title": "Tolka utsaga (2)",
-    "text": "\"Första kastet är 33 m plus en tredjedel av tredje\" → k_1 = 33 + \\frac{k_3}{3}. Linjär ekvation i k1 och k3.",
+    "text": "\"Första kastet är 33 m plus en tredjedel av tredje\" → \uE000k_1 = 33 + \\frac{k_3}{3}\uE001. Linjär ekvation i k1 och k3.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Använd frågestammen",
-    "text": "Frågestammen ger k_1 = k_3. Sätt in i (2): k_3 = 33 + \\frac{k_3}{3}.",
+    "text": "Frågestammen ger \uE000k_1 = k_3\uE001. Sätt in i (2): \uE000k_3 = 33 + \\frac{k_3}{3}\uE001.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Lös ekvationen",
-    "text": "Subtrahera \\frac{k_3}{3} från båda sidor: \\frac{2k_3}{3} = 33. Multiplicera med 3/2: k_3 = 49{,}5 m.",
+    "text": "Subtrahera \uE000\\frac{k_3}{3}\uE001 från båda sidor: \uE000\\frac{2k_3}{3} = 33\uE001. Multiplicera med 3/2: \uE000k_3 = 49{,}5\uE001 m.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Test (2) ensamt — slutförd",
-    "text": "(2) + frågestammen räcker. k_3 = 49{,}5 m är unikt. Tillräckligt.",
+    "text": "(2) + frågestammen räcker. \uE000k_3 = 49{,}5\uE001 m är unikt. Tillräckligt.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Varför ger inte (1) absolutvärden?",
-    "text": "(1) är homogen i k2 och k3 (\\(k_2 = \\frac{2k_3}{3}\\) skalar med k3). Utan en kalibreringspunkt (ett konkret tal i meter) kan kasten skalas godtyckligt.",
+    "text": "(1) är homogen i k2 och k3 (\\(k_2 = \uE000\\frac{2k_3}{3}\uE001\\) skalar med k3). Utan en kalibreringspunkt (ett konkret tal i meter) kan kasten skalas godtyckligt.",
     "tier": "detail"
    },
    {
@@ -3183,49 +3183,49 @@
    {
     "n": 2,
     "title": "Notation",
-    "text": "Låt p_r, p_g, p_b vara sannolikheterna för röd, grön respektive blå pärla. Eftersom kategorierna är uttömmande och uteslutande: p_r + p_g + p_b = 1.",
+    "text": "Låt \uE000p_r, p_g, p_b\uE001 vara sannolikheterna för röd, grön respektive blå pärla. Eftersom kategorierna är uttömmande och uteslutande: \uE000p_r + p_g + p_b = 1\uE001.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Vad är \"röd eller blå\"?",
-    "text": "Då dragningen ger exakt EN pärla är händelserna {röd} och {blå} disjunkta. P(blå eller röd) = p_b + p_r (additionsregeln för disjunkta händelser).",
+    "text": "Då dragningen ger exakt EN pärla är händelserna {röd} och {blå} disjunkta. P(blå eller röd) = \uE000p_b + p_r\uE001 (additionsregeln för disjunkta händelser).",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Tolka utsaga (1)",
-    "text": "\"P(blå eller röd) = 0,7\" → p_b + p_r = 0{,}7. Eftersom p_r + p_g + p_b = 1 följer direkt p_g = 0{,}3.",
+    "text": "\"P(blå eller röd) = 0,7\" → \uE000p_b + p_r = 0{,}7\uE001. Eftersom \uE000p_r + p_g + p_b = 1\uE001 följer direkt \uE000p_g = 0{,}3\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Test (1) ensamt",
-    "text": "Vi vet p_g = 0{,}3 och p_r + p_b = 0{,}7. Men p_r är fri inom [0; 0,7] — t.ex. p_r = 0{,}5, p_b = 0{,}2 eller p_r = 0{,}3, p_b = 0{,}4. Otillräckligt.",
+    "text": "Vi vet \uE000p_g = 0{,}3\uE001 och \uE000p_r + p_b = 0{,}7\uE001. Men \uE000p_r\uE001 är fri inom [0; 0,7] — t.ex. \uE000p_r = 0{,}5, p_b = 0{,}2\uE001 eller \uE000p_r = 0{,}3, p_b = 0{,}4\uE001. Otillräckligt.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Tolka utsaga (2)",
-    "text": "\"P(grön eller röd) = 0,9\" → p_g + p_r = 0{,}9. Likadant: p_b = 1 - 0{,}9 = 0{,}1.",
+    "text": "\"P(grön eller röd) = 0,9\" → \uE000p_g + p_r = 0{,}9\uE001. Likadant: \uE000p_b = 1 - 0{,}9 = 0{,}1\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Test (2) ensamt",
-    "text": "Vi vet p_b = 0{,}1 och p_g + p_r = 0{,}9. Men p_r är fri inom [0; 0,9]. Otillräckligt.",
+    "text": "Vi vet \uE000p_b = 0{,}1\uE001 och \uE000p_g + p_r = 0{,}9\uE001. Men \uE000p_r\uE001 är fri inom [0; 0,9]. Otillräckligt.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Kombinera (1) och (2)",
-    "text": "Från (1): p_g = 0{,}3. Från (2): p_b = 0{,}1. Använd totalen: p_r = 1 - p_g - p_b = 1 - 0{,}3 - 0{,}1.",
+    "text": "Från (1): \uE000p_g = 0{,}3\uE001. Från (2): \uE000p_b = 0{,}1\uE001. Använd totalen: \uE000p_r = 1 - p_g - p_b = 1 - 0{,}3 - 0{,}1\uE001.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Räkna",
-    "text": "p_r = 0{,}6 = 60 %.",
+    "text": "\uE000p_r = 0{,}6\uE001 = 60 %.",
     "tier": "essential"
    },
    {
@@ -3283,7 +3283,7 @@
   }
  },
  "host-2013-kvant2-XYZ-001": {
-  "solution_path": "'Av' i bråksammanhang betyder multiplikation: \\frac{2}{3}\\cdot\\frac{3}{4}=\\frac{2\\cdot 3}{3\\cdot 4}=\\frac{6}{12}=\\frac{1}{2}. Treorna förkortas direkt.",
+  "solution_path": "'Av' i bråksammanhang betyder multiplikation: \uE000\\frac{2}{3}\\cdot\\frac{3}{4}=\\frac{2\\cdot 3}{3\\cdot 4}=\\frac{6}{12}=\\frac{1}{2}\uE001. Treorna förkortas direkt.",
   "steps": [
    {
     "n": 1,
@@ -3294,85 +3294,85 @@
    {
     "n": 2,
     "title": "Definition: 'av' = multiplikation",
-    "text": "I bråk betyder 'A av B' A\\cdot B. Det är samma som '60 % av 200' = 0{,}6\\cdot 200 — preposition översätts till multiplikationstecken.",
+    "text": "I bråk betyder 'A av B' \uE000A\\cdot B\uE001. Det är samma som '60 % av 200' = \uE0000{,}6\\cdot 200\uE001 — preposition översätts till multiplikationstecken.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Skriv uttrycket",
-    "text": "\\frac{2}{3}\\,\\text{av}\\,\\frac{3}{4}=\\frac{2}{3}\\cdot\\frac{3}{4}.",
+    "text": "\uE000\\frac{2}{3}\\,\\text{av}\\,\\frac{3}{4}=\\frac{2}{3}\\cdot\\frac{3}{4}\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Definition: bråkmultiplikation",
-    "text": "\\frac{a}{b}\\cdot\\frac{c}{d}=\\frac{a\\cdot c}{b\\cdot d}. Täljare gångras med täljare, nämnare gångras med nämnare.",
+    "text": "\uE000\\frac{a}{b}\\cdot\\frac{c}{d}=\\frac{a\\cdot c}{b\\cdot d}\uE001. Täljare gångras med täljare, nämnare gångras med nämnare.",
     "tier": "detail"
    },
    {
     "n": 5,
     "title": "Multiplicera täljarna",
-    "text": "2\\cdot 3=6.",
+    "text": "\uE0002\\cdot 3=6\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Multiplicera nämnarna",
-    "text": "3\\cdot 4=12.",
+    "text": "\uE0003\\cdot 4=12\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Sammansätt",
-    "text": "\\frac{2\\cdot 3}{3\\cdot 4}=\\frac{6}{12}.",
+    "text": "\uE000\\frac{2\\cdot 3}{3\\cdot 4}=\\frac{6}{12}\uE001.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Definition: förkortning",
-    "text": "Ett bråk förkortas genom att täljare och nämnare delas med samma faktor. \\frac{6}{12} har gemensam faktor 6.",
+    "text": "Ett bråk förkortas genom att täljare och nämnare delas med samma faktor. \uE000\\frac{6}{12}\uE001 har gemensam faktor 6.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Förkorta till enklaste form",
-    "text": "\\frac{6}{12}=\\frac{6/6}{12/6}=\\frac{1}{2}.",
+    "text": "\uE000\\frac{6}{12}=\\frac{6/6}{12/6}=\\frac{1}{2}\uE001.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Snabbare väg: korsförkortning",
-    "text": "Innan multiplikation kan treorna i \\frac{2}{3}\\cdot\\frac{3}{4} förkortas direkt: \\frac{2}{\\cancel{3}}\\cdot\\frac{\\cancel{3}}{4}=\\frac{2}{4}=\\frac{1}{2}. Ger samma svar med mindre räkning.",
+    "text": "Innan multiplikation kan treorna i \uE000\\frac{2}{3}\\cdot\\frac{3}{4}\uE001 förkortas direkt: \uE000\\frac{2}{\\cancel{3}}\\cdot\\frac{\\cancel{3}}{4}=\\frac{2}{4}=\\frac{1}{2}\uE001. Ger samma svar med mindre räkning.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Verifiera storleken",
-    "text": "2/3 är mindre än 1, så svaret ska vara mindre än 3/4. \\frac{1}{2}<\\frac{3}{4} ✓.",
+    "text": "2/3 är mindre än 1, så svaret ska vara mindre än 3/4. \uE000\\frac{1}{2}<\\frac{3}{4}\uE001 ✓.",
     "tier": "detail"
    },
    {
     "n": 12,
     "title": "Slutsats",
-    "text": "Svaret är A: \\frac{1}{2}. Insikten i en mening: 'av' = · i bråk, och förkortning av gemensamma faktorer över korset gör räkningen snabbare.",
+    "text": "Svaret är A: \uE000\\frac{1}{2}\uE001. Insikten i en mening: 'av' = · i bråk, och förkortning av gemensamma faktorer över korset gör räkningen snabbare.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Det är lätt att 'addera täljare och nämnare': \\frac{2+3}{3+4}=\\frac{5}{7} fast med tappad summa: 3/7.",
-    "why_wrong": "Steg 4 säger att täljare och nämnare MULTIPLICERAS, inte adderas. 3/7 har ingen koppling till \\frac{2}{3}\\cdot\\frac{3}{4}."
+    "why_tempting": "Det är lätt att 'addera täljare och nämnare': \uE000\\frac{2+3}{3+4}=\\frac{5}{7}\uE001 fast med tappad summa: 3/7.",
+    "why_wrong": "Steg 4 säger att täljare och nämnare MULTIPLICERAS, inte adderas. 3/7 har ingen koppling till \uE000\\frac{2}{3}\\cdot\\frac{3}{4}\uE001."
    },
    {
     "letter": "C",
     "why_tempting": "Om du minns regeln som 'addera nämnaren och behåll täljaren' kan 5/7 verka rätt.",
-    "why_wrong": "Som steg 4 visar finns INGEN addition i bråkmultiplikation. \\frac{6}{12} förkortar till \\frac{1}{2}, inte \\frac{5}{7}."
+    "why_wrong": "Som steg 4 visar finns INGEN addition i bråkmultiplikation. \uE000\\frac{6}{12}\uE001 förkortar till \uE000\\frac{1}{2}\uE001, inte \uE000\\frac{5}{7}\uE001."
    },
    {
     "letter": "D",
-    "why_tempting": "Snabbsvar är ofta att blanda multiplikation med kvotering — t.ex. \\frac{2}{3}\\div\\frac{3}{4}=\\frac{8}{9} med felförenkling till 5/12.",
-    "why_wrong": "Steg 3 fastställer multiplikation, inte division. \\frac{2}{3}\\cdot\\frac{3}{4}=\\frac{1}{2}."
+    "why_tempting": "Snabbsvar är ofta att blanda multiplikation med kvotering — t.ex. \uE000\\frac{2}{3}\\div\\frac{3}{4}=\\frac{8}{9}\uE001 med felförenkling till 5/12.",
+    "why_wrong": "Steg 3 fastställer multiplikation, inte division. \uE000\\frac{2}{3}\\cdot\\frac{3}{4}=\\frac{1}{2}\uE001."
    }
   ],
   "technique": "'A av B' i bråk = A · B. Förkorta gemensamma faktorer över korset innan multiplikation om möjligt.",
@@ -3406,31 +3406,31 @@
    {
     "n": 3,
     "title": "Lika regler för · och ÷",
-    "text": "Division är samma som multiplikation med invers: a\\div b=a\\cdot\\frac{1}{b}. Tecknet på \\frac{1}{b} är samma som på b, så teckenreglerna är identiska.",
+    "text": "Division är samma som multiplikation med invers: \uE000a\\div b=a\\cdot\\frac{1}{b}\uE001. Tecknet på \uE000\\frac{1}{b}\uE001 är samma som på b, så teckenreglerna är identiska.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Granska A",
-    "text": "Positiv täljare och negativ nämnare: olika tecken → negativ kvot. T.ex. \\frac{6}{-2}=-3. Påståendet stämmer.",
+    "text": "Positiv täljare och negativ nämnare: olika tecken → negativ kvot. T.ex. \uE000\\frac{6}{-2}=-3\uE001. Påståendet stämmer.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Granska B",
-    "text": "Negativ täljare och positiv nämnare: olika tecken → NEGATIV kvot. T.ex. \\frac{-6}{2}=-3. B påstår positiv → fel.",
+    "text": "Negativ täljare och positiv nämnare: olika tecken → NEGATIV kvot. T.ex. \uE000\\frac{-6}{2}=-3\uE001. B påstår positiv → fel.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Granska C",
-    "text": "Produkt av ett negativt och ett positivt tal: olika tecken → NEGATIVT resultat. T.ex. (-3)\\cdot 2=-6. C påstår positiv → fel.",
+    "text": "Produkt av ett negativt och ett positivt tal: olika tecken → NEGATIVT resultat. T.ex. \uE000(-3)\\cdot 2=-6\uE001. C påstår positiv → fel.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Granska D",
-    "text": "Produkt av två negativa tal: lika tecken → POSITIVT resultat. T.ex. (-3)\\cdot(-2)=6. D påstår negativ → fel.",
+    "text": "Produkt av två negativa tal: lika tecken → POSITIVT resultat. T.ex. \uE000(-3)\\cdot(-2)=6\uE001. D påstår negativ → fel.",
     "tier": "essential"
    },
    {
@@ -3448,7 +3448,7 @@
    {
     "n": 10,
     "title": "Verifiera med konkreta exempel",
-    "text": "A: \\frac{4}{-2}=-2 ✓ (negativ). Verifierat.",
+    "text": "A: \uE000\\frac{4}{-2}=-2\uE001 ✓ (negativ). Verifierat.",
     "tier": "detail"
    },
    {
@@ -3489,7 +3489,7 @@
   }
  },
  "host-2013-kvant2-XYZ-004": {
-  "solution_path": "Vid den givna konfigurationen (yttervinkelsats eller triangelns vinkelsumma) löses y ut till y=60\\degree-x baserat på de markerade vinklarna i figuren.",
+  "solution_path": "Vid den givna konfigurationen (yttervinkelsats eller triangelns vinkelsumma) löses y ut till \uE000y=60\\degree-x\uE001 baserat på de markerade vinklarna i figuren.",
   "steps": [
    {
     "n": 1,
@@ -3512,19 +3512,19 @@
    {
     "n": 4,
     "title": "Sätt upp vinkelsumman",
-    "text": "120\\degree+x+y=180\\degree (alternativt med yttervinkelsatsen direkt: yttervinkeln 120 = x + y).",
+    "text": "\uE000120\\degree+x+y=180\\degree\uE001 (alternativt med yttervinkelsatsen direkt: yttervinkeln 120 = x + y).",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Lös ut y",
-    "text": "Dra ifrån 120 från båda sidor: x+y=60\\degree. Subtrahera x: y=60\\degree-x.",
+    "text": "Dra ifrån 120 från båda sidor: \uE000x+y=60\\degree\uE001. Subtrahera x: \uE000y=60\\degree-x\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Definition: yttervinkelsatsen",
-    "text": "Yttervinkeln till en triangel är lika med summan av de två motstående inre vinklarna. Om 120° är en yttervinkel: 120=x+y ger samma resultat.",
+    "text": "Yttervinkeln till en triangel är lika med summan av de två motstående inre vinklarna. Om 120° är en yttervinkel: \uE000120=x+y\uE001 ger samma resultat.",
     "tier": "detail"
    },
    {
@@ -3542,7 +3542,7 @@
    {
     "n": 9,
     "title": "Konkret exempel",
-    "text": "Säg x = 20°. Då blir y = 40°. Summa: 20+40+120=180 ✓.",
+    "text": "Säg x = 20°. Då blir y = 40°. Summa: \uE00020+40+120=180\uE001 ✓.",
     "tier": "detail"
    },
    {
@@ -3554,7 +3554,7 @@
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Svaret är B: (60-x)\\degree. Insikten i en mening: triangelns vinkelsumma + en konkret given vinkel ger den okända som en LINJÄR FUNKTION av x.",
+    "text": "Svaret är B: \uE000(60-x)\\degree\uE001. Insikten i en mening: triangelns vinkelsumma + en konkret given vinkel ger den okända som en LINJÄR FUNKTION av x.",
     "tier": "essential"
    }
   ],
@@ -3567,7 +3567,7 @@
    {
     "letter": "C",
     "why_tempting": "Många stannar vid att 'y = x − konstant' känns symmetriskt med 'konstant − x' utan att kolla riktning.",
-    "why_wrong": "Steg 8 fångar tecknet: y=60-x ger positivt y för små x. x-30 går åt fel håll."
+    "why_wrong": "Steg 8 fångar tecknet: \uE000y=60-x\uE001 ger positivt y för små x. \uE000x-30\uE001 går åt fel håll."
    },
    {
     "letter": "D",
@@ -3575,12 +3575,12 @@
     "why_wrong": "Steg 5 och 8: både siffran (60, inte 30) och tecknet (60 − x, inte x − 60) måste stämma."
    }
   ],
-  "technique": "Triangelns vinkelsumma + given vinkel uttryckt i x: ställ upp \\theta_{1}+\\theta_{2}+\\theta_{3}=180\\degree och lös ut den okända.",
+  "technique": "Triangelns vinkelsumma + given vinkel uttryckt i x: ställ upp \uE000\\theta_{1}+\\theta_{2}+\\theta_{3}=180\\degree\uE001 och lös ut den okända.",
   "pitfall": "Botemedlet mot fel teckenriktning: kolla rimligheten — vinklar är positiva, så 60 − x kräver x < 60.",
   "framework_id": "XYZ-TRAP-035",
   "pregrade_tactic": {
    "handle": "Vinkelsum-receptet",
-   "move": "Skriv \\text{alla tre vinklar} = 180\\degree explicit, sätt in alla kända vinklar (inkl. x), lös ut den okända."
+   "move": "Skriv \uE000\\text{alla tre vinklar} = 180\\degree\uE001 explicit, sätt in alla kända vinklar (inkl. x), lös ut den okända."
   },
   "_meta": {
    "model": "claude-opus-4-7-via-max-subscription",
@@ -3589,66 +3589,66 @@
   }
  },
  "host-2013-kvant2-XYZ-005": {
-  "solution_path": "Multiplicera mantissor och addera exponenter: 1\\cdot 4=4 och 10^{10}\\cdot 10^{-8}=10^{10+(-8)}=10^{2}. Sträcka: 4\\cdot 10^{2} cm.",
+  "solution_path": "Multiplicera mantissor och addera exponenter: \uE0001\\cdot 4=4\uE001 och \uE00010^{10}\\cdot 10^{-8}=10^{10+(-8)}=10^{2}\uE001. Sträcka: \uE0004\\cdot 10^{2}\uE001 cm.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Partikeln har hastighet 1\\cdot 10^{10} cm/s och rör sig i 4\\cdot 10^{-8} sekunder. Sträcka = hastighet × tid.",
+    "text": "Partikeln har hastighet \uE0001\\cdot 10^{10}\uE001 cm/s och rör sig i \uE0004\\cdot 10^{-8}\uE001 sekunder. Sträcka = hastighet × tid.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Definition: sträcka, fart, tid",
-    "text": "Sambandet s=v\\cdot t — sträcka är hastighet multiplicerat med tid. Enheterna kontrolleras: (cm/s) · s = cm.",
+    "text": "Sambandet \uE000s=v\\cdot t\uE001 — sträcka är hastighet multiplicerat med tid. Enheterna kontrolleras: (cm/s) · s = cm.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Sätt upp produkten",
-    "text": "s=(1\\cdot 10^{10})\\cdot(4\\cdot 10^{-8}) cm.",
+    "text": "\uE000s=(1\\cdot 10^{10})\\cdot(4\\cdot 10^{-8})\uE001 cm.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Definition: produkt av tiopotenser",
-    "text": "(a\\cdot 10^{m})\\cdot(b\\cdot 10^{n})=(a\\cdot b)\\cdot 10^{m+n}. Mantissor multipliceras separat; exponenter ADDERAS.",
+    "text": "\uE000(a\\cdot 10^{m})\\cdot(b\\cdot 10^{n})=(a\\cdot b)\\cdot 10^{m+n}\uE001. Mantissor multipliceras separat; exponenter ADDERAS.",
     "tier": "detail"
    },
    {
     "n": 5,
     "title": "Multiplicera mantissorna",
-    "text": "1\\cdot 4=4. Det är den nya mantissan.",
+    "text": "\uE0001\\cdot 4=4\uE001. Det är den nya mantissan.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Addera exponenterna",
-    "text": "10^{10}\\cdot 10^{-8}=10^{10+(-8)}=10^{10-8}=10^{2}.",
+    "text": "\uE00010^{10}\\cdot 10^{-8}=10^{10+(-8)}=10^{10-8}=10^{2}\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Definition: addition av tecken-tal",
-    "text": "10+(-8)=2. Vid addition av positivt och negativt tal: ta differensen mellan absolutbeloppen, behåll tecknet på det större.",
+    "text": "\uE00010+(-8)=2\uE001. Vid addition av positivt och negativt tal: ta differensen mellan absolutbeloppen, behåll tecknet på det större.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Sammansätt resultatet",
-    "text": "s=4\\cdot 10^{2}=400 cm.",
+    "text": "\uE000s=4\\cdot 10^{2}=400\uE001 cm.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Sanity-check med decimaler",
-    "text": "Hastighet =10^{10}=10\\,000\\,000\\,000 cm/s. Tid =4\\cdot 10^{-8}=0{,}00000004 s. Produkt: 10^{10}\\cdot 4\\cdot 10^{-8}=4\\cdot 10^{2}=400 cm ✓.",
+    "text": "Hastighet \uE000=10^{10}=10\\,000\\,000\\,000\uE001 cm/s. Tid \uE000=4\\cdot 10^{-8}=0{,}00000004\uE001 s. Produkt: \uE00010^{10}\\cdot 4\\cdot 10^{-8}=4\\cdot 10^{2}=400\uE001 cm ✓.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Varför inte 10¹⁸?",
-    "text": "Felet 10¹⁸ uppstår om man räknar 10\\cdot 8=80 eller MULTIPLICERAR exponenter i stället för att addera. Vid 10^{a}\\cdot 10^{b} gäller alltid addition: a + b.",
+    "text": "Felet 10¹⁸ uppstår om man räknar \uE00010\\cdot 8=80\uE001 eller MULTIPLICERAR exponenter i stället för att addera. Vid \uE00010^{a}\\cdot 10^{b}\uE001 gäller alltid addition: a + b.",
     "tier": "essential"
    },
    {
@@ -3660,33 +3660,33 @@
    {
     "n": 12,
     "title": "Slutsats",
-    "text": "Svaret är B: 4\\cdot 10^{2} cm. Insikten i en mening: vid produkt av tiopotenser ADDERAS exponenterna — multiplicera dem aldrig.",
+    "text": "Svaret är B: \uE0004\\cdot 10^{2}\uE001 cm. Insikten i en mening: vid produkt av tiopotenser ADDERAS exponenterna — multiplicera dem aldrig.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att MULTIPLICERA exponenterna istället för att addera: 10\\cdot 8=80 → 10¹⁸ (med tappat tecken på 8).",
-    "why_wrong": "Steg 4 säger: vid produkt av tiopotenser ADDERAS exponenterna. 10+(-8)=2, alltså 10²."
+    "why_tempting": "Det är lätt att MULTIPLICERA exponenterna istället för att addera: \uE00010\\cdot 8=80\uE001 → 10¹⁸ (med tappat tecken på 8).",
+    "why_wrong": "Steg 4 säger: vid produkt av tiopotenser ADDERAS exponenterna. \uE00010+(-8)=2\uE001, alltså 10²."
    },
    {
     "letter": "C",
-    "why_tempting": "Om du minns regeln som 'multiplicera exponenterna' korrekt med tecken: 10\\cdot(-8)=-80 → 10⁻⁸⁰? Eller felförenkling till 10⁻¹⁸?",
-    "why_wrong": "Steg 6: multiplikation av tiopotenser kräver ADDITION. -80 är fel operation; -18 är två fel kombinerade."
+    "why_tempting": "Om du minns regeln som 'multiplicera exponenterna' korrekt med tecken: \uE00010\\cdot(-8)=-80\uE001 → 10⁻⁸⁰? Eller felförenkling till 10⁻¹⁸?",
+    "why_wrong": "Steg 6: multiplikation av tiopotenser kräver ADDITION. \uE000-80\uE001 är fel operation; \uE000-18\uE001 är två fel kombinerade."
    },
    {
     "letter": "D",
     "why_tempting": "Snabbsvar är ofta att kombinera flera exponentfel: −80 kan dyka upp om man tar bara åttans tecken.",
-    "why_wrong": "Steg 4 fastställer addition. 10+(-8)=2 — det är den enda korrekta exponenten."
+    "why_wrong": "Steg 4 fastställer addition. \uE00010+(-8)=2\uE001 — det är den enda korrekta exponenten."
    }
   ],
-  "technique": "Multiplikation av tiopotenser: 10^{a}\\cdot 10^{b}=10^{a+b}. Mantissor (siffrorna före tian) multipliceras separat, exponenter adderas.",
-  "pitfall": "Botemedlet mot 'multiplicera exponenter'-felet: skriv UT regeln 10^{a}\\cdot 10^{b}=10^{a+b} innan du räknar — då aktiveras addition automatiskt.",
+  "technique": "Multiplikation av tiopotenser: \uE00010^{a}\\cdot 10^{b}=10^{a+b}\uE001. Mantissor (siffrorna före tian) multipliceras separat, exponenter adderas.",
+  "pitfall": "Botemedlet mot 'multiplicera exponenter'-felet: skriv UT regeln \uE00010^{a}\\cdot 10^{b}=10^{a+b}\uE001 innan du räknar — då aktiveras addition automatiskt.",
   "framework_id": "XYZ-TRAP-031",
   "pregrade_tactic": {
    "handle": "Mantissa-exponent-receptet",
-   "move": "Vid produkt på formen (a\\cdot 10^{m})\\cdot(b\\cdot 10^{n}): räkna a·b och m + n separat — multiplicera aldrig exponenterna."
+   "move": "Vid produkt på formen \uE000(a\\cdot 10^{m})\\cdot(b\\cdot 10^{n})\uE001: räkna a·b och m + n separat — multiplicera aldrig exponenterna."
   },
   "_meta": {
    "model": "claude-opus-4-7-via-max-subscription",
@@ -3695,66 +3695,66 @@
   }
  },
  "host-2013-kvant2-XYZ-008": {
-  "solution_path": "Upphöj varje faktor i parentesen till 4: 3^{4}=81, (x^{3})^{4}=x^{12}, (y^{2})^{4}=y^{8}, z^{4}=z^{4}. Resultat: 81x^{12}y^{8}z^{4}.",
+  "solution_path": "Upphöj varje faktor i parentesen till 4: \uE0003^{4}=81\uE001, \uE000(x^{3})^{4}=x^{12}\uE001, \uE000(y^{2})^{4}=y^{8}\uE001, \uE000z^{4}=z^{4}\uE001. Resultat: \uE00081x^{12}y^{8}z^{4}\uE001.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Du ska förenkla (3x^{3}y^{2}z)^{4}. Hela produkten i parentesen upphöjs till 4.",
+    "text": "Du ska förenkla \uE000(3x^{3}y^{2}z)^{4}\uE001. Hela produkten i parentesen upphöjs till 4.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Definition: potens av produkt",
-    "text": "(abc)^{n}=a^{n}\\cdot b^{n}\\cdot c^{n}. Varje faktor i produkten upphöjs separat — exponenten 'distribueras' över multiplikation.",
+    "text": "\uE000(abc)^{n}=a^{n}\\cdot b^{n}\\cdot c^{n}\uE001. Varje faktor i produkten upphöjs separat — exponenten 'distribueras' över multiplikation.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Distribuera exponenten 4",
-    "text": "(3x^{3}y^{2}z)^{4}=3^{4}\\cdot(x^{3})^{4}\\cdot(y^{2})^{4}\\cdot z^{4}.",
+    "text": "\uE000(3x^{3}y^{2}z)^{4}=3^{4}\\cdot(x^{3})^{4}\\cdot(y^{2})^{4}\\cdot z^{4}\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Räkna 3^4",
-    "text": "3^{4}=3\\cdot 3\\cdot 3\\cdot 3=81. Koefficienten upphöjs till 4, INTE multipliceras med 4.",
+    "title": "Räkna \uE0003^4\uE001",
+    "text": "\uE0003^{4}=3\\cdot 3\\cdot 3\\cdot 3=81\uE001. Koefficienten upphöjs till 4, INTE multipliceras med 4.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Definition: potens av potens",
-    "text": "(a^{m})^{n}=a^{m\\cdot n}. Vid en potens upphöjd till en annan potens MULTIPLICERAS exponenterna.",
+    "text": "\uE000(a^{m})^{n}=a^{m\\cdot n}\uE001. Vid en potens upphöjd till en annan potens MULTIPLICERAS exponenterna.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Räkna (x³)⁴",
-    "text": "(x^{3})^{4}=x^{3\\cdot 4}=x^{12}.",
+    "text": "\uE000(x^{3})^{4}=x^{3\\cdot 4}=x^{12}\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Räkna (y²)⁴",
-    "text": "(y^{2})^{4}=y^{2\\cdot 4}=y^{8}.",
+    "text": "\uE000(y^{2})^{4}=y^{2\\cdot 4}=y^{8}\uE001.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Räkna z⁴",
-    "text": "z står ensamt utan synlig exponent — det betyder z=z^{1}. Då (z^{1})^{4}=z^{4}.",
+    "text": "z står ensamt utan synlig exponent — det betyder \uE000z=z^{1}\uE001. Då \uE000(z^{1})^{4}=z^{4}\uE001.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Sammansätt resultatet",
-    "text": "81\\cdot x^{12}\\cdot y^{8}\\cdot z^{4}=81x^{12}y^{8}z^{4}.",
+    "text": "\uE00081\\cdot x^{12}\\cdot y^{8}\\cdot z^{4}=81x^{12}y^{8}z^{4}\uE001.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Sanity-check med x = y = z = 1",
-    "text": "(3\\cdot 1\\cdot 1\\cdot 1)^{4}=3^{4}=81 och 81\\cdot 1\\cdot 1\\cdot 1=81 ✓.",
+    "text": "\uE000(3\\cdot 1\\cdot 1\\cdot 1)^{4}=3^{4}=81\uE001 och \uE00081\\cdot 1\\cdot 1\\cdot 1=81\uE001 ✓.",
     "tier": "detail"
    },
    {
@@ -3766,33 +3766,33 @@
    {
     "n": 12,
     "title": "Slutsats",
-    "text": "Svaret är D: 81x^{12}y^{8}z^{4}. Insikten i en mening: vid (\\text{produkt})^{n} upphöjs VARJE faktor till n, och exponenter inom en faktor MULTIPLICERAS med n.",
+    "text": "Svaret är D: \uE00081x^{12}y^{8}z^{4}\uE001. Insikten i en mening: vid \uE000(\\text{produkt})^{n}\uE001 upphöjs VARJE faktor till n, och exponenter inom en faktor MULTIPLICERAS med n.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att MULTIPLICERA koefficienten 3 med exponent 4 istället för att upphöja: 3\\cdot 4=12.",
-    "why_wrong": "Steg 4 fastställer: hela uttrycket upphöjs till 4, inklusive koefficienten. 3^{4}=81, inte 12."
+    "why_tempting": "Det är lätt att MULTIPLICERA koefficienten 3 med exponent 4 istället för att upphöja: \uE0003\\cdot 4=12\uE001.",
+    "why_wrong": "Steg 4 fastställer: hela uttrycket upphöjs till 4, inklusive koefficienten. \uE0003^{4}=81\uE001, inte 12."
    },
    {
     "letter": "B",
-    "why_tempting": "Om du minns regeln som 'multiplicera koefficienten' men 'multiplicera exponenter' korrekt blir det 12x^{12}y^{8}z^{4}.",
-    "why_wrong": "Steg 4 visar att även koefficienten 3 upphöjs: 3^{4}=81."
+    "why_tempting": "Om du minns regeln som 'multiplicera koefficienten' men 'multiplicera exponenter' korrekt blir det \uE00012x^{12}y^{8}z^{4}\uE001.",
+    "why_wrong": "Steg 4 visar att även koefficienten 3 upphöjs: \uE0003^{4}=81\uE001."
    },
    {
     "letter": "C",
-    "why_tempting": "Snabbsvar är ofta att få rätt koefficient (81) men fel på exponenter genom addition: 3+4=7 för x.",
-    "why_wrong": "Steg 5 fastställer: (a^{m})^{n}=a^{mn}, alltså multiplikation. 3\\cdot 4=12, inte 7."
+    "why_tempting": "Snabbsvar är ofta att få rätt koefficient (81) men fel på exponenter genom addition: \uE0003+4=7\uE001 för x.",
+    "why_wrong": "Steg 5 fastställer: \uE000(a^{m})^{n}=a^{mn}\uE001, alltså multiplikation. \uE0003\\cdot 4=12\uE001, inte 7."
    }
   ],
-  "technique": "Potens av produkt: (abc)^{n}=a^{n}b^{n}c^{n}. Vid potens av potens MULTIPLICERAS exponenterna.",
+  "technique": "Potens av produkt: \uE000(abc)^{n}=a^{n}b^{n}c^{n}\uE001. Vid potens av potens MULTIPLICERAS exponenterna.",
   "pitfall": "Botemedlet mot att glömma upphöja koefficienten: skriv ut alla fyra faktorer separat innan exponenten distribueras — då missar du inte 3⁴.",
   "framework_id": "XYZ-TRAP-030",
   "pregrade_tactic": {
    "handle": "Distribuera-exponenten-receptet",
-   "move": "Vid (abc\\cdot 10^{n})^{k}: distribuera k över VARJE faktor (inklusive koefficienten), multiplicera inre exponenter med k."
+   "move": "Vid \uE000(abc\\cdot 10^{n})^{k}\uE001: distribuera k över VARJE faktor (inklusive koefficienten), multiplicera inre exponenter med k."
   },
   "_meta": {
    "model": "claude-opus-4-7-via-max-subscription",
@@ -3801,7 +3801,7 @@
   }
  },
  "host-2013-kvant2-XYZ-010": {
-  "solution_path": "Hastighet = \\frac{1\\,\\text{sida}}{m\\,\\text{minuter}}=\\frac{1}{m} sidor/min. På 7 minuter läser Kalle 7\\cdot\\frac{1}{m}=\\frac{7}{m} sidor.",
+  "solution_path": "Hastighet = \uE000\\frac{1\\,\\text{sida}}{m\\,\\text{minuter}}=\\frac{1}{m}\uE001 sidor/min. På 7 minuter läser Kalle \uE0007\\cdot\\frac{1}{m}=\\frac{7}{m}\uE001 sidor.",
   "steps": [
    {
     "n": 1,
@@ -3818,7 +3818,7 @@
    {
     "n": 3,
     "title": "Räkna hastigheten",
-    "text": "Han läser 1 sida på m minuter, alltså \\frac{1}{m} sidor per minut.",
+    "text": "Han läser 1 sida på m minuter, alltså \uE000\\frac{1}{m}\uE001 sidor per minut.",
     "tier": "essential"
    },
    {
@@ -3830,19 +3830,19 @@
    {
     "n": 5,
     "title": "Sätt in 7 minuter",
-    "text": "Antal sidor = \\frac{1}{m}\\cdot 7=\\frac{7}{m}.",
+    "text": "Antal sidor = \uE000\\frac{1}{m}\\cdot 7=\\frac{7}{m}\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Konkret exempel m = 2",
-    "text": "Han läser 1 sida på 2 minuter. På 7 minuter: \\frac{7}{2}=3{,}5 sidor — vilket stämmer med intuition (drygt 3 sidor på 7 minuter när tempo är 1 sida per 2 minuter).",
+    "text": "Han läser 1 sida på 2 minuter. På 7 minuter: \uE000\\frac{7}{2}=3{,}5\uE001 sidor — vilket stämmer med intuition (drygt 3 sidor på 7 minuter när tempo är 1 sida per 2 minuter).",
     "tier": "detail"
    },
    {
     "n": 7,
     "title": "Konkret exempel m = 7",
-    "text": "Han läser 1 sida på 7 minuter. På 7 minuter: \\frac{7}{7}=1 sida. Exakt 1 sida — ✓.",
+    "text": "Han läser 1 sida på 7 minuter. På 7 minuter: \uE000\\frac{7}{7}=1\uE001 sida. Exakt 1 sida — ✓.",
     "tier": "detail"
    },
    {
@@ -3866,7 +3866,7 @@
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Svaret är C: \\frac{7}{m}. Insikten i en mening: tempo = mängd/tid, så multiplikation med ny tid ger ny mängd — enhetsanalys löser proportionen mekaniskt.",
+    "text": "Svaret är C: \uE000\\frac{7}{m}\uE001. Insikten i en mening: tempo = mängd/tid, så multiplikation med ny tid ger ny mängd — enhetsanalys löser proportionen mekaniskt.",
     "tier": "essential"
    }
   ],
@@ -10258,7 +10258,7 @@
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: hur stor var den STÖRSTA PROCENTUELLA ökningen av det beräknade antalet ransoneringsbrott mellan två på varandra följande år? Du söker max((Y_{n+1} − Y_n) / Y_n × 100) över alla år-par i ransoneringsbrott-kurvan. Facit fastslår C (210 %).",
+    "text": "Frågan: hur stor var den STÖRSTA PROCENTUELLA ökningen av det beräknade antalet ransoneringsbrott mellan två på varandra följande år? Du söker \uE000max((Y_{n+1}\uE001 − Y_n) \uE000/\uE001 Y_n × 100) över alla år-par i ransoneringsbrott-kurvan. Facit fastslår C (210 %).",
     "tier": "essential"
    },
    {
@@ -11730,7 +11730,7 @@
    {
     "n": 9,
     "title": "Sanity check",
-    "text": "Sätt kvadratens sida = 2. Diagonalen är \\sqrt{2^2+2^2} = 2\\sqrt{2}. Radien DB är samma sträcka, så även DP.",
+    "text": "Sätt kvadratens sida = 2. Diagonalen är \uE000\\sqrt{2^2+2^2} = 2\\sqrt{2}\uE001. Radien DB är samma sträcka, så även DP.",
     "tier": "detail"
    },
    {
@@ -11977,66 +11977,66 @@
   }
  },
  "host-2013-kvant2-KVA-013": {
-  "solution_path": "Villkor: x > 0. Kvantitet I = -\\frac{7}{4}x, Kvantitet II = -\\frac{3}{2}x = -\\frac{6}{4}x. Båda är NEGATIVA för x > 0. Eftersom \\frac{7}{4} > \\frac{6}{4} har I större absolutbelopp och ligger därför LÄNGRE till vänster på tallinjen — I är alltså mindre än II. Alltså II > I. Svaret är B.",
+  "solution_path": "Villkor: x > 0. Kvantitet I = \uE000-\\frac{7}{4}x\uE001, Kvantitet II = \uE000-\\frac{3}{2}x\uE001 = \uE000-\\frac{6}{4}x\uE001. Båda är NEGATIVA för x > 0. Eftersom \uE000\\frac{7}{4} > \\frac{6}{4}\uE001 har I större absolutbelopp och ligger därför LÄNGRE till vänster på tallinjen — I är alltså mindre än II. Alltså II > I. Svaret är B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Givet x > 0. Jämför Kvantitet I = -\\frac{7}{4}x med Kvantitet II = -\\frac{3}{2}x. Notera minustecknet framför BÅDA — det är hela poängen med uppgiften.",
+    "text": "Givet x > 0. Jämför Kvantitet I = \uE000-\\frac{7}{4}x\uE001 med Kvantitet II = \uE000-\\frac{3}{2}x\uE001. Notera minustecknet framför BÅDA — det är hela poängen med uppgiften.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Vad betyder minustecknet?",
-    "text": "Ett minustecken framför ett uttryck vänder dess tecken. Eftersom x > 0 är \\frac{7}{4}x och \\frac{3}{2}x båda positiva — och med minus framför blir båda kvantiteterna alltså NEGATIVA.",
+    "text": "Ett minustecken framför ett uttryck vänder dess tecken. Eftersom x > 0 är \uE000\\frac{7}{4}x\uE001 och \uE000\\frac{3}{2}x\uE001 båda positiva — och med minus framför blir båda kvantiteterna alltså NEGATIVA.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Bryt ut x",
-    "text": "Båda uttryck har formen (konstant)·x. Eftersom x > 0 bevaras storleksordningen mellan konstanterna när vi multiplicerar med x. Så vi kan först jämföra konstanterna -\\frac{7}{4} och -\\frac{3}{2}.",
+    "text": "Båda uttryck har formen (konstant)·x. Eftersom x > 0 bevaras storleksordningen mellan konstanterna när vi multiplicerar med x. Så vi kan först jämföra konstanterna \uE000-\\frac{7}{4}\uE001 och \uE000-\\frac{3}{2}\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Gemensam nämnare",
-    "text": "För att jämföra \\frac{7}{4} och \\frac{3}{2} skriver vi dem över samma nämnare: \\frac{3}{2} = \\frac{6}{4} (multiplicera täljare och nämnare med 2). Nu står båda över 4.",
+    "text": "För att jämföra \uE000\\frac{7}{4}\uE001 och \uE000\\frac{3}{2}\uE001 skriver vi dem över samma nämnare: \uE000\\frac{3}{2} = \\frac{6}{4}\uE001 (multiplicera täljare och nämnare med 2). Nu står båda över 4.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Jämför magnituderna",
-    "text": "Med samma nämnare vinner den större täljaren: 7 > 6, så \\frac{7}{4} > \\frac{6}{4} = \\frac{3}{2}. Alltså har \\frac{7}{4}x STÖRRE absolutbelopp än \\frac{3}{2}x.",
+    "text": "Med samma nämnare vinner den större täljaren: 7 > 6, så \uE000\\frac{7}{4} > \\frac{6}{4} = \\frac{3}{2}\uE001. Alltså har \uE000\\frac{7}{4}x\uE001 STÖRRE absolutbelopp än \uE000\\frac{3}{2}x\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Här sitter fällan: negativa tal",
-    "text": "För NEGATIVA tal betyder större absolutbelopp MINDRE värde. -\\frac{7}{4}x ligger längre till vänster om noll än -\\frac{3}{2}x — alltså är I mindre, inte större. 'Störst magnitud' ≠ 'störst värde' när tecknet är minus.",
+    "text": "För NEGATIVA tal betyder större absolutbelopp MINDRE värde. \uE000-\\frac{7}{4}x\uE001 ligger längre till vänster om noll än \uE000-\\frac{3}{2}x\uE001 — alltså är I mindre, inte större. 'Störst magnitud' ≠ 'störst värde' när tecknet är minus.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Rita tallinjen",
-    "text": "Tänk dig x = 4: I = -\\frac{7}{4}\\cdot 4 = -7, II = -\\frac{3}{2}\\cdot 4 = -6. På tallinjen: −7 ligger till vänster om −6. Längre till vänster = mindre. Så I < II.",
+    "text": "Tänk dig x = 4: I = \uE000-\\frac{7}{4}\\cdot 4 = -7\uE001, II = \uE000-\\frac{3}{2}\\cdot 4 = -6\uE001. På tallinjen: −7 ligger till vänster om −6. Längre till vänster = mindre. Så I < II.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Konkret test till",
-    "text": "Sätt x = 100: I = -\\frac{7}{4}\\cdot 100 = -175, II = -\\frac{3}{2}\\cdot 100 = -150. Igen: −175 < −150, så II > I. Samma slutsats oavsett hur stort x är.",
+    "text": "Sätt x = 100: I = \uE000-\\frac{7}{4}\\cdot 100 = -175\uE001, II = \uE000-\\frac{3}{2}\\cdot 100 = -150\uE001. Igen: −175 < −150, så II > I. Samma slutsats oavsett hur stort x är.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Skillnaden algebraiskt",
-    "text": "I − II = -\\frac{7}{4}x - \\left(-\\frac{3}{2}x\\right) = -\\frac{7}{4}x + \\frac{6}{4}x = -\\frac{1}{4}x. För x > 0 är -\\frac{1}{4}x strikt negativ, så I − II < 0, alltså I < II.",
+    "text": "I − II = \uE000-\\frac{7}{4}x - \\left(-\\frac{3}{2}x\\right) = -\\frac{7}{4}x + \\frac{6}{4}x = -\\frac{1}{4}x\uE001. För x > 0 är \uE000-\\frac{1}{4}x\uE001 strikt negativ, så I − II < 0, alltså I < II.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Kan svaret flippa?",
-    "text": "Nej. Skillnaden -\\frac{1}{4}x är negativ för VARJE x > 0. Inget positivt x-värde får I att vinna. Ordningen är låst.",
+    "text": "Nej. Skillnaden \uE000-\\frac{1}{4}x\uE001 är negativ för VARJE x > 0. Inget positivt x-värde får I att vinna. Ordningen är låst.",
     "tier": "detail"
    },
    {
@@ -12055,13 +12055,13 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att se att \\frac{7}{4} > \\frac{3}{2} (steg 5) och slentrianmässigt dra slutsatsen att I är störst — som om minustecknen inte fanns.",
+    "why_tempting": "Det är lätt att se att \uE000\\frac{7}{4} > \\frac{3}{2}\uE001 (steg 5) och slentrianmässigt dra slutsatsen att I är störst — som om minustecknen inte fanns.",
     "why_wrong": "Minustecknen vänder allt. Som steg 6 visar betyder större magnitud MINDRE värde för negativa tal. I ligger längst till vänster på tallinjen, alltså är I minst."
    },
    {
     "letter": "C",
     "why_tempting": "Om du hastar och tänker att koefficienterna 'nästan' är lika, eller att x kan trolla bort skillnaden, kan lika kännas rimligt.",
-    "why_wrong": "Steg 9 ger skillnaden -\\frac{1}{4}x, som är strikt skild från noll för alla x > 0. Kvantiteterna är aldrig lika."
+    "why_wrong": "Steg 9 ger skillnaden \uE000-\\frac{1}{4}x\uE001, som är strikt skild från noll för alla x > 0. Kvantiteterna är aldrig lika."
    },
    {
     "letter": "D",
@@ -12070,7 +12070,7 @@
    }
   ],
   "technique": "Negativ-koefficient-strategin: när båda kvantiteter är (konstant)·x med samma x > 0, jämför först konstanternas storlek med gemensam nämnare, och VÄND sedan slutsatsen om båda konstanter är negativa. Triggern: minustecken framför båda uttryck + samma positiva variabel → jämför magnitud, flippa för tecknet.",
-  "pitfall": "Vanliga fällan är att jämföra \\frac{7}{4} och \\frac{3}{2} som om de vore positiva och välja I. Botemedlet: för negativa tal är 'större' = närmare noll, inte längst bort. Rita en tallinje om du tvekar — längre till höger vinner alltid.",
+  "pitfall": "Vanliga fällan är att jämföra \uE000\\frac{7}{4}\uE001 och \uE000\\frac{3}{2}\uE001 som om de vore positiva och välja I. Botemedlet: för negativa tal är 'större' = närmare noll, inte längst bort. Rita en tallinje om du tvekar — längre till höger vinner alltid.",
   "pregrade_tactic": {
    "handle": "Teckenvändningen",
    "move": "Har båda kvantiteter minus framför? Jämför magnituderna som vanligt, vänd sedan slutsatsen: den med minst magnitud är störst."
@@ -12182,19 +12182,19 @@
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Villkor x > 0. Jämför x + \\frac{1}{x} (I) med 2 (II).",
+    "text": "Villkor x > 0. Jämför \uE000x + \\frac{1}{x}\uE001 (I) med 2 (II).",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "AM-GM-olikheten",
-    "text": "För positiva tal a, b gäller (a+b)/2 ≥ \\sqrt{ab}. Likhet endast då a = b.",
+    "text": "För positiva tal a, b gäller (a+b)/2 ≥ \uE000\\sqrt{ab}\uE001. Likhet endast då a = b.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Tillämpa på x och 1/x",
-    "text": "a = x, b = 1/x. AM-GM: (x + 1/x)/2 ≥ \\sqrt{x \\cdot 1/x} = 1. Multiplicera med 2: x + 1/x ≥ 2.",
+    "text": "a = x, b = 1/x. AM-GM: (x + 1/x)/2 ≥ \uE000\\sqrt{x \\cdot 1/x} = 1\uE001. Multiplicera med 2: x + 1/x ≥ 2.",
     "tier": "essential"
    },
    {
@@ -12377,54 +12377,54 @@
   }
  },
  "host-2013-kvant2-KVA-018": {
-  "solution_path": "Villkor b > 1, x > 0. I = x^b/b, II = (x/b)^b = x^b/b^b. Båda har täljare x^b > 0; nämnaren i I är b, i II är b^b. För b > 1 är b^b > b, så II har större nämnare och blir mindre. I > II — svaret A.",
+  "solution_path": "Villkor \uE000b > 1\uE001, \uE000x > 0\uE001. \uE000I = x^b/b\uE001, II \uE000= (x/b)^b = x^b/b^b\uE001. Båda har täljare \uE000x^b > 0\uE001; nämnaren i I är b, i II är \uE000b^b\uE001. För \uE000b > 1\uE001 är \uE000b^b > b\uE001, så II har större nämnare och blir mindre. \uE000I >\uE001 II — svaret A.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Villkor b > 1, x > 0. Jämför \\frac{x^b}{b} med \\left(\\frac{x}{b}\\right)^b.",
+    "text": "Villkor b > 1, x > 0. Jämför \uE000\\frac{x^b}{b}\uE001 med \uE000\\left(\\frac{x}{b}\\right)^b\uE001.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Förenkla II",
-    "text": "Potensregel: (a/c)^n = a^n/c^n. Så II = \\frac{x^b}{b^b}.",
+    "text": "Potensregel: \uE000(a/c)^n = a^n/c^n\uE001. Så II = \uE000\\frac{x^b}{b^b}\uE001.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Samma täljare",
-    "text": "Båda kvantiteter har täljare x^b (positiv eftersom x > 0).",
+    "text": "Båda kvantiteter har täljare \uE000x^b\uE001 (positiv eftersom x > 0).",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Jämför nämnarna",
-    "text": "I har nämnare b; II har nämnare b^b. Med samma positiva täljare vinner bråket med MINDRE nämnare.",
+    "text": "I har nämnare b; II har nämnare \uE000b^b\uE001. Med samma positiva täljare vinner bråket med MINDRE nämnare.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Är b^b > b för b > 1?",
-    "text": "Ja. b^b = b·b^(b−1). Eftersom b > 1 och b−1 > 0 är b^(b−1) > 1, så b·b^(b−1) > b·1 = b.",
+    "title": "Är \uE000b^b > b\uE001 för \uE000b > 1\uE001?",
+    "text": "Ja. \uE000b^b = b·b^(b−1)\uE001. Eftersom \uE000b > 1\uE001 och b−1 \uE000> 0\uE001 är \uE000b^(b−1) > 1\uE001, så \uE000b·b^(b−1) >\uE001 b·1 \uE000= b\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Konkret check: b = 2",
-    "text": "b^b = 4, b = 2. Ja, 4 > 2.",
+    "text": "\uE000b^b = 4\uE001, \uE000b = 2\uE001. Ja, \uE0004 > 2\uE001.",
     "tier": "detail"
    },
    {
     "n": 7,
     "title": "Konkret check: b = 1,5",
-    "text": "b^b ≈ 1,84, b = 1,5. Ja, 1,84 > 1,5.",
+    "text": "\uE000b^b ≈ 1,84\uE001, \uE000b = 1,5\uE001. Ja, \uE0001,84 > 1,5\uE001.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Översätt till bråken",
-    "text": "b^b > b ⇒ x^b/b^b < x^b/b ⇒ II < I.",
+    "text": "\uE000b^b > b ⇒ x^b/b^b < x^b/b ⇒\uE001 II \uE000< I\uE001.",
     "tier": "essential"
    },
    {
@@ -12436,13 +12436,13 @@
    {
     "n": 10,
     "title": "Räcker villkoren?",
-    "text": "Ja — b > 1 garanterar b^b > b strikt; x > 0 garanterar positiv täljare.",
+    "text": "Ja — \uE000b > 1\uE001 garanterar \uE000b^b > b\uE001 strikt; \uE000x > 0\uE001 garanterar positiv täljare.",
     "tier": "essential"
    },
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "I > II för alla b > 1, x > 0 — svaret är A. Insikten: i (x/b)^b förstärks nämnaren från b till b^b, vilket krymper bråket relativt x^b/b.",
+    "text": "\uE000I >\uE001 II för alla \uE000b > 1\uE001, \uE000x > 0\uE001 — svaret är A. Insikten: \uE000i (x/b)^b\uE001 förstärks nämnaren från b till \uE000b^b\uE001, vilket krymper bråket relativt \uE000x^b/b\uE001.",
     "tier": "essential"
    }
   ],
@@ -12450,21 +12450,21 @@
    {
     "letter": "B",
     "why_tempting": "Att hela kvoten är upphöjd till b ser ut att förstora II.",
-    "why_wrong": "Steg 2 visar att (x/b)^b = x^b/b^b — täljaren matchar I:s täljare, men nämnaren b^b är STÖRRE än b, så bråket blir mindre."
+    "why_wrong": "Steg 2 visar att \uE000(x/b)^b = x^b/b^b\uE001 — täljaren matchar I:s täljare, men nämnaren \uE000b^b\uE001 är STÖRRE än b, så bråket blir mindre."
    },
    {
     "letter": "C",
     "why_tempting": "Vid x = b kan utseendet av båda kvantiteter verka 'matcha'.",
-    "why_wrong": "Steg 9 visar med konkreta tal att I är strikt större. Likhet kräver b^b = b, vilket bara gäller vid b = 1 — utesluten."
+    "why_wrong": "Steg 9 visar med konkreta tal att I är strikt större. Likhet kräver \uE000b^b = b\uE001, vilket bara gäller vid \uE000b = 1\uE001 — utesluten."
    },
    {
     "letter": "D",
     "why_tempting": "Snabbsvar 'okända b och x → otillräcklig'.",
-    "why_wrong": "Steg 5 fastställer b^b > b för ALLA b > 1, oberoende av x. Villkoret räcker."
+    "why_wrong": "Steg 5 fastställer \uE000b^b > b\uE001 för ALLA \uE000b > 1\uE001, oberoende av x. Villkoret räcker."
    }
   ],
-  "technique": "Förenkla potens-bråk innan jämförelse: (a/c)^n = a^n/c^n. När täljarna matchar reduceras frågan till nämnarna. Triggern: '(x/b)^b mot x^b/b'.",
-  "pitfall": "Botemedlet mot att underskatta b^b: minns 'exponent > 1 förstärker basen' — b^b är dramatiskt större än b för b > 1.",
+  "technique": "Förenkla potens-bråk innan jämförelse: \uE000(a/c)^n = a^n/c^n\uE001. När täljarna matchar reduceras frågan till nämnarna. Triggern: \uE000'(x/b)^b\uE001 mot \uE000x^b/b'\uE001.",
+  "pitfall": "Botemedlet mot att underskatta \uE000b^b\uE001: minns 'exponent \uE000> 1\uE001 förstärker basen' — \uE000b^b\uE001 är dramatiskt större än b för \uE000b > 1\uE001.",
   "framework_id": null,
   "pregrade_tactic": {
    "handle": "Potens-nämnar-förstärkningen",
@@ -12577,7 +12577,7 @@
   }
  },
  "host-2013-kvant1-XYZ-002": {
-  "solution_path": "Sätt upp proportion: liter per km är konstant, så 19/350 = L/1710. Det är samma som 19\\cdot 1710 = 350\\cdot L, men i förhållande-form blir det \\frac{19}{350} = \\frac{L}{1710} — vilket är alternativ A.",
+  "solution_path": "Sätt upp proportion: liter per km är konstant, så \uE00019/350 = L/1710\uE001. Det är samma som \uE00019\\cdot 1710 = 350\\cdot L\uE001, men i förhållande-form blir det \uE000\\frac{19}{350} = \\frac{L}{1710}\uE001 — vilket är alternativ A.",
   "steps": [
    {
     "n": 1,
@@ -12600,25 +12600,25 @@
    {
     "n": 4,
     "title": "Skriv konstantens villkor",
-    "text": "Förbrukningen är konstant: \\frac{\\text{liter}}{\\text{km}} = \\frac{\\text{liter}}{\\text{km}}. Sätt in: \\frac{19}{350} = \\frac{L}{1\\,710}.",
+    "text": "Förbrukningen är konstant: \uE000\\frac{\\text{liter}}{\\text{km}} = \\frac{\\text{liter}}{\\text{km}}\uE001. Sätt in: \uE000\\frac{19}{350} = \\frac{L}{1\\,710}\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Definition: två sätt att skriva proportionen",
-    "text": "Proportionen \\frac{a}{b} = \\frac{c}{d} kan flippas till \\frac{b}{a} = \\frac{d}{c} — bägge sidor inverterade ger samma sanning. Men man får INTE blanda: bara EN sida flippad blir fel.",
+    "text": "Proportionen \uE000\\frac{a}{b} = \\frac{c}{d}\uE001 kan flippas till \uE000\\frac{b}{a} = \\frac{d}{c}\uE001 — bägge sidor inverterade ger samma sanning. Men man får INTE blanda: bara EN sida flippad blir fel.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Matcha mot alternativ A",
-    "text": "Alternativ A skriver \\frac{19}{350} = \\frac{L}{1710} (vänster = liter/km för Marias mätning, höger = liter/km för 1 710 km-sträckan). Båda sidorna är samma slags förhållande, det stämmer.",
+    "text": "Alternativ A skriver \uE000\\frac{19}{350} = \\frac{L}{1710}\uE001 (vänster = liter/km för Marias mätning, höger = liter/km för 1 710 km-sträckan). Båda sidorna är samma slags förhållande, det stämmer.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Lös ut L (för verifiering)",
-    "text": "Korsmultiplikation: 19\\cdot 1\\,710 = 350\\cdot L, alltså L = \\frac{19\\cdot 1\\,710}{350}. Eftersom 1 710 ≈ 4,886·350 blir L ≈ 4,886·19 ≈ 92,8 liter — rimligt för 1 710 km.",
+    "text": "Korsmultiplikation: \uE00019\\cdot 1\\,710 = 350\\cdot L\uE001, alltså \uE000L = \\frac{19\\cdot 1\\,710}{350}\uE001. Eftersom 1 710 ≈ 4,886·350 blir L ≈ 4,886·19 ≈ 92,8 liter — rimligt för 1 710 km.",
     "tier": "detail"
    },
    {
@@ -12650,7 +12650,7 @@
    {
     "letter": "B",
     "why_tempting": "Det är lätt att invertera bara ena sidan om man tänker 'om jag flyttar L hit blir det enklare' — då hamnar L i nämnaren på den vänstra sidan men på 'plats för täljare' på högra.",
-    "why_wrong": "Som steg 5 visar måste BÅDA sidor flippas tillsammans eller ingen alls. \\frac{19}{L} = \\frac{1710}{350} är 'liter/liter = km/km' (steg 8) — inte ett förbrukningssamband."
+    "why_wrong": "Som steg 5 visar måste BÅDA sidor flippas tillsammans eller ingen alls. \uE000\\frac{19}{L} = \\frac{1710}{350}\uE001 är 'liter/liter = km/km' (steg 8) — inte ett förbrukningssamband."
    },
    {
     "letter": "C",
@@ -12677,42 +12677,42 @@
   }
  },
  "host-2013-kvant1-XYZ-005": {
-  "solution_path": "Multiplicera båda sidor med 100·12 = 1 200: x\\cdot 3\\cdot 9 = 81\\cdot 1\\,200. Vänsterledet är 27x; högerledet 97 200. Då blir x = \\frac{97\\,200}{27} = 3\\,600.",
+  "solution_path": "Multiplicera båda sidor med 100·12 = 1 200: \uE000x\\cdot 3\\cdot 9 = 81\\cdot 1\\,200\uE001. Vänsterledet är 27x; högerledet 97 200. Då blir \uE000x = \\frac{97\\,200}{27} = 3\\,600\uE001.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Ekvationen är \\frac{x\\cdot 3\\cdot 9}{100\\cdot 12} = 81. Sök x. Det är ett rakt lösa-ut-x-problem med ett bråk på vänster sida.",
+    "text": "Ekvationen är \uE000\\frac{x\\cdot 3\\cdot 9}{100\\cdot 12} = 81\uE001. Sök x. Det är ett rakt lösa-ut-x-problem med ett bråk på vänster sida.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Förenkla konstanterna",
-    "text": "I täljaren: 3\\cdot 9 = 27. I nämnaren: 100\\cdot 12 = 1\\,200. Ekvationen blir \\frac{27x}{1\\,200} = 81.",
+    "text": "I täljaren: \uE0003\\cdot 9 = 27\uE001. I nämnaren: \uE000100\\cdot 12 = 1\\,200\uE001. Ekvationen blir \uE000\\frac{27x}{1\\,200} = 81\uE001.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Definition: multiplicera bort en nämnare",
-    "text": "När en variabel står i en bråkets täljare, multiplicera båda sidor med nämnaren. Det följer av \\frac{a}{b} = c \\Leftrightarrow a = bc så länge b \\neq 0.",
+    "text": "När en variabel står i en bråkets täljare, multiplicera båda sidor med nämnaren. Det följer av \uE000\\frac{a}{b} = c \\Leftrightarrow a = bc\uE001 så länge \uE000b \\neq 0\uE001.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Multiplicera båda sidor med 1 200",
-    "text": "\\frac{27x}{1\\,200}\\cdot 1\\,200 = 81\\cdot 1\\,200 ger 27x = 97\\,200.",
+    "text": "\uE000\\frac{27x}{1\\,200}\\cdot 1\\,200 = 81\\cdot 1\\,200\uE001 ger \uE00027x = 97\\,200\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Lös ut x",
-    "text": "Dela med 27: x = \\frac{97\\,200}{27}.",
+    "text": "Dela med 27: \uE000x = \\frac{97\\,200}{27}\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Räkna 97 200 / 27",
-    "text": "Kort räkning: 27\\cdot 3\\,000 = 81\\,000; 97\\,200 - 81\\,000 = 16\\,200; 27\\cdot 600 = 16\\,200. Alltså 27\\cdot 3\\,600 = 97\\,200.",
+    "text": "Kort räkning: \uE00027\\cdot 3\\,000 = 81\\,000\uE001; \uE00097\\,200 - 81\\,000 = 16\\,200\uE001; \uE00027\\cdot 600 = 16\\,200\uE001. Alltså \uE00027\\cdot 3\\,600 = 97\\,200\uE001.",
     "tier": "detail"
    },
    {
@@ -12724,13 +12724,13 @@
    {
     "n": 8,
     "title": "Verifiera",
-    "text": "Sätt in x = 3 600: täljaren blir 3\\,600\\cdot 27 = 97\\,200; nämnaren 1 200. Kvot: 97\\,200/1\\,200 = 81. ✓",
+    "text": "Sätt in x = 3 600: täljaren blir \uE0003\\,600\\cdot 27 = 97\\,200\uE001; nämnaren 1 200. Kvot: \uE00097\\,200/1\\,200 = 81\uE001. ✓",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Alternativ väg: korta först",
-    "text": "Direkt-förkortning: \\frac{27x}{1\\,200} = 81 \\Rightarrow x = \\frac{81\\cdot 1\\,200}{27} = 3\\cdot 1\\,200 = 3\\,600 (eftersom 81/27 = 3).",
+    "text": "Direkt-förkortning: \uE000\\frac{27x}{1\\,200} = 81 \\Rightarrow x = \\frac{81\\cdot 1\\,200}{27} = 3\\cdot 1\\,200 = 3\\,600\uE001 (eftersom \uE00081/27 = 3\uE001).",
     "tier": "detail"
    },
    {
@@ -12777,36 +12777,36 @@
   }
  },
  "host-2013-kvant1-XYZ-010": {
-  "solution_path": "Dela bråket i två: \\frac{1-x}{xy} = \\frac{1}{xy} - \\frac{x}{xy}. Förkorta \\frac{x}{xy} = \\frac{1}{y}. Slutgiltigt: \\frac{1}{xy} - \\frac{1}{y} — alternativ D.",
+  "solution_path": "Dela bråket i två: \uE000\\frac{1-x}{xy} = \\frac{1}{xy} - \\frac{x}{xy}\uE001. Förkorta \uE000\\frac{x}{xy} = \\frac{1}{y}\uE001. Slutgiltigt: \uE000\\frac{1}{xy} - \\frac{1}{y}\uE001 — alternativ D.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Du ska hitta vilket uttryck som är lika med \\frac{1-x}{xy} när varken x eller y är noll. Det är en algebraisk identitetsfråga, inte en ekvation att lösa.",
+    "text": "Du ska hitta vilket uttryck som är lika med \uE000\\frac{1-x}{xy}\uE001 när varken x eller y är noll. Det är en algebraisk identitetsfråga, inte en ekvation att lösa.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Definition: dela täljaren över nämnaren",
-    "text": "Regel: \\frac{a-b}{c} = \\frac{a}{c} - \\frac{b}{c}. Subtraktion i täljaren kan splittras över samma nämnare. (Det funkar INTE åt andra hållet med nämnaren.)",
+    "text": "Regel: \uE000\\frac{a-b}{c} = \\frac{a}{c} - \\frac{b}{c}\uE001. Subtraktion i täljaren kan splittras över samma nämnare. (Det funkar INTE åt andra hållet med nämnaren.)",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Tillämpa regeln",
-    "text": "Med a = 1, b = x, c = xy: \\frac{1-x}{xy} = \\frac{1}{xy} - \\frac{x}{xy}.",
+    "text": "Med a = 1, b = x, c = xy: \uE000\\frac{1-x}{xy} = \\frac{1}{xy} - \\frac{x}{xy}\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Förkorta andra termen",
-    "text": "\\frac{x}{xy}: x i täljaren och nämnaren tar ut varandra (eftersom x ≠ 0). Kvar: \\frac{1}{y}.",
+    "text": "\uE000\\frac{x}{xy}\uE001: x i täljaren och nämnaren tar ut varandra (eftersom x ≠ 0). Kvar: \uE000\\frac{1}{y}\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Sätt ihop",
-    "text": "Resultatet är \\frac{1}{xy} - \\frac{1}{y}.",
+    "text": "Resultatet är \uE000\\frac{1}{xy} - \\frac{1}{y}\uE001.",
     "tier": "essential"
    },
    {
@@ -12818,25 +12818,25 @@
    {
     "n": 7,
     "title": "Sanity-check med konkreta tal",
-    "text": "Prova x = 2, y = 3: \\frac{1-2}{2\\cdot 3} = \\frac{-1}{6}. Alternativ D: \\frac{1}{6} - \\frac{1}{3} = \\frac{1}{6} - \\frac{2}{6} = -\\frac{1}{6}. ✓",
+    "text": "Prova x = 2, y = 3: \uE000\\frac{1-2}{2\\cdot 3} = \\frac{-1}{6}\uE001. Alternativ D: \uE000\\frac{1}{6} - \\frac{1}{3} = \\frac{1}{6} - \\frac{2}{6} = -\\frac{1}{6}\uE001. ✓",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Varför fungerar A inte?",
-    "text": "Alternativ A är \\frac{1}{x} - \\frac{1}{xy}. Med x = 2, y = 3: \\frac{1}{2} - \\frac{1}{6} = \\frac{3-1}{6} = \\frac{1}{3}. Det är inte −1/6.",
+    "text": "Alternativ A är \uE000\\frac{1}{x} - \\frac{1}{xy}\uE001. Med x = 2, y = 3: \uE000\\frac{1}{2} - \\frac{1}{6} = \\frac{3-1}{6} = \\frac{1}{3}\uE001. Det är inte −1/6.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Varför fungerar B inte?",
-    "text": "Alternativ B är \\frac{1}{y} - \\frac{1}{xy} = \\frac{x-1}{xy}. Det är (x−1)/(xy), inte (1−x)/(xy) — tecknet är fel.",
+    "text": "Alternativ B är \uE000\\frac{1}{y} - \\frac{1}{xy}\uE001 = \uE000\\frac{x-1}{xy}\uE001. Det är (x−1)/(xy), inte (1−x)/(xy) — tecknet är fel.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Varför fungerar C inte?",
-    "text": "Alternativ C är \\frac{1}{xy} - \\frac{1}{x} = \\frac{1-y}{xy}. Det innehåller y i täljaren, inte x — fel variabel kancellerad.",
+    "text": "Alternativ C är \uE000\\frac{1}{xy} - \\frac{1}{x} = \\frac{1-y}{xy}\uE001. Det innehåller y i täljaren, inte x — fel variabel kancellerad.",
     "tier": "detail"
    },
    {
@@ -12882,7 +12882,7 @@
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Ekvationen \\dfrac{b}{a+x} = \\dfrac{b}{2x} har samma täljare b på båda sidor. Villkoren a ≠ 0 och b ≠ 0 finns för att nollor inte ska tillkomma i nämnaren eller täljaren. Mål: hitta x i termer av a (och eventuellt b).",
+    "text": "Ekvationen \uE000\\dfrac{b}{a+x} = \\dfrac{b}{2x}\uE001 har samma täljare b på båda sidor. Villkoren \uE000a ≠ 0\uE001 och \uE000b ≠ 0\uE001 finns för att nollor inte ska tillkomma i nämnaren eller täljaren. Mål: hitta x i termer av a (och eventuellt b).",
     "tier": "essential"
    },
    {
@@ -12894,7 +12894,7 @@
    {
     "n": 3,
     "title": "Förkorta bort b",
-    "text": "Multiplicera båda led med 1/b (definierat eftersom b ≠ 0). Kvar blir \\dfrac{1}{a+x} = \\dfrac{1}{2x}.",
+    "text": "Multiplicera båda led med 1/b (definierat eftersom \uE000b ≠ 0\uE001). Kvar blir \uE000\\dfrac{1}{a+x} = \\dfrac{1}{2x}\uE001.",
     "tier": "essential"
    },
    {
@@ -12924,13 +12924,13 @@
    {
     "n": 8,
     "title": "Verifiera genom insättning",
-    "text": "Sätt x = a i originalet: Vänster led blir \\dfrac{b}{a+a} = \\dfrac{b}{2a} och höger led blir \\dfrac{b}{2a}. Likhet — rätt.",
+    "text": "Sätt \uE000x = a i\uE001 originalet: Vänster led blir \uE000\\dfrac{b}{a+a} = \\dfrac{b}{2a}\uE001 och höger led blir \uE000\\dfrac{b}{2a}\uE001. Likhet — rätt.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Notera varför distraktorerna lurar",
-    "text": "Svarsalternativen ab/2 och ab fångar studenten som insåg att korsmultiplikation skulle ge b \\cdot 2x = b(a+x) men sedan behöll b kvar på vägen istället för att direkt förkorta bort det.",
+    "text": "Svarsalternativen ab/2 och ab fångar studenten som insåg att korsmultiplikation skulle ge \uE000b \\cdot 2x = b(a+x)\uE001 men sedan behöll b kvar på vägen istället för att direkt förkorta bort det.",
     "tier": "optional"
    },
    {
@@ -12943,7 +12943,7 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Korsmultiplikation b \\cdot 2x = b(a+x) ger bx = b(a+x)/2 om man tappar tålamodet och delar högerledet med 2 i fel ordning — ab/2 dyker upp som ett halvfabrikat.",
+    "why_tempting": "Korsmultiplikation \uE000b \\cdot 2x = b(a+x)\uE001 ger bx \uE000=\uE001 b(a+x)/2 om man tappar tålamodet och delar högerledet med 2 i fel ordning — ab/2 dyker upp som ett halvfabrikat.",
     "why_wrong": "Det är ett uttryck för något annat än x: ab/2 har enheten av en produkt, inte av en variabel som a. Dessutom kan b ≠ 0 elimineras direkt, så b kan inte finnas kvar i slutsvaret."
    },
    {
@@ -12954,7 +12954,7 @@
    {
     "letter": "C",
     "why_tempting": "Bråket a/3 ser ut som ett rimligt 'låt-mig-dela-med-något' svar om man räknar fel på koefficienten — t.ex. tolkar 2x som 3x av distraktion.",
-    "why_wrong": "Ekvationen ger entydigt a + x = 2x \\Rightarrow x = a. Det finns ingen 3:a i ekvationen som kan dyka upp i nämnaren av lösningen."
+    "why_wrong": "Ekvationen ger entydigt \uE000a + x = 2x \\Rightarrow x = a\uE001. Det finns ingen 3:a i ekvationen som kan dyka upp i nämnaren av lösningen."
    }
   ],
   "technique": "När två bråk med samma täljare (≠ 0) är lika: sätt deras nämnare lika direkt. Genvägen sparar tid och eliminerar onyttiga variabler som b ur slutsvaret.",
@@ -12971,7 +12971,7 @@
   }
  },
  "host-2013-kvant2-XYZ-006": {
-  "solution_path": "Triangel ABD med AB=AD=1 cm och rät vinkel vid A ger BD = \\sqrt{1^2 + 1^2} = \\sqrt{2} cm (Pythagoras). Triangel BCD är liksidig → BC = CD = BD = √2. Omkrets ABCD: AB + BC + CD + DA = 1 + \\sqrt{2} + \\sqrt{2} + 1 = 2 + 2\\sqrt{2} cm.",
+  "solution_path": "Triangel ABD med AB=AD=1 cm och rät vinkel vid A ger \uE000BD = \\sqrt{1^2 + 1^2} = \\sqrt{2}\uE001 cm (Pythagoras). Triangel BCD är liksidig → BC = CD = BD = √2. Omkrets ABCD: \uE000AB + BC + CD + DA = 1 + \\sqrt{2} + \\sqrt{2} + 1 = 2 + 2\\sqrt{2}\uE001 cm.",
   "steps": [
    {
     "n": 1,
@@ -12988,13 +12988,13 @@
    {
     "n": 3,
     "title": "Definition: Pythagoras sats",
-    "text": "I en rätvinklig triangel med kateter a, b och hypotenusa c gäller a^2 + b^2 = c^2. Hypotenusan ligger MITT EMOT den räta vinkeln.",
+    "text": "I en rätvinklig triangel med kateter a, b och hypotenusa c gäller \uE000a^2 + b^2 = c^2\uE001. Hypotenusan ligger MITT EMOT den räta vinkeln.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Räkna ut BD",
-    "text": "Triangel ABD är rätvinklig vid A: kateterna AB = 1 och AD = 1. Då blir BD^2 = 1^2 + 1^2 = 2, alltså BD = \\sqrt{2} cm.",
+    "text": "Triangel ABD är rätvinklig vid A: kateterna AB = 1 och AD = 1. Då blir \uE000BD^2 = 1^2 + 1^2 = 2\uE001, alltså \uE000BD = \\sqrt{2}\uE001 cm.",
     "tier": "essential"
    },
    {
@@ -13018,7 +13018,7 @@
    {
     "n": 8,
     "title": "Addera till omkrets",
-    "text": "Omkrets = 1 + \\sqrt{2} + \\sqrt{2} + 1 = 2 + 2\\sqrt{2} cm.",
+    "text": "Omkrets = \uE0001 + \\sqrt{2} + \\sqrt{2} + 1 = 2 + 2\\sqrt{2}\uE001 cm.",
     "tier": "essential"
    },
    {
@@ -13036,7 +13036,7 @@
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Svaret är C: (2 + 2\\sqrt{2}) cm. Insikten i en mening: när två lika sidor möts i rät vinkel ger Pythagoras hypotenusan √2 gånger sidan — och i liksidiga trianglar är alla sidor lika oavsett orientering.",
+    "text": "Svaret är C: \uE000(2 + 2\\sqrt{2})\uE001 cm. Insikten i en mening: när två lika sidor möts i rät vinkel ger Pythagoras hypotenusan √2 gånger sidan — och i liksidiga trianglar är alla sidor lika oavsett orientering.",
     "tier": "essential"
    }
   ],
@@ -13071,12 +13071,12 @@
   }
  },
  "host-2013-kvant2-XYZ-007": {
-  "solution_path": "Subtrahera a från båda sidor: b > -2b. Lägg till 2b: 3b > 0, alltså b > 0.",
+  "solution_path": "Subtrahera a från båda sidor: \uE000b > -2b\uE001. Lägg till 2b: \uE0003b > 0\uE001, alltså \uE000b > 0\uE001.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Olikheten a + b > a - 2b ska gälla. Sök villkoret på b. Notera att a saknar villkor — det betyder att svaret inte beror på a.",
+    "text": "Olikheten \uE000a + b > a - 2b\uE001 ska gälla. Sök villkoret på b. Notera att a saknar villkor — det betyder att svaret inte beror på a.",
     "tier": "essential"
    },
    {
@@ -13088,19 +13088,19 @@
    {
     "n": 3,
     "title": "Subtrahera a från båda sidor",
-    "text": "a + b - a > a - 2b - a ger b > -2b. a försvinner helt.",
+    "text": "\uE000a + b - a > a - 2b - a\uE001 ger \uE000b > -2b\uE001. a försvinner helt.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Adde 2b på båda sidor",
-    "text": "b + 2b > -2b + 2b ger 3b > 0.",
+    "text": "\uE000b + 2b > -2b + 2b\uE001 ger \uE0003b > 0\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Dela med 3",
-    "text": "3 är positivt, så riktningen behålls: b > 0.",
+    "text": "3 är positivt, så riktningen behålls: \uE000b > 0\uE001.",
     "tier": "essential"
    },
    {
@@ -13176,19 +13176,19 @@
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Två räta linjer y = -x + 7 och y = \\dfrac{2}{3}x - \\dfrac{4}{3} skär i en punkt P = (x_1, y_1). Frågan är inte exakt värde — bara vilka tecken x_1 och y_1 har.",
+    "text": "Två räta linjer \uE000y = -x + 7\uE001 och \uE000y = \\dfrac{2}{3}x - \\dfrac{4}{3}\uE001 skär i en punkt \uE000P =\uE001 (x_1, y_1). Frågan är inte exakt värde — bara vilka tecken x_1 och y_1 har.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Sätt upp skärningsekvationen",
-    "text": "I skärningspunkten har båda linjerna samma y. Likställ höger leden: -x + 7 = \\dfrac{2}{3}x - \\dfrac{4}{3}.",
+    "text": "I skärningspunkten har båda linjerna samma y. Likställ höger leden: \uE000-x + 7 = \\dfrac{2}{3}x - \\dfrac{4}{3}\uE001.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Multiplicera bort nämnaren",
-    "text": "Multiplicera båda led med 3 för att slippa bråken: 3(-x + 7) = 3 \\cdot \\dfrac{2}{3}x - 3 \\cdot \\dfrac{4}{3}, alltså -3x + 21 = 2x - 4.",
+    "text": "Multiplicera båda led med 3 för att slippa bråken: 3(-x \uE000+ 7\uE001) \uE000= 3 \\cdot \\dfrac{2}{3}x - 3 \\cdot \\dfrac{4}{3}\uE001, alltså \uE000-3x + 21 = 2x - 4\uE001.",
     "tier": "essential"
    },
    {
@@ -13218,7 +13218,7 @@
    {
     "n": 8,
     "title": "Korskontroll mot andra linjen",
-    "text": "Kontrollera med y = \\dfrac{2}{3} \\cdot 5 - \\dfrac{4}{3} = \\dfrac{10}{3} - \\dfrac{4}{3} = \\dfrac{6}{3} = 2. Samma värde — punkten ligger på båda linjerna.",
+    "text": "Kontrollera med \uE000y = \\dfrac{2}{3} \\cdot 5 - \\dfrac{4}{3} = \\dfrac{10}{3} - \\dfrac{4}{3} = \\dfrac{6}{3} = 2\uE001. Samma värde — punkten ligger på båda linjerna.",
     "tier": "essential"
    },
    {
@@ -13242,7 +13242,7 @@
    },
    {
     "letter": "C",
-    "why_tempting": "Om man flyttar fel term över likhetstecknet och får -5x = 25 istället för 5x = 25, så blir x_1 = -5 < 0. Med x = -5 i andra linjen blir y = -2/3 \\cdot 5 - 4/3 = -14/3 < 0 — men intercepten 7 är så stor att man kanske gissar y_1 > 0 ändå.",
+    "why_tempting": "Om man flyttar fel term över likhetstecknet och får \uE000-5x = 25\uE001 istället för \uE0005x = 25\uE001, så blir \uE000x_1 = -5 < 0\uE001. Med \uE000x = -5 i\uE001 andra linjen blir \uE000y =\uE001 -2/3 \uE000\\cdot 5 -\uE001 4/3 \uE000=\uE001 -14/3 \uE000< 0\uE001 — men intercepten 7 är så stor att man kanske gissar \uE000y_1 > 0\uE001 ändå.",
     "why_wrong": "Korrekt teckenhantering ger 5x = 25, inte -5x = 25. När man flyttar -3x till höger blir det +3x på höger sida, och 2x + 3x = 5x. x_1 = 5, inte -5."
    },
    {
@@ -13256,7 +13256,7 @@
   "framework_id": "XYZ-TRAP-014",
   "pregrade_tactic": {
    "handle": "Korsskärningen",
-   "move": "Sätt y-uttrycken lika, rensa nämnare med multiplikation, och beräkna x först; sätt sedan in x i den linje med enklast intercept för att få y."
+   "move": "Sätt y-uttrycken lika, rensa nämnare med multiplikation, och beräkna x först; sätt sedan in x i den linje med enklast y-skärning för att få y."
   },
   "_meta": {
    "model": "claude-opus-4-7-via-max-subscription",
@@ -13265,72 +13265,72 @@
   }
  },
  "host-2013-kvant2-XYZ-011": {
-  "solution_path": "Bryt ut x ur vänstra ledet. Båda leden får då samma teckenstruktur (+\\,-\\,+\\,-) — kvoten mellan dem är x:s värde.",
+  "solution_path": "Bryt ut x ur vänstra ledet. Båda leden får då samma teckenstruktur (\uE000+\\,-\\,+\\,-\uE001) — kvoten mellan dem är x:s värde.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Ekvationen \\frac{x}{5} - \\frac{x}{10} + \\frac{x}{15} - \\frac{x}{20} = 1 - \\frac{1}{2} + \\frac{1}{3} - \\frac{1}{4} har x i varje term i vänstra ledet. Höger led är ett rent talvärde. Strategin: isolera x genom att bryta ut.",
+    "text": "Ekvationen \uE000\\frac{x}{5} - \\frac{x}{10} + \\frac{x}{15} - \\frac{x}{20} = 1 - \\frac{1}{2} + \\frac{1}{3} - \\frac{1}{4}\uE001 har x i varje term i vänstra ledet. Höger led är ett rent talvärde. Strategin: isolera x genom att bryta ut.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Strukturen i båda leden",
-    "text": "Lägg märke till att nämnarna 5,\\,10,\\,15,\\,20 i VL är fyra gånger nämnarna 1,\\,2,\\,3,\\,4 i HL — och tecknen +\\,-\\,+\\,- är identiska. Det är ingen slump; ekvationen är konstruerad så.",
+    "text": "Lägg märke till att nämnarna \uE0005,\\,10,\\,15,\\,20\uE001 i VL är fyra gånger nämnarna \uE0001,\\,2,\\,3,\\,4\uE001 i HL — och tecknen \uE000+\\,-\\,+\\,-\uE001 är identiska. Det är ingen slump; ekvationen är konstruerad så.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Vad betyder utbrytning?",
-    "text": "Distributiva lagen baklänges: om varje term har samma faktor x, så är \\tfrac{x}{5} - \\tfrac{x}{10} + \\tfrac{x}{15} - \\tfrac{x}{20} = x\\bigl(\\tfrac{1}{5} - \\tfrac{1}{10} + \\tfrac{1}{15} - \\tfrac{1}{20}\\bigr). Faktorn x flyttas utanför parentesen.",
+    "text": "Distributiva lagen baklänges: om varje term har samma faktor x, så är \uE000\\tfrac{x}{5} - \\tfrac{x}{10} + \\tfrac{x}{15} - \\tfrac{x}{20} = x\\bigl(\\tfrac{1}{5} - \\tfrac{1}{10} + \\tfrac{1}{15} - \\tfrac{1}{20}\\bigr)\uE001. Faktorn x flyttas utanför parentesen.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Bryt ut x",
-    "text": "VL blir alltså x\\bigl(\\tfrac{1}{5} - \\tfrac{1}{10} + \\tfrac{1}{15} - \\tfrac{1}{20}\\bigr) = 1 - \\tfrac{1}{2} + \\tfrac{1}{3} - \\tfrac{1}{4}.",
+    "text": "VL blir alltså \uE000x\\bigl(\\tfrac{1}{5} - \\tfrac{1}{10} + \\tfrac{1}{15} - \\tfrac{1}{20}\\bigr) = 1 - \\tfrac{1}{2} + \\tfrac{1}{3} - \\tfrac{1}{4}\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Gemensam nämnare i HL",
-    "text": "Bråkaddition kräver gemensam nämnare. För 1,\\,2,\\,3,\\,4 är MGN = 12. Skriv om: 1 = \\tfrac{12}{12},\\ \\tfrac{1}{2}=\\tfrac{6}{12},\\ \\tfrac{1}{3}=\\tfrac{4}{12},\\ \\tfrac{1}{4}=\\tfrac{3}{12}.",
+    "text": "Bråkaddition kräver gemensam nämnare. För \uE0001,\\,2,\\,3,\\,4\uE001 är MGN = 12. Skriv om: \uE0001 = \\tfrac{12}{12},\\ \\tfrac{1}{2}=\\tfrac{6}{12},\\ \\tfrac{1}{3}=\\tfrac{4}{12},\\ \\tfrac{1}{4}=\\tfrac{3}{12}\uE001.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Räkna HL",
-    "text": "\\tfrac{12}{12} - \\tfrac{6}{12} + \\tfrac{4}{12} - \\tfrac{3}{12} = \\tfrac{12 - 6 + 4 - 3}{12} = \\tfrac{7}{12}.",
+    "text": "\uE000\\tfrac{12}{12} - \\tfrac{6}{12} + \\tfrac{4}{12} - \\tfrac{3}{12} = \\tfrac{12 - 6 + 4 - 3}{12} = \\tfrac{7}{12}\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Gemensam nämnare i VL-parentesen",
-    "text": "För 5,\\,10,\\,15,\\,20 är MGN = 60. Skriv om: \\tfrac{1}{5}=\\tfrac{12}{60},\\ \\tfrac{1}{10}=\\tfrac{6}{60},\\ \\tfrac{1}{15}=\\tfrac{4}{60},\\ \\tfrac{1}{20}=\\tfrac{3}{60}.",
+    "text": "För \uE0005,\\,10,\\,15,\\,20\uE001 är MGN = 60. Skriv om: \uE000\\tfrac{1}{5}=\\tfrac{12}{60},\\ \\tfrac{1}{10}=\\tfrac{6}{60},\\ \\tfrac{1}{15}=\\tfrac{4}{60},\\ \\tfrac{1}{20}=\\tfrac{3}{60}\uE001.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Räkna VL-parentesen",
-    "text": "\\tfrac{12}{60} - \\tfrac{6}{60} + \\tfrac{4}{60} - \\tfrac{3}{60} = \\tfrac{7}{60}. Samma täljare 7 — det är poängen med uppgiften.",
+    "text": "\uE000\\tfrac{12}{60} - \\tfrac{6}{60} + \\tfrac{4}{60} - \\tfrac{3}{60} = \\tfrac{7}{60}\uE001. Samma täljare 7 — det är poängen med uppgiften.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Sätt in i ekvationen",
-    "text": "x\\cdot\\tfrac{7}{60} = \\tfrac{7}{12}.",
+    "text": "\uE000x\\cdot\\tfrac{7}{60} = \\tfrac{7}{12}\uE001.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Lös ut x",
-    "text": "Multiplicera båda led med \\tfrac{60}{7}: x = \\tfrac{7}{12}\\cdot\\tfrac{60}{7} = \\tfrac{60}{12} = 5.",
+    "text": "Multiplicera båda led med \uE000\\tfrac{60}{7}\uE001: \uE000x = \\tfrac{7}{12}\\cdot\\tfrac{60}{7} = \\tfrac{60}{12} = 5\uE001.",
     "tier": "essential"
    },
    {
     "n": 11,
     "title": "Verifiera",
-    "text": "Sätt in x=5 i VL: \\tfrac{5}{5} - \\tfrac{5}{10} + \\tfrac{5}{15} - \\tfrac{5}{20} = 1 - \\tfrac{1}{2} + \\tfrac{1}{3} - \\tfrac{1}{4} — identiskt med HL. Stämmer.",
+    "text": "Sätt in \uE000x=5\uE001 i VL: \uE000\\tfrac{5}{5} - \\tfrac{5}{10} + \\tfrac{5}{15} - \\tfrac{5}{20} = 1 - \\tfrac{1}{2} + \\tfrac{1}{3} - \\tfrac{1}{4}\uE001 — identiskt med HL. Stämmer.",
     "tier": "essential"
    },
    {
@@ -13382,13 +13382,13 @@
    {
     "n": 2,
     "title": "Översätt villkoret till en ekvation",
-    "text": "P(pojke) = (2/3) P(flicka) blir \\dfrac{p}{p+f} = \\dfrac{2}{3} \\cdot \\dfrac{f}{p+f}.",
+    "text": "\uE000P(pojke) = (2/3) P(flicka)\uE001 blir \uE000\\dfrac{p}{p+f} = \\dfrac{2}{3} \\cdot \\dfrac{f}{p+f}\uE001.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Eliminera den gemensamma nämnaren",
-    "text": "Båda sidor har samma nämnare p + f (≠ 0 eftersom klassen inte är tom). Multiplicera båda led med (p + f) — kvar blir den rena relationen p = \\dfrac{2}{3} f.",
+    "text": "Båda sidor har samma nämnare \uE000p + f\uE001 (≠ 0 eftersom klassen inte är tom). Multiplicera båda led med (p \uE000+ f\uE001) — kvar blir den rena relationen \uE000p = \\dfrac{2}{3} f\uE001.",
     "tier": "essential"
    },
    {
