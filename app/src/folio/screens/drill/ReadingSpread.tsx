@@ -1,5 +1,6 @@
-import { type ReactNode, type RefObject, useLayoutEffect, useRef, useState } from 'react'
+import { type ReactNode, type RefObject, useRef, useState } from 'react'
 import { MathText } from '@/components/MathText'
+import { Lit } from '@/folio/ui/Lit'
 import { TacticNote, Verdict } from './DrillHead'
 import { DtkPlate } from './DtkPlate'
 import type { DrillCoreActions, DrillCoreRefs, DrillCoreView } from './drillCore'
@@ -7,7 +8,7 @@ import { gapModel } from './ElfGaps'
 import { Facit } from './Facit'
 import { GradedOptions, Options } from './Options'
 import { PassageView } from './PassageView'
-import { PhoneSheet, type SheetState } from './PhoneSheet'
+import { PhoneSheet, type ReadingTab } from './PhoneSheet'
 import type { DrillQuestion } from './types'
 import './reading.css'
 
@@ -18,7 +19,6 @@ export function ReadingSpread({
   questions,
   phone,
   index,
-  total,
   frameworks,
   action,
   problem,
@@ -42,29 +42,22 @@ export function ReadingSpread({
 }) {
   const feedback = view.phase === 'feedback'
   const q = view.question
-  const [sheetChoice, setSheetChoice] = useState<{
+  const [tabChoice, setTabChoice] = useState<{
     qid: string
     feedback: boolean
-    state: SheetState
+    tab: ReadingTab
   } | null>(null)
-  const sheet =
-    sheetChoice?.qid === q.qid && sheetChoice.feedback === feedback
-      ? sheetChoice.state
-      : feedback
-        ? 'full'
-        : 'peek'
-  const setSheet = (state: SheetState) => setSheetChoice({ qid: q.qid, feedback, state })
+  const currentChoice = tabChoice?.qid === q.qid && tabChoice.feedback === feedback
+  // Commit the new key too: revisiting an earlier pass question must not revive
+  // a stale Texten choice and leave the host focusing a hidden question.
+  if (!currentChoice) setTabChoice({ qid: q.qid, feedback, tab: 'question' })
+  const tab = currentChoice ? tabChoice.tab : 'question'
+  const setTab = (tab: ReadingTab) => setTabChoice({ qid: q.qid, feedback, tab })
   const documentRef = useRef<HTMLDivElement>(null)
-  const previousSheet = useRef(sheet)
-  useLayoutEffect(() => {
-    if (phone && feedback && previousSheet.current === 'peek' && sheet === 'full' && !suspended)
-      verdict.current?.focus()
-    previousSheet.current = sheet
-  }, [phone, feedback, sheet, suspended, verdict])
   const gaps = gapModel(view, questions)
   const cite = (n: number, source?: string) => {
     if (phone) {
-      setSheet('peek')
+      setTab('text')
       window.requestAnimationFrame(() =>
         documentRef.current
           ?.querySelector<HTMLElement>(`[data-n="${n}"]`)
@@ -144,9 +137,8 @@ export function ReadingSpread({
         questions={questions}
         index={view.index}
         onZoom={(rotation) => {
-          // Closing the viewer must reveal the verdict even after the reader
-          // folded feedback away to inspect the plate.
-          if (phone && feedback) setSheet('full')
+          // The host restores question/verdict focus when the viewer closes.
+          if (phone) setTab('question')
           onZoom(rotation)
         }}
       />
@@ -157,36 +149,22 @@ export function ReadingSpread({
     return (
       <div className="rd-spread">
         <div className="rd-verso">{passage}</div>
-        <div className="rd-recto">{question}</div>
+        <Lit as="div" className="rd-recto">
+          {question}
+        </Lit>
       </div>
     )
   return (
     <div className="rd-phone">
-      <div
-        className="rd-document"
-        data-testid="rd-document"
-        ref={documentRef}
-        inert={sheet === 'full' || undefined}
-      >
-        {passage}
-        {!feedback ? question : null}
-      </div>
       <PhoneSheet
-        state={sheet}
-        setState={setSheet}
-        feedback={feedback}
-        position={`Fråga ${index + 1} av ${total}`}
+        tab={tab}
+        setTab={setTab}
+        questionKey={q.qid}
+        passage={<div ref={documentRef}>{passage}</div>}
         action={action}
-        onQuestion={() => {
-          const target = feedback
-            ? documentRef.current?.querySelector<HTMLElement>('.rd-passage, .rd-plate')
-            : problem.current
-          if (feedback && target) target.tabIndex = -1
-          window.requestAnimationFrame(() => target?.focus())
-        }}
-        onReturn={() => setSheet('full')}
+        suspended={suspended}
       >
-        {feedback ? answer : null}
+        {question}
       </PhoneSheet>
     </div>
   )

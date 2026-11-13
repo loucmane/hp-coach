@@ -204,6 +204,17 @@ beforeEach(() => {
 })
 
 describe('Reading through SessionPlayer and the Folio host', () => {
+  it('uses two desktop sheets with paragraph signs and one lit question', async () => {
+    const { container } = mount()
+    await questionReady()
+    expect(container.querySelector('.rd-spread > .rd-verso .rd-passage')).toBeInTheDocument()
+    expect(container.querySelector('.rd-spread > .rd-recto .rd-question')).toBeInTheDocument()
+    expect(container.querySelectorAll('[data-lit="true"]')).toHaveLength(1)
+    expect(container.querySelectorAll('.fa-ui-go')).toHaveLength(1)
+    expect(screen.getByTestId('rd-para-1').querySelector('.rd-para-n')).toHaveTextContent('¶ 1')
+    expect(screen.getByTestId('rd-para-2').querySelector('.rd-para-n')).toHaveTextContent('¶ 2')
+  })
+
   it.each([
     false,
     true,
@@ -219,6 +230,7 @@ describe('Reading through SessionPlayer and the Folio host', () => {
     }))
     mount()
     await questionReady()
+    if (phone) fireEvent.click(screen.getByRole('tab', { name: 'Texten' }))
     const plate = screen.getByTestId('rd-plate')
     const image = within(plate).getByRole('img')
     const rotate = within(plate).getByRole('button', { name: 'Rotera figur 90 grader' })
@@ -250,6 +262,7 @@ describe('Reading through SessionPlayer and the Folio host', () => {
     key('Enter')
     key('Enter')
     await questionReady(2)
+    if (phone) fireEvent.click(screen.getByRole('tab', { name: 'Texten' }))
     const nextImage = within(screen.getByTestId('rd-plate')).getByRole('img')
     expect(nextImage).toHaveAttribute('src', '/next.jpg')
     expect(nextImage.style.transform).toContain('rotate(0deg)')
@@ -272,9 +285,7 @@ describe('Reading through SessionPlayer and the Folio host', () => {
     key('Enter')
     const verdict = screen.getByTestId('fa-verdict')
     const prompt = screen.getByTestId('drill-prompt')
-    const content = phone
-      ? screen.getByTestId('rd-sheet').querySelector('.rd-sheet-body')
-      : question
+    const content = question
     expect(
       Array.from(content?.children ?? [])
         .slice(0, 4)
@@ -292,22 +303,24 @@ describe('Reading through SessionPlayer and the Folio host', () => {
   it.each([
     false,
     true,
-  ])('numbers body paragraphs, cites evidence and handles the sheet, phone=%s', async (phone) => {
+  ])('numbers body paragraphs, cites evidence and switches tabs, phone=%s', async (phone) => {
     h.phone = phone
     const { container } = mount()
     await questionReady()
+    if (phone) fireEvent.click(screen.getByRole('tab', { name: 'Texten' }))
     expect(screen.getByRole('heading', { name: 'En titel' })).toBeInTheDocument()
     expect(screen.getByTestId('rd-para-1')).toHaveTextContent(body[0])
     expect(screen.queryByTestId('rd-para-3')).toBeNull()
     expect(screen.queryByTestId('rd-badge')).toBeNull()
-    if (phone) expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'peek')
+    if (phone) expect(screen.getByTestId('rd-document')).toBeVisible()
     await accessible(container)
+    if (phone) fireEvent.click(screen.getByRole('tab', { name: 'Frågan' }))
     key('a')
     fireEvent.click(screen.getByTestId('fa-lock'))
     expect(screen.getByTestId('fa-verdict')).toHaveFocus()
     if (phone) {
-      expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'full')
-      expect(screen.getByTestId('rd-document')).toHaveAttribute('inert')
+      expect(screen.getByRole('tab', { name: 'Frågan' })).toHaveAttribute('aria-selected', 'true')
+      expect(screen.getByTestId('rd-document')).not.toBeVisible()
     }
     expect(screen.getByTestId('fa-step-1')).toBeVisible()
     await accessible(container)
@@ -322,31 +335,36 @@ describe('Reading through SessionPlayer and the Folio host', () => {
     ).toEqual(citedBefore)
     expect(screen.getByTestId('rd-para-2')).toHaveAttribute('data-flash', 'true')
     if (phone) {
-      expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'peek')
-      expect(screen.getByTestId('rd-document')).not.toHaveAttribute('inert')
+      expect(screen.getByRole('tab', { name: 'Texten' })).toHaveAttribute('aria-selected', 'true')
+      expect(screen.getByTestId('rd-document')).toBeVisible()
+      await waitFor(() => expect(screen.getByTestId('rd-para-2')).toHaveFocus())
       await accessible(container)
-      fireEvent.click(screen.getByRole('button', { name: 'Tillbaka till facit' }))
-      expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'full')
-      expect(screen.getByTestId('fa-verdict')).toHaveFocus()
+      fireEvent.click(screen.getByRole('tab', { name: 'Frågan' }))
+      expect(screen.getByRole('tab', { name: 'Frågan' })).toHaveFocus()
+      expect(screen.getByTestId('fa-verdict')).toBeVisible()
+      expect(screen.getByTestId('fa-step-1')).toBeVisible()
     }
   })
-  it('keeps focus on the grab handle when toggling full and open feedback', async () => {
+  it('keeps tab focus, selected answers and all feedback through phone tab switches', async () => {
     h.phone = true
     mount()
     await questionReady()
     key('a')
-    key('Enter')
-    const handle = screen.getByRole('button', { name: 'Visa mindre facit' })
-    handle.focus()
-    fireEvent.click(handle)
-    expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'open')
-    expect(handle).toHaveFocus()
-    fireEvent.click(handle)
-    expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'full')
-    expect(handle).toHaveFocus()
-    fireEvent.click(screen.getByRole('button', { name: 'Visa texten' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Tillbaka till facit' }))
-    expect(screen.getByTestId('fa-verdict')).toHaveFocus()
+    fireEvent.click(screen.getByRole('tab', { name: 'Texten' }))
+    expect(screen.getByTestId('fa-lock').closest('[data-lit="true"]')).toBeNull()
+    fireEvent.click(screen.getByRole('tab', { name: 'Frågan' }))
+    expect(screen.getByTestId('option-A')).toHaveAttribute('aria-checked', 'true')
+    fireEvent.click(screen.getByTestId('fa-lock'))
+    const verdict = screen.getByTestId('fa-verdict')
+    for (const name of ['Texten', 'Frågan']) {
+      const tab = screen.getByRole('tab', { name })
+      fireEvent.click(tab)
+      expect(tab).toHaveFocus()
+      expect(tab).toHaveAttribute('aria-selected', 'true')
+    }
+    expect(screen.getByTestId('fa-verdict')).toBe(verdict)
+    expect(verdict).toBeVisible()
+    expect(screen.getByTestId('fa-step-1')).toBeVisible()
   })
   it('shows only synthetic disclosure and toggles its verbatim note', async () => {
     h.bank = [{ ...reading(), qid: 'p5-las-b19-002-r1-LÄS-001' }]
@@ -420,6 +438,7 @@ describe('Reading through SessionPlayer and the Folio host', () => {
     }))
     const { container } = mount()
     await questionReady()
+    if (phone) fireEvent.click(screen.getByRole('tab', { name: 'Texten' }))
     const plate = screen.getByTestId('rd-plate')
     expect(screen.getByText('Första av tre frågor till figuren')).toBeInTheDocument()
     expect(plate).toHaveTextContent('uppgifterna 29–31')
@@ -438,12 +457,13 @@ describe('Reading through SessionPlayer and the Folio host', () => {
       key('a')
       key('Enter')
       await accessible(container)
-      if (phone) fireEvent.click(screen.getByRole('button', { name: 'Visa texten' }))
+      if (phone) fireEvent.click(screen.getByRole('tab', { name: 'Texten' }))
       fireEvent.click(screen.getByTestId('question-figure'))
       key('Enter')
       fireEvent.keyDown(screen.getByRole('dialog', { name: 'Förstorad figur' }), { key: 'Escape' })
       expect(screen.getByTestId('fa-verdict')).toHaveFocus()
-      if (phone) expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'full')
+      if (phone)
+        expect(screen.getByRole('tab', { name: 'Frågan' })).toHaveAttribute('aria-selected', 'true')
       key('Enter')
       await questionReady(index + 1)
       expect(screen.getByTestId('rd-plate') === plate).toBe(true)
