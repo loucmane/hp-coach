@@ -116,7 +116,7 @@ describe('Folio question mapper and block seam', () => {
     // this title rule. In var-2026 several original paragraphs are flattened.
     expect(changed).toEqual([
       { qid: 'var-2013-verb2-LÄS-012', path: '.steps.1.text', ordinal: 3, before: 4, after: 3 },
-      { qid: 'var-2026-verb2-LÄS-017', path: '.steps.1.text', ordinal: 1, before: 2, after: 1 },
+      { qid: 'var-2026-verb2-LÄS-017', path: '.steps.1.text', ordinal: 2, before: 3, after: 2 },
     ])
     console.info('Reading ordinal/quote audit (single-location fields):', summary)
   })

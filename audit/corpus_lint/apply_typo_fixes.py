@@ -27,6 +27,9 @@ Exact option fixes run after spelling corrections. They require a matching
 question id, option letter, and complete old text; prompts, numeric answers
 on other questions, and already-corrected options are left alone.
 Exact prompt fixes likewise require a matching qid and complete old prompt.
+Passage fixes match a reviewed boundary (or complete damaged context) only
+inside the named questions' context fields. They never guess at paragraphs
+from casing or punctuation during a re-parse.
 
 USAGE:
     python3 audit/corpus_lint/apply_typo_fixes.py            # dry run
@@ -192,8 +195,72 @@ def apply_prompt_fixes(question: dict, prompt_fixes: dict, counts: dict) -> dict
     return {**question, 'prompt': correct}
 
 
+def build_passage_replacements(passage_list: list[dict]) -> dict:
+    """Index source-verified context edits, rejecting ambiguous duplicates."""
+    out = {}
+    for fix in passage_list:
+        if not fix['text'] or fix['text'] in fix['correct']:
+            raise ValueError('Passage fixes must remove their nonempty source pattern')
+        for qid in fix['qids']:
+            rules = out.setdefault(qid, {})
+            if fix['text'] in rules:
+                raise ValueError(f'Duplicate passage fix: {qid}')
+            rules[fix['text']] = fix['correct']
+    return out
+
+
+def apply_passage_fixes(question: dict, passage_fixes: dict, counts: dict) -> dict:
+    """Join only explicitly reviewed text in its original reading passage."""
+    qid, context = question.get('qid'), question.get('context')
+    if question.get('section') not in ('LÄS', 'ELF') or not isinstance(context, str):
+        return question
+    corrected = context
+    for text, replacement in passage_fixes.get(qid, {}).items():
+        occurrences = corrected.count(text)
+        if occurrences > 1:
+            raise ValueError(f'Ambiguous passage boundary: {qid}')
+        if occurrences:
+            corrected = corrected.replace(text, replacement, 1)
+            counts[f'{qid} passage'] += 1
+    return {**question, 'context': corrected} if corrected != context else question
+
+
+def build_citation_replacements(citation_list: list[dict]) -> dict:
+    """Index exact explanation-field edits; never renumber citations blindly."""
+    out = {}
+    for fix in citation_list:
+        key = tuple(fix['path'])
+        if not key or fix['text'] == fix['correct']:
+            raise ValueError('Citation fixes need a field path and changed text')
+        rules = out.setdefault(fix['qid'], {})
+        if key in rules:
+            raise ValueError(f'Duplicate citation fix: {fix["qid"]} {key}')
+        rules[key] = (fix['text'], fix['correct'])
+    return out
+
+
+def apply_citation_fixes(explanation, rules: dict, counts: dict, qid: str):
+    def replace_at(obj, keys, old, new):
+        if not keys:
+            return new if obj == old else obj
+        key, *remaining = keys
+        if isinstance(obj, dict) and key in obj:
+            return {**obj, key: replace_at(obj[key], remaining, old, new)}
+        if isinstance(obj, list) and isinstance(key, int) and 0 <= key < len(obj):
+            return [replace_at(v, remaining, old, new) if i == key else v
+                    for i, v in enumerate(obj)]
+        return obj
+
+    for keys, (old, new) in rules.items():
+        corrected = replace_at(explanation, keys, old, new)
+        if corrected != explanation:
+            counts[f'{qid} citation'] += 1
+            explanation = corrected
+    return explanation
+
+
 def walk_json_file(path: Path, replacements, counts, dry_run=True, option_fixes=None,
-                   prompt_fixes=None):
+                   prompt_fixes=None, passage_fixes=None, citation_fixes=None):
     """Walk all string fields in a JSON file and apply replacements.
 
     Tracks section context so rules tagged `swedish_only` skip ELF
@@ -225,6 +292,7 @@ def walk_json_file(path: Path, replacements, counts, dry_run=True, option_fixes=
             result = {k: recurse(v, inner_section) for k, v in obj.items()}
             corrected = apply_option_fixes(result, option_fixes or {}, counts)
             corrected = apply_prompt_fixes(corrected, prompt_fixes or {}, counts)
+            corrected = apply_passage_fixes(corrected, passage_fixes or {}, counts)
             if corrected != result:
                 file_changed[0] = True
             return corrected
@@ -236,6 +304,12 @@ def walk_json_file(path: Path, replacements, counts, dry_run=True, option_fixes=
         isinstance(k, str) and _section_from_qid(k) for k in data
     ):
         new_data = {k: recurse(v, _section_from_qid(k)) for k, v in data.items()}
+        for qid, explanation in new_data.items():
+            corrected = apply_citation_fixes(
+                explanation, (citation_fixes or {}).get(qid, {}), counts, qid)
+            if corrected != explanation:
+                file_changed[0] = True
+                new_data[qid] = corrected
     else:
         new_data = recurse(data, None)
 
@@ -258,15 +332,22 @@ def main():
     ap.add_argument('--fix-list', default=str(SCRIPT_DIR / 'typo_fixes.json'))
     ap.add_argument('--options-only', action='store_true',
                     help='Apply only exact option fixes, without the word/phrase sweep')
+    ap.add_argument('--passages-only', action='store_true',
+                    help='Apply only the source-verified passage and citation repairs')
     args = ap.parse_args()
+    if args.options_only and args.passages_only:
+        ap.error('--options-only and --passages-only are mutually exclusive')
 
     fixes = json.loads(Path(args.fix_list).read_text())
     fix_list = fixes['fix']
     phrase_list = fixes.get('phrase_fix', [])
     option_fixes = build_option_replacements(fixes.get('option_fix', []))
     prompt_fixes = build_prompt_replacements(fixes.get('prompt_fix', []))
+    passage_fixes = build_passage_replacements(fixes.get('passage_fix', []))
+    citation_fixes = build_citation_replacements(fixes.get('citation_fix', []))
     print(f'Loaded {len(fix_list)} verified word fixes + {len(phrase_list)} phrase fixes '
           f'+ {len(option_fixes)} option fixes + {len(prompt_fixes)} prompt fixes '
+          f'+ passage fixes for {len(passage_fixes)} questions '
           f'from {args.fix_list}')
 
     # Phrase replacements run FIRST (greedy multi-token match), then
@@ -276,6 +357,12 @@ def main():
     replacements = build_phrase_replacements(phrase_list) + build_replacements(fix_list)
     if args.options_only:
         replacements = []
+        prompt_fixes = {}
+        passage_fixes = {}
+        citation_fixes = {}
+    if args.passages_only:
+        replacements = []
+        option_fixes = {}
         prompt_fixes = {}
 
     counts = defaultdict(int)
@@ -306,7 +393,8 @@ def main():
             if f.name.startswith('_'):
                 continue
             if walk_json_file(f, replacements, counts, dry_run=not args.apply,
-                              option_fixes=option_fixes, prompt_fixes=prompt_fixes):
+                              option_fixes=option_fixes, prompt_fixes=prompt_fixes,
+                              passage_fixes=passage_fixes, citation_fixes=citation_fixes):
                 files_changed.append(str(f.relative_to(ROOT)))
 
     print()
