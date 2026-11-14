@@ -18,7 +18,7 @@
    {
     "letter": "C",
     "why_tempting": "Det är frestande att försöka göra dem 'jämförbara' genom att tänka att 2·6 = 12 och 3·4 = 12 och därför är de lika.",
-    "why_wrong": "Det blandar ihop multiplikation med upprepad multiplikation. 2^{6} är INTE 2 · 6 utan 2 multiplicerat med sig självt sex gånger. Steg 3–4 visar det."
+    "why_wrong": "Det blandar ihop multiplikation med upprepad multiplikation. \uE0002^{6}\uE001 är INTE 2 · 6 utan 2 multiplicerat med sig självt sex gånger. Steg 3–4 visar det."
    },
    {
     "letter": "D",
@@ -28,29 +28,29 @@
   ],
   "framework_id": "KVA-TRAP-018",
   "pitfall": null,
-  "solution_path": "Räkna ut potenserna direkt: 2^{6} = 64 och 3^{4} = 81. 81 > 64, alltså II > I. Svaret är B.",
+  "solution_path": "Räkna ut potenserna direkt: \uE0002^{6} = 64\uE001 och \uE0003^{4} = 81\uE001. 81 > 64, alltså II > I. Svaret är B.",
   "steps": [
    {
     "n": 1,
-    "text": "Jämför två potenser: Kvantitet I = 2^{6}, Kvantitet II = 3^{4}. Vilken är större?",
+    "text": "Jämför två potenser: Kvantitet I = \uE0002^{6}\uE001, Kvantitet II = \uE0003^{4}\uE001. Vilken är större?",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "a^{n} betyder a multiplicerat med sig självt n gånger. Så 2^{6} = 2 \\cdot 2 \\cdot 2 \\cdot 2 \\cdot 2 \\cdot 2 och 3^{4} = 3 \\cdot 3 \\cdot 3 \\cdot 3.",
+    "text": "\uE000a^{n}\uE001 betyder a multiplicerat med sig självt n gånger. Så \uE0002^{6} = 2 \\cdot 2 \\cdot 2 \\cdot 2 \\cdot 2 \\cdot 2\uE001 och \uE0003^{4} = 3 \\cdot 3 \\cdot 3 \\cdot 3\uE001.",
     "tier": "detail",
     "title": "Vad betyder en exponent?"
    },
    {
     "n": 3,
-    "text": "2^{2} = 4. 2^{3} = 4 \\cdot 2 = 8. 2^{4} = 8 \\cdot 2 = 16. 2^{5} = 16 \\cdot 2 = 32. 2^{6} = 32 \\cdot 2 = 64.",
+    "text": "\uE0002^{2} = 4\uE001. \uE0002^{3} = 4 \\cdot 2 = 8\uE001. \uE0002^{4} = 8 \\cdot 2 = 16\uE001. \uE0002^{5} = 16 \\cdot 2 = 32\uE001. \uE0002^{6} = 32 \\cdot 2 = 64\uE001.",
     "tier": "essential",
     "title": "Räkna 2⁶ steg för steg"
    },
    {
     "n": 4,
-    "text": "3^{2} = 9. 3^{3} = 9 \\cdot 3 = 27. 3^{4} = 27 \\cdot 3 = 81.",
+    "text": "\uE0003^{2} = 9\uE001. \uE0003^{3} = 9 \\cdot 3 = 27\uE001. \uE0003^{4} = 27 \\cdot 3 = 81\uE001.",
     "tier": "essential",
     "title": "Räkna 3⁴ steg för steg"
    },
@@ -68,7 +68,7 @@
    },
    {
     "n": 7,
-    "text": "När basen är liten (som 2) växer potensen lång- samt; när basen är större (som 3) växer den snabbare per steg. Här 'hinner' 3:an ifatt på fyra steg trots att 2:an får två extra. 3^{4}/2^{6} = 81/64 \\approx 1{,}27.",
+    "text": "När basen är liten (som 2) växer potensen lång- samt; när basen är större (som 3) växer den snabbare per steg. Här 'hinner' 3:an ifatt på fyra steg trots att 2:an får två extra. \uE0003^{4}/2^{6} = 81/64 \\approx 1{,}27\uE001.",
     "tier": "detail",
     "title": "Tumregel som ramverk"
    },
@@ -91,7 +91,7 @@
     "title": "Slutsats"
    }
   ],
-  "technique": "Numerisk potens-jämförelse: när två potenser med olika baser OCH olika exponenter ska jämföras, finns ingen genväg — beräkna båda. Triggern: 'jämför a^{m} med b^{n}, a ≠ b' → räkna ut steg för steg."
+  "technique": "Numerisk potens-jämförelse: när två potenser med olika baser OCH olika exponenter ska jämföras, finns ingen genväg — beräkna båda. Triggern: 'jämför \uE000a^{m}\uE001 med \uE000b^{n}\uE001, a ≠ b' → räkna ut steg för steg."
  },
  "host-ver2-2019-kvant1-KVA-014": {
   "_meta": {
@@ -122,11 +122,11 @@
   ],
   "framework_id": "KVA-TRAP-023",
   "pitfall": "Frestelsen är att jämföra bråk direkt på täljare eller nämnare utan att samordna nämnarna. Botemedlet: lås nämnarna lika INNAN du tittar på täljarna — då blir jämförelsen mekanisk.",
-  "solution_path": "Skriv om I med gemensam nämnare 64: \\frac{1}{4} + \\frac{1}{16} + \\frac{1}{64} = \\frac{16}{64} + \\frac{4}{64} + \\frac{1}{64} = \\frac{21}{64}. Jämför med II = 85/256 genom att förlänga: \\frac{21}{64} = \\frac{84}{256}. 84 < 85, så II > I. Svaret är B.",
+  "solution_path": "Skriv om I med gemensam nämnare 64: \uE000\\frac{1}{4} + \\frac{1}{16} + \\frac{1}{64} = \\frac{16}{64} + \\frac{4}{64} + \\frac{1}{64} = \\frac{21}{64}\uE001. Jämför med II = 85/256 genom att förlänga: \uE000\\frac{21}{64} = \\frac{84}{256}\uE001. 84 < 85, så II > I. Svaret är B.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi ska jämföra summan I = \\frac{1}{4} + \\frac{1}{16} + \\frac{1}{64} med II = \\frac{85}{256}. För att jämföra bråk behöver de ha samma nämnare.",
+    "text": "Vi ska jämföra summan I = \uE000\\frac{1}{4} + \\frac{1}{16} + \\frac{1}{64}\uE001 med II = \uE000\\frac{85}{256}\uE001. För att jämföra bråk behöver de ha samma nämnare.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
@@ -144,7 +144,7 @@
    },
    {
     "n": 4,
-    "text": "\\frac{1}{4} = \\frac{1 \\cdot 16}{4 \\cdot 16} = \\frac{16}{64}. \\frac{1}{16} = \\frac{1 \\cdot 4}{16 \\cdot 4} = \\frac{4}{64}. \\frac{1}{64} är redan klar.",
+    "text": "\uE000\\frac{1}{4} = \\frac{1 \\cdot 16}{4 \\cdot 16} = \\frac{16}{64}\uE001. \uE000\\frac{1}{16} = \\frac{1 \\cdot 4}{16 \\cdot 4} = \\frac{4}{64}\uE001. \uE000\\frac{1}{64}\uE001 är redan klar.",
     "tier": "essential",
     "title": "Förläng bråken till nämnare 64"
    },
@@ -156,7 +156,7 @@
    },
    {
     "n": 6,
-    "text": "\\frac{16}{64} + \\frac{4}{64} + \\frac{1}{64} = \\frac{16 + 4 + 1}{64} = \\frac{21}{64}.",
+    "text": "\uE000\\frac{16}{64} + \\frac{4}{64} + \\frac{1}{64} = \\frac{16 + 4 + 1}{64} = \\frac{21}{64}\uE001.",
     "tier": "essential",
     "title": "Summera I"
    },
@@ -168,7 +168,7 @@
    },
    {
     "n": 8,
-    "text": "\\frac{21}{64} = \\frac{21 \\cdot 4}{64 \\cdot 4} = \\frac{84}{256}.",
+    "text": "\uE000\\frac{21}{64} = \\frac{21 \\cdot 4}{64 \\cdot 4} = \\frac{84}{256}\uE001.",
     "tier": "essential",
     "title": "Förläng I till nämnare 256"
    },
@@ -244,31 +244,31 @@
    },
    {
     "n": 3,
-    "text": "För en RÄTVINKLIG triangel med kateterna a och b och hypotenusan c gäller a^{2} + b^{2} = c^{2}. Omvänt: om sidorna uppfyller den ekvationen är triangeln rätvinklig — och då är största vinkeln exakt 90°.",
+    "text": "För en RÄTVINKLIG triangel med kateterna a och b och hypotenusan c gäller \uE000a^{2} + b^{2} = c^{2}\uE001. Omvänt: om sidorna uppfyller den ekvationen är triangeln rätvinklig — och då är största vinkeln exakt 90°.",
     "tier": "detail",
     "title": "Pythagoras sats"
    },
    {
     "n": 4,
-    "text": "6^{2} = 6 \\cdot 6 = 36. På samma sätt 8^{2} = 64 och 10^{2} = 100.",
+    "text": "\uE0006^{2} = 6 \\cdot 6 = 36\uE001. På samma sätt \uE0008^{2} = 64\uE001 och \uE00010^{2} = 100\uE001.",
     "tier": "detail",
     "title": "Vad betyder 6²?"
    },
    {
     "n": 5,
-    "text": "6^{2} + 8^{2} = 36 + 64 = 100. Och 10^{2} = 100. 36 + 64 = 100 ✓. Pythagoras stämmer — triangeln är rätvinklig och största vinkeln är 90°.",
+    "text": "\uE0006^{2} + 8^{2} = 36 + 64 = 100\uE001. Och \uE00010^{2} = 100\uE001. \uE00036 + 64 = 100\uE001 ✓. Pythagoras stämmer — triangeln är rätvinklig och största vinkeln är 90°.",
     "tier": "essential",
     "title": "Testa Pythagoras på 6-8-10"
    },
    {
     "n": 6,
-    "text": "9^{2} = 81, 12^{2} = 144, 15^{2} = 225.",
+    "text": "\uE0009^{2} = 81\uE001, \uE00012^{2} = 144\uE001, \uE00015^{2} = 225\uE001.",
     "tier": "detail",
     "title": "Räkna 9², 12², 15²"
    },
    {
     "n": 7,
-    "text": "9^{2} + 12^{2} = 81 + 144 = 225. Och 15^{2} = 225. 225 = 225 ✓. Pythagoras stämmer — också rätvinklig, största vinkeln 90°.",
+    "text": "\uE0009^{2} + 12^{2} = 81 + 144 = 225\uE001. Och \uE00015^{2} = 225\uE001. \uE000225 = 225\uE001 ✓. Pythagoras stämmer — också rätvinklig, största vinkeln 90°.",
     "tier": "essential",
     "title": "Testa Pythagoras på 9-12-15"
    },
@@ -297,7 +297,7 @@
     "title": "Slutsats"
    }
   ],
-  "technique": "Triangel-vinkel via Pythagoras + likformighet: testa om a^{2} + b^{2} = c^{2} för att se om triangeln är rätvinklig. Likformiga trianglar (samma proportion) har samma vinklar. Triggern: 'jämför vinklar i två trianglar med givna sidor' → kolla proportioner och Pythagoras."
+  "technique": "Triangel-vinkel via Pythagoras + likformighet: testa om \uE000a^{2} + b^{2} = c^{2}\uE001 för att se om triangeln är rätvinklig. Likformiga trianglar (samma proportion) har samma vinklar. Triggern: 'jämför vinklar i två trianglar med givna sidor' → kolla proportioner och Pythagoras."
  },
  "host-ver2-2019-kvant1-KVA-016": {
   "_meta": {
@@ -338,7 +338,7 @@
    },
    {
     "n": 2,
-    "text": "Den distributiva lagen säger att a(b + c) = a \\cdot b + a \\cdot c — när en faktor står framför en parentes, gångrar man den med varje term inuti.",
+    "text": "Den distributiva lagen säger att \uE000a(b + c) = a \\cdot b + a \\cdot c\uE001 — när en faktor står framför en parentes, gångrar man den med varje term inuti.",
     "tier": "detail",
     "title": "Vad betyder distributiva lagen?"
    },
@@ -428,7 +428,7 @@
   ],
   "framework_id": "KVA-TRAP-020",
   "pitfall": null,
-  "solution_path": "Konens volym är V = \\frac{1}{3} \\pi r^{2} h. Kon I: \\frac{1}{3}\\pi \\cdot 9 \\cdot 4 = 12\\pi. Kon II: \\frac{1}{3}\\pi \\cdot 16 \\cdot 3 = 16\\pi. 16π > 12π — II är större. Svaret är B.",
+  "solution_path": "Konens volym är \uE000V = \\frac{1}{3} \\pi r^{2} h\uE001. Kon I: \uE000\\frac{1}{3}\\pi \\cdot 9 \\cdot 4 = 12\\pi\uE001. Kon II: \uE000\\frac{1}{3}\\pi \\cdot 16 \\cdot 3 = 16\\pi\uE001. 16π > 12π — II är större. Svaret är B.",
   "steps": [
    {
     "n": 1,
@@ -438,7 +438,7 @@
    },
    {
     "n": 2,
-    "text": "V_{kon} = \\frac{1}{3} \\pi r^{2} h där r är basytans radie och h är höjden. Faktorerna är: π (cirkelkonstanten), r^{2} (radien gångrat med sig själv), h (höjden), och 1/3 (för att kon är 'kägelformad' — bara 1/3 av motsvarande cylinder).",
+    "text": "\uE000V_{kon} = \\frac{1}{3} \\pi r^{2} h\uE001 där r är basytans radie och h är höjden. Faktorerna är: π (cirkelkonstanten), \uE000r^{2}\uE001 (radien gångrat med sig själv), h (höjden), och 1/3 (för att kon är 'kägelformad' — bara 1/3 av motsvarande cylinder).",
     "tier": "detail",
     "title": "Konens volym-formel"
    },
@@ -450,19 +450,19 @@
    },
    {
     "n": 4,
-    "text": "3^{2} = 9, 4^{2} = 16.",
+    "text": "\uE0003^{2} = 9\uE001, \uE0004^{2} = 16\uE001.",
     "tier": "detail",
     "title": "Räkna 3² och 4²"
    },
    {
     "n": 5,
-    "text": "V_{I} = \\frac{1}{3} \\pi \\cdot 3^{2} \\cdot 4 = \\frac{1}{3} \\pi \\cdot 9 \\cdot 4 = \\frac{1}{3} \\pi \\cdot 36 = 12\\pi.",
+    "text": "\uE000V_{I} = \\frac{1}{3} \\pi \\cdot 3^{2} \\cdot 4 = \\frac{1}{3} \\pi \\cdot 9 \\cdot 4 = \\frac{1}{3} \\pi \\cdot 36 = 12\\pi\uE001.",
     "tier": "essential",
     "title": "Räkna kon I:s volym"
    },
    {
     "n": 6,
-    "text": "V_{II} = \\frac{1}{3} \\pi \\cdot 4^{2} \\cdot 3 = \\frac{1}{3} \\pi \\cdot 16 \\cdot 3 = \\frac{1}{3} \\pi \\cdot 48 = 16\\pi.",
+    "text": "\uE000V_{II} = \\frac{1}{3} \\pi \\cdot 4^{2} \\cdot 3 = \\frac{1}{3} \\pi \\cdot 16 \\cdot 3 = \\frac{1}{3} \\pi \\cdot 48 = 16\\pi\uE001.",
     "tier": "essential",
     "title": "Räkna kon II:s volym"
    },
@@ -497,7 +497,7 @@
     "title": "Slutsats"
    }
   ],
-  "technique": "Volym av kon: använd V = \\frac{1}{3} \\pi r^{2} h. När en KVA-uppgift byter plats på r och h: räkna ut bägge, eftersom r kvadreras väger den tyngre. Triggern: 'kon med (r, h) vs (h, r)' → större r vinner."
+  "technique": "Volym av kon: använd \uE000V = \\frac{1}{3} \\pi r^{2} h\uE001. När en KVA-uppgift byter plats på r och h: räkna ut bägge, eftersom r kvadreras väger den tyngre. Triggern: 'kon med (r, h) vs (h, r)' → större r vinner."
  },
  "host-ver2-2019-kvant1-KVA-021": {
   "_meta": {
@@ -528,7 +528,7 @@
   ],
   "framework_id": "KVA-TRAP-011",
   "pitfall": null,
-  "solution_path": "Skriv om: \\frac{x}{100} y = 50 ger y = \\frac{5000}{x}. Värdet på y beror på x. Om x = 100, blir y = 50 < 60. Om x = 50, blir y = 100 > 60. Bägge riktningar är möjliga — information saknas. Svaret är D.",
+  "solution_path": "Skriv om: \uE000\\frac{x}{100} y = 50\uE001 ger \uE000y = \\frac{5000}{x}\uE001. Värdet på y beror på x. Om x = 100, blir y = 50 < 60. Om x = 50, blir y = 100 > 60. Bägge riktningar är möjliga — information saknas. Svaret är D.",
   "steps": [
    {
     "n": 1,
@@ -538,19 +538,19 @@
    },
    {
     "n": 2,
-    "text": "'x procent av y' = \\frac{x}{100} \\cdot y. Det är en multiplikation där x/100 ger 'andelen' (typ 0,3 för 30 %).",
+    "text": "'x procent av y' = \uE000\\frac{x}{100} \\cdot y\uE001. Det är en multiplikation där x/100 ger 'andelen' (typ 0,3 för 30 %).",
     "tier": "detail",
     "title": "Vad betyder 'x procent av'?"
    },
    {
     "n": 3,
-    "text": "\\frac{x}{100} \\cdot y = 50. Lös ut y genom att gångra båda sidor med 100/x: y = \\frac{5000}{x}.",
+    "text": "\uE000\\frac{x}{100} \\cdot y = 50\uE001. Lös ut y genom att gångra båda sidor med 100/x: \uE000y = \\frac{5000}{x}\uE001.",
     "tier": "essential",
     "title": "Översätt första villkoret"
    },
    {
     "n": 4,
-    "text": "\\frac{x}{100} \\cdot z = 60, alltså z = \\frac{6000}{x}. (Vi behöver inte z i jämförelsen, men det visar att samma x styr båda.)",
+    "text": "\uE000\\frac{x}{100} \\cdot z = 60\uE001, alltså \uE000z = \\frac{6000}{x}\uE001. (Vi behöver inte z i jämförelsen, men det visar att samma x styr båda.)",
     "tier": "detail",
     "title": "Översätt andra villkoret"
    },
@@ -1213,11 +1213,11 @@
   ],
   "framework_id": "NOG-TRAP-024",
   "pitfall": null,
-  "solution_path": "Sambandet ger \\frac{x}{400} = \\frac{y}{300}, alltså x = 4y/3. (1) y = 300 → x = 400. Räcker. (2) x + y = 700 + x = 4y/3 → 7y/3 = 700, y = 300, x = 400. Räcker. Var och en ensam är tillräcklig. Svaret är D.",
+  "solution_path": "Sambandet ger \uE000\\frac{x}{400} = \\frac{y}{300}\uE001, alltså x = 4y/3. (1) y = 300 → x = 400. Räcker. (2) x + y = 700 + x = 4y/3 → 7y/3 = 700, y = 300, x = 400. Räcker. Var och en ensam är tillräcklig. Svaret är D.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi har sambandet \\frac{x}{400} = \\frac{y}{300} (en proportion). Vi söker x som ett bestämt tal.",
+    "text": "Vi har sambandet \uE000\\frac{x}{400} = \\frac{y}{300}\uE001 (en proportion). Vi söker x som ett bestämt tal.",
     "tier": "essential",
     "title": "Förstå frågan"
    },
@@ -1432,7 +1432,7 @@
    {
     "letter": "B",
     "why_tempting": "Många stannar vid (6 − 3)² = 3² = 9 — och hoppas att 9 ska skrivas som 3¹.",
-    "why_wrong": "Steg 3–5 visar att 6^{2} - 3^{2} inte är samma sak som (6-3)^{2}. Den första är 36 − 9 = 27, den andra är 3² = 9. Och även om svaret hade varit 9 vore det 3², inte 3¹."
+    "why_wrong": "Steg 3–5 visar att \uE0006^{2} - 3^{2}\uE001 inte är samma sak som \uE000(6-3)^{2}\uE001. Den första är 36 − 9 = 27, den andra är 3² = 9. Och även om svaret hade varit 9 vore det 3², inte 3¹."
    },
    {
     "letter": "C",
@@ -1442,29 +1442,29 @@
   ],
   "framework_id": null,
   "pitfall": null,
-  "solution_path": "Räkna ut potenserna: 6^{2}=36 och 3^{2}=9, alltså 36 − 9 = 27. Skriv 27 som en potens av 3: 27 = 3\\cdot 3\\cdot 3 = 3^{3}. Svaret är D.",
+  "solution_path": "Räkna ut potenserna: \uE0006^{2}=36\uE001 och \uE0003^{2}=9\uE001, alltså 36 − 9 = 27. Skriv 27 som en potens av 3: \uE00027 = 3\\cdot 3\\cdot 3 = 3^{3}\uE001. Svaret är D.",
   "steps": [
    {
     "n": 1,
-    "text": "Frågan vill ha värdet av 6^{2} - 3^{2} uttryckt som en potens av 3. Alla svarsalternativ har for- men 3^{k}, så slutmålet är att hitta exponenten k.",
+    "text": "Frågan vill ha värdet av \uE0006^{2} - 3^{2}\uE001 uttryckt som en potens av 3. Alla svarsalternativ har for- men \uE0003^{k}\uE001, så slutmålet är att hitta exponenten k.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "En liten upphöjd tvåa kallas exponent. 6^{2} betyder 6 gångrat med sig självt: 6^{2} = 6 \\cdot 6. På samma sätt är 3^{2} = 3 \\cdot 3.",
+    "text": "En liten upphöjd tvåa kallas exponent. \uE0006^{2}\uE001 betyder 6 gångrat med sig självt: \uE0006^{2} = 6 \\cdot 6\uE001. På samma sätt är \uE0003^{2} = 3 \\cdot 3\uE001.",
     "tier": "detail",
     "title": "Vad betyder 6²?"
    },
    {
     "n": 3,
-    "text": "6 \\cdot 6 = 36.",
+    "text": "\uE0006 \\cdot 6 = 36\uE001.",
     "tier": "essential",
     "title": "Räkna 6²"
    },
    {
     "n": 4,
-    "text": "3 \\cdot 3 = 9.",
+    "text": "\uE0003 \\cdot 3 = 9\uE001.",
     "tier": "essential",
     "title": "Räkna 3²"
    },
@@ -1476,25 +1476,25 @@
    },
    {
     "n": 6,
-    "text": "3^{0} = 1 (allt upphöjt i 0 är 1), 3^{1} = 3, 3^{2} = 9, 3^{3} = 27. Vi söker den exponent som ger 27.",
+    "text": "\uE0003^{0} = 1\uE001 (allt upphöjt i 0 är 1), \uE0003^{1} = 3\uE001, \uE0003^{2} = 9\uE001, \uE0003^{3} = 27\uE001. Vi söker den exponent som ger 27.",
     "tier": "detail",
-    "title": "Vad betyder 3^k?"
+    "title": "Vad betyder \uE0003^k\uE001?"
    },
    {
     "n": 7,
-    "text": "27 är 3 · 3 · 3. Tre treor multiplicerade ihop. Det är precis definitionen av 3^{3}.",
+    "text": "27 är 3 · 3 · 3. Tre treor multiplicerade ihop. Det är precis definitionen av \uE0003^{3}\uE001.",
     "tier": "essential",
     "title": "Faktorisera 27"
    },
    {
     "n": 8,
-    "text": "A är 3^{0} = 1. B är 3^{1} = 3. C är 3^{2} = 9. D är 3^{3} = 27. Bara D ger 27.",
+    "text": "A är \uE0003^{0} = 1\uE001. B är \uE0003^{1} = 3\uE001. C är \uE0003^{2} = 9\uE001. D är \uE0003^{3} = 27\uE001. Bara D ger 27.",
     "tier": "essential",
     "title": "Matcha mot alternativen"
    },
    {
     "n": 9,
-    "text": "Kontrollera: 3^{3} = 3 \\cdot 3 \\cdot 3 = 9 \\cdot 3 = 27. Och 6^{2} - 3^{2} = 36 - 9 = 27. Stämmer.",
+    "text": "Kontrollera: \uE0003^{3} = 3 \\cdot 3 \\cdot 3 = 9 \\cdot 3 = 27\uE001. Och \uE0006^{2} - 3^{2} = 36 - 9 = 27\uE001. Stämmer.",
     "tier": "detail",
     "title": "Verifiera"
    },
@@ -1505,7 +1505,7 @@
     "title": "Slutsats"
    }
   ],
-  "technique": "Potens-matchningsstrategin: när alla svarsalternativ är potenser av samma bas (här 3^{k}), räkna ut uttrycket numeriskt först och faktorisera sedan resultatet i den givna basen. Triggern: 'fyra svar med samma bas, olika exponent' → räkna fram talet, bryt ner i basen."
+  "technique": "Potens-matchningsstrategin: när alla svarsalternativ är potenser av samma bas (här \uE0003^{k}\uE001), räkna ut uttrycket numeriskt först och faktorisera sedan resultatet i den givna basen. Triggern: 'fyra svar med samma bas, olika exponent' → räkna fram talet, bryt ner i basen."
  },
  "host-ver2-2019-kvant1-XYZ-002": {
   "_meta": {
@@ -1558,7 +1558,7 @@
    },
    {
     "n": 4,
-    "text": "Arean av en triangel är \\frac{1}{2} \\cdot bas \\cdot h\\ddot{o}jd. Basen är en av sidorna, och höjden är det vinkelräta avståndet från motstående hörn till basens linje.",
+    "text": "Arean av en triangel är \uE000\\frac{1}{2} \\cdot bas \\cdot h\\ddot{o}jd\uE001. Basen är en av sidorna, och höjden är det vinkelräta avståndet från motstående hörn till basens linje.",
     "tier": "detail",
     "title": "Triangelarea-formeln"
    },
@@ -1582,7 +1582,7 @@
    },
    {
     "n": 8,
-    "text": "Area = \\frac{1}{2} \\cdot 4 \\cdot 5 = \\frac{20}{2} = 10 areaenheter.",
+    "text": "Area = \uE000\\frac{1}{2} \\cdot 4 \\cdot 5 = \\frac{20}{2} = 10\uE001 areaenheter.",
     "tier": "essential",
     "title": "Sätt in i formeln"
    },
@@ -1740,13 +1740,13 @@
    },
    {
     "n": 2,
-    "text": "Procent betyder 'av hundra'. 35 % = \\frac{35}{100}. Att ta '35 % av x' betyder att gångra: \\frac{35}{100} \\cdot x = \\frac{35x}{100}.",
+    "text": "Procent betyder 'av hundra'. 35 % = \uE000\\frac{35}{100}\uE001. Att ta '35 % av x' betyder att gångra: \uE000\\frac{35}{100} \\cdot x = \\frac{35x}{100}\uE001.",
     "tier": "detail",
     "title": "Vad betyder procent?"
    },
    {
     "n": 3,
-    "text": "\\frac{35}{100} kan förkortas. Både 35 och 100 är delbara med 5: \\frac{35}{100} = \\frac{7}{20}. Så uppgiften blir: när är \\frac{7x}{20} ett heltal?",
+    "text": "\uE000\\frac{35}{100}\uE001 kan förkortas. Både 35 och 100 är delbara med 5: \uE000\\frac{35}{100} = \\frac{7}{20}\uE001. Så uppgiften blir: när är \uE000\\frac{7x}{20}\uE001 ett heltal?",
     "tier": "essential",
     "title": "Förenkla bråket"
    },
@@ -1758,25 +1758,25 @@
    },
    {
     "n": 5,
-    "text": "\\frac{7 \\cdot 30}{20} = \\frac{210}{20} = 10{,}5. Decimaltal — inte heltal. A är ute.",
+    "text": "\uE000\\frac{7 \\cdot 30}{20} = \\frac{210}{20} = 10{,}5\uE001. Decimaltal — inte heltal. A är ute.",
     "tier": "detail",
     "title": "Testa A = 30"
    },
    {
     "n": 6,
-    "text": "\\frac{7 \\cdot 35}{20} = \\frac{245}{20} = 12{,}25. Inte heltal. B är ute.",
+    "text": "\uE000\\frac{7 \\cdot 35}{20} = \\frac{245}{20} = 12{,}25\uE001. Inte heltal. B är ute.",
     "tier": "detail",
     "title": "Testa B = 35"
    },
    {
     "n": 7,
-    "text": "40 är delbart med 20 (40 = 2 · 20). \\frac{7 \\cdot 40}{20} = \\frac{280}{20} = 14. Heltal ✓.",
+    "text": "40 är delbart med 20 (40 = 2 · 20). \uE000\\frac{7 \\cdot 40}{20} = \\frac{280}{20} = 14\uE001. Heltal ✓.",
     "tier": "essential",
     "title": "Testa C = 40"
    },
    {
     "n": 8,
-    "text": "\\frac{7 \\cdot 45}{20} = \\frac{315}{20} = 15{,}75. Inte heltal. D är ute.",
+    "text": "\uE000\\frac{7 \\cdot 45}{20} = \\frac{315}{20} = 15{,}75\uE001. Inte heltal. D är ute.",
     "tier": "detail",
     "title": "Testa D = 45"
    },
@@ -1934,7 +1934,7 @@
    },
    {
     "n": 2,
-    "text": "5(x − 1) är en kompakt skrivning för 'gångra 5 med hela uttrycket inom parentesen'. Den distributiva lagen säger: a(b + c) = a \\cdot b + a \\cdot c — gångra a med varje term inuti var för sig.",
+    "text": "5(x − 1) är en kompakt skrivning för 'gångra 5 med hela uttrycket inom parentesen'. Den distributiva lagen säger: \uE000a(b + c) = a \\cdot b + a \\cdot c\uE001 — gångra a med varje term inuti var för sig.",
     "tier": "detail",
     "title": "Vad betyder parenteserna?"
    },
@@ -2024,11 +2024,11 @@
   ],
   "framework_id": "XYZ-TRAP-015",
   "pitfall": null,
-  "solution_path": "A = \\frac{bh}{2} betyder bh = 2A (gångra båda sidor med 2). Dela båda sidor med b: h = \\frac{2A}{b}. Svaret är B.",
+  "solution_path": "\uE000A = \\frac{bh}{2}\uE001 betyder \uE000bh = 2A\uE001 (gångra båda sidor med 2). Dela båda sidor med b: \uE000h = \\frac{2A}{b}\uE001. Svaret är B.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi har formeln A = \\frac{bh}{2} och ska lösa ut h. Slutmålet är ett uttryck av for- men 'h = något med A och b'.",
+    "text": "Vi har formeln \uE000A = \\frac{bh}{2}\uE001 och ska lösa ut h. Slutmålet är ett uttryck av for- men 'h = något med A och b'.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
@@ -2046,7 +2046,7 @@
    },
    {
     "n": 4,
-    "text": "För att slippa bråket gångrar vi båda sidor med 2: 2 \\cdot A = 2 \\cdot \\frac{bh}{2}. Tvåorna på höger sida tar ut varandra och vi får 2A = bh.",
+    "text": "För att slippa bråket gångrar vi båda sidor med 2: \uE0002 \\cdot A = 2 \\cdot \\frac{bh}{2}\uE001. Tvåorna på höger sida tar ut varandra och vi får 2A = bh.",
     "tier": "essential",
     "title": "Strategin: tag bort delningen först"
    },
@@ -2064,25 +2064,25 @@
    },
    {
     "n": 7,
-    "text": "\\frac{bh}{b} = \\frac{2A}{b}. På vänster sida tar b ut sig själv (b/b = 1), så vänster blir h. Resultat: h = \\frac{2A}{b}.",
+    "text": "\uE000\\frac{bh}{b} = \\frac{2A}{b}\uE001. På vänster sida tar b ut sig själv (b/b = 1), så vänster blir h. Resultat: \uE000h = \\frac{2A}{b}\uE001.",
     "tier": "essential",
     "title": "Dela båda sidor med b"
    },
    {
     "n": 8,
-    "text": "\\frac{bh}{b} betyder bh delat med b. Eftersom bh är b · h kan vi tänka oss 'b · h / b' = 'h · (b/b)' = h · 1 = h.",
+    "text": "\uE000\\frac{bh}{b}\uE001 betyder bh delat med b. Eftersom bh är b · h kan vi tänka oss 'b · h / b' = 'h · (b/b)' = h · 1 = h.",
     "tier": "detail",
     "title": "Varför fungerar förkortningen?"
    },
    {
     "n": 9,
-    "text": "A: h = 2Ab — fel, b ska delas, inte multipliceras. B: h = \\frac{2A}{b} — matchar. C: h = \\frac{Ab}{2} — fel, det är formeln för bA/2. D: h = \\frac{b}{2A} — fel, b och 2A i fel position.",
+    "text": "A: h = 2Ab — fel, b ska delas, inte multipliceras. B: \uE000h = \\frac{2A}{b}\uE001 — matchar. C: \uE000h = \\frac{Ab}{2}\uE001 — fel, det är formeln för bA/2. D: \uE000h = \\frac{b}{2A}\uE001 — fel, b och 2A i fel position.",
     "tier": "essential",
     "title": "Matcha mot alternativen"
    },
    {
     "n": 10,
-    "text": "Säg b = 4, h = 3, då A = 4·3/2 = 6. Stoppa in i h = \\frac{2A}{b}: h = (2·6)/4 = 12/4 = 3 ✓.",
+    "text": "Säg b = 4, h = 3, då A = 4·3/2 = 6. Stoppa in i \uE000h = \\frac{2A}{b}\uE001: h = (2·6)/4 = 12/4 = 3 ✓.",
     "tier": "essential",
     "title": "Verifiera med konkreta tal"
    },
@@ -2124,7 +2124,7 @@
   ],
   "framework_id": "XYZ-TRAP-043",
   "pitfall": null,
-  "solution_path": "Cirkel A har radie 3 cm, alltså area \\pi \\cdot 3^{2} = 9\\pi. Eftersom denna area är 1/4 av cirkel B:s area, är B:s area 4 · 9π = 36π, och B:s radie är \\sqrt{36} = 6 cm. Svaret är B.",
+  "solution_path": "Cirkel A har radie 3 cm, alltså area \uE000\\pi \\cdot 3^{2} = 9\\pi\uE001. Eftersom denna area är 1/4 av cirkel B:s area, är B:s area 4 · 9π = 36π, och B:s radie är \uE000\\sqrt{36} = 6\uE001 cm. Svaret är B.",
   "steps": [
    {
     "n": 1,
@@ -2134,25 +2134,25 @@
    },
    {
     "n": 2,
-    "text": "En cirkels area är \\pi \\cdot r^{2}, där r är radien och π ≈ 3,14. Formeln säger: radien upphöjd i två, gångrat med π.",
+    "text": "En cirkels area är \uE000\\pi \\cdot r^{2}\uE001, där r är radien och π ≈ 3,14. Formeln säger: radien upphöjd i två, gångrat med π.",
     "tier": "detail",
     "title": "Cirkelns area-formel"
    },
    {
     "n": 3,
-    "text": "r^{2} betyder r · r — radien gångrat med sig själv. Om r = 3 är r^{2} = 9.",
+    "text": "\uE000r^{2}\uE001 betyder r · r — radien gångrat med sig själv. Om r = 3 är \uE000r^{2} = 9\uE001.",
     "tier": "detail",
     "title": "Vad betyder r²?"
    },
    {
     "n": 4,
-    "text": "A:s radie är 3, så A:s area = \\pi \\cdot 3^{2} = \\pi \\cdot 9 = 9\\pi cm².",
+    "text": "A:s radie är 3, så A:s area = \uE000\\pi \\cdot 3^{2} = \\pi \\cdot 9 = 9\\pi\uE001 cm².",
     "tier": "essential",
     "title": "Räkna A:s area"
    },
    {
     "n": 5,
-    "text": "'A:s area är 1/4 av B:s area' betyder: 9\\pi = \\frac{1}{4} \\cdot B_{area}, eller skrivet annorlunda: B:s area = 4 · A:s area.",
+    "text": "'A:s area är 1/4 av B:s area' betyder: \uE0009\\pi = \\frac{1}{4} \\cdot B_{area}\uE001, eller skrivet annorlunda: B:s area = 4 · A:s area.",
     "tier": "essential",
     "title": "Översätt villkoret"
    },
@@ -2164,25 +2164,25 @@
    },
    {
     "n": 7,
-    "text": "Om B:s area är \\pi \\cdot r_{B}^{2} = 36\\pi, så är r_{B}^{2} = 36 (π försvinner när vi delar bort den från båda sidor).",
+    "text": "Om B:s area är \uE000\\pi \\cdot r_{B}^{2} = 36\\pi\uE001, så är \uE000r_{B}^{2} = 36\uE001 (π försvinner när vi delar bort den från båda sidor).",
     "tier": "essential",
     "title": "Vänd formeln baklänges"
    },
    {
     "n": 8,
-    "text": "\\sqrt{36} betyder 'vilket positivt tal upphöjt i två blir 36?'. Svar: 6, eftersom 6 · 6 = 36. Radien är ett avstånd och alltid positivt, så vi tar bara den positiva roten.",
+    "text": "\uE000\\sqrt{36}\uE001 betyder 'vilket positivt tal upphöjt i två blir 36?'. Svar: 6, eftersom 6 · 6 = 36. Radien är ett avstånd och alltid positivt, så vi tar bara den positiva roten.",
     "tier": "detail",
     "title": "Vad är kvadratroten av 36?"
    },
    {
     "n": 9,
-    "text": "r_{B} = \\sqrt{36} = 6 cm.",
+    "text": "\uE000r_{B} = \\sqrt{36} = 6\uE001 cm.",
     "tier": "essential",
     "title": "Räkna B:s radie"
    },
    {
     "n": 10,
-    "text": "Kolla att A:s area är 1/4 av B:s: A = 9π, B = π · 6² = 36π. \\frac{9\\pi}{36\\pi} = \\frac{1}{4} ✓.",
+    "text": "Kolla att A:s area är 1/4 av B:s: A = 9π, B = π · 6² = 36π. \uE000\\frac{9\\pi}{36\\pi} = \\frac{1}{4}\uE001 ✓.",
     "tier": "essential",
     "title": "Verifiera"
    },
@@ -2202,32 +2202,32 @@
    "recipe": "variant-c-regen-wave"
   },
   "framework_id": "XYZ-TRAP-032",
-  "solution_path": "Förenkla \\sqrt{12xy^4 z^3} genom att faktorisera 12, y^4 och z^3 i perfekta kvadrater. 12 = 4 \\cdot 3, y^4 = (y^2)^2, z^3 = z^2 \\cdot z. Resultat: 2y^2 z \\sqrt{3xz} (alternativ B).",
+  "solution_path": "Förenkla \uE000\\sqrt{12xy^4 z^3}\uE001 genom att faktorisera 12, \uE000y^4\uE001 och \uE000z^3\uE001 i perfekta kvadrater. \uE00012 = 4 \\cdot 3\uE001, \uE000y^4 = (y^2)^2\uE001, \uE000z^3 = z^2 \\cdot z\uE001. Resultat: \uE0002y^2 z \\sqrt{3xz}\uE001 (alternativ B).",
   "technique": "Förenkling av rotuttryck med flera variabler: faktorisera varje del separat. Jämna exponenter (2, 4, 6...) går ut HEL. Udda exponenter (1, 3, 5...) går ut med ett varv kvar under roten.",
-  "pitfall": "Botemedlet mot förenklings-slarv: räkna varje variabels och varje primtals exponent var för sig. 12 = 4 \\cdot 3 — perfekt kvadrat är 4, inte 12 självt. z^3 = z^2 \\cdot z — perfekta kvadraten är z^2, inte hela z^3.",
+  "pitfall": "Botemedlet mot förenklings-slarv: räkna varje variabels och varje primtals exponent var för sig. \uE00012 = 4 \\cdot 3\uE001 — perfekt kvadrat är 4, inte 12 självt. \uE000z^3 = z^2 \\cdot z\uE001 — perfekta kvadraten är \uE000z^2\uE001, inte hela \uE000z^3\uE001.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Uttrycket är \\sqrt{12 x y^4 z^3} med x, y, z > 0. Vi ska skriva det i formen 'konstant · variabler · \\sqrt{...}' — alltså dra ut allt som är möjligt från under rottecknet.",
+    "text": "Uttrycket är \uE000\\sqrt{12 x y^4 z^3}\uE001 med x, y, z > 0. Vi ska skriva det i formen 'konstant · variabler · \uE000\\sqrt{...}\uE001' — alltså dra ut allt som är möjligt från under rottecknet.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Produktregeln för rötter",
-    "text": "För positiva a, b gäller: \\sqrt{a \\cdot b} = \\sqrt{a} \\cdot \\sqrt{b}. Det betyder att vi kan separera roten faktor för faktor och dra ut varje del oberoende.",
+    "text": "För positiva a, b gäller: \uE000\\sqrt{a \\cdot b} = \\sqrt{a} \\cdot \\sqrt{b}\uE001. Det betyder att vi kan separera roten faktor för faktor och dra ut varje del oberoende.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Definiera perfekt kvadrat",
-    "text": "Ett tal eller variabel är en perfekt kvadrat om dess rot är 'rent' (utan rotsymbol kvar). 1, 4, 9, 16 är perfekta kvadrater bland heltal. För variabler: x^2, x^4, x^6, ... — alla JÄMNA exponenter.",
+    "text": "Ett tal eller variabel är en perfekt kvadrat om dess rot är 'rent' (utan rotsymbol kvar). 1, 4, 9, 16 är perfekta kvadrater bland heltal. För variabler: \uE000x^2, x^4, x^6, ...\uE001 — alla JÄMNA exponenter.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Faktorisera 12",
-    "text": "Sök största perfekta kvadraten i 12. Test: 4 delar 12 (12 = 4 \\cdot 3). 9 delar inte 12. Så största perfekta kvadrat är 4: 12 = 4 \\cdot 3.",
+    "text": "Sök största perfekta kvadraten i 12. Test: 4 delar 12 (\uE00012 = 4 \\cdot 3\uE001). 9 delar inte 12. Så största perfekta kvadrat är 4: \uE00012 = 4 \\cdot 3\uE001.",
     "tier": "essential"
    },
    {
@@ -2238,62 +2238,62 @@
    },
    {
     "n": 6,
-    "title": "Klassa y^4",
-    "text": "Exponenten 4 är jämn. y^4 = (y^2)^2, alltså en perfekt kvadrat. Den går ut HEL: \\sqrt{y^4} = y^2.",
+    "title": "Klassa \uE000y^4\uE001",
+    "text": "Exponenten 4 är jämn. \uE000y^4 = (y^2)^2\uE001, alltså en perfekt kvadrat. Den går ut HEL: \uE000\\sqrt{y^4} = y^2\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Klassa z^3",
-    "text": "Exponenten 3 är udda. Dela upp: z^3 = z^2 \\cdot z. z^2 är perfekt kvadrat (går ut som z), och en enstaka z stannar kvar.",
+    "title": "Klassa \uE000z^3\uE001",
+    "text": "Exponenten 3 är udda. Dela upp: \uE000z^3 = z^2 \\cdot z\uE001. \uE000z^2\uE001 är perfekt kvadrat (går ut som z), och en enstaka z stannar kvar.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Skriv om hela roten",
-    "text": "\\sqrt{12 x y^4 z^3} = \\sqrt{4 \\cdot 3 \\cdot x \\cdot y^4 \\cdot z^2 \\cdot z}. Använd produktregeln: = \\sqrt{4} \\cdot \\sqrt{y^4} \\cdot \\sqrt{z^2} \\cdot \\sqrt{3xz}.",
+    "text": "\uE000\\sqrt{12 x y^4 z^3} = \\sqrt{4 \\cdot 3 \\cdot x \\cdot y^4 \\cdot z^2 \\cdot z}\uE001. Använd produktregeln: \uE000= \\sqrt{4} \\cdot \\sqrt{y^4} \\cdot \\sqrt{z^2} \\cdot \\sqrt{3xz}\uE001.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Räkna ut de tre perfekta kvadraterna",
-    "text": "\\sqrt{4} = 2, \\sqrt{y^4} = y^2, \\sqrt{z^2} = z. Multiplicera: koefficienten utanför roten blir 2 y^2 z.",
+    "text": "\uE000\\sqrt{4} = 2\uE001, \uE000\\sqrt{y^4} = y^2\uE001, \uE000\\sqrt{z^2} = z\uE001. Multiplicera: koefficienten utanför roten blir \uE0002 y^2 z\uE001.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Samla resultatet",
-    "text": "2 y^2 z \\cdot \\sqrt{3xz} = 2y^2 z \\sqrt{3xz}. Det är formen 'konstant · variabel · \\sqrt{...}'.",
+    "text": "\uE0002 y^2 z \\cdot \\sqrt{3xz} = 2y^2 z \\sqrt{3xz}\uE001. Det är formen 'konstant · variabel · \uE000\\sqrt{...}\uE001'.",
     "tier": "essential"
    },
    {
     "n": 11,
     "title": "Verifiera genom kvadrering",
-    "text": "Kvadrera tillbaka: (2y^2 z)^2 \\cdot 3xz = 4 y^4 z^2 \\cdot 3xz = 12 x y^4 z^3. Stämmer exakt — förenklingen är korrekt.",
+    "text": "Kvadrera tillbaka: \uE000(2y^2 z)^2 \\cdot 3xz = 4 y^4 z^2 \\cdot 3xz = 12 x y^4 z^3\uE001. Stämmer exakt — förenklingen är korrekt.",
     "tier": "essential"
    },
    {
     "n": 12,
     "title": "Slutsats",
-    "text": "Svar: B, 2y^2 z \\sqrt{3xz}. Insikten i en mening: faktorisera varje del under roten separat — perfekta kvadrater går ut, resten stannar kvar.",
+    "text": "Svar: B, \uE0002y^2 z \\sqrt{3xz}\uE001. Insikten i en mening: faktorisera varje del under roten separat — perfekta kvadrater går ut, resten stannar kvar.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att räkna 2yz\\sqrt{3xz} genom att tappa en exponent på y (skriva \\sqrt{y^4} = y istället för y^2).",
-    "why_wrong": "Steg 6 visar att \\sqrt{y^4} = y^2, inte y. Y-exponenten halveras vid rotutdragning: 4/2 = 2."
+    "why_tempting": "Det är lätt att räkna \uE0002yz\\sqrt{3xz}\uE001 genom att tappa en exponent på y (skriva \uE000\\sqrt{y^4} = y\uE001 istället för \uE000y^2\uE001).",
+    "why_wrong": "Steg 6 visar att \uE000\\sqrt{y^4} = y^2\uE001, inte y. Y-exponenten halveras vid rotutdragning: 4/2 = 2."
    },
    {
     "letter": "C",
-    "why_tempting": "Snabbsvar är ofta 6yz\\sqrt{2xz} om man tror att \\sqrt{12} = 6\\sqrt{...} eller blandar ihop faktorisering.",
-    "why_wrong": "Steg 4 säger 12 = 4 \\cdot 3, så \\sqrt{12} = 2\\sqrt{3} — inte 6 eller \\sqrt{2}-kombo. Plus: y-exponenten är fel (samma fel som A)."
+    "why_tempting": "Snabbsvar är ofta \uE0006yz\\sqrt{2xz}\uE001 om man tror att \uE000\\sqrt{12} = 6\\sqrt{...}\uE001 eller blandar ihop faktorisering.",
+    "why_wrong": "Steg 4 säger \uE00012 = 4 \\cdot 3\uE001, så \uE000\\sqrt{12} = 2\\sqrt{3}\uE001 — inte 6 eller \uE000\\sqrt{2}\uE001-kombo. Plus: y-exponenten är fel (samma fel som A)."
    },
    {
     "letter": "D",
-    "why_tempting": "Många stannar vid 6y^2 z\\sqrt{2xz} — y-delen rätt men 12-faktoriseringen fel.",
-    "why_wrong": "Steg 9: \\sqrt{4} = 2, inte 6. Sammansättningsfelet ger koefficienten 6 istället för 2, och tappar att 3 ligger kvar under roten."
+    "why_tempting": "Många stannar vid \uE0006y^2 z\\sqrt{2xz}\uE001 — y-delen rätt men 12-faktoriseringen fel.",
+    "why_wrong": "Steg 9: \uE000\\sqrt{4} = 2\uE001, inte 6. Sammansättningsfelet ger koefficienten 6 istället för 2, och tappar att 3 ligger kvar under roten."
    }
   ],
   "pregrade_tactic": {
@@ -2542,11 +2542,11 @@
   ],
   "framework_id": null,
   "pitfall": null,
-  "solution_path": "\\frac{4}{x} - \\frac{1}{2} = 2 ger \\frac{4}{x} = \\frac{5}{2}, alltså x = \\frac{8}{5} = 1{,}6. 1,6 > 1, så I > II. Svaret är A.",
+  "solution_path": "\uE000\\frac{4}{x} - \\frac{1}{2} = 2\uE001 ger \uE000\\frac{4}{x} = \\frac{5}{2}\uE001, alltså \uE000x = \\frac{8}{5} = 1{,}6\uE001. 1,6 > 1, så I > II. Svaret är A.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi har ekvationen \\frac{4}{x} - \\frac{1}{2} = 2 och ska jämföra x med 1.",
+    "text": "Vi har ekvationen \uE000\\frac{4}{x} - \\frac{1}{2} = 2\uE001 och ska jämföra x med 1.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
@@ -2558,19 +2558,19 @@
    },
    {
     "n": 3,
-    "text": "\\frac{4}{x} = 2 + \\frac{1}{2}.",
+    "text": "\uE000\\frac{4}{x} = 2 + \\frac{1}{2}\uE001.",
     "tier": "essential",
     "title": "Lägg till 1/2 på båda sidor"
    },
    {
     "n": 4,
-    "text": "2 = 4/2 (gemensam nämnare 2). Så \\frac{4}{2} + \\frac{1}{2} = \\frac{5}{2}.",
+    "text": "2 = 4/2 (gemensam nämnare 2). Så \uE000\\frac{4}{2} + \\frac{1}{2} = \\frac{5}{2}\uE001.",
     "tier": "detail",
     "title": "Räkna 2 + 1/2"
    },
    {
     "n": 5,
-    "text": "För att lösa ut x, kors-multiplicera: 4 \\cdot 2 = 5 \\cdot x, alltså 8 = 5x.",
+    "text": "För att lösa ut x, kors-multiplicera: \uE0004 \\cdot 2 = 5 \\cdot x\uE001, alltså 8 = 5x.",
     "tier": "essential",
     "title": "Vi har 4/x = 5/2"
    },
@@ -2582,7 +2582,7 @@
    },
    {
     "n": 7,
-    "text": "5x = 8 → x = \\frac{8}{5} = 1,6.",
+    "text": "5x = 8 → \uE000x = \\frac{8}{5}\uE001 = 1,6.",
     "tier": "essential",
     "title": "Lös för x"
    },
@@ -2594,7 +2594,7 @@
    },
    {
     "n": 9,
-    "text": "Sätt in x = 8/5 i ursprungsekvationen: \\frac{4}{8/5} - \\frac{1}{2} = 4 \\cdot \\frac{5}{8} - \\frac{1}{2} = \\frac{20}{8} - \\frac{1}{2} = \\frac{5}{2} - \\frac{1}{2} = \\frac{4}{2} = 2 ✓.",
+    "text": "Sätt in x = 8/5 i ursprungsekvationen: \uE000\\frac{4}{8/5} - \\frac{1}{2} = 4 \\cdot \\frac{5}{8} - \\frac{1}{2} = \\frac{20}{8} - \\frac{1}{2} = \\frac{5}{2} - \\frac{1}{2} = \\frac{4}{2} = 2\uE001 ✓.",
     "tier": "detail",
     "title": "Verifiera"
    },
@@ -2764,7 +2764,7 @@
    },
    {
     "n": 3,
-    "text": "Area = \\frac{1}{2} \\cdot bas \\cdot h\\ddot{o}jd. Höjden är det vinkelräta avståndet från motstående hörn till basens linje.",
+    "text": "Area = \uE000\\frac{1}{2} \\cdot bas \\cdot h\\ddot{o}jd\uE001. Höjden är det vinkelräta avståndet från motstående hörn till basens linje.",
     "tier": "detail",
     "title": "Triangelarea-formeln"
    },
@@ -2794,7 +2794,7 @@
    },
    {
     "n": 8,
-    "text": "Area(AMC) = \\frac{1}{2} \\cdot AM \\cdot h. Area(MBC) = \\frac{1}{2} \\cdot MB \\cdot h. Eftersom AM = MB och h är samma, är areorna lika.",
+    "text": "Area(AMC) = \uE000\\frac{1}{2} \\cdot AM \\cdot h\uE001. Area(MBC) = \uE000\\frac{1}{2} \\cdot MB \\cdot h\uE001. Eftersom AM = MB och h är samma, är areorna lika.",
     "tier": "essential",
     "title": "Jämför areorna"
    },
@@ -3066,17 +3066,17 @@
   ],
   "framework_id": "KVA-TRAP-024",
   "pitfall": null,
-  "solution_path": "3^{3} + 3^{3} + 3^{3} = 3 termer av 3^{3}, alltså 3 \\cdot 3^{3} = 3^{1+3} = 3^{4}. Lika med II. Svaret är C.",
+  "solution_path": "\uE0003^{3} + 3^{3} + 3^{3}\uE001 = 3 termer av \uE0003^{3}\uE001, alltså \uE0003 \\cdot 3^{3} = 3^{1+3} = 3^{4}\uE001. Lika med II. Svaret är C.",
   "steps": [
    {
     "n": 1,
-    "text": "Jämför I = 3^{3} + 3^{3} + 3^{3} med II = 3^{4}.",
+    "text": "Jämför I = \uE0003^{3} + 3^{3} + 3^{3}\uE001 med II = \uE0003^{4}\uE001.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "3^{3} = 3 \\cdot 3 \\cdot 3 = 27. Tre gånger med sig själv.",
+    "text": "\uE0003^{3} = 3 \\cdot 3 \\cdot 3 = 27\uE001. Tre gånger med sig själv.",
     "tier": "detail",
     "title": "Vad betyder 3³?"
    },
@@ -3088,7 +3088,7 @@
    },
    {
     "n": 4,
-    "text": "3^{4} = 3 \\cdot 3 \\cdot 3 \\cdot 3 = 81. Fyra gånger med sig själv.",
+    "text": "\uE0003^{4} = 3 \\cdot 3 \\cdot 3 \\cdot 3 = 81\uE001. Fyra gånger med sig själv.",
     "tier": "essential",
     "title": "Vad betyder 3⁴?"
    },
@@ -3106,13 +3106,13 @@
    },
    {
     "n": 7,
-    "text": "3^{3} + 3^{3} + 3^{3} = 3 termer av samma uttryck = 3 \\cdot 3^{3}. Och 3 \\cdot 3^{3} = 3^{1+3} = 3^{4} (lagen för multiplikation av potenser med samma bas).",
+    "text": "\uE0003^{3} + 3^{3} + 3^{3}\uE001 = 3 termer av samma uttryck = \uE0003 \\cdot 3^{3}\uE001. Och \uE0003 \\cdot 3^{3} = 3^{1+3} = 3^{4}\uE001 (lagen för multiplikation av potenser med samma bas).",
     "tier": "essential",
     "title": "Algebraisk genväg"
    },
    {
     "n": 8,
-    "text": "a^{m} \\cdot a^{n} = a^{m+n}. Exponenterna adderas. Här: 3^{1} \\cdot 3^{3} = 3^{4}.",
+    "text": "\uE000a^{m} \\cdot a^{n} = a^{m+n}\uE001. Exponenterna adderas. Här: \uE0003^{1} \\cdot 3^{3} = 3^{4}\uE001.",
     "tier": "detail",
     "title": "Vad är 'multiplicera potenser med samma bas'?"
    },
@@ -3130,12 +3130,12 @@
    },
    {
     "n": 11,
-    "text": "Svaret är C — I är lika med II. Insikten i en mening: tre kopior av 3^{n} = 3 \\cdot 3^{n} = 3^{n+1} — addition av samma potens omvandlas till exponent +1.",
+    "text": "Svaret är C — I är lika med II. Insikten i en mening: tre kopior av \uE0003^{n}\uE001 = \uE0003 \\cdot 3^{n} = 3^{n+1}\uE001 — addition av samma potens omvandlas till exponent +1.",
     "tier": "essential",
     "title": "Slutsats"
    }
   ],
-  "technique": "Kort-form för upprepad addition av potens: k kopior av a^{n} = k \\cdot a^{n}. När k råkar vara basens värde: a \\cdot a^{n} = a^{n+1}. Triggern: 'samma potens-term flera gånger adderad' → samla med multiplikation."
+  "technique": "Kort-form för upprepad addition av potens: \uE000k\uE001 kopior av \uE000a^{n}\uE001 = \uE000k \\cdot a^{n}\uE001. När k råkar vara basens värde: \uE000a \\cdot a^{n} = a^{n+1}\uE001. Triggern: 'samma potens-term flera gånger adderad' → samla med multiplikation."
  },
  "host-ver2-2019-kvant2-KVA-020": {
   "_meta": {
@@ -3260,7 +3260,7 @@
   ],
   "framework_id": "KVA-TRAP-027",
   "pitfall": null,
-  "solution_path": "Åttahörningens omkrets = 8x. Triangeln har hypotenusan 5x och två katetar a, b med a^{2} + b^{2} = 25x^{2}. För ALLA positiva a, b gäller a + b > \\sqrt{a^{2}+b^{2}} = 5x, så a + b > 5x och triangelns omkrets > 5x + 5x = 10x > 8x. II > I. Svaret är B.",
+  "solution_path": "Åttahörningens omkrets = 8x. Triangeln har hypotenusan 5x och två katetar a, b med \uE000a^{2} + b^{2} = 25x^{2}\uE001. För ALLA positiva a, b gäller a + b > \uE000\\sqrt{a^{2}+b^{2}}\uE001 = 5x, så a + b > 5x och triangelns omkrets > 5x + 5x = 10x > 8x. II > I. Svaret är B.",
   "steps": [
    {
     "n": 1,
@@ -3282,7 +3282,7 @@
    },
    {
     "n": 4,
-    "text": "Om katetarna är a och b, hypotenusan c: a^{2} + b^{2} = c^{2}. Här c = 5x, så a^{2} + b^{2} = 25x^{2}.",
+    "text": "Om katetarna är a och b, hypotenusan c: \uE000a^{2} + b^{2} = c^{2}\uE001. Här c = 5x, så \uE000a^{2} + b^{2} = 25x^{2}\uE001.",
     "tier": "detail",
     "title": "Pythagoras"
    },
@@ -3294,13 +3294,13 @@
    },
    {
     "n": 6,
-    "text": "För positiva a, b gäller alltid: a + b > \\sqrt{a^{2} + b^{2}}. (Detta är en konsekvens av att (a+b)^{2} = a^{2} + 2ab + b^{2} > a^{2} + b^{2} när a, b > 0.)",
+    "text": "För positiva a, b gäller alltid: \uE000a + b > \\sqrt{a^{2} + b^{2}}\uE001. (Detta är en konsekvens av att \uE000(a+b)^{2} = a^{2} + 2ab + b^{2} > a^{2} + b^{2}\uE001 när a, b > 0.)",
     "tier": "detail",
     "title": "En klassisk olikhet"
    },
    {
     "n": 7,
-    "text": "Sätt in: a + b > \\sqrt{25x^{2}} = 5x. Summan av katetarna är ALLTID större än hypotenusan i en rätvinklig triangel.",
+    "text": "Sätt in: \uE000a + b > \\sqrt{25x^{2}} = 5x\uE001. Summan av katetarna är ALLTID större än hypotenusan i en rätvinklig triangel.",
     "tier": "essential",
     "title": "Vad betyder olikheten konkret?"
    },
@@ -4156,7 +4156,7 @@
   ],
   "framework_id": "XYZ-TRAP-053",
   "pitfall": "Den vanliga fällan är att blanda ihop dm (100 mm) med cm (10 mm), eller att glömma att svenska mil = 10 km, inte 1 km. Botemedlet: skriv ner trappa mm-cm-dm-m-km med faktor 10 mellan varje steg — då blir konverteringen mekanisk.",
-  "solution_path": "1 km = 1 000 000 mm, så 8 500 000 mm = 8,5 km. Svaret är C. Kontroll: A ger 8{,}5\\cdot 10^{3} cm = 8 500 cm = 85 m (fel storleksordning); D ger 8,5 mil = 85 km (× 10 för mycket).",
+  "solution_path": "1 km = 1 000 000 mm, så 8 500 000 mm = 8,5 km. Svaret är C. Kontroll: A ger \uE0008{,}5\\cdot 10^{3}\uE001 cm = 8 500 cm = 85 m (fel storleksordning); D ger 8,5 mil = 85 km (× 10 för mycket).",
   "steps": [
    {
     "n": 1,
@@ -4178,13 +4178,13 @@
    },
    {
     "n": 4,
-    "text": "8{,}5 \\cdot 10^{3} cm = 8 500 cm. Och 8 500 cm = 8 500 · 10 mm = 85 000 mm. Inte 8 500 000 mm. A är ute.",
+    "text": "\uE0008{,}5 \\cdot 10^{3}\uE001 cm = 8 500 cm. Och 8 500 cm = 8 500 · 10 mm = 85 000 mm. Inte 8 500 000 mm. A är ute.",
     "tier": "detail",
     "title": "Räkna A: 8,5·10³ cm"
    },
    {
     "n": 5,
-    "text": "8{,}5 \\cdot 10^{5} dm = 850 000 dm. Och 850 000 dm = 850 000 · 100 mm = 85 000 000 mm. För mycket — det är 10 gånger 8 500 000. B är ute.",
+    "text": "\uE0008{,}5 \\cdot 10^{5}\uE001 dm = 850 000 dm. Och 850 000 dm = 850 000 · 100 mm = 85 000 000 mm. För mycket — det är 10 gånger 8 500 000. B är ute.",
     "tier": "detail",
     "title": "Räkna B: 8,5·10⁵ dm"
    },
@@ -4234,44 +4234,44 @@
    "recipe": "variant-c-regen-wave"
   },
   "framework_id": "XYZ-TRAP-051",
-  "solution_path": "Linjens ekvation har formen y = kx + m. Avläs m direkt som y-skärningen (där linjen korsar y-axeln) — m = 3. Bestäm k från lutningens tecken (linjen faller åt höger, så k < 0) och belopp (\\Delta y / \\Delta x = 1{,}5). Alltså y = -1{,}5x + 3 (alternativ B).",
+  "solution_path": "Linjens ekvation har formen \uE000y = kx + m\uE001. Avläs m direkt som y-skärningen (där linjen korsar y-axeln) — m = 3. Bestäm k från lutningens tecken (linjen faller åt höger, så k < 0) och belopp (\uE000\\Delta y / \\Delta x = 1{,}5\uE001). Alltså \uE000y = -1{,}5x + 3\uE001 (alternativ B).",
   "technique": "Linje från graf: två avläsningar — y-skärningen m (var linjen korsar y-axeln) och lutningen k (förändring i y dividerat med förändring i x mellan två punkter). Tecknet på k ges av om linjen stiger (+) eller faller (−) åt höger.",
   "pitfall": "Botemedlet mot tecken-blanding: rita en hjälp-pil från vänster till höger längs linjen och fråga: 'går pilen UPP eller NER?' Upp = positivt k, ner = negativt k. Räkna ALDRIG belopp utan att först fastställa tecken.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Grafen visar en rät linje L i ett xy-koordinatsystem. Vi ska välja den ekvation bland fyra alternativ som beskriver den linjen. Alla alternativ har formen y = kx + m med olika tecken på k och m.",
+    "text": "Grafen visar en rät linje L i ett xy-koordinatsystem. Vi ska välja den ekvation bland fyra alternativ som beskriver den linjen. Alla alternativ har formen \uE000y = kx + m\uE001 med olika tecken på k och m.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Definiera räta linjens ekvation",
-    "text": "Varje rät linje (som inte är vertikal) kan skrivas y = kx + m, där k är lutningen (hur brant) och m är y-skärningen (var linjen träffar y-axeln, dvs x = 0).",
+    "text": "Varje rät linje (som inte är vertikal) kan skrivas \uE000y = kx + m\uE001, där k är lutningen (hur brant) och m är y-skärningen (var linjen träffar y-axeln, dvs x = 0).",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Definiera y-skärning",
-    "text": "y-skärningen m är y-värdet där linjen korsar y-axeln. Detta är samma sak som att sätta x = 0 i ekvationen: y = k \\cdot 0 + m = m. Avläsbart direkt från grafen.",
+    "text": "y-skärningen m är y-värdet där linjen korsar y-axeln. Detta är samma sak som att sätta x = 0 i ekvationen: \uE000y = k \\cdot 0 + m = m\uE001. Avläsbart direkt från grafen.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Avläs m från grafen",
-    "text": "Följ linjen tills den korsar y-axeln. Den korsar y-axeln OVANFÖR origo (positivt y-värde). Avläsningen ger y-värdet 3. Alltså m = +3 (inte −3).",
+    "text": "Följ linjen tills den korsar y-axeln. Den korsar y-axeln OVANFÖR origo (positivt y-värde). Avläsningen ger y-värdet 3. Alltså \uE000m = +3\uE001 (inte −3).",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Definiera lutning",
-    "text": "Lutningen k = \\Delta y / \\Delta x — hur mycket y ändras per enhet x. Beräknas mellan två punkter på linjen: k = (y_2 - y_1) / (x_2 - x_1).",
+    "text": "Lutningen \uE000k = \\Delta y / \\Delta x\uE001 — hur mycket y ändras per enhet x. Beräknas mellan två punkter på linjen: \uE000k = (y_2 - y_1) / (x_2 - x_1)\uE001.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Bestäm tecken på k",
-    "text": "Titta på linjens lutning åt höger. Om linjen STIGER (går upp) åt höger → k > 0. Om linjen FALLER (går ner) åt höger → k < 0. Här faller linjen åt höger, alltså k < 0.",
+    "text": "Titta på linjens lutning åt höger. Om linjen STIGER (går upp) åt höger → k > 0. Om linjen FALLER (går ner) åt höger → k < 0. Här faller linjen åt höger, alltså \uE000k < 0\uE001.",
     "tier": "essential"
    },
    {
@@ -4283,25 +4283,25 @@
    {
     "n": 8,
     "title": "Räkna ut beloppet av k",
-    "text": "Använd lutningsformeln: k = (0 - 3) / (2 - 0) = -3/2 = -1{,}5. Tecknet stämmer (negativ, som väntat från steg 6), beloppet är 1,5.",
+    "text": "Använd lutningsformeln: \uE000k = (0 - 3) / (2 - 0) = -3/2 = -1{,}5\uE001. Tecknet stämmer (negativ, som väntat från steg 6), beloppet är 1,5.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Sätt ihop ekvationen",
-    "text": "y = k x + m med k = -1{,}5 och m = +3 ger y = -1{,}5x + 3.",
+    "text": "\uE000y = k x + m\uE001 med \uE000k = -1{,}5\uE001 och \uE000m = +3\uE001 ger \uE000y = -1{,}5x + 3\uE001.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Verifiera med en punkt",
-    "text": "Substituera (2, 0): -1{,}5 \\cdot 2 + 3 = -3 + 3 = 0. ✓. Substituera (0, 3): -1{,}5 \\cdot 0 + 3 = 3. ✓. Båda punkter ligger på linjen — ekvationen stämmer.",
+    "text": "Substituera (2, 0): \uE000-1{,}5 \\cdot 2 + 3 = -3 + 3 = 0\uE001. ✓. Substituera (0, 3): \uE000-1{,}5 \\cdot 0 + 3 = 3\uE001. ✓. Båda punkter ligger på linjen — ekvationen stämmer.",
     "tier": "essential"
    },
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Svar: B, y = -1{,}5x + 3. Insikten i en mening: bestäm ALLTID tecken på k FÖRST (faller/stiger) och m FÖRST (var linjen korsar y-axeln) — beloppen är räkneövning, men teckenfelen är poäng-tjuven.",
+    "text": "Svar: B, \uE000y = -1{,}5x + 3\uE001. Insikten i en mening: bestäm ALLTID tecken på k FÖRST (faller/stiger) och m FÖRST (var linjen korsar y-axeln) — beloppen är räkneövning, men teckenfelen är poäng-tjuven.",
     "tier": "essential"
    }
   ],
@@ -4314,11 +4314,11 @@
    {
     "letter": "C",
     "why_tempting": "Snabbsvar är ofta att tappa minustecknet på k — räkna lutningens belopp 1,5 utan att kontrollera om linjen stiger eller faller.",
-    "why_wrong": "Steg 6 säger: faller åt höger = negativ lutning. k = +1{,}5 skulle ge en STIGANDE linje — fel riktning enligt grafen."
+    "why_wrong": "Steg 6 säger: faller åt höger = negativ lutning. \uE000k = +1{,}5\uE001 skulle ge en STIGANDE linje — fel riktning enligt grafen."
    },
    {
     "letter": "D",
-    "why_tempting": "Första instinkten är att ta alla värden som positiva när man räknar belopp — får 1{,}5 och 3, sätter ihop som y = 1{,}5x + 3.",
+    "why_tempting": "Första instinkten är att ta alla värden som positiva när man räknar belopp — får \uE0001{,}5\uE001 och 3, sätter ihop som \uE000y = 1{,}5x + 3\uE001.",
     "why_wrong": "Steg 6 och steg 8 låser fast tecknet på k som negativt. D blandar fel tecken med rätt belopp på k — typisk 'belopps-bara'-tankefälla."
    }
   ],
@@ -4850,11 +4850,11 @@
   ],
   "framework_id": "XYZ-TRAP-040",
   "pitfall": "Frestelsen är att 'förenkla' förhållanden mellan kvadratrötter genom att kvadrera. Botemedlet: förhållanden behåller sin form — √2:√3 är inte 2:3. För att jämföra storlek, dela: √2/√3 = √(2/3) ≈ 0,816.",
-  "solution_path": "A4-formatet har förhållandet lång:kort = \\sqrt{2} : 1. Sätt lång = \\sqrt{2} och kort = 1. Diagonalen via Pythagoras: \\sqrt{(\\sqrt{2})^{2} + 1^{2}} = \\sqrt{3}. Förhållandet lång:diagonal = \\sqrt{2} : \\sqrt{3}. Svaret är D.",
+  "solution_path": "A4-formatet har förhållandet lång:kort = \uE000\\sqrt{2} : 1\uE001. Sätt lång = \uE000\\sqrt{2}\uE001 och kort = 1. Diagonalen via Pythagoras: \uE000\\sqrt{(\\sqrt{2})^{2} + 1^{2}} = \\sqrt{3}\uE001. Förhållandet lång:diagonal = \uE000\\sqrt{2} : \\sqrt{3}\uE001. Svaret är D.",
   "steps": [
    {
     "n": 1,
-    "text": "Ett A4-pappers förhållande mellan långa och korta sidan är \\sqrt{2} : 1. Vi söker förhållandet mellan långa sidan och DIAGONALEN.",
+    "text": "Ett A4-pappers förhållande mellan långa och korta sidan är \uE000\\sqrt{2} : 1\uE001. Vi söker förhållandet mellan långa sidan och DIAGONALEN.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
@@ -4866,55 +4866,55 @@
    },
    {
     "n": 3,
-    "text": "För en rätvinklig triangel: katet_{1}^{2} + katet_{2}^{2} = hypotenusa^{2}. Här är kateterna långa och korta sidan, hypotenusan är diagonalen.",
+    "text": "För en rätvinklig triangel: \uE000katet_{1}^{2} + katet_{2}^{2} = hypotenusa^{2}\uE001. Här är kateterna långa och korta sidan, hypotenusan är diagonalen.",
     "tier": "detail",
     "title": "Pythagoras sats"
    },
    {
     "n": 4,
-    "text": "Förhållandet \\sqrt{2} : 1 betyder att om vi sätter korta sidan = 1, blir långa sidan \\sqrt{2}. Detta gör räkningen enklast — förhållanden påverkas inte av skala.",
+    "text": "Förhållandet \uE000\\sqrt{2} : 1\uE001 betyder att om vi sätter korta sidan = 1, blir långa sidan \uE000\\sqrt{2}\uE001. Detta gör räkningen enklast — förhållanden påverkas inte av skala.",
     "tier": "essential",
     "title": "Välj konkreta tal"
    },
    {
     "n": 5,
-    "text": "\\sqrt{2} är det positiva tal som upphöjt i 2 ger 2. Approximativt 1,414. Kvadrat: (\\sqrt{2})^{2} = 2.",
+    "text": "\uE000\\sqrt{2}\uE001 är det positiva tal som upphöjt i 2 ger 2. Approximativt 1,414. Kvadrat: \uE000(\\sqrt{2})^{2} = 2\uE001.",
     "tier": "detail",
     "title": "Vad betyder √2?"
    },
    {
     "n": 6,
-    "text": "d^{2} = (\\sqrt{2})^{2} + 1^{2} = 2 + 1 = 3.",
+    "text": "\uE000d^{2} = (\\sqrt{2})^{2} + 1^{2} = 2 + 1 = 3\uE001.",
     "tier": "essential",
     "title": "Räkna diagonalens längd²"
    },
    {
     "n": 7,
-    "text": "d = \\sqrt{3}.",
+    "text": "\uE000d = \\sqrt{3}\uE001.",
     "tier": "essential",
     "title": "Räkna diagonalen"
    },
    {
     "n": 8,
-    "text": "Lång = \\sqrt{2}, diagonal = \\sqrt{3}. Förhållande: \\sqrt{2} : \\sqrt{3}.",
+    "text": "Lång = \uE000\\sqrt{2}\uE001, diagonal = \uE000\\sqrt{3}\uE001. Förhållande: \uE000\\sqrt{2} : \\sqrt{3}\uE001.",
     "tier": "essential",
     "title": "Förhållandet lång:diagonal"
    },
    {
     "n": 9,
-    "text": "\\sqrt{2} \\approx 1{,}414, \\sqrt{3} \\approx 1{,}732. Förhållande 1,414/1,732 ≈ 0,82. Långa sidan är ca 82 % av diagonalen — rimligt.",
+    "text": "\uE000\\sqrt{2} \\approx 1{,}414\uE001, \uE000\\sqrt{3} \\approx 1{,}732\uE001. Förhållande 1,414/1,732 ≈ 0,82. Långa sidan är ca 82 % av diagonalen — rimligt.",
     "tier": "detail",
     "title": "Verifiera med approximationer"
    },
    {
     "n": 10,
-    "text": "A: 1 : \\sqrt{3} — saknar långa sidan \\sqrt{2}. Fel. B: \\sqrt{2} : \\sqrt{3} — wait\\ldots alternativ B verkar vara \\sqrt{2} : \\sqrt{3} men prompten skriver '2:3'. C: '√2:2' fel. D: '√2 : √3' — matchar.",
+    "text": "A: \uE0001 : \\sqrt{3}\uE001 — saknar långa sidan \uE000\\sqrt{2}\uE001. Fel. B: \uE000\\sqrt{2} : \\sqrt{3} — wait\\ldots\uE001 alternativ B verkar vara \uE000\\sqrt{2} : \\sqrt{3}\uE001 men prompten skriver '2:3'. C: '√2:2' fel. D: '√2 : √3' — matchar.",
     "tier": "essential",
     "title": "Värdera alternativen"
    },
    {
     "n": 11,
-    "text": "Svaret är D = \\sqrt{2} : \\sqrt{3}. Insikten i en mening: i A4-formatet är diagonalen alltid \\sqrt{3} när långa sidan är \\sqrt{2} och korta = 1 — A4:s \\sqrt{2}-proportion är vad som gör det unikt.",
+    "text": "Svaret är D = \uE000\\sqrt{2} : \\sqrt{3}\uE001. Insikten i en mening: i A4-formatet är diagonalen alltid \uE000\\sqrt{3}\uE001 när långa sidan är \uE000\\sqrt{2}\uE001 och korta = 1 — A4:s \uE000\\sqrt{2}\uE001-proportion är vad som gör det unikt.",
     "tier": "essential",
     "title": "Slutsats"
    }
@@ -4939,7 +4939,7 @@
    },
    {
     "letter": "B",
-    "why_tempting": "Många stannar vid att räkna ut x = 10^{5} och stannar där, utan att gå hela vägen till z.",
+    "why_tempting": "Många stannar vid att räkna ut x = \uE00010^{5}\uE001 och stannar där, utan att gå hela vägen till z.",
     "why_wrong": "Steg 4: 10⁵ är bara värdet av x. Vi behöver räkna alla tre kedjor till z = 10¹⁰."
    },
    {
@@ -4950,11 +4950,11 @@
   ],
   "framework_id": "XYZ-TRAP-031",
   "pitfall": null,
-  "solution_path": "För att maximera z välj operator i varje ekvation som ökar resultatet mest. Steg 1: 10^{3} \\cdot 100 = 10^{5} (multiplikation). Steg 2: x \\div 10^{-1} = 10^{5} \\cdot 10 = 10^{6} (division med litet tal ger störst). Steg 3: y \\div 0{,}0001 = 10^{6} \\cdot 10^{4} = 10^{10}. Svaret är C.",
+  "solution_path": "För att maximera z välj operator i varje ekvation som ökar resultatet mest. Steg 1: \uE00010^{3} \\cdot 100 = 10^{5}\uE001 (multiplikation). Steg 2: \uE000x \\div 10^{-1} = 10^{5} \\cdot 10 = 10^{6}\uE001 (division med litet tal ger störst). Steg 3: \uE000y \\div 0{,}0001 = 10^{6} \\cdot 10^{4} = 10^{10}\uE001. Svaret är C.",
   "steps": [
    {
     "n": 1,
-    "text": "Tre ekvationer i kedja: 10^{3} \\square 100 = x, sedan x \\square 10^{-1} = y, sedan y \\square 0{,}0001 = z. Varje ruta är ANTINGEN multiplikation eller division. Vi vill MAXIMERA z.",
+    "text": "Tre ekvationer i kedja: \uE00010^{3} \\square 100 = x\uE001, sedan \uE000x \\square 10^{-1} = y\uE001, sedan \uE000y \\square 0{,}0001 = z\uE001. Varje ruta är ANTINGEN multiplikation eller division. Vi vill MAXIMERA z.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
@@ -4972,49 +4972,49 @@
    },
    {
     "n": 4,
-    "text": "Båda operander 10^{3} = 1000 och 100 är större än 1. Multiplikation: 10^{3} \\cdot 100 = 10^{3} \\cdot 10^{2} = 10^{5}. Division: 10^{3} / 100 = 10. Mult ger större — välj mult. x = 10^{5}.",
+    "text": "Båda operander \uE00010^{3} = 1000\uE001 och 100 är större än 1. Multiplikation: \uE00010^{3} \\cdot 100 = 10^{3} \\cdot 10^{2} = 10^{5}\uE001. Division: \uE00010^{3} / 100 = 10\uE001. Mult ger större — välj mult. x = \uE00010^{5}\uE001.",
     "tier": "essential",
     "title": "Steg 1 — 10³ □ 100"
    },
    {
     "n": 5,
-    "text": "10^{-1} = \\frac{1}{10} = 0{,}1. En negativ exponent betyder 'invers' — 1 delat med talet upphöjt i positiva exponenten.",
+    "text": "\uE00010^{-1} = \\frac{1}{10} = 0{,}1\uE001. En negativ exponent betyder 'invers' — 1 delat med talet upphöjt i positiva exponenten.",
     "tier": "detail",
     "title": "Vad betyder 10^-1?"
    },
    {
     "n": 6,
-    "text": "Operanden 10^{-1} = 0{,}1 är mindre än 1. Multiplicera = krymp (10^{5} \\cdot 0{,}1 = 10^{4}). Dela = växa (10^{5} / 0{,}1 = 10^{5} \\cdot 10 = 10^{6}). Välj division. y = 10^{6}.",
+    "text": "Operanden \uE00010^{-1} = 0{,}1\uE001 är mindre än 1. Multiplicera = krymp (\uE00010^{5} \\cdot 0{,}1 = 10^{4}\uE001). Dela = växa (\uE00010^{5} / 0{,}1 = 10^{5} \\cdot 10 = 10^{6}\uE001). Välj division. y = \uE00010^{6}\uE001.",
     "tier": "essential",
     "title": "Steg 2 — x □ 10⁻¹"
    },
    {
     "n": 7,
-    "text": "0,0001 = 10^{-4}, mycket mindre än 1. Mult krymper: 10^{6} \\cdot 10^{-4} = 10^{2}. Division växer mycket: 10^{6} / 10^{-4} = 10^{6} \\cdot 10^{4} = 10^{10}. Välj division. z = 10^{10}.",
+    "text": "0,0001 = \uE00010^{-4}\uE001, mycket mindre än 1. Mult krymper: \uE00010^{6} \\cdot 10^{-4} = 10^{2}\uE001. Division växer mycket: \uE00010^{6} / 10^{-4} = 10^{6} \\cdot 10^{4} = 10^{10}\uE001. Välj division. z = \uE00010^{10}\uE001.",
     "tier": "essential",
     "title": "Steg 3 — y □ 0,0001"
    },
    {
     "n": 8,
-    "text": "Att dela med 10^{n} är samma som att gångra med 10^{-n}, och inversen 10^{-n} \\to 10^{n} när man flyttar mellan multiplikation och division.",
+    "text": "Att dela med \uE00010^{n}\uE001 är samma som att gångra med \uE00010^{-n}\uE001, och inversen \uE00010^{-n} \\to 10^{n}\uE001 när man flyttar mellan multiplikation och division.",
     "tier": "detail",
     "title": "Räkneregeln: dela med tio-potens"
    },
    {
     "n": 9,
-    "text": "Räkna z direkt: z = 10^{3} \\cdot 100 \\div 10^{-1} \\div 10^{-4} = 10^{5} \\cdot 10 \\cdot 10^{4} = 10^{10}.",
+    "text": "Räkna z direkt: z = \uE00010^{3} \\cdot 100 \\div 10^{-1} \\div 10^{-4} = 10^{5} \\cdot 10 \\cdot 10^{4} = 10^{10}\uE001.",
     "tier": "detail",
     "title": "Verifiera"
    },
    {
     "n": 10,
-    "text": "A: 10^{0} = 1 — för litet. B: 10^{5} — det är x, inte z. C: 10^{10} — matchar. D: 10^{15} — för stort, omöjligt att nå.",
+    "text": "A: \uE00010^{0} = 1\uE001 — för litet. B: \uE00010^{5}\uE001 — det är x, inte z. C: \uE00010^{10}\uE001 — matchar. D: \uE00010^{15}\uE001 — för stort, omöjligt att nå.",
     "tier": "essential",
     "title": "Värdera alternativen"
    },
    {
     "n": 11,
-    "text": "Svaret är C = 10^{10}. Insikten i en mening: för MAXIMUM väljer du division när operanden < 1 (division med liten är gångra med stor); multiplikation när operanden > 1.",
+    "text": "Svaret är C = \uE00010^{10}\uE001. Insikten i en mening: för MAXIMUM väljer du division när operanden < 1 (division med liten är gångra med stor); multiplikation när operanden > 1.",
     "tier": "essential",
     "title": "Slutsats"
    }
@@ -5034,7 +5034,7 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är frestande att tro att alla 'rektanglar' är kvadrater och arean är x^{2}.",
+    "why_tempting": "Det är frestande att tro att alla 'rektanglar' är kvadrater och arean är \uE000x^{2}\uE001.",
     "why_wrong": "Steg 11: x² är arean av en kvadrat med sida x, oavsett omkrets. För en allmän rektangel beror arean också på andra sidan."
    },
    {
@@ -5090,7 +5090,7 @@
    },
    {
     "n": 7,
-    "text": "x^{2} = x · x. Det är x gångrat med sig själv.",
+    "text": "\uE000x^{2}\uE001 = x · x. Det är x gångrat med sig själv.",
     "tier": "detail",
     "title": "Vad betyder x²?"
    },
@@ -8800,7 +8800,7 @@
    },
    {
     "n": 2,
-    "text": "Forskningens syfte formuleras explicit i fjärde stycket: 'Vår forskning syftar till att kartlägga alla viktiga mekaniska faktorer som bestämmer vid vilken längd och spänning som muskeln fungerar bäst.' Strax tidigare står: 'För varje studerad muskel upprättas en längd–kraft-kurva.'",
+    "text": "Forskningens syfte formuleras explicit i tredje stycket: 'Vår forskning syftar till att kartlägga alla viktiga mekaniska faktorer som bestämmer vid vilken längd och spänning som muskeln fungerar bäst.' Strax tidigare står: 'För varje studerad muskel upprättas en längd–kraft-kurva.'",
     "tier": "essential",
     "title": "Hitta stället"
    },
@@ -8940,7 +8940,7 @@
    },
    {
     "n": 2,
-    "text": "Avgörande mening i första stycket: 'Persson sammanfattar det i sitt kapitel om kanondebatten — där diskussionen framför allt kom att handla om vilken som var den \"rätta listan\" av litterära verk — med att debattlogiken \"förutsätter en övertygelse om att litteraturläsning kan ha automatiska verkningar och att dessa verkningar både enkelt kan förutses och att de är goda\".'",
+    "text": "Avgörande mening i andra stycket: 'Persson sammanfattar det i sitt kapitel om kanondebatten — där diskussionen framför allt kom att handla om vilken som var den \"rätta listan\" av litterära verk — med att debattlogiken \"förutsätter en övertygelse om att litteraturläsning kan ha automatiska verkningar och att dessa verkningar både enkelt kan förutses och att de är goda\".'",
     "tier": "essential",
     "title": "Hitta stället"
    },
@@ -12718,12 +12718,12 @@
   "technique": "DTK-strategi för 'triangelarea på karta'-frågor: (1) hitta de tre hörnen via kartans etiketter och punktmarkeringar, (2) välj en sida som bas — helst en som ligger nästan vågrätt eller lodrätt — och mät den mot skalstocken, (3) mät det VINKELRÄTA avståndet från det tredje hörnet till baslinjen, (4) area = (bas × höjd)/2. Triggern: 'triangelformat område' → geometri-formel med vinkelrät höjd, inte sida-gånger-sida och inte rektangel."
  },
  "host-ver2-2019-kvant1-KVA-018": {
-  "solution_path": "Detta är samma uppgift som version 1, men med kvantiteterna i omvänd ordning. Kvantitet I = 0,51. Kvantitet II = sannolikheten att 4^{x} är jämnt. Eftersom 4^{x}=2^{2x} är jämnt för varje positivt heltal x, är den sannolikheten 1. Då är II = 1 > 0,51 = I — svaret B.",
+  "solution_path": "Detta är samma uppgift som version 1, men med kvantiteterna i omvänd ordning. Kvantitet I = 0,51. Kvantitet II = sannolikheten att \uE0004^{x}\uE001 är jämnt. Eftersom \uE0004^{x}=2^{2x}\uE001 är jämnt för varje positivt heltal x, är den sannolikheten 1. Då är II = 1 > 0,51 = I — svaret B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "x är ett heltal med 1\\le x\\le 100\\,000. Kvantitet I = 0,51. Kvantitet II = sannolikheten att 4^{x} är ett jämnt tal.",
+    "text": "x är ett heltal med \uE0001\\le x\\le 100\\,000\uE001. Kvantitet I = 0,51. Kvantitet II = sannolikheten att \uE0004^{x}\uE001 är ett jämnt tal.",
     "tier": "essential"
    },
    {
@@ -12734,14 +12734,14 @@
    },
    {
     "n": 3,
-    "title": "Analysera 4^{x}",
-    "text": "4^{x}=2^{2x} — alltid delbart med 2 för varje heltal x ≥ 1. Så 4^{x} är alltid jämnt.",
+    "title": "Analysera \uE0004^{x}\uE001",
+    "text": "\uE0004^{x}=2^{2x}\uE001 — alltid delbart med 2 för varje heltal x ≥ 1. Så \uE0004^{x}\uE001 är alltid jämnt.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Sannolikheten är 1",
-    "text": "Eftersom '4^{x} jämnt' inträffar för alla möjliga x är det en säker händelse: Kvantitet II = 1.",
+    "text": "Eftersom '\uE0004^{x}\uE001 jämnt' inträffar för alla möjliga x är det en säker händelse: Kvantitet II = 1.",
     "tier": "essential"
    },
    {
@@ -12759,7 +12759,7 @@
    {
     "n": 7,
     "title": "Testa några x",
-    "text": "x = 1: 4=2^{2} jämnt. x = 5: 4^{5}=1024 jämnt. Alltid jämnt, så p = 1.",
+    "text": "x = 1: \uE0004=2^{2}\uE001 jämnt. x = 5: \uE0004^{5}=1024\uE001 jämnt. Alltid jämnt, så p = 1.",
     "tier": "detail"
    },
    {
@@ -12801,7 +12801,7 @@
    {
     "letter": "D",
     "why_tempting": "Ett stort okänt x lockar till 'informationen räcker inte'.",
-    "why_wrong": "Steg 10: svaret är bestämt för hela intervallet — 4^{x} är alltid jämnt (p = 1). Informationen räcker."
+    "why_wrong": "Steg 10: svaret är bestämt för hela intervallet — \uE0004^{x}\uE001 är alltid jämnt (p = 1). Informationen räcker."
    }
   ],
   "technique": "Paritet-hos-potens-regeln (spegelversion): en jämn bas upphöjd till ett positivt heltal är alltid jämn, så sannolikheten = 1. Läs noga vilken kvantitet som bär sannolikheten. Triggern: samma som version 1, men kontrollera uppställningsordningen innan du väljer bokstav.",
@@ -13200,12 +13200,12 @@
   }
  },
  "host-ver2-2019-kvant2-XYZ-005": {
-  "solution_path": "Skriv om 49 som potens av 7: 49 = 7^{2}. Då måste exponenterna vara lika: 7 + x/3 = 2. Lös: x/3 = -5, alltså x = -15.",
+  "solution_path": "Skriv om 49 som potens av 7: \uE00049 = 7^{2}\uE001. Då måste exponenterna vara lika: \uE0007 + x/3 = 2\uE001. Lös: \uE000x/3 = -5\uE001, alltså \uE000x = -15\uE001.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Ekvationen 7^{\\,7 + x/3} = 49 har en variabel exponent. Strategin för sådana ekvationer: gör båda leden till potenser av SAMMA bas, sedan kan exponenterna jämställas.",
+    "text": "Ekvationen \uE0007^{\\,7 + x/3} = 49\uE001 har en variabel exponent. Strategin för sådana ekvationer: gör båda leden till potenser av SAMMA bas, sedan kan exponenterna jämställas.",
     "tier": "essential"
    },
    {
@@ -13217,43 +13217,43 @@
    {
     "n": 3,
     "title": "Skriv 49 som potens av 7",
-    "text": "7\\cdot 7 = 49, alltså 49 = 7^{2}. Detta är en av de viktigaste talen att kunna utantill: 7^{2}=49.",
+    "text": "\uE0007\\cdot 7 = 49\uE001, alltså \uE00049 = 7^{2}\uE001. Detta är en av de viktigaste talen att kunna utantill: \uE0007^{2}=49\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Sätt in i ekvationen",
-    "text": "7^{\\,7 + x/3} = 7^{2}.",
+    "text": "\uE0007^{\\,7 + x/3} = 7^{2}\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Lika baser ⇒ lika exponenter",
-    "text": "Exponentialfunktionen b^{u} är injektiv för b>0,\\,b\\neq 1 (varje y-värde har bara ett x-värde). Alltså: om 7^{A}=7^{B} så är A=B.",
+    "text": "Exponentialfunktionen \uE000b^{u}\uE001 är injektiv för \uE000b>0,\\,b\\neq 1\uE001 (varje y-värde har bara ett x-värde). Alltså: om \uE0007^{A}=7^{B}\uE001 så är \uE000A=B\uE001.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Sätt upp exponentekvationen",
-    "text": "7 + \\dfrac{x}{3} = 2.",
+    "text": "\uE0007 + \\dfrac{x}{3} = 2\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Subtrahera 7 i båda led",
-    "text": "\\dfrac{x}{3} = 2 - 7 = -5.",
+    "text": "\uE000\\dfrac{x}{3} = 2 - 7 = -5\uE001.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Multiplicera båda led med 3",
-    "text": "x = -5 \\cdot 3 = -15.",
+    "text": "\uE000x = -5 \\cdot 3 = -15\uE001.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Verifiera",
-    "text": "Sätt in x=-15: exponenten blir 7 + (-15)/3 = 7 - 5 = 2, och 7^{2}=49. Stämmer.",
+    "text": "Sätt in \uE000x=-15\uE001: exponenten blir \uE0007 + (-15)/3 = 7 - 5 = 2\uE001, och \uE0007^{2}=49\uE001. Stämmer.",
     "tier": "essential"
    },
    {
@@ -13335,7 +13335,7 @@
    {
     "n": 7,
     "title": "Förenkla bråkuttryck",
-    "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+    "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För \uE000a/b = c/d\uE001 ger korsmultiplikation \uE000ad = bc\uE001 — säkrare än att försöka 'flytta bråk'.",
     "tier": "detail"
    },
    {
@@ -13347,7 +13347,7 @@
    {
     "n": 9,
     "title": "Geometri-grundregler",
-    "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+    "text": "Triangelns vinkelsumma är 180°, rektangelarea är \uE000a\\cdot b\uE001, cirkelarea är \uE000\\pi r^2\uE001. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
     "tier": "detail"
    },
    {
