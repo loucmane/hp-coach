@@ -32,6 +32,7 @@ import { clerkWebhookRoute } from './routes/clerkWebhook'
 import { contentRoute } from './routes/content'
 import { dailyPlansRoute } from './routes/dailyPlans'
 import { devLoginRoute } from './routes/devLogin'
+import { explanationFeedbackRoute } from './routes/explanationFeedback'
 import { exportRoute, importRoute } from './routes/export'
 import { fitRoute, itemStatsRoute } from './routes/fit'
 import { frameworkProgressRoute } from './routes/frameworkProgress'
@@ -63,7 +64,7 @@ app.use(
       return undefined
     },
     // PUT: /api/daily-plans/:date (the cross-device plan-baseline upsert)
-    // is the only PUT route — it was silently CORS-blocked from the SPA
+    // was the first PUT route — it was silently CORS-blocked from the SPA
     // origin until PUT was added here (preflight 204'd but disallowed the
     // method, so the browser never sent the request and the plan never
     // reached the server).
@@ -109,6 +110,8 @@ const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .route('/attempts', attemptsRoute)
   .route('/mistakes', mistakesRoute)
   .route('/mock-results', mockResultsRoute)
+  // "Hjälpte förklaringen?" per question (LJ-16): PUT /:qid upserts, GET lists.
+  .route('/explanations/feedback', explanationFeedbackRoute)
   // Learned item-difficulty layer (PL-L.1): read fitted difficulties and
   // trigger the fit on demand. The nightly cron is the production path.
   .route('/item-stats', itemStatsRoute)
