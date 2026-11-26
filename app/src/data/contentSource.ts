@@ -51,6 +51,14 @@ export function __resetContentAuth(): void {
   })
 }
 
+/** The session token for an authed call made outside React (LJ-16: the
+ *  explanation feedback PUT). Like contentFetch, it waits for the getter
+ *  <ContentAuthBridge> registers, then asks it. Null when signed out. */
+export async function contentAuthToken(): Promise<string | null> {
+  const getToken = await tokenGetterPromise
+  return getToken()
+}
+
 /**
  * Fetch a strict-tier content file by its relative key
  * (`data/var-2024.json`, `explanations/host-2025.json`).
