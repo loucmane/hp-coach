@@ -1306,7 +1306,7 @@
   ],
   "framework_id": "KVA-TRAP-027",
   "pitfall": "Den vanligaste fällan är att försöka räkna ut konkreta värden och fastna i att 'det beror på dimensionerna'. Botemedlet: använd Pythagoras + kvadrering för att se att jämförelsen reducerar till '0 vs 2ab', vilket inte beror på de specifika siffrorna.",
-  "solution_path": "I en rektangel med sidor a och b är diagonalen \\sqrt{a^2 + b^2}, halva omkretsen är a + b. Triangelolikheten ger \\sqrt{a^2+b^2} < a + b alltid (för positiva a, b). Halva omkretsen är alltid större. Svaret är B.",
+  "solution_path": "I en rektangel med sidor a och b är diagonalen \uE000\\sqrt{a^2 + b^2}\uE001, halva omkretsen är \uE000a + b\uE001. Triangelolikheten ger \uE000\\sqrt{a^2+b^2} < a + b\uE001 alltid (för positiva a, b). Halva omkretsen är alltid större. Svaret är B.",
   "steps": [
    {
     "n": 1,
@@ -1346,7 +1346,7 @@
    },
    {
     "n": 7,
-    "text": "För positiva tal bevaras storleksordningen om vi kvadrerar. Vänster sida kvadrerad: a^2 + b^2. Höger sida kvadrerad: (a + b)^2 = a^2 + 2ab + b^2.",
+    "text": "För positiva tal bevaras storleksordningen om vi kvadrerar. Vänster sida kvadrerad: \uE000a^2 + b^2\uE001. Höger sida kvadrerad: (a \uE000+ b)^2 = a^2 + 2ab + b^2\uE001.",
     "tier": "essential",
     "title": "Kvadrera båda sidor"
    },
@@ -1600,7 +1600,7 @@
   ],
   "framework_id": "KVA-TRAP-024",
   "pitfall": "Den vanligaste fällan är att låta sig avskräckas av villkoret a < b och tro att det MÅSTE påverka svaret. Botemedlet: skriv ut uttrycken algebraiskt först — om de är identiska före några substitutioner, är de lika oberoende av villkor.",
-  "solution_path": "Avstånd från origo till (a, b) = \\sqrt{a^2 + b^2}; från origo till (b, a) = \\sqrt{b^2 + a^2}. Båda samma sak. Svaret är C.",
+  "solution_path": "Avstånd från origo till (a, b) \uE000= \\sqrt{a^2 + b^2}\uE001; från origo till (b, a) \uE000= \\sqrt{b^2 + a^2}\uE001. Båda samma sak. Svaret är C.",
   "steps": [
    {
     "n": 1,
@@ -1640,13 +1640,13 @@
    },
    {
     "n": 7,
-    "text": "Addition är kommutativ: A + B = B + A för alla tal. Det spelar ingen roll i vilken ordning du adderar — summan är densamma. Här används den på A = a^2 och B = b^2.",
+    "text": "Addition är kommutativ: \uE000A + B = B + A\uE001 för alla tal. Det spelar ingen roll i vilken ordning du adderar — summan är densamma. Här används den på \uE000A = a^2\uE001 och \uE000B = b^2\uE001.",
     "tier": "detail",
     "title": "Den kommutativa lagen"
    },
    {
     "n": 8,
-    "text": "Villkoret a < b är ett vilseledande tillägg. Det räcker att a och b är reella tal — kvadrater av reella tal är positiva oberoende av tecken, och summan a^2 + b^2 är symmetrisk i a och b. Storleksordningen mellan a och b förstör inte symmetrin.",
+    "text": "Villkoret \uE000a < b\uE001 är ett vilseledande tillägg. Det räcker att a och b är reella tal — kvadrater av reella tal är positiva oberoende av tecken, och summan \uE000a^2 + b^2\uE001 är symmetrisk i a och b. Storleksordningen mellan a och b förstör inte symmetrin.",
     "tier": "detail",
     "title": "Varför spelar a < b ingen roll?"
    },
@@ -1669,7 +1669,7 @@
     "title": "Slutsats"
    }
   ],
-  "technique": "Symmetri-strategin: när två uttryck är symmetriska under utbyte av variabler (typ a^2 + b^2 vs b^2 + a^2), är de identiska oberoende av variablernas värden. Triggern: 'kvantiteter där variabelnamnen är BYTTA' → leta efter den symmetri som gör jämförelsen trivial.",
+  "technique": "Symmetri-strategin: när två uttryck är symmetriska under utbyte av variabler (typ \uE000a^2 + b^2\uE001 vs \uE000b^2 + a^2\uE001), är de identiska oberoende av variablernas värden. Triggern: 'kvantiteter där variabelnamnen är BYTTA' \uE000→\uE001 leta efter den symmetri som gör jämförelsen trivial.",
   "pregrade_tactic": {
    "handle": "Symmetrigreppet",
    "move": "När variablerna är bytta i de två kvantiteterna — testa om symmetrin gör jämförelsen trivial innan du börjar räkna med villkoret."
@@ -2138,7 +2138,7 @@
    },
    {
     "n": 8,
-    "text": "Vi söker minsta T sådant att T är en multipel av 12, 8 och 6 (i minuter). Faktorisera: 12 = 2^2 · 3, 8 = 2^3, 6 = 2 · 3. MGM = 2^3 · 3 = 24 minuter. Efter 24 min: A har gått 2 varv, B har gått 3 varv, C har gått 4 varv. Alla vid startplatsen ✓.",
+    "text": "Vi söker minsta T sådant att T är en multipel av 12, 8 och 6 (i minuter). Faktorisera: \uE00012 = 2^2 · 3\uE001, \uE0008 = 2^3\uE001, \uE0006 = 2 · 3\uE001. MGM \uE000= 2^3 · 3 = 24\uE001 minuter. Efter 24 min: A har gått 2 varv, B har gått 3 varv, C har gått 4 varv. Alla vid startplatsen ✓.",
     "tier": "essential",
     "title": "Sök minsta gemensamma multipel"
    },
@@ -2406,7 +2406,7 @@
    }
   ],
   "framework_id": "NOG-TRAP-007",
-  "pitfall": "Den vanligaste fällan är att tro att Thales sats (rätvinklig triangel i cirkel) ger triangelns area. Botemedlet: minns att rätvinkliga trianglar i en cirkel kan ha vilken som helst area mellan 0 och r^2 (max-arean uppnås av likbent rätvinklig).",
+  "pitfall": "Den vanligaste fällan är att tro att Thales sats (rätvinklig triangel i cirkel) ger triangelns area. Botemedlet: minns att rätvinkliga trianglar i en cirkel kan ha vilken som helst area mellan 0 och \uE000r^2\uE001 (max-arean uppnås av likbent rätvinklig).",
   "solution_path": "(1) ger bordets area = π·400 = 400π och dukens area = 400. Sannolikheten för utanför = (400π − 400) / (400π) = 1 − 1/π. (2) ger triangelns hypotenusa = diameter, men det räcker inte att bestämma triangelns area (utan kateterna). Svaret är A.",
   "steps": [
    {
@@ -2429,7 +2429,7 @@
    },
    {
     "n": 4,
-    "text": "(1): bordets radie = 20 cm → bordets area = π · 20^2 = 400π cm^2. Dukens area = 400 cm^2.",
+    "text": "(1): bordets radie \uE000= 20\uE001 cm \uE000→\uE001 bordets area \uE000=\uE001 π \uE000· 20^2 =\uE001 400π \uE000cm^2\uE001. Dukens area \uE000= 400 cm^2\uE001.",
     "tier": "essential",
     "title": "Översätt (1)"
    },
@@ -2459,7 +2459,7 @@
    },
    {
     "n": 9,
-    "text": "Om hypotenusan = 2r (diametern), så kan kateterna a och b vara vilka som helst med a^2 + b^2 = (2r)^2 = 4r^2. Triangelns area = a·b/2 varierar med valet av a och b — den är max när a = b = r√2 (likbent), men kan vara liten om a är nära 0 eller nära 2r.",
+    "text": "Om hypotenusan \uE000= 2r (diametern)\uE001, så kan kateterna a och b vara vilka som helst med \uE000a^2 + b^2 = (2r)^2 = 4r^2\uE001. Triangelns area \uE000=\uE001 a·b/2 varierar med valet av a och b — den är max när \uE000a = b =\uE001 r√2 (likbent), men kan vara liten om a är nära 0 eller nära 2r.",
     "tier": "detail",
     "title": "Varför räcker inte 'rätvinklig + inskriven'?"
    },
@@ -2876,7 +2876,7 @@
   ],
   "framework_id": "XYZ-TRAP-010",
   "pitfall": null,
-  "solution_path": "En kurva skär x-axeln där y = 0, alltså där x^{2} + x - 6 = 0. Faktorisera till (x+3)(x-2) = 0 → x = −3 eller x = 2. Svaret är C.",
+  "solution_path": "En kurva skär x-axeln där y = 0, alltså där \uE000x^{2} + x - 6 = 0\uE001. Faktorisera till \uE000(x+3)(x-2) = 0\uE001 → x = −3 eller x = 2. Svaret är C.",
   "steps": [
    {
     "n": 1,
@@ -2892,13 +2892,13 @@
    },
    {
     "n": 3,
-    "text": "Vi ersätter y med 0 i formeln: 0 = x^{2} + x - 6, eller lika gärna x^{2} + x - 6 = 0. Det är en andragradsekvation.",
+    "text": "Vi ersätter y med 0 i formeln: \uE0000 = x^{2} + x - 6\uE001, eller lika gärna \uE000x^{2} + x - 6 = 0\uE001. Det är en andragradsekvation.",
     "tier": "essential",
     "title": "Sätt y = 0"
    },
    {
     "n": 4,
-    "text": "x^{2} betyder x gångrat med sig självt: x \\cdot x. Om x = 4 är x^{2} = 16. Om x = −3 är x^{2} = 9 (negativ · negativ = positiv).",
+    "text": "\uE000x^{2}\uE001 betyder x gångrat med sig självt: \uE000x \\cdot x\uE001. Om x = 4 är \uE000x^{2} = 16\uE001. Om x = −3 är \uE000x^{2} = 9\uE001 (negativ · negativ = positiv).",
     "tier": "detail",
     "title": "Vad är x²?"
    },
@@ -2916,7 +2916,7 @@
    },
    {
     "n": 7,
-    "text": "Med talen 3 och −2 kan vi faktorisera: x^{2} + x - 6 = (x + 3)(x - 2). Kontrollera genom att multiplicera tillbaka: (x+3)(x−2) = x² − 2x + 3x − 6 = x² + x − 6 ✓.",
+    "text": "Med talen 3 och −2 kan vi faktorisera: \uE000x^{2} + x - 6 = (x + 3)(x - 2)\uE001. Kontrollera genom att multiplicera tillbaka: (x+3)(x−2) = x² − 2x + 3x − 6 = x² + x − 6 ✓.",
     "tier": "essential",
     "title": "Skriv om till produktform"
    },
@@ -3054,23 +3054,23 @@
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Om du glömmer att vända tecknet på −2x när minusparentesen distribueras, blir x-termerna -2x - 2x = -4x istället för 0. Resultatet ser ut som 3x^{2} - 4x.",
+    "why_tempting": "Om du glömmer att vända tecknet på −2x när minusparentesen distribueras, blir x-termerna \uE000-2x - 2x = -4x\uE001 istället för 0. Resultatet ser ut som \uE0003x^{2} - 4x\uE001.",
     "why_wrong": "Steg 8 påminner: minustecknet framför parentesen vänder TECKNET på varje term inuti. −(−2x) = +2x, inte −2x. När båda x-termerna har rätt tecken tar de ut varandra."
    },
    {
     "letter": "C",
-    "why_tempting": "Det är lätt att 'addera' 3x²:orna istället för att subtrahera, om man bara klumpar ihop alla x^{2}-termer: 6x^{2} + 3x^{2} = 9x^{2}.",
-    "why_wrong": "Det är en subtraktion mellan parenteserna, inte addition. Steg 9 visar att andra parentesens 3x^{2} blir -3x^{2} efter minusdistribuering — 6x^{2} - 3x^{2} = 3x^{2}."
+    "why_tempting": "Det är lätt att 'addera' 3x²:orna istället för att subtrahera, om man bara klumpar ihop alla \uE000x^{2}\uE001-termer: \uE0006x^{2} + 3x^{2} = 9x^{2}\uE001.",
+    "why_wrong": "Det är en subtraktion mellan parenteserna, inte addition. Steg 9 visar att andra parentesens \uE0003x^{2}\uE001 blir \uE000-3x^{2}\uE001 efter minusdistribuering — \uE0006x^{2} - 3x^{2} = 3x^{2}\uE001."
    },
    {
     "letter": "D",
-    "why_tempting": "Snabbsvar är ofta att kombinera båda fel: addera istället för subtrahera de kvadratiska termerna OCH glömma att vända x-termens tecken — det ger 9x^{2} - 4x.",
+    "why_tempting": "Snabbsvar är ofta att kombinera båda fel: addera istället för subtrahera de kvadratiska termerna OCH glömma att vända x-termens tecken — det ger \uE0009x^{2} - 4x\uE001.",
     "why_wrong": "Två fel på samma gång. Steg 8 och steg 9 visar att båda räkneoperationer ska vara subtraktion (för minustecknet framför parentesen) — inte addition."
    }
   ],
   "framework_id": "XYZ-TRAP-024",
   "pitfall": "Den vanligaste fällan är att vända tecknet på den FÖRSTA ter- men i andra parentesen men glömma den ANDRA. Botemedlet: skriv ut alla led explicit (6x² − 2x − 3x² + 2x) innan du börjar samla — då syns alla fyra tecken tydligt och inget glöms.",
-  "solution_path": "Multiplicera ut båda parenteserna: (3x − 1)·2x = 6x^{2} - 2x och x(3x − 2) = 3x^{2} - 2x. Skillnaden är 6x^{2} - 2x - 3x^{2} + 2x = 3x^{2}. Svaret är A.",
+  "solution_path": "Multiplicera ut båda parenteserna: (3x − 1)·2x = \uE0006x^{2} - 2x\uE001 och x(3x − 2) = \uE0003x^{2} - 2x\uE001. Skillnaden är \uE0006x^{2} - 2x - 3x^{2} + 2x = 3x^{2}\uE001. Svaret är A.",
   "steps": [
    {
     "n": 1,
@@ -3086,61 +3086,61 @@
    },
    {
     "n": 3,
-    "text": "Den distributiva lagen säger: a(b - c) = a \\cdot b - a \\cdot c — gångra a separat med varje term inuti parentesen. Vi kommer använda den två gånger i denna uppgift.",
+    "text": "Den distributiva lagen säger: \uE000a(b - c) = a \\cdot b - a \\cdot c\uE001 — gångra a separat med varje term inuti parentesen. Vi kommer använda den två gånger i denna uppgift.",
     "tier": "detail",
     "title": "Den distributiva lagen"
    },
    {
     "n": 4,
-    "text": "Gångra 2x med varje term inuti: (3x − 1)·2x = 3x·2x + (−1)·2x = 6x^{2} - 2x. Tänk: 3x · 2x = 3·2·x·x = 6x^{2}, och −1 · 2x = −2x.",
+    "text": "Gångra 2x med varje term inuti: (3x − 1)·2x = 3x·2x + (−1)·2x = \uE0006x^{2} - 2x\uE001. Tänk: 3x · 2x = 3·2·x·x = \uE0006x^{2}\uE001, och −1 · 2x = −2x.",
     "tier": "essential",
     "title": "Multiplicera ut (3x − 1)·2x"
    },
    {
     "n": 5,
-    "text": "x · x = x^{2} per definition. När du gångrar samma variabel med sig själv ökar exponenten med 1.",
+    "text": "x · x = \uE000x^{2}\uE001 per definition. När du gångrar samma variabel med sig själv ökar exponenten med 1.",
     "tier": "detail",
     "title": "Vad är x · x?"
    },
    {
     "n": 6,
-    "text": "Gångra x med varje term inuti: x · 3x + x · (−2) = 3x^{2} - 2x. Tänk: x · 3x = 3·x·x = 3x^{2}, och x · (−2) = −2x.",
+    "text": "Gångra x med varje term inuti: x · 3x + x · (−2) = \uE0003x^{2} - 2x\uE001. Tänk: x · 3x = 3·x·x = \uE0003x^{2}\uE001, och x · (−2) = −2x.",
     "tier": "essential",
     "title": "Multiplicera ut x(3x − 2)"
    },
    {
     "n": 7,
-    "text": "Vi har nu (3x − 1)·2x − x(3x − 2) = (6x^{2} - 2x) − (3x^{2} - 2x). Notera minustecknet FRAMFÖR andra parentesen — det vänder tecknet på allt inuti.",
+    "text": "Vi har nu (3x − 1)·2x − x(3x − 2) = (\uE0006x^{2} - 2x\uE001) − (\uE0003x^{2} - 2x\uE001). Notera minustecknet FRAMFÖR andra parentesen — det vänder tecknet på allt inuti.",
     "tier": "essential",
     "title": "Skriv hela uttrycket"
    },
    {
     "n": 8,
-    "text": "−(3x^{2} - 2x) = -3x^{2} + 2x. Minustecknet 'gångras in' i båda termerna: negativ av en negativ blir positiv, så −(−2x) = +2x.",
+    "text": "−(\uE0003x^{2} - 2x\uE001) = \uE000-3x^{2} + 2x\uE001. Minustecknet 'gångras in' i båda termerna: negativ av en negativ blir positiv, så −(−2x) = +2x.",
     "tier": "detail",
     "title": "Distribuera minustecknet"
    },
    {
     "n": 9,
-    "text": "Uttrycket är nu 6x^{2} - 2x - 3x^{2} + 2x. Termer med x^{2} hör ihop: 6x^{2} - 3x^{2} = 3x^{2}. Termer med x hör ihop: −2x + 2x = 0.",
+    "text": "Uttrycket är nu \uE0006x^{2} - 2x - 3x^{2} + 2x\uE001. Termer med \uE000x^{2}\uE001 hör ihop: \uE0006x^{2} - 3x^{2} = 3x^{2}\uE001. Termer med x hör ihop: −2x + 2x = 0.",
     "tier": "essential",
     "title": "Samla termer av samma sort"
    },
    {
     "n": 10,
-    "text": "Termer med samma variabel-del kan slås ihop genom att addera koefficienterna (talen framför). 6x^{2} och 3x^{2} är liknande; 2x och x^{2} är INTE liknande (olika exponent).",
+    "text": "Termer med samma variabel-del kan slås ihop genom att addera koefficienterna (talen framför). \uE0006x^{2}\uE001 och \uE0003x^{2}\uE001 är liknande; 2x och \uE000x^{2}\uE001 är INTE liknande (olika exponent).",
     "tier": "detail",
     "title": "Vad betyder 'liknande termer'?"
    },
    {
     "n": 11,
-    "text": "Resultatet är 3x^{2} + 0 = 3x^{2}. x-termerna tar ut varandra helt — de var där bara för att lura oss.",
+    "text": "Resultatet är \uE0003x^{2} + 0 = 3x^{2}\uE001. x-termerna tar ut varandra helt — de var där bara för att lura oss.",
     "tier": "essential",
     "title": "Sista förenkling"
    },
    {
     "n": 12,
-    "text": "Svaret är A — 3x^{2}. Insikten i en mening: när du subtraherar en parentes, vänd ALLA tecken inuti den först, sedan samla liknande termer i ordning.",
+    "text": "Svaret är A — \uE0003x^{2}\uE001. Insikten i en mening: när du subtraherar en parentes, vänd ALLA tecken inuti den först, sedan samla liknande termer i ordning.",
     "tier": "essential",
     "title": "Slutsats"
    }
@@ -3153,79 +3153,79 @@
  },
  "var-2013-kvant1-XYZ-010": {
   "framework_id": "XYZ-TRAP-026",
-  "solution_path": "Villkoret x - y = 0 betyder x = y (och x ≠ 0 så även y ≠ 0). Då blir \\frac{x^{n}}{y^{n}} = \\left(\\frac{x}{y}\\right)^{n} = 1^{n} = 1 för alla heltal n. Villkoret att n är delbart med 2 är ett vilseledande tillägg.",
+  "solution_path": "Villkoret \uE000x - y = 0\uE001 betyder \uE000x = y\uE001 (och \uE000x ≠ 0\uE001 så även \uE000y ≠ 0\uE001). Då blir \uE000\\frac{x^{n}}{y^{n}} = \\left(\\frac{x}{y}\\right)^{n} = 1^{n} = 1\uE001 för alla heltal n. Villkoret att n är delbart med 2 är ett vilseledande tillägg.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Du har \\frac{x^{n}}{y^{n}} med två villkor: x - y = 0 och n är ett heltal delbart med 2. Vad är uttryckets värde?",
+    "text": "Du har \uE000\\frac{x^{n}}{y^{n}}\uE001 med två villkor: \uE000x - y = 0\uE001 och n är ett heltal delbart med 2. Vad är uttryckets värde?",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Översätt villkoret",
-    "text": "x - y = 0 är ekvivalent med x = y. Eftersom x ≠ 0 (givet) följer också y ≠ 0 — annars vore nämnaren noll och uttrycket odefinierat.",
+    "text": "\uE000x - y = 0\uE001 är ekvivalent med \uE000x = y\uE001. Eftersom \uE000x ≠ 0\uE001 (givet) följer också \uE000y ≠ 0\uE001 — annars vore nämnaren noll och uttrycket odefinierat.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Potens-kvot-lagen",
-    "text": "\\frac{a^{n}}{b^{n}} = \\left(\\frac{a}{b}\\right)^{n}: när två potenser med samma exponent delas kan vi i stället upphöja deras kvot.",
+    "text": "\uE000\\frac{a^{n}}{b^{n}} = \\left(\\frac{a}{b}\\right)^{n}\uE001: när två potenser med samma exponent delas kan vi i stället upphöja deras kvot.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Sätt in x = y",
-    "text": "\\frac{x^{n}}{y^{n}} = \\left(\\frac{x}{y}\\right)^{n} = \\left(\\frac{y}{y}\\right)^{n} = 1^{n}.",
+    "text": "\uE000\\frac{x^{n}}{y^{n}} = \\left(\\frac{x}{y}\\right)^{n} = \\left(\\frac{y}{y}\\right)^{n} = 1^{n}\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Ettans potenser",
-    "text": "1^{n} = 1 för alla heltal n (positiva, negativa, jämna, udda). Ett upphöjt till vad som helst är fortfarande ett.",
+    "text": "\uE0001^{n} = 1\uE001 för alla heltal n (positiva, negativa, jämna, udda). Ett upphöjt till vad som helst är fortfarande ett.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Vad gör villkoret om n?",
-    "text": "Att n är jämnt delbart med 2 spelar ingen roll här — 1^{n} = 1 oavsett. Villkoret är en distraktor som inte påverkar svaret.",
+    "text": "Att n är jämnt delbart med 2 spelar ingen roll här — \uE0001^{n} = 1\uE001 oavsett. Villkoret är en distraktor som inte påverkar svaret.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Verifiera med konkreta tal",
-    "text": "Sätt x = y = 3, n = 4: \\frac{3^{4}}{3^{4}} = \\frac{81}{81} = 1. Sätt x = y = 5, n = 2: \\frac{5^{2}}{5^{2}} = \\frac{25}{25} = 1. ✓",
+    "text": "Sätt \uE000x = y = 3, n = 4\uE001: \uE000\\frac{3^{4}}{3^{4}} = \\frac{81}{81} = 1\uE001. Sätt \uE000x = y = 5, n = 2\uE001: \uE000\\frac{5^{2}}{5^{2}} = \\frac{25}{25} = 1\uE001. ✓",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Slutsats",
-    "text": "Svaret är C: 1. Insikten i en mening: när villkor ger x = y, blir varje symmetriskt uttryck i x och y trivialt — och extra villkor kan vara distraktorer.",
+    "text": "Svaret är C: 1. Insikten i en mening: när villkor ger \uE000x = y\uE001, blir varje symmetriskt uttryck i x och y trivialt — och extra villkor kan vara distraktorer.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "−1 om du tror att jämn potens ger (-1)^{n} eller blandar ihop med teckenfrågor.",
-    "why_wrong": "Steg 4 visar att kvoten är 1^{n}, inte (-1)^{n}. Det finns inget minustecken i uppgiften."
+    "why_tempting": "−1 om du tror att jämn potens ger \uE000(-1)^{n}\uE001 eller blandar ihop med teckenfrågor.",
+    "why_wrong": "Steg 4 visar att kvoten är \uE0001^{n}\uE001, inte \uE000(-1)^{n}\uE001. Det finns inget minustecken i uppgiften."
    },
    {
     "letter": "B",
-    "why_tempting": "Noll om du missuppfattar villkoret som x = 0 (i stället för x = y).",
-    "why_wrong": "Steg 2 visar att uppgiften uttryckligen säger x ≠ 0; villkoret är x = y, inte x = 0."
+    "why_tempting": "Noll om du missuppfattar villkoret som \uE000x = 0\uE001 (i stället för \uE000x = y\uE001).",
+    "why_wrong": "Steg 2 visar att uppgiften uttryckligen säger \uE000x ≠ 0\uE001; villkoret är \uE000x = y\uE001, inte \uE000x = 0\uE001."
    },
    {
     "letter": "D",
-    "why_tempting": "2 om du blandar ihop 1^{n} med 1 + 1 eller tänker att exponenten 2 (från 'delbart med 2') ger svaret.",
-    "why_wrong": "Steg 5 visar att 1^{n} = 1 för alla n; exponentens värde påverkar inte svaret när basen är 1."
+    "why_tempting": "2 om du blandar ihop \uE0001^{n}\uE001 med \uE0001 + 1\uE001 eller tänker att exponenten 2 (från 'delbart med 2') ger svaret.",
+    "why_wrong": "Steg 5 visar att \uE0001^{n} = 1\uE001 för alla n; exponentens värde påverkar inte svaret när basen är 1."
    }
   ],
-  "technique": "Identifiera symmetri i villkoren först. När villkoret ger x = y (eller mer generellt: en relation som gör en kvot trivial), försvinner ofta hela uppgiftens komplexitet.",
+  "technique": "Identifiera symmetri i villkoren först. När villkoret ger \uE000x = y\uE001 (eller mer generellt: en relation som gör en kvot trivial), försvinner ofta hela uppgiftens komplexitet.",
   "pitfall": "Inte alla villkor i en uppgift är relevanta. Att n är delbart med 2 är en klassisk distraktor här — det skapar förväntan om att paritet ska spela roll, men gör det inte.",
   "pregrade_tactic": {
    "handle": "Symmetrigreppet",
-   "move": "När ett villkor ger x = y (eller motsvarande), sätt in det direkt i kvoten innan du tänker på exponenter — det kollapsar uttrycket på en rad."
+   "move": "När ett villkor ger \uE000x = y\uE001 (eller motsvarande), sätt in det direkt i kvoten innan du tänker på exponenter — det kollapsar uttrycket på en rad."
   },
   "_meta": {
    "model": "claude-opus-4-7-hand-authored",
@@ -3240,9 +3240,9 @@
    "recipe": "variant-c-regen-wave"
   },
   "framework_id": "XYZ-TRAP-042",
-  "solution_path": "Kvadratens area är 3^2 = 9 cm². Cirkelns area är 16 cm² större, alltså 25 cm². Använd A = \\pi r^2 = 25, lös r = \\sqrt{25/\\pi} = 5/\\sqrt{\\pi} (alternativ B i den korrekta läsningen).",
-  "technique": "Cirkelradie från area: invertera arean med formeln A = \\pi r^2 — alltså r = \\sqrt{A/\\pi}. När arean är ett tydligt kvadrattal under roten landar man på rena bråkuttryck.",
-  "pitfall": "Botemedlet mot att glömma kvadratroten: notera att A skalar med r^2, alltså är r alltid en KVADRATROT av A/π. Skriv ut formeln r = \\sqrt{A/\\pi} innan du börjar.",
+  "solution_path": "Kvadratens area är \uE0003^2 = 9\uE001 cm². Cirkelns area är 16 cm² större, alltså 25 cm². Använd \uE000A = \\pi r^2 = 25\uE001, lös \uE000r = \\sqrt{25/\\pi} = 5/\\sqrt{\\pi}\uE001 (alternativ B i den korrekta läsningen).",
+  "technique": "Cirkelradie från area: invertera arean med formeln \uE000A = \\pi r^2\uE001 — alltså \uE000r = \\sqrt{A/\\pi}\uE001. När arean är ett tydligt kvadrattal under roten landar man på rena bråkuttryck.",
+  "pitfall": "Botemedlet mot att glömma kvadratroten: notera att A skalar med \uE000r^2\uE001, alltså är r alltid en KVADRATROT av A/π. Skriv ut formeln \uE000r = \\sqrt{A/\\pi}\uE001 innan du börjar.",
   "steps": [
    {
     "n": 1,
@@ -3253,67 +3253,67 @@
    {
     "n": 2,
     "title": "Definiera kvadratarea",
-    "text": "En kvadrat med sida s har area A = s^2 (sida gånger sida). Det är samma sak som att räkna hur många små enhetskvadrater som ryms i kvadraten.",
+    "text": "En kvadrat med sida s har area \uE000A = s^2\uE001 (sida gånger sida). Det är samma sak som att räkna hur många små enhetskvadrater som ryms i kvadraten.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Räkna kvadratens area",
-    "text": "Med s = 3 cm: A_{kvadrat} = 3^2 = 9 cm². Det är basvärdet.",
+    "text": "Med s = 3 cm: \uE000A_{kvadrat} = 3^2 = 9\uE001 cm². Det är basvärdet.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Räkna cirkelns area",
-    "text": "Cirkelns area är 16 cm² mer än kvadratens: A_{cirkel} = 9 + 16 = 25 cm².",
+    "text": "Cirkelns area är 16 cm² mer än kvadratens: \uE000A_{cirkel} = 9 + 16 = 25\uE001 cm².",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Definiera cirkelarea",
-    "text": "En cirkel med radie r har area A = \\pi r^2, där \\pi \\approx 3{,}14159 är en geometrisk konstant.",
+    "text": "En cirkel med radie r har area \uE000A = \\pi r^2\uE001, där \uE000\\pi \\approx 3{,}14159\uE001 är en geometrisk konstant.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Ställ upp ekvationen",
-    "text": "Sätt cirkelareaformeln lika med 25: \\pi r^2 = 25.",
+    "text": "Sätt cirkelareaformeln lika med 25: \uE000\\pi r^2 = 25\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Isolera r²",
-    "text": "Dividera båda led med π: r^2 = 25/\\pi.",
+    "text": "Dividera båda led med π: \uE000r^2 = 25/\\pi\uE001.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Dra kvadratroten",
-    "text": "Eftersom radien är positiv: r = \\sqrt{25/\\pi}. Använd \\sqrt{a/b} = \\sqrt{a}/\\sqrt{b}: r = \\sqrt{25}/\\sqrt{\\pi} = 5/\\sqrt{\\pi}.",
+    "text": "Eftersom radien är positiv: \uE000r = \\sqrt{25/\\pi}\uE001. Använd \uE000\\sqrt{a/b} = \\sqrt{a}/\\sqrt{b}\uE001: \uE000r = \\sqrt{25}/\\sqrt{\\pi} = 5/\\sqrt{\\pi}\uE001.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Tolka uttrycket",
-    "text": "5/\\sqrt{\\pi} är ett exakt uttryck (kan inte förenklas vidare utan numerisk approximation). Numeriskt: \\sqrt{\\pi} \\approx 1{,}772, så r \\approx 5/1{,}772 \\approx 2{,}82 cm.",
+    "text": "\uE0005/\\sqrt{\\pi}\uE001 är ett exakt uttryck (kan inte förenklas vidare utan numerisk approximation). Numeriskt: \uE000\\sqrt{\\pi} \\approx 1{,}772\uE001, så \uE000r \\approx 5/1{,}772 \\approx 2{,}82\uE001 cm.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Rimlighetskontroll",
-    "text": "Test: A = \\pi \\cdot 2{,}82^2 \\approx 3{,}14 \\cdot 7{,}95 \\approx 25 cm². Stämmer. Och en cirkel med radie ~2,82 cm är synbart större än en 3-cm-kvadrat (diametern \\approx 5{,}64 cm större än kvadratdiagonalen \\approx 4{,}24 cm) — men areamässigt rimligt.",
+    "text": "Test: \uE000A = \\pi \\cdot 2{,}82^2 \\approx 3{,}14 \\cdot 7{,}95 \\approx 25\uE001 cm². Stämmer. Och en cirkel med radie ~2,82 cm är synbart större än en 3-cm-kvadrat (diametern \uE000\\approx 5{,}64\uE001 cm större än kvadratdiagonalen \uE000\\approx 4{,}24\uE001 cm) — men areamässigt rimligt.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Verifiera",
-    "text": "Kvadrera tillbaka: r^2 = 25/\\pi, så \\pi r^2 = 25 = 9 + 16 — exakt villkoret.",
+    "text": "Kvadrera tillbaka: \uE000r^2 = 25/\\pi\uE001, så \uE000\\pi r^2 = 25\uE001 = 9 + 16 — exakt villkoret.",
     "tier": "essential"
    },
    {
     "n": 12,
     "title": "Slutsats",
-    "text": "Svar: B (parsningen visar alla alternativ identiska, men facit är B). Insikten i en mening: cirkelradien fås alltid via r = \\sqrt{A/\\pi} — invertera formeln och låt kvadratroten finnas kvar i svaret om π är inblandad.",
+    "text": "Svar: B (parsningen visar alla alternativ identiska, men facit är B). Insikten i en mening: cirkelradien fås alltid via \uE000r = \\sqrt{A/\\pi}\uE001 — invertera formeln och låt kvadratroten finnas kvar i svaret om π är inblandad.",
     "tier": "essential"
    }
   ],
@@ -3325,18 +3325,18 @@
    },
    {
     "letter": "C",
-    "why_tempting": "Det är lätt att kasta om täljare/nämnare och tro att svaret är \\sqrt{\\pi}/5 istället för 5/\\sqrt{\\pi}.",
-    "why_wrong": "Steg 8 är explicit: \\sqrt{25}/\\sqrt{\\pi} = 5/\\sqrt{\\pi} (täljarens kvadratrot, nämnarens kvadratrot)."
+    "why_tempting": "Det är lätt att kasta om täljare/nämnare och tro att svaret är \uE000\\sqrt{\\pi}/5\uE001 istället för \uE0005/\\sqrt{\\pi}\uE001.",
+    "why_wrong": "Steg 8 är explicit: \uE000\\sqrt{25}/\\sqrt{\\pi} = 5/\\sqrt{\\pi}\uE001 (täljarens kvadratrot, nämnarens kvadratrot)."
    },
    {
     "letter": "D",
-    "why_tempting": "Många stannar vid A = 25 utan att ta kvadratroten — landar då på r = 25/π istället för \\sqrt{25/\\pi}.",
-    "why_wrong": "Steg 8: kvadratroten är obligatorisk när du går från r^2 till r. Att skippa den ger en kvadratisk fel-skala."
+    "why_tempting": "Många stannar vid \uE000A = 25\uE001 utan att ta kvadratroten — landar då på r = 25/π istället för \uE000\\sqrt{25/\\pi}\uE001.",
+    "why_wrong": "Steg 8: kvadratroten är obligatorisk när du går från \uE000r^2\uE001 till r. Att skippa den ger en kvadratisk fel-skala."
    }
   ],
   "pregrade_tactic": {
    "handle": "Kvadratrots-inverteringen",
-   "move": "När arean är given — skriv r = \\sqrt{A/\\pi} direkt och förenkla först därefter; kvadratroten är aldrig valbar."
+   "move": "När arean är given — skriv \uE000r = \\sqrt{A/\\pi}\uE001 direkt och förenkla först därefter; kvadratroten är aldrig valbar."
   }
  },
  "var-2013-kvant2-DTK-029": {
@@ -4712,7 +4712,7 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att tro att a < b 'gör' Kvantitet I positiv på något sätt — men a^2 − b^2 med a < b blir NEGATIV (eftersom b^2 > a^2 när |b| > |a|).",
+    "why_tempting": "Det är lätt att tro att \uE000a < b\uE001 'gör' Kvantitet I positiv på något sätt — men \uE000a^2\uE001 − \uE000b^2\uE001 med \uE000a < b\uE001 blir NEGATIV (eftersom \uE000b^2 > a^2\uE001 när |b| \uE000>\uE001 |a|).",
     "why_wrong": "Tecken på Kvantitet I är samma som tecken på Kvantitet II — båda är identiska uttryck (steg 6). Frågan om positivt/negativt är irrelevant för jämförelsen."
    },
    {
@@ -4728,41 +4728,41 @@
   ],
   "framework_id": "KVA-TRAP-024",
   "pitfall": "Den vanligaste fällan är att tro att 'olika form = olika värde' och välja A, B eller D. Botemedlet: utveckla ALLTID båda uttryck till expanderad form (alla parenteser utvecklade, termer ordnade) innan du drar slutsatsen.",
-  "solution_path": "Konjugatregeln: a^2 − b^2 = (a + b)(a − b) ALLTID. Kvantitet I = Kvantitet II identiskt, oavsett a < b. Svaret är C.",
+  "solution_path": "Konjugatregeln: \uE000a^2\uE001 − \uE000b^2 =\uE001 (a \uE000+\uE001 b)(a − b) ALLTID. Kvantitet \uE000I =\uE001 Kvantitet II identiskt, oavsett \uE000a < b\uE001. Svaret är C.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi har a < b (alltså två olika tal). Vi jämför Kvantitet I = a^2 − b^2 mot Kvantitet II = (a + b)(a − b). Är de lika eller olika?",
+    "text": "Vi har \uE000a < b\uE001 (alltså två olika tal). Vi jämför Kvantitet \uE000I = a^2\uE001 − \uE000b^2\uE001 mot Kvantitet II \uE000=\uE001 (a \uE000+\uE001 b)(a − b). Är de lika eller olika?",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "Använd distributiva lagen: varje term i första parentesen multipliceras med varje term i andra. (a + b)(a − b) = a · a + a · (−b) + b · a + b · (−b) = a^2 − ab + ab − b^2.",
+    "text": "Använd distributiva lagen: varje term i första parentesen multipliceras med varje term i andra. (a \uE000+\uE001 b)(a − b) \uE000= a · a + a · (−b) + b · a + b · (−b) = a^2\uE001 − ab \uE000+\uE001 ab − \uE000b^2\uE001.",
     "tier": "essential",
     "title": "Multiplicera ut (a + b)(a − b)"
    },
    {
     "n": 3,
-    "text": "a^2 − ab + ab − b^2. Termerna −ab och +ab tar ut varandra (lika och motsatt tecken). Kvar: a^2 − b^2.",
+    "text": "\uE000a^2\uE001 − ab \uE000+\uE001 ab − \uE000b^2\uE001. Termerna −ab och +ab tar ut varandra (lika och motsatt tecken). Kvar: \uE000a^2\uE001 − \uE000b^2\uE001.",
     "tier": "essential",
     "title": "Förenkla"
    },
    {
     "n": 4,
-    "text": "Det vi just visade är den s.k. KONJUGATREGELN: (a + b)(a − b) = a^2 − b^2. Det är en av matematikens mest använda regler — minns den utantill.",
+    "text": "Det vi just visade är den s.k. KONJUGATREGELN: (a \uE000+\uE001 b)(a − b) \uE000= a^2\uE001 − \uE000b^2\uE001. Det är en av matematikens mest använda regler — minns den utantill.",
     "tier": "detail",
     "title": "Konjugatregeln"
    },
    {
     "n": 5,
-    "text": "(a + b) och (a − b) är 'konjugat' — samma uttryck men med byte av tecken på en term. Multiplikation av konjugat ger alltid 'kvadratdifferens' (a^2 − b^2).",
+    "text": "(a \uE000+ b\uE001) och (a − b) är 'konjugat' — samma uttryck men med byte av tecken på en term. Multiplikation av konjugat ger alltid 'kvadratdifferens' \uE000(a^2\uE001 − \uE000b^2\uE001).",
     "tier": "detail",
     "title": "Varför heter den 'konjugatregeln'?"
    },
    {
     "n": 6,
-    "text": "Kvantitet I = a^2 − b^2 (direkt från prompten). Kvantitet II = (a + b)(a − b) = a^2 − b^2 (efter utveckling). De är IDENTISKA — samma uttryck.",
+    "text": "Kvantitet \uE000I = a^2\uE001 − \uE000b^2\uE001 (direkt från prompten). Kvantitet II \uE000=\uE001 (a \uE000+\uE001 b)(a − b) \uE000= a^2\uE001 − \uE000b^2\uE001 (efter utveckling). De är IDENTISKA — samma uttryck.",
     "tier": "essential",
     "title": "Jämför kvantiteterna"
    },
@@ -4780,18 +4780,18 @@
    },
    {
     "n": 9,
-    "text": "Tekniskt: om a = b vore Kvantitet I = a^2 − a^2 = 0 och Kvantitet II = (2a)(0) = 0. Lika ändå. Men a < b utesluter detta fall — irrelevant.",
+    "text": "Tekniskt: om \uE000a = b\uE001 vore Kvantitet \uE000I = a^2\uE001 − \uE000a^2 = 0\uE001 och Kvantitet II \uE000=\uE001 (2a)(0) \uE000= 0\uE001. Lika ändå. Men \uE000a < b\uE001 utesluter detta fall — irrelevant.",
     "tier": "detail",
     "title": "Pröva med a = b skulle vara fel"
    },
    {
     "n": 10,
-    "text": "Kvantitet I = Kvantitet II identiskt. Svaret är C. Insikten i en mening: konjugatregeln (a + b)(a − b) = a^2 − b^2 är en ALGEBRAISK IDENTITET — den gäller för alla a, b, så svaret är alltid C utan att räkna numeriskt.",
+    "text": "Kvantitet \uE000I =\uE001 Kvantitet II identiskt. Svaret är C. Insikten i en mening: konjugatregeln (a \uE000+\uE001 b)(a − b) \uE000= a^2\uE001 − \uE000b^2\uE001 är en ALGEBRAISK IDENTITET — den gäller för alla a, b, så svaret är alltid C utan att räkna numeriskt.",
     "tier": "essential",
     "title": "Slutsats"
    }
   ],
-  "technique": "Identitets-igenkännings-strategin i KVA: när två uttryck SER OLIKA UT, leta alltid efter en algebraisk identitet som kopplar dem. Konjugatregeln (a+b)(a−b) = a^2 − b^2, kvadreringsregeln (a±b)^2 = a^2 ± 2ab + b^2 är de vanligaste. Triggern: 'kvantiteter med samma variabler men olika form' → utveckla båda till samma standardform.",
+  "technique": "Identitets-igenkännings-strategin i KVA: när två uttryck SER OLIKA UT, leta alltid efter en algebraisk identitet som kopplar dem. Konjugatregeln (a+b)(a−b) \uE000= a^2\uE001 − \uE000b^2\uE001, kvadreringsregeln \uE000(a±b)^2 = a^2 ± 2ab + b^2\uE001 är de vanligaste. Triggern: 'kvantiteter med samma variabler men olika form' \uE000→\uE001 utveckla båda till samma standardform.",
   "pregrade_tactic": {
    "handle": "Identitetsigenkänningen",
    "move": "När två uttryck ser olika ut men har samma variabler — kolla först om konjugatregeln eller kvadreringsregeln gör dem identiska."
@@ -4812,7 +4812,7 @@
    {
     "letter": "C",
     "why_tempting": "Många stannar vid 'kanske AC är exakt 12 om man räknar fel på höjden eller hypotenusan' — men det skulle kräva en specifik kombination.",
-    "why_wrong": "Steg 9 visar exakt: AC^2 = 132 och 12^2 = 144 — INTE lika. AC är cirka 11,49 cm, klart mindre än 12."
+    "why_wrong": "Steg 9 visar exakt: \uE000AC^2 = 132\uE001 och \uE00012^2 = 144\uE001 — INTE lika. AC är cirka 11,49 cm, klart mindre än 12."
    },
    {
     "letter": "D",
@@ -4850,19 +4850,19 @@
    },
    {
     "n": 5,
-    "text": "Triangel BMA har en rät vinkel vid M (höjden står vinkelrätt mot basen). Hypotenusan är AB = 7 (en av de likbenta sidorna). Kateterna är BM = 4 och AM = ?. Pythagoras: AM^2 + BM^2 = AB^2 → AM^2 + 16 = 49 → AM^2 = 33 → AM = \\sqrt{33}.",
+    "text": "Triangel BMA har en rät vinkel vid M (höjden står vinkelrätt mot basen). Hypotenusan är AB \uE000= 7\uE001 (en av de likbenta sidorna). Kateterna är BM \uE000= 4\uE001 och AM \uE000=\uE001 ?. Pythagoras: \uE000AM^2\uE001 \uE000+\uE001 \uE000BM^2\uE001 \uE000=\uE001 \uE000AB^2\uE001 \uE000→\uE001 \uE000AM^2\uE001 \uE000+ 16 = 49 →\uE001 \uE000AM^2\uE001 \uE000= 33 →\uE001 AM \uE000= \\sqrt{33}\uE001.",
     "tier": "essential",
     "title": "Pythagoras i halv-triangeln"
    },
    {
     "n": 6,
-    "text": "\\sqrt{33} ligger mellan \\sqrt{25} = 5 och \\sqrt{36} = 6. Mer exakt: 5,7^2 = 32,49 och 5,8^2 = 33,64. Så \\sqrt{33} ≈ 5,745.",
+    "text": "\uE000\\sqrt{33}\uE001 ligger mellan \uE000\\sqrt{25} = 5\uE001 och \uE000\\sqrt{36} = 6\uE001. Mer exakt: \uE0005,7^2\uE001 \uE000= 32,49\uE001 och \uE0005,8^2\uE001 \uE000= 33,64\uE001. Så \uE000\\sqrt{33} ≈ 5,745\uE001.",
     "tier": "detail",
-    "title": "Räkna \\sqrt{33}"
+    "title": "Räkna \uE000\\sqrt{33}\uE001"
    },
    {
     "n": 7,
-    "text": "AC = 2 · AM = 2 · \\sqrt{33} ≈ 2 · 5,745 ≈ 11,49 cm.",
+    "text": "AC \uE000= 2 ·\uE001 AM \uE000= 2 · \\sqrt{33} ≈ 2 · 5,745 ≈ 11,49\uE001 cm.",
     "tier": "essential",
     "title": "Räkna AC"
    },
@@ -4874,9 +4874,9 @@
    },
    {
     "n": 9,
-    "text": "För att jämföra utan räknare, kvadrera båda: (2\\sqrt{33})^2 = 4 · 33 = 132. Och 12^2 = 144. 132 < 144, så 2\\sqrt{33} < 12. Bekräftar samma slutsats.",
+    "text": "För att jämföra utan räknare, kvadrera båda: \uE000(2\\sqrt{33})^2 = 4 · 33 = 132\uE001. Och \uE00012^2\uE001 \uE000= 144\uE001. \uE000132 < 144\uE001, så \uE0002\\sqrt{33} < 12\uE001. Bekräftar samma slutsats.",
     "tier": "detail",
-    "title": "Exakt jämförelse: 2\\sqrt{33} mot 12"
+    "title": "Exakt jämförelse: \uE0002\\sqrt{33}\uE001 mot 12"
    },
    {
     "n": 10,
@@ -6252,81 +6252,81 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att korsmultiplicera men sedan glömma 3:an när man delar — får man bara b = \\frac{5ax}{y} om man av misstag multiplicerar fel sida med x istället för att dela.",
-    "why_wrong": "Steg 5 säger 3bx = 5ay — så x står på vänster sida (med b), inte i lösningens täljare. b ska bero på y i täljaren och x i nämnaren, inte tvärtom (steg 6)."
+    "why_tempting": "Det är lätt att korsmultiplicera men sedan glömma 3:an när man delar — får man bara \uE000b = \\frac{5ax}{y}\uE001 om man av misstag multiplicerar fel sida med x istället för att dela.",
+    "why_wrong": "Steg 5 säger \uE0003bx = 5ay\uE001 — så x står på vänster sida (med b), inte i lösningens täljare. b ska bero på \uE000y\uE001 i täljaren och \uE000x\uE001 i nämnaren, inte tvärtom (steg 6)."
    },
    {
     "letter": "B",
-    "why_tempting": "Många stannar vid \\frac{5ax}{3y} om de råkar byta x och y vid korsmultiplikationen.",
+    "why_tempting": "Många stannar vid \uE000\\frac{5ax}{3y}\uE001 om de råkar byta x och y vid korsmultiplikationen.",
     "why_wrong": "Steg 5 visar att y multipliceras med 5a, inte med 3. Att placera y i nämnaren och x i täljaren vänder bråket helt — bryter mot ekvationen."
    },
    {
     "letter": "C",
-    "why_tempting": "Om du minns korsmultiplikationen som '5ay = något' men glömmer dela med 3, landar du på b = \\frac{5ay}{x} — och om svarsalternativen verkar likna det kan man välja C på syn.",
+    "why_tempting": "Om du minns korsmultiplikationen som '5ay = något' men glömmer dela med 3, landar du på \uE000b = \\frac{5ay}{x}\uE001 — och om svarsalternativen verkar likna det kan man välja C på syn.",
     "why_wrong": "Steg 6 visar att vi MÅSTE dela med både 3 OCH x för att isolera b. Att utelämna 3:an i nämnaren ger ett svar 3 gånger för stort."
    }
   ],
   "framework_id": "XYZ-TRAP-025",
   "pitfall": "Den vanligaste fällan är att korsa fel — att multiplicera täljare-med-täljare och nämnare-med-nämnare istället för täljare-med-NÄMNARE-på-andra-sidan. Botemedlet: tänk på det som 'rita ett X över ekvationen', så blir det visuellt vilka tal som hör ihop.",
-  "solution_path": "Ur \\frac{x}{y} = \\frac{5a}{3b} fås 3bx = 5ay genom korsmultiplikation, sedan b = \\frac{5ay}{3x}. Svaret är D.",
+  "solution_path": "Ur \uE000\\frac{x}{y} = \\frac{5a}{3b}\uE001 fås \uE0003bx = 5ay\uE001 genom korsmultiplikation, sedan \uE000b = \\frac{5ay}{3x}\uE001. Svaret är D.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi har en ekvation där två bråk är lika: \\frac{x}{y} = \\frac{5a}{3b}. Vi ska lösa ut b, alltså få b ensamt på ena sidan.",
+    "text": "Vi har en ekvation där två bråk är lika: \uE000\\frac{x}{y} = \\frac{5a}{3b}\uE001. Vi ska lösa ut b, alltså få b ensamt på ena sidan.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "Ett bråk är division: \\frac{x}{y} betyder 'x delat med y'. För att två bråk ska vara lika ska de representera samma kvot — t.ex. \\frac{1}{2} = \\frac{2}{4} eftersom båda är 0,5.",
+    "text": "Ett bråk är division: \uE000\\frac{x}{y}\uE001 betyder 'x delat med y'. För att två bråk ska vara lika ska de representera samma kvot — t.ex. \uE000\\frac{1}{2} = \\frac{2}{4}\uE001 eftersom båda är 0,5.",
     "tier": "detail",
     "title": "Vad betyder ett bråk?"
    },
    {
     "n": 3,
-    "text": "När två bråk är lika kan vi 'korsa' dem: täljaren i det ena multipliceras med nämnaren i det andra, och vice versa, för att få en multiplikationsekvation utan bråk. Regeln: \\frac{A}{B} = \\frac{C}{D} ⟹ A \\cdot D = B \\cdot C.",
+    "text": "När två bråk är lika kan vi 'korsa' dem: täljaren i det ena multipliceras med nämnaren i det andra, och vice versa, för att få en multiplikationsekvation utan bråk. Regeln: \uE000\\frac{A}{B} = \\frac{C}{D}\uE001 ⟹ \uE000A \\cdot D = B \\cdot C\uE001.",
     "tier": "essential",
     "title": "Strategi: korsmultiplikation"
    },
    {
     "n": 4,
-    "text": "Du multiplicerar båda sidor av ekvationen med B och med D (i båda fall ändras inte balansen). \\frac{A}{B} \\cdot B \\cdot D = \\frac{C}{D} \\cdot B \\cdot D ger A \\cdot D = B \\cdot C efter förkortning.",
+    "text": "Du multiplicerar båda sidor av ekvationen med B och med D (i båda fall ändras inte balansen). \uE000\\frac{A}{B} \\cdot B \\cdot D = \\frac{C}{D} \\cdot B \\cdot D\uE001 ger \uE000A \\cdot D = B \\cdot C\uE001 efter förkortning.",
     "tier": "detail",
     "title": "Varför fungerar korsmultiplikation?"
    },
    {
     "n": 5,
-    "text": "\\frac{x}{y} = \\frac{5a}{3b} ger x \\cdot 3b = y \\cdot 5a, alltså 3bx = 5ay.",
+    "text": "\uE000\\frac{x}{y} = \\frac{5a}{3b}\uE001 ger \uE000x \\cdot 3b = y \\cdot 5a\uE001, alltså \uE0003bx = 5ay\uE001.",
     "tier": "essential",
     "title": "Tillämpa korsmultiplikation"
    },
    {
     "n": 6,
-    "text": "Vi har 3bx = 5ay. För att få b ensamt, dela båda sidor med 3x: b = \\frac{5ay}{3x}.",
+    "text": "Vi har \uE0003bx = 5ay\uE001. För att få b ensamt, dela båda sidor med 3x: \uE000b = \\frac{5ay}{3x}\uE001.",
     "tier": "essential",
     "title": "Lös ut b"
    },
    {
     "n": 7,
-    "text": "I ekvationen 3bx = 5ay multipliceras b med 3 och med x. Det inverterar du genom att dela båda sidor med 3 och med x (samma sak som att dela med 3x). Då står b ensamt på vänster sida.",
+    "text": "I ekvationen \uE0003bx = 5ay\uE001 multipliceras b med 3 och med x. Det inverterar du genom att dela båda sidor med 3 och med x (samma sak som att dela med 3x). Då står b ensamt på vänster sida.",
     "tier": "detail",
     "title": "Varför dela med 3x?"
    },
    {
     "n": 8,
-    "text": "Svaret b = \\frac{5ay}{3x} har samma 'algebraiska struktur' som väntat: a och y är båda i täljaren (de stod på olika sidor från start), x är i nämnaren (det var i täljaren till vänster, så det vandrar till nämnaren när vi flyttar runt det).",
+    "text": "Svaret \uE000b = \\frac{5ay}{3x}\uE001 har samma 'algebraiska struktur' som väntat: a och y är båda i täljaren (de stod på olika sidor från start), x är i nämnaren (det var i täljaren till vänster, så det vandrar till nämnaren när vi flyttar runt det).",
     "tier": "essential",
     "title": "Kontrollera enheterna"
    },
    {
     "n": 9,
-    "text": "Sätt x = 5, y = 3, a = 1. Då ska \\frac{5}{3} = \\frac{5 \\cdot 1}{3b} = \\frac{5}{3b} gälla, alltså 3b = 3, b = 1. Och formeln ger b = \\frac{5 \\cdot 1 \\cdot 3}{3 \\cdot 5} = \\frac{15}{15} = 1 ✓.",
+    "text": "Sätt x = 5, y = 3, a = 1. Då ska \uE000\\frac{5}{3} = \\frac{5 \\cdot 1}{3b} = \\frac{5}{3b}\uE001 gälla, alltså 3b = 3, b = 1. Och formeln ger \uE000b = \\frac{5 \\cdot 1 \\cdot 3}{3 \\cdot 5} = \\frac{15}{15} = 1\uE001 ✓.",
     "tier": "detail",
     "title": "Verifiera med ett konkret exempel"
    },
    {
     "n": 10,
-    "text": "b = \\frac{5ay}{3x}. Svaret är D. Insikten i en mening: 'två bråk lika' → korsmultiplicera → lös ut den variabel du söker som om det vore en helt vanlig linjär ekvation.",
+    "text": "\uE000b = \\frac{5ay}{3x}\uE001. Svaret är D. Insikten i en mening: 'två bråk lika' → korsmultiplicera → lös ut den variabel du söker som om det vore en helt vanlig linjär ekvation.",
     "tier": "essential",
     "title": "Slutsats"
    }
@@ -6378,7 +6378,7 @@
    },
    {
     "n": 3,
-    "text": "Mittpunkten mellan (x_1, y_1) och (x_2, y_2) är \\left(\\frac{x_1+x_2}{2}, \\frac{y_1+y_2}{2}\\right). Med ord: ta medelvärdet av x-koordinaterna och medelvärdet av y-koordinaterna.",
+    "text": "Mittpunkten mellan \uE000(x_1, y_1)\uE001 och \uE000(x_2, y_2)\uE001 är \uE000\\left(\\frac{x_1+x_2}{2}, \\frac{y_1+y_2}{2}\\right)\uE001. Med ord: ta medelvärdet av x-koordinaterna och medelvärdet av y-koordinaterna.",
     "tier": "essential",
     "title": "Mittpunktsformeln"
    },
@@ -6435,74 +6435,74 @@
    {
     "letter": "A",
     "why_tempting": "Det är lätt att blanda ihop basen 3 (i \uE0003^4\uE001) med variabeln t — om man läser '81 \uE000= 3^4\\text{'}\uE001 och tänker 'då måste t vara 3', plockar man fel av talen.",
-    "why_wrong": "Med t = 3 blir basen t − 1 = 2 och exponenten 3, alltså 2^3 = 8 (steg 6) — inte 81. Det är EXPONENTEN som är t här, inte basen."
+    "why_wrong": "Med \uE000t = 3\uE001 blir basen t − \uE0001 = 2\uE001 och exponenten 3, alltså \uE0002^3 = 8\uE001 (steg 6) — inte 81. Det är EXPONENTEN som är t här, inte basen."
    },
    {
     "letter": "C",
-    "why_tempting": "Om du noterar att 81 = 9^2 och tror att exponenten t måste matcha en delare av 81, kan du gissa t = 6 (en mittenstor delare).",
-    "why_wrong": "5^6 är astronomiskt stort (steg 7) — överhuvudtaget inte 81. Den enkla heltalsfaktoriseringen 81 = 3^4 ger entydigt t = 4 via mönstret t − 1 = 3 → t = 4."
+    "why_tempting": "Om du noterar att \uE00081 = 9^2\uE001 och tror att exponenten t måste matcha en delare av 81, kan du gissa \uE000t = 6\uE001 (en mittenstor delare).",
+    "why_wrong": "\uE0005^6\uE001 är astronomiskt stort (steg 7) — överhuvudtaget inte 81. Den enkla heltalsfaktoriseringen \uE00081 = 3^4\uE001 ger entydigt \uE000t = 4\uE001 via mönstret t − \uE0001 = 3 → t = 4\uE001."
    },
    {
     "letter": "D",
     "why_tempting": "Snabbsvar är ofta '81 = 9·9, så svaret innehåller en 9' — och slänger ut t = 9 utan att kontrollera.",
-    "why_wrong": "Med t = 9 blir basen 8 och exponenten 9 — 8^9 är hundratusentals miljoner. Det räcker att räkna 8^2 = 64 för att se att (8^9) är hopplöst större än 81."
+    "why_wrong": "Med \uE000t = 9\uE001 blir basen 8 och exponenten 9 — \uE0008^9\uE001 är hundratusentals miljoner. Det räcker att räkna \uE0008^2 = 64\uE001 för att se att \uE000(8^9)\uE001 är hopplöst större än 81."
    }
   ],
   "framework_id": "XYZ-TRAP-027",
   "pitfall": null,
-  "solution_path": "Sök t så att (t − 1)^t = 81. Testa heltal: t = 4 ger 3^4 = 81 ✓. Svaret är B.",
+  "solution_path": "Sök t så att (t − \uE0001)^t = 81\uE001. Testa heltal: \uE000t = 4\uE001 ger \uE0003^4 = 81\uE001 ✓. Svaret är B.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi har ekvationen (t − 1)^t = 81. Vi ska hitta värdet på t. Svarsalternativen är heltal (3, 4, 6, 9), så vi kan testa dem direkt.",
+    "text": "Vi har ekvationen (t − \uE0001)^t = 81\uE001. Vi ska hitta värdet på t. Svarsalternativen är heltal (3, 4, 6, 9), så vi kan testa dem direkt.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "(t − 1)^t betyder 'gångra (t − 1) med sig självt t gånger'. Om t = 3 är (t − 1)^t = 2^3 = 2·2·2 = 8. Exponenten styr hur många gånger basen multipliceras.",
+    "text": "(t − \uE0001)^t\uE001 betyder 'gångra (t − 1) med sig självt t gånger'. Om \uE000t = 3\uE001 är (t − \uE0001)^t = 2^3 =\uE001 2·2·2 \uE000= 8\uE001. Exponenten styr hur många gånger basen multipliceras.",
     "tier": "detail",
     "title": "Vad betyder exponenten t?"
    },
    {
     "n": 3,
-    "text": "81 kan skrivas på flera sätt: 81 = 3^4 (3·3·3·3) eller 81 = 9^2 (9·9). Det smartaste är att leta efter vilken kombination av bas och exponent som passar mönstret (t − 1)^t.",
+    "text": "81 kan skrivas på flera sätt: \uE00081 = 3^4 (3·3·3·3)\uE001 eller \uE00081 = 9^2 (9·9)\uE001. Det smartaste är att leta efter vilken kombination av bas och exponent som passar mönstret (t − \uE0001)^t\uE001.",
     "tier": "essential",
     "title": "Faktorisera 81 i potenser"
    },
    {
     "n": 4,
-    "text": "3^4 = 3·3·3·3. Steg för steg: 3·3 = 9, 9·3 = 27, 27·3 = 81. Så 3^4 = 81 ✓.",
+    "text": "\uE0003^4 =\uE001 3·3·3·3. Steg för steg: 3·3 \uE000= 9\uE001, 9·3 \uE000= 27\uE001, 27·3 \uE000= 81\uE001. Så \uE0003^4 = 81\uE001 ✓.",
     "tier": "detail",
-    "title": "Räkna ut 3^4"
+    "title": "Räkna ut \uE0003^4\uE001"
    },
    {
     "n": 5,
     "text": "Om (t − 1) = 3 och t = 4, då stämmer det: t − 1 = 4 − 1 = 3 ✓ och exponenten är 4. Båda villkor uppfyllda samtidigt.",
     "tier": "essential",
-    "title": "Matcha med (t − 1)^t"
+    "title": "Matcha med (t − \uE0001)^t\uE001"
    },
    {
     "n": 6,
-    "text": "Med t = 3: (3 − 1)^3 = 2^3 = 8. Det är inte 81. Bort med A.",
+    "text": "Med \uE000t = 3\uE001: (3 − \uE0001)^3 = 2^3 = 8\uE001. Det är inte 81. Bort med A.",
     "tier": "detail",
     "title": "Testa A: t = 3"
    },
    {
     "n": 7,
-    "text": "Med t = 6: (6 − 1)^6 = 5^6. 5^2 = 25, 5^3 = 125. Det är redan över 81 efter 3 multiplikationer, och vi har 3 till kvar — alldeles för stort.",
+    "text": "Med \uE000t = 6\uE001: (6 − \uE0001)^6 = 5^6\uE001. \uE0005^2 = 25\uE001, \uE0005^3 = 125\uE001. Det är redan över 81 efter 3 multiplikationer, och vi har 3 till kvar — alldeles för stort.",
     "tier": "detail",
     "title": "Testa C: t = 6"
    },
    {
     "n": 8,
-    "text": "Med t = 9: (9 − 1)^9 = 8^9. 8^2 = 64, 8^3 = 512. Astronomiskt stort jämfört med 81. Bort med D.",
+    "text": "Med \uE000t = 9\uE001: (9 − \uE0001)^9 = 8^9\uE001. \uE0008^2 = 64\uE001, \uE0008^3 = 512\uE001. Astronomiskt stort jämfört med 81. Bort med D.",
     "tier": "detail",
     "title": "Testa D: t = 9"
    },
    {
     "n": 9,
-    "text": "(4 − 1)^4 = 3^4 = 81 ✓. Det enda alternativ där VL = HL.",
+    "text": "(4 − \uE0001)^4 = 3^4 = 81\uE001 ✓. Det enda alternativ där VL \uE000=\uE001 HL.",
     "tier": "essential",
     "title": "Verifiera B: t = 4"
    },
@@ -6513,7 +6513,7 @@
     "title": "Slutsats"
    }
   ],
-  "technique": "Bas-exponent-matchning: när du har en ekvation av for- men 'något^något = N' med samma variabel i båda, faktorisera N i sina möjliga potensformer (3^4 9^2, 81^1) och leta efter den enda där basen och exponenten passar relationen från ekvationen. Triggern: '(uttryck)^t = heltal' med t i båda → testa heltal från svarsalternativen.",
+  "technique": "Bas-exponent-matchning: när du har en ekvation av for- men \uE000'något^något =\uE001 N' med samma variabel i båda, faktorisera N i sina möjliga potensformer \uE000(3^4 9^2\uE001, \uE00081^1\uE001) och leta efter den enda där basen och exponenten passar relationen från ekvationen. Triggern: \uE000'(uttryck)^t =\uE001 heltal' med t i båda \uE000→\uE001 testa heltal från svarsalternativen.",
   "pregrade_tactic": {
    "handle": "Svarsalternativtestet",
    "move": "När alternativen är få heltal och variabeln finns i både bas och exponent — sätt in varje alternativ direkt och kolla."
@@ -6596,7 +6596,7 @@
    },
    {
     "n": 9,
-    "text": "Vad blir tal nummer 5? 1 290·3 − 15 = 3 870 − 15 = 3 855. Mönstret går vidare — bekräftar att regeln är n_{k+1} = 3·n_k − 15.",
+    "text": "Vad blir tal nummer 5? 1 290·3 − \uE00015 = 3 870\uE001 − \uE00015 = 3 855\uE001. Mönstret går vidare — bekräftar att regeln är \uE000n_{k+1} =\uE001 3·n_k − 15.",
     "tier": "detail",
     "title": "Verifiera nästa tal"
    },
@@ -6613,7 +6613,7 @@
     "title": "Slutsats"
    }
   ],
-  "technique": "Eliminationsstrategin för rekursiva talföljder: skriv ekvationen för regeln (n_{k+1} = x·n_k − y) för minst två par och subtrahera ekvationerna för att eliminera y. Då blir x = (skillnad av höger sida)/(skillnad av vänster sida). Triggern: 'följd där nästa tal = x · föregående − y' med okända x, y → eliminationsmetod på två par.",
+  "technique": "Eliminationsstrategin för rekursiva talföljder: skriv ekvationen för regeln \uE000(n_{k+1} =\uE001 x·n_k − y) för minst två par och subtrahera ekvationerna för att eliminera y. Då blir \uE000x =\uE001 (skillnad av höger sida)/(skillnad av vänster sida). Triggern: 'följd där nästa tal \uE000= x ·\uE001 föregående − y' med okända x, \uE000y →\uE001 eliminationsmetod på två par.",
   "pregrade_tactic": {
    "handle": "Talföljdselimination",
    "move": "Skriv regeln för två par i följden och subtrahera ekvationerna — då försvinner den ena obekanta och du kan lösa den andra."
@@ -6629,62 +6629,62 @@
    {
     "letter": "A",
     "why_tempting": "Det är lätt att tänka 'x är negativt och blir mindre när det kvadreras' — men det är BARA tanken om förstoring som lurar; kvadrering tar bort tecknet helt.",
-    "why_wrong": "Steg 5 visar att x^2 är positivt för alla negativa x, så x < 0 < x^2 — olikheten x > x^2 omöjlig."
+    "why_wrong": "Steg 5 visar att \uE000x^2\uE001 är positivt för alla negativa x, så \uE000x < 0 < x^2\uE001 — olikheten \uE000x > x^2\uE001 omöjlig."
    },
    {
     "letter": "B",
     "why_tempting": "Vänster-till-höger-läsning av '−1 < x < 0' kan kännas som 'små negativa tal' och man tror att de slipper kvadrationsregeln.",
-    "why_wrong": "Negativa tal av vilken storlek som helst kvadreras till positiva (steg 2, 6). −0,5 ger x^2 = 0,25 > 0 > −0,5. Olikheten bryts."
+    "why_wrong": "Negativa tal av vilken storlek som helst kvadreras till positiva (steg 2, 6). −0,5 ger \uE000x^2 = 0,25 > 0 >\uE001 −0,5. Olikheten bryts."
    },
    {
     "letter": "D",
-    "why_tempting": "Snabbsvar är ofta 'stora tal blir större vid multiplikation' — men det missar att vi jämför x med x^2, inte med ett annat tal.",
-    "why_wrong": "För x > 1 är x^2 STÖRRE än x (steg 10). t.ex. 2^2 = 4 > 2. Det vänder olikheten åt fel håll."
+    "why_tempting": "Snabbsvar är ofta 'stora tal blir större vid multiplikation' — men det missar att vi jämför x med \uE000x^2\uE001, inte med ett annat tal.",
+    "why_wrong": "För \uE000x > 1\uE001 är \uE000x^2\uE001 STÖRRE än x (steg 10). t.ex. \uE0002^2 = 4 > 2\uE001. Det vänder olikheten åt fel håll."
    }
   ],
   "framework_id": null,
-  "pitfall": "Den vanligaste fällan är att 'x^2 > 0' och 'x > 0' blandas ihop. Botemedlet: rita en tallinje, markera 0 och 1, och tänk på kvadration som 'placerar talet närmare 0 om |x| < 1, och längre bort om |x| > 1'.",
-  "solution_path": "Olikheten x > x^2 gäller endast då x och x^2 har samma tecken OCH x > x^2. Testa intervallen: x > 1 ger x^2 > x (fel håll); 0 < x < 1 ger x^2 < x ✓; negativa x ger x^2 > 0 > x. Svaret är C: 0 < x < 1.",
+  "pitfall": "Den vanligaste fällan är att \uE000'x^2 >\uE001 0' och 'x \uE000>\uE001 0' blandas ihop. Botemedlet: rita en tallinje, markera 0 och 1, och tänk på kvadration som 'placerar talet närmare 0 om |x| \uE000< 1\uE001, och längre bort om |x| \uE000>\uE001 1'.",
+  "solution_path": "Olikheten \uE000x > x^2\uE001 gäller endast då x och \uE000x^2\uE001 har samma tecken OCH \uE000x > x^2\uE001. Testa intervallen: \uE000x > 1\uE001 ger \uE000x^2 > x\uE001 (fel håll); \uE0000 < x < 1\uE001 ger \uE000x^2 < x\uE001 ✓; negativa x ger \uE000x^2 > 0 > x\uE001. Svaret är C: \uE0000 < x < 1\uE001.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi söker alla x där x är STÖRRE än x kvadrerat. Olikheten är x > x^2. Vi ska identifiera vilket intervall av reella tal som uppfyller villkoret.",
+    "text": "Vi söker alla x där x är STÖRRE än x kvadrerat. Olikheten är \uE000x > x^2\uE001. Vi ska identifiera vilket intervall av reella tal som uppfyller villkoret.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "x^2 = x · x. Om x = 3 är x^2 = 9. Om x = 0,5 är x^2 = 0,25. Om x = −3 är x^2 = 9 (negativ gånger negativ blir positiv). x^2 är ALLTID 0 eller positivt.",
+    "text": "\uE000x^2 = x · x\uE001. Om \uE000x = 3\uE001 är \uE000x^2 = 9\uE001. Om \uE000x = 0,5\uE001 är \uE000x^2 = 0,25\uE001. Om \uE000x =\uE001 −3 är \uE000x^2 = 9\uE001 (negativ gånger negativ blir positiv). \uE000x^2\uE001 är ALLTID 0 eller positivt.",
     "tier": "detail",
-    "title": "Vad är x^2?"
+    "title": "Vad är \uE000x^2\uE001?"
    },
    {
     "n": 3,
-    "text": "Vi har fyra svarsalternativ som täcker olika intervall. Vi kan välja ett enkelt provtal från varje intervall och kolla om x > x^2 gäller.",
+    "text": "Vi har fyra svarsalternativ som täcker olika intervall. Vi kan välja ett enkelt provtal från varje intervall och kolla om \uE000x > x^2\uE001 gäller.",
     "tier": "essential",
     "title": "Strategi: testa intervallen"
    },
    {
     "n": 4,
-    "text": "Välj x = −2. Då x^2 = 4. Är −2 > 4? Nej, −2 är mindre. Olikheten gäller inte. Bort med A.",
+    "text": "Välj \uE000x =\uE001 −2. Då \uE000x^2 = 4\uE001. Är −2 \uE000> 4\uE001? Nej, −2 är mindre. Olikheten gäller inte. Bort med A.",
     "tier": "essential",
     "title": "Testa A: x < −1"
    },
    {
     "n": 5,
-    "text": "För alla negativa x är x^2 positivt. Då är x < 0 < x^2 — alltså x ALDRIG större än x^2 när x är negativt. Det utesluter både A och B.",
+    "text": "För alla negativa x är \uE000x^2\uE001 positivt. Då är \uE000x < 0 < x^2\uE001 — alltså x ALDRIG större än \uE000x^2\uE001 när x är negativt. Det utesluter både A och B.",
     "tier": "detail",
     "title": "Mönstret för negativa x"
    },
    {
     "n": 6,
-    "text": "Välj x = −0,5. Då x^2 = 0,25. Är −0,5 > 0,25? Nej, −0,5 är negativt och 0,25 positivt. Bort med B.",
+    "text": "Välj \uE000x =\uE001 −0,5. Då \uE000x^2 = 0,25\uE001. Är −0,5 \uE000> 0,25\uE001? Nej, −0,5 är negativt och 0,25 positivt. Bort med B.",
     "tier": "essential",
     "title": "Testa B: −1 < x < 0"
    },
    {
     "n": 7,
-    "text": "Välj x = 0,5. Då x^2 = 0,5 · 0,5 = 0,25. Är 0,5 > 0,25? Ja ✓. Olikheten gäller. Testa ett till: x = 0,9 → x^2 = 0,81. Är 0,9 > 0,81? Ja ✓. C verkar stämma.",
+    "text": "Välj \uE000x = 0,5\uE001. Då \uE000x^2 = 0,5 · 0,5 = 0,25\uE001. Är \uE0000,5 > 0,25\uE001? Ja ✓. Olikheten gäller. Testa ett till: \uE000x = 0,9 → x^2 = 0,81\uE001. Är \uE0000,9 > 0,81\uE001? Ja ✓. C verkar stämma.",
     "tier": "essential",
     "title": "Testa C: 0 < x < 1"
    },
@@ -6692,11 +6692,11 @@
     "n": 8,
     "text": "När du multiplicerar ett tal mellan 0 och 1 med sig självt blir det MINDRE — 0,5 gånger 0,5 är 0,25. Den intuitiva regeln: 'bråk blir mindre när man gångrar dem med sig själva'.",
     "tier": "detail",
-    "title": "Varför x > x^2 när 0 < x < 1?"
+    "title": "Varför \uE000x > x^2\uE001 när \uE0000 < x < 1\uE001?"
    },
    {
     "n": 9,
-    "text": "Välj x = 2. Då x^2 = 4. Är 2 > 4? Nej. Bort med D.",
+    "text": "Välj \uE000x = 2\uE001. Då \uE000x^2 = 4\uE001. Är \uE0002 > 4\uE001? Nej. Bort med D.",
     "tier": "essential",
     "title": "Testa D: x > 1"
    },
@@ -6704,16 +6704,16 @@
     "n": 10,
     "text": "Heltal större än 1 (och allmänt tal > 1) blir STÖRRE när de kvadreras — 2·2 = 4 är större än 2. Spegelbilden av punkten 8.",
     "tier": "detail",
-    "title": "Varför x^2 > x när x > 1?"
+    "title": "Varför \uE000x^2 > x\uE001 när \uE000x > 1\uE001?"
    },
    {
     "n": 11,
-    "text": "Endast intervallet 0 < x < 1 uppfyller x > x^2. Svaret är C. Insikten i en mening: kvadrering KRYMPER tal mellan 0 och 1, MEN FÖRSTORAR tal > 1; för negativa x byts tecken så x^2 är alltid större än x.",
+    "text": "Endast intervallet \uE0000 < x < 1\uE001 uppfyller \uE000x > x^2\uE001. Svaret är C. Insikten i en mening: kvadrering KRYMPER tal mellan 0 och 1, MEN FÖRSTORAR tal \uE000> 1\uE001; för negativa x byts tecken så \uE000x^2\uE001 är alltid större än x.",
     "tier": "essential",
     "title": "Slutsats"
    }
   ],
-  "technique": "Intervalltest-strategin för olikheter: när svarsalternativen är intervall, plocka ett enkelt provtal från varje intervall (typ −2, −0,5, 0,5, 2) och kontrollera olikheten direkt. Spara tid genom att utesluta intervall där det är 'uppenbart att tecknen krockar' (t.ex. x < 0 mot x^2 > 0). Triggern: 'för vilka x gäller olikheten' + intervallalternativ → testa provtal.",
+  "technique": "Intervalltest-strategin för olikheter: när svarsalternativen är intervall, plocka ett enkelt provtal från varje intervall (typ −2, −0,5, 0,5, 2) och kontrollera olikheten direkt. Spara tid genom att utesluta intervall där det är 'uppenbart att tecknen krockar' (t.ex. \uE000x < 0\uE001 mot \uE000x^2 > 0\uE001). Triggern: 'för vilka x gäller olikheten' \uE000+\uE001 intervallalternativ \uE000→\uE001 testa provtal.",
   "pregrade_tactic": {
    "handle": "Intervalltestet",
    "move": "När alternativen är intervall — plocka ett provtal från varje intervall och kontrollera olikheten direkt med substitution."
@@ -6729,38 +6729,38 @@
    {
     "letter": "A",
     "why_tempting": "Det är lätt att tro att 'kvadratroten ur 0,5 är 0,25' om man räknar 'roten halverar' — kanske blandar man ihop kvadratroten med halva talet.",
-    "why_wrong": "Steg 8 visar 0,25^2 = 0,0625, inte 0,5. Kvadratroten ur 0,5 är ungefär 0,707, mellan 0,5 och 1 (inte mindre än 0,5)."
+    "why_wrong": "Steg 8 visar \uE0000,25^2 = 0,0625\uE001, inte 0,5. Kvadratroten ur 0,5 är ungefär 0,707, mellan 0,5 och 1 (inte mindre än 0,5)."
    },
    {
     "letter": "B",
     "why_tempting": "Vänster-till-höger-läsning eller gissning på 'något mellan 0,5 och 1' kan landa på 0,75.",
-    "why_wrong": "0,75^2 = 0,5625 (steg 8), inte 0,5. Närmare, men ändå inte rätt. Det exakta värdet är 1/\\sqrt{2} ≈ 0,707."
+    "why_wrong": "\uE0000,75^2\uE001 \uE000= 0,5625\uE001 (steg 8), inte 0,5. Närmare, men ändå inte rätt. Det exakta värdet är \uE0001/\\sqrt{2} ≈ 0,707\uE001."
    },
    {
     "letter": "C",
-    "why_tempting": "Snabbsvar är ofta att 'invertera' problemet — om x^2 = 0,5 kanske x = 2 (eftersom 0,5 är inversen av 2).",
-    "why_wrong": "2^2 = 4 (steg 8), inte 0,5. Inversen 1/(x^2) är inte samma sak som x. Att förväxla 1/x och x^2 är en klassisk algebrafälla."
+    "why_tempting": "Snabbsvar är ofta att 'invertera' problemet — om \uE000x^2 = 0,5\uE001 kanske \uE000x = 2\uE001 (eftersom 0,5 är inversen av 2).",
+    "why_wrong": "\uE0002^2 = 4\uE001 (steg 8), inte 0,5. Inversen \uE0001/(x^2)\uE001 är inte samma sak som x. Att förväxla 1/x och \uE000x^2\uE001 är en klassisk algebrafälla."
    }
   ],
   "framework_id": "XYZ-TRAP-009",
   "pitfall": "Den vanligaste fällan är att tro att 'kvadratroten ur 0,5 = 0,5'. Botemedlet: minns att tal MELLAN 0 och 1 är 'mindre än sin egen kvadratrot' — eftersom kvadrering KRYMPER dem, måste rotning STORA dem (mot 1).",
-  "solution_path": "x^2 = 0,5 = 1/2 betyder att x är kvadratroten ur 1/2. Eftersom x > 0 är x = \\sqrt{1/2} = 1/\\sqrt{2}. Svaret är D: 1/\\sqrt{2}.",
+  "solution_path": "\uE000x^2 = 0,5 =\uE001 1/2 betyder att x är kvadratroten ur 1/2. Eftersom \uE000x > 0\uE001 är \uE000x = \\sqrt{1/2} = 1/\\sqrt{2}\uE001. Svaret är D: \uE0001/\\sqrt{2}\uE001.",
   "steps": [
    {
     "n": 1,
-    "text": "Vi har x > 0 och x^2 = 0,5. Vi söker värdet på x. Det blir kvadratroten ur 0,5.",
+    "text": "Vi har \uE000x > 0\uE001 och \uE000x^2 = 0,5\uE001. Vi söker värdet på x. Det blir kvadratroten ur 0,5.",
     "tier": "essential",
     "title": "Förstå problemet"
    },
    {
     "n": 2,
-    "text": "x^2 = x · x. Om x = 3 är x^2 = 9. Om x = 0,5 är x^2 = 0,25. Att lösa 'x^2 = något' betyder att hitta det tal som gångrat med sig självt ger den siffran.",
+    "text": "\uE000x^2 = x · x\uE001. Om \uE000x = 3\uE001 är \uE000x^2 = 9\uE001. Om \uE000x = 0,5\uE001 är \uE000x^2 = 0,25\uE001. Att lösa \uE000'x^2 =\uE001 något' betyder att hitta det tal som gångrat med sig självt ger den siffran.",
     "tier": "detail",
-    "title": "Vad betyder x^2?"
+    "title": "Vad betyder \uE000x^2\uE001?"
    },
    {
     "n": 3,
-    "text": "Kvadratroten ur ett tal N (skrivet \\sqrt{N}) är det positiva tal vars kvadrat är N. \\sqrt{9} = 3 eftersom 3^2 = 9. \\sqrt{2} ≈ 1,414 eftersom 1,414^2 ≈ 2.",
+    "text": "Kvadratroten ur ett tal N (skrivet \uE000\\sqrt{N})\uE001 är det positiva tal vars kvadrat är N. \uE000\\sqrt{9} = 3\uE001 eftersom \uE0003^2\uE001 \uE000= 9\uE001. \uE000\\sqrt{2} ≈ 1,414\uE001 eftersom \uE0001,414^2\uE001 \uE000≈ 2\uE001.",
     "tier": "detail",
     "title": "Vad är kvadratrot?"
    },
@@ -6772,42 +6772,42 @@
    },
    {
     "n": 5,
-    "text": "x^2 = 1/2 ⟹ x = \\sqrt{1/2} (positiv rot eftersom x > 0). Och \\sqrt{1/2} = \\sqrt{1}/\\sqrt{2} = 1/\\sqrt{2}.",
+    "text": "\uE000x^2\uE001 \uE000=\uE001 1/2 ⟹ \uE000x = \\sqrt{1/2}\uE001 (positiv rot eftersom \uE000x >\uE001 0). Och \uE000\\sqrt{1/2} = \\sqrt{1}/\\sqrt{2} = 1/\\sqrt{2}\uE001.",
     "tier": "essential",
     "title": "Tag kvadratroten"
    },
    {
     "n": 6,
-    "text": "\\sqrt{a/b} = \\sqrt{a}/\\sqrt{b}. Det är samma princip som att 'kvadratroten distribuerar över division'.",
+    "text": "\uE000\\sqrt{a/b} = \\sqrt{a}/\\sqrt{b}\uE001. Det är samma princip som att 'kvadratroten distribuerar över division'.",
     "tier": "detail",
     "title": "Regel: kvadratrot av ett bråk"
    },
    {
     "n": 7,
-    "text": "1/\\sqrt{2} ≈ 1/1,414 ≈ 0,707. Kontrollera: 0,707^2 ≈ 0,5 ✓.",
+    "text": "\uE0001/\\sqrt{2} ≈\uE001 1/1,414 \uE000≈ 0,707\uE001. Kontrollera: \uE0000,707^2\uE001 \uE000≈ 0,5\uE001 ✓.",
     "tier": "essential",
     "title": "Räkna numeriskt"
    },
    {
     "n": 8,
-    "text": "A: 0,25 → 0,25^2 = 0,0625, fel. B: 0,75 → 0,75^2 = 0,5625, fel. C: 2 → 2^2 = 4, fel. D: 1/\\sqrt{2} ≈ 0,707 → 0,707^2 ≈ 0,5 ✓.",
+    "text": "A: \uE0000,25 →\uE001 \uE0000,25^2\uE001 \uE000= 0,0625\uE001, fel. B: \uE0000,75 →\uE001 \uE0000,75^2\uE001 \uE000= 0,5625\uE001, fel. C: \uE0002 →\uE001 \uE0002^2\uE001 \uE000= 4\uE001, fel. D: \uE0001/\\sqrt{2} ≈ 0,707 →\uE001 \uE0000,707^2\uE001 \uE000≈ 0,5\uE001 ✓.",
     "tier": "essential",
     "title": "Testa alternativen"
    },
    {
     "n": 9,
-    "text": "Lättfälla: tänka att 'x = 0,5 eftersom x^2 = 0,5'. Men 0,5^2 = 0,25, INTE 0,5. Kvadratroten ur 0,5 är inte 0,5. Det är ett tal MELLAN 0,5 och 1 (eftersom alla tal mellan 0 och 1 blir mindre när de kvadreras).",
+    "text": "Lättfälla: tänka att 'x \uE000= 0,5\uE001 eftersom \uE000x^2 =\uE001 0,5'. Men \uE0000,5^2 = 0,25\uE001, INTE 0,5. Kvadratroten ur 0,5 är inte 0,5. Det är ett tal MELLAN 0,5 och 1 (eftersom alla tal mellan 0 och 1 blir mindre när de kvadreras).",
     "tier": "detail",
     "title": "Varför inte 1/2 självt?"
    },
    {
     "n": 10,
-    "text": "x = 1/\\sqrt{2}. Svaret är D. Insikten i en mening: 'x^2 = 0,5' betyder x = \\sqrt{0,5} = 1/\\sqrt{2}; och tal mellan 0 och 1 ger kvadratrötter SOM ÄR STÖRRE än talet självt.",
+    "text": "\uE000x = 1/\\sqrt{2}\uE001. Svaret är D. Insikten i en mening: \uE000'x^2\uE001 \uE000=\uE001 0,5' betyder \uE000x = \\sqrt{0,5} = 1/\\sqrt{2}\uE001; och tal mellan 0 och 1 ger kvadratrötter SOM ÄR STÖRRE än talet självt.",
     "tier": "essential",
     "title": "Slutsats"
    }
   ],
-  "technique": "Kvadratrots-strategin: när x^2 = N och x > 0, är x = \\sqrt{N}. För bråk är \\sqrt{a/b} = \\sqrt{a}/\\sqrt{b}. Triggern: 'x^2 = något' med x positivt → ta positiva kvadratroten direkt. Spara tid genom att skriva om decimaler som bråk innan rotdragning.",
+  "technique": "Kvadratrots-strategin: när \uE000x^2\uE001 \uE000= N\uE001 och \uE000x > 0\uE001, är \uE000x = \\sqrt{N}\uE001. För bråk är \uE000\\sqrt{a/b} = \\sqrt{a}/\\sqrt{b}\uE001. Triggern: \uE000'x^2\uE001 \uE000=\uE001 något' med x positivt \uE000→\uE001 ta positiva kvadratroten direkt. Spara tid genom att skriva om decimaler som bråk innan rotdragning.",
   "pregrade_tactic": {
    "handle": "Kvadratroten",
    "move": "När x² = N och x är positivt är x = √N — för decimaler, skriv om som bråk innan rotdragning för att slippa räkna med komman."
@@ -6822,23 +6822,23 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att skriva (x + y)^2 = x^2 + 2xy + y^2 men sedan dra av y^2 istället för x^2 av misstag — då blir resultatet 2xy + x^2.",
-    "why_wrong": "Steg 6 visar att den mindre kvadratens area är x^2 (sidan är x), inte y^2. Att dra av fel kvadrat ger ett uttryck där x^2 felaktigt blir kvar."
+    "why_tempting": "Det är lätt att skriva (x \uE000+ y)^2 = x^2 + 2xy + y^2\uE001 men sedan dra av \uE000y^2\uE001 istället för \uE000x^2\uE001 av misstag — då blir resultatet \uE0002xy + x^2\uE001.",
+    "why_wrong": "Steg 6 visar att den mindre kvadratens area är \uE000x^2\uE001 (sidan är x), inte \uE000y^2\uE001. Att dra av fel kvadrat ger ett uttryck där \uE000x^2\uE001 felaktigt blir kvar."
    },
    {
     "letter": "C",
-    "why_tempting": "Många stannar vid (y − x)^2 = y^2 − 2xy + x^2 och tror att skillnaden kommer från det formelträdet — då skriver de y^2 − 2xy.",
+    "why_tempting": "Många stannar vid (y − \uE000x)^2 = y^2\uE001 − \uE0002xy + x^2\uE001 och tror att skillnaden kommer från det formelträdet — då skriver de \uE000y^2\uE001 − 2xy.",
     "why_wrong": "(y − x) är inte sidan i någondera kvadrat — sidorna är x och x + y, inte y och y − x. Steg 7 visar att 2xy-termerna är POSITIVA flikar; minustecknet i C är fel."
    },
    {
     "letter": "D",
-    "why_tempting": "Snabbsvar är ofta 'skillnad av två kvadrater' → y^2 − x^2, en formel man känner igen.",
-    "why_wrong": "Formeln y^2 − x^2 = (y − x)(y + x) gäller för en kvadrat med sidan y minus en med sidan x. Men här är den större kvadratens sida x + y (inte y) — så uttrycket blir (x+y)^2 − x^2 = 2xy + y^2, inte y^2 − x^2."
+    "why_tempting": "Snabbsvar är ofta 'skillnad av två kvadrater' \uE000→ y^2\uE001 − \uE000x^2\uE001, en formel man känner igen.",
+    "why_wrong": "Formeln \uE000y^2\uE001 − \uE000x^2 =\uE001 (y − x)(y \uE000+ x\uE001) gäller för en kvadrat med sidan y minus en med sidan x. Men här är den större kvadratens sida \uE000x + y\uE001 (inte y) — så uttrycket blir \uE000(x+y)^2\uE001 − \uE000x^2 = 2xy + y^2\uE001, inte \uE000y^2\uE001 − \uE000x^2\uE001."
    }
   ],
   "framework_id": "XYZ-TRAP-013",
-  "pitfall": "Den vanligaste fällan är att tro att skillnaden är y^2 (en kvadrat med sidan y). Botemedlet: rita upp kvadraterna inuti varandra — då ser man tydligt att skillnaden är L-formad och består av tre delar (två rektanglar + en liten kvadrat), inte bara en kvadrat.",
-  "solution_path": "Större kvadratens sida är x + y. Större arean = (x+y)^2 = x^2 + 2xy + y^2. Mindre arean = x^2. Skillnaden = 2xy + y^2. Svaret är B.",
+  "pitfall": "Den vanligaste fällan är att tro att skillnaden är \uE000y^2\uE001 (en kvadrat med sidan y). Botemedlet: rita upp kvadraterna inuti varandra — då ser man tydligt att skillnaden är L-formad och består av tre delar (två rektanglar \uE000+\uE001 en liten kvadrat), inte bara en kvadrat.",
+  "solution_path": "Större kvadratens sida är \uE000x + y\uE001. Större arean \uE000= (x+y)^2 = x^2 + 2xy + y^2\uE001. Mindre arean \uE000= x^2\uE001. Skillnaden \uE000= 2xy + y^2\uE001. Svaret är B.",
   "steps": [
    {
     "n": 1,
@@ -6848,15 +6848,15 @@
    },
    {
     "n": 2,
-    "text": "Arean av en kvadrat med sida s är s · s = s^2. För den mindre: x · x = x^2. För den större: (x + y) · (x + y) = (x + y)^2.",
+    "text": "Arean av en kvadrat med sida s är \uE000s · s = s^2\uE001. För den mindre: \uE000x · x = x^2\uE001. För den större: (x \uE000+ y\uE001) \uE000·\uE001 (x \uE000+ y\uE001) \uE000=\uE001 (x \uE000+ y)^2\uE001.",
     "tier": "detail",
     "title": "Vad är arean av en kvadrat?"
    },
    {
     "n": 3,
-    "text": "(x + y)^2 betyder (x + y)·(x + y). Multiplicera ut med distributiva lagen (varje term i första parentesen med varje term i den andra): x·x + x·y + y·x + y·y = x^2 + xy + xy + y^2 = x^2 + 2xy + y^2.",
+    "text": "(x \uE000+ y)^2\uE001 betyder (x \uE000+\uE001 y)·(x \uE000+ y\uE001). Multiplicera ut med distributiva lagen (varje term i första parentesen med varje term i den andra): x·x \uE000+\uE001 x·y \uE000+\uE001 y·x \uE000+\uE001 y·y \uE000= x^2 +\uE001 xy \uE000+\uE001 xy \uE000+ y^2 = x^2 + 2xy + y^2\uE001.",
     "tier": "essential",
-    "title": "Multiplicera ut (x + y)^2"
+    "title": "Multiplicera ut (x \uE000+ y)^2\uE001"
    },
    {
     "n": 4,
@@ -6866,42 +6866,42 @@
    },
    {
     "n": 5,
-    "text": "(a + b)^2 = a^2 + 2ab + b^2 är så vanlig att man memorerar den. Mitttermen 2ab kommer från xy + yx (samma sak adderat två gånger).",
+    "text": "(a \uE000+ b)^2 = a^2 + 2ab + b^2\uE001 är så vanlig att man memorerar den. Mitttermen 2ab kommer från xy \uE000+\uE001 yx (samma sak adderat två gånger).",
     "tier": "detail",
     "title": "Kvadreringsregeln"
    },
    {
     "n": 6,
-    "text": "Större area − mindre area = (x^2 + 2xy + y^2) − x^2 x^2-termerna tar ut varandra. Kvar: 2xy + y^2.",
+    "text": "Större area − mindre area \uE000= (x^2 + 2xy + y^2\uE001) − \uE000x^2 x^2-termerna\uE001 tar ut varandra. Kvar: \uE0002xy + y^2\uE001.",
     "tier": "essential",
     "title": "Räkna skillnaden"
    },
    {
     "n": 7,
-    "text": "Föreställ dig en stor kvadrat (x + y) × (x + y). Inuti, i ena hörnet, en mindre kvadrat x × x. Den 'L-formade' resten består av: en lång rektangel x × y längs ena sidan, en kort rektangel y × x längs en annan sida, och en liten kvadrat y × y i hörnet. Sammanlagt: xy + xy + y^2 = 2xy + y^2.",
+    "text": "Föreställ dig en stor kvadrat (x \uE000+ y\uE001) × (x \uE000+ y\uE001). Inuti, i ena hörnet, en mindre kvadrat x × x. Den 'L-formade' resten består av: en lång rektangel x × y längs ena sidan, en kort rektangel y × x längs en annan sida, och en liten kvadrat y × y i hörnet. Sammanlagt: xy \uE000+\uE001 xy \uE000+ y^2 = 2xy + y^2\uE001.",
     "tier": "detail",
     "title": "Visualisera geometriskt"
    },
    {
     "n": 8,
-    "text": "Sätt x = 3, y = 2. Mindre area = 9. Större kvadratens sida = 5, area = 25. Skillnad = 16. Formel: 2xy + y^2 = 12 + 4 = 16 ✓.",
+    "text": "Sätt \uE000x = 3\uE001, \uE000y = 2\uE001. Mindre area \uE000= 9\uE001. Större kvadratens sida \uE000= 5\uE001, area \uE000= 25\uE001. Skillnad \uE000= 16\uE001. Formel: \uE0002xy + y^2 = 12 + 4 = 16\uE001 ✓.",
     "tier": "detail",
     "title": "Verifiera med konkreta siffror"
    },
    {
     "n": 9,
-    "text": "A: 2xy + x^2 — fel, det är y^2 i kvadreringsregeln, inte x^2 C: y^2 − 2xy — fel tecken. D: y^2 − x^2 — det är skillnaden av kvadrater (vilket egentligen är (y − x)(y + x)), inte vår skillnad.",
+    "text": "A: \uE0002xy + x^2\uE001 — fel, det är \uE000y^2 i\uE001 kvadreringsregeln, inte \uE000x^2 C\uE001: \uE000y^2\uE001 − 2xy — fel tecken. D: \uE000y^2\uE001 − \uE000x^2\uE001 — det är skillnaden av kvadrater (vilket egentligen är (y − x)(y \uE000+ x\uE001)), inte vår skillnad.",
     "tier": "essential",
     "title": "Jämför med alternativen"
    },
    {
     "n": 10,
-    "text": "Skillnaden är (2xy + y^2) cm^2. Svaret är B. Insikten i en mening: när en kvadrat 'växer' med y längs sidan, växer arean med 2xy (de två 'flikarna') plus y^2 (hörnet i den nya hörnan).",
+    "text": "Skillnaden är (2xy \uE000+ y^2\uE001) \uE000cm^2\uE001. Svaret är B. Insikten i en mening: när en kvadrat 'växer' med y längs sidan, växer arean med 2xy (de två 'flikarna') plus \uE000y^2\uE001 (hörnet i den nya hörnan).",
     "tier": "essential",
     "title": "Slutsats"
    }
   ],
-  "technique": "Areaskillnad-strategin: när en kvadrat 'växer' med y längs sidan, är skillnaden i area (s + y)^2 − s^2 = 2sy + y^2. Det är en 'L-formad' yta runt den ursprungliga kvadraten — två flikar av storlek s · y plus ett hörn y · y. Triggern: 'större kvadrat med sida y längre än mindre' → använd kvadreringsregeln (a+b)^2.",
+  "technique": "Areaskillnad-strategin: när en kvadrat 'växer' med y längs sidan, är skillnaden i area (s \uE000+ y)^2\uE001 − \uE000s^2 = 2sy + y^2\uE001. Det är en 'L-formad' yta runt den ursprungliga kvadraten — två flikar av storlek \uE000s · y\uE001 plus ett hörn \uE000y · y\uE001. Triggern: 'större kvadrat med sida y längre än mindre' \uE000→\uE001 använd kvadreringsregeln \uE000(a+b)^2\uE001.",
   "pregrade_tactic": {
    "handle": "Areaskillnaden",
    "move": "När en kvadrats sida växer med y — använd kvadreringsregeln, så blir skillnaden i area 2sy + y², inte bara y²."
@@ -8272,7 +8272,7 @@
    },
    {
     "n": 2,
-    "text": "Recensenten flaggar svagheten i mitten av sjätte stycket: \"Det motsträviga källmaterialet har förmodligen tvingat fram urvalet, men det sätter också gränser för generaliserbarheten i slutsatserna.\" Och senare: ironiskt nog är det \"både ett problem, om man vill dra generaliserbara slutsatser, och vad jag betraktar som avhandlingens viktigaste och mest värdefulla resultat.\"",
+    "text": "Recensenten flaggar svagheten i mitten av sjunde stycket: \"Det motsträviga källmaterialet har förmodligen tvingat fram urvalet, men det sätter också gränser för generaliserbarheten i slutsatserna.\" Och senare: ironiskt nog är det \"både ett problem, om man vill dra generaliserbara slutsatser, och vad jag betraktar som avhandlingens viktigaste och mest värdefulla resultat.\"",
     "tier": "essential",
     "title": "Hitta stället"
    },
@@ -12484,12 +12484,12 @@
   }
  },
  "var-2013-kvant2-KVA-022": {
-  "solution_path": "I = (n+1)^{m}, II = m^{(n+1)}, med n, m icke-negativa heltal. Testa två tillåtna fall. n=0, m=0: I = 1^{0}=1, II = 0^{1}=0 → I > II. n=1, m=3: I = 2^{3}=8, II = 3^{2}=9 → I < II. Ordningen flippar mellan fallen, så informationen är otillräcklig — svaret är D.",
+  "solution_path": "I = \uE000(n+1)^{m}\uE001, II = \uE000m^{(n+1)}\uE001, med n, m icke-negativa heltal. Testa två tillåtna fall. \uE000n=0, m=0\uE001: I = \uE0001^{0}=1\uE001, II = \uE0000^{1}=0\uE001 → I > II. \uE000n=1, m=3\uE001: I = \uE0002^{3}=8\uE001, II = \uE0003^{2}=9\uE001 → I < II. Ordningen flippar mellan fallen, så informationen är otillräcklig — svaret är D.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "n och m är heltal med n ≥ 0 och m ≥ 0. Vi jämför I = (n+1)^{m} med II = m^{(n+1)}. Inga exakta värden är givna, så vi måste testa om ordningen kan flippa.",
+    "text": "n och m är heltal med n ≥ 0 och m ≥ 0. Vi jämför I = \uE000(n+1)^{m}\uE001 med II = \uE000m^{(n+1)}\uE001. Inga exakta värden är givna, så vi måste testa om ordningen kan flippa.",
     "tier": "essential"
    },
    {
@@ -12501,13 +12501,13 @@
    {
     "n": 3,
     "title": "Notera potensregler för 0",
-    "text": "Kom ihåg: a^{0}=1 för a ≠ 0, och 0^{k}=0 för k ≥ 1. Dessa gränsfall är ofta nyckeln.",
+    "text": "Kom ihåg: \uE000a^{0}=1\uE001 för a ≠ 0, och \uE0000^{k}=0\uE001 för k ≥ 1. Dessa gränsfall är ofta nyckeln.",
     "tier": "detail"
    },
    {
     "n": 4,
     "title": "Fall 1: n = 0, m = 0",
-    "text": "I = (0+1)^{0}=1^{0}=1. II = 0^{(0+1)}=0^{1}=0. Alltså I = 1 > 0 = II. Här vinner I.",
+    "text": "I = \uE000(0+1)^{0}=1^{0}=1\uE001. II = \uE0000^{(0+1)}=0^{1}=0\uE001. Alltså I = 1 > 0 = II. Här vinner I.",
     "tier": "essential"
    },
    {
@@ -12519,7 +12519,7 @@
    {
     "n": 6,
     "title": "Fall 2: n = 1, m = 3",
-    "text": "I = (1+1)^{3}=2^{3}=8. II = 3^{(1+1)}=3^{2}=9. Alltså I = 8 < 9 = II. Här vinner II.",
+    "text": "I = \uE000(1+1)^{3}=2^{3}=8\uE001. II = \uE0003^{(1+1)}=3^{2}=9\uE001. Alltså I = 8 < 9 = II. Här vinner II.",
     "tier": "essential"
    },
    {
@@ -12537,7 +12537,7 @@
    {
     "n": 9,
     "title": "En brasklapp om lika-fall",
-    "text": "Det finns dessutom fall där de är lika, t.ex. n = 1, m = 2: I = 2^{2}=4, II = 2^{2}=4. Det stärker bara slutsatsen att ordningen inte är låst.",
+    "text": "Det finns dessutom fall där de är lika, t.ex. n = 1, m = 2: I = \uE0002^{2}=4\uE001, II = \uE0002^{2}=4\uE001. Det stärker bara slutsatsen att ordningen inte är låst.",
     "tier": "detail"
    },
    {
@@ -12571,7 +12571,7 @@
    }
   ],
   "technique": "Motexempeljakten: vid fria heltalsvariabler, pröva systematiskt småfall (0, 1, 2) tills du hittar både ett 'I > II'-fall och ett 'I < II'-fall — då är svaret D. Triggern: variabler i både bas och exponent, inga fasta värden → leta teckenflip via småtal.",
-  "pitfall": "Vanliga fällan är att testa ett enda talval och generalisera. Botemedlet: leta AKTIVT efter ett fall som motsäger ditt första — särskilt gränsfallen 0 och 1, där a^{0}=1 och 0^{k}=0 ofta bryter mönstret.",
+  "pitfall": "Vanliga fällan är att testa ett enda talval och generalisera. Botemedlet: leta AKTIVT efter ett fall som motsäger ditt första — särskilt gränsfallen 0 och 1, där \uE000a^{0}=1\uE001 och \uE0000^{k}=0\uE001 ofta bryter mönstret.",
   "pregrade_tactic": {
    "handle": "Dubbeltestet",
    "move": "Hittade du 'I vinner' i ett fall — leta genast efter ett tillåtet fall där II vinner; lyckas du är svaret D."
@@ -12625,7 +12625,7 @@
    {
     "n": 7,
     "title": "Förenkla bråkuttryck",
-    "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+    "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För \uE000a/b = c/d\uE001 ger korsmultiplikation \uE000ad = bc\uE001 — säkrare än att försöka 'flytta bråk'.",
     "tier": "detail"
    },
    {
@@ -12637,7 +12637,7 @@
    {
     "n": 9,
     "title": "Geometri-grundregler",
-    "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+    "text": "Triangelns vinkelsumma är 180°, rektangelarea är \uE000a\\cdot b\uE001, cirkelarea är \uE000\\pi r^2\uE001. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
     "tier": "detail"
    },
    {
@@ -12725,7 +12725,7 @@
    {
     "n": 7,
     "title": "Förenkla bråkuttryck",
-    "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+    "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För \uE000a/b = c/d\uE001 ger korsmultiplikation \uE000ad = bc\uE001 — säkrare än att försöka 'flytta bråk'.",
     "tier": "detail"
    },
    {
@@ -12737,7 +12737,7 @@
    {
     "n": 9,
     "title": "Geometri-grundregler",
-    "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+    "text": "Triangelns vinkelsumma är 180°, rektangelarea är \uE000a\\cdot b\uE001, cirkelarea är \uE000\\pi r^2\uE001. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
     "tier": "detail"
    },
    {
@@ -12784,12 +12784,12 @@
   }
  },
  "var-2013-kvant1-XYZ-009": {
-  "solution_path": "Med b = a+1, c = a+2: a-b = -1, b-c = -1, a-c = -2. Då blir \\frac{a-b}{b-c}\\cdot(a-c) = \\frac{-1}{-1}\\cdot(-2) = 1\\cdot(-2) = -2.",
+  "solution_path": "Med b = a+1, c = a+2: \uE000a-b = -1\uE001, \uE000b-c = -1\uE001, \uE000a-c = -2\uE001. Då blir \uE000\\frac{a-b}{b-c}\\cdot(a-c) = \\frac{-1}{-1}\\cdot(-2) = 1\\cdot(-2) = -2\uE001.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "a, b, c är tre på varandra följande heltal i ordningen a < b < c. Beräkna \\frac{a-b}{b-c}\\cdot(a-c).",
+    "text": "a, b, c är tre på varandra följande heltal i ordningen a < b < c. Beräkna \uE000\\frac{a-b}{b-c}\\cdot(a-c)\uE001.",
     "tier": "essential"
    },
    {
@@ -12801,31 +12801,31 @@
    {
     "n": 3,
     "title": "Räkna a − b",
-    "text": "a - b = a - (a+1) = -1.",
+    "text": "\uE000a - b = a - (a+1) = -1\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Räkna b − c",
-    "text": "b - c = (a+1) - (a+2) = -1.",
+    "text": "\uE000b - c = (a+1) - (a+2) = -1\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Räkna a − c",
-    "text": "a - c = a - (a+2) = -2.",
+    "text": "\uE000a - c = a - (a+2) = -2\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Sätt ihop bråket",
-    "text": "\\frac{a-b}{b-c} = \\frac{-1}{-1} = 1. Två minustecken neutraliserar varandra.",
+    "text": "\uE000\\frac{a-b}{b-c} = \\frac{-1}{-1} = 1\uE001. Två minustecken neutraliserar varandra.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Multiplicera med (a−c)",
-    "text": "1\\cdot(-2) = -2.",
+    "text": "\uE0001\\cdot(-2) = -2\uE001.",
     "tier": "essential"
    },
    {
@@ -13084,7 +13084,7 @@
   }
  },
  "var-2013-kvant2-XYZ-010": {
-  "solution_path": "Räkna täljaren och nämnaren var för sig: täljaren blir 3/16, nämnaren blir 2. Dubbelbråket (3/16)/2 = 3/32.",
+  "solution_path": "Räkna täljaren och nämnaren var för sig: täljaren blir \uE0003/16\uE001, nämnaren blir 2. Dubbelbråket \uE000(3/16)/2 = 3/32\uE001.",
   "steps": [
    {
     "n": 1,
@@ -13095,49 +13095,49 @@
    {
     "n": 2,
     "title": "Förenkla 4/8 och 8/2",
-    "text": "\\dfrac{4}{8} = \\dfrac{1}{2} (kortat med 4). \\dfrac{8}{2} = 4 (delning).",
+    "text": "\uE000\\dfrac{4}{8} = \\dfrac{1}{2}\uE001 (kortat med 4). \uE000\\dfrac{8}{2} = 4\uE001 (delning).",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Räkna täljaren",
-    "text": "\\dfrac{4}{8}\\cdot\\dfrac{1}{2}\\cdot\\dfrac{3}{4} = \\dfrac{1}{2}\\cdot\\dfrac{1}{2}\\cdot\\dfrac{3}{4}.",
+    "text": "\uE000\\dfrac{4}{8}\\cdot\\dfrac{1}{2}\\cdot\\dfrac{3}{4} = \\dfrac{1}{2}\\cdot\\dfrac{1}{2}\\cdot\\dfrac{3}{4}\uE001.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Multiplicera bråken",
-    "text": "Multiplikationsregeln: täljare × täljare, nämnare × nämnare. \\dfrac{1}{2}\\cdot\\dfrac{1}{2}\\cdot\\dfrac{3}{4} = \\dfrac{1\\cdot 1\\cdot 3}{2\\cdot 2\\cdot 4} = \\dfrac{3}{16}.",
+    "text": "Multiplikationsregeln: täljare × täljare, nämnare × nämnare. \uE000\\dfrac{1}{2}\\cdot\\dfrac{1}{2}\\cdot\\dfrac{3}{4} = \\dfrac{1\\cdot 1\\cdot 3}{2\\cdot 2\\cdot 4} = \\dfrac{3}{16}\uE001.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Räkna nämnaren",
-    "text": "\\dfrac{8}{2}\\cdot\\dfrac{1}{2} = 4\\cdot\\dfrac{1}{2} = 2.",
+    "text": "\uE000\\dfrac{8}{2}\\cdot\\dfrac{1}{2} = 4\\cdot\\dfrac{1}{2} = 2\uE001.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Sätt ihop dubbelbråket",
-    "text": "Uttrycket blir \\dfrac{3/16}{2}.",
+    "text": "Uttrycket blir \uE000\\dfrac{3/16}{2}\uE001.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Division med ett tal är multiplikation med dess invers",
-    "text": "\\dfrac{a}{n} = a\\cdot\\dfrac{1}{n}. Alltså \\dfrac{3/16}{2} = \\dfrac{3}{16}\\cdot\\dfrac{1}{2}.",
+    "text": "\uE000\\dfrac{a}{n} = a\\cdot\\dfrac{1}{n}\uE001. Alltså \uE000\\dfrac{3/16}{2} = \\dfrac{3}{16}\\cdot\\dfrac{1}{2}\uE001.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Räkna ut",
-    "text": "\\dfrac{3}{16}\\cdot\\dfrac{1}{2} = \\dfrac{3}{32}.",
+    "text": "\uE000\\dfrac{3}{16}\\cdot\\dfrac{1}{2} = \\dfrac{3}{32}\uE001.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Verifiera med decimaler",
-    "text": "Täljaren: 0{,}5\\cdot 0{,}5\\cdot 0{,}75 = 0{,}1875. Nämnaren: 2. Kvot: 0{,}09375. Och 3/32 = 0{,}09375. Stämmer.",
+    "text": "Täljaren: \uE0000{,}5\\cdot 0{,}5\\cdot 0{,}75 = 0{,}1875\uE001. Nämnaren: 2. Kvot: \uE0000{,}09375\uE001. Och \uE0003/32 = 0{,}09375\uE001. Stämmer.",
     "tier": "detail"
    },
    {
